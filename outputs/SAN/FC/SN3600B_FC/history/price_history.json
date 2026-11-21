@@ -8,8 +8,12 @@
     {
       "date": "2026-09-22",
       "price": 19746,
-      "status": "PRICE_CHANGED",
-      "prevPrice": 0
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "CLIC Status: \"Active\" -> \"Valid\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\""
+      ]
     }
   ],
   "R7M09A": [
@@ -22,7 +26,17 @@
       "date": "2026-09-22",
       "price": 19950,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Port Upgrade Bundle\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":19950,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "R7M10A": [
@@ -35,7 +49,17 @@
       "date": "2026-09-22",
       "price": 12951,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Port Upgrade Bundle\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":12951,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "QK724A": [
@@ -48,7 +72,17 @@
       "date": "2026-09-22",
       "price": 417,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Transceiver\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":417,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "R6B10A": [
@@ -61,7 +95,17 @@
       "date": "2026-09-22",
       "price": 1946,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Transceiver\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":1946,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "R6W28A": [
@@ -74,7 +118,17 @@
       "date": "2026-09-22",
       "price": 13290,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Transceiver\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":13290,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "QK725A": [
@@ -87,7 +141,17 @@
       "date": "2026-09-22",
       "price": 3400,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Transceiver\"",
+        "CLIC Status: \"Obsolete (OB)\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":3400,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "R6B11A": [
@@ -100,7 +164,17 @@
       "date": "2026-09-22",
       "price": 6614,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Transceiver\"",
+        "CLIC Status: \"Obsolete (OB)\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":6614,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "R6B21A": [
@@ -113,7 +187,17 @@
       "date": "2026-09-22",
       "price": 27508,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Transceiver\"",
+        "CLIC Status: \"Obsolete (OB)\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":27508,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P9H29A": [
@@ -126,7 +210,17 @@
       "date": "2026-09-22",
       "price": 6100,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Transceiver\"",
+        "CLIC Status: \"Obsolete (OB)\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":6100,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P9H32A": [
@@ -139,7 +233,17 @@
       "date": "2026-09-22",
       "price": 2199,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Transceiver\"",
+        "CLIC Status: \"Obsolete (OB)\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":2199,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "R0Q23A": [
@@ -152,7 +256,17 @@
       "date": "2026-09-22",
       "price": 15989,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Transceiver\"",
+        "CLIC Status: \"Obsolete (OB)\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":15989,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "R6B12A": [
@@ -165,7 +279,17 @@
       "date": "2026-09-22",
       "price": 2691,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Transceiver\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2691,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "R6B13A": [
@@ -178,7 +302,17 @@
       "date": "2026-09-22",
       "price": 8838,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Transceiver\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":8838,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "R6W26A": [
@@ -191,7 +325,17 @@
       "date": "2026-09-22",
       "price": 19567,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Transceiver\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":19567,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "R7M17A": [
@@ -204,7 +348,17 @@
       "date": "2026-09-22",
       "price": 35170,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Transceiver\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":35170,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "N9Y63A": [
@@ -217,7 +371,16 @@
       "date": "2026-09-22",
       "price": 436,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Drive Cage / Drive\"",
+        "CLIC Status: \"Obsolete (OB)\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":436,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "295633-B22": [
@@ -230,7 +393,16 @@
     {
       "date": "2026-09-22",
       "price": 102,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":102,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF556A": [
@@ -243,7 +415,16 @@
     {
       "date": "2026-09-22",
       "price": 55,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF557A": [
@@ -256,7 +437,16 @@
     {
       "date": "2026-09-22",
       "price": 156,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":156,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF568A": [
@@ -269,7 +459,16 @@
     {
       "date": "2026-09-22",
       "price": 71,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":71,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF570A": [
@@ -282,7 +481,16 @@
     {
       "date": "2026-09-22",
       "price": 55,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "R1C66A": [
@@ -295,7 +503,16 @@
       "date": "2026-09-22",
       "price": 88,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":88,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "142257-002": [
@@ -308,7 +525,16 @@
     {
       "date": "2026-09-22",
       "price": 34,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"EOL Warning (90-Day)\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":34,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "A0N33A": [
@@ -321,7 +547,16 @@
     {
       "date": "2026-09-22",
       "price": 78,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":78,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF558A": [
@@ -334,7 +569,16 @@
     {
       "date": "2026-09-22",
       "price": 65,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF559A": [
@@ -347,7 +591,16 @@
     {
       "date": "2026-09-22",
       "price": 55,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF560A": [
@@ -360,7 +613,16 @@
     {
       "date": "2026-09-22",
       "price": 55,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF561A": [
@@ -373,7 +635,16 @@
     {
       "date": "2026-09-22",
       "price": 55,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF562A": [
@@ -386,7 +657,16 @@
     {
       "date": "2026-09-22",
       "price": 194,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":194,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF564A": [
@@ -399,7 +679,16 @@
     {
       "date": "2026-09-22",
       "price": 55,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF565A": [
@@ -412,7 +701,16 @@
     {
       "date": "2026-09-22",
       "price": 55,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF566A": [
@@ -425,7 +723,16 @@
     {
       "date": "2026-09-22",
       "price": 55,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF567A": [
@@ -438,7 +745,16 @@
     {
       "date": "2026-09-22",
       "price": 65,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF569A": [
@@ -451,7 +767,16 @@
     {
       "date": "2026-09-22",
       "price": 65,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF571A": [
@@ -463,7 +788,16 @@
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Obsolete (OB)\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF572A": [
@@ -476,7 +810,16 @@
     {
       "date": "2026-09-22",
       "price": 60,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":60,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AF591A": [
@@ -489,7 +832,16 @@
     {
       "date": "2026-09-22",
       "price": 49,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":49,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "R1C65A": [
@@ -502,7 +854,16 @@
     {
       "date": "2026-09-22",
       "price": 119,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":119,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "SG579A": [
@@ -515,7 +876,16 @@
     {
       "date": "2026-09-22",
       "price": 142,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Obsolete (OB)\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":142,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "SK792A": [
@@ -528,7 +898,16 @@
       "date": "2026-09-22",
       "price": 30,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Obsolete (OB)\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":30,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AJ833A": [
@@ -541,7 +920,17 @@
     {
       "date": "2026-09-22",
       "price": 65,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AJ835A": [
@@ -554,7 +943,17 @@
       "date": "2026-09-22",
       "price": 95,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":95,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AJ836A": [
@@ -567,7 +966,17 @@
     {
       "date": "2026-09-22",
       "price": 115,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":115,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AJ838A": [
@@ -580,7 +989,17 @@
     {
       "date": "2026-09-22",
       "price": 208,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":208,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AJ839A": [
@@ -593,7 +1012,17 @@
     {
       "date": "2026-09-22",
       "price": 253,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":253,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AJ834A": [
@@ -606,7 +1035,17 @@
     {
       "date": "2026-09-22",
       "price": 70,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":70,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AJ837A": [
@@ -619,7 +1058,17 @@
     {
       "date": "2026-09-22",
       "price": 162,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":162,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "QK731A": [
@@ -632,7 +1081,17 @@
       "date": "2026-09-22",
       "price": 2000,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "QK732A": [
@@ -645,7 +1104,17 @@
     {
       "date": "2026-09-22",
       "price": 115,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":115,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "QK737A": [
@@ -658,7 +1127,17 @@
     {
       "date": "2026-09-22",
       "price": 415,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":415,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "QK729A": [
@@ -671,7 +1150,17 @@
       "date": "2026-09-22",
       "price": 719,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":719,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "QK733A": [
@@ -684,7 +1173,17 @@
     {
       "date": "2026-09-22",
       "price": 130,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":130,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "QK734A": [
@@ -697,7 +1196,17 @@
     {
       "date": "2026-09-22",
       "price": 147,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":147,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "QK735A": [
@@ -710,7 +1219,17 @@
     {
       "date": "2026-09-22",
       "price": 195,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":195,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "QK736A": [
@@ -723,7 +1242,17 @@
     {
       "date": "2026-09-22",
       "price": 239,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Cable Kit\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":239,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "Q1Z11BAE": [
@@ -736,13 +1265,198 @@
       "date": "2026-09-22",
       "price": 11806,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":11806,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "H6Z29A": [
     {
       "date": "2026-09-22",
       "price": 7071,
+      "status": "ADDED"
+    }
+  ],
+  "R8P28A": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "R8P29A": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "R4G55A": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "R4G55B": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q2B45A#05Y": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q1H71A#05Y": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q1H72A#05Y": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q2B46A#05Y": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q2B44A#05Y": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q1H70A#05Y": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q1H70A#AC3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q1H71A#AC3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q1H72A#AC3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "R7R97A#AC3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "R8P28A#AC3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "R8P29A#AC3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q1H71B#05Y": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q1H70B#05Y": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "R4G55A#05Y": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q1H72B#05Y": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "R4G55B#AC3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "R4G55A#AC3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q1H72B#AC3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q1H70B#AC3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "Q1H71B#AC3": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
       "status": "ADDED"
     }
   ]

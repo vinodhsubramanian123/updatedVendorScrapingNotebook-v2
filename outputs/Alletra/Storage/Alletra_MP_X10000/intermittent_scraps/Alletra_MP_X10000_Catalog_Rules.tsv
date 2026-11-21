@@ -1,0 +1,84 @@
+Main Category	Sub-Category	Constraint	Rule Type	Rule Text
+Unknown	Power Level Options	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Unknown	Power Watt Options	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Power Cords	Power Cords Length	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Unknown	Installation Services	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Unknown	Node Chassis	max 8	Quantity Constraint	Quantity: max 8
+Unknown	Node	max 4	Quantity Constraint	Quantity: max 4
+Power Supplies	Power Supplies	max 4	Quantity Constraint	Quantity: max 4
+Power Supplies	Power Cord	max 8	Quantity Constraint	Quantity: max 8
+Power Supplies	Data Intelligent Node	max 3	Quantity Constraint	Quantity: max 3
+Power Supplies	Data Intelligence GPUs	Unlimited	Quantity Constraint	Quantity: Unlimited
+Power Supplies	Data Intelligence SaaS	max 5	Quantity Constraint	Quantity: max 5
+Power Supplies	Data protection accelerator node	Unlimited	Quantity Constraint	Quantity: Unlimited
+Power Supplies	Drive Enclosure	max 16	Quantity Constraint	Quantity: max 16
+Power Supplies	BlueTooth Connectivity Kit	max 1	Quantity Constraint	Quantity: max 1
+Power Supplies	Back-End Switches	max 2	Quantity Constraint	Quantity: max 2
+Power Supplies	Back-End Switch Rail Kits	max 8	Quantity Constraint	Quantity: max 8
+Cables	Management Cables	Unlimited	Quantity Constraint	Quantity: Unlimited
+Cables	DAC Cables	Unlimited	Quantity Constraint	Quantity: Unlimited
+Cables	Configuration Indicators	max 2	Quantity Constraint	Quantity: max 2
+Cables	Commvault Tracking SKU	max 1	Quantity Constraint	Quantity: max 1
+Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
+Accessories & Infrastructure	Node Chassis	max 8	Configuration Rule	Selection constraint for Node Chassis: max 8
+Storage Controllers	Node	max 4	Configuration Rule	Selection constraint for Node: max 4
+Storage Controllers	Node	max 4	Configuration Rule	B series nodes only supported for upgrades
+Storage Controllers	Node	max 4	Configuration Rule	R7C71B conditional visibility: portal selector activation required (B series nodes only supported for upgrades); PORTAL_CONDITIONAL
+Power Supplies	Power Supplies	max 4	Configuration Rule	Selection constraint for Power Supplies: max 4
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	No Mix PowerSupply
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	R7C78A conditional visibility: portal selector activation required (No Mix PowerSupply); PORTAL_CONDITIONAL
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	R9Z97A conditional visibility: portal selector activation required (No Mix PowerSupply); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cord	max 8	Configuration Rule	Selection constraint for Power Cord: max 8
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	P22173-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 1); PORTAL_CONDITIONAL
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	P36877-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 1); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Breaker Panel can be selected only if R7C78A is selected
+Accessories & Infrastructure	System Options	optional	Configuration Rule	G2H95A conditional visibility: portal selector activation required (Breaker Panel can be selected only if R7C78A is selected); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Q9N54A conditional visibility: portal selector activation required (Breaker Panel can be selected only if R7C78A is selected); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	Selection constraint for Drive Enclosure: max 16
+Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	Max quantity of product limited by space available.
+Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	S2T35A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	Q2F19A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	Back-End Connectivity cables are not supported
+Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	R9F76A conditional visibility: portal selector activation required (Back-End Connectivity cables are not supported); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	R9F79A conditional visibility: portal selector activation required (Back-End Connectivity cables are not supported); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	R9F80A conditional visibility: portal selector activation required (Back-End Connectivity cables are not supported); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	R9F81A conditional visibility: portal selector activation required (Back-End Connectivity cables are not supported); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	S1D25A conditional visibility: portal selector activation required (Back-End Connectivity cables are not supported); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	S1D26A conditional visibility: portal selector activation required (Back-End Connectivity cables are not supported); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	S1D27A conditional visibility: portal selector activation required (Back-End Connectivity cables are not supported); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	S1D28A conditional visibility: portal selector activation required (Back-End Connectivity cables are not supported); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	Max quantity of product class limited by space available.
+Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	R9H71B conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	R9H73B conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	R9H72B conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	S4P49A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	S1Z68A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	R9H67A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	R9H66A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	R9H69A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	R9H68A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	S4P40A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	S3L74A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	S3L73A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
+Power Supplies	BlueTooth Connectivity Kit	max 1	Configuration Rule	Selection constraint for BlueTooth Connectivity Kit: max 1
+Power Supplies	Back-End Switches	max 2	Configuration Rule	Selection constraint for Back-End Switches: max 2
+Power Supplies	Back-End Switches	max 2	Configuration Rule	If “acPowerFlag” is selected then S1S69A not supported
+Power Supplies	Back-End Switches	max 2	Configuration Rule	S1S69A conditional visibility: portal selector activation required (If “acPowerFlag” is selected then S1S69A not supported); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Back-End Switch Rail Kits	max 8	Configuration Rule	Selection constraint for Back-End Switch Rail Kits: max 8
+Cables & Enablement Kits	Management Cables	no max	Configuration Rule	Selection constraint for Management Cables: no max
+Cables & Enablement Kits	DAC Cables	no max	Configuration Rule	Selection constraint for DAC Cables: no max
+Accessories & Infrastructure	Commvault Tracking SKU	max 1	Configuration Rule	Selection constraint for Commvault Tracking SKU: max 1
+Support Services	Configuration Indicators	max 2	Configuration Rule	Selection constraint for Configuration Indicators: max 2
+Controller Node Models	Configuration Rules	No Mixing of Chassis	Learned Feedback Rule	[CHASSIS_GATE] No Mixing of Chassis
+Controller Node Models	Configuration Rules	B series nodes only supported for upgrades	Learned Feedback Rule	[MUTUAL_EXCLUSION] B series nodes only supported for upgrades
+Controller Node Models	Configuration Rules	TAA isSelected	Learned Feedback Rule	[MUTUAL_EXCLUSION] TAA isSelected
+Power Supplies	Configuration Rules	No Mix PowerSupply	Learned Feedback Rule	[MUTUAL_EXCLUSION] No Mix PowerSupply
+Power Supplies	Configuration Rules	If single Phase or threePhase is selected then DC Power Cables not supported 1	Learned Feedback Rule	[MUTUAL_EXCLUSION] If single Phase or threePhase is selected then DC Power Cables not supported 1
+Power Supplies	Configuration Rules	Breaker Panel can be selected only if R7C78A is selected	Learned Feedback Rule	[MUTUAL_EXCLUSION] Breaker Panel can be selected only if R7C78A is selected
+Data Intelligent Node	Configuration Rules	If (S7V58A ) is selected, Then show the option to select S6A73C,S6W21C	Learned Feedback Rule	[MUTUAL_EXCLUSION] If (S7V58A ) is selected, Then show the option to select S6A73C,S6W21C
+Drive Enclosure	Configuration Rules	TAA isSelected	Learned Feedback Rule	[MUTUAL_EXCLUSION] TAA isSelected
+Drive Enclosure	Configuration Rules	Max quantity of product limited by space available.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Max quantity of product limited by space available.
+Drive Enclosure	Configuration Rules	Back-End Connectivity cables are not supported	Learned Feedback Rule	[MUTUAL_EXCLUSION] Back-End Connectivity cables are not supported
+Capacity	Configuration Rules	Max quantity of product class limited by space available.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Max quantity of product class limited by space available.
+Back-End Switches	Configuration Rules	If “acPowerFlag” is selected then S1S69A not supported	Learned Feedback Rule	[MUTUAL_EXCLUSION] If “acPowerFlag” is selected then S1S69A not supported

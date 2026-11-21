@@ -1,0 +1,42 @@
+{
+  "query": "Alletra Storage MP B10000",
+  "selectedSku": "B10000",
+  "source": "HPE OCA Product Search via authenticated CDP session",
+  "capturedAt": "2026-11-21T12:45:40.400Z",
+  "deliveryEstimate": "",
+  "candidates": [
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"1\"]",
+      "optionValue": "arcusSolwizard",
+      "text": "arcusSolwizard - HPE Alletra Storage MP B10000",
+      "sku": "B10000",
+      "listPriceUsd": 0,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "",
+      "deliveryLabel": "",
+      "isBto": false,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": true,
+      "isWizard": true
+    },
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"0\"]",
+      "optionValue": "arcusKSAsol",
+      "text": "S7U66A/S7U67A - HPE Alletra Storage MP B10000 KSA",
+      "sku": "S7U66A",
+      "listPriceUsd": 0,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "",
+      "deliveryLabel": "",
+      "isBto": false,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": true,
+      "isWizard": false
+    }
+  ],
+  "excludedCandidates": []
+}

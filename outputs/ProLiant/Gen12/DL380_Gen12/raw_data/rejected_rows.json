@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "1.0.0",
+  "product": "DL380_Gen12",
+  "generatedAt": "2026-11-21T11:58:03.970Z",
+  "rejectedCount": 20,
+  "rows": [
+    {
+      "tableIndex": 2,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Smart Chassis"
+      ]
+    },
+    {
+      "tableIndex": 3,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Define connection for x4 Cage\n If no selection is made here it will default to Controller x2"
+      ]
+    },
+    {
+      "tableIndex": 4,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Ambient Temperature"
+      ]
+    },
+    {
+      "tableIndex": 6,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HDD Blank Kit"
+      ]
+    },
+    {
+      "tableIndex": 13,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Riser Cards"
+      ]
+    },
+    {
+      "tableIndex": 17,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Private Cloud Business Edition"
+      ]
+    },
+    {
+      "tableIndex": 19,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HPE Complete Software"
+      ]
+    },
+    {
+      "tableIndex": 24,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "SGI Software"
+      ]
+    },
+    {
+      "tableIndex": 137,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Hardware",
+        "USD46,095.00",
+        "Support",
+        "USD19,306.00"
+      ]
+    },
+    {
+      "tableIndex": 140,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    },
+    {
+      "tableIndex": 158,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    },
+    {
+      "tableIndex": 159,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Hardware",
+        "USD46,095.00",
+        "Support",
+        "USD19,306.00"
+      ]
+    },
+    {
+      "tableIndex": 179,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Smart Chassis"
+      ]
+    },
+    {
+      "tableIndex": 180,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Define connection for x4 Cage\n If no selection is made here it will default to Controller x2"
+      ]
+    },
+    {
+      "tableIndex": 181,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Ambient Temperature"
+      ]
+    },
+    {
+      "tableIndex": 183,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HDD Blank Kit"
+      ]
+    },
+    {
+      "tableIndex": 190,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Riser Cards"
+      ]
+    },
+    {
+      "tableIndex": 194,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Private Cloud Business Edition"
+      ]
+    },
+    {
+      "tableIndex": 196,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HPE Complete Software"
+      ]
+    },
+    {
+      "tableIndex": 201,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "SGI Software"
+      ]
+    }
+  ]
+}

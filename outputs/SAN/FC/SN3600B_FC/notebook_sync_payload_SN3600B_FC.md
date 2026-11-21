@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/NETWORKING/SAN/FC/SN3600B_FC`
 
-**Sync Timestamp**: 2026-11-16T21:08:50.291Z
+**Sync Timestamp**: 2026-11-21T13:23:42.236Z
 
-**Total Verified SKUs**: `158` (`58` Hardware + `100` Services)
+**Total Verified SKUs**: `205` (`79` Hardware + `126` Services)
 
-**Total Synced KnowledgeDeltas**: `21`
+**Total Synced KnowledgeDeltas**: `22`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Price & Attr Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|----------------------|------------|--------|
-| **Hardware Components** | 58 | 1 | 1 | 34 | 22 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 100 | 0 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **158** | **1** | **1** | **34** | **22** | **0** | **ACTIVE** |
+| **Hardware Components** | 79 | 22 | 0 | 34 | 23 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 126 | 26 | 0 | 87 | 13 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **205** | **48** | **0** | **121** | **36** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -39,12 +39,13 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 13. **[LEARN_UNIVERSAL_RECONCILIATION_UNSPLIT_AND_SERVICES_20261117]**: Two-baseline BOM reconciliation must resolve unsplit customer baseline items directly from parsed workbook lines scaled across per-node multipliers (preserving global wrapper items at quantity 1), check sibling services JSON catalogs alongside hardware catalog entries so valid SaaS and care SKUs are not misclassified as uncataloged, and support explicit no-quarantine flags in verification runs (INV-241). *(Type: WORKFLOW_RECONCILIATION_UNSPLIT_AND_SERVICES_LOOKUP)*
 14. **[LEARN_UNIVERSAL_SEPARATED_CABLE_PATHS_AND_CATEGORY_MATCHING_20261117]**: Physical validation must distinguish backplane-to-controller storage signal cables, CPU-to-slot OCP enablement cables, and controller sideband telemetry paths separately without miscounting storage cables as adapters or passing disconnected backplanes, enforce product-specific thermal kit lookup before falling back, and reject cross-category hardware mismatches plus non-hardware OS/management tokens in replacement scoring (INV-241). *(Type: WORKFLOW_TOPOLOGY_CATEGORY_AND_CABLE_ENFORCEMENT)*
 15. **[LEARN_UNIVERSAL_FAST_SHIP_TOPOLOGY_AND_CLIC_CARRYFORWARD_20261117]**: Fast-ship candidate synthesis must resolve coupled cabling and enablement paths and pass full multi-aspect physical revalidation before ranking, spare non-bottleneck compute/power parts when another hardware option sets the >=21-day lead-time bottleneck, report configurator solution Estimated Delivery Time separately from single-part component lead times, and classify BOM CLIC Status or live configurator results with 0 unbuildables, 0 errors, and 0 process-control blocks (even with warning advisories) as PORTAL_VALIDATED_WITH_WARNINGS while failing closed on any unbuildable/error row or unbacked validation claim (INV-241). *(Type: WORKFLOW_FAST_SHIP_TOPOLOGY_AND_CLIC_CARRYFORWARD)*
-16. **[OWNER_STANDARD_3Y_BASIC]**: Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified or explicitly authorized. For this SN3600B BOQ the owner authorized 5-year Essential to 3-year Basic. Compare qualified fixed and flexible service options; disclose retention and preserve parent/suffix pairs. This commercial preference is not vendor qualification. *(Type: SUPPORT_POLICY)*
-17. **[OWNER_ICON_SERVICE_ISOLATION]**: Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA. *(Type: ICON_SUPPORT_ISOLATION)*
-18. **[OWNER_OCA_EXPIRED_SESSION]**: When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors. *(Type: SESSION_RECOVERY_PROTOCOL)*
-19. **[OWNER_CLOSEST_REQUIREMENT_RANK]**: Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alternatives disclose every deviation; do not silently reduce term, tier, capacity or resilience. Keep explicit owner overrides auditable against the original customer BOQ. *(Type: CUSTOMER_INTENT_POLICY)*
-20. **[OWNER_COMPONENT_DOMAIN_ROUTING]**: Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate scopes. Resolve ownership before quantities. Validate each component and enclosure/bay, adapter/fabric, optical endpoints, shared power and per-icon SLA relationships; missing profiles remain NOT_EVALUATED and cannot inherit server defaults. Scraping completeness is not buildability certification. *(Type: COMPONENT_DOMAIN_ROUTING)*
-21. **[GUARDRAIL_TRANSPORT_RECOVERY]**: Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enforce scoped local simulation and NotebookLM checks. Retry bounded transient provider errors without exhausting keys, distinguish per-minute from explicit daily quotas, and use configured approved model fallback with preserved tool results and no replay side effects. Empty or unfinished responses are unavailable, not verification. Dashboard status is independent of NotebookLM and vendor acceptance. *(Type: GUARDRAIL_RECOVERY_POLICY)*
+16. **[LEARN_UNIVERSAL_BLINDSPOT_SUPPORT_PARITY_AND_MULTIVENDOR_BOM_20261118]**: Universal portfolio intelligence, support governance & multi-vendor attribute mapping rules (INV-242, INV-243): (1) Index companion *_Services.json entries non-destructively onto catalogData via non-enumerable _servicesEntries (preserving catalogData.entries and snapshotFingerprint), normalize -2/-1 max-qty sentinels to null, and recover or flag SHIFTED_COLUMN_CORRUPTION rows where SKU/badge tokens leak into Unit Price columns. (2) Enforce per-node quantity parity (Qty >= serverCount) for COM, iLO, and child support SKUs, flag COM-vs-hardware term mismatches and discontinued iLO licenses, fail Gate B14 as ACTION_REQUIRED when multi-node Gen11/Gen12 servers have qualifyingComQty < chassisQty without an approved SmartForm override, and separate Gate B19 PORTAL_VALIDATED_WITH_PC_OVERRIDE from unresolved P+ Process Control blocks. (3) Keep cross-solution price/lead-time backfill scoped strictly to same-generation matches while preserving nullable unpriced SKUs. (4) Map competitor Dell/Huawei/Cisco/Lenovo BOM lines using canonical attribute vectors without silent write-endurance or InfiniBand-to-Ethernet downgrades, and keep deadcode/orphan and scope-aware delta deduplication gates green. *(Type: WORKFLOW_BLINDSPOT_SUPPORT_PARITY_AND_MULTIVENDOR_BOM)*
+17. **[OWNER_STANDARD_3Y_BASIC]**: Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified or explicitly authorized. For this SN3600B BOQ the owner authorized 5-year Essential to 3-year Basic. Compare qualified fixed and flexible service options; disclose retention and preserve parent/suffix pairs. This commercial preference is not vendor qualification. *(Type: SUPPORT_POLICY)*
+18. **[OWNER_ICON_SERVICE_ISOLATION]**: Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA. *(Type: ICON_SUPPORT_ISOLATION)*
+19. **[OWNER_OCA_EXPIRED_SESSION]**: When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors. *(Type: SESSION_RECOVERY_PROTOCOL)*
+20. **[OWNER_CLOSEST_REQUIREMENT_RANK]**: Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alternatives disclose every deviation; do not silently reduce term, tier, capacity or resilience. Keep explicit owner overrides auditable against the original customer BOQ. *(Type: CUSTOMER_INTENT_POLICY)*
+21. **[OWNER_COMPONENT_DOMAIN_ROUTING]**: Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate scopes. Resolve ownership before quantities. Validate each component and enclosure/bay, adapter/fabric, optical endpoints, shared power and per-icon SLA relationships; missing profiles remain NOT_EVALUATED and cannot inherit server defaults. Scraping completeness is not buildability certification. *(Type: COMPONENT_DOMAIN_ROUTING)*
+22. **[GUARDRAIL_TRANSPORT_RECOVERY]**: Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enforce scoped local simulation and NotebookLM checks. Retry bounded transient provider errors without exhausting keys, distinguish per-minute from explicit daily quotas, and use configured approved model fallback with preserved tool results and no replay side effects. Empty or unfinished responses are unavailable, not verification. Dashboard status is independent of NotebookLM and vendor acceptance. *(Type: GUARDRAIL_RECOVERY_POLICY)*
 
 ## 🏛️ 2. Family & Generation Rules (SAN FC)
 
@@ -69,6 +70,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | Product # | Description | Category | List Price (USD) | Discontinued Date | Price Trend | Presales Strategy Guidance |
 |---|---|---|---:|---|:---:|---|
 | `142257-002` | HPE C13 - C14 WW 250V 10Amp 2.5m Jumper Cord | Cables & Enablement Kits | $34 | 11/30/2026 | 0.00% | ⚠️ Approaching EOL (11/30/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `R4G55B#AC3` | No Localization | Networking | $0 | 10/31/2026 | 0.00% | ⚠️ Approaching EOL (10/31/2026). Valid for immediate builds; verify multi-year roadmaps. |
 
 ## 📊 5b. Category-Level Trends & Significant Price Adjustments
 
@@ -77,9 +79,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | Category | Total SKUs | Added | Modified | Unchanged | Clearance / Drops | Category Planning Insight |
 |---|---:|---:|---:|---:|---:|---|
 | **Chassis** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
-| **Networking** | 16 | 1 | 15 | 0 | 0 | ✨ Portfolio expanding (+1 new options) |
+| **Networking** | 27 | 12 | 15 | 0 | 0 | ✨ Portfolio expanding (+12 new options) |
 | **Drive Enclosures / Drives** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
-| **Cables & Enablement Kits** | 39 | 0 | 39 | 0 | 0 | 🔄 Attributes/specifications updated (39 SKUs) |
+| **Cables & Enablement Kits** | 49 | 10 | 39 | 0 | 0 | ✨ Portfolio expanding (+10 new options) |
 | **Software & Licenses** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
 
 ### High-Impact Price Adjustments (Drops $\ge 10\%$ and Major Moves)
@@ -92,90 +94,840 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Timestamp | Source | SKU | Attribute | Old Value | New Value | Detail |
 |-----------|--------|-----|-----------|-----------|-----------|--------|
-| 2026-09-22 | Hardware | `AF566A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `AF567A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `AF569A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `AF571A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `AF572A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `AF591A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `R1C65A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `SG579A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `SK792A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `AJ833A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `AJ835A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `AJ836A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `AJ838A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `AJ839A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `AJ834A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `AJ837A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `QK731A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `QK732A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `QK737A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `QK729A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `QK733A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `QK734A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `QK735A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"1,560.00"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"1,560.00"}" |
-| 2026-09-22 | Hardware | `QK736A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| 2026-09-22 | Hardware | `Q1Z11BAE` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
+| 2026-09-22 | Services | `H46SJA5` | Speed Tier | N/A | **Unpublished** | Speed Tier: "N/A" → "Unpublished" |
+| 2026-09-22 | Services | `H46SJA5` | Vendor Recommended | N/A | **false** | Vendor Recommended: "N/A" → "false" |
+| 2026-09-22 | Services | `H46SJA5` | Vendor Attributes | {"Product Number":"H46SJA5"} | **{"leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","Product Number":"H46SJA5","rowType":"SUPPORT_SERVICE"}** | Vendor Attributes: "{"Product Number":"H46SJA5"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","Product Number":"H46SJA5","rowType":"SUPPORT_SERVICE"}" |
+| 2026-09-22 | Services | `H46SKA3` | Component Role | N/A | **Service & Support** | Component Role: "N/A" → "Service & Support" |
+| 2026-09-22 | Services | `H46SKA3` | Start Date | 2026-09-21 | **N/A** | Start Date: "2026-09-21" → "N/A" |
+| 2026-09-22 | Services | `H46SKA3` | Discontinued Date | 05/31/2028 | **N/A** | Discontinued Date: "05/31/2028" → "N/A" |
+| 2026-09-22 | Services | `H46SKA3` | CLIC Status | Active | **Unpublished** | CLIC Status: "Active" → "Unpublished" |
+| 2026-09-22 | Services | `H46SKA3` | Lead Time | N/A | **Unpublished** | Lead Time: "N/A" → "Unpublished" |
+| 2026-09-22 | Services | `H46SKA3` | Lead Time Source | Not published by OCA | **Unpublished** | Lead Time Source: "Not published by OCA" → "Unpublished" |
+| 2026-09-22 | Services | `H46SKA3` | Speed Tier | N/A | **Unpublished** | Speed Tier: "N/A" → "Unpublished" |
+| 2026-09-22 | Services | `H46SKA3` | Vendor Recommended | N/A | **false** | Vendor Recommended: "N/A" → "false" |
+| 2026-09-22 | Services | `H46SKA3` | Vendor Attributes | {"Product Number":"H46SKA3"} | **{"leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","Product Number":"H46SKA3","rowType":"SUPPORT_SERVICE"}** | Vendor Attributes: "{"Product Number":"H46SKA3"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","Product Number":"H46SKA3","rowType":"SUPPORT_SERVICE"}" |
+| 2026-09-22 | Services | `H6Z29A` | Description | HPE B-series 16Gb LW 25km FC SFP 1-pack Transceiver | **N/A** | Description: "HPE B-series 16Gb LW 25km FC SFP 1-pack Transceiver" → "N/A" |
+| 2026-09-22 | Services | `H6Z29A` | Constraint | no max | **N/A** | Constraint: "no max" → "N/A" |
+| 2026-09-22 | Services | `H6Z29A` | Rule/Note | Selection constraint for 16Gb Transceivers: no max | **N/A** | Rule/Note: "Selection constraint for 16Gb Transceivers: no max" → "N/A" |
+| 2026-09-22 | Services | `H6Z29A` | Max Qty | -1 | **N/A** | Max Qty: "-1" → "N/A" |
+| 2026-09-22 | Services | `H6Z29A` | Option Type | Service | **N/A** | Option Type: "Service" → "N/A" |
+| 2026-09-22 | Services | `H6Z29A` | Start Date | 03/03/2017 | **N/A** | Start Date: "03/03/2017" → "N/A" |
+| 2026-09-22 | Services | `H6Z29A` | Discontinued Date | 12/01/2022 | **N/A** | Discontinued Date: "12/01/2022" → "N/A" |
+| 2026-09-22 | Services | `H6Z29A` | Lifecycle Status | Obsolete (OB) | **N/A** | Lifecycle Status: "Obsolete (OB)" → "N/A" |
+| 2026-09-22 | Services | `H6Z29A` | CLIC Status | Obsolete (OB) | **N/A** | CLIC Status: "Obsolete (OB)" → "N/A" |
+| 2026-09-22 | Services | `H6Z29A` | Lifecycle Badge | OB | **N/A** | Lifecycle Badge: "OB" → "N/A" |
+| 2026-09-22 | Services | `H6Z29A` | Availability | Obsolete (OB) | **N/A** | Availability: "Obsolete (OB)" → "N/A" |
+| 2026-09-22 | Services | `H6Z29A` | Lead Time Source | Not published by OCA | **N/A** | Lead Time Source: "Not published by OCA" → "N/A" |
+| 2026-09-22 | Services | `H6Z29A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **N/A** | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "N/A" |
 
 ### Current Scrape SKU Attribute Deltas
 
 | SKU | Source | Diff Status | Attribute Changes (Old → New) |
 |-----|--------|-------------|-------------------------------|
-| `R7M09A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `R7M10A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `QK724A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `R6B10A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `R6W28A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
+| `R7R97A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | CLIC Status: "Active" → "Valid"; Speed Tier: "(None)" → "Unpublished" |
+| `R7M09A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Port Upgrade Bundle"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":19950,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `R7M10A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Port Upgrade Bundle"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":12951,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `QK724A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Transceiver"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":417,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `R6B10A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Transceiver"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":1946,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `R6W28A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Transceiver"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":13290,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
 | `H6Z29A` | Hardware | ADDED | New SKU introduced |
-| `QK725A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `R6B11A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `R6B21A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `P9H29A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `P9H32A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `R0Q23A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `R6B12A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `R6B13A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `R6W26A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `R7M17A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `N9Y63A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `295633-B22` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF556A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF557A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF568A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF570A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `R1C66A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `142257-002` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `A0N33A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF558A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF559A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF560A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF561A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF562A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF564A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF565A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF566A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF567A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF569A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF571A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF572A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AF591A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `R1C65A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `SG579A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `SK792A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AJ833A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AJ835A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AJ836A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AJ838A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AJ839A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AJ834A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `AJ837A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `QK731A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
-| `QK732A` | Hardware | ATTRIBUTE_CHANGED | Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"Extended Price (USD)":"NA"}" |
+| `QK725A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Transceiver"; CLIC Status: "Obsolete (OB)" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":3400,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `R6B11A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Transceiver"; CLIC Status: "Obsolete (OB)" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":6614,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `R6B21A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Transceiver"; CLIC Status: "Obsolete (OB)" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":27508,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `P9H29A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Transceiver"; CLIC Status: "Obsolete (OB)" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":6100,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `P9H32A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Transceiver"; CLIC Status: "Obsolete (OB)" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":2199,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `R0Q23A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Transceiver"; CLIC Status: "Obsolete (OB)" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":15989,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `R6B12A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Transceiver"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":2691,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `R6B13A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Transceiver"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":8838,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `R6W26A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Transceiver"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":19567,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `R7M17A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Transceiver"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":35170,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `N9Y63A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Component Role: "(None)" → "Drive Cage / Drive"; CLIC Status: "Obsolete (OB)" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":436,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `295633-B22` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":102,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF556A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":55,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF557A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":156,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF568A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":71,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF570A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":55,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `R1C66A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":88,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `142257-002` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "EOL Warning (90-Day)" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"90-Day Warning","listPrice":34,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `A0N33A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":78,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF558A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":65,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF559A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":55,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF560A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":55,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF561A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":55,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF562A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":194,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF564A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":55,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF565A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":55,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF566A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":55,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF567A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":65,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF569A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":65,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF571A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Obsolete (OB)" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF572A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":60,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AF591A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":49,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `R1C65A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":119,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `SG579A` | Hardware | ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Obsolete (OB)" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":142,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `SK792A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Component Role: "(None)" → "Cable Kit"; CLIC Status: "Obsolete (OB)" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":30,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AJ833A` | Hardware | ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":65,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AJ835A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":95,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AJ836A` | Hardware | ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":115,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AJ838A` | Hardware | ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":208,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AJ839A` | Hardware | ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":253,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AJ834A` | Hardware | ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":70,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `AJ837A` | Hardware | ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":162,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
+| `QK731A` | Hardware | PRICE_AND_ATTRIBUTE_CHANGED | Max Qty: "-1" → "(None)"; Component Role: "(None)" → "Cable Kit"; CLIC Status: "Active" → "Unpublished"; Lead Time: "(None)" → "Unpublished"; Lead Time Source: "Not published by OCA" → "Unpublished"; Speed Tier: "(None)" → "Unpublished"; Vendor Recommended: "(None)" → "false"; Vendor Attributes: "{"Extended Price (USD)":"0"}" → "{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":2000,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}" |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 
 | Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |
 |--------------------|----------------|------------|-------------|--------------|
 | **SN3600B_FC** | SAN | FC | 1U | `R7R97A` |
+
+## 📦 9. Solution Manifest, EDT & Commercial Baseline
+
+**Configuration Profile**: `OCA Config 2` | **Icon ID**: `I155845745-01` | **Estimated Delivery Time (EDT)**: `14 - 18 days`
+
+| Hardware (USD) | Support (USD) | Services (USD) | Software (USD) | Total Baseline (USD) |
+|---:|---:|---:|---:|---:|
+| $21,306 | $2,705 | $537 | $0 | **$24,548** |
+
+### Authoritative Baseline BOM Hierarchy
+
+| Level | Product # | Description | Qty | Unit Price (USD) | Ext. Price (USD) |
+|---|---|---|---:|---:|---:|
+| (1) | `R7R97A` | HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch | 1 | $19,746 | $19,746 |
+| (1) | `QK735A` | HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 15m Cable | 8 | $195 | $1,560 |
+| (1) | `HA113A1` | HPE Installation Service | 1 | $0 | $0 |
+| (2) | `HA113A1 5GA` | HPE LowEnd SAN/Edge Switch/HAFM Inst SVC | 1 | $537 | $537 |
+| (1) | `HU4A6A5` | HPE 5Y Tech Care Essential Service | 1 | $0 | $0 |
+| (2) | `HU4A6A5 ZTL` | HPE SN3600B 24/8 8p 32G Swch Support | 1 | $2,705 | $2,705 |
+
+### Structural Field & Evidence Coverage
+
+- **Row Types**: BASE_SYSTEM: 1, HARDWARE_OPTION: 92, SOFTWARE_SUBSCRIPTION: 14, SUPPORT_SERVICE: 98
+- **Price States**: PRICED: 70, UNPRICED: 121, ZERO_UNCONFIRMED: 14
+- **Lead-Time Measurement**: Numeric Days: 0, ETA Date Only: 0, Unpublished: 205
+- **Visibility Coverage**: VISIBLE: 205
+
+## ⏱️ 10. Supply Chain & Delivery Lead Time Intelligence
+
+### ⚠️ Supply Chain Verification Advisory (Unpublished Delivery Lead Times)
+
+*The following high-value active components have unpublished delivery estimates in live OCA. Presales engineers must verify distributor buffer stock before quoting committed deployment timelines:*
+
+| Product # | Description | Category | Lead Time Status | Presales Action |
+|---|---|---|:---:|---|
+| `R7R97A` | HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch | Chassis | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `R7M09A` | HPE SN3600B 32Gb 8-port Short Wave SFP28 Fibre Channel Upgrade License with Transceiver Kit | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `R7M10A` | HPE SN3600B 16Gb 8-port Short Wave SFP+ Fibre Channel Upgrade License with Transceiver Kit | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `R6W28A` | HPE B-series 16Gb SFP+ Short Wave 8-pack Secure Transceiver | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `H6Z29A` | HPE B-series 16Gb LW 25km FC SFP 1-pack Transceiver | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `R6B11A` | HPE B-series 16Gb SFP+ Long Wave 10km 1-pack Secure Transceiver | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `R6B21A` | HPE B-series 16Gb SFP+ Extended Long Wave 25km 1-pack Secure Transceiver | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P9H29A` | HPE B-Series 32Gb SFP28 Long Wave 1-pack Transceiver | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `R0Q23A` | HPE B-series 32Gb SFP28 Short Wave 8-pack Transceiver | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `R6B13A` | HPE B-series 32Gb SFP28 Long Wave 10km 1-pack Secure Transceiver | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `R6W26A` | HPE B-series 32Gb SFP28 Short Wave 8-pack Secure Transceiver | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `R7M17A` | HPE B-series 32Gb SFP Extended Long Wave 25km 1-pack Secure Transceiver | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `Q1Z11BAE` | HPE SN3600B Power Pack+ Upgrade E-LTU | Software & Licenses | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+
+
+<!-- MANAGED_FULL_CATALOG -->
+Content fingerprint: 6725bd163d03c7e207dd64daaa2fc76365c6ef5f743e77c4e6b1658cd9c61a5c
+
+## Complete workbook text projection
+
+Displayed cell values follow by sheet and original row. Formatting, charts and formulas remain in the Excel artifact. Repeated rows refer to the first identical row and schema; no content is replaced by a fingerprint.
+
+### Category Summary
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Main Category | Sub-Category | Constraint | Min Qty | Max Qty | Total SKUs | Has Rules | Rule Count |
+| 2 | Unknown | SANnav -  Renewal License | no max | 0 | Unlimited | 0 | No | 0 |
+| 3 | Accessories | Accessories | max 99 | 0 | 99 | 0 | No | 0 |
+| 4 | Transceivers | Active Port Transceivers | no max | 0 | Unlimited | 0 | No | 0 |
+| 5 | Transceivers | 16Gb Transceivers | no max | 0 | Unlimited | 0 | No | 0 |
+| 6 | Transceivers | 32Gb Transceivers | no max | 0 | Unlimited | 0 | No | 0 |
+| 7 | Accessories | Power Cords for Wall Outlets | max 2 | 0 | 2 | 0 | No | 0 |
+| 8 | Cables | OM3 LC-LC type connectors cable | no max | 0 | Unlimited | 0 | No | 0 |
+| 9 | Cables | Premier Flex OM4 | no max | 0 | Unlimited | 0 | No | 0 |
+| 10 | Cables | Switch-PDU Power Cord | max 1 | 0 | 1 | 0 | No | 0 |
+| 11 | Software | Port Upgrade Licenses | no max | 0 | Unlimited | 0 | No | 0 |
+| 12 | Software | SANnav - New License | no max | 0 | Unlimited | 0 | No | 0 |
+| 13 | Software | SANnav - Renewal License | no max | 0 | Unlimited | 0 | No | 0 |
+| 14 | Chassis | Variants | min 1, max 1 — Active OCA CTO chassis | 1 | 1 | 1 | Yes | 1 |
+| 15 | Networking | Active Port Transceivers | no max | 0 | Unlimited | 2 | Yes | 1 |
+| 16 | Networking | 16Gb Transceivers | no max | 0 | Unlimited | 7 | Yes | 1 |
+| 17 | Networking | 32Gb Transceivers | no max | 0 | Unlimited | 7 | Yes | 1 |
+| 18 | Drive Enclosures / Drives | System Options | max 24 | 0 | 24 | 1 | Yes | 1 |
+| 19 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | max 2 | 0 | 2 | 24 | Yes | 1 |
+| 20 | Cables &amp; Enablement Kits | OM3 LC-LC type connectors cable | no max | 0 | Unlimited | 7 | Yes | 1 |
+| 21 | Cables &amp; Enablement Kits | Premier Flex OM4 | no max | 0 | Unlimited | 8 | Yes | 1 |
+| 22 | Cables &amp; Enablement Kits | Switch-PDU Power Cord | max 1 | 0 | 1 | 10 | Yes | 1 |
+| 23 | Networking | Optical Transceivers &amp; DAC Cables | max 8 | 0 | 8 | 11 | Yes | 1 |
+| 24 | Software &amp; Licenses | Port Upgrade Licenses | no max | 0 | Unlimited | 2 | Yes | 2 |
+| 25 | Software &amp; Licenses | SANnav - New License | no max | 0 | Unlimited | 9 | Yes | 1 |
+| 26 | Software &amp; Licenses | SANnav - Renewal License | no max | 0 | Unlimited | 3 | Yes | 1 |
+| 27 | Support Services | System Options |  | 0 | Unlimited | 103 | No | 0 |
+| 28 | Support Services | Support &amp; Deployment Services | max 8 | 0 | 8 | 10 | Yes | 1 |
+
+
+### All SKUs
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 | Column 14 | Column 15 | Column 16 | Column 17 | Column 18 | Column 19 | Column 20 | Column 21 | Column 22 | Column 23 | Column 24 | Column 25 | Column 26 | Column 27 | Column 28 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
+| 2 | Chassis | Variants | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Chassis &gt; Variants | Base Chassis | min 1, max 1 | 1 | 1 | Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis | R7R97A | CTO | HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch | 1 | $19,746.00 |  |  |  |  | No | Available in OCA product catalog | Unpublished |  | Unpublished | Not published by OCA | Valid | Active | 2026-09-21 | 05/31/2028 |  |
+| 3 | Networking | Active Port Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; Active Port Transceivers | Port Upgrade Bundle | Unlimited | 0 | Unlimited | Selection constraint for Active Port Transceivers: no max | R7M09A | Standard | HPE SN3600B 32Gb 8-port Short Wave SFP28 Fibre Channel Upgrade License with Transceiver Kit | 0 | $19,950.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 08/04/2021 | 03/31/2028 | [TEXT_1] |
+| 4 | Networking | Active Port Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; Active Port Transceivers | Port Upgrade Bundle | Unlimited | 0 | Unlimited | Selection constraint for Active Port Transceivers: no max | R7M10A | Standard | HPE SN3600B 16Gb 8-port Short Wave SFP+ Fibre Channel Upgrade License with Transceiver Kit | 0 | $12,951.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 08/04/2021 | 09/30/2027 | [TEXT_2] |
+| 5 | Networking | 16Gb Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; 16Gb Transceivers | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for 16Gb Transceivers: no max | QK724A | Standard | HPE B-series 16Gb SFP+ Short Wave Transceiver | 0 | $417.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 03/31/2027 | [TEXT_3] |
+| 6 | Networking | 16Gb Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; 16Gb Transceivers | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for 16Gb Transceivers: no max | R6B10A | Standard | HPE B-series 16Gb SFP+ Short Wave 1-pack Secure Transceiver | 0 | $1,946.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/07/2020 | 03/31/2027 | [TEXT_4] |
+| 7 | Networking | 16Gb Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; 16Gb Transceivers | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for 16Gb Transceivers: no max | R6W28A | Standard | HPE B-series 16Gb SFP+ Short Wave 8-pack Secure Transceiver | 0 | $13,290.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 08/04/2021 | 06/30/2027 | [TEXT_5] |
+| 8 | Networking | 16Gb Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; 16Gb Transceivers | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for 16Gb Transceivers: no max | H6Z29A | Standard | HPE B-series 16Gb LW 25km FC SFP 1-pack Transceiver | 0 | $7,071.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/03/2017 | 12/01/2022 | [TEXT_6] |
+| 9 | Networking | 16Gb Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; 16Gb Transceivers | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for 16Gb Transceivers: no max | QK725A | Standard | HPE B-series 16Gb SFP+ Long Wave 10km Transceiver | 0 | $3,400.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/03/2017 | 02/23/2023 | [TEXT_7] |
+| 10 | Networking | 16Gb Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; 16Gb Transceivers | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for 16Gb Transceivers: no max | R6B11A | Standard | HPE B-series 16Gb SFP+ Long Wave 10km 1-pack Secure Transceiver | 0 | $6,614.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 12/07/2020 | 05/31/2025 | [TEXT_8] |
+| 11 | Networking | 16Gb Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; 16Gb Transceivers | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for 16Gb Transceivers: no max | R6B21A | Standard | HPE B-series 16Gb SFP+ Extended Long Wave 25km 1-pack Secure Transceiver | 0 | $27,508.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 12/07/2020 | 05/31/2025 | [TEXT_9] |
+| 12 | Networking | 32Gb Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; 32Gb Transceivers | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for 32Gb Transceivers: no max | P9H29A | Standard | HPE B-Series 32Gb SFP28 Long Wave 1-pack Transceiver | 0 | $6,100.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/27/2017 | 10/31/2021 | [TEXT_10] |
+| 13 | Networking | 32Gb Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; 32Gb Transceivers | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for 32Gb Transceivers: no max | P9H32A | Standard | HPE B-series 32Gb SFP28 Short Wave 1-pack Transceiver | 0 | $2,199.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/03/2017 | 08/03/2022 | [TEXT_11] |
+| 14 | Networking | 32Gb Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; 32Gb Transceivers | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for 32Gb Transceivers: no max | R0Q23A | Standard | HPE B-series 32Gb SFP28 Short Wave 8-pack Transceiver | 0 | $15,989.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 04/02/2019 | 04/15/2023 | [TEXT_12] |
+| 15 | Networking | 32Gb Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; 32Gb Transceivers | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for 32Gb Transceivers: no max | R6B12A | Standard | HPE B-series 32Gb SFP28 Short Wave 1-pack Secure Transceiver | 0 | $2,691.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/07/2020 | 02/28/2028 | [TEXT_13] |
+| 16 | Networking | 32Gb Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; 32Gb Transceivers | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for 32Gb Transceivers: no max | R6B13A | Standard | HPE B-series 32Gb SFP28 Long Wave 10km 1-pack Secure Transceiver | 0 | $8,838.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/07/2020 | 02/28/2028 | [TEXT_14] |
+| 17 | Networking | 32Gb Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; 32Gb Transceivers | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for 32Gb Transceivers: no max | R6W26A | Standard | HPE B-series 32Gb SFP28 Short Wave 8-pack Secure Transceiver | 0 | $19,567.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 08/04/2021 | 10/31/2027 | [TEXT_15] |
+| 18 | Networking | 32Gb Transceivers | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; 32Gb Transceivers | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for 32Gb Transceivers: no max | R7M17A | Standard | HPE B-series 32Gb SFP Extended Long Wave 25km 1-pack Secure Transceiver | 0 | $35,170.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 06/07/2021 | 02/28/2028 | [TEXT_16] |
+| 19 | Drive Enclosures / Drives | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Drive Enclosures / Drives &gt; System Options | Drive Cage / Drive | max 24 | 0 | 24 | Selection constraint for System Options: max 24 | N9Y63A | Standard | HPE B-series 4G USB Drive | 0 | $436.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/03/2017 | 04/30/2026 | [TEXT_17] |
+| 20 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | 295633-B22 | Standard | HPE C19 - C20 WW 250V 16Amp 2.5m Jumper Cord | 0 | $102.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 07/31/2028 | [TEXT_18] |
+| 21 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF556A | Standard | HPE C13 - Nema 5-15P US/CA 110V 10Amp 1.83m Power Cord | 0 | $55.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 09/30/2028 | [TEXT_19] |
+| 22 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF557A | Standard | HPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord | 0 | $156.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 10/31/2031 | [TEXT_20] |
+| 23 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF568A | Standard | HPE C13 - CEE-VII EU 250V 10Amp 1.83m Power Cord | 0 | $71.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 10/31/2031 | [TEXT_21] |
+| 24 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF570A | Standard | HPE C13 - BS-1363A UK/HK/SG 250V 10Amp 1.83m Power Cord | 0 | $55.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 09/30/2028 | [TEXT_19] |
+| 25 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | R1C66A | Standard | HPE C19-C20 IN 250V 16Amp 2.5m Black Jumper Cord | 0 | $88.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/03/2018 | 10/31/2031 | [TEXT_22] |
+| 26 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | 142257-002 | Standard | HPE C13 - C14 WW 250V 10Amp 2.5m Jumper Cord | 0 | $34.00 |  |  | NA |  | No | EOL Warning (90-Day) | Unpublished |  | Unpublished | Unpublished | Unpublished | EOL Warning (90-Day) | 03/03/2017 | 11/30/2026 | [TEXT_23] |
+| 27 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | A0N33A | Standard | HPE C13-NEMA 6-15P 10A/250V 3.6m Black Power Cord | 0 | $78.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 09/30/2031 | [TEXT_24] |
+| 28 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF558A | Standard | HPE C13 - IRAM -2073 AR 250V 10A 2.5m Power Cord | 0 | $65.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 09/30/2028 | [TEXT_25] |
+| 29 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF559A | Standard | HPE C13 - Nema 5-15P TH/PH 250V 10Amp 1.83m Power Cord | 0 | $55.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 09/30/2028 | [TEXT_19] |
+| 30 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF560A | Standard | HPE C13 - KSC- 8305 KR 250V 10Amp 1.83m Power Cord | 0 | $55.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 09/30/2028 | [TEXT_19] |
+| 31 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF561A | Standard | HPE C13 - CNS-690 TW 110V 13Amp 1.83m Power Cord | 0 | $55.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 09/30/2028 | [TEXT_19] |
+| 32 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF562A | Standard | HPE C13 - IS-1293 IN 240V 6Amp LV 2.0m Power Cord | 0 | $194.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 10/31/2031 | [TEXT_26] |
+| 33 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF564A | Standard | HPE C13 - SI-32 IL 250V 10Amp 1.83m Power Cord | 0 | $55.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 09/30/2028 | [TEXT_19] |
+| 34 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF565A | Standard | HPE C13 - SEV 1011 CH 250V 10Amp 1.83m Power Cord | 0 | $55.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 09/30/2028 | [TEXT_19] |
+| 35 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF566A | Standard | HPE C13 - DK-2.5A DK 250V 10Amp 1.83m Power Cord | 0 | $55.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 09/30/2028 | [TEXT_19] |
+| 36 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF567A | Standard | HPE C13 - SABS-164 ZA 250V 10Amp 2.5m Power Cord | 0 | $65.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 09/30/2028 | [TEXT_25] |
+| 37 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF569A | Standard | HPE C13 - AS3112-3 AU 250V 10Amp 2.5m Power Cord | 0 | $65.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 09/30/2028 | [TEXT_25] |
+| 38 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF571A | Standard | HPE C13 - CEI-23-50 IT/CL 250V 10Amp 1.83m Power Cord | 0 |  |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/03/2017 | 09/30/2018 | [TEXT_27] |
+| 39 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF572A | Standard | HPE C13 - JIS C8303 JP 100V 12Amp 2.0m Power Cord | 0 | $60.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 09/30/2028 | [TEXT_28] |
+| 40 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | AF591A | Standard | HPE C13 - NBR-14136 BR 250V 10Amp 1.83m Power Cord | 0 | $49.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 10/31/2031 | [TEXT_29] |
+| 41 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | R1C65A | Standard | HPE C13-C14 IN 250V 10Amp 2m Black Jumper Cord | 0 | $119.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/03/2018 | 10/31/2031 | [TEXT_30] |
+| 42 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | SG579A | Standard | HPE C13 - IS-1293 IN 250V 10Amp HV 2.5m Power Cord | 0 | $142.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 11/19/2018 | 11/30/2022 | [TEXT_31] |
+| 43 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Power Cords for Wall Outlets | Cable Kit | max 2 | 0 | 2 | Selection constraint for Power Cords for Wall Outlets: max 2 | SK792A | Standard | HPE 1.83m C13-NEMA 6-15P Power Cord | 0 | $30.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/03/2017 | 11/30/2022 | [TEXT_32] |
+| 44 | Cables &amp; Enablement Kits | OM3 LC-LC type connectors cable | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; OM3 LC-LC type connectors cable | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for OM3 LC-LC type connectors cable: no max | AJ833A | Standard | HPE LC to LC Multi-mode OM3 2-Fiber 0.5m 1-Pack Fiber Optic Cable | 0 | $65.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_25] |
+| 45 | Cables &amp; Enablement Kits | OM3 LC-LC type connectors cable | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; OM3 LC-LC type connectors cable | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for OM3 LC-LC type connectors cable: no max | AJ835A | Standard | HPE LC to LC Multi-mode OM3 2-Fiber 2.0m 1-Pack Fiber Optic Cable | 0 | $95.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_33] |
+| 46 | Cables &amp; Enablement Kits | OM3 LC-LC type connectors cable | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; OM3 LC-LC type connectors cable | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for OM3 LC-LC type connectors cable: no max | AJ836A | Standard | HPE LC to LC Multi-mode OM3 2-Fiber 5.0m 1-Pack Fiber Optic Cable | 0 | $115.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_34] |
+| 47 | Cables &amp; Enablement Kits | OM3 LC-LC type connectors cable | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; OM3 LC-LC type connectors cable | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for OM3 LC-LC type connectors cable: no max | AJ838A | Standard | HPE LC to LC Multi-mode OM3 2-Fiber 30.0m 1-Pack Fiber Optic Cable | 0 | $208.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_35] |
+| 48 | Cables &amp; Enablement Kits | OM3 LC-LC type connectors cable | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; OM3 LC-LC type connectors cable | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for OM3 LC-LC type connectors cable: no max | AJ839A | Standard | HPE LC to LC Multi-mode OM3 2-Fiber 50.0m 1-Pack Fiber Optic Cable | 0 | $253.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_36] |
+| 49 | Cables &amp; Enablement Kits | OM3 LC-LC type connectors cable | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; OM3 LC-LC type connectors cable | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for OM3 LC-LC type connectors cable: no max | AJ834A | Standard | HPE LC to LC Multi-mode OM3 2-Fiber 1.0m 1-Pack Fiber Optic Cable | 0 | $70.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_37] |
+| 50 | Cables &amp; Enablement Kits | OM3 LC-LC type connectors cable | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; OM3 LC-LC type connectors cable | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for OM3 LC-LC type connectors cable: no max | AJ837A | Standard | HPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable | 0 | $162.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_38] |
+| 51 | Cables &amp; Enablement Kits | Premier Flex OM4 | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Premier Flex OM4 | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Premier Flex OM4: no max | QK731A | Standard | HPE Premier Flex MPO12/MPO12 Multi-mode OM4 50m Fiber Cable | 0 | $2,000.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_39] |
+| 52 | Cables &amp; Enablement Kits | Premier Flex OM4 | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Premier Flex OM4 | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Premier Flex OM4: no max | QK732A | Standard | HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 1m Cable | 0 | $115.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_34] |
+| 53 | Cables &amp; Enablement Kits | Premier Flex OM4 | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Premier Flex OM4 | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Premier Flex OM4: no max | QK737A | Standard | HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 50m Cable | 0 | $415.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_40] |
+| 54 | Cables &amp; Enablement Kits | Premier Flex OM4 | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Premier Flex OM4 | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Premier Flex OM4: no max | QK729A | Standard | HPE Premier Flex MPO12/MPO12 Multi-mode OM4 10m Fiber Cable | 0 | $719.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_41] |
+| 55 | Cables &amp; Enablement Kits | Premier Flex OM4 | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Premier Flex OM4 | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Premier Flex OM4: no max | QK733A | Standard | HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 2m Cable | 0 | $130.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_42] |
+| 56 | Cables &amp; Enablement Kits | Premier Flex OM4 | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Premier Flex OM4 | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Premier Flex OM4: no max | QK734A | Standard | HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable | 0 | $147.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_43] |
+| 57 | Cables &amp; Enablement Kits | Premier Flex OM4 | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Premier Flex OM4 | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Premier Flex OM4: no max | QK735A | Standard | HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 15m Cable | 8 | $195.00 |  |  | $1,560.00 |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_44] |
+| 58 | Cables &amp; Enablement Kits | Premier Flex OM4 | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Premier Flex OM4 | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Premier Flex OM4: no max | QK736A | Standard | HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 30m Cable | 0 | $239.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 03/03/2017 | 11/30/2028 | [TEXT_45] |
+| 59 | Cables &amp; Enablement Kits | Switch-PDU Power Cord | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Switch-PDU Power Cord | Cable Kit | max 1 | 0 | 1 | Selection constraint for Switch-PDU Power Cord: max 1 | Q2B45A#05Y | Standard | 2.4M JUMPER (IEC320 C13/C14 M/F CEE 22) | 0 |  |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/27/2017 | 06/13/2018 | [TEXT_27] |
+| 60 | Cables &amp; Enablement Kits | Switch-PDU Power Cord | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Switch-PDU Power Cord | Cable Kit | max 1 | 0 | 1 | Selection constraint for Switch-PDU Power Cord: max 1 | Q1H71A#05Y | Standard | 2.4M JUMPER (IEC320 C13/C14 M/F CEE 22) | 0 | $0.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/27/2017 | 03/28/2019 | [TEXT_46] |
+| 61 | Cables &amp; Enablement Kits | Switch-PDU Power Cord | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Switch-PDU Power Cord | Cable Kit | max 1 | 0 | 1 | Selection constraint for Switch-PDU Power Cord: max 1 | Q1H72A#05Y | Standard | 2.4M JUMPER (IEC320 C13/C14 M/F CEE 22) | 0 |  |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/27/2017 | 02/05/2019 | [TEXT_27] |
+| 62 | Cables &amp; Enablement Kits | Switch-PDU Power Cord | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Switch-PDU Power Cord | Cable Kit | max 1 | 0 | 1 | Selection constraint for Switch-PDU Power Cord: max 1 | Q2B46A#05Y | Standard | 2.4M JUMPER (IEC320 C13/C14 M/F CEE 22) | 0 |  |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/27/2017 | 06/13/2018 | [TEXT_27] |
+| 63 | Cables &amp; Enablement Kits | Switch-PDU Power Cord | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Switch-PDU Power Cord | Cable Kit | max 1 | 0 | 1 | Selection constraint for Switch-PDU Power Cord: max 1 | Q2B44A#05Y | Standard | 2.4M JUMPER (IEC320 C13/C14 M/F CEE 22) | 0 |  |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/27/2017 | 06/13/2018 | [TEXT_27] |
+| 64 | Cables &amp; Enablement Kits | Switch-PDU Power Cord | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Switch-PDU Power Cord | Cable Kit | max 1 | 0 | 1 | Selection constraint for Switch-PDU Power Cord: max 1 | Q1H70A#05Y | Standard | 2.4M JUMPER (IEC320 C13/C14 M/F CEE 22) | 0 | $0.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/27/2017 | 03/08/2019 | [TEXT_46] |
+| 65 | Cables &amp; Enablement Kits | Switch-PDU Power Cord | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Switch-PDU Power Cord | Cable Kit | max 1 | 0 | 1 | Selection constraint for Switch-PDU Power Cord: max 1 | Q1H70A#AC3 | Standard | NO LOCALIZATION | 0 |  |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/27/2017 | 03/08/2019 | [TEXT_27] |
+| 66 | Cables &amp; Enablement Kits | Switch-PDU Power Cord | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Switch-PDU Power Cord | Cable Kit | max 1 | 0 | 1 | Selection constraint for Switch-PDU Power Cord: max 1 | Q1H71A#AC3 | Standard | NO LOCALIZATION | 0 |  |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/27/2017 | 03/28/2019 | [TEXT_27] |
+| 67 | Cables &amp; Enablement Kits | Switch-PDU Power Cord | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Switch-PDU Power Cord | Cable Kit | max 1 | 0 | 1 | Selection constraint for Switch-PDU Power Cord: max 1 | Q1H72A#AC3 | Standard | NO LOCALIZATION | 0 |  |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/27/2017 | 02/05/2019 | [TEXT_27] |
+| 68 | Cables &amp; Enablement Kits | Switch-PDU Power Cord | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Cables &amp; Enablement Kits &gt; Switch-PDU Power Cord | Cable Kit | max 1 | 0 | 1 | Selection constraint for Switch-PDU Power Cord: max 1 | R7R97A#AC3 | Standard | No Localization | 0 | $0.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 06/07/2021 | 06/30/2027 | [TEXT_47] |
+| 69 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | Each base model only accepts its own localization option. | R8P28A#AC3 | Standard | HPE 25GbE SFP28 LR 10km 1-pack Extended Temperature Pull Tab Transceiver Include with complete syste | 0 | $0.00 |  |  | NA |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 09/07/2021 | 06/30/2027 | [TEXT_47] |
+| 70 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | Each base model only accepts its own localization option. | R8P29A#AC3 | Standard | HPE 400GbE QSFP-DD/OSFP 5m Active Optical Cable Include with complete system | 0 | $0.00 |  |  | NA |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 09/07/2021 | 06/30/2027 | [TEXT_47] |
+| 71 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | Each base model only accepts its own localization option. | Q1H71B#05Y | Standard | 2.4m Jumper (IEC320 C13/C14 M/F CEE 22) | 0 | $0.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 10/01/2018 | 04/05/2023 | [TEXT_46] |
+| 72 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | Each base model only accepts its own localization option. | Q1H70B#05Y | Standard | 2.4m Jumper (IEC320 C13/C14 M/F CEE 22) | 0 | $0.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 10/01/2018 | 01/16/2023 | [TEXT_46] |
+| 73 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | Each base model only accepts its own localization option. | R4G55A#05Y | Standard | CDC HP SN3600B 16G 24/8 8p SWSFP+FC Swch | 0 | $0.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 04/06/2020 | 07/15/2022 | [TEXT_46] |
+| 74 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | Each base model only accepts its own localization option. | Q1H72B#05Y | Standard | CDC HP SN3600B 32G 24/24 Pwr Pk+ FC Swch | 0 | $0.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 10/01/2018 | 07/31/2022 | [TEXT_46] |
+| 75 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | Each base model only accepts its own localization option. | R4G55B#AC3 | Standard | No Localization | 0 | $0.00 |  |  | NA |  | No | EOL Warning (90-Day) | Unpublished |  | Unpublished | Unpublished | Unpublished | EOL Warning (90-Day) | 09/07/2021 | 10/31/2026 | [TEXT_48] |
+| 76 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | Each base model only accepts its own localization option. | R4G55A#AC3 | Standard | No localization | 0 | $0.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 04/06/2020 | 07/15/2022 | [TEXT_46] |
+| 77 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | Each base model only accepts its own localization option. | Q1H72B#AC3 | Standard | No localization | 0 | $0.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 10/01/2018 | 07/31/2022 | [TEXT_46] |
+| 78 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | Each base model only accepts its own localization option. | Q1H70B#AC3 | Standard | No localization | 0 | $0.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 10/01/2018 | 01/16/2023 | [TEXT_46] |
+| 79 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | Each base model only accepts its own localization option. | Q1H71B#AC3 | Standard | No localization | 0 | $0.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 10/01/2018 | 04/05/2023 | [TEXT_46] |
+| 80 | Software &amp; Licenses | Port Upgrade Licenses | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Software &amp; Licenses &gt; Port Upgrade Licenses | Operating System / License | Unlimited | 0 | Unlimited | Selection constraint for Port Upgrade Licenses: no max | Q1Z11BAE | Standard | HPE SN3600B Power Pack+ Upgrade E-LTU | 0 | $11,806.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 10/01/2018 | 10/31/2028 | [TEXT_49] |
+
+
+### Chassis Variants
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Product # | Form Factor | Description | Option Type | HPE Recommended | List Price (USD) | Constraint | Start Date | Discontinued Date | Note |
+| 2 | R7R97A | Unknown | HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch | CTO | No | $19,746.00 | min 1, max 1 | 2026-09-21 | 05/31/2028 | Select ONE chassis variant as the mandatory CTO base. All component rules, drive bay limits, and power constraints depend on this selection. |
+
+
+### Chassis Options Matrix
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Base SKU | Form Factor | Option Type | HPE Recommended | List Price (USD) | Drive Media Supported | Base Drive Bays | Max Expandability | Power Envelope | Lifecycle Status | Start Date | Discontinued Date | Architectural Rules |
+| 2 | R7R97A | Unknown | CTO | No | $19,746.00 | UNVERIFIED — variant-specific evidence required | UNVERIFIED — title is not a bay inventory | UNVERIFIED — variant-specific evidence required | UNVERIFIED — variant-specific evidence required | Active | 2026-09-21 | 05/31/2028 | NOT VERIFIED: do not transfer compatibility or rules between base SKUs without scoped vendor evidence. |
+
+
+### Rules &amp; Constraints
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Main Category | Sub-Category | Constraint | Rule Type | Rule Text |
+| 2 | Unknown | SANnav -  Renewal License | Unlimited | Quantity Constraint | Quantity: Unlimited |
+| 3 | Accessories | Accessories | max 99 | Quantity Constraint | Quantity: max 99 |
+| 4 | Transceivers | Active Port Transceivers | Unlimited | Quantity Constraint | Quantity: Unlimited |
+| 5 | Transceivers | 16Gb Transceivers | Unlimited | Quantity Constraint | Quantity: Unlimited |
+| 6 | Transceivers | 32Gb Transceivers | Unlimited | Quantity Constraint | Quantity: Unlimited |
+| 7 | Accessories | Power Cords for Wall Outlets | max 2 | Quantity Constraint | Quantity: max 2 |
+| 8 | Cables | OM3 LC-LC type connectors cable | Unlimited | Quantity Constraint | Quantity: Unlimited |
+| 9 | Cables | Premier Flex OM4 | Unlimited | Quantity Constraint | Quantity: Unlimited |
+| 10 | Cables | Switch-PDU Power Cord | max 1 | Quantity Constraint | Quantity: max 1 |
+| 11 | Software | Port Upgrade Licenses | Unlimited | Quantity Constraint | Quantity: Unlimited |
+| 12 | Software | SANnav - New License | Unlimited | Quantity Constraint | Quantity: Unlimited |
+| 13 | Software | SANnav - Renewal License | Unlimited | Quantity Constraint | Quantity: Unlimited |
+| 14 | Chassis | Variants | min 1, max 1 — Active OCA CTO chassis | Configuration Rule | Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis |
+| 15 | Networking | Active Port Transceivers | no max | Configuration Rule | Selection constraint for Active Port Transceivers: no max |
+| 16 | Networking | 16Gb Transceivers | no max | Configuration Rule | Selection constraint for 16Gb Transceivers: no max |
+| 17 | Networking | 32Gb Transceivers | no max | Configuration Rule | Selection constraint for 32Gb Transceivers: no max |
+| 18 | Drive Enclosures / Drives | System Options | max 24 | Configuration Rule | Selection constraint for System Options: max 24 |
+| 19 | Cables &amp; Enablement Kits | Power Cords for Wall Outlets | max 2 | Configuration Rule | Selection constraint for Power Cords for Wall Outlets: max 2 |
+| 20 | Cables &amp; Enablement Kits | OM3 LC-LC type connectors cable | no max | Configuration Rule | Selection constraint for OM3 LC-LC type connectors cable: no max |
+| 21 | Cables &amp; Enablement Kits | Premier Flex OM4 | no max | Configuration Rule | Selection constraint for Premier Flex OM4: no max |
+| 22 | Cables &amp; Enablement Kits | Switch-PDU Power Cord | max 1 | Configuration Rule | Selection constraint for Switch-PDU Power Cord: max 1 |
+| 23 | Networking | Optical Transceivers &amp; DAC Cables | max 8 | Configuration Rule | Each base model only accepts its own localization option. |
+| 24 | Software &amp; Licenses | Port Upgrade Licenses | no max | Configuration Rule | Selection constraint for Port Upgrade Licenses: no max |
+| 25 | Software &amp; Licenses | SANnav - New License | no max | Configuration Rule | Selection constraint for SANnav - New License: no max |
+| 26 | Software &amp; Licenses | SANnav - Renewal License | no max | Configuration Rule | Selection constraint for SANnav - Renewal License: no max |
+| 27 | Support Services | Support &amp; Deployment Services | max 8 | Configuration Rule | Selection constraint for OCP3 Networking Adapters: max 8 |
+
+
+### Software &amp; Licenses
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 | Column 14 | Column 15 | Column 16 | Column 17 | Column 18 | Column 19 | Column 20 | Column 21 | Column 22 | Column 23 | Column 24 | Column 25 | Column 26 | Column 27 | Column 28 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
+| 3 | Software &amp; Licenses | Port Upgrade Licenses | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Software &amp; Licenses &gt; Port Upgrade Licenses | Operating System / License | Unlimited | 0 | Unlimited | Selection constraint for Port Upgrade Licenses: no max | Q1Z10AAE | Service | HPE SN3600B 8-port Fibre Channel Upgrade E-LTU | 0 | $7,223.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 03/27/2017 | 07/03/2022 | {"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":7223,"priceState":"PRICED","priceStatus":"PRICED","rowType":"SOFTWARE_SUBSCRIPTION"} |
+| 4 | Software &amp; Licenses | SANnav - New License | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Software &amp; Licenses &gt; SANnav - New License | Operating System / License | Unlimited | 0 | Unlimited | Selection constraint for SANnav - New License: no max | R3P47AAE | Service | HPE SANnav Global View 1yr E-LTU | 0 | $135,058.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 09/03/2019 | 08/31/2031 | [TEXT_50] |
+| 5 | Software &amp; Licenses | SANnav - New License | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Software &amp; Licenses &gt; SANnav - New License | Operating System / License | Unlimited | 0 | Unlimited | Selection constraint for SANnav - New License: no max | R3P50AAE | Service | HPE SANnav Global View 3yr E-LTU | 0 | $324,137.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 09/03/2019 | 08/31/2031 | {"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":324137,"priceState":"PRICED","priceStatus":"PRICED","rowType":"SOFTWARE_SUBSCRIPTION"} |
+| 6 | Software &amp; Licenses | SANnav - New License | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Software &amp; Licenses &gt; SANnav - New License | Operating System / License | Unlimited | 0 | Unlimited | Selection constraint for SANnav - New License: no max | R4P31AAE | Service | HPE SANnav Global View 5yr E-LTU | 0 | $540,233.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 02/03/2020 | 08/31/2031 | {"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":540233,"priceState":"PRICED","priceStatus":"PRICED","rowType":"SOFTWARE_SUBSCRIPTION"} |
+| 7 | Software &amp; Licenses | SANnav - New License | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Software &amp; Licenses &gt; SANnav - New License | Operating System / License | Unlimited | 0 | Unlimited | Selection constraint for SANnav - New License: no max | R3P45AAE | Service | HPE SANnav Management Portal Base 1yr E-LTU | 0 | $36,018.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 09/03/2019 | 08/31/2031 | [TEXT_51] |
+| 8 | Software &amp; Licenses | SANnav - New License | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Software &amp; Licenses &gt; SANnav - New License | Operating System / License | Unlimited | 0 | Unlimited | Selection constraint for SANnav - New License: no max | R3P48AAE | Service | HPE SANnav Management Portal Base 3yr E-LTU | 0 | $86,443.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 09/03/2019 | 08/31/2031 | {"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":86443,"priceState":"PRICED","priceStatus":"PRICED","rowType":"SOFTWARE_SUBSCRIPTION"} |
+| 9 | Software &amp; Licenses | SANnav - New License | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Software &amp; Licenses &gt; SANnav - New License | Operating System / License | Unlimited | 0 | Unlimited | Selection constraint for SANnav - New License: no max | R4P29AAE | Service | HPE SANnav Management Portal Base 5yr E-LTU | 0 | $144,076.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 02/03/2020 | 08/31/2031 | {"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":144076,"priceState":"PRICED","priceStatus":"PRICED","rowType":"SOFTWARE_SUBSCRIPTION"} |
+| 10 | Software &amp; Licenses | SANnav - New License | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Software &amp; Licenses &gt; SANnav - New License | Operating System / License | Unlimited | 0 | Unlimited | Selection constraint for SANnav - New License: no max | R3P46AAE | Service | HPE SANnav Management Portal Enterprise 1yr E-LTU | 0 | $90,047.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 09/03/2019 | 08/31/2031 | [TEXT_52] |
+| 11 | Software &amp; Licenses | SANnav - New License | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Software &amp; Licenses &gt; SANnav - New License | Operating System / License | Unlimited | 0 | Unlimited | Selection constraint for SANnav - New License: no max | R3P49AAE | Service | HPE SANnav Management Portal Enterprise 3yr E-LTU | 0 | $216,111.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 09/03/2019 | 08/31/2031 | {"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":216111,"priceState":"PRICED","priceStatus":"PRICED","rowType":"SOFTWARE_SUBSCRIPTION"} |
+| 12 | Software &amp; Licenses | SANnav - New License | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Software &amp; Licenses &gt; SANnav - New License | Operating System / License | Unlimited | 0 | Unlimited | Selection constraint for SANnav - New License: no max | R4P30AAE | Service | HPE SANnav Management Portal Enterprise 5yr E-LTU | 0 | $360,192.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 02/03/2020 | 08/31/2031 | {"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":360192,"priceState":"PRICED","priceStatus":"PRICED","rowType":"SOFTWARE_SUBSCRIPTION"} |
+| 13 | Software &amp; Licenses | SANnav - Renewal License | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Software &amp; Licenses &gt; SANnav - Renewal License | Operating System / License | Unlimited | 0 | Unlimited | Selection constraint for SANnav - Renewal License: no max | S1S58AAE | Service | HPE SANnav Global View 1-year Renewal E-LTU | 0 | $135,058.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 06/05/2023 | 08/31/2031 | [TEXT_50] |
+| 14 | Software &amp; Licenses | SANnav - Renewal License | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Software &amp; Licenses &gt; SANnav - Renewal License | Operating System / License | Unlimited | 0 | Unlimited | Selection constraint for SANnav - Renewal License: no max | S1S52AAE | Service | HPE SANnav Management Portal Base 1-year Renewal E-LTU | 0 | $36,018.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 06/05/2023 | 08/31/2031 | [TEXT_51] |
+| 15 | Software &amp; Licenses | SANnav - Renewal License | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Software &amp; Licenses &gt; SANnav - Renewal License | Operating System / License | Unlimited | 0 | Unlimited | Selection constraint for SANnav - Renewal License: no max | S1S55AAE | Service | HPE SANnav Management Portal Enterprise 1-year Renewal E-LTU | 0 | $90,047.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 06/05/2023 | 08/31/2031 | [TEXT_52] |
+
+Row 2: identical to sheet All SKUs, row 80.
+
+### Support Services
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 | Column 14 | Column 15 | Column 16 | Column 17 | Column 18 | Column 19 | Column 20 | Column 21 | Column 22 | Column 23 | Column 24 | Column 25 | Column 26 | Column 27 | Column 28 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
+| 2 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H29BWA1 | Service | HPE FE Tamper Evident Pack Overpack SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H29BWA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 3 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H29BXA1 | Service | HPE FE Tamper Evident Pack UoS SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H29BXA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 4 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | HA875A1 | Service | HPE Special Factory Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"HA875A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 5 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JD0A1 | Service | HPE 3PAR Onl Imp QuickStartup Rmt1 Svc | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JD0A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 6 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JT1A1 | Service | HPE NSS Improvement Unit of Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JT1A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"HARDWARE_OPTION"} |
+| 7 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36NRA4 | Service | HPE Zerto Virtual TAM 4yr 8x5 Remote SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36NRA4","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 8 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36NRA5 | Service | HPE Zerto Virtual TAM 5yr 8x5 Remote SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36NRA5","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 9 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36NSA1 | Service | HPE Zerto Health Check per Site SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36NSA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 10 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36NTA1 | Service | HPE Zerto Custom UoS SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36NTA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 11 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H39VQA1#V0F | Service | HPE Synergy First Frame Rmt Str SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H39VQA1#V0F","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 12 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H42ZHA1 | Service | HPE Perf Analysis Comp Option1 Rmt1 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H42ZHA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 13 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H42ZJA1 | Service | HPE Perf Analysis Comp Option2 Rmt1 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H42ZJA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 14 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H42ZKA1 | Service | HPE Perf Analysis Comp Option3 Rmt1 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H42ZKA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 15 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JT2A1 | Service | HPE NSS Implementation Unit of Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JT2A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"HARDWARE_OPTION"} |
+| 16 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H29BRA1 | Service | HPE Cray Team Day SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H29BRA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 17 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H29BSA1 | Service | HPE Storage Servers Install Hourly SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H29BSA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 18 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36NLA1 | Service | HPE Zerto Quick Cloud Remote SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36NLA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 19 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36NMA1 | Service | HPE Zerto Quick Start Remote SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36NMA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 20 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36NNA1 | Service | HPE Zerto Quick Migration Remote SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36NNA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 21 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36NPA1 | Service | HPE Zerto Quick Advisor Remote SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36NPA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 22 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36NQA1 | Service | HPE Zerto Strutd TAM 1yr 12x5 Remote SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36NQA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 23 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36NQA3 | Service | HPE Zerto Strutd TAM 3yr 12x5 Remote SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36NQA3","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 24 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36NQA4 | Service | HPE Zerto Strutd TAM 4yr 12x5 Remote SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36NQA4","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 25 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | AG629A | Standard | HPE Consolidated Delivery Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | [TEXT_53] |
+| 26 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | P1F75A | Standard | HPE Fixed Delivery Appointment Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | [TEXT_53] |
+| 27 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | P1F74A | Standard | HPE Unloading Logistic Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | [TEXT_53] |
+| 28 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | P1F76A | Standard | HPE Pre-Delivery Site Survey SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 29 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | P1F79A | Standard | HPE Delivery Any Day at 1300 Hours Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | [TEXT_53] |
+| 30 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | P1F78A | Standard | HPE Delivery Any Day at 0800 Hours Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | [TEXT_53] |
+| 31 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | P1F69A | Standard | HPE Delivery Site Above Ground Floor Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | [TEXT_53] |
+| 32 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | P1F80A | Standard | HPE Delivery Any Day at 1000 Hours Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | [TEXT_53] |
+| 33 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | P1F82A | Standard | HPE Delivery Any Day at 1500 Hours Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | [TEXT_53] |
+| 34 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | P1F71A | Standard | HPE Special Delivery Truck Size Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | [TEXT_53] |
+| 35 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | BQ337A | Standard | HPE Expedite Shipment Large Logistic Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | [TEXT_53] |
+| 36 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | BQ335A | Standard | HPE Expedite Shipment Small Logistic Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | [TEXT_53] |
+| 37 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | AG628A | Standard | HPE Special Equipment Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | [TEXT_53] |
+| 38 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | G1H96A1 | Standard | HPE Account Management Support - EG 1 Svc | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"G1H96A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 39 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | G1H97A1 | Standard | HPE Account Management Support - EG 2 Svc | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"G1H97A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 40 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | G1H98A1 | Standard | HPE Account Management Support - EG 3 | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"G1H98A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"HARDWARE_OPTION"} |
+| 41 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | G1H99A1 | Standard | HPE Account Management Support - EG 4 Svc | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"G1H99A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 42 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JD1A1 | Service | HPE Data Migration Readiness Assess Svc | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JD1A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 43 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JD7A1 | Service | HPE Quickstart File Data Mig10TB SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JD7A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 44 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H1Y14A1#799 | Service | HPE Networking Unit of SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H1Y14A1#799","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 45 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H1Y26A1#002 | Service | HPE Energy Efficiency Analysis SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H1Y26A1#002","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 46 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H1Y26A1#003 | Service | HPE Infra Condition and Cap Analysis SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H1Y26A1#003","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 47 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H30RVA1 | Service | HPE Container Adopt Ph1 Redht Rem SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H30RVA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 48 | Support Services | Support &amp; Deployment Services | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; Support &amp; Deployment Services | Service &amp; Support | max 8 | 0 | 8 | Selection constraint for OCP3 Networking Adapters: max 8 | H33XSA1 | Service | HPE Education - Learning Credits 1Yr SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H33XSA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 49 | Support Services | Support &amp; Deployment Services | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; Support &amp; Deployment Services | Service &amp; Support | max 8 | 0 | 8 | Selection constraint for OCP3 Networking Adapters: max 8 | H33XTA2 | Service | HPE Education - Learning Credits 2Yr SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H33XTA2","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 50 | Support Services | Support &amp; Deployment Services | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; Support &amp; Deployment Services | Service &amp; Support | max 8 | 0 | 8 | Selection constraint for OCP3 Networking Adapters: max 8 | H33XVA3 | Service | HPE Education - Learning Credits 3Yr SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H33XVA3","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 51 | Support Services | Support &amp; Deployment Services | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; Support &amp; Deployment Services | Service &amp; Support | max 8 | 0 | 8 | Selection constraint for OCP3 Networking Adapters: max 8 | H33XWA4 | Service | HPE Education - Learning Credits 4Yr SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H33XWA4","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 52 | Support Services | Support &amp; Deployment Services | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; Support &amp; Deployment Services | Service &amp; Support | max 8 | 0 | 8 | Selection constraint for OCP3 Networking Adapters: max 8 | H33XXA5 | Service | HPE Education - Learning Credits 5Yr SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H33XXA5","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 53 | Support Services | Support &amp; Deployment Services | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; Support &amp; Deployment Services | Service &amp; Support | max 8 | 0 | 8 | Selection constraint for OCP3 Networking Adapters: max 8 | H36NVA1 | Service | HPE Zerto Quick Upgrade Remote SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36NVA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 54 | Support Services | Support &amp; Deployment Services | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; Support &amp; Deployment Services | Service &amp; Support | max 8 | 0 | 8 | Selection constraint for OCP3 Networking Adapters: max 8 | H36XCA1#006 | Service | HPE GPU on RHOCP Integrat SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36XCA1#006","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 55 | Support Services | Support &amp; Deployment Services | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; Support &amp; Deployment Services | Service &amp; Support | max 8 | 0 | 8 | Selection constraint for OCP3 Networking Adapters: max 8 | HA0Z0A1 | Service | HPE DL 1Yr Other 1GB Content Hosted SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"HA0Z0A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 56 | Support Services | Support &amp; Deployment Services | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; Support &amp; Deployment Services | Service &amp; Support | max 8 | 0 | 8 | Selection constraint for OCP3 Networking Adapters: max 8 | HR2R4A1 | Service | HPE Digital Learner Bronze 1Yr Subs SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"HR2R4A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 57 | Support Services | Support &amp; Deployment Services | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; Support &amp; Deployment Services | Service &amp; Support | max 8 | 0 | 8 | Selection constraint for OCP3 Networking Adapters: max 8 | HR2R5A1 | Service | HPE Digital Learner Silver 1Yr Subs SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"HR2R5A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 58 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JD9A1 | Service | HPE File Data Migration 100TB SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JD9A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 59 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H1WU9A1 | Service | HPE Scality Integration Basic SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H1WU9A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 60 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H1WV0A1 | Service | HPE Scality Integration Advanced SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H1WV0A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 61 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H1XF9A1 | Service | HPE Risk Assessment 10 Functions SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H1XF9A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 62 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H1XG0A1 | Service | HPE Business Imp Anlys 15 Process SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H1XG0A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 63 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H1XG7A1 | Service | HPE AI Video Analytics Assessment SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H1XG7A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 64 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H1Y25A1#002 | Service | HPE Energy Efficiency Analysis SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H1Y25A1#002","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 65 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H1Y25A1#003 | Service | HPE Infra Condition and Cap Analysis SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H1Y25A1#003","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 66 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H2S79A1 | Service | HPE Remot NW Conf and IntHr BusHrs SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H2S79A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 67 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H2S81A1 | Service | HPE Onsite NW Conf and Int Bus Hrs SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H2S81A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 68 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H29BQA1 | Service | HPE Cray Custom Operations SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H29BQA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 69 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H30SBA1 | Service | HPE Container Adopt Ph3 Redht Onsite SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H30SBA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 70 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H30SCA1 | Service | HPE Container Adopt Ph1 Anths Rem SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H30SCA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 71 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H30SLA1 | Service | HPE Container Adopt Ph1 Rnchr Onsite SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H30SLA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 72 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H30SMA1 | Service | HPE Container Adopt Ph2 Rnchr Rem SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H30SMA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 73 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H30SNA1 | Service | HPE Container Adopt Ph2 Rnchr Onsite SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H30SNA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 74 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36NRA3 | Service | HPE Zerto Virtual TAM 3yr 8x5 Remote SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36NRA3","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 75 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36PBA1 | Service | HPE Zerto Virtual TAM 1mo 8x5 Remote SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36PBA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 76 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36PCA1 | Service | HPE Zerto Virtual TAM 3mo 8x5 Remote SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36PCA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 77 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H36PDA1 | Service | HPE Zerto Virtual TAM 6mo 8x5 Remote SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H36PDA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 78 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | HA124A1#V5K | Service | HPE Private Cloud AI with X10000 St SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"HA124A1#V5K","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 79 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H42ZQA1 | Service | HPE Perf Analysis SAP Option2 Rmt1 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H42ZQA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 80 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H42ZRA1 | Service | HPE Perf Analysis SAP Option3 Rmt1 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H42ZRA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 81 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H43BCA1 | Service | HPE Priv Cloud AI Deployment SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H43BCA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 82 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H44MDA1 | Service | HPE Data Sanitization HPC T1 NSH SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H44MDA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 83 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H44NJA1 | Service | HPE Compute Firmware Onsite SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H44NJA1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 84 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | HU7D2A1 | Service | HPE Synergy Ecosystem Health Review SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"HU7D2A1","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 85 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JD4A1#WFH | Service | HPE 1Y Service Credits Qty 10 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JD4A1#WFH","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 86 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JD4A1#WFK | Service | HPE 1Y Service Credits Qty 10 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JD4A1#WFK","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 87 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JD4A1#WFM | Service | HPE 1Y Service Credits Qty 10 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JD4A1#WFM","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 88 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JD4A1#Y65 | Service | HPE 1Y Service Credits Qty 10 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JD4A1#Y65","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 89 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JD4A1#Y6B | Service | HPE 1Y Service Credits Qty 10 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JD4A1#Y6B","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 90 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JD4A1008E | Service | HPE 1Y Service Credits Qty 10 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JD4A1008E","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 91 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JD4A10BK5 | Service | HPE 1Y Service Credits Qty 10 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JD4A10BK5","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 92 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JD4A3#WFH | Service | HPE 3Y Service Credits Qty 30 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JD4A3#WFH","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 93 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JD4A3#WFK | Service | HPE 3Y Service Credits Qty 30 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JD4A3#WFK","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 94 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H0JD4A3#WFM | Service | HPE 3Y Service Credits Qty 30 SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H0JD4A3#WFM","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 95 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H34MTA3#Y34 | Service | HPE 3Y CC SB PerformOptimization HPC SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H34MTA3#Y34","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 96 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H34MTA4#Y34 | Service | HPE 4Y CC SB PerformOptimization HPC SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H34MTA4#Y34","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 97 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H34MTA5#Y34 | Service | HPE 5Y CC SB PerformOptimization HPC SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H34MTA5#Y34","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 98 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H39DJA3#Y35 | Service | HPE 3Y CC SB ATS Compute Base SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H39DJA3#Y35","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 99 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H39DJA4#Y35 | Service | HPE 4Y CC SB ATS Compute Base SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H39DJA4#Y35","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 100 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H39DJA5#Y35 | Service | HPE 5Y CC SB ATS Compute Base SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H39DJA5#Y35","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 101 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H39DKA3#Y35 | Service | HPE 3Y CC SB ATS Compute Ext SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H39DKA3#Y35","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 102 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H39DKA4#Y35 | Service | HPE 4Y CC SB ATS Compute Ext SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H39DKA4#Y35","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 103 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H39DKA5#Y35 | Service | HPE 5Y CC SB ATS Compute Ext SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H39DKA5#Y35","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 104 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H39DLA3#Y36 | Service | HPE 3Y CC SB ATS Storage Base SVC | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H39DLA3#Y36","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 105 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H46SGA3 | Service | HPE 3Y AL STG Block Pro-SAM T1 Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H46SGA3","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 106 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H46SGA4 | Service | HPE 4Y AL STG Block Pro-SAM T1 Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H46SGA4","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 107 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H46SGA5 | Service | HPE 5Y AL STG Block Pro-SAM T1 Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H46SGA5","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 108 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H46SHA3 | Service | HPE 3Y AL STG Block Pro-SAM T2 Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H46SHA3","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 109 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H46SHA4 | Service | HPE 4Y AL STG Block Pro-SAM T2 Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H46SHA4","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 110 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H46SHA5 | Service | HPE 5Y AL STG Block Pro-SAM T2 Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H46SHA5","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 111 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H46SJA3 | Service | HPE 3Y AL STG File/Object Pro-SAM T1 Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H46SJA3","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 112 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H46SJA4 | Service | HPE 4Y AL STG File/Object Pro-SAM T1 Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H46SJA4","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 113 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H46SJA5 | Service | HPE 5Y AL STG File/Object Pro-SAM T1 Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H46SJA5","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+| 114 | Support Services | System Options | HPE OCA &gt; SN3600B FC [R7R97A] &gt; Support Services &gt; System Options | Service &amp; Support | Unlimited | 0 | Unlimited |  | H46SKA3 | Service | HPE 3Y AL STG File/Object Pro-SAM T2 Service | 0 |  |  |  |  |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active |  |  | {"Product Number":"H46SKA3","leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"SUPPORT_SERVICE"} |
+
+
+### Networking
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 | Column 14 | Column 15 | Column 16 | Column 17 | Column 18 | Column 19 | Column 20 | Column 21 | Column 22 | Column 23 | Column 24 | Column 25 | Column 26 | Column 27 | Column 28 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
+
+Row 2: identical to sheet All SKUs, row 3.
+Row 3: identical to sheet All SKUs, row 4.
+Row 4: identical to sheet All SKUs, row 5.
+Row 5: identical to sheet All SKUs, row 6.
+Row 6: identical to sheet All SKUs, row 7.
+Row 7: identical to sheet All SKUs, row 8.
+Row 8: identical to sheet All SKUs, row 9.
+Row 9: identical to sheet All SKUs, row 10.
+Row 10: identical to sheet All SKUs, row 11.
+Row 11: identical to sheet All SKUs, row 12.
+Row 12: identical to sheet All SKUs, row 13.
+Row 13: identical to sheet All SKUs, row 14.
+Row 14: identical to sheet All SKUs, row 15.
+Row 15: identical to sheet All SKUs, row 16.
+Row 16: identical to sheet All SKUs, row 17.
+Row 17: identical to sheet All SKUs, row 18.
+Row 18: identical to sheet All SKUs, row 69.
+Row 19: identical to sheet All SKUs, row 70.
+Row 20: identical to sheet All SKUs, row 71.
+Row 21: identical to sheet All SKUs, row 72.
+Row 22: identical to sheet All SKUs, row 73.
+Row 23: identical to sheet All SKUs, row 74.
+Row 24: identical to sheet All SKUs, row 75.
+Row 25: identical to sheet All SKUs, row 76.
+Row 26: identical to sheet All SKUs, row 77.
+Row 27: identical to sheet All SKUs, row 78.
+Row 28: identical to sheet All SKUs, row 79.
+
+### Chassis
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 | Column 14 | Column 15 | Column 16 | Column 17 | Column 18 | Column 19 | Column 20 | Column 21 | Column 22 | Column 23 | Column 24 | Column 25 | Column 26 | Column 27 | Column 28 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
+
+Row 2: identical to sheet All SKUs, row 2.
+
+### Drive Enclosures  Drives
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 | Column 14 | Column 15 | Column 16 | Column 17 | Column 18 | Column 19 | Column 20 | Column 21 | Column 22 | Column 23 | Column 24 | Column 25 | Column 26 | Column 27 | Column 28 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
+
+Row 2: identical to sheet All SKUs, row 19.
+
+### Cables &amp; Enablement Kits
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 | Column 14 | Column 15 | Column 16 | Column 17 | Column 18 | Column 19 | Column 20 | Column 21 | Column 22 | Column 23 | Column 24 | Column 25 | Column 26 | Column 27 | Column 28 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
+
+Row 2: identical to sheet All SKUs, row 20.
+Row 3: identical to sheet All SKUs, row 21.
+Row 4: identical to sheet All SKUs, row 22.
+Row 5: identical to sheet All SKUs, row 23.
+Row 6: identical to sheet All SKUs, row 24.
+Row 7: identical to sheet All SKUs, row 25.
+Row 8: identical to sheet All SKUs, row 26.
+Row 9: identical to sheet All SKUs, row 27.
+Row 10: identical to sheet All SKUs, row 28.
+Row 11: identical to sheet All SKUs, row 29.
+Row 12: identical to sheet All SKUs, row 30.
+Row 13: identical to sheet All SKUs, row 31.
+Row 14: identical to sheet All SKUs, row 32.
+Row 15: identical to sheet All SKUs, row 33.
+Row 16: identical to sheet All SKUs, row 34.
+Row 17: identical to sheet All SKUs, row 35.
+Row 18: identical to sheet All SKUs, row 36.
+Row 19: identical to sheet All SKUs, row 37.
+Row 20: identical to sheet All SKUs, row 38.
+Row 21: identical to sheet All SKUs, row 39.
+Row 22: identical to sheet All SKUs, row 40.
+Row 23: identical to sheet All SKUs, row 41.
+Row 24: identical to sheet All SKUs, row 42.
+Row 25: identical to sheet All SKUs, row 43.
+Row 26: identical to sheet All SKUs, row 44.
+Row 27: identical to sheet All SKUs, row 45.
+Row 28: identical to sheet All SKUs, row 46.
+Row 29: identical to sheet All SKUs, row 47.
+Row 30: identical to sheet All SKUs, row 48.
+Row 31: identical to sheet All SKUs, row 49.
+Row 32: identical to sheet All SKUs, row 50.
+Row 33: identical to sheet All SKUs, row 51.
+Row 34: identical to sheet All SKUs, row 52.
+Row 35: identical to sheet All SKUs, row 53.
+Row 36: identical to sheet All SKUs, row 54.
+Row 37: identical to sheet All SKUs, row 55.
+Row 38: identical to sheet All SKUs, row 56.
+Row 39: identical to sheet All SKUs, row 57.
+Row 40: identical to sheet All SKUs, row 58.
+Row 41: identical to sheet All SKUs, row 59.
+Row 42: identical to sheet All SKUs, row 60.
+Row 43: identical to sheet All SKUs, row 61.
+Row 44: identical to sheet All SKUs, row 62.
+Row 45: identical to sheet All SKUs, row 63.
+Row 46: identical to sheet All SKUs, row 64.
+Row 47: identical to sheet All SKUs, row 65.
+Row 48: identical to sheet All SKUs, row 66.
+Row 49: identical to sheet All SKUs, row 67.
+Row 50: identical to sheet All SKUs, row 68.
+
+### Discontinued SKUs
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 | Column 14 | Column 15 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Product # | Description | Main Category | Sub-Category | Status | First Seen Date | Discontinued Date | Reinstated Date | Days Active | Last Known Price | Full Price Trail | Tracking State | Retention Class | Business Relevant | Reason |
+| 2 | H6Z29A | HPE B-series 16Gb LW 25km FC SFP 1-pack Transceiver | Networking | 16Gb Transceivers | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 3 | R8P28A | HPE 25GbE SFP28 LR 10km 1-pack Extended Temperature Pull Tab Transceiver Include with complete syste | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 4 | R8P29A | HPE 400GbE QSFP-DD/OSFP 5m Active Optical Cable Include with complete system | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 5 | R4G55A | CDC HP SN3600B 16G 24/8 8p SWSFP+FC Swch | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 6 | R4G55B | No Localization | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 7 | Q2B45A#05Y | 2.4M JUMPER (IEC320 C13/C14 M/F CEE 22) | Cables &amp; Enablement Kits | Switch-PDU Power Cord | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 8 | Q1H71A#05Y | 2.4M JUMPER (IEC320 C13/C14 M/F CEE 22) | Cables &amp; Enablement Kits | Switch-PDU Power Cord | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 9 | Q1H72A#05Y | 2.4M JUMPER (IEC320 C13/C14 M/F CEE 22) | Cables &amp; Enablement Kits | Switch-PDU Power Cord | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 10 | Q2B46A#05Y | 2.4M JUMPER (IEC320 C13/C14 M/F CEE 22) | Cables &amp; Enablement Kits | Switch-PDU Power Cord | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 11 | Q2B44A#05Y | 2.4M JUMPER (IEC320 C13/C14 M/F CEE 22) | Cables &amp; Enablement Kits | Switch-PDU Power Cord | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 12 | Q1H70A#05Y | 2.4M JUMPER (IEC320 C13/C14 M/F CEE 22) | Cables &amp; Enablement Kits | Switch-PDU Power Cord | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 13 | Q1H70A#AC3 | NO LOCALIZATION | Cables &amp; Enablement Kits | Switch-PDU Power Cord | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 14 | Q1H71A#AC3 | NO LOCALIZATION | Cables &amp; Enablement Kits | Switch-PDU Power Cord | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 15 | Q1H72A#AC3 | NO LOCALIZATION | Cables &amp; Enablement Kits | Switch-PDU Power Cord | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 16 | R7R97A#AC3 | No Localization | Cables &amp; Enablement Kits | Switch-PDU Power Cord | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 17 | R8P28A#AC3 | HPE 25GbE SFP28 LR 10km 1-pack Extended Temperature Pull Tab Transceiver Include with complete syste | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 18 | R8P29A#AC3 | HPE 400GbE QSFP-DD/OSFP 5m Active Optical Cable Include with complete system | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 19 | Q1H71B#05Y | 2.4m Jumper (IEC320 C13/C14 M/F CEE 22) | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 20 | Q1H70B#05Y | 2.4m Jumper (IEC320 C13/C14 M/F CEE 22) | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 21 | R4G55A#05Y | CDC HP SN3600B 16G 24/8 8p SWSFP+FC Swch | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 22 | Q1H72B#05Y | CDC HP SN3600B 32G 24/24 Pwr Pk+ FC Swch | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 23 | R4G55B#AC3 | No Localization | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 24 | R4G55A#AC3 | No localization | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 25 | Q1H72B#AC3 | No localization | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 26 | Q1H70B#AC3 | No localization | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+| 27 | Q1H71B#AC3 | No localization | Networking | Optical Transceivers &amp; DAC Cables | ACTIVE | 2026-09-22 |  |  |  |  |  | LIFECYCLE_RETAINED | COMPACT_LIFECYCLE_TOMBSTONE | No | [DISCONTINUED] Deprecated from latest HPE OCA portal |
+
+
+### Metadata
+
+| Original row | Column 1 | Column 2 |
+| --- | --- | --- |
+| 1 | Field | Value |
+| 2 | Chassis | SN3600B FC |
+| 3 | Scrape Date | 2026-09-22 |
+| 4 | Source | OCA (Online Configuration Application) |
+| 5 | Total Sub-Categories | 27 |
+| 6 | Total Hardware SKUs | 79 |
+| 7 | Total Service/Software SKUs | 126 |
+| 8 | Total Combined SKUs | 205 |
+| 9 | Chassis Variant Options | 1 |
+| 10 | Total Rules | 26 |
+| 11 | Unavailable DOM Rules | 0 |
+| 12 | Total Tables | 11 |
+| 13 | Diff Added SKUs | 48 |
+| 14 | Diff Removed SKUs | 0 |
+| 15 | Diff Price Changed | 0 |
+| 16 | Diff Attr Changed | 121 |
+| 17 | Diff Price+Attr Changed | 36 |
+| 18 | Diff Reinstated SKUs | 0 |
+| 19 | Diff Unchanged SKUs | 0 |
+| 20 | Discontinued (All-Time) | 0 |
+| 21 | Reinstated (All-Time) | 0 |
+| 22 | Services JSON | outputs/SAN/FC/SN3600B_FC/SN3600B_FC_Services.json |
+| 23 | Output Folder | outputs/SAN/FC/SN3600B_FC |
+
+
+## Shared cell text
+
+Bracketed TEXT identifiers above refer to these exact repeated values. The surrounding sheet, column and row determine applicability.
+
+### TEXT_1
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":19950,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_2
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":12951,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_3
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":417,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_4
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":1946,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_5
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":13290,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_6
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":7071,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_7
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":3400,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_8
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":6614,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_9
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":27508,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_10
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":6100,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_11
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":2199,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_12
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":15989,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_13
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":2691,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_14
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":8838,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_15
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":19567,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_16
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":35170,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_17
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":436,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_18
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":102,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_19
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":55,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_20
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":156,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_21
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":71,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_22
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":88,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_23
+
+{"leadTime":"Unpublished","lifecycleCanonical":"90-Day Warning","listPrice":34,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_24
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":78,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_25
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":65,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_26
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":194,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_27
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_28
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":60,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_29
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":49,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_30
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":119,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_31
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":142,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_32
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":30,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_33
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":95,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_34
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":115,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_35
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":208,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_36
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":253,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_37
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":70,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_38
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":162,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_39
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":2000,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_40
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":415,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_41
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":719,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_42
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":130,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_43
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":147,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_44
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":195,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_45
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":239,"priceState":"PRICED","priceStatus":"PRICED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_46
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Obsolete","listPrice":0,"priceState":"ZERO_UNCONFIRMED","priceStatus":"ZERO_UNCONFIRMED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_47
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":0,"priceState":"ZERO_UNCONFIRMED","priceStatus":"ZERO_UNCONFIRMED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_48
+
+{"leadTime":"Unpublished","lifecycleCanonical":"90-Day Warning","listPrice":0,"priceState":"ZERO_UNCONFIRMED","priceStatus":"ZERO_UNCONFIRMED","rowType":"HARDWARE_OPTION"}
+
+### TEXT_49
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":11806,"priceState":"PRICED","priceStatus":"PRICED","rowType":"SOFTWARE_SUBSCRIPTION"}
+
+### TEXT_50
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":135058,"priceState":"PRICED","priceStatus":"PRICED","rowType":"SOFTWARE_SUBSCRIPTION"}
+
+### TEXT_51
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":36018,"priceState":"PRICED","priceStatus":"PRICED","rowType":"SOFTWARE_SUBSCRIPTION"}
+
+### TEXT_52
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":90047,"priceState":"PRICED","priceStatus":"PRICED","rowType":"SOFTWARE_SUBSCRIPTION"}
+
+### TEXT_53
+
+{"leadTime":"Unpublished","lifecycleCanonical":"Active","priceState":"UNPRICED","priceStatus":"UNPRICED","rowType":"HARDWARE_OPTION"}
 

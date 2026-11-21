@@ -2499,13 +2499,14 @@
     "daysActive": 14,
     "lastKnownPrice": "72.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $72.00 → 2026-09-10: $72.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P77111-B21": {
     "productNumber": "P77111-B21",
@@ -2517,13 +2518,14 @@
     "daysActive": 14,
     "lastKnownPrice": "52.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $52.00 → 2026-09-10: $52.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P77112-AA1": {
     "productNumber": "P77112-AA1",
@@ -2551,13 +2553,14 @@
     "daysActive": 14,
     "lastKnownPrice": "322.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $322.00 → 2026-09-10: $322.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P77113-B21": {
     "productNumber": "P77113-B21",
@@ -2569,13 +2572,14 @@
     "daysActive": 14,
     "lastKnownPrice": "226.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $226.00 → 2026-09-10: $226.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P77114-B21": {
     "productNumber": "P77114-B21",
@@ -2587,13 +2591,14 @@
     "daysActive": 14,
     "lastKnownPrice": "636.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $636.00 → 2026-09-10: $636.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P77115-B21": {
     "productNumber": "P77115-B21",
@@ -2605,13 +2610,14 @@
     "daysActive": 14,
     "lastKnownPrice": "444.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $444.00 → 2026-09-10: $444.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P77116-B21": {
     "productNumber": "P77116-B21",
@@ -2623,13 +2629,14 @@
     "daysActive": 14,
     "lastKnownPrice": "3143.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $3143.00 → 2026-09-10: $3143.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P77117-B21": {
     "productNumber": "P77117-B21",
@@ -2641,13 +2648,14 @@
     "daysActive": 14,
     "lastKnownPrice": "2184.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $2184.00 → 2026-09-10: $2184.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P77118-B21": {
     "productNumber": "P77118-B21",
@@ -2659,13 +2667,14 @@
     "daysActive": 14,
     "lastKnownPrice": "280.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $280.00 → 2026-09-10: $280.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P77119-B21": {
     "productNumber": "P77119-B21",
@@ -2677,13 +2686,14 @@
     "daysActive": 14,
     "lastKnownPrice": "201.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $201.00 → 2026-09-10: $201.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P77120-B21": {
     "productNumber": "P77120-B21",
@@ -2695,13 +2705,14 @@
     "daysActive": 14,
     "lastKnownPrice": "1364.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $1364.00 → 2026-09-10: $1364.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P77121-B21": {
     "productNumber": "P77121-B21",
@@ -2713,13 +2724,14 @@
     "daysActive": 14,
     "lastKnownPrice": "974.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $974.00 → 2026-09-10: $974.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P77122-B21": {
     "productNumber": "P77122-B21",
@@ -2731,13 +2743,14 @@
     "daysActive": 14,
     "lastKnownPrice": "13566.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $13566.00 → 2026-09-10: $13566.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P77123-B21": {
     "productNumber": "P77123-B21",
@@ -2749,13 +2762,14 @@
     "daysActive": 14,
     "lastKnownPrice": "9666.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $9666.00 → 2026-09-10: $9666.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P77096-291": {
     "productNumber": "P77096-291",
@@ -3839,13 +3853,14 @@
     "daysActive": 14,
     "lastKnownPrice": "99999.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $99999.00 → 2026-09-10: $99999.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "05/31/2025",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P46191-B21": {
     "productNumber": "P46191-B21",
@@ -3857,13 +3872,14 @@
     "daysActive": 14,
     "lastKnownPrice": "55.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $55.00 → 2026-09-10: $55.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "05/31/2025",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P46194-B21": {
     "productNumber": "P46194-B21",
@@ -3875,13 +3891,14 @@
     "daysActive": 14,
     "lastKnownPrice": "44.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $44.00 → 2026-09-10: $44.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "05/31/2025",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P46215-AA1": {
     "productNumber": "P46215-AA1",
@@ -3893,13 +3910,14 @@
     "daysActive": 14,
     "lastKnownPrice": "99999.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $99999.00 → 2026-09-10: $99999.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "05/31/2025",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P46215-AB1": {
     "productNumber": "P46215-AB1",
@@ -3911,13 +3929,14 @@
     "daysActive": 14,
     "lastKnownPrice": "99999.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $99999.00 → 2026-09-10: $99999.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "05/31/2025",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P46215-B21": {
     "productNumber": "P46215-B21",
@@ -3929,13 +3948,14 @@
     "daysActive": 14,
     "lastKnownPrice": "271.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $271.00 → 2026-09-10: $271.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "05/31/2025",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P46216-B21": {
     "productNumber": "P46216-B21",
@@ -3947,13 +3967,14 @@
     "daysActive": 14,
     "lastKnownPrice": "216.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $216.00 → 2026-09-10: $216.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "05/31/2025",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P46217-B21": {
     "productNumber": "P46217-B21",
@@ -3965,13 +3986,14 @@
     "daysActive": 14,
     "lastKnownPrice": "539.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $539.00 → 2026-09-10: $539.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "05/31/2025",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P46218-B21": {
     "productNumber": "P46218-B21",
@@ -3983,13 +4005,14 @@
     "daysActive": 14,
     "lastKnownPrice": "429.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $429.00 → 2026-09-10: $429.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "05/31/2025",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P46219-B21": {
     "productNumber": "P46219-B21",
@@ -4001,13 +4024,14 @@
     "daysActive": 14,
     "lastKnownPrice": "2695.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $2695.00 → 2026-09-10: $2695.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "05/31/2025",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P46220-B21": {
     "productNumber": "P46220-B21",
@@ -4019,13 +4043,14 @@
     "daysActive": 14,
     "lastKnownPrice": "2145.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $2145.00 → 2026-09-10: $2145.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "05/31/2025",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P46221-B21": {
     "productNumber": "P46221-B21",
@@ -4037,13 +4062,14 @@
     "daysActive": 14,
     "lastKnownPrice": "935.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $935.00 → 2026-09-10: $935.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "05/31/2025",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P46222-B21": {
     "productNumber": "P46222-B21",
@@ -4055,13 +4081,14 @@
     "daysActive": 14,
     "lastKnownPrice": "880.00",
     "fullPriceTrail": "2026-08-27: (no price) → 2026-08-28: (no price) → 2026-09-09: $880.00 → 2026-09-10: $880.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "05/31/2025",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-11-20"
   },
   "P46155-291": {
     "productNumber": "P46155-291",
@@ -4553,7 +4580,18 @@
     "mainCategory": "Drive Enclosures / Drives",
     "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "11831.00",
+    "fullPriceTrail": "2026-09-09: $11831.00 → 2026-09-10: $11831.00 [Δ Attr] → 2026-11-20: $11831.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "Obsolete (OB)",
+    "vendorDiscontinuedDate": "09/15/2023",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P58232-B21": {
     "productNumber": "P58232-B21",
@@ -4561,7 +4599,18 @@
     "mainCategory": "Drive Enclosures / Drives",
     "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "6532.00",
+    "fullPriceTrail": "2026-09-09: $6532.00 → 2026-09-10: $6532.00 [Δ Attr] → 2026-11-20: $6532.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "Obsolete (OB)",
+    "vendorDiscontinuedDate": "02/29/2024",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P69779-B21": {
     "productNumber": "P69779-B21",
@@ -4633,7 +4682,18 @@
     "mainCategory": "Drive Enclosures / Drives",
     "subCategory": "Hard Disk Drives (SAS/SATA)",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "655.00",
+    "fullPriceTrail": "2026-09-09: $655.00 → 2026-09-10: $655.00 [Δ Attr] → 2026-11-20: $655.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "Obsolete (OB)",
+    "vendorDiscontinuedDate": "12/31/2025",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "833928-B21": {
     "productNumber": "833928-B21",
@@ -4665,7 +4725,18 @@
     "mainCategory": "Drive Enclosures / Drives",
     "subCategory": "Hard Disk Drives (SAS/SATA)",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "1005.00",
+    "fullPriceTrail": "2026-09-09: $1005.00 → 2026-09-10: $1005.00 [Δ Attr] → 2026-11-20: $1005.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "Obsolete (OB)",
+    "vendorDiscontinuedDate": "12/31/2025",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "881787-B21": {
     "productNumber": "881787-B21",
@@ -4681,7 +4752,18 @@
     "mainCategory": "Drive Enclosures / Drives",
     "subCategory": "Hard Disk Drives (SAS/SATA)",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "2405.00",
+    "fullPriceTrail": "2026-09-09: $2405.00 → 2026-09-10: $2405.00 [Δ Attr] → 2026-11-20: $2405.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "Obsolete (OB)",
+    "vendorDiscontinuedDate": "12/31/2024",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P09165-B21": {
     "productNumber": "P09165-B21",
@@ -4689,7 +4771,18 @@
     "mainCategory": "Drive Enclosures / Drives",
     "subCategory": "Hard Disk Drives (SAS/SATA)",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "2223.00",
+    "fullPriceTrail": "2026-09-09: $2223.00 → 2026-09-10: $2223.00 [Δ Attr] → 2026-11-20: $2223.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "Obsolete (OB)",
+    "vendorDiscontinuedDate": "12/31/2024",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P23449-B21": {
     "productNumber": "P23449-B21",
@@ -4713,7 +4806,18 @@
     "mainCategory": "Drive Enclosures / Drives",
     "subCategory": "Hard Disk Drives (SAS/SATA)",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "3235.00",
+    "fullPriceTrail": "2026-09-09: $3235.00 → 2026-09-10: $3235.00 [Δ Attr] → 2026-11-20: $3235.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "Obsolete (OB)",
+    "vendorDiscontinuedDate": "08/14/2024",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P53556-B21": {
     "productNumber": "P53556-B21",
@@ -4721,7 +4825,18 @@
     "mainCategory": "Drive Enclosures / Drives",
     "subCategory": "Hard Disk Drives (SAS/SATA)",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "1711.00",
+    "fullPriceTrail": "2026-09-09: $1711.00 → 2026-09-10: $1711.00 [Δ Attr] → 2026-11-20: $1711.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "Obsolete (OB)",
+    "vendorDiscontinuedDate": "12/31/2023",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P53557-B21": {
     "productNumber": "P53557-B21",
@@ -4729,7 +4844,18 @@
     "mainCategory": "Drive Enclosures / Drives",
     "subCategory": "Hard Disk Drives (SAS/SATA)",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "1602.00",
+    "fullPriceTrail": "2026-09-09: $1602.00 → 2026-09-10: $1602.00 [Δ Attr] → 2026-11-20: $1602.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "Obsolete (OB)",
+    "vendorDiscontinuedDate": "12/31/2023",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P68583-B21": {
     "productNumber": "P68583-B21",
@@ -4777,7 +4903,18 @@
     "mainCategory": "Drive Enclosures / Drives",
     "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "21304.00",
+    "fullPriceTrail": "2026-09-09: $21304.00 → 2026-09-10: $21304.00 [Δ Attr] → 2026-11-20: $21304.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "EOL Warning (90-Day)",
+    "vendorDiscontinuedDate": "10/31/2026",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P70069-B21": {
     "productNumber": "P70069-B21",
@@ -4785,7 +4922,18 @@
     "mainCategory": "Drive Enclosures / Drives",
     "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "3410.00",
+    "fullPriceTrail": "2026-09-09: $3410.00 → 2026-09-10: $3410.00 [Δ Attr] → 2026-11-20: $3410.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "Obsolete (OB)",
+    "vendorDiscontinuedDate": "12/31/2025",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P70072-B21": {
     "productNumber": "P70072-B21",
@@ -4793,7 +4941,18 @@
     "mainCategory": "Drive Enclosures / Drives",
     "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "4220.00",
+    "fullPriceTrail": "2026-09-09: $4220.00 → 2026-09-10: $4220.00 [Δ Attr] → 2026-11-20: $4220.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "Obsolete (OB)",
+    "vendorDiscontinuedDate": "12/31/2025",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P70587-B21": {
     "productNumber": "P70587-B21",
@@ -4801,7 +4960,18 @@
     "mainCategory": "Drive Enclosures / Drives",
     "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "1379.00",
+    "fullPriceTrail": "2026-09-09: $1379.00 → 2026-09-10: $1379.00 [Δ Attr] → 2026-11-20: $1379.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "Obsolete (OB)",
+    "vendorDiscontinuedDate": "06/30/2026",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P70591-B21": {
     "productNumber": "P70591-B21",
@@ -4825,7 +4995,18 @@
     "mainCategory": "Drive Enclosures / Drives",
     "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "1601.00",
+    "fullPriceTrail": "2026-09-09: $1601.00 → 2026-09-10: $1601.00 [Δ Attr] → 2026-11-20: $1601.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "Obsolete (OB)",
+    "vendorDiscontinuedDate": "12/13/2025",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P75863-B21": {
     "productNumber": "P75863-B21",
@@ -8057,6 +8238,678 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "Partner Software - Operating System 8pks",
     "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "P64706-S25": {
+    "productNumber": "P64706-S25",
+    "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-5600 CAS-46-45-45 EC8 Registered Memory Kit for Smart Choice",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P50216-B21": {
+    "productNumber": "P50216-B21",
+    "description": "HPE 1.92TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PM1733a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "NVMe - SSD and AIC - Read Intensive",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P63829-B21": {
+    "productNumber": "P63829-B21",
+    "description": "HPE 1.92TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "NVMe - SSD and AIC - Read Intensive",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P63833-B21": {
+    "productNumber": "P63833-B21",
+    "description": "HPE 3.84TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "NVMe - SSD and AIC - Read Intensive",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P63837-B21": {
+    "productNumber": "P63837-B21",
+    "description": "HPE 7.68TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "NVMe - SSD and AIC - Read Intensive",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P63841-B21": {
+    "productNumber": "P63841-B21",
+    "description": "HPE 15.36TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "NVMe - SSD and AIC - Read Intensive",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P88533-B21": {
+    "productNumber": "P88533-B21",
+    "description": "HPE 30.72TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "NVMe - SSD and AIC - Read Intensive",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P92315-B21": {
+    "productNumber": "P92315-B21",
+    "description": "HPE 1.92TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "NVMe - SSD and AIC - Read Intensive",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P92317-B21": {
+    "productNumber": "P92317-B21",
+    "description": "HPE 3.84TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "NVMe - SSD and AIC - Read Intensive",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P92319-B21": {
+    "productNumber": "P92319-B21",
+    "description": "HPE 7.68TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "NVMe - SSD and AIC - Read Intensive",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P92321-B21": {
+    "productNumber": "P92321-B21",
+    "description": "HPE 15.36TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "NVMe - SSD and AIC - Read Intensive",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P92309-B21": {
+    "productNumber": "P92309-B21",
+    "description": "HPE 1.6TB NVMe Gen4 Mainstream Performance Mixed Use SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "NVMe - SSD and AIC - Mixed Use",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P92311-B21": {
+    "productNumber": "P92311-B21",
+    "description": "HPE 3.2TB NVMe Gen4 Mainstream Performance Mixed Use SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "NVMe - SSD and AIC - Mixed Use",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P92313-B21": {
+    "productNumber": "P92313-B21",
+    "description": "HPE 6.4TB NVMe Gen4 Mainstream Performance Mixed Use SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "NVMe - SSD and AIC - Mixed Use",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P97487-B21": {
+    "productNumber": "P97487-B21",
+    "description": "AMD X4542-PLUS 50/100G 2P QSFP56 Spl Adp",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S6K30A": {
+    "productNumber": "S6K30A",
+    "description": "Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server Additional License",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "Q9R65A": {
+    "productNumber": "Q9R65A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Operating Systems",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "Q9R66A": {
+    "productNumber": "Q9R66A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Operating Systems",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "Q9R67A": {
+    "productNumber": "Q9R67A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Operating Systems",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "Q9R68A": {
+    "productNumber": "Q9R68A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Operating Systems",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R8W23AAE": {
+    "productNumber": "R8W23AAE",
+    "description": "HPE ML Dev Env SW 1-19 GPU 1yr Sub E-RTU",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R8W26AAE": {
+    "productNumber": "R8W26AAE",
+    "description": "HPE ML Dev Env SW 20-99 GPU 1y Sub E-RTU",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R8W27AAE": {
+    "productNumber": "R8W27AAE",
+    "description": "HPE ML Dev Env SW 100+ GPU 1yr Sub E-RTU",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R7J59AAE": {
+    "productNumber": "R7J59AAE",
+    "description": "Intel Virtual RAID on CPU Premium E-RTU for HPE",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S0E38AAE": {
+    "productNumber": "S0E38AAE",
+    "description": "Intel Virtual RAID on CPU Standard E-RTU for HPE",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S3Q39AAE": {
+    "productNumber": "S3Q39AAE",
+    "description": "Intel Virtual RAID on CPU RAID 1 E-RTU for HPE",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q35AAE": {
+    "productNumber": "R3Q35AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 1-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q37AAE": {
+    "productNumber": "R3Q37AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 3-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q38AAE": {
+    "productNumber": "R3Q38AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 4-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q39AAE": {
+    "productNumber": "R3Q39AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q40AAE": {
+    "productNumber": "R3Q40AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q42AAE": {
+    "productNumber": "R3Q42AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education 3-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q44AAE": {
+    "productNumber": "R3Q44AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 1-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q46AAE": {
+    "productNumber": "R3Q46AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 3-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q47AAE": {
+    "productNumber": "R3Q47AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 4-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q48AAE": {
+    "productNumber": "R3Q48AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q49AAE": {
+    "productNumber": "R3Q49AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 1-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q51AAE": {
+    "productNumber": "R3Q51AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 3-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q52AAE": {
+    "productNumber": "R3Q52AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 4-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q53AAE": {
+    "productNumber": "R3Q53AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q63AAE": {
+    "productNumber": "R3Q63AAE",
+    "description": "NVIDIA RTX Virtual Workstation SUMS 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q67AAE": {
+    "productNumber": "R3Q67AAE",
+    "description": "NVIDIA RTX Virtual Workstation SUMS 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q68AAE": {
+    "productNumber": "R3Q68AAE",
+    "description": "NVIDIA RTX Virtual Workstation SUMS 1 Concurrent User Education 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q72AAE": {
+    "productNumber": "R3Q72AAE",
+    "description": "NVIDIA RTX Virtual Workstation SUMS 1 Concurrent User Education 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q73AAE": {
+    "productNumber": "R3Q73AAE",
+    "description": "NVIDIA Virtual Applications SUMS 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q77AAE": {
+    "productNumber": "R3Q77AAE",
+    "description": "NVIDIA Virtual Applications SUMS 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q79AAE": {
+    "productNumber": "R3Q79AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q81AAE": {
+    "productNumber": "R3Q81AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 3-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q93AAE": {
+    "productNumber": "R3Q93AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Perpetual E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q94AAE": {
+    "productNumber": "R3Q94AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education Perpetual E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q95AAE": {
+    "productNumber": "R3Q95AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R01AAE": {
+    "productNumber": "R3R01AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User Perpetual E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R02AAE": {
+    "productNumber": "R3R02AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R03AAE": {
+    "productNumber": "R3R03AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 3-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R06AAE": {
+    "productNumber": "R3R06AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User Perpetual E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R07AAE": {
+    "productNumber": "R3R07AAE",
+    "description": "NVIDIA Virtual PC SUMS 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R12AAE": {
+    "productNumber": "R3R12AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 3-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R21AAE": {
+    "productNumber": "R3R21AAE",
+    "description": "NVIDIA Virtual PC SUMS 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R26AAE": {
+    "productNumber": "R3R26AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education 1-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R27AAE": {
+    "productNumber": "R3R27AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education 3-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S16AAE": {
+    "productNumber": "S2S16AAE",
+    "description": "NVIDIA AI Enterprise per GPU 1-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S17AAE": {
+    "productNumber": "S2S17AAE",
+    "description": "NVIDIA AI Enterprise per GPU 3-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S18AAE": {
+    "productNumber": "S2S18AAE",
+    "description": "NVIDIA AI Enterprise per GPU 5-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S19AAE": {
+    "productNumber": "S2S19AAE",
+    "description": "NVIDIA AI Enterprise per GPU 1-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S20AAE": {
+    "productNumber": "S2S20AAE",
+    "description": "NVIDIA AI Enterprise per GPU 3-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S21AAE": {
+    "productNumber": "S2S21AAE",
+    "description": "NVIDIA AI Enterprise per GPU 5-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S22AAE": {
+    "productNumber": "S2S22AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 1-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S23AAE": {
+    "productNumber": "S2S23AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 3-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S24AAE": {
+    "productNumber": "S2S24AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 5-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S25AAE": {
+    "productNumber": "S2S25AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 1-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S26AAE": {
+    "productNumber": "S2S26AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 3-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S27AAE": {
+    "productNumber": "S2S27AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 5-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S28AAE": {
+    "productNumber": "S2S28AAE",
+    "description": "NVIDIA AI Enterprise per GPU 1-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S29AAE": {
+    "productNumber": "S2S29AAE",
+    "description": "NVIDIA AI Enterprise per GPU 3-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S30AAE": {
+    "productNumber": "S2S30AAE",
+    "description": "NVIDIA AI Enterprise per GPU 5-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S31AAE": {
+    "productNumber": "S2S31AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 1-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S32AAE": {
+    "productNumber": "S2S32AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 3-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S33AAE": {
+    "productNumber": "S2S33AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 5-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S34AAE": {
+    "productNumber": "S2S34AAE",
+    "description": "NVIDIA AI Enterprise per GPU 1-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S35AAE": {
+    "productNumber": "S2S35AAE",
+    "description": "NVIDIA AI Enterprise per GPU 3-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S36AAE": {
+    "productNumber": "S2S36AAE",
+    "description": "NVIDIA AI Enterprise per GPU 5-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S37AAE": {
+    "productNumber": "S2S37AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 1-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S38AAE": {
+    "productNumber": "S2S38AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 3-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S39AAE": {
+    "productNumber": "S2S39AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 5-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
     "status": "ACTIVE"
   }
 }

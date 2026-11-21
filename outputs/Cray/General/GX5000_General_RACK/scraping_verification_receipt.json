@@ -1,0 +1,60 @@
+{
+  "verifiedAt": "2026-11-21T05:32:31.787Z",
+  "productId": "GX5000_General_RACK",
+  "family": "Cray",
+  "generation": "General",
+  "preflight": {
+    "recordedAt": "2026-11-06T08:19:51.318Z",
+    "pass": true,
+    "product": {
+      "pass": true,
+      "productId": "GX5000_General_RACK",
+      "family": "Cray",
+      "generation": "General",
+      "pillar": "SERVER",
+      "notebookId": "86c93203-6b76-439a-b7ab-33ad782e3178",
+      "canonicalDriveEnabled": false,
+      "publishDriveWorkbook": true,
+      "expectedWorkbookSheets": 10,
+      "requiredSheetsCount": 0
+    },
+    "notebookLm": {
+      "pass": true,
+      "status": "VERIFIED_HEALTHY"
+    },
+    "googleWorkspace": {
+      "pass": true,
+      "status": "VERIFIED_SCOPES",
+      "account": "authenticated",
+      "hasSheetsScope": true,
+      "hasDriveScope": true
+    },
+    "vendorPolicy": {
+      "vendor": "HPE",
+      "anchorTabUrl": "https://partner.hpe.com/group/prp",
+      "handoffMechanism": "SAML_POST_NEW_TAB",
+      "allowInPlaceReload": false,
+      "recoveryProtocol": "CLOSE_CONFIG_TAB_RETURN_TO_TAB1_CLICK_QUICK_LINK"
+    }
+  },
+  "postflight": {
+    "pass": true,
+    "status": "PASS",
+    "qualityAuditPassed": true,
+    "diffSummaryError": null,
+    "hwSkuCount": 2,
+    "serviceSkuCount": 0,
+    "totalSkuCount": 2,
+    "conditionalSkusCount": 0,
+    "unavailableRulesCount": 0,
+    "diffSummaryPresent": true,
+    "cloudSyncState": "VERIFIED",
+    "notebookId": "86c93203-6b76-439a-b7ab-33ad782e3178",
+    "verifiedSourceId": "77cb94d8-0147-4546-a884-d24c7cdaf035",
+    "verifiedSourceName": "GX5000_General_RACK_OCA_Catalog_2026-11-21",
+    "payloadSha256": "d20c14305029c0b364cc5ec362e8380068966e0ce43a4613f024179db4786ccd",
+    "cloudVerifiedAt": "2026-11-21T05:32:31.787Z",
+    "readbackVerified": true,
+    "canaryVerified": true
+  }
+}

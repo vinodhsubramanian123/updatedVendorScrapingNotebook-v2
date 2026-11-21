@@ -1,13 +1,29 @@
 Main Category	Sub-Category	Constraint	Rule Type	Rule Text
-Chassis	Variants	min 1, max 1 — Active OCA Base Chassis	Configuration Rule	Base chassis captured from the active OCA configuration summary
-Accessories & Infrastructure	Encryption Kit	max 999	Configuration Rule	Selection constraint for Encryption Kit: max 999
+Tape Drives	Tape Drives	max 3	Quantity Constraint	Quantity: max 3
+MSL Options	Encryption Kit	max 999	Quantity Constraint	Quantity: max 999
+MSL Options	Power Supply	max 1	Quantity Constraint	Quantity: max 1
+Cables	FibreChannel Cables	max 999	Quantity Constraint	Quantity: max 999
+Cables	SAS Cables	max 999	Quantity Constraint	Quantity: max 999
+Expansion Modules	Expansion Modules	max 15	Quantity Constraint	Quantity: max 15
+Power Cords	Power Cord	Unlimited	Quantity Constraint	Quantity: Unlimited
+Storage Media	Storage Media	max 999	Quantity Constraint	Quantity: max 999
+Software	Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
+Storage Controllers	Fibre Channel Host Bus Adapters	max 3	Configuration Rule	Selection constraint for Fibre Channel Host Bus Adapters: max 3
+MSL Options	Encryption Kit	max 999	Configuration Rule	Selection constraint for Encryption Kit: max 999
 Power Supplies	Power Supply	max 1	Configuration Rule	Selection constraint for Power Supply: max 1
 Cables & Enablement Kits	FibreChannel Cables	max 999	Configuration Rule	Selection constraint for FibreChannel Cables: max 999
 Drive Enclosures / Drives	SAS Cables	max 999	Configuration Rule	Selection constraint for SAS Cables: max 999
-Accessories & Infrastructure	Expansion Modules	max 15	Configuration Rule	Selection constraint for Expansion Modules: max 15
-Accessories & Infrastructure	Storage Media	max 999	Configuration Rule	Selection constraint for Storage Media: max 999
 Drive Enclosures / Drives	SAS Cables	max 999	Configuration Rule	Supported on LTO-9 SAS Drive (R6Q75A) Only.
-Storage Controllers	Storage Media	max 999	Configuration Rule	Selection constraint for Storage Media: max 999
+Drive Enclosures / Drives	SAS Cables	max 999	Configuration Rule	716197-B21 conditional visibility: portal selector activation required (Supported on LTO-9 SAS Drive (R6Q75A) Only.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	SAS Cables	max 999	Configuration Rule	716199-B21 conditional visibility: portal selector activation required (Supported on LTO-9 SAS Drive (R6Q75A) Only.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	SAS Cables	max 999	Configuration Rule	P35176-B21 conditional visibility: portal selector activation required (Supported on LTO-9 SAS Drive (R6Q75A) Only.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	SAS Cables	max 999	Configuration Rule	P35175-B21 conditional visibility: portal selector activation required (Supported on LTO-9 SAS Drive (R6Q75A) Only.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cord	no max	Configuration Rule	Selection constraint for Power Cord: no max
+Storage Controllers	Storage Media	max 999	Configuration Rule	Selection constraint for Storage Media: max 999
 Software & Licenses	Software	no max	Configuration Rule	Selection constraint for Software: no max
-Networking	Fibre Channel Host Bus Adapters	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
+Support Services	Storage Media	max 999	Configuration Rule	Selection constraint for Storage Media: max 999
+Support Services	Support & Deployment Services	max 8	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 8
+Processor	Intel Xeon Scalable Processors	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
+Chassis	Encryption Kit	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
+Cables	Configuration Rules	Supported on LTO-9 SAS Drive (R6Q75A) Only.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Supported on LTO-9 SAS Drive (R6Q75A) Only.

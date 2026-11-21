@@ -779,9 +779,20 @@
     "productNumber": "P69234-B21",
     "description": "HPE 1.92TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 CD8P SSD",
     "mainCategory": "Drive Enclosures / Drives",
-    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "19743.00",
+    "fullPriceTrail": "2026-09-09: $19743.00 → 2026-09-10: $19743.00 [Δ Attr] → 2026-11-20: $19743.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "EOL Warning (90-Day)",
+    "vendorDiscontinuedDate": "11/30/2026",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P69239-B21": {
     "productNumber": "P69239-B21",
@@ -907,25 +918,58 @@
     "productNumber": "P69241-B21",
     "description": "HPE 1.6TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 CD8P SSD",
     "mainCategory": "Drive Enclosures / Drives",
-    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "20109.00",
+    "fullPriceTrail": "2026-09-09: $20109.00 → 2026-09-10: $20109.00 [Δ Attr] → 2026-11-20: $20109.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "EOL Warning (90-Day)",
+    "vendorDiscontinuedDate": "11/30/2026",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P69243-B21": {
     "productNumber": "P69243-B21",
     "description": "HPE 3.2TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 CD8P SSD",
     "mainCategory": "Drive Enclosures / Drives",
-    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "27452.00",
+    "fullPriceTrail": "2026-09-09: $27452.00 → 2026-09-10: $27452.00 [Δ Attr] → 2026-11-20: $27452.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "EOL Warning (90-Day)",
+    "vendorDiscontinuedDate": "11/30/2026",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P69245-B21": {
     "productNumber": "P69245-B21",
     "description": "HPE 6.4TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 CD8P SSD",
     "mainCategory": "Drive Enclosures / Drives",
-    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
     "firstSeenDate": "2026-09-09",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-20",
+    "daysActive": 72,
+    "lastKnownPrice": "44109.00",
+    "fullPriceTrail": "2026-09-09: $44109.00 → 2026-09-10: $44109.00 [Δ Attr] → 2026-11-20: $44109.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "EOL Warning (90-Day)",
+    "vendorDiscontinuedDate": "11/30/2026",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "P69546-B21": {
     "productNumber": "P69546-B21",
@@ -3589,6 +3633,534 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "Partner Software - Operating System 8pks",
     "firstSeenDate": "2026-09-13",
+    "status": "ACTIVE"
+  },
+  "P57807-B21": {
+    "productNumber": "P57807-B21",
+    "description": "HPE 15.36TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM PM1743 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SSD - EDSFF NVME Read Intensive",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S6K30A": {
+    "productNumber": "S6K30A",
+    "description": "Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server Additional License",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "Q9R65A": {
+    "productNumber": "Q9R65A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Operating Systems",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "Q9R66A": {
+    "productNumber": "Q9R66A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Operating Systems",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "Q9R67A": {
+    "productNumber": "Q9R67A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Operating Systems",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "Q9R68A": {
+    "productNumber": "Q9R68A",
+    "description": "Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Operating Systems",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q35AAE": {
+    "productNumber": "R3Q35AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 1-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q37AAE": {
+    "productNumber": "R3Q37AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 3-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q38AAE": {
+    "productNumber": "R3Q38AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 4-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q39AAE": {
+    "productNumber": "R3Q39AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q40AAE": {
+    "productNumber": "R3Q40AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q42AAE": {
+    "productNumber": "R3Q42AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education 3-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q44AAE": {
+    "productNumber": "R3Q44AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 1-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q46AAE": {
+    "productNumber": "R3Q46AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 3-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q47AAE": {
+    "productNumber": "R3Q47AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 4-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q48AAE": {
+    "productNumber": "R3Q48AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q49AAE": {
+    "productNumber": "R3Q49AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 1-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q51AAE": {
+    "productNumber": "R3Q51AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 3-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q52AAE": {
+    "productNumber": "R3Q52AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 4-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q53AAE": {
+    "productNumber": "R3Q53AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q63AAE": {
+    "productNumber": "R3Q63AAE",
+    "description": "NVIDIA RTX Virtual Workstation SUMS 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q67AAE": {
+    "productNumber": "R3Q67AAE",
+    "description": "NVIDIA RTX Virtual Workstation SUMS 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q68AAE": {
+    "productNumber": "R3Q68AAE",
+    "description": "NVIDIA RTX Virtual Workstation SUMS 1 Concurrent User Education 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q72AAE": {
+    "productNumber": "R3Q72AAE",
+    "description": "NVIDIA RTX Virtual Workstation SUMS 1 Concurrent User Education 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q73AAE": {
+    "productNumber": "R3Q73AAE",
+    "description": "NVIDIA Virtual Applications SUMS 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q77AAE": {
+    "productNumber": "R3Q77AAE",
+    "description": "NVIDIA Virtual Applications SUMS 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q79AAE": {
+    "productNumber": "R3Q79AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q81AAE": {
+    "productNumber": "R3Q81AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 3-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q93AAE": {
+    "productNumber": "R3Q93AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Perpetual E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q94AAE": {
+    "productNumber": "R3Q94AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education Perpetual E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q95AAE": {
+    "productNumber": "R3Q95AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R01AAE": {
+    "productNumber": "R3R01AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User Perpetual E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R02AAE": {
+    "productNumber": "R3R02AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R03AAE": {
+    "productNumber": "R3R03AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 3-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R06AAE": {
+    "productNumber": "R3R06AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User Perpetual E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R07AAE": {
+    "productNumber": "R3R07AAE",
+    "description": "NVIDIA Virtual PC SUMS 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R12AAE": {
+    "productNumber": "R3R12AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 3-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R21AAE": {
+    "productNumber": "R3R21AAE",
+    "description": "NVIDIA Virtual PC SUMS 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R26AAE": {
+    "productNumber": "R3R26AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education 1-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R27AAE": {
+    "productNumber": "R3R27AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education 3-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S16AAE": {
+    "productNumber": "S2S16AAE",
+    "description": "NVIDIA AI Enterprise per GPU 1-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S17AAE": {
+    "productNumber": "S2S17AAE",
+    "description": "NVIDIA AI Enterprise per GPU 3-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S18AAE": {
+    "productNumber": "S2S18AAE",
+    "description": "NVIDIA AI Enterprise per GPU 5-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S19AAE": {
+    "productNumber": "S2S19AAE",
+    "description": "NVIDIA AI Enterprise per GPU 1-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S20AAE": {
+    "productNumber": "S2S20AAE",
+    "description": "NVIDIA AI Enterprise per GPU 3-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S21AAE": {
+    "productNumber": "S2S21AAE",
+    "description": "NVIDIA AI Enterprise per GPU 5-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S22AAE": {
+    "productNumber": "S2S22AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 1-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S23AAE": {
+    "productNumber": "S2S23AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 3-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S24AAE": {
+    "productNumber": "S2S24AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 5-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S25AAE": {
+    "productNumber": "S2S25AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 1-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S26AAE": {
+    "productNumber": "S2S26AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 3-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S27AAE": {
+    "productNumber": "S2S27AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 5-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S28AAE": {
+    "productNumber": "S2S28AAE",
+    "description": "NVIDIA AI Enterprise per GPU 1-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S29AAE": {
+    "productNumber": "S2S29AAE",
+    "description": "NVIDIA AI Enterprise per GPU 3-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S30AAE": {
+    "productNumber": "S2S30AAE",
+    "description": "NVIDIA AI Enterprise per GPU 5-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S31AAE": {
+    "productNumber": "S2S31AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 1-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S32AAE": {
+    "productNumber": "S2S32AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 3-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S33AAE": {
+    "productNumber": "S2S33AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 5-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S34AAE": {
+    "productNumber": "S2S34AAE",
+    "description": "NVIDIA AI Enterprise per GPU 1-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S35AAE": {
+    "productNumber": "S2S35AAE",
+    "description": "NVIDIA AI Enterprise per GPU 3-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S36AAE": {
+    "productNumber": "S2S36AAE",
+    "description": "NVIDIA AI Enterprise per GPU 5-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S37AAE": {
+    "productNumber": "S2S37AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 1-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S38AAE": {
+    "productNumber": "S2S38AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 3-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S39AAE": {
+    "productNumber": "S2S39AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 5-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S8M87AAE": {
+    "productNumber": "S8M87AAE",
+    "description": "NVIDIA RTX PRO 4500 Blackwell Server Edition per GPU 3-year E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S8M88AAE": {
+    "productNumber": "S8M88AAE",
+    "description": "NVIDIA RTX PRO 4500 Blackwell Server Edition per GPU 5-year E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
     "status": "ACTIVE"
   }
 }

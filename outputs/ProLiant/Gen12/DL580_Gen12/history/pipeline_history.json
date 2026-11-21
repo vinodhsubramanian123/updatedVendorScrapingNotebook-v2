@@ -1,6 +1,194 @@
 [
   {
     "summary": {
+      "runId": "run_DL580_Gen12_1795262304938",
+      "sessionName": "DL580_Gen12",
+      "startTime": "2026-11-21T11:58:24.937Z",
+      "endTime": "2026-11-21T11:58:30.863Z",
+      "durationMs": 5926,
+      "durationSec": "5.93",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 580,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 580,
+      "validationStats": {
+        "totalEntries": 67,
+        "totalSKUs": 580,
+        "validSKUs": 580,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 60,
+        "priceErrors": 0,
+        "ruleCount": 119,
+        "categoryCount": 12
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-21T11:58:24.938Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/ProLiant/Gen12/DL580_Gen12/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/ProLiant/Gen12/DL580_Gen12/DL580_Gen12_Catalog.json",
+          "chassisLabel": "DL580 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:27.357Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 50,
+          "totalUniqueSKUs": 580,
+          "incrementalStats": {
+            "totalScrapedSkus": 580,
+            "unchangedSkusCount": 515,
+            "modifiedSkusCount": 4,
+            "addedSkusCount": 61,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:27.371Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 67,
+            "totalSKUs": 580,
+            "validSKUs": 580,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 60,
+            "priceErrors": 0,
+            "ruleCount": 119,
+            "categoryCount": 12
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:30.861Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/ProLiant/Gen12/DL580_Gen12/DL580_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 580,
+      "classified": 580,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL580_Gen12_1795178882556",
+      "sessionName": "DL580_Gen12",
+      "startTime": "2026-11-20T12:48:02.551Z",
+      "endTime": "2026-11-20T12:48:07.559Z",
+      "durationMs": 5008,
+      "durationSec": "5.01",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 519,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 519,
+      "validationStats": {
+        "totalEntries": 65,
+        "totalSKUs": 519,
+        "validSKUs": 519,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 60,
+        "priceErrors": 0,
+        "ruleCount": 117,
+        "categoryCount": 13
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-20T12:48:02.556Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/.catalog-staging/staging_DL580_Gen12_1795178882030/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/.catalog-staging/staging_DL580_Gen12_1795178882030/DL580_Gen12_Catalog.json",
+          "chassisLabel": "DL580 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-20T12:48:06.991Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 51,
+          "totalUniqueSKUs": 519,
+          "incrementalStats": {
+            "totalScrapedSkus": 519,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 519,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T12:48:07.021Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 65,
+            "totalSKUs": 519,
+            "validSKUs": 519,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 60,
+            "priceErrors": 0,
+            "ruleCount": 117,
+            "categoryCount": 13
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T12:48:07.559Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/.catalog-staging/staging_DL580_Gen12_1795178882030/DL580_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 519,
+      "classified": 519,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_DL580_Gen12_1789298980932",
       "sessionName": "DL580_Gen12",
       "startTime": "2026-09-13T11:29:40.931Z",

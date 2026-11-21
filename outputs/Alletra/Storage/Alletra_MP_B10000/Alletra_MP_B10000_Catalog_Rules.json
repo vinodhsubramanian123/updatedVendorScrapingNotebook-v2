@@ -1,0 +1,2660 @@
+{
+  "metadata": {
+    "chassis": "Alletra MP B10000",
+    "model": "Alletra_MP_B10000",
+    "family": "Alletra",
+    "generation": "Storage",
+    "pillar": "STORAGE",
+    "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
+    "scrapeDate": "2026-11-21",
+    "scrapeTimestamp": "2026-11-21T12:46:05.706Z",
+    "builtAt": "2026-11-21T12:46:07.214Z",
+    "totalSubcategories": 14,
+    "totalUniqueSKUs": 202,
+    "totalTables": 43,
+    "diffSummary": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 202,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "historySnapshot": "catalog_2026-11-21.json",
+    "priceAnalytics": {
+      "scrapeDate": "2026-11-21",
+      "categoryBreakdown": {
+        "Chassis": {
+          "totalSKUs": 0,
+          "totalPrice": 0,
+          "minPrice": 0,
+          "maxPrice": 0,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            }
+          },
+          "avgPrice": 0
+        },
+        "Accessories & Infrastructure": {
+          "totalSKUs": 4,
+          "totalPrice": 16107,
+          "minPrice": 166,
+          "maxPrice": 13749,
+          "subcategories": {
+            "Accessories & Infrastructure Options": {
+              "totalSKUs": 3,
+              "totalPrice": 14112,
+              "avgPrice": 4704
+            },
+            "Chassis Infrastructure & Rail Kits": {
+              "totalSKUs": 1,
+              "totalPrice": 1995,
+              "avgPrice": 1995
+            }
+          },
+          "avgPrice": 4026.75
+        },
+        "Storage Controllers": {
+          "totalSKUs": 10,
+          "totalPrice": 2773137,
+          "minPrice": 72092,
+          "maxPrice": 513103,
+          "subcategories": {
+            "Storage Controllers Options": {
+              "totalSKUs": 10,
+              "totalPrice": 2773137,
+              "avgPrice": 277313.7
+            }
+          },
+          "avgPrice": 277313.7
+        },
+        "Power Supplies": {
+          "totalSKUs": 4,
+          "totalPrice": 27370,
+          "minPrice": 2327,
+          "maxPrice": 11842,
+          "subcategories": {
+            "Flex Slot Power Supplies": {
+              "totalSKUs": 3,
+              "totalPrice": 15528,
+              "avgPrice": 5176
+            },
+            "-48VDC Power Supplies & Cable Kits": {
+              "totalSKUs": 1,
+              "totalPrice": 11842,
+              "avgPrice": 11842
+            }
+          },
+          "avgPrice": 6842.5
+        },
+        "Cables & Enablement Kits": {
+          "totalSKUs": 91,
+          "totalPrice": 13916,
+          "minPrice": 10,
+          "maxPrice": 3075,
+          "subcategories": {
+            "Power Cords & Jumper Cables": {
+              "totalSKUs": 36,
+              "totalPrice": 2565,
+              "avgPrice": 71.25
+            },
+            "-48VDC Power Supplies & Cable Kits": {
+              "totalSKUs": 39,
+              "totalPrice": 3614,
+              "avgPrice": 92.66666666666667
+            },
+            "Cables & Enablement Kits Options": {
+              "totalSKUs": 13,
+              "totalPrice": 7584,
+              "avgPrice": 583.3846153846154
+            },
+            "PCIe Networking Adapters": {
+              "totalSKUs": 3,
+              "totalPrice": 153,
+              "avgPrice": 51
+            }
+          },
+          "avgPrice": 152.92307692307693
+        },
+        "Software & Licenses": {
+          "totalSKUs": 47,
+          "totalPrice": 2761775,
+          "minPrice": 1,
+          "maxPrice": 367245,
+          "subcategories": {
+            "Software LTU": {
+              "totalSKUs": 47,
+              "totalPrice": 2761775,
+              "avgPrice": 58761.17021276596
+            }
+          },
+          "avgPrice": 58761.17021276596
+        },
+        "Networking": {
+          "totalSKUs": 31,
+          "totalPrice": 51330,
+          "minPrice": 250,
+          "maxPrice": 3399,
+          "subcategories": {
+            "Optical Transceivers & DAC Cables": {
+              "totalSKUs": 31,
+              "totalPrice": 51330,
+              "avgPrice": 1655.8064516129032
+            }
+          },
+          "avgPrice": 1655.8064516129032
+        },
+        "Drive Enclosures / Drives": {
+          "totalSKUs": 12,
+          "totalPrice": 1976663,
+          "minPrice": 36109,
+          "maxPrice": 376435,
+          "subcategories": {
+            "Solid State Drives (NVMe/SAS/SATA)": {
+              "totalSKUs": 6,
+              "totalPrice": 896003,
+              "avgPrice": 149333.83333333334
+            },
+            "SFF Drive Cages & Enablement": {
+              "totalSKUs": 6,
+              "totalPrice": 1080660,
+              "avgPrice": 180110
+            }
+          },
+          "avgPrice": 164721.91666666666
+        },
+        "Support Services": {
+          "totalSKUs": 1,
+          "totalPrice": 3075,
+          "minPrice": 3075,
+          "maxPrice": 3075,
+          "subcategories": {
+            "Support Services Options": {
+              "totalSKUs": 1,
+              "totalPrice": 3075,
+              "avgPrice": 3075
+            }
+          },
+          "avgPrice": 3075
+        }
+      }
+    },
+    "snapshotFingerprint": "f9c301e145daa98038ab2687571f27f5b237fc73e1c31065a05d144fd388ec68",
+    "chassisVariantCount": 1,
+    "rulesGeneratedAt": "2026-11-21T12:46:07.636Z",
+    "rulesCount": 153,
+    "ninjaSizingIntegratedAt": "2026-11-21T12:46:41.787Z",
+    "ninjaSizingSha256": "244b4a0fe5c40646d91e91c4f330224b72830856f9790379b86f893747785f1b"
+  },
+  "chassisVariants": [
+    {
+      "sku": "S7U66A",
+      "description": "S7U66A/S7U67A - HPE Alletra Storage MP B10000 KSA",
+      "formFactor": "Unknown",
+      "listPrice": 0,
+      "listPriceFormatted": "$0.00",
+      "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "BASELINE",
+      "priceHistoryTrail": "2026-11-21: (no price)"
+    }
+  ],
+  "chassisVariantMatrix": {
+    "S7U66A": {
+      "sku": "S7U66A",
+      "description": "S7U66A/S7U67A - HPE Alletra Storage MP B10000 KSA",
+      "formFactor": "Unknown",
+      "listPrice": 0,
+      "listPriceFormatted": "$0.00",
+      "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "BASELINE",
+      "priceHistoryTrail": "2026-11-21: (no price)"
+    }
+  },
+  "smartChassisCombinations": [],
+  "solutionManifest": {
+    "commercialBreakdown": null,
+    "deliveryAndSupport": {
+      "iconId": "I158544799-01C2B",
+      "edt": "24 - 30 days",
+      "configName": "OCA Config 2Icon ID: I158544799-01C2BEDT: 24 - 30 days",
+      "attachedServices": [
+        {
+          "deviceTarget": "HPE Alletra Storage MP B10000 #1 GroupN/A",
+          "reactiveSupport": "",
+          "installation": "",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Alletra Storage MP B10000 #1N/A",
+          "reactiveSupport": "",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Storage Data Encryption LTU",
+          "reactiveSupport": "N/A",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Alletra Storage MP B10000 SVC",
+          "reactiveSupport": "N/A",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Configurator Defined Build Instruction Option",
+          "reactiveSupport": "HU4A6A5#699 HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "Virtual Rack Service #1ZU715ACTO",
+          "reactiveSupport": "HU4A6A5 HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Alletra Storage MP 10000 2U Chassis",
+          "reactiveSupport": "HU4A6A5008L HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Alletra Storage MP NVMe Shelf",
+          "reactiveSupport": "HU4A6A5008Z HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Alletra Storage MP NVMe Shelf",
+          "reactiveSupport": "HU4A6A5008Z HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Alletra Storage MP NVMe Shelf",
+          "reactiveSupport": "HU4A6A5008Z HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Alletra Storage MP B10200 Base Configuration",
+          "reactiveSupport": "HU4A6A5008W HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Alletra Storage MP 32-port 100GbE Switch Bundle",
+          "reactiveSupport": "HU4A6A500HV HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Alletra Storage MP NVMe Shelf",
+          "reactiveSupport": "HU4A6A5008Z HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Alletra Storage MP NVMe Shelf",
+          "reactiveSupport": "HU4A6A5008Z HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Alletra Storage MP NVMe Shelf",
+          "reactiveSupport": "HU4A6A5008Z HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Alletra Storage MP NVMe Shelf",
+          "reactiveSupport": "HU4A6A5008Z HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE Alletra Storage MP NVMe Shelf",
+          "reactiveSupport": "HU4A6A5008Z HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        }
+      ]
+    },
+    "baselineHierarchy": []
+  },
+  "subcategories": [],
+  "rules": [
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0U32A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0U32A conditional visibility: portal selector activation required (Max 2 Chassis); PORTAL_CONDITIONAL",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R7D02B"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R7D02B conditional visibility: portal selector activation required (B series nodes only supported for upgrades); PORTAL_CONDITIONAL",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controllers Options",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R7D03B"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R7D03B conditional visibility: portal selector activation required (B series nodes only supported for upgrades); PORTAL_CONDITIONAL",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controllers Options",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0R20B"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0R20B conditional visibility: portal selector activation required (B series nodes only supported for upgrades); PORTAL_CONDITIONAL",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0R21B"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0R21B conditional visibility: portal selector activation required (B series nodes only supported for upgrades); PORTAL_CONDITIONAL",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controllers Options",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0S41B"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0S41B conditional visibility: portal selector activation required (B series nodes only supported for upgrades); PORTAL_CONDITIONAL",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0S42B"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0S42B conditional visibility: portal selector activation required (B series nodes only supported for upgrades); PORTAL_CONDITIONAL",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S4V66B"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S4V66B conditional visibility: portal selector activation required (B series nodes only supported for upgrades); PORTAL_CONDITIONAL",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controllers Options",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S4V67B"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S4V67B conditional visibility: portal selector activation required (B series nodes only supported for upgrades); PORTAL_CONDITIONAL",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S4V66A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S4V66A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controllers Options",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R7D03A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R7D03A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controllers Options",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0R21A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0R21A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controllers Options",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0S38A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0S38A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controllers Options",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S4V67A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S4V67A conditional visibility: portal selector activation required (TAA isSelected); PORTAL_CONDITIONAL",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0R20A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0R20A conditional visibility: portal selector activation required (TAA isSelected); PORTAL_CONDITIONAL",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0S40A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0S40A conditional visibility: portal selector activation required (TAA isSelected); PORTAL_CONDITIONAL",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0S41A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0S41A conditional visibility: portal selector activation required (TAA isSelected); PORTAL_CONDITIONAL",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0S42A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0S42A conditional visibility: portal selector activation required (TAA isSelected); PORTAL_CONDITIONAL",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0S39A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0S39A conditional visibility: portal selector activation required (Hide B10140); PORTAL_CONDITIONAL",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controllers Options",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0S43A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0S43A conditional visibility: portal selector activation required (Hide B10140); PORTAL_CONDITIONAL",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R7C77A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R7C77A conditional visibility: portal selector activation required (No Mix PowerSupply); PORTAL_CONDITIONAL",
+      "parentCategory": "Power Supplies",
+      "subCategory": "Flex Slot Power Supplies",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R7C78A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R7C78A conditional visibility: portal selector activation required (No Mix PowerSupply); PORTAL_CONDITIONAL",
+      "parentCategory": "Power Supplies",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R9Z97A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R9Z97A conditional visibility: portal selector activation required (No Mix PowerSupply); PORTAL_CONDITIONAL",
+      "parentCategory": "Power Supplies",
+      "subCategory": "Flex Slot Power Supplies",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "295633-B22"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "295633-B22 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF556A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF556A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF568A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF568A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF593A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF593A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P22173-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P22173-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P36877-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P36877-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78148-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78148-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78155-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78155-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78164-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78164-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R1C66A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R1C66A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "A0K02A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "A0K02A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "A0N33A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "A0N33A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF557A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF557A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF558A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF558A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF559A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF559A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF560A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF560A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF561A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF561A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF562A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF562A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF564A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF564A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF565A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF565A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF566A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF566A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF567A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF567A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF569A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF569A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF570A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF570A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF572A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF572A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF573A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF573A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF591A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF591A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P08315-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P08315-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78130-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78130-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78131-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78131-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78144-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78144-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78145-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78145-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78147-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78147-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78156-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78156-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78157-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78157-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78384-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78384-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78940-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78940-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78941-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78941-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R1C65A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R1C65A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "G2H95A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "G2H95A conditional visibility: portal selector activation required (Breaker Panel can be selected only if R7C78A is selected); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software LTU",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "Q9N54A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "Q9N54A conditional visibility: portal selector activation required (Breaker Panel can be selected only if R7C78A is selected); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software LTU",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0S46A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0S46A conditional visibility: portal selector activation required (TAA isSelected); PORTAL_CONDITIONAL",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R8M59A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R8M59A conditional visibility: portal selector activation required (When S1J10A/S0S46A is selected, do not allow R8M59A to be selected); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S2T35A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S2T35A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "JL271A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "JL271A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "Q2F19A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "Q2F19A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R0Z25A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R0Z25A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R0Z27A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R0Z27A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R8M61A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R8M61A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R9F77A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R9F77A conditional visibility: portal selector activation required (When R7D02A or R7D03A or S0S42A or S0R20A or R7D02B or R7D03B or S0S42B or S0R20B is selected, do not allow R8M59A or R9F77A to be selected (for new configurations and upgrades)); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S1Z68A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S1Z68A conditional visibility: portal selector activation required (Mixing is not allowed for initial configuration.); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SFF Drive Cages & Enablement",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R9H66A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R9H66A conditional visibility: portal selector activation required (Mixing is not allowed for initial configuration.); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SFF Drive Cages & Enablement",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R9H69A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R9H69A conditional visibility: portal selector activation required (Mixing is not allowed for initial configuration.); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SFF Drive Cages & Enablement",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R9H68A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R9H68A conditional visibility: portal selector activation required (Mixing is not allowed for initial configuration.); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SFF Drive Cages & Enablement",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S3L74A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S3L74A conditional visibility: portal selector activation required (Mixing is not allowed for initial configuration.); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SFF Drive Cages & Enablement",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S3L73A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S3L73A conditional visibility: portal selector activation required (Mixing is not allowed for initial configuration.); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SFF Drive Cages & Enablement",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S1S69A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S1S69A conditional visibility: portal selector activation required (If “dcPowerFlag” is selected then S1S69A not supported); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software LTU",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S4Q37A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S4Q37A conditional visibility: portal selector activation required (S0A95A cannot be ordered with S3V78A/S4Q37A); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Cables & Enablement Kits Options",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S3V78A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S3V78A conditional visibility: portal selector activation required (S0A95A cannot be ordered with S3V78A/S4Q37A); PORTAL_CONDITIONAL",
+      "parentCategory": "Support Services",
+      "subCategory": "Support Services Options",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0A98AAE"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0A98AAE conditional visibility: portal selector activation required (The S0A99AAE / S0A98AAE applicable for the drives configured as Add-ons/upgrades only); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software LTU",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0A99AAE"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0A99AAE conditional visibility: portal selector activation required (The S0A99AAE / S0A98AAE applicable for the drives configured as Add-ons/upgrades only); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software LTU",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0A99A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S0A99A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software LTU",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S1S85AAE"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S1S85AAE conditional visibility: portal selector activation required (This SKU can be selected only when HPE GreenLake = Yes); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software LTU",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Storage Preferences",
+      "subCategory": "Configuration Rules",
+      "constraint": "R7C77A is only supported on rack-less solutions for S0R21A, S0S41A, S0S38A, S0S40A, S0S39A, S0S43A, S4V66A, S4V67A, S0R21B, S0S41B, S4V66B, S4V67B nodes",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] R7C77A is only supported on rack-less solutions for S0R21A, S0S41A, S0S38A, S0S40A, S0S39A, S0S43A, S4V66A, S4V67A, S0R21B, S0S41B, S4V66B, S4V67B nodes",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "Arcus_ACPower_LowLine_WW_Intl"
+      ],
+      "ineligibilityReason": "R7C77A is only supported on rack-less solutions for S0R21A, S0S41A, S0S38A, S0S40A, S0S39A, S0S43A, S4V66A, S4V67A, S0R21B, S0S41B, S4V66B, S4V67B nodes",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Installation Options",
+      "subCategory": "Configuration Rules",
+      "constraint": "Not applicable for S1R06A, S5S40A, R7D02A, R7D03A, S0S42A and S0R20A",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Not applicable for S1R06A, S5S40A, R7D02A, R7D03A, S0S42A and S0R20A",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "No_Installation_Services"
+      ],
+      "ineligibilityReason": "Not applicable for S1R06A, S5S40A, R7D02A, R7D03A, S0S42A and S0R20A",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "CHASSIS_GATE",
+      "parentCategory": "Controller Node Models",
+      "subCategory": "Configuration Rules",
+      "constraint": "Max 2 Chassis",
+      "maxQty": "",
+      "rule": "[CHASSIS_GATE] Max 2 Chassis",
+      "conditionKey": "chassisModel",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S0U32A"
+      ],
+      "ineligibilityReason": "Max 2 Chassis",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Controller Node Models",
+      "subCategory": "Configuration Rules",
+      "constraint": "B series nodes only supported for upgrades",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] B series nodes only supported for upgrades",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "R7D02B",
+        "R7D03B",
+        "S0R20B",
+        "S0R21B",
+        "S0S41B",
+        "S0S42B",
+        "S4V66B",
+        "S4V67B"
+      ],
+      "ineligibilityReason": "B series nodes only supported for upgrades",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Controller Node Models",
+      "subCategory": "Configuration Rules",
+      "constraint": "Max quantity of product limited by space available.",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Max quantity of product limited by space available.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S4V66A",
+        "R7D03A",
+        "S0R21A",
+        "S0S38A"
+      ],
+      "ineligibilityReason": "Max quantity of product limited by space available.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Controller Node Models",
+      "subCategory": "Configuration Rules",
+      "constraint": "TAA isSelected",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] TAA isSelected",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S4V67A",
+        "S0R20A",
+        "S0S40A",
+        "S0S41A",
+        "S0S42A"
+      ],
+      "ineligibilityReason": "TAA isSelected",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Controller Node Models",
+      "subCategory": "Configuration Rules",
+      "constraint": "Hide B10140",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Hide B10140",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S0S39A",
+        "S0S43A"
+      ],
+      "ineligibilityReason": "Hide B10140",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Power Supplies",
+      "subCategory": "Configuration Rules",
+      "constraint": "No Mix PowerSupply",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] No Mix PowerSupply",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "R7C77A",
+        "R7C78A",
+        "R9Z97A"
+      ],
+      "ineligibilityReason": "No Mix PowerSupply",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Power Supplies",
+      "subCategory": "Configuration Rules",
+      "constraint": "If single Phase or threePhase is selected then DC Power Cables not supported 2",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] If single Phase or threePhase is selected then DC Power Cables not supported 2",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "295633-B22",
+        "AF556A",
+        "AF568A",
+        "AF593A",
+        "P22173-B21",
+        "P36877-B21",
+        "P78148-B21",
+        "P78155-B21",
+        "P78164-B21",
+        "R1C66A",
+        "A0K02A",
+        "A0N33A",
+        "AF557A",
+        "AF558A",
+        "AF559A",
+        "AF560A",
+        "AF561A",
+        "AF562A",
+        "AF564A",
+        "AF565A",
+        "AF566A",
+        "AF567A",
+        "AF569A",
+        "AF570A",
+        "AF572A",
+        "AF573A",
+        "AF591A",
+        "P08315-B21",
+        "P78130-B21",
+        "P78131-B21",
+        "P78144-B21",
+        "P78145-B21",
+        "P78147-B21",
+        "P78156-B21",
+        "P78157-B21",
+        "P78384-B21",
+        "P78940-B21",
+        "P78941-B21",
+        "R1C65A"
+      ],
+      "ineligibilityReason": "If single Phase or threePhase is selected then DC Power Cables not supported 2",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Power Supplies",
+      "subCategory": "Configuration Rules",
+      "constraint": "Breaker Panel can be selected only if R7C78A is selected",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Breaker Panel can be selected only if R7C78A is selected",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "G2H95A",
+        "Q9N54A"
+      ],
+      "ineligibilityReason": "Breaker Panel can be selected only if R7C78A is selected",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Drive Enclosure",
+      "subCategory": "Configuration Rules",
+      "constraint": "TAA isSelected",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] TAA isSelected",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S0S46A"
+      ],
+      "ineligibilityReason": "TAA isSelected",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Drive Enclosure",
+      "subCategory": "Configuration Rules",
+      "constraint": "When S1J10A/S0S46A is selected, do not allow R8M59A to be selected",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] When S1J10A/S0S46A is selected, do not allow R8M59A to be selected",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "R8M59A"
+      ],
+      "ineligibilityReason": "When S1J10A/S0S46A is selected, do not allow R8M59A to be selected",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Drive Enclosure",
+      "subCategory": "Configuration Rules",
+      "constraint": "Max quantity of product limited by space available.",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Max quantity of product limited by space available.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S2T35A",
+        "JL271A",
+        "Q2F19A",
+        "R0Z25A",
+        "R0Z27A",
+        "R8M61A"
+      ],
+      "ineligibilityReason": "Max quantity of product limited by space available.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Drive Enclosure",
+      "subCategory": "Configuration Rules",
+      "constraint": "When R7D02A or R7D03A or S0S42A or S0R20A or R7D02B or R7D03B or S0S42B or S0R20B is selected, do not allow R8M59A or R9F77A to be selected (for new configurations and upgrades)",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] When R7D02A or R7D03A or S0S42A or S0R20A or R7D02B or R7D03B or S0S42B or S0R20B is selected, do not allow R8M59A or R9F77A to be selected (for new configurations and upgrades)",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "R9F77A"
+      ],
+      "ineligibilityReason": "When R7D02A or R7D03A or S0S42A or S0R20A or R7D02B or R7D03B or S0S42B or S0R20B is selected, do not allow R8M59A or R9F77A to be selected (for new configurations and upgrades)",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Capacity",
+      "subCategory": "Configuration Rules",
+      "constraint": "Mixing is not allowed for initial configuration.",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Mixing is not allowed for initial configuration.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S1Z68A",
+        "R9H66A",
+        "R9H69A",
+        "R9H68A"
+      ],
+      "ineligibilityReason": "Mixing is not allowed for initial configuration.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Back-End Switches",
+      "subCategory": "Configuration Rules",
+      "constraint": "If “dcPowerFlag” is selected then S1S69A not supported",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] If “dcPowerFlag” is selected then S1S69A not supported",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S1S69A"
+      ],
+      "ineligibilityReason": "If “dcPowerFlag” is selected then S1S69A not supported",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Back-End Switches",
+      "subCategory": "Configuration Rules",
+      "constraint": "S0A95A cannot be ordered with S3V78A/S4Q37A",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] S0A95A cannot be ordered with S3V78A/S4Q37A",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S4Q37A",
+        "S3V78A"
+      ],
+      "ineligibilityReason": "S0A95A cannot be ordered with S3V78A/S4Q37A",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Software",
+      "subCategory": "Configuration Rules",
+      "constraint": "The S0A99AAE / S0A98AAE applicable for the drives configured as Add-ons/upgrades only",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] The S0A99AAE / S0A98AAE applicable for the drives configured as Add-ons/upgrades only",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S0A98AAE",
+        "S0A99AAE"
+      ],
+      "ineligibilityReason": "The S0A99AAE / S0A98AAE applicable for the drives configured as Add-ons/upgrades only",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Software",
+      "subCategory": "Configuration Rules",
+      "constraint": "Max quantity of product limited by space available.",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Max quantity of product limited by space available.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S0A99A"
+      ],
+      "ineligibilityReason": "Max quantity of product limited by space available.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Software",
+      "subCategory": "Configuration Rules",
+      "constraint": "This SKU can be selected only when HPE GreenLake = Yes",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] This SKU can be selected only when HPE GreenLake = Yes",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S1S85AAE"
+      ],
+      "ineligibilityReason": "This SKU can be selected only when HPE GreenLake = Yes",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "parentCategory": "Chassis",
+      "subCategory": "Variants",
+      "constraint": "min 1, max 1 — Active OCA CTO chassis",
+      "maxQty": 1,
+      "rule": "Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Accessories & Infrastructure Options",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Software LTU: max 1"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controllers Options",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Software LTU: max 1"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controllers Options",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "B series nodes only supported for upgrades"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controllers Options",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Max quantity of product limited by space available."
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controllers Options",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Hide B10140"
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "subCategory": "Flex Slot Power Supplies",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Software LTU: max 1"
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "subCategory": "Flex Slot Power Supplies",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "No Mix PowerSupply"
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "No Mix PowerSupply"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Power Cords & Jumper Cables",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Software LTU: max 1"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "If single Phase or threePhase is selected then DC Power Cables not supported 2"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software LTU",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Breaker Panel can be selected only if R7C78A is selected"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software LTU",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Software LTU: max 1"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Software LTU: max 1"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "When S1J10A/S0S46A is selected, do not allow R8M59A to be selected"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Max quantity of product limited by space available."
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Software LTU: max 1"
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SFF Drive Cages & Enablement",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Mixing is not allowed for initial configuration."
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Chassis Infrastructure & Rail Kits",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Chassis Infrastructure & Rail Kits: max 1"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software LTU",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "If “dcPowerFlag” is selected then S1S69A not supported"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Cables & Enablement Kits Options",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Software LTU: max 1"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Cables & Enablement Kits Options",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "S0A95A cannot be ordered with S3V78A/S4Q37A"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Support Services Options",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "S0A95A cannot be ordered with S3V78A/S4Q37A"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "PCIe Networking Adapters",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Software LTU: max 1"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software LTU",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Max quantity of product limited by space available."
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software LTU",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "This SKU can be selected only when HPE GreenLake = Yes"
+    },
+    {
+      "ruleId": "NINJA_B10K_SWITCHLESS_B10100_TOPOLOGY",
+      "parentCategory": "Chassis",
+      "subCategory": "Switchless Topology (B10100)",
+      "type": "NINJA_TOPOLOGY_SWITCHLESS",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "Switchless B10100 topology (direct-attached, no backend NVMe-oF switches): uberSKUs S0B84A (HPE Alletra STG MP B10100 Base Config), S0U38A (HPE Alletra STG MP B10100 Up Config), S3V89A (HPE GL Prv Cld w/AL STG MP Base Config), S3V90A (HPE GL Prv Cld w/AL STG MP Upg Config); controller chassis R7C75A hosts up to 24 internal NVMe SSDs; expansion uses S1J10A JBOF shelves (2x S1R28A). Nodes: B10120 [S0S38A, 8c, JBOF 0-1, maxDrives=24, maxTotal=24]; B10130 [S0R21A, 16c, JBOF 0-3, maxDrives=24, maxTotal=72]; B10140 [S4V66A, 32c, JBOF 0-3, maxDrives=24, maxTotal=72].",
+      "ruleText": "Switchless B10100 topology (direct-attached, no backend NVMe-oF switches): uberSKUs S0B84A (HPE Alletra STG MP B10100 Base Config), S0U38A (HPE Alletra STG MP B10100 Up Config), S3V89A (HPE GL Prv Cld w/AL STG MP Base Config), S3V90A (HPE GL Prv Cld w/AL STG MP Upg Config); controller chassis R7C75A hosts up to 24 internal NVMe SSDs; expansion uses S1J10A JBOF shelves (2x S1R28A). Nodes: B10120 [S0S38A, 8c, JBOF 0-1, maxDrives=24, maxTotal=24]; B10130 [S0R21A, 16c, JBOF 0-3, maxDrives=24, maxTotal=72]; B10140 [S4V66A, 32c, JBOF 0-3, maxDrives=24, maxTotal=72]."
+    },
+    {
+      "ruleId": "NINJA_B10K_SWITCHED_B10200_TOPOLOGY",
+      "parentCategory": "Chassis",
+      "subCategory": "Switched Topology (B10200)",
+      "type": "NINJA_TOPOLOGY_SWITCHED",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "Switched / Clustered B10200 topology (requires backend NVMe-oF switches): uberSKUs S1R06A (HPE Alletra STG MP B10200 Base Config), S1R07A (HPE Alletra STG MP B10200 Up Config), S3V91A (HPE GL Prv Cld w/AL MP Base Clstr Config), S3V92A (HPE GL Prv Cld w/AL MP Upg Clstr Config); controller chassis R7C75A hosts 0 internal drives (all drives reside in mandatory external JBOFs, 1-8 JBOFs, up to 384 drives). Nodes: B10230 [R7D02A, 16c, JBOF 1-8, maxInternalDrives=0, maxTotal=384]; B10240 [R7D03A, 32c, JBOF 1-8, maxInternalDrives=0, maxTotal=384].",
+      "ruleText": "Switched / Clustered B10200 topology (requires backend NVMe-oF switches): uberSKUs S1R06A (HPE Alletra STG MP B10200 Base Config), S1R07A (HPE Alletra STG MP B10200 Up Config), S3V91A (HPE GL Prv Cld w/AL MP Base Clstr Config), S3V92A (HPE GL Prv Cld w/AL MP Upg Clstr Config); controller chassis R7C75A hosts 0 internal drives (all drives reside in mandatory external JBOFs, 1-8 JBOFs, up to 384 drives). Nodes: B10230 [R7D02A, 16c, JBOF 1-8, maxInternalDrives=0, maxTotal=384]; B10240 [R7D03A, 32c, JBOF 1-8, maxInternalDrives=0, maxTotal=384]."
+    },
+    {
+      "ruleId": "NINJA_B10K_TOPOLOGY_MUTUAL_EXCLUSION",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Topology Mutual Exclusion",
+      "type": "INTRA_CATEGORY_EXCLUSION",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "Switchless B10100 controller nodes (S0S38A, S0R21A, S4V66A) and Switched B10200 controller nodes (R7D02A, R7D03A) are mutually exclusive and MUST NOT be mixed in one array. Select Switchless B10100 vs. Switched B10200 based on customer drive scale (>72 drives or multi-node cluster mandates Switched B10200).",
+      "ruleText": "Switchless B10100 controller nodes (S0S38A, S0R21A, S4V66A) and Switched B10200 controller nodes (R7D02A, R7D03A) are mutually exclusive and MUST NOT be mixed in one array. Select Switchless B10100 vs. Switched B10200 based on customer drive scale (>72 drives or multi-node cluster mandates Switched B10200)."
+    },
+    {
+      "ruleId": "NINJA_B10K_BASE_CONFIGS",
+      "parentCategory": "Chassis",
+      "subCategory": "Base Configs",
+      "type": "NINJA_SIZING_BASELINE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "Ninja Online B10000 global base configuration SKUs: S0B84A (HPE Alletra STG MP B10100 Base Config); S1R06A (HPE Alletra STG MP B10200 Base Config); S3V89A (HPE GL Prv Cld w/AL STG MP Base Config); S3V91A (HPE GL Prv Cld w/AL MP Base Clstr Config).",
+      "ruleText": "Ninja Online B10000 global base configuration SKUs: S0B84A (HPE Alletra STG MP B10100 Base Config); S1R06A (HPE Alletra STG MP B10200 Base Config); S3V89A (HPE GL Prv Cld w/AL STG MP Base Config); S3V91A (HPE GL Prv Cld w/AL MP Base Clstr Config)."
+    },
+    {
+      "ruleId": "NINJA_B10K_NODE_S0S38A",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Controller Nodes",
+      "affectedSku": "S0S38A",
+      "type": "NINJA_NODE_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 Node S0S38A (Model B10120, Controller): 8 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=24, JBOF range=0-1, power max=0W.",
+      "ruleText": "B10000 Node S0S38A (Model B10120, Controller): 8 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=24, JBOF range=0-1, power max=0W."
+    },
+    {
+      "ruleId": "NINJA_B10K_NODE_S0S40A",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Controller Nodes",
+      "affectedSku": "S0S40A",
+      "type": "NINJA_NODE_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 Node S0S40A (Model B10120, Controller): 8 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=24, JBOF range=0-1, power max=0W.",
+      "ruleText": "B10000 Node S0S40A (Model B10120, Controller): 8 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=24, JBOF range=0-1, power max=0W."
+    },
+    {
+      "ruleId": "NINJA_B10K_NODE_S0R21A",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Controller Nodes",
+      "affectedSku": "S0R21A",
+      "type": "NINJA_NODE_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 Node S0R21A (Model B10130, Controller): 16 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W.",
+      "ruleText": "B10000 Node S0R21A (Model B10130, Controller): 16 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W."
+    },
+    {
+      "ruleId": "NINJA_B10K_NODE_S0S41A",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Controller Nodes",
+      "affectedSku": "S0S41A",
+      "type": "NINJA_NODE_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 Node S0S41A (Model B10130, Controller): 16 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W.",
+      "ruleText": "B10000 Node S0S41A (Model B10130, Controller): 16 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W."
+    },
+    {
+      "ruleId": "NINJA_B10K_NODE_S4V66A",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Controller Nodes",
+      "affectedSku": "S4V66A",
+      "type": "NINJA_NODE_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 Node S4V66A (Model B10140, Controller): 32 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W.",
+      "ruleText": "B10000 Node S4V66A (Model B10140, Controller): 32 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W."
+    },
+    {
+      "ruleId": "NINJA_B10K_NODE_S4V67A",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Controller Nodes",
+      "affectedSku": "S4V67A",
+      "type": "NINJA_NODE_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 Node S4V67A (Model B10140, Controller): 32 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W.",
+      "ruleText": "B10000 Node S4V67A (Model B10140, Controller): 32 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W."
+    },
+    {
+      "ruleId": "NINJA_B10K_NODE_S1R28A",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Controller Nodes",
+      "affectedSku": "S1R28A",
+      "type": "NINJA_NODE_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 Node S1R28A (Model 10010, JBOF): 0 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=0, JBOF range=0-0, power max=0W.",
+      "ruleText": "B10000 Node S1R28A (Model 10010, JBOF): 0 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=0, JBOF range=0-0, power max=0W."
+    },
+    {
+      "ruleId": "NINJA_B10K_NODE_S1R29A",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Controller Nodes",
+      "affectedSku": "S1R29A",
+      "type": "NINJA_NODE_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 Node S1R29A (Model 10010, JBOF): 0 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=0, JBOF range=0-0, power max=0W.",
+      "ruleText": "B10000 Node S1R29A (Model 10010, JBOF): 0 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=0, JBOF range=0-0, power max=0W."
+    },
+    {
+      "ruleId": "NINJA_B10K_NODE_R7D02A",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Controller Nodes",
+      "affectedSku": "R7D02A",
+      "type": "NINJA_NODE_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 Node R7D02A (Model B10230, Controller): 16 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W.",
+      "ruleText": "B10000 Node R7D02A (Model B10230, Controller): 16 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W."
+    },
+    {
+      "ruleId": "NINJA_B10K_NODE_S0S42A",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Controller Nodes",
+      "affectedSku": "S0S42A",
+      "type": "NINJA_NODE_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 Node S0S42A (Model B10230, Controller): 16 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W.",
+      "ruleText": "B10000 Node S0S42A (Model B10230, Controller): 16 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W."
+    },
+    {
+      "ruleId": "NINJA_B10K_NODE_R7D03A",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Controller Nodes",
+      "affectedSku": "R7D03A",
+      "type": "NINJA_NODE_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 Node R7D03A (Model B10240, Controller): 32 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W.",
+      "ruleText": "B10000 Node R7D03A (Model B10240, Controller): 32 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W."
+    },
+    {
+      "ruleId": "NINJA_B10K_NODE_S0R20A",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Controller Nodes",
+      "affectedSku": "S0R20A",
+      "type": "NINJA_NODE_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 Node S0R20A (Model B10240, Controller): 32 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W.",
+      "ruleText": "B10000 Node S0R20A (Model B10240, Controller): 32 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W."
+    },
+    {
+      "ruleId": "NINJA_B10K_PSU_R7C76A",
+      "parentCategory": "Power Supplies",
+      "subCategory": "Power Supplies",
+      "affectedSku": "R7C76A",
+      "type": "NINJA_POWER_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 PSU R7C76A: 1600W AC (230 VAC), ErP Lot9=false.",
+      "ruleText": "B10000 PSU R7C76A: 1600W AC (230 VAC), ErP Lot9=false."
+    },
+    {
+      "ruleId": "NINJA_B10K_PSU_R9Z97A",
+      "parentCategory": "Power Supplies",
+      "subCategory": "Power Supplies",
+      "affectedSku": "R9Z97A",
+      "type": "NINJA_POWER_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 PSU R9Z97A: 2200W AC (230 VAC), ErP Lot9=true.",
+      "ruleText": "B10000 PSU R9Z97A: 2200W AC (230 VAC), ErP Lot9=true."
+    },
+    {
+      "ruleId": "NINJA_B10K_PSU_R7C77A",
+      "parentCategory": "Power Supplies",
+      "subCategory": "Power Supplies",
+      "affectedSku": "R7C77A",
+      "type": "NINJA_POWER_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 PSU R7C77A: 1800W AC (115 VAC), ErP Lot9=false.",
+      "ruleText": "B10000 PSU R7C77A: 1800W AC (115 VAC), ErP Lot9=false."
+    },
+    {
+      "ruleId": "NINJA_B10K_PSU_R7C78A",
+      "parentCategory": "Power Supplies",
+      "subCategory": "Power Supplies",
+      "affectedSku": "R7C78A",
+      "type": "NINJA_POWER_ENVELOPE",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "B10000 PSU R7C78A: 1600W DC (48 VAC), ErP Lot9=false.",
+      "ruleText": "B10000 PSU R7C78A: 1600W DC (48 VAC), ErP Lot9=false."
+    },
+    {
+      "ruleId": "NINJA_B10K_OCA_HANDOFF_WORKFLOW",
+      "parentCategory": "Chassis",
+      "subCategory": "Sizing & Import Workflow",
+      "type": "NINJA_OCA_HANDOFF_WORKFLOW",
+      "source": "HPE_NINJA_ONLINE_SIZER",
+      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
+      "rule": "Alletra Storage MP B10000 workflow: size controller nodes, switch topology (B10100/B10200), JBOFs, NVMe drives, capacity DRR, performance, and power in HPE Ninja Online, export OCA JSON, import into HPE OCA, then adapt transceivers (SFPs/QSFPs), cabling, support services, and run CLIC validation in OCA.",
+      "ruleText": "Alletra Storage MP B10000 workflow: size controller nodes, switch topology (B10100/B10200), JBOFs, NVMe drives, capacity DRR, performance, and power in HPE Ninja Online, export OCA JSON, import into HPE OCA, then adapt transceivers (SFPs/QSFPs), cabling, support services, and run CLIC validation in OCA."
+    }
+  ]
+}

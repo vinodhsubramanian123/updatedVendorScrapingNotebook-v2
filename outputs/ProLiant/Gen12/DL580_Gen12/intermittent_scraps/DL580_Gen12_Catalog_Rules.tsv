@@ -1,52 +1,209 @@
 Main Category	Sub-Category	Constraint	Rule Type	Rule Text
+Energy Star	Energy Star	max 1	Quantity Constraint	Quantity: max 1
 Processor	Processor	max 4	Quantity Constraint	Quantity: max 4
+Processor	Heatsink Kit (required)	max 5	Quantity Constraint	Quantity: max 5
+Processor	Heatsink Kit	min 1, Required	Quantity Constraint	Quantity: min 1, Required
 Memory	Memory	max 32	Quantity Constraint	Quantity: max 32
+Storage Devices	Drive Cage	max 5	Quantity Constraint	Quantity: max 5
+Storage Devices	SAS Controller	max 4	Quantity Constraint	Quantity: max 4
+Storage Devices	Smart Storage Battery	max 3	Quantity Constraint	Quantity: max 3
+Storage Devices	Internal Storage Controller Cables	max 1	Quantity Constraint	Quantity: max 1
+Storage Devices	RAID Settings	max 1	Quantity Constraint	Quantity: max 1
+Storage Devices	Optical Drive	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	iLO Common Password	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	Trusted Supply Chain	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	Identifier/Tracking SKUs	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	Riser Cards	max 6	Quantity Constraint	Quantity: max 6
+Factory Configuration Settings	Accessories	max 2	Quantity Constraint	Quantity: max 2
+Networking	Ethernet PCIe	max 4	Quantity Constraint	Quantity: max 4
+Networking	InfiniBand PCIe	max 4	Quantity Constraint	Quantity: max 4
+Networking	Ethernet Cables and QSFP/SFP	max 14	Quantity Constraint	Quantity: max 14
+Networking	Fibre Channel HBA	max 4	Quantity Constraint	Quantity: max 4
+Networking	OCP Ethernet	max 2	Quantity Constraint	Quantity: max 2
+Networking	Upgrades	max 4	Quantity Constraint	Quantity: max 4
+Networking	Transceivers	max 14	Quantity Constraint	Quantity: max 14
+OS Boot Device	OS Boot Device	max 2	Quantity Constraint	Quantity: max 2
+Accessories	Management Hardware	max 1	Quantity Constraint	Quantity: max 1
+Security Options	Security Hardware	max 1	Quantity Constraint	Quantity: max 1
+Manufacturing Services	Manufacturing Services	max 2	Quantity Constraint	Quantity: max 2
+Manufacturing Services	Pensando DSP (SW)	Unlimited	Quantity Constraint	Quantity: Unlimited
+Rack Options	Rack Options	max 2	Quantity Constraint	Quantity: max 2
+Rack Options	Power Supplies	max 4	Quantity Constraint	Quantity: max 4
+Rack Options	Accessories	max 4	Quantity Constraint	Quantity: max 4
+Rack Options	Power Cords	max 4	Quantity Constraint	Quantity: max 4
+Rack Options	Power Cooling Options	max 6	Quantity Constraint	Quantity: max 6
+AI-at-Scale	AI-at-Scale	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	HPC Software Products	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	High Availability Computing - Cluster Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	Partner Software - Interconnect Management Array	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	NVIDIA GPU SW	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	Partner Software - Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	Compute Ops Management SKUs (required)	max 1	Quantity Constraint	Quantity: max 1
+HPE Compute Ops Management	Compute Ops Management SKUs	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+HPE Compute Ops Management	Compute Ops Management Enablement SKUs	max 1	Quantity Constraint	Quantity: max 1
+HPE Compute Ops Management	OEM Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	Proliant Software Media Kits	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	Red Hat (add-ons)	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	SUSE Add-ons	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	iLO	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	OneView Management Software	max 1	Quantity Constraint	Quantity: max 1
+HPE Compute Ops Management	INTEL VROC Products	max 1	Quantity Constraint	Quantity: max 1
+HPE Compute Ops Management	Supported Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	MS Windows Server	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	MS Windows Server - Essentials	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	Red Hat OpenShift Platform Container	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	Resale Option Kit	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	SUSE containers	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	SUSE Linux Enterprise Server	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	Microsoft Windows CAL Packs	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	Red Hat Enterprise Linux Server-Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	VMware vCloud Products	Unlimited	Quantity Constraint	Quantity: Unlimited
 Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
 Accessories & Infrastructure	Energy Star Configuration Presets	max 1	Configuration Rule	Selection constraint for Energy Star Configuration Presets: max 1
 Processor	Processor	max 4	Configuration Rule	Selection constraint for Processor: max 4
-Cables & Enablement Kits	Standard & Performance Heat Sinks	max 1	Configuration Rule	Selection constraint for Standard & Performance Heat Sinks: max 1
-Cables & Enablement Kits	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	4P Mezz Enable kit cannot be selected with either UPI 2P FIO Cbl kit or 2P Air Baffle kit.
+Cooling / Thermal	Heatsink Kit	required	Configuration Rule	Selection constraint for Heatsink Kit: required
+Cables & Enablement Kits	Server Management & Operating System Licenses	max 1	Configuration Rule	Selection constraint for Compute Ops Management Enablement SKUs: max 1
+Cables & Enablement Kits	Server Management & Operating System Licenses	max 1	Configuration Rule	P80445-B21 conditional visibility: portal selector activation required (4P Mezz Enable kit cannot be selected with either UPI 2P FIO Cbl kit or 2P Air Baffle kit.); PORTAL_CONDITIONAL
 Memory	Memory	max 32	Configuration Rule	Selection constraint for Memory: max 32
-Memory	Memory	max 32	Configuration Rule	These products are hidden due to Supply constraints
+Memory	Memory	max 32	Configuration Rule	BTO Memories are not allowed in CTO Base Model.
+Memory	Memory	max 32	Configuration Rule	P69728-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P69729-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P69730-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P73447-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
 Memory	Memory	max 32	Configuration Rule	Mixing of memory DIMMs of different capacities is not allowed.
+Memory	Memory	max 32	Configuration Rule	P69729-F21 conditional visibility: portal selector activation required (Mixing of memory DIMMs of different capacities is not allowed.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P69730-F21 conditional visibility: portal selector activation required (Mixing of memory DIMMs of different capacities is not allowed.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P73447-F21 conditional visibility: portal selector activation required (Mixing of memory DIMMs of different capacities is not allowed.); PORTAL_CONDITIONAL
 Drive Enclosures / Drives	Drive Cage	max 5	Configuration Rule	Selection constraint for Drive Cage: max 5
 Storage Controllers	SAS Controller	max 4	Configuration Rule	Selection constraint for SAS Controller: max 4
 Storage Controllers	Internal Storage Controller Cables	max 1	Configuration Rule	Selection constraint for Internal Storage Controller Cables: max 1
-Cables & Enablement Kits	Tri-Mode MegaRAID Storage Controllers	max 1	Configuration Rule	Selection constraint for Tri-Mode MegaRAID Storage Controllers: max 1
-Cables & Enablement Kits	Tri-Mode MegaRAID Storage Controllers	max 3	Configuration Rule	12W Smart Hybrid Capacitor OR 16W Smart Hybrid Capacitor OR 96W Smart Storage Battery can be selected only if  MR416i/ MR408i controller is selected.
-Cables & Enablement Kits	Tri-Mode MegaRAID Storage Controllers	max 3	Configuration Rule	There are no "HPE Recommended products" available. Please use the toggle to show potential alternatives.
-Storage Controllers	Energy Star	max 1	Configuration Rule	Selection constraint for Energy Star: max 1
+Storage Controllers	Internal Storage Controller Cables	max 1	Configuration Rule	P58335-B21 conditional visibility: portal selector activation required (MR408i-p / MR408i-o controller can be selected with Qty 1 8SFF x1 drive cage only. No other drive cage combinations is allowed with this controller                            Allowed Drive Cage combinations with MR408i-p / MR408i-o controllers -   - Qty 1 8SFF x1                           - Qty 1 8SFF x1 + Universal Media Bay Kit                           - Qty 1 8SFF x1 + Universal Media Bay Kit + 2SFF Drive cage.); PORTAL_CONDITIONAL
+Storage Controllers	Internal Storage Controller Cables	max 1	Configuration Rule	P74775-B21 conditional visibility: portal selector activation required (MR408i-p / MR408i-o controller can be selected with Qty 1 8SFF x1 drive cage only. No other drive cage combinations is allowed with this controller                            Allowed Drive Cage combinations with MR408i-p / MR408i-o controllers -   - Qty 1 8SFF x1                           - Qty 1 8SFF x1 + Universal Media Bay Kit                           - Qty 1 8SFF x1 + Universal Media Bay Kit + 2SFF Drive cage.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Tri-Mode MegaRAID Storage Controllers	max 3	Configuration Rule	Selection constraint for Tri-Mode MegaRAID Storage Controllers: max 3
+Storage Controllers	Smart Storage Batteries	max 3	Configuration Rule	Selection constraint for Smart Storage Batteries: max 3
+Storage Controllers	Smart Storage Batteries	max 3	Configuration Rule	P02381-B21 conditional visibility: portal selector activation required (12W Smart Hybrid Capacitor OR 16W Smart Hybrid Capacitor OR 96W Smart Storage Battery can be selected only if  MR416i/ MR408i controller is selected.); PORTAL_CONDITIONAL
+Storage Controllers	Smart Storage Batteries	max 3	Configuration Rule	P01367-B21 conditional visibility: portal selector activation required (12W Smart Hybrid Capacitor OR 16W Smart Hybrid Capacitor OR 96W Smart Storage Battery can be selected only if  MR416i/ MR408i controller is selected.); PORTAL_CONDITIONAL
+Storage Controllers	RAID Settings	max 1	Configuration Rule	Selection constraint for RAID Settings: max 1
 Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	Selection constraint for Optical Drive: max 1
 Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	701498-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
 Accessories & Infrastructure	Drive Blank & FIO Enablement Kits	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
-Software & Licenses	iLO Common Password	max 1	Configuration Rule	Selection constraint for iLO Common Password: max 1
+Accessories & Infrastructure	Drive Blank & FIO Enablement Kits	max 1	Configuration Rule	666987-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Software & Licenses	Server Management & Operating System Licenses	max 1	Configuration Rule	Selection constraint for iLO Common Password: max 1
 Accessories & Infrastructure	Trusted Supply Chain	max 1	Configuration Rule	Selection constraint for Trusted Supply Chain: max 1
-Software & Licenses	iLO	no max	Configuration Rule	Selection constraint for iLO: no max
-PCIe Risers	PCIe Riser Kits	max 1	Configuration Rule	Selection constraint for PCIe Riser Kits: max 1
-Cables & Enablement Kits	PCIe Riser Kits	max 1	Configuration Rule	Selection constraint for PCIe Riser Kits: max 1
-Networking	Ethernet Cables and QSFP/SFP	max 14	Configuration Rule	Selection constraint for Ethernet Cables and QSFP/SFP: max 14
-Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
-Networking	Fibre Channel Host Bus Adapters	max 1	Configuration Rule	Selection constraint for Fibre Channel Host Bus Adapters: max 1
-Networking	Fibre Channel HBA	max 4	Configuration Rule	These products are hidden due to Supply constraints
-Cables & Enablement Kits	OCP3 Networking Adapters	max 1	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 1
-Networking	Ethernet Cables and QSFP/SFP	max 14	Configuration Rule	These products are hidden due to Supply constraints
+Software & Licenses	Server Management & Operating System Licenses	max 1	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: max 1
+PCIe Risers	Riser Cards	max 6	Configuration Rule	Selection constraint for Riser Cards: max 6
+Cables & Enablement Kits	PCIe Riser Kits	max 2	Configuration Rule	Selection constraint for PCIe Riser Kits: max 2
+Networking	Ethernet PCIe	max 4	Configuration Rule	Selection constraint for Ethernet PCIe: max 4
+Networking	InfiniBand PCIe	max 4	Configuration Rule	Selection constraint for InfiniBand PCIe: max 4
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	487655-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Networking	Fibre Channel HBA	max 4	Configuration Rule	Selection constraint for Fibre Channel HBA: max 4
+Networking	OCP Ethernet	max 2	Configuration Rule	Selection constraint for OCP Ethernet: max 2
+Cables & Enablement Kits	OCP3 Networking Adapters	max 4	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 4
+Networking	Transceivers	max 14	Configuration Rule	Selection constraint for Transceivers: max 14
 Cables & Enablement Kits	Solid State Drives (NVMe/SAS/SATA)	max 2	Configuration Rule	Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 2
-Accessories & Infrastructure	Energy Star	max 1	Configuration Rule	Selection constraint for Energy Star: max 1
+Accessories & Infrastructure	Management Hardware	max 1	Configuration Rule	Selection constraint for Management Hardware: max 1
 Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	max 1	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: max 1
-Cables & Enablement Kits	Power Cords	max 4	Configuration Rule	Power cord cannot be selected if HPE Remove Standard Power Cords(469774-409) is in the configuration.
-Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	required	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: required
-Power Supplies	Flex Slot Power Supplies	max 1	Configuration Rule	Selection constraint for Flex Slot Power Supplies: max 1
+Accessories & Infrastructure	Accessories & Infrastructure Options	max 2	Configuration Rule	Selection constraint for Manufacturing Services: max 2
+Cables & Enablement Kits	Power Cords	max 4	Configuration Rule	Selection constraint for Power Cords: max 4
+Cables & Enablement Kits	Power Cords	max 4	Configuration Rule	469774-409 conditional visibility: portal selector activation required (Power cord cannot be selected if HPE Remove Standard Power Cords(469774-409) is in the configuration.); PORTAL_CONDITIONAL
+Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	max 2	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: max 2
+Power Supplies	Power Supplies	max 4	Configuration Rule	Selection constraint for Power Supplies: max 4
 Power Supplies	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	Mixing of Power Supplies is not allowed.
-Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	Selection constraint for -48VDC Power Supplies & Cable Kits: max 1
-Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	Selection constraint for Power Cords & Jumper Cables: max 1
+Power Supplies	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P67248-B21 conditional visibility: portal selector activation required (Mixing of Power Supplies is not allowed.); PORTAL_CONDITIONAL
+Power Supplies	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P73210-B21 conditional visibility: portal selector activation required (Mixing of Power Supplies is not allowed.); PORTAL_CONDITIONAL
+Power Supplies	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P67244-B21 conditional visibility: portal selector activation required (Mixing of Power Supplies is not allowed.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 4	Configuration Rule	Selection constraint for -48VDC Power Supplies & Cable Kits: max 4
 Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	Supports C19/ C19-C20 Power Cords only.
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF556A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF568A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P73874-B21 conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF557A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF558A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF559A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF560A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF561A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF562A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF564A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF565A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF566A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF567A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF569A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF570A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF572A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF573A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF591A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78130-B21 conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78131-B21 conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78144-B21 conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78145-B21 conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78147-B21 conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78156-B21 conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78940-B21 conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78941-B21 conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	R1C65A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	Mixing of Power cords is not allowed
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	P78148-B21 conditional visibility: portal selector activation required (Mixing of Power cords is not allowed); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	P78155-B21 conditional visibility: portal selector activation required (Mixing of Power cords is not allowed); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	P78164-B21 conditional visibility: portal selector activation required (Mixing of Power cords is not allowed); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	P78157-B21 conditional visibility: portal selector activation required (Mixing of Power cords is not allowed); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
-Networking	OCP3 Networking Adapters	max 1	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 1
-Software & Licenses	SUSE Linux Enterprise Server	no max	Configuration Rule	Selection constraint for SUSE Linux Enterprise Server: no max
-Software & Licenses	Red Hat Enterprise Linux Server-Virtualization	no max	Configuration Rule	Selection constraint for Red Hat Enterprise Linux Server-Virtualization: no max
-Accessories & Infrastructure	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	Selection constraint for Compute Ops Management Enablement SKUs: max 1
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	A0K02A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	A0N33A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Cooling / Thermal	Power Cooling Options	max 6	Configuration Rule	Selection constraint for Power Cooling Options: max 6
+Software & Licenses	HPC Software Products	no max	Configuration Rule	Selection constraint for HPC Software Products: no max
 Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	Selection constraint for High Availability Computing - Cluster Software: no max
+Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for NVIDIA GPU SW: no max
+Software & Licenses	Partner Software - Operating System	no max	Configuration Rule	Selection constraint for Partner Software - Operating System: no max
+Software & Licenses	Compute Ops Management SKUs	required	Configuration Rule	Selection constraint for Compute Ops Management SKUs: required
+Software & Licenses	OEM Software	no max	Configuration Rule	Selection constraint for OEM Software: no max
+Software & Licenses	Proliant Software Media Kits	no max	Configuration Rule	Selection constraint for Proliant Software Media Kits: no max
+Software & Licenses	Red Hat (add-ons)	no max	Configuration Rule	Selection constraint for Red Hat (add-ons): no max
+Software & Licenses	SUSE Add-ons	no max	Configuration Rule	Selection constraint for SUSE Add-ons: no max
+Software & Licenses	iLO	no max	Configuration Rule	Selection constraint for iLO: no max
+Software & Licenses	OneView Management Software	max 1	Configuration Rule	Selection constraint for OneView Management Software: max 1
+Storage Controllers	INTEL VROC Products	max 1	Configuration Rule	Selection constraint for INTEL VROC Products: max 1
+Software & Licenses	Server Management & Operating System Licenses	max 1	Configuration Rule	Selection constraint for INTEL VROC Products: max 1
+Software & Licenses	Supported Operating System	no max	Configuration Rule	Selection constraint for Supported Operating System: no max
 Software & Licenses	MS Windows Server	no max	Configuration Rule	Selection constraint for MS Windows Server: no max
-Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for MS Windows Server: no max
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	Selection constraint for MS Windows Server - Essentials: no max
+Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for MS Windows Server - Essentials: no max
+Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: no max
+Software & Licenses	SUSE Linux Enterprise Server	no max	Configuration Rule	Selection constraint for SUSE Linux Enterprise Server: no max
 Software & Licenses	Microsoft Windows CAL Packs	no max	Configuration Rule	Selection constraint for Microsoft Windows CAL Packs: no max
+Software & Licenses	Red Hat Enterprise Linux Server-Virtualization	no max	Configuration Rule	Selection constraint for Red Hat Enterprise Linux Server-Virtualization: no max
+Support Services	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: no max
+Software & Licenses	Partner Software - Interconnect Management Array	no max	Configuration Rule	Selection constraint for Partner Software - Interconnect Management Array: no max
+Software & Licenses	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	Selection constraint for Compute Ops Management Enablement SKUs: max 1
+Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	Selection constraint for Red Hat OpenShift Platform Container: no max
+Software & Licenses	SUSE containers	no max	Configuration Rule	Selection constraint for SUSE containers: no max
+Support Services	Energy Star	max 1	Configuration Rule	Selection constraint for Energy Star: max 1
+Support Services	Server Management & Operating System Licenses	max 1	Configuration Rule	Private Product is not valid for current customer account
+Support Services	Server Management & Operating System Licenses	max 1	Configuration Rule	S4F94AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
+Support Services	Server Management & Operating System Licenses	max 1	Configuration Rule	S4G00AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
+Support Services	Server Management & Operating System Licenses	max 1	Configuration Rule	S4R76AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
+Support Services	Management Hardware	max 1	Configuration Rule	Selection constraint for Management Hardware: max 1
+Support Services	Support & Deployment Services	max 8	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 8
+Processor	Configuration Rules	4P Mezz Enable kit cannot be selected with either UPI 2P FIO Cbl kit or 2P Air Baffle kit.	Learned Feedback Rule	[MUTUAL_EXCLUSION] 4P Mezz Enable kit cannot be selected with either UPI 2P FIO Cbl kit or 2P Air Baffle kit.
+Memory	Configuration Rules	BTO Memories are not allowed in CTO Base Model.	Learned Feedback Rule	[BTO_DISALLOWED] BTO Memories are not allowed in CTO Base Model.
+Memory	Configuration Rules	Mixing of memory DIMMs of different capacities is not allowed.	Learned Feedback Rule	[MEMORY_MIXING] Mixing of memory DIMMs of different capacities is not allowed.
+Storage Devices	Configuration Rules	MR408i-p / MR408i-o controller can be selected with Qty 1 8SFF x1 drive cage only. No other drive cage combinations is allowed with this controller Allowed Drive Cage combinations with MR408i-p / MR408i-o controllers - - Qty 1 8SFF x1 - Qty 1 8SFF x1 + Universal Media Bay Kit - Qty 1 8SFF x1 + Universal Media Bay Kit + 2SFF Drive cage.	Learned Feedback Rule	[MUTUAL_EXCLUSION] MR408i-p / MR408i-o controller can be selected with Qty 1 8SFF x1 drive cage only. No other drive cage combinations is allowed with this controller Allowed Drive Cage combinations with MR408i-p / MR408i-o controllers - - Qty 1 8SFF x1 - Qty 1 8SFF x1 + Universal Media Bay Kit - Qty 1 8SFF x1 + Universal Media Bay Kit + 2SFF Drive cage.
+Storage Devices	Configuration Rules	12W Smart Hybrid Capacitor OR 16W Smart Hybrid Capacitor OR 96W Smart Storage Battery can be selected only if MR416i/ MR408i controller is selected.	Learned Feedback Rule	[MUTUAL_EXCLUSION] 12W Smart Hybrid Capacitor OR 16W Smart Hybrid Capacitor OR 96W Smart Storage Battery can be selected only if MR416i/ MR408i controller is selected.
+Storage Devices	Configuration Rules	BTO products are not allowed in CTO Base Model.	Learned Feedback Rule	[BTO_DISALLOWED] BTO products are not allowed in CTO Base Model.
+Networking	Configuration Rules	BTO products are not allowed in CTO Base Model.	Learned Feedback Rule	[BTO_DISALLOWED] BTO products are not allowed in CTO Base Model.
+Manufacturing Services	Configuration Rules	Power cord cannot be selected if HPE Remove Standard Power Cords(469774-409) is in the configuration.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Power cord cannot be selected if HPE Remove Standard Power Cords(469774-409) is in the configuration.
+Power and Cooling	Configuration Rules	Mixing of Power Supplies is not allowed.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Mixing of Power Supplies is not allowed.
+Power and Cooling	Configuration Rules	Supports C19/ C19-C20 Power Cords only.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Supports C19/ C19-C20 Power Cords only.
+Power and Cooling	Configuration Rules	Mixing of Power cords is not allowed	Learned Feedback Rule	[MUTUAL_EXCLUSION] Mixing of Power cords is not allowed
+Power and Cooling	Configuration Rules	BTO products are not allowed in CTO Base Model.	Learned Feedback Rule	[BTO_DISALLOWED] BTO products are not allowed in CTO Base Model.
+Virtualization	Configuration Rules	Private Product is not valid for current customer account	Learned Feedback Rule	[MUTUAL_EXCLUSION] Private Product is not valid for current customer account
+Storage Devices	SAS Controller		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Fibre Channel HBA, InfiniBand PCIe, SAS Controller, Ethernet PCIe, Power Cooling Options, OCP Ethernet, Transceivers)
+Networking	Ethernet PCIe		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Fibre Channel HBA, InfiniBand PCIe, SAS Controller, Ethernet PCIe, Power Cooling Options, OCP Ethernet, Transceivers)
+Networking	InfiniBand PCIe		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Fibre Channel HBA, InfiniBand PCIe, SAS Controller, Ethernet PCIe, Power Cooling Options, OCP Ethernet, Transceivers)
+Networking	Fibre Channel HBA		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Fibre Channel HBA, InfiniBand PCIe, SAS Controller, Ethernet PCIe, Power Cooling Options, OCP Ethernet, Transceivers)
+Networking	OCP Ethernet		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Fibre Channel HBA, InfiniBand PCIe, SAS Controller, Ethernet PCIe, Power Cooling Options, OCP Ethernet, Transceivers)
+Networking	Transceivers		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Fibre Channel HBA, InfiniBand PCIe, SAS Controller, Ethernet PCIe, Power Cooling Options, OCP Ethernet, Transceivers)
+Rack Options	Power Cooling Options		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Fibre Channel HBA, InfiniBand PCIe, SAS Controller, Ethernet PCIe, Power Cooling Options, OCP Ethernet, Transceivers)
+Factory Configuration Settings	Trusted Supply Chain		Conditional Rule	If this option is selected, one instance of the following E-LTU software option is required per order (not per server): R6X85AAE - HPE Trusted Supply Chain E-LTU
+Manufacturing Services	Manufacturing Services		Conditional Rule	If "Remove Standard Power Cords" is selected by mistake, then please make sure to de-select it. (Manufacturing Services)

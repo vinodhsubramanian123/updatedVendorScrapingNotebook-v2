@@ -1,0 +1,26 @@
+{
+  "product": "DL380a_Gen12",
+  "notebookId": "b233ec88-4682-4164-a801-3ee6ca649dc1",
+  "replacementSourceId": "e267b702-e744-4dee-bdbb-6bf62dc179ed",
+  "verifiedAt": "2026-11-21T13:39:06.166Z",
+  "contentFingerprints": null,
+  "legacyFingerprint": "b9565ae18639b0db5a6831149cd08c19a18aedeedace8a1bd3ed4654e7f79806",
+  "retirementRequested": true,
+  "plannedRetirementIds": [
+    "e6ecd13c-4467-4fed-9c9e-9a67793c5800",
+    "a8bc2b86-9ae4-43ee-8382-cca813676555",
+    "94cc8fcb-683a-4a6a-a1b9-2e019fc9e104",
+    "405d26ba-fa80-4b38-9786-03c085e69cdf",
+    "f982f4c5-98cc-47da-9f77-c52a62fd238c"
+  ],
+  "status": "CONSOLIDATED",
+  "retiredSourceIds": [
+    "e6ecd13c-4467-4fed-9c9e-9a67793c5800",
+    "a8bc2b86-9ae4-43ee-8382-cca813676555",
+    "94cc8fcb-683a-4a6a-a1b9-2e019fc9e104",
+    "405d26ba-fa80-4b38-9786-03c085e69cdf",
+    "f982f4c5-98cc-47da-9f77-c52a62fd238c"
+  ],
+  "remainingSourceIds": [],
+  "retirementErrors": []
+}

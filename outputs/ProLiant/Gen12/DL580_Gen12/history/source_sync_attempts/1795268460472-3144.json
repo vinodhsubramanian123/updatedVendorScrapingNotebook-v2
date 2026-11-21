@@ -1,0 +1,22 @@
+{
+  "product": "DL580_Gen12",
+  "notebookId": "3f5344ce-da79-4f6d-a131-f303d1e43dc3",
+  "replacementSourceId": "673dc828-5688-4d3a-8357-c8e151fbc7ee",
+  "verifiedAt": "2026-11-21T13:41:00.472Z",
+  "contentFingerprints": null,
+  "legacyFingerprint": "eb657e1ab3df3f8d9481a0611c8f309c39aafdd0696da03973dc6e683fda05d2",
+  "retirementRequested": true,
+  "plannedRetirementIds": [
+    "dd0756e1-9d19-4f76-953e-4fef83269433",
+    "b859bf5a-71fd-439d-9c8c-c2651bd6c509",
+    "d18f86c0-402b-4416-a5bc-48f9e7c727ac"
+  ],
+  "status": "CONSOLIDATED",
+  "retiredSourceIds": [
+    "dd0756e1-9d19-4f76-953e-4fef83269433",
+    "b859bf5a-71fd-439d-9c8c-c2651bd6c509",
+    "d18f86c0-402b-4416-a5bc-48f9e7c727ac"
+  ],
+  "remainingSourceIds": [],
+  "retirementErrors": []
+}

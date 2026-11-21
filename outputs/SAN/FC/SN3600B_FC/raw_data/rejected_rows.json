@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "product": "SN3600B_FC",
+  "generatedAt": "2026-11-21T12:56:33.395Z",
+  "rejectedCount": 2,
+  "rows": [
+    {
+      "tableIndex": 22,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Hardware",
+        "USD21,306.00",
+        "Support",
+        "USD2,705.00"
+      ]
+    },
+    {
+      "tableIndex": 25,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    }
+  ]
+}

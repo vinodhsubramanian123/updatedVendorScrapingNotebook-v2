@@ -1,105 +1,150 @@
 {
-  "recordedAt": "2026-11-11T13:31:02.538Z",
+  "recordedAt": "2026-11-21T13:40:40.086Z",
   "results": [
     {
       "deltaId": "LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001",
-      "persisted": true,
+      "persisted": false,
+      "alreadyRecorded": true,
       "certification": {
-        "reachable": true,
-        "ruleId": "LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001",
-        "ruleType": "WORKFLOW_VENDOR_OBSERVATION_ADVISORY",
-        "affectedSku": "S3U30C",
-        "targetSku": "",
-        "scopeTaxonomy": "CHASSIS_SPECIFIC",
-        "simulationResult": null,
-        "verifiedAt": "2026-11-11T13:31:02.341Z"
+        "reachable": true
       }
     },
     {
       "deltaId": "LEARN_DL380_GEN12_OEM_DEFAULT_20260930",
-      "persisted": true,
+      "persisted": false,
+      "alreadyRecorded": true,
       "certification": {
-        "reachable": true,
-        "ruleId": "LEARN_DL380_GEN12_OEM_DEFAULT_20260930",
-        "ruleType": "WORKFLOW_OEM_SELECTION_ADVISORY",
-        "affectedSku": "P77819-B21",
-        "targetSku": "",
-        "scopeTaxonomy": "CHASSIS_SPECIFIC",
-        "simulationResult": null,
-        "verifiedAt": "2026-11-11T13:31:02.376Z"
+        "reachable": true
       }
     },
     {
       "deltaId": "LEARN_DL380_GEN12_RUNTIME_DISCOVERY_20260930",
-      "persisted": true,
+      "persisted": false,
+      "alreadyRecorded": true,
       "certification": {
-        "reachable": true,
-        "ruleId": "LEARN_DL380_GEN12_RUNTIME_DISCOVERY_20260930",
-        "ruleType": "WORKFLOW_RUNTIME_DISCOVERY_ADVISORY",
-        "affectedSku": "",
-        "targetSku": "",
-        "scopeTaxonomy": "CHASSIS_SPECIFIC",
-        "simulationResult": null,
-        "verifiedAt": "2026-11-11T13:31:02.409Z"
+        "reachable": true
       }
     },
     {
       "deltaId": "LEARN_DL380_GEN12_COVERAGE_BOUNDARY_20260930",
-      "persisted": true,
+      "persisted": false,
+      "alreadyRecorded": true,
       "certification": {
-        "reachable": true,
-        "ruleId": "LEARN_DL380_GEN12_COVERAGE_BOUNDARY_20260930",
-        "ruleType": "WORKFLOW_CAPTURE_COVERAGE_ADVISORY",
-        "affectedSku": "",
-        "targetSku": "",
-        "scopeTaxonomy": "CHASSIS_SPECIFIC",
-        "simulationResult": null,
-        "verifiedAt": "2026-11-11T13:31:02.440Z"
+        "reachable": true
       }
     },
     {
       "deltaId": "LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012",
-      "persisted": true,
+      "persisted": false,
+      "alreadyRecorded": true,
       "certification": {
-        "reachable": true,
-        "ruleId": "LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012",
-        "ruleType": "WORKFLOW_CHASSIS_CLASSIFICATION_ADVISORY",
-        "affectedSku": "",
-        "targetSku": "",
-        "scopeTaxonomy": "CHASSIS_SPECIFIC",
-        "simulationResult": null,
-        "verifiedAt": "2026-11-11T13:31:02.475Z"
+        "reachable": true
       }
     },
     {
       "deltaId": "LEARN_UNIVERSAL_ACCESSORY_SCOPE_ISOLATION_20261012",
-      "persisted": true,
+      "persisted": false,
+      "alreadyRecorded": true,
       "certification": {
-        "reachable": true,
-        "ruleId": "LEARN_UNIVERSAL_ACCESSORY_SCOPE_ISOLATION_20261012",
-        "ruleType": "WORKFLOW_SCOPE_ISOLATION_ADVISORY",
-        "affectedSku": "P36877-B21",
-        "targetSku": "",
-        "scopeTaxonomy": "CHASSIS_SPECIFIC",
-        "simulationResult": null,
-        "verifiedAt": "2026-11-11T13:31:02.508Z"
+        "reachable": true
       }
     },
     {
       "deltaId": "LEARN_WEBLOGIC_EXPAND_SECTIONS_COST_CAPTURE_20261012",
+      "persisted": false,
+      "alreadyRecorded": true,
+      "certification": {
+        "reachable": true
+      }
+    },
+    {
+      "deltaId": "LEARN_BLOCKUI_OPACITY_ZERO_FALSE_POSITIVE_20261120",
+      "persisted": false,
+      "alreadyRecorded": true,
+      "certification": {
+        "reachable": true
+      }
+    },
+    {
+      "deltaId": "LEARN_4SOCKET_ENTERPRISE_WORKSPACE_TIMEOUT_20261120",
       "persisted": true,
       "certification": {
         "reachable": true,
-        "ruleId": "LEARN_WEBLOGIC_EXPAND_SECTIONS_COST_CAPTURE_20261012",
-        "ruleType": "WORKFLOW_DOM_EXTRACTION_ADVISORY",
+        "ruleId": "LEARN_4SOCKET_ENTERPRISE_WORKSPACE_TIMEOUT_20261120",
+        "ruleType": "WORKFLOW_TIMING_ADVISORY",
         "affectedSku": "",
         "targetSku": "",
         "scopeTaxonomy": "CHASSIS_SPECIFIC",
         "simulationResult": null,
-        "verifiedAt": "2026-11-11T13:31:02.538Z"
+        "verifiedAt": "2026-11-21T13:40:40.063Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_CS_SUPPLY_CONSTRAINT_BADGE_20261120",
+      "persisted": false,
+      "alreadyRecorded": true,
+      "certification": {
+        "reachable": true
+      }
+    },
+    {
+      "deltaId": "LEARN_NORMAL_CTO_CARD_PRIORITY_ASYNC_XHR_20261121",
+      "persisted": false,
+      "alreadyRecorded": true,
+      "certification": {
+        "reachable": true
+      }
+    },
+    {
+      "deltaId": "LEARN_SMART_CTO_WAKEUP_PROTOCOL_20261121",
+      "persisted": false,
+      "alreadyRecorded": true,
+      "certification": {
+        "reachable": true
+      }
+    },
+    {
+      "deltaId": "LEARN_CS_ANTI_OVERWRITE_AND_OPTION_SUFFIX_20261121",
+      "persisted": false,
+      "alreadyRecorded": true,
+      "certification": {
+        "reachable": true
+      }
+    },
+    {
+      "deltaId": "LEARN_ALLETRA_MP_NINJA_CORE_OCA_ADAPTATION_20261121",
+      "persisted": false,
+      "alreadyRecorded": true,
+      "certification": {
+        "reachable": true
+      }
+    },
+    {
+      "deltaId": "LEARN_COLD_OCA_STEP1_DEFERRED_CLICK_20261121",
+      "persisted": false,
+      "alreadyRecorded": true,
+      "certification": {
+        "reachable": true
+      }
+    },
+    {
+      "deltaId": "LEARN_CANONICAL_SPECS_REPLAY_AND_NLM_FAILOVER_20261121",
+      "persisted": false,
+      "alreadyRecorded": true,
+      "certification": {
+        "reachable": true
+      }
+    },
+    {
+      "deltaId": "LEARN_NLM_UNIFIED_PROFILE_WMI_PORT_MAP_20261121",
+      "persisted": false,
+      "alreadyRecorded": true,
+      "certification": {
+        "reachable": true
       }
     }
   ],
+  "unreachableIds": [],
   "allReachable": true,
   "cloudSyncStatus": "NOT_PERFORMED",
   "hardwareAcceptanceStatus": "NOT_CERTIFIED"

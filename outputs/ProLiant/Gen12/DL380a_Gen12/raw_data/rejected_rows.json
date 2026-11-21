@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0.0",
+  "product": "DL380a_Gen12",
+  "generatedAt": "2026-11-21T11:58:20.041Z",
+  "rejectedCount": 10,
+  "rows": [
+    {
+      "tableIndex": 1,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Ambient Temperature"
+      ]
+    },
+    {
+      "tableIndex": 11,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "M.2"
+      ]
+    },
+    {
+      "tableIndex": 14,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Private Cloud Business Edition"
+      ]
+    },
+    {
+      "tableIndex": 15,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HPE Complete Software"
+      ]
+    },
+    {
+      "tableIndex": 16,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HPE Security Compliance Software"
+      ]
+    },
+    {
+      "tableIndex": 17,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "ProLiant Media Kits and License"
+      ]
+    },
+    {
+      "tableIndex": 18,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "SGI Software"
+      ]
+    },
+    {
+      "tableIndex": 88,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Hardware",
+        "USD159,340.00",
+        "Support",
+        "USD34,658.00"
+      ]
+    },
+    {
+      "tableIndex": 91,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    },
+    {
+      "tableIndex": 109,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    }
+  ]
+}

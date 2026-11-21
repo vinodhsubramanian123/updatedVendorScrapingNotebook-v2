@@ -1,0 +1,72 @@
+{
+  "verifiedAt": "2026-11-21T13:42:25.106Z",
+  "productId": "MSL3040_Tape",
+  "family": "StoreEver",
+  "generation": "Tape",
+  "preflight": {
+    "recordedAt": "2026-11-20T08:20:42.745Z",
+    "pass": true,
+    "product": {
+      "pass": true,
+      "productId": "MSL3040_Tape",
+      "family": "StoreEver",
+      "generation": "Tape",
+      "pillar": "STORAGE",
+      "notebookId": "644020e5-42f9-4c4b-95cc-fcf82122685c",
+      "canonicalDriveEnabled": false,
+      "publishDriveWorkbook": true,
+      "expectedWorkbookSheets": 12,
+      "requiredSheetsCount": 0
+    },
+    "notebookLm": {
+      "pass": true,
+      "status": "VERIFIED_HEALTHY"
+    },
+    "googleWorkspace": {
+      "pass": true,
+      "status": "VERIFIED_SCOPES",
+      "account": "authenticated",
+      "hasSheetsScope": true,
+      "hasDriveScope": true
+    },
+    "vendorPolicy": {
+      "vendor": "HPE",
+      "anchorTabUrl": "https://partner.hpe.com/group/prp",
+      "handoffMechanism": "SAML_POST_NEW_TAB",
+      "allowInPlaceReload": false,
+      "recoveryProtocol": "CLOSE_CONFIG_TAB_RETURN_TO_TAB1_CLICK_QUICK_LINK"
+    }
+  },
+  "postflight": {
+    "pass": true,
+    "status": "VERIFIED",
+    "qualityAuditPassed": true,
+    "diffSummaryError": null,
+    "hwSkuCount": 124,
+    "serviceSkuCount": 153,
+    "totalSkuCount": 277,
+    "conditionalSkusCount": 4,
+    "unavailableRulesCount": 1,
+    "diffSummaryPresent": true,
+    "diffCounts": {
+      "ADDED": 91,
+      "MODIFIED": 158,
+      "PRICE_CHANGED": 0,
+      "ATTRIBUTE_CHANGED": 158,
+      "PRICE_AND_ATTRIBUTE_CHANGED": 0,
+      "REINSTATED": 0,
+      "REMOVED": 28,
+      "DISCONTINUED": 0,
+      "UNCHANGED": 0
+    },
+    "cloudSyncState": "CLOUD_VERIFIED",
+    "notebookId": "644020e5-42f9-4c4b-95cc-fcf82122685c",
+    "verifiedSourceId": "a753a1a9-787d-445b-8dfc-2cef3cd05a54",
+    "verifiedSourceName": "MSL3040_Tape_OCA_Catalog_2026-11-20",
+    "payloadSha256": "2b286f24d4d00582ca9a1d89a7e1452a29155fb3e5460feecda9e87b0fc54529",
+    "cloudVerifiedAt": "2026-11-21T13:42:25.106Z",
+    "readbackVerified": true,
+    "canaryVerified": true
+  },
+  "overallPass": true
+}

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "product": "MSL3040_Tape",
+  "generatedAt": "2026-11-21T11:58:39.476Z",
+  "rejectedCount": 4,
+  "rows": [
+    {
+      "tableIndex": 2,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Expansion Modules"
+      ]
+    },
+    {
+      "tableIndex": 3,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Spooling Kit"
+      ]
+    },
+    {
+      "tableIndex": 17,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    },
+    {
+      "tableIndex": 33,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    }
+  ]
+}

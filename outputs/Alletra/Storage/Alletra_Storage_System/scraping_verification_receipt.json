@@ -1,0 +1,60 @@
+{
+  "verifiedAt": "2026-11-21T05:31:26.302Z",
+  "productId": "Alletra_Storage_System",
+  "family": "Alletra",
+  "generation": "Storage",
+  "preflight": {
+    "recordedAt": "2026-11-06T08:18:17.970Z",
+    "pass": true,
+    "product": {
+      "pass": true,
+      "productId": "Alletra_Storage_System",
+      "family": "Alletra",
+      "generation": "Storage",
+      "pillar": "STORAGE",
+      "notebookId": "a67629ba-3434-42ab-b465-bd6d71852198",
+      "canonicalDriveEnabled": false,
+      "publishDriveWorkbook": true,
+      "expectedWorkbookSheets": 10,
+      "requiredSheetsCount": 0
+    },
+    "notebookLm": {
+      "pass": true,
+      "status": "VERIFIED_HEALTHY"
+    },
+    "googleWorkspace": {
+      "pass": true,
+      "status": "VERIFIED_SCOPES",
+      "account": "authenticated",
+      "hasSheetsScope": true,
+      "hasDriveScope": true
+    },
+    "vendorPolicy": {
+      "vendor": "HPE",
+      "anchorTabUrl": "https://partner.hpe.com/group/prp",
+      "handoffMechanism": "SAML_POST_NEW_TAB",
+      "allowInPlaceReload": false,
+      "recoveryProtocol": "CLOSE_CONFIG_TAB_RETURN_TO_TAB1_CLICK_QUICK_LINK"
+    }
+  },
+  "postflight": {
+    "pass": true,
+    "status": "PASS",
+    "qualityAuditPassed": true,
+    "diffSummaryError": null,
+    "hwSkuCount": 3,
+    "serviceSkuCount": 0,
+    "totalSkuCount": 3,
+    "conditionalSkusCount": 0,
+    "unavailableRulesCount": 3,
+    "diffSummaryPresent": true,
+    "cloudSyncState": "VERIFIED",
+    "notebookId": "a67629ba-3434-42ab-b465-bd6d71852198",
+    "verifiedSourceId": "f3cfb459-e45d-4828-9cf5-89d61f74d199",
+    "verifiedSourceName": "Alletra_Storage_System_OCA_Catalog_2026-11-21",
+    "payloadSha256": "d8896a899b3caac43b012cbca72614fec07c253c5e4e5d6a5baafa2a34ec81bf",
+    "cloudVerifiedAt": "2026-11-21T05:31:26.302Z",
+    "readbackVerified": true,
+    "canaryVerified": true
+  }
+}

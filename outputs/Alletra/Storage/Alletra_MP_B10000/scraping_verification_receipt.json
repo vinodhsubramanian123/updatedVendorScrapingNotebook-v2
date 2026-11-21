@@ -1,0 +1,69 @@
+{
+  "verifiedAt": "2026-11-21T13:22:19.799Z",
+  "productId": "Alletra_MP_B10000",
+  "family": "Alletra",
+  "generation": "Storage",
+  "preflight": {
+    "recordedAt": "2026-11-21T12:44:55.699Z",
+    "pass": true,
+    "product": {
+      "pass": true,
+      "productId": "Alletra_MP_B10000",
+      "family": "Alletra",
+      "generation": "Storage",
+      "pillar": "STORAGE",
+      "notebookId": null,
+      "canonicalDriveEnabled": false,
+      "publishDriveWorkbook": true,
+      "expectedWorkbookSheets": 10,
+      "requiredSheetsCount": 0
+    },
+    "notebookLm": {
+      "pass": true,
+      "status": "SKIPPED_BY_FLAG"
+    },
+    "googleWorkspace": {
+      "pass": true,
+      "status": "SKIPPED_BY_FLAG"
+    },
+    "vendorPolicy": {
+      "vendor": "HPE",
+      "anchorTabUrl": "https://partner.hpe.com/group/prp",
+      "handoffMechanism": "SAML_POST_NEW_TAB",
+      "allowInPlaceReload": false,
+      "recoveryProtocol": "CLOSE_CONFIG_TAB_RETURN_TO_TAB1_CLICK_QUICK_LINK"
+    }
+  },
+  "postflight": {
+    "pass": true,
+    "status": "VERIFIED",
+    "qualityAuditPassed": true,
+    "diffSummaryError": null,
+    "hwSkuCount": 202,
+    "serviceSkuCount": 100,
+    "totalSkuCount": 302,
+    "conditionalSkusCount": 88,
+    "unavailableRulesCount": 21,
+    "diffSummaryPresent": true,
+    "diffCounts": {
+      "ADDED": 0,
+      "MODIFIED": 0,
+      "PRICE_CHANGED": 0,
+      "ATTRIBUTE_CHANGED": 0,
+      "PRICE_AND_ATTRIBUTE_CHANGED": 0,
+      "REINSTATED": 0,
+      "REMOVED": 0,
+      "DISCONTINUED": 0,
+      "UNCHANGED": 302
+    },
+    "cloudSyncState": "CLOUD_VERIFIED",
+    "notebookId": "b4131379-36ec-47c3-8016-882fc26a171c",
+    "verifiedSourceId": "d23ebb17-74cc-4b83-9264-2fb4fd827420",
+    "verifiedSourceName": "Alletra_MP_B10000_OCA_Catalog_2026-11-21",
+    "payloadSha256": "7bdfc96c51a1db7559b2412f548c4545b32f0ecaf2ed53fb825f07efbb23ee29",
+    "cloudVerifiedAt": "2026-11-21T13:22:19.799Z",
+    "readbackVerified": true,
+    "canaryVerified": true
+  },
+  "overallPass": true
+}

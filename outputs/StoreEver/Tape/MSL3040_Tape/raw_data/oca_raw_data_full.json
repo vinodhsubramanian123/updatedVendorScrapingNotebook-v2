@@ -1,33 +1,86 @@
 {
-  "timestamp": "2026-09-09T08:21:33.801Z",
+  "timestamp": "2026-11-20T08:21:40.880Z",
+  "vendor": "HPE",
+  "portalUrl": "https://oca.ext.hpe.com/oca/OCAInternalLogin",
   "pageTitle": "External OCA  | Hewlett Packard Enterprise",
   "url": "https://oca.ext.hpe.com/oca/OCAInternalLogin",
-  "nodeText": "MSL3040 #1",
+  "nodeText": "HPE MSL3040 Scalable Base Module [Q6Q62C]",
   "qsLink": "",
-  "scrollHeight": 4077,
-  "textLength": 10415,
-  "fullText": "Home\nConfigure\n❯\n6\nOCA Config 2\nWork-In-Progress\nConfig Status\nOK\nUCID\nTempUCID\nSolution Type\nIcon Separation\nEDT\n17 - 21 days\nQuote ID\nNot quoted\nLock Type\nUnlocked\nQuotation Mode\nBuy\nIQ with aaS Compatible\nSolution List Price\n⇄\nUSD 28,806.00\nAdd Opportunity\nQuote\nSave\nExport\nAdd Product\nAuto Updates\nSearch Icon\nNew Delegation\nOCA Config 2\n>\nIcon #1 - OCA Config 2\n>\nMSL3040 #1\nWhat's new?\nSummary\nComponents\nMenu\nLayout\nPower\nBOM\nCustomer Intent\nServices\n?\nWhere Used\nTape Drives\nMSL Options\nCables\nExpansion Modules\nPower Cords\nStorage Media\nSoftware\nAd-Hoc\n Tape Drives\n\n\nTape Drives (max 3)\n Do Not forget to order your cartridges under the Storage Media table (Tape Drives)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tStart\tDiscontinued\n Q6Q67A\tHPE StoreEver MSL LTO-8 Ultrium 30750 FC Drive Upgrade Kit\t\n0\n\t21,600.00\tNA\t02/05/2018\t05/31/2030\n Q6Q68A\tHPE StoreEver MSL LTO-8 Ultrium 30750 SAS Drive Upgrade Kit\t\n0\n\t16,800.00\tNA\t02/05/2018\t05/31/2030\n R6Q74A\tHPE StoreEver MSL LTO-9 Ultrium 45000 Fibre Channel Drive Upgrade Kit\t\n0\n\t33,000.00\tNA\t01/10/2022\t05/31/2030\n R6Q75A\tHPE StoreEver MSL LTO-9 Ultrium 45000 SAS Drive Upgrade Kit\t\n0\n\t24,000.00\tNA\t01/10/2022\t05/31/2030\n\n\n MSL Options\n\n\nEncryption Kit (max 999)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tStart\tDiscontinued\n AM495A\tHPE StoreEver 1/8 G2 Tape Autoloader and MSL Tape Library Encryption Kit\t\n0\n\t2,500.00\tNA\t10/23/2017\t09/30/2027\n\n\nPower Supply (max 1)\n If user wants power redundancy, they need to select a second power supply for each module (Power Supply)\n If user wants to be TAA compliant, they need to select a second power supply for each module factory integrated (0D1). (Power Supply)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tStart\tDiscontinued\n Q6Q64A\tHPE StoreEver MSL3040 Upgrade Power Supply Kit\t\n0\n\t780.00\tNA\t12/04/2017\t09/30/2031\n\n\n Cables\n\n\nFibreChannel Cables (max 999)\n Make sure to select the appropriate cable connectivity based on the tape drive you have selected. (FibreChannel Cables)\n Drives and libraries do not ship with FC cables . Order 1 or 2 cables per tape drive, selecting cable length to match the appropriate environment. Please choose a cable if customer does not have one on-site. (FibreChannel Cables)\n Drives and Libraries do not ship with SAS cables. One SAS cable is needed for each SAS drive for 1x cables (AE465A & AE470A), all other cables (AN975A, AN976A, K2R09A and K2R10A) support up to 4 tape drives per cable. Please choose cable if customer does not have one on-site. (FibreChannel Cables)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tStart\tDiscontinued\n AJ838A\tHPE LC to LC Multi-mode OM3 2-Fiber 30.0m 1-Pack Fiber Optic Cable\t\n0\n\t208.00\tNA\t\n\t10/23/2017\t11/30/2028\n AJ836A\tHPE LC to LC Multi-mode OM3 2-Fiber 5.0m 1-Pack Fiber Optic Cable\t\n0\n\t115.00\tNA\t\n\t10/23/2017\t11/30/2028\n AJ839A\tHPE LC to LC Multi-mode OM3 2-Fiber 50.0m 1-Pack Fiber Optic Cable\t\n0\n\t253.00\tNA\t\n\t10/23/2017\t11/30/2028\n QK732A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 1m Cable\t\n0\n\t115.00\tNA\t\n\t10/23/2017\t11/30/2028\n QK737A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 50m Cable\t\n0\n\t415.00\tNA\t\n\t10/23/2017\t11/30/2028\n AJ837A\tHPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable\t\n0\n\t162.00\tNA\t\n\t10/23/2017\t11/30/2028\n QK735A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 15m Cable\t\n0\n\t195.00\tNA\t\n\t10/23/2017\t11/30/2028\n QK733A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 2m Cable\t\n0\n\t130.00\tNA\t\n\t10/23/2017\t11/30/2028\n QK736A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 30m Cable\t\n0\n\t239.00\tNA\t\n\t10/23/2017\t11/30/2028\n QK734A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable\t\n0\n\t147.00\tNA\t\n\t10/23/2017\t11/30/2028\n\n\nSAS Cables (max 999)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tStart\tDiscontinued\n 716191-B21\tHPE 2.0m External Mini SAS High Density to Mini SAS Cable\t\n0\n\t221.00\tNA\t\n\t10/23/2017\t08/31/2030\n 716193-B21\tHPE 4.0m External Mini SAS High Density to Mini SAS Cable\t\n0\n\t324.00\tNA\t\n\t10/23/2017\t08/31/2030\n K2R10A\tHPE StoreEver Mini-SAS High Density to 4-lane Mini-SAS External Fanout 4m Cable\t\n0\n\t501.00\tNA\t\n\t10/23/2017\t05/31/2027\n K2R09A\tHPE StoreEver Mini-SAS High Density to 4-lane Mini-SAS External Fanout 2m Cable\t\n0\n\t358.00\tNA\t\n\t10/23/2017\t05/31/2027\n\n\n Expansion Modules\n\nNotes\n This spooling mechanism (S0D78A) is only required for HPE StoreEver MSL3040 Scalable Library Base Module (SKUs: Q6Q62A or Q6Q62B) when more than 6 Expansions Modules (SKU: Q6Q63A) are installed. This spooling mechanism (S0D78A) is not required for HPE StoreEver MSL3040 Scalable Library Base Module SKU Q6Q62C\n\n\nExpansion Modules (max 15)\n The Base Module can hold up to 3 half-height tape drives, if user wants more than 3 tape drives they must select an Expansion Module(s) (Q6Q63A). (Expansion Modules)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tStart\tDiscontinued\n Q6Q63A\tHPE StoreEver MSL3040 Scalable Library Expansion Module\t\n0\n\t7,275.00\tNA\t12/04/2017\t09/30/2031\n\nNotes\n This spooling mechanism (S0D78A) is only required for HPE StoreEver MSL3040 Scalable Library Base Module (SKUs: Q6Q62A or Q6Q62B) when more than 6 Expansions Modules (SKU: Q6Q63A) are installed.\n This spooling mechanism (S0D78A) is not required for HPE StoreEver MSL3040 Scalable Library Base Module SKU Q6Q62C.\n\n\n Power Cords\n\n\nPower Cord (no max)\n One HP 10A IEC320 C14-C13 8ft/2.4m PDU Cable (part number 142257-002) is included with this model. If not using the PDU power cord, please select the correct power cord for your geographical location (Power Cord)\n\n\nShow more >>\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tStart\tDiscontinued\n AF570A\tHPE C13 - BS-1363A UK/HK/SG 250V 10Amp 1.83m Power Cord\t\n0\n\t55.00\tNA\t\n\t10/23/2017\t09/30/2028\n AF568A\tHPE C13 - CEE-VII EU 250V 10Amp 1.83m Power Cord\t\n0\n\t71.00\tNA\t\n\t10/23/2017\t10/31/2031\n AF557A\tHPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord\t\n0\n\t156.00\tNA\t\n\t10/23/2017\t10/31/2031\n AF556A\tHPE C13 - Nema 5-15P US/CA 110V 10Amp 1.83m Power Cord\t\n0\n\t55.00\tNA\t\n\t10/23/2017\t09/30/2028\n AF569A\tHPE C13 - AS3112-3 AU 250V 10Amp 2.5m Power Cord\t\n0\n\t65.00\tNA\t\n\t10/23/2017\t09/30/2028\n90 142257-002\tHPE C13 - C14 WW 250V 10Amp 2.5m Jumper Cord\t\n0\n\t34.00\tNA\t\n\t10/23/2017\t11/30/2026\n AF561A\tHPE C13 - CNS-690 TW 110V 13Amp 1.83m Power Cord\t\n0\n\t55.00\tNA\t\n\t10/23/2017\t09/30/2028\n AF566A\tHPE C13 - DK-2.5A DK 250V 10Amp 1.83m Power Cord\t\n0\n\t55.00\tNA\t\n\t10/23/2017\t09/30/2028\n AF558A\tHPE C13 - IRAM -2073 AR 250V 10A 2.5m Power Cord\t\n0\n\t65.00\tNA\t\n\t10/23/2017\t09/30/2028\n AF562A\tHPE C13 - IS-1293 IN 240V 6Amp LV 2.0m Power Cord\t\n0\n\t194.00\tNA\t\n\t10/23/2017\t10/31/2031\n\n\n Storage Media\n\n\nStorage Media (max 999)\n\n\nShow more >>\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tStart\tDiscontinued\n C7976AA\tHPE LTO-6 Ultrium 6.25TB RW 20 Data Cartridges\t\n0\n\tNA\tNA\t12/03/2018\t09/30/2031\n C7976AC\tHPE LTO-6 Ultrium 6.25TB RW Custom Labeled 20 Data Cartridges Library Pack without Cases\t\n0\n\t1,530.46\tNA\t10/23/2017\t09/30/2031\n C7976AL\tHPE LTO-6 Ultrium 6.25TB RW Custom Labeled 20 Data Cartridges with Cases\t\n0\n\t1,530.47\tNA\t10/23/2017\t09/30/2031\n C7976A\tHPE LTO-6 Ultrium 6.25TB RW Data Cartridge\t\n0\n\t76.53\tNA\t10/23/2017\t09/30/2031\n C7976AN\tHPE LTO-6 Ultrium 6.25TB RW Non Custom Labeled 20 Data Cartridges with Cases\t\n0\n\t1,530.47\tNA\t10/23/2017\t09/30/2031\n C7976WL\tHPE LTO-6 Ultrium 6.25TB WORM Custom Labeled 20 Data Cartridges with Cases\t\n0\n\t2,176.50\tNA\t10/23/2017\t09/30/2031\n C7976W\tHPE LTO-6 Ultrium 6.25TB WORM Data Cartridge\t\n0\n\t108.82\tNA\t10/23/2017\t09/30/2031\n Q2013A\tHPE LTO-6 Ultrium RW Bar Code Label Pack\t\n0\n\t92.99\tNA\t10/23/2017\t09/30/2031\n C7977AH\tHPE LTO-7 Ultrium 15TB Eco Case Data Cartridge 20 Pack\t\n0\n\t2,205.96\tNA\t10/23/2017\t10/31/2036\n C7977A\tHPE LTO-7 Ultrium 15TB RW Data Cartridge\t\n0\n\t110.30\tNA\t10/23/2017\t10/31/2036\n\n\n Software\n\n\nSoftware (no max)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tStart\tDiscontinued\n TC406AAE\tHPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced E-LTU\t\n0\n\t2,500.00\tNA\t10/23/2017\t10/31/2028\n TC406A\tHPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced LTU\t\n0\n\t2,500.00\tNA\t10/23/2017\t10/31/2028\n Q8K43AAE\tHPE StoreEver MSL3040 Command View for Tape Libraries - Data Verification 100 Cartridges E-LTU\t\n1\n\t1,750.00\t1,750.00\t12/04/2017\t12/31/2028\n Q8K98AAE\tHPE StoreEver MSL3040 KMIP Key Manager E-LTU\t\n0\n\t6,000.00\tNA\t12/04/2017\t10/31/2028\n Q8K98A\tHPE StoreEver MSL3040 KMIP Key Manager LTU\t\n0\n\t6,000.00\tNA\t12/04/2017\t12/31/2028\n Q8L00AAE\tHPE StoreEver MSL3040 LTO-7+ Path Failover E-LTU\t\n0\n\t6,000.00\tNA\t12/04/2017\t10/31/2028\n Q8L00A\tHPE StoreEver MSL3040 LTO-7+ Path Failover LTU\t\n0\n\t6,000.00\tNA\t12/04/2017\t12/31/2028\n Q8K99AAE\tHPE StoreEver MSL3040 Secure Manager E-LTU\t\n0\n\t2,000.00\tNA\t12/04/2017\t10/31/2028\n Q8K99A\tHPE StoreEver MSL3040 Secure Manager LTU\t\n0\n\t2,000.00\tNA\t12/04/2017\t12/31/2028\n\n\n Ad-Hoc\n\nImportant Note: Before using Ad-Hoc please make sure you have reviewed and are following the Ad-Hoc guidelines available here. Failure to follow the guidelines can lead to blocked orders.\nProducts added as Ad-Hoc will not get default support services. If you need Support services, add the product from the OCA catalog if it's available.\nOnly use Sub-item=Y when you want to integrate FIO products or products with #0D1 options into the base model\n+/-\tProduct #\tDescription\toption\tMultiply With Node\tSub-item\tPrice (USD) \tQuantity\tStart\tDiscontinued\n\t<new ad-hoc item>\t<search by description>\t\t\t\t\t\t\n\nCollapse All\nExpand All\nExpand Subsections\nUndo Selection\nRemove Defaults\nView HPE Recommended only\nHPE MSL3040 Scalable Base Module [Q6Q62C]\nLoading...\nCLIC Check\nNeed Help? WalkMe\nLive chat\nChanges to the Workgroup creation and lookup logic for OCA after January 21st 2023\nLearn More",
+  "selectedBaseSku": "Q6Q62C",
+  "baseSku": "Q6Q62C",
+  "ownerProduct": "MSL3040_Tape",
+  "ownerConfiguration": "HPE MSL3040 Scalable Base Module [Q6Q62C]",
+  "parentConfiguration": null,
+  "parentBaseSku": null,
+  "parentOfferPriceUsd": null,
+  "supportCoverageStatus": "NOT_PROBED",
+  "columnCoverage": {
+    "verified": false,
+    "present": {},
+    "missing": [
+      "sku",
+      "description",
+      "price",
+      "leadTime",
+      "lifecycleDates"
+    ],
+    "error": "api.sendCommand is not a function"
+  },
+  "ownedMenuDiscovery": {
+    "status": "OBSERVED_CONFIGURED_CHILD_MENUS",
+    "children": []
+  },
+  "componentServiceEvidence": null,
+  "unscopedServiceTables": [],
+  "solutionDomain": "STORAGE",
+  "observedSelectors": [
+    {
+      "selector": "#extended_overview_menu",
+      "value": "EXPANDED"
+    },
+    {
+      "selector": "ambientTemperature",
+      "value": "DEFAULT_AND_SWEEP_RESTORED"
+    }
+  ],
+  "finalSelectorsRestored": true,
+  "scrollHeight": 786,
+  "textLength": 15738,
+  "textExtractionMode": "FULL_BODY_TEXT",
+  "outsideTableNotesCaptured": true,
+  "fullText": "Home\nConfigure\n❯\nOCA Config 2\nWork-In-Progress\nConfig Status\nWarning\nUCID\nTempUCID\nSolution Type\nIcon Separation\nEDT\n17 - 21 days\nQuote ID\nNot quoted\nLock Type\nUnlocked\nQuotation Mode\nBuy\nIQ with aaS Compatible\nSolution List Price\n⇄\nUSD 28,806.00\nAdd Opportunity\nQuote\nSave\nExport\nAdd Product\nAuto Updates\nSearch Icon\nNew Delegation\nDesign Solution / Add Product\nPrice\nComplete Quote\nOCA Config 2\n>\nIcon #1 - OCA Config 2\n>\nMSL3040 #1\nSummary\nComponents\nMenu\nLayout\nPower\nBOM\nCustomer Intent\nServices\nWhere Used\nCollapse All\nExpand All\nExpand Subsections\nUndo Selection\nRemove Defaults\nView HPE Recommended only\nHPE MSL3040 Scalable Base Module [Q6Q62C]\nTape Drives\nMSL Options\nCables\nExpansion Modules\nPower Cords\nStorage Media\nSoftware\nAd-Hoc\n Tape Drives\n\n\nTape Drives (max 3)\n Do Not forget to order your cartridges under the Storage Media table (Tape Drives)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  Q6Q67A\tHPE StoreEver MSL LTO-8 Ultrium 30750 FC Drive Upgrade Kit\t\n0\n\t21,600.00\tNA\t4\t02/05/2018\t05/31/2030\t06/30/2030\n  Q6Q68A\tHPE StoreEver MSL LTO-8 Ultrium 30750 SAS Drive Upgrade Kit\t\n0\n\t16,800.00\tNA\t14\t02/05/2018\t05/31/2030\t06/30/2030\n  R6Q74A\tHPE StoreEver MSL LTO-9 Ultrium 45000 Fibre Channel Drive Upgrade Kit\t\n0\n\t33,000.00\tNA\t42\t01/10/2022\t05/31/2030\t06/30/2030\n  R6Q75A\tHPE StoreEver MSL LTO-9 Ultrium 45000 SAS Drive Upgrade Kit\t\n0\n\t24,000.00\tNA\t14\t01/10/2022\t05/31/2030\t06/30/2030\n\n\n MSL Options\n\n\nEncryption Kit (max 999)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  AM495A\tHPE StoreEver 1/8 G2 Tape Autoloader and MSL Tape Library Encryption Kit\t\n0\n\t2,500.00\tNA\t4\t10/23/2017\t09/30/2027\t10/31/2027\n\n\nPower Supply (max 1)\n If user wants power redundancy, they need to select a second power supply for each module (Power Supply)\n If user wants to be TAA compliant, they need to select a second power supply for each module factory integrated (0D1). (Power Supply)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  Q6Q64A\tHPE StoreEver MSL3040 Upgrade Power Supply Kit\t\n0\n\t780.00\tNA\t4\t12/04/2017\t09/30/2031\t10/31/2031\n\n\n Cables\n\n\nFibreChannel Cables (max 999)\n Make sure to select the appropriate cable connectivity based on the tape drive you have selected. (FibreChannel Cables)\n Drives and libraries do not ship with FC cables . Order 1 or 2 cables per tape drive, selecting cable length to match the appropriate environment. Please choose a cable if customer does not have one on-site. (FibreChannel Cables)\n Drives and Libraries do not ship with SAS cables. One SAS cable is needed for each SAS drive for 1x cables (AE465A & AE470A), all other cables (AN975A, AN976A, K2R09A and K2R10A) support up to 4 tape drives per cable. Please choose cable if customer does not have one on-site. (FibreChannel Cables)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  AJ838A\tHPE LC to LC Multi-mode OM3 2-Fiber 30.0m 1-Pack Fiber Optic Cable\t\n0\n\t208.00\tNA\t\n\t3\t10/23/2017\t11/30/2028\t12/31/2028\n  AJ836A\tHPE LC to LC Multi-mode OM3 2-Fiber 5.0m 1-Pack Fiber Optic Cable\t\n0\n\t115.00\tNA\t\n\t3\t10/23/2017\t11/30/2028\t12/31/2028\n  AJ839A\tHPE LC to LC Multi-mode OM3 2-Fiber 50.0m 1-Pack Fiber Optic Cable\t\n0\n\t253.00\tNA\t\n\t3\t10/23/2017\t11/30/2028\t12/31/2028\n  QK732A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 1m Cable\t\n0\n\t115.00\tNA\t\n\t3\t10/23/2017\t11/30/2028\t12/31/2028\n  QK737A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 50m Cable\t\n0\n\t415.00\tNA\t\n\t3\t10/23/2017\t11/30/2028\t12/31/2028\n  AJ837A\tHPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable\t\n0\n\t162.00\tNA\t\n\t4\t10/23/2017\t11/30/2028\t12/31/2028\n  QK735A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 15m Cable\t\n0\n\t195.00\tNA\t\n\t14\t10/23/2017\t11/30/2028\t12/31/2028\n  QK733A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 2m Cable\t\n0\n\t130.00\tNA\t\n\t14\t10/23/2017\t11/30/2028\t12/31/2028\n  QK736A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 30m Cable\t\n0\n\t239.00\tNA\t\n\t4\t10/23/2017\t11/30/2028\t12/31/2028\n  QK734A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable\t\n0\n\t147.00\tNA\t\n\t14\t10/23/2017\t11/30/2028\t12/31/2028\n\n\nSAS Cables (max 999)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  716191-B21\tHPE 2.0m External Mini SAS High Density to Mini SAS Cable\t\n0\n\t221.00\tNA\t\n\t3\t10/23/2017\t08/31/2030\t09/30/2030\n  716193-B21\tHPE 4.0m External Mini SAS High Density to Mini SAS Cable\t\n0\n\t324.00\tNA\t\n\t3\t10/23/2017\t08/31/2030\t09/30/2030\n  K2R10A\tHPE StoreEver Mini-SAS High Density to 4-lane Mini-SAS External Fanout 4m Cable\t\n0\n\t501.00\tNA\t\n\t3\t10/23/2017\t05/31/2027\t06/30/2027\n  K2R09A\tHPE StoreEver Mini-SAS High Density to 4-lane Mini-SAS External Fanout 2m Cable\t\n0\n\t358.00\tNA\t\n\t4\t10/23/2017\t05/31/2027\t06/30/2027\n\n\n\n Expansion Modules\n\nNotes\n This spooling mechanism (S0D78A) is only required for HPE StoreEver MSL3040 Scalable Library Base Module (SKUs: Q6Q62A or Q6Q62B) when more than 6 Expansions Modules (SKU: Q6Q63A) are installed. This spooling mechanism (S0D78A) is not required for HPE StoreEver MSL3040 Scalable Library Base Module SKU Q6Q62C\n\n\nExpansion Modules (max 15)\n The Base Module can hold up to 3 half-height tape drives, if user wants more than 3 tape drives they must select an Expansion Module(s) (Q6Q63A). (Expansion Modules)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  Q6Q63A\tHPE StoreEver MSL3040 Scalable Library Expansion Module\t\n0\n\t7,275.00\tNA\t4\t12/04/2017\t09/30/2031\t10/31/2031\n\nNotes\n This spooling mechanism (S0D78A) is only required for HPE StoreEver MSL3040 Scalable Library Base Module (SKUs: Q6Q62A or Q6Q62B) when more than 6 Expansions Modules (SKU: Q6Q63A) are installed.\n This spooling mechanism (S0D78A) is not required for HPE StoreEver MSL3040 Scalable Library Base Module SKU Q6Q62C.\n\n\n Power Cords\n\n\nPower Cord (no max)\n One HP 10A IEC320 C14-C13 8ft/2.4m PDU Cable (part number 142257-002) is included with this model. If not using the PDU power cord, please select the correct power cord for your geographical location (Power Cord)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  AF568A\tHPE C13 - CEE-VII EU 250V 10Amp 1.83m Power Cord\t\n0\n\t71.00\tNA\t\n\t3\t10/23/2017\t10/31/2031\t11/30/2031\n  AF556A\tHPE C13 - Nema 5-15P US/CA 110V 10Amp 1.83m Power Cord\t\n0\n\t55.00\tNA\t\n\t3\t10/23/2017\t06/30/2029\t07/31/2029\n  AF569A\tHPE C13 - AS3112-3 AU 250V 10Amp 2.5m Power Cord\t\n0\n\t65.00\tNA\t\n\t11\t10/23/2017\t06/30/2029\t07/31/2029\n  AF570A\tHPE C13 - BS-1363A UK/HK/SG 250V 10Amp 1.83m Power Cord\t\n0\n\t55.00\tNA\t\n\t13\t10/23/2017\t06/30/2029\t07/31/2029\n  142257-002\tHPE C13 - C14 WW 250V 10Amp 2.5m Jumper Cord\t\n0\n\t34.00\tNA\t\n\t8\t10/23/2017\t06/30/2029\t07/31/2029\n  AF561A\tHPE C13 - CNS-690 TW 110V 13Amp 1.83m Power Cord\t\n0\n\t55.00\tNA\t\n\t14\t10/23/2017\t06/30/2029\t07/31/2029\n  AF566A\tHPE C13 - DK-2.5A DK 250V 10Amp 1.83m Power Cord\t\n0\n\t55.00\tNA\t\n\t11\t10/23/2017\t06/30/2029\t07/31/2029\n  AF557A\tHPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord\t\n0\n\t156.00\tNA\t\n\t21\t10/23/2017\t10/31/2031\t11/30/2031\n  AF558A\tHPE C13 - IRAM -2073 AR 250V 10A 2.5m Power Cord\t\n0\n\t65.00\tNA\t\n\t4\t10/23/2017\t06/30/2029\t07/31/2029\n  AF562A\tHPE C13 - IS-1293 IN 240V 6Amp LV 2.0m Power Cord\t\n0\n\t194.00\tNA\t\n\t4\t10/23/2017\t10/31/2031\t11/30/2031\n  AF572A\tHPE C13 - JIS C8303 JP 100V 12Amp 2.0m Power Cord\t\n0\n\t60.00\tNA\t\n\t4\t10/23/2017\t06/30/2029\t07/31/2029\n  AF560A\tHPE C13 - KSC- 8305 KR 250V 10Amp 1.83m Power Cord\t\n0\n\t55.00\tNA\t\n\t4\t10/23/2017\t06/30/2029\t07/31/2029\n  AF559A\tHPE C13 - Nema 5-15P TH/PH 250V 10Amp 1.83m Power Cord\t\n0\n\t55.00\tNA\t\n\t4\t10/23/2017\t06/30/2029\t07/31/2029\n  AF567A\tHPE C13 - SABS-164 ZA 250V 10Amp 2.5m Power Cord\t\n0\n\t65.00\tNA\t\n\t4\t10/23/2017\t06/30/2029\t07/31/2029\n  AF565A\tHPE C13 - SEV 1011 CH 250V 10Amp 1.83m Power Cord\t\n0\n\t55.00\tNA\t\n\t11\t10/23/2017\t06/30/2029\t07/31/2029\n  AF564A\tHPE C13 - SI-32 IL 250V 10Amp 1.83m Power Cord\t\n0\n\t55.00\tNA\t\n\t4\t10/23/2017\t06/30/2029\t07/31/2029\n\n\n Storage Media\n\n\nStorage Media (max 999)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  C7976AA\tHPE LTO-6 Ultrium 6.25TB RW 20 Data Cartridges\t\n0\n\tNA\tNA\t8\t12/03/2018\t09/30/2031\t10/31/2031\n  C7976AC\tHPE LTO-6 Ultrium 6.25TB RW Custom Labeled 20 Data Cartridges Library Pack without Cases\t\n0\n\t1,530.46\tNA\t8\t10/23/2017\t09/30/2031\t10/31/2031\n  C7976AL\tHPE LTO-6 Ultrium 6.25TB RW Custom Labeled 20 Data Cartridges with Cases\t\n0\n\t1,530.47\tNA\t8\t10/23/2017\t09/30/2031\t10/31/2031\n  C7976A\tHPE LTO-6 Ultrium 6.25TB RW Data Cartridge\t\n0\n\t76.53\tNA\t4\t10/23/2017\t09/30/2031\t10/31/2031\n  C7976AN\tHPE LTO-6 Ultrium 6.25TB RW Non Custom Labeled 20 Data Cartridges with Cases\t\n0\n\t1,530.47\tNA\t6\t10/23/2017\t09/30/2031\t10/31/2031\n  C7976WL\tHPE LTO-6 Ultrium 6.25TB WORM Custom Labeled 20 Data Cartridges with Cases\t\n0\n\t2,176.50\tNA\t8\t10/23/2017\t09/30/2031\t10/31/2031\n  C7976W\tHPE LTO-6 Ultrium 6.25TB WORM Data Cartridge\t\n0\n\t108.82\tNA\t4\t10/23/2017\t09/30/2031\t10/31/2031\n  Q2013A\tHPE LTO-6 Ultrium RW Bar Code Label Pack\t\n0\n\t92.99\tNA\t4\t10/23/2017\t09/30/2031\t10/31/2031\n  C7977AH\tHPE LTO-7 Ultrium 15TB Eco Case Data Cartridge 20 Pack\t\n0\n\t2,205.96\tNA\t8\t10/23/2017\t10/31/2036\t11/30/2036\n  C7977A\tHPE LTO-7 Ultrium 15TB RW Data Cartridge\t\n0\n\t110.30\tNA\t8\t10/23/2017\t10/31/2036\t11/30/2036\n  C7977AN\tHPE LTO-7 Ultrium Non Custom Labeled Data Cartridge 20 Pack\t\n0\n\t2,205.96\tNA\t4\t10/23/2017\t10/31/2036\t11/30/2036\n  Q2014A\tHPE LTO-7 Ultrium RW Bar Code Label Pack\t\n0\n\t92.99\tNA\t4\t10/23/2017\t10/31/2036\t11/30/2036\n  C7977AL\tHPE LTO-7 Ultrium RW Custom Labeled Data Cartridge 20 Pack\t\n0\n\t2,205.96\tNA\t9\t10/23/2017\t10/31/2036\t11/30/2036\n  C7977AC\tHPE LTO-7 Ultrium RW No Case Custom Labeled Data Cartridge 20 Pack\t\n0\n\t2,205.96\tNA\t8\t10/23/2017\t10/31/2036\t11/30/2036\n  C7977WL\tHPE LTO-7 Ultrium WORM Custom Labeled Data Cartridge 20 Pack\t\n0\n\t3,044.17\tNA\t8\t10/23/2017\t10/31/2036\t11/30/2036\n  C7977W\tHPE LTO-7 Ultrium WORM Data Cartridge\t\n0\n\t152.20\tNA\t4\t10/23/2017\t10/31/2036\t11/30/2036\n  Q2078AH\tHPE LTO-8 Ultrium 30TB RW 20 Data Cartridges Library Pack without Cases\t\n0\n\t2,348.24\tNA\t4\t08/14/2019\t10/31/2036\t11/30/2036\n  Q2078AL\tHPE LTO-8 Ultrium 30TB RW Custom Labeled Library Pack 20 Data Cartridges with Cases\t\n0\n\t2,348.24\tNA\t14\t08/14/2019\t10/31/2036\t11/30/2036\n  Q2078AC\tHPE LTO-8 Ultrium 30TB RW Custom Labeled Library Pack 20 Data Cartridges without Cases\t\n0\n\t2,348.24\tNA\t8\t08/14/2019\t10/31/2036\t11/30/2036\n  Q2078A\tHPE LTO-8 Ultrium 30TB RW Data Cartridge\t\n0\n\t117.43\tNA\t14\t08/14/2019\t10/31/2036\t11/30/2036\n  Q2078AN\tHPE LTO-8 Ultrium 30TB RW Non Custom Labeled Library Pack 20 Data Cartridges with Cases\t\n0\n\t2,348.24\tNA\t14\t08/14/2019\t10/31/2036\t11/30/2036\n  Q2078WL\tHPE LTO-8 Ultrium 30TB WORM Custom Labeled 20 Data Cartridges with Cases\t\n0\n\t3,240.72\tNA\t14\t08/14/2019\t10/31/2036\t11/30/2036\n  Q2078W\tHPE LTO-8 Ultrium 30TB WORM Data Cartridge\t\n0\n\t162.07\tNA\t14\t08/14/2019\t10/31/2036\t11/30/2036\n  Q2015A\tHPE LTO-8 Ultrium RW Bar Code Label Pack\t\n0\n\t92.99\tNA\t4\t12/04/2017\t10/31/2036\t11/30/2036\n  Q2079AH\tHPE LTO-9 Ultrium 45TB RW 20 Data Cartridges Library Pack without Cases\t\n0\n\t2,911.01\tNA\t4\t09/07/2021\t11/30/2030\t12/31/2030\n  Q2079AL\tHPE LTO-9 Ultrium 45TB RW Custom Labeled 20 Data Cartridges with Cases\t\n0\n\t2,911.01\tNA\t10\t09/07/2021\t11/30/2030\t12/31/2030\n  Q2079AC\tHPE LTO-9 Ultrium 45TB RW Custom Labeled Library Pack 20 Data Cartridges without Cases\t\n0\n\t2,911.01\tNA\t9\t09/07/2021\t11/30/2030\t12/31/2030\n  Q2079A\tHPE LTO-9 Ultrium 45TB RW Data Cartridge\t\n0\n\t145.56\tNA\t8\t09/07/2021\t11/30/2030\t12/31/2030\n  Q2079AN\tHPE LTO-9 Ultrium 45TB RW Non Custom Labeled 20 Data Cartridges with Cases\t\n0\n\t2,911.01\tNA\t4\t09/07/2021\t11/30/2030\t12/31/2030\n  Q2079WL\tHPE LTO-9 Ultrium 45TB WORM Custom Labeled 20 Data Cartridges with Cases\t\n0\n\t3,976.02\tNA\t14\t09/07/2021\t11/30/2030\t12/31/2030\n  Q2079W\tHPE LTO-9 Ultrium 45TB WORM Data Cartridge\t\n0\n\t198.80\tNA\t14\t09/07/2021\t11/30/2030\t12/31/2030\n  Q2017A\tHPE LTO-9 Ultrium RW Bar Code Label Pack\t\n0\n\t92.99\tNA\t4\t09/07/2021\t11/30/2030\t12/31/2030\n  C7978A\tHPE Ultrium Universal Cleaning Cartridge\t\n0\n\t77.62\tNA\t4\t10/23/2017\t10/31/2036\t11/30/2036\n\n\n Software\n\n\nSoftware (no max)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  TC406AAE\tHPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced E-LTU\t\n0\n\t2,500.00\tNA\t\t10/23/2017\t10/31/2028\t11/30/2028\n  TC406A\tHPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced LTU\t\n0\n\t2,500.00\tNA\t\t10/23/2017\t10/31/2028\t11/30/2028\n  Q8K43AAE\tHPE StoreEver MSL3040 Command View for Tape Libraries - Data Verification 100 Cartridges E-LTU\t\n1\n\t1,750.00\t1,750.00\t\t12/04/2017\t12/31/2028\t01/31/2029\n  Q8K98AAE\tHPE StoreEver MSL3040 KMIP Key Manager E-LTU\t\n0\n\t6,000.00\tNA\t\t12/04/2017\t10/31/2028\t11/30/2028\n  Q8K98A\tHPE StoreEver MSL3040 KMIP Key Manager LTU\t\n0\n\t6,000.00\tNA\t\t12/04/2017\t12/31/2028\t01/31/2029\n  Q8L00AAE\tHPE StoreEver MSL3040 LTO-7+ Path Failover E-LTU\t\n0\n\t6,000.00\tNA\t\t12/04/2017\t10/31/2028\t11/30/2028\n  Q8L00A\tHPE StoreEver MSL3040 LTO-7+ Path Failover LTU\t\n0\n\t6,000.00\tNA\t\t12/04/2017\t12/31/2028\t01/31/2029\n  Q8K99AAE\tHPE StoreEver MSL3040 Secure Manager E-LTU\t\n0\n\t2,000.00\tNA\t\t12/04/2017\t10/31/2028\t11/30/2028\n  Q8K99A\tHPE StoreEver MSL3040 Secure Manager LTU\t\n0\n\t2,000.00\tNA\t\t12/04/2017\t12/31/2028\t01/31/2029\n\n\n Ad-Hoc\n\nImportant Note: Before using Ad-Hoc please make sure you have reviewed and are following the Ad-Hoc guidelines available here. Failure to follow the guidelines can lead to blocked orders.\nProducts added as Ad-Hoc will not get default support services. If you need Support services, add the product from the OCA catalog if it's available.\nOnly use Sub-item=Y when you want to integrate FIO products or products with #0D1 options into the base model\n+/-\tProduct #\tDescription\toption\tMultiply With Node\tSub-item\tPrice (USD) \tQuantity\tStart\tDiscontinued\tObsolete\n\t<new ad-hoc item>\t<search by description>\t\t\t\t\t\t\t\n\nCLIC Check\nLive chat\nSupport Services\nService Type\nFixed Services\nFlexible Services\nService Level\nStandard\nPremium\nPartner\nNo Support\nTerm\n3 Years\n4 Years\n5 Years\nCoverage\nBasic\nEssential\nCritical\nData Privacy\nApply DMR To All\nApply CDMR To All\nApply GDMR To All\nNone/Manual\nSpecified Delivery Support Services\nSDSS Remote\nInstall\nHA114A1 HPE Installation and Startup Service\nAfter Hours Installation\nAfter Hours/Weekends/Holidays HW Installation\n\tQty\tReactive support \tInstall \tDevice specific services\nIcon ID: I158519560-01EDT: 14 - 18 days\nQ6Q62C \nHU4A6A5#YJR HPE 5Y Tech Care Essential Service\nHA114A1#5UE HPE Installation and Startup Service\nHPE StoreEver MSL3040 Command View for Tape Libraries - Data Verification 100 Cartridges E-LTU\nHU4A6A5#YJY HPE 5Y Tech Care Essential Service\nN/A\nAdditional Services\nAI Standard Service Advisor Tool\nUse the AI Standard Service Advisor Tool to identify the correct quoting path (IQ vs. FQ), receive a unique ID if the FQ path is required, and get guidance on selecting the appropriate services.\nTraining materials and access to the tool: A&PS 2.0 – IQ Acceleration SharePoint page\nAccess requests & support: Contact serviceadvisortool@hpe.com for access, issues or questions.\nDeployment Services\nFactory Express\nAdd HPC and Compute services\nImplementation\nInstall-Install and Start Up\nLogistics\nProfessional Services\nAdvisory\nAdd Customer Specific Services\nEducation\nIntegration and Migration\nOperate and Improve\nRelocation\nRetire and Sanitize\nService Credits\nProactive Services\nComplete Care Services\nProactive Support Manager Services\nDeployment Services\nProfessional Services\nProactive Services",
   "sections": [
     {
       "tagName": "H3",
-      "text": "MS Service level selection",
+      "text": "Process Guide",
       "className": ""
     },
     {
-      "tagName": "H3",
-      "text": "Duration",
-      "className": ""
+      "tagName": "DIV",
+      "text": "Additional Services\n      \n    \n    AI Standard Service Advisor ToolUse the AI Standard Service Advisor Tool to identify the correct quoting path (IQ vs. FQ), receive a unique ID if the FQ path is required, and get guidance on selecting the appropriate services.Training materials and access to the tool: A&PS 2.0 – IQ Acceleration SharePoint pageAccess requests & support: Contact serviceadvisortool@hpe.com for access, issues or questions.\n      \n      Summary",
+      "className": "section-header"
     },
     {
-      "tagName": "H3",
-      "text": "Nodes count",
-      "className": ""
+      "tagName": "H4",
+      "text": "Tier 1 - Basic Delivery",
+      "className": "logistics-tier-title"
+    },
+    {
+      "tagName": "H4",
+      "text": "Tier 2 - Value Add Services",
+      "className": "logistics-tier-title"
+    },
+    {
+      "tagName": "H4",
+      "text": "Tier 3 - Value Add Services - Flexible Quotation",
+      "className": "logistics-tier-title"
     }
   ],
   "tables": [
     {
       "tableIndex": 0,
-      "rowCount": 182,
+      "tableId": "",
+      "rowCount": 23,
       "rows": [
         [
           "Tape Drives"
@@ -36,242 +89,13 @@
           "Tape Drives (max 3)\n Do Not forget to order your cartridges under the Storage Media table (Tape Drives)"
         ],
         [
-          "C0H28A [OB]",
-          "Available",
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "Start",
-          "Discontinued",
-          "C0H28A [OB]",
-          "HPE StoreEver MSL LTO-6 Ultrium 6250 Fibre Channel Drive Upgrade Kit",
-          "0",
-          "5,300.00",
-          "NA",
-          "10/23/2017",
-          "04/30/2024",
-          "C0H27A [OB]",
-          "HPE StoreEver MSL LTO-6 Ultrium 6250 SAS Drive Upgrade Kit",
-          "0",
-          "5,100.00",
-          "NA",
-          "10/23/2017",
-          "11/30/2023",
-          "N7P36A [OB]",
-          "HPE StoreEver MSL LTO-7 Ultrium 15000 FC Drive Upgrade Kit",
-          "0",
-          "9,362.00",
-          "NA",
-          "10/23/2017",
-          "07/17/2026",
-          "N7P37A [OB]",
-          "HPE StoreEver MSL LTO-7 Ultrium 15000 SAS Drive Upgrade Kit",
-          "0",
-          "9,010.00",
-          "NA",
-          "10/23/2017",
-          "07/17/2026",
-          "Q6Q67A [OB]",
-          "HPE StoreEver MSL LTO-8 Ultrium 30750 FC Drive Upgrade Kit",
-          "0",
-          "21,600.00",
-          "NA",
-          "02/05/2018",
-          "05/31/2030",
-          "Q6Q68A [OB]",
-          "HPE StoreEver MSL LTO-8 Ultrium 30750 SAS Drive Upgrade Kit",
-          "0",
-          "16,800.00",
-          "NA",
-          "02/05/2018",
-          "05/31/2030",
-          "R6Q74A [OB]",
-          "HPE StoreEver MSL LTO-9 Ultrium 45000 Fibre Channel Drive Upgrade Kit",
-          "0",
-          "33,000.00",
-          "NA",
-          "01/10/2022",
-          "05/31/2030",
-          "R6Q75A [OB]",
-          "HPE StoreEver MSL LTO-9 Ultrium 45000 SAS Drive Upgrade Kit",
-          "0",
-          "24,000.00",
-          "NA",
-          "01/10/2022",
-          "05/31/2030"
-        ],
-        [
-          "Available"
-        ],
-        [
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "Start",
-          "Discontinued"
-        ],
-        [
-          "C0H28A [OB]",
-          "HPE StoreEver MSL LTO-6 Ultrium 6250 Fibre Channel Drive Upgrade Kit",
-          "0",
-          "5,300.00",
-          "NA",
-          "10/23/2017",
-          "04/30/2024"
-        ],
-        [
-          "C0H27A [OB]",
-          "HPE StoreEver MSL LTO-6 Ultrium 6250 SAS Drive Upgrade Kit",
-          "0",
-          "5,100.00",
-          "NA",
-          "10/23/2017",
-          "11/30/2023"
-        ],
-        [
-          "N7P36A [OB]",
-          "HPE StoreEver MSL LTO-7 Ultrium 15000 FC Drive Upgrade Kit",
-          "0",
-          "9,362.00",
-          "NA",
-          "10/23/2017",
-          "07/17/2026"
-        ],
-        [
-          "N7P37A [OB]",
-          "HPE StoreEver MSL LTO-7 Ultrium 15000 SAS Drive Upgrade Kit",
-          "0",
-          "9,010.00",
-          "NA",
-          "10/23/2017",
-          "07/17/2026"
-        ],
-        [
-          "Q6Q67A",
-          "HPE StoreEver MSL LTO-8 Ultrium 30750 FC Drive Upgrade Kit",
-          "0",
-          "21,600.00",
-          "NA",
-          "02/05/2018",
-          "05/31/2030"
-        ],
-        [
-          "Q6Q68A",
-          "HPE StoreEver MSL LTO-8 Ultrium 30750 SAS Drive Upgrade Kit",
-          "0",
-          "16,800.00",
-          "NA",
-          "02/05/2018",
-          "05/31/2030"
-        ],
-        [
-          "R6Q74A",
-          "HPE StoreEver MSL LTO-9 Ultrium 45000 Fibre Channel Drive Upgrade Kit",
-          "0",
-          "33,000.00",
-          "NA",
-          "01/10/2022",
-          "05/31/2030"
-        ],
-        [
-          "R6Q75A",
-          "HPE StoreEver MSL LTO-9 Ultrium 45000 SAS Drive Upgrade Kit",
-          "0",
-          "24,000.00",
-          "NA",
-          "01/10/2022",
-          "05/31/2030"
-        ],
-        [
           "MSL Options"
         ],
         [
           "Encryption Kit (max 999)"
         ],
         [
-          "AM495A",
-          "Available",
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "Start",
-          "Discontinued",
-          "AM495A",
-          "HPE StoreEver 1/8 G2 Tape Autoloader and MSL Tape Library Encryption Kit",
-          "0",
-          "2,500.00",
-          "NA",
-          "10/23/2017",
-          "09/30/2027"
-        ],
-        [
-          "Available"
-        ],
-        [
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "Start",
-          "Discontinued"
-        ],
-        [
-          "AM495A",
-          "HPE StoreEver 1/8 G2 Tape Autoloader and MSL Tape Library Encryption Kit",
-          "0",
-          "2,500.00",
-          "NA",
-          "10/23/2017",
-          "09/30/2027"
-        ],
-        [
           "Power Supply (max 1)\n If user wants power redundancy, they need to select a second power supply for each module (Power Supply)\n If user wants to be TAA compliant, they need to select a second power supply for each module factory integrated (0D1). (Power Supply)"
-        ],
-        [
-          "Q6Q64A",
-          "Available",
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "Start",
-          "Discontinued",
-          "Q6Q64A",
-          "HPE StoreEver MSL3040 Upgrade Power Supply Kit",
-          "0",
-          "780.00",
-          "NA",
-          "12/04/2017",
-          "09/30/2031"
-        ],
-        [
-          "Available"
-        ],
-        [
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "Start",
-          "Discontinued"
-        ],
-        [
-          "Q6Q64A",
-          "HPE StoreEver MSL3040 Upgrade Power Supply Kit",
-          "0",
-          "780.00",
-          "NA",
-          "12/04/2017",
-          "09/30/2031"
         ],
         [
           "Cables"
@@ -280,478 +104,7 @@
           "FibreChannel Cables (max 999)\n Make sure to select the appropriate cable connectivity based on the tape drive you have selected. (FibreChannel Cables)\n Drives and libraries do not ship with FC cables . Order 1 or 2 cables per tape drive, selecting cable length to match the appropriate environment. Please choose a cable if customer does not have one on-site. (FibreChannel Cables)\n Drives and Libraries do not ship with SAS cables. One SAS cable is needed for each SAS drive for 1x cables (AE465A & AE470A), all other cables (AN975A, AN976A, K2R09A and K2R10A) support up to 4 tape drives per cable. Please choose cable if customer does not have one on-site. (FibreChannel Cables)"
         ],
         [
-          "AJ838A",
-          "Available",
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "HPE Recommended",
-          "Start",
-          "Discontinued",
-          "AJ838A",
-          "HPE LC to LC Multi-mode OM3 2-Fiber 30.0m 1-Pack Fiber Optic Cable",
-          "0",
-          "208.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028",
-          "AJ836A",
-          "HPE LC to LC Multi-mode OM3 2-Fiber 5.0m 1-Pack Fiber Optic Cable",
-          "0",
-          "115.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028",
-          "AJ839A",
-          "HPE LC to LC Multi-mode OM3 2-Fiber 50.0m 1-Pack Fiber Optic Cable",
-          "0",
-          "253.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028",
-          "QK732A",
-          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 1m Cable",
-          "0",
-          "115.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028",
-          "QK737A",
-          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 50m Cable",
-          "0",
-          "415.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028",
-          "AJ837A",
-          "HPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable",
-          "0",
-          "162.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028",
-          "QK735A",
-          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 15m Cable",
-          "0",
-          "195.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028",
-          "QK733A",
-          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 2m Cable",
-          "0",
-          "130.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028",
-          "QK736A",
-          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 30m Cable",
-          "0",
-          "239.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028",
-          "QK734A",
-          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable",
-          "0",
-          "147.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028"
-        ],
-        [
-          "Available"
-        ],
-        [
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "HPE Recommended",
-          "Start",
-          "Discontinued"
-        ],
-        [
-          "AJ838A",
-          "HPE LC to LC Multi-mode OM3 2-Fiber 30.0m 1-Pack Fiber Optic Cable",
-          "0",
-          "208.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028"
-        ],
-        [
-          "AJ836A",
-          "HPE LC to LC Multi-mode OM3 2-Fiber 5.0m 1-Pack Fiber Optic Cable",
-          "0",
-          "115.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028"
-        ],
-        [
-          "AJ839A",
-          "HPE LC to LC Multi-mode OM3 2-Fiber 50.0m 1-Pack Fiber Optic Cable",
-          "0",
-          "253.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028"
-        ],
-        [
-          "QK732A",
-          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 1m Cable",
-          "0",
-          "115.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028"
-        ],
-        [
-          "QK737A",
-          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 50m Cable",
-          "0",
-          "415.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028"
-        ],
-        [
-          "AJ837A",
-          "HPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable",
-          "0",
-          "162.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028"
-        ],
-        [
-          "QK735A",
-          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 15m Cable",
-          "0",
-          "195.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028"
-        ],
-        [
-          "QK733A",
-          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 2m Cable",
-          "0",
-          "130.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028"
-        ],
-        [
-          "QK736A",
-          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 30m Cable",
-          "0",
-          "239.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028"
-        ],
-        [
-          "QK734A",
-          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable",
-          "0",
-          "147.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2028"
-        ],
-        [
           "SAS Cables (max 999)"
-        ],
-        [
-          "716191-B21 [OB]",
-          "Available",
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "HPE Recommended",
-          "Start",
-          "Discontinued",
-          "716191-B21 [OB]",
-          "HPE 2.0m External Mini SAS High Density to Mini SAS Cable",
-          "0",
-          "221.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "08/31/2030",
-          "716193-B21 [OB]",
-          "HPE 4.0m External Mini SAS High Density to Mini SAS Cable",
-          "0",
-          "324.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "08/31/2030",
-          "K2R10A [OB]",
-          "HPE StoreEver Mini-SAS High Density to 4-lane Mini-SAS External Fanout 4m Cable",
-          "0",
-          "501.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "05/31/2027",
-          "AE470A [OB]",
-          "HPE SAS Min-Min 1x-2M Cable Assembly Kit",
-          "0",
-          "78.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "05/31/2022",
-          "AE465A [OB]",
-          "HPE SAS Min-Min 1x-4m Cable Assembly Kit",
-          "0",
-          "110.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "01/31/2022",
-          "AN975A [OB]",
-          "HPE StoreEver 2m External Mini-SAS to 4x1 Mini-SAS Cable",
-          "0",
-          "264.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "08/31/2025",
-          "AN976A [OB]",
-          "HPE StoreEver 4m External Mini-SAS to 4x1 Mini-SAS Cable",
-          "0",
-          "410.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "08/31/2025",
-          "K2R09A [OB]",
-          "HPE StoreEver Mini-SAS High Density to 4-lane Mini-SAS External Fanout 2m Cable",
-          "0",
-          "358.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "05/31/2027"
-        ],
-        [
-          "Available"
-        ],
-        [
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "HPE Recommended",
-          "Start",
-          "Discontinued"
-        ],
-        [
-          "716191-B21",
-          "HPE 2.0m External Mini SAS High Density to Mini SAS Cable",
-          "0",
-          "221.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "08/31/2030"
-        ],
-        [
-          "716193-B21",
-          "HPE 4.0m External Mini SAS High Density to Mini SAS Cable",
-          "0",
-          "324.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "08/31/2030"
-        ],
-        [
-          "K2R10A",
-          "HPE StoreEver Mini-SAS High Density to 4-lane Mini-SAS External Fanout 4m Cable",
-          "0",
-          "501.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "05/31/2027"
-        ],
-        [
-          "AE470A [OB]",
-          "HPE SAS Min-Min 1x-2M Cable Assembly Kit",
-          "0",
-          "78.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "05/31/2022"
-        ],
-        [
-          "AE465A [OB]",
-          "HPE SAS Min-Min 1x-4m Cable Assembly Kit",
-          "0",
-          "110.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "01/31/2022"
-        ],
-        [
-          "AN975A [OB]",
-          "HPE StoreEver 2m External Mini-SAS to 4x1 Mini-SAS Cable",
-          "0",
-          "264.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "08/31/2025"
-        ],
-        [
-          "AN976A [OB]",
-          "HPE StoreEver 4m External Mini-SAS to 4x1 Mini-SAS Cable",
-          "0",
-          "410.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "08/31/2025"
-        ],
-        [
-          "K2R09A",
-          "HPE StoreEver Mini-SAS High Density to 4-lane Mini-SAS External Fanout 2m Cable",
-          "0",
-          "358.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "05/31/2027"
-        ],
-        [
-          "716197-B21",
-          "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "HPE Recommended",
-          "Start",
-          "Discontinued",
-          "716197-B21",
-          "HPE External 2.0m (6ft) Mini-SAS HD 4x to Mini-SAS HD 4x Cable",
-          "0",
-          "177.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "08/31/2030",
-          "716199-B21",
-          "HPE External 4.0m (13ft) Mini-SAS HD 4x to Mini-SAS HD 4x Cable",
-          "0",
-          "287.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "08/31/2030",
-          "P35176-B21",
-          "HPE External 12Gb Mini SAS High Density to Mini SAS High Density 4-lane 2m Fanout Cable",
-          "0",
-          "206.00",
-          "NA",
-          "",
-          "01/10/2022",
-          "08/31/2030",
-          "P35175-B21",
-          "HPE External 12Gb Mini SAS High Density to Mini SAS High Density 4-lane 4m Fanout Cable",
-          "0",
-          "369.00",
-          "NA",
-          "",
-          "01/10/2022",
-          "08/31/2030"
-        ],
-        [
-          "Supported on LTO-9 SAS Drive (R6Q75A) Only."
-        ],
-        [
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "HPE Recommended",
-          "Start",
-          "Discontinued"
-        ],
-        [
-          "716197-B21",
-          "HPE External 2.0m (6ft) Mini-SAS HD 4x to Mini-SAS HD 4x Cable",
-          "0",
-          "177.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "08/31/2030"
-        ],
-        [
-          "716199-B21",
-          "HPE External 4.0m (13ft) Mini-SAS HD 4x to Mini-SAS HD 4x Cable",
-          "0",
-          "287.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "08/31/2030"
-        ],
-        [
-          "P35176-B21",
-          "HPE External 12Gb Mini SAS High Density to Mini SAS High Density 4-lane 2m Fanout Cable",
-          "0",
-          "206.00",
-          "NA",
-          "",
-          "01/10/2022",
-          "08/31/2030"
-        ],
-        [
-          "P35175-B21",
-          "HPE External 12Gb Mini SAS High Density to Mini SAS High Density 4-lane 4m Fanout Cable",
-          "0",
-          "369.00",
-          "NA",
-          "",
-          "01/10/2022",
-          "08/31/2030"
         ],
         [
           "Expansion Modules"
@@ -761,45 +114,6 @@
         ],
         [
           "Expansion Modules (max 15)\n The Base Module can hold up to 3 half-height tape drives, if user wants more than 3 tape drives they must select an Expansion Module(s) (Q6Q63A). (Expansion Modules)"
-        ],
-        [
-          "Q6Q63A",
-          "Available",
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "Start",
-          "Discontinued",
-          "Q6Q63A",
-          "HPE StoreEver MSL3040 Scalable Library Expansion Module",
-          "0",
-          "7,275.00",
-          "NA",
-          "12/04/2017",
-          "09/30/2031"
-        ],
-        [
-          "Available"
-        ],
-        [
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "Start",
-          "Discontinued"
-        ],
-        [
-          "Q6Q63A",
-          "HPE StoreEver MSL3040 Scalable Library Expansion Module",
-          "0",
-          "7,275.00",
-          "NA",
-          "12/04/2017",
-          "09/30/2031"
         ],
         [
           "Spooling Kit"
@@ -814,1643 +128,16 @@
           "Power Cord (no max)\n One HP 10A IEC320 C14-C13 8ft/2.4m PDU Cable (part number 142257-002) is included with this model. If not using the PDU power cord, please select the correct power cord for your geographical location (Power Cord)"
         ],
         [
-          "AF570A [90]",
-          "Available",
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "HPE Recommended",
-          "Start",
-          "Discontinued",
-          "AF570A [90]",
-          "HPE C13 - BS-1363A UK/HK/SG 250V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028",
-          "AF568A [90]",
-          "HPE C13 - CEE-VII EU 250V 10Amp 1.83m Power Cord",
-          "0",
-          "71.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "10/31/2031",
-          "AF557A [90]",
-          "HPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord",
-          "0",
-          "156.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "10/31/2031",
-          "AF556A [90]",
-          "HPE C13 - Nema 5-15P US/CA 110V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028",
-          "AF569A [90]",
-          "HPE C13 - AS3112-3 AU 250V 10Amp 2.5m Power Cord",
-          "0",
-          "65.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028",
-          "142257-002 [90]",
-          "HPE C13 - C14 WW 250V 10Amp 2.5m Jumper Cord",
-          "0",
-          "34.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2026",
-          "AF571A [90]",
-          "HPE C13 - CEI-23-50 IT/CL 250V 10Amp 1.83m Power Cord",
-          "0",
-          "NA",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2018",
-          "AF561A [90]",
-          "HPE C13 - CNS-690 TW 110V 13Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028",
-          "AF566A [90]",
-          "HPE C13 - DK-2.5A DK 250V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028",
-          "AF558A [90]",
-          "HPE C13 - IRAM -2073 AR 250V 10A 2.5m Power Cord",
-          "0",
-          "65.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028",
-          "AF562A [90]",
-          "HPE C13 - IS-1293 IN 240V 6Amp LV 2.0m Power Cord",
-          "0",
-          "194.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "10/31/2031",
-          "SG579A [90]",
-          "HPE C13 - IS-1293 IN 250V 10Amp HV 2.5m Power Cord",
-          "0",
-          "142.00",
-          "NA",
-          "",
-          "11/19/2018",
-          "11/30/2022",
-          "AF572A [90]",
-          "HPE C13 - JIS C8303 JP 100V 12Amp 2.0m Power Cord",
-          "0",
-          "60.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028",
-          "AF560A [90]",
-          "HPE C13 - KSC- 8305 KR 250V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028",
-          "AF559A [90]",
-          "HPE C13 - Nema 5-15P TH/PH 250V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028",
-          "AF567A [90]",
-          "HPE C13 - SABS-164 ZA 250V 10Amp 2.5m Power Cord",
-          "0",
-          "65.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028",
-          "AF565A [90]",
-          "HPE C13 - SEV 1011 CH 250V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028",
-          "AF564A [90]",
-          "HPE C13 - SI-32 IL 250V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028"
-        ],
-        [
-          "Available"
-        ],
-        [
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "HPE Recommended",
-          "Start",
-          "Discontinued"
-        ],
-        [
-          "AF570A",
-          "HPE C13 - BS-1363A UK/HK/SG 250V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028"
-        ],
-        [
-          "AF568A",
-          "HPE C13 - CEE-VII EU 250V 10Amp 1.83m Power Cord",
-          "0",
-          "71.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "10/31/2031"
-        ],
-        [
-          "AF557A",
-          "HPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord",
-          "0",
-          "156.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "10/31/2031"
-        ],
-        [
-          "AF556A",
-          "HPE C13 - Nema 5-15P US/CA 110V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028"
-        ],
-        [
-          "AF569A",
-          "HPE C13 - AS3112-3 AU 250V 10Amp 2.5m Power Cord",
-          "0",
-          "65.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028"
-        ],
-        [
-          "142257-002 [90]",
-          "HPE C13 - C14 WW 250V 10Amp 2.5m Jumper Cord",
-          "0",
-          "34.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "11/30/2026"
-        ],
-        [
-          "AF571A [OB]",
-          "HPE C13 - CEI-23-50 IT/CL 250V 10Amp 1.83m Power Cord",
-          "0",
-          "NA",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2018"
-        ],
-        [
-          "AF561A",
-          "HPE C13 - CNS-690 TW 110V 13Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028"
-        ],
-        [
-          "AF566A",
-          "HPE C13 - DK-2.5A DK 250V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028"
-        ],
-        [
-          "AF558A",
-          "HPE C13 - IRAM -2073 AR 250V 10A 2.5m Power Cord",
-          "0",
-          "65.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028"
-        ],
-        [
-          "AF562A",
-          "HPE C13 - IS-1293 IN 240V 6Amp LV 2.0m Power Cord",
-          "0",
-          "194.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "10/31/2031"
-        ],
-        [
-          "SG579A [OB]",
-          "HPE C13 - IS-1293 IN 250V 10Amp HV 2.5m Power Cord",
-          "0",
-          "142.00",
-          "NA",
-          "",
-          "11/19/2018",
-          "11/30/2022"
-        ],
-        [
-          "AF572A",
-          "HPE C13 - JIS C8303 JP 100V 12Amp 2.0m Power Cord",
-          "0",
-          "60.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028"
-        ],
-        [
-          "AF560A",
-          "HPE C13 - KSC- 8305 KR 250V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028"
-        ],
-        [
-          "AF559A",
-          "HPE C13 - Nema 5-15P TH/PH 250V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028"
-        ],
-        [
-          "AF567A",
-          "HPE C13 - SABS-164 ZA 250V 10Amp 2.5m Power Cord",
-          "0",
-          "65.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028"
-        ],
-        [
-          "AF565A",
-          "HPE C13 - SEV 1011 CH 250V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028"
-        ],
-        [
-          "AF564A",
-          "HPE C13 - SI-32 IL 250V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028"
-        ],
-        [
           "Storage Media"
         ],
         [
           "Storage Media (max 999)"
         ],
         [
-          "C7973A [OB]",
-          "Available",
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "Start",
-          "Discontinued",
-          "C7973A [OB]",
-          "HPE LTO-3 Ultrium 800 GB Re-writable Data Cartridge",
-          "0",
-          "61.35",
-          "NA",
-          "10/23/2017",
-          "10/31/2018",
-          "C7973W [OB]",
-          "HPE LTO-3 Ultrium 800 GB WORM Data Cartridge",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "10/31/2018",
-          "C7973AL [OB]",
-          "HPE LTO-3 Ultrium 800GB RW Labeled Data Cartridge 20 Pack",
-          "0",
-          "NA",
-          "NA",
-          "10/31/2018",
-          "10/31/2018",
-          "C7974AN [OB]",
-          "HPE LTO-4 Ultrium 1.6TB Non-custom Label Data Cartridge 20 Pack",
-          "0",
-          "695.91",
-          "NA",
-          "10/23/2017",
-          "01/31/2023",
-          "C7974AL [OB]",
-          "HPE LTO-4 Ultrium 1.6TB RW Custom Label Data Cartridge 20 Pack",
-          "0",
-          "1,182.63",
-          "NA",
-          "10/31/2018",
-          "04/28/2022",
-          "Q2009A [OB]",
-          "HPE LTO-4 Ultrium Read/Write Bar Code Label Pack",
-          "0",
-          "197.87",
-          "NA",
-          "10/23/2017",
-          "05/31/2022",
-          "Q2010A [OB]",
-          "HPE LTO-4 Ultrium WORM Bar Code Label Pack",
-          "0",
-          "199.05",
-          "NA",
-          "10/23/2017",
-          "01/31/2024",
-          "C7975AL [OB]",
-          "HPE LTO-5 RW Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "929.43",
-          "NA",
-          "10/23/2017",
-          "03/15/2025",
-          "C7975AA [OB]",
-          "HPE LTO-5 Ultrium 3TB RW 20 Data Cartridges",
-          "0",
-          "NA",
-          "NA",
-          "12/03/2018",
-          "03/15/2025",
-          "C7975A [OB]",
-          "HPE LTO-5 Ultrium 3TB RW Data Cartridge",
-          "0",
-          "46.46",
-          "NA",
-          "10/23/2017",
-          "07/31/2026",
-          "C7975W [OB]",
-          "HPE LTO-5 Ultrium 3TB WORM Data Cartridge",
-          "0",
-          "53.12",
-          "NA",
-          "10/23/2017",
-          "11/30/2023",
-          "C7975AN [OB]",
-          "HPE LTO-5 Ultrium Non-custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "929.43",
-          "NA",
-          "10/23/2017",
-          "12/23/2025",
-          "Q2011A [OB]",
-          "HPE LTO-5 Ultrium RW Bar Code Label Pack",
-          "0",
-          "92.99",
-          "NA",
-          "10/23/2017",
-          "07/31/2026",
-          "Q2012A [OB]",
-          "HPE LTO-5 Ultrium WORM Bar Code Label Pack",
-          "0",
-          "199.05",
-          "NA",
-          "10/23/2017",
-          "02/28/2024",
-          "C7976BL [OB]",
-          "HPE LTO-6 Ultrium 6.25TB BaFe RW Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "1,146.39",
-          "NA",
-          "10/23/2017",
-          "03/15/2025",
-          "C7976B [OB]",
-          "HPE LTO-6 Ultrium 6.25TB BaFe RW Data Cartridge",
-          "0",
-          "57.32",
-          "NA",
-          "10/23/2017",
-          "07/07/2025",
-          "C7976BN [OB]",
-          "HPE LTO-6 Ultrium 6.25TB BaFe RW Non Custom Labeled Data Cartridges 20 Pack",
-          "0",
-          "1,293.13",
-          "NA",
-          "10/23/2017",
-          "04/20/2026",
-          "C7976BW [OB]",
-          "HPE LTO-6 Ultrium 6.25TB BaFe WORM Data Cartridge",
-          "0",
-          "86.76",
-          "NA",
-          "10/23/2017",
-          "04/20/2026",
-          "C7976AF [OB]",
-          "HPE LTO-6 Ultrium 6.25TB MP RFID RW Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "10/31/2018",
-          "C7976AA [OB]",
-          "HPE LTO-6 Ultrium 6.25TB RW 20 Data Cartridges",
-          "0",
-          "NA",
-          "NA",
-          "12/03/2018",
-          "09/30/2031",
-          "C7976AC [OB]",
-          "HPE LTO-6 Ultrium 6.25TB RW Custom Labeled 20 Data Cartridges Library Pack without Cases",
-          "0",
-          "1,530.46",
-          "NA",
-          "10/23/2017",
-          "09/30/2031",
-          "C7976AL [OB]",
-          "HPE LTO-6 Ultrium 6.25TB RW Custom Labeled 20 Data Cartridges with Cases",
-          "0",
-          "1,530.47",
-          "NA",
-          "10/23/2017",
-          "09/30/2031",
-          "C7976A [OB]",
-          "HPE LTO-6 Ultrium 6.25TB RW Data Cartridge",
-          "0",
-          "76.53",
-          "NA",
-          "10/23/2017",
-          "09/30/2031",
-          "C7976AN [OB]",
-          "HPE LTO-6 Ultrium 6.25TB RW Non Custom Labeled 20 Data Cartridges with Cases",
-          "0",
-          "1,530.47",
-          "NA",
-          "10/23/2017",
-          "09/30/2031",
-          "C7976WL [OB]",
-          "HPE LTO-6 Ultrium 6.25TB WORM Custom Labeled 20 Data Cartridges with Cases",
-          "0",
-          "2,176.50",
-          "NA",
-          "10/23/2017",
-          "09/30/2031",
-          "C7976W [OB]",
-          "HPE LTO-6 Ultrium 6.25TB WORM Data Cartridge",
-          "0",
-          "108.82",
-          "NA",
-          "10/23/2017",
-          "09/30/2031",
-          "Q2013A [OB]",
-          "HPE LTO-6 Ultrium RW Bar Code Label Pack",
-          "0",
-          "92.99",
-          "NA",
-          "10/23/2017",
-          "09/30/2031",
-          "C7977AH [OB]",
-          "HPE LTO-7 Ultrium 15TB Eco Case Data Cartridge 20 Pack",
-          "0",
-          "2,205.96",
-          "NA",
-          "10/23/2017",
-          "10/31/2036",
-          "C7977A [OB]",
-          "HPE LTO-7 Ultrium 15TB RW Data Cartridge",
-          "0",
-          "110.30",
-          "NA",
-          "10/23/2017",
-          "10/31/2036",
-          "C7977AN [OB]",
-          "HPE LTO-7 Ultrium Non Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "2,205.96",
-          "NA",
-          "10/23/2017",
-          "10/31/2036",
-          "C7977AF [OB]",
-          "HPE LTO-7 Ultrium RFID RW Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "10/31/2018",
-          "Q2014A [OB]",
-          "HPE LTO-7 Ultrium RW Bar Code Label Pack",
-          "0",
-          "92.99",
-          "NA",
-          "10/23/2017",
-          "10/31/2036",
-          "C7977AL [OB]",
-          "HPE LTO-7 Ultrium RW Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "2,205.96",
-          "NA",
-          "10/23/2017",
-          "10/31/2036",
-          "C7977AC [OB]",
-          "HPE LTO-7 Ultrium RW No Case Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "2,205.96",
-          "NA",
-          "10/23/2017",
-          "10/31/2036",
-          "Q2078MC [OB]",
-          "HPE LTO-7 Ultrium Type M 22.5TB RW 20 Data Cartridges Custom Labeled Library Pack without Cases",
-          "0",
-          "1,617.88",
-          "NA",
-          "02/05/2018",
-          "07/01/2023",
-          "Q2078ML [OB]",
-          "HPE LTO-7 Ultrium Type M 22.5TB RW 20 Data Cartridges Custom Labeled with Cases",
-          "0",
-          "1,617.88",
-          "NA",
-          "02/05/2018",
-          "07/01/2023",
-          "Q2078MN [OB]",
-          "HPE LTO-7 Ultrium Type M 22.5TB RW 20 Data Cartridges Non Custom Labeled with Cases",
-          "0",
-          "1,617.88",
-          "NA",
-          "02/05/2018",
-          "07/01/2023",
-          "Q2016A [OB]",
-          "HPE LTO-7 Ultrium Type M RW Bar Code Label Pack",
-          "0",
-          "199.05",
-          "NA",
-          "02/05/2018",
-          "07/01/2023",
-          "C7977WL [OB]",
-          "HPE LTO-7 Ultrium WORM Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "3,044.17",
-          "NA",
-          "10/23/2017",
-          "10/31/2036",
-          "C7977W [OB]",
-          "HPE LTO-7 Ultrium WORM Data Cartridge",
-          "0",
-          "152.20",
-          "NA",
-          "10/23/2017",
-          "10/31/2036",
-          "Q2078AH [OB]",
-          "HPE LTO-8 Ultrium 30TB RW 20 Data Cartridges Library Pack without Cases",
-          "0",
-          "2,348.24",
-          "NA",
-          "08/14/2019",
-          "10/31/2036",
-          "Q2078AL [OB]",
-          "HPE LTO-8 Ultrium 30TB RW Custom Labeled Library Pack 20 Data Cartridges with Cases",
-          "0",
-          "2,348.24",
-          "NA",
-          "08/14/2019",
-          "10/31/2036",
-          "Q2078AC [OB]",
-          "HPE LTO-8 Ultrium 30TB RW Custom Labeled Library Pack 20 Data Cartridges without Cases",
-          "0",
-          "2,348.24",
-          "NA",
-          "08/14/2019",
-          "10/31/2036",
-          "Q2078A [OB]",
-          "HPE LTO-8 Ultrium 30TB RW Data Cartridge",
-          "0",
-          "117.43",
-          "NA",
-          "08/14/2019",
-          "10/31/2036",
-          "Q2078AN [OB]",
-          "HPE LTO-8 Ultrium 30TB RW Non Custom Labeled Library Pack 20 Data Cartridges with Cases",
-          "0",
-          "2,348.24",
-          "NA",
-          "08/14/2019",
-          "10/31/2036",
-          "Q2078WL [OB]",
-          "HPE LTO-8 Ultrium 30TB WORM Custom Labeled 20 Data Cartridges with Cases",
-          "0",
-          "3,240.72",
-          "NA",
-          "08/14/2019",
-          "10/31/2036",
-          "Q2078W [OB]",
-          "HPE LTO-8 Ultrium 30TB WORM Data Cartridge",
-          "0",
-          "162.07",
-          "NA",
-          "08/14/2019",
-          "10/31/2036",
-          "Q2015A [OB]",
-          "HPE LTO-8 Ultrium RW Bar Code Label Pack",
-          "0",
-          "92.99",
-          "NA",
-          "12/04/2017",
-          "10/31/2036",
-          "Q2079AH [OB]",
-          "HPE LTO-9 Ultrium 45TB RW 20 Data Cartridges Library Pack without Cases",
-          "0",
-          "2,911.01",
-          "NA",
-          "09/07/2021",
-          "11/30/2030",
-          "Q2079AL [OB]",
-          "HPE LTO-9 Ultrium 45TB RW Custom Labeled 20 Data Cartridges with Cases",
-          "0",
-          "2,911.01",
-          "NA",
-          "09/07/2021",
-          "11/30/2030",
-          "Q2079AC [OB]",
-          "HPE LTO-9 Ultrium 45TB RW Custom Labeled Library Pack 20 Data Cartridges without Cases",
-          "0",
-          "2,911.01",
-          "NA",
-          "09/07/2021",
-          "11/30/2030",
-          "Q2079A [OB]",
-          "HPE LTO-9 Ultrium 45TB RW Data Cartridge",
-          "0",
-          "145.56",
-          "NA",
-          "09/07/2021",
-          "11/30/2030",
-          "Q2079AN [OB]",
-          "HPE LTO-9 Ultrium 45TB RW Non Custom Labeled 20 Data Cartridges with Cases",
-          "0",
-          "2,911.01",
-          "NA",
-          "09/07/2021",
-          "11/30/2030",
-          "Q2079WL [OB]",
-          "HPE LTO-9 Ultrium 45TB WORM Custom Labeled 20 Data Cartridges with Cases",
-          "0",
-          "3,976.02",
-          "NA",
-          "09/07/2021",
-          "11/30/2030",
-          "Q2079W [OB]",
-          "HPE LTO-9 Ultrium 45TB WORM Data Cartridge",
-          "0",
-          "198.80",
-          "NA",
-          "09/07/2021",
-          "11/30/2030",
-          "Q2017A [OB]",
-          "HPE LTO-9 Ultrium RW Bar Code Label Pack",
-          "0",
-          "92.99",
-          "NA",
-          "09/07/2021",
-          "11/30/2030",
-          "C7972A [OB]",
-          "HPE LTO2 Ultrium 400GB RW Data Tape",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "10/31/2017",
-          "C7974A [OB]",
-          "HPE LTO4 Ultrium 1.6TB Read/Write Data Cartridge",
-          "0",
-          "58.24",
-          "NA",
-          "10/23/2017",
-          "05/31/2022",
-          "C7974W [OB]",
-          "HPE LTO4 Ultrium 1.6TB WORM Data Tape Cartridge",
-          "0",
-          "41.63",
-          "NA",
-          "10/23/2017",
-          "01/31/2024",
-          "Q2007A [OB]",
-          "HPE Ultrium 3 RW Bar Code Label Pack",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "10/31/2018",
-          "Q2008A [OB]",
-          "HPE Ultrium 3 WORM Bar Code Label Pack",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "10/31/2018",
-          "C7972AN [OB]",
-          "HPE Ultrium 400GB Non-custom Label 20 Pack",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "12/31/2017",
-          "C7973AN [OB]",
-          "HPE Ultrium 800GB Non-custom Label 20 Pack",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "10/31/2018",
-          "C7978A [OB]",
-          "HPE Ultrium Universal Cleaning Cartridge",
-          "0",
-          "77.62",
-          "NA",
-          "10/23/2017",
-          "10/31/2036"
-        ],
-        [
-          "Available"
-        ],
-        [
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "Start",
-          "Discontinued"
-        ],
-        [
-          "C7973A [OB]",
-          "HPE LTO-3 Ultrium 800 GB Re-writable Data Cartridge",
-          "0",
-          "61.35",
-          "NA",
-          "10/23/2017",
-          "10/31/2018"
-        ],
-        [
-          "C7973W [OB]",
-          "HPE LTO-3 Ultrium 800 GB WORM Data Cartridge",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "10/31/2018"
-        ],
-        [
-          "C7973AL [OB]",
-          "HPE LTO-3 Ultrium 800GB RW Labeled Data Cartridge 20 Pack",
-          "0",
-          "NA",
-          "NA",
-          "10/31/2018",
-          "10/31/2018"
-        ],
-        [
-          "C7974AN [OB]",
-          "HPE LTO-4 Ultrium 1.6TB Non-custom Label Data Cartridge 20 Pack",
-          "0",
-          "695.91",
-          "NA",
-          "10/23/2017",
-          "01/31/2023"
-        ],
-        [
-          "C7974AL [OB]",
-          "HPE LTO-4 Ultrium 1.6TB RW Custom Label Data Cartridge 20 Pack",
-          "0",
-          "1,182.63",
-          "NA",
-          "10/31/2018",
-          "04/28/2022"
-        ],
-        [
-          "Q2009A [OB]",
-          "HPE LTO-4 Ultrium Read/Write Bar Code Label Pack",
-          "0",
-          "197.87",
-          "NA",
-          "10/23/2017",
-          "05/31/2022"
-        ],
-        [
-          "Q2010A [OB]",
-          "HPE LTO-4 Ultrium WORM Bar Code Label Pack",
-          "0",
-          "199.05",
-          "NA",
-          "10/23/2017",
-          "01/31/2024"
-        ],
-        [
-          "C7975AL [OB]",
-          "HPE LTO-5 RW Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "929.43",
-          "NA",
-          "10/23/2017",
-          "03/15/2025"
-        ],
-        [
-          "C7975AA [OB]",
-          "HPE LTO-5 Ultrium 3TB RW 20 Data Cartridges",
-          "0",
-          "NA",
-          "NA",
-          "12/03/2018",
-          "03/15/2025"
-        ],
-        [
-          "C7975A [DS]",
-          "HPE LTO-5 Ultrium 3TB RW Data Cartridge",
-          "0",
-          "46.46",
-          "NA",
-          "10/23/2017",
-          "07/31/2026"
-        ],
-        [
-          "C7975W [OB]",
-          "HPE LTO-5 Ultrium 3TB WORM Data Cartridge",
-          "0",
-          "53.12",
-          "NA",
-          "10/23/2017",
-          "11/30/2023"
-        ],
-        [
-          "C7975AN [OB]",
-          "HPE LTO-5 Ultrium Non-custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "929.43",
-          "NA",
-          "10/23/2017",
-          "12/23/2025"
-        ],
-        [
-          "Q2011A [DS]",
-          "HPE LTO-5 Ultrium RW Bar Code Label Pack",
-          "0",
-          "92.99",
-          "NA",
-          "10/23/2017",
-          "07/31/2026"
-        ],
-        [
-          "Q2012A [OB]",
-          "HPE LTO-5 Ultrium WORM Bar Code Label Pack",
-          "0",
-          "199.05",
-          "NA",
-          "10/23/2017",
-          "02/28/2024"
-        ],
-        [
-          "C7976BL [OB]",
-          "HPE LTO-6 Ultrium 6.25TB BaFe RW Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "1,146.39",
-          "NA",
-          "10/23/2017",
-          "03/15/2025"
-        ],
-        [
-          "C7976B [OB]",
-          "HPE LTO-6 Ultrium 6.25TB BaFe RW Data Cartridge",
-          "0",
-          "57.32",
-          "NA",
-          "10/23/2017",
-          "07/07/2025"
-        ],
-        [
-          "C7976BN [OB]",
-          "HPE LTO-6 Ultrium 6.25TB BaFe RW Non Custom Labeled Data Cartridges 20 Pack",
-          "0",
-          "1,293.13",
-          "NA",
-          "10/23/2017",
-          "04/20/2026"
-        ],
-        [
-          "C7976BW [OB]",
-          "HPE LTO-6 Ultrium 6.25TB BaFe WORM Data Cartridge",
-          "0",
-          "86.76",
-          "NA",
-          "10/23/2017",
-          "04/20/2026"
-        ],
-        [
-          "C7976AF [OB]",
-          "HPE LTO-6 Ultrium 6.25TB MP RFID RW Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "10/31/2018"
-        ],
-        [
-          "C7976AA",
-          "HPE LTO-6 Ultrium 6.25TB RW 20 Data Cartridges",
-          "0",
-          "NA",
-          "NA",
-          "12/03/2018",
-          "09/30/2031"
-        ],
-        [
-          "C7976AC",
-          "HPE LTO-6 Ultrium 6.25TB RW Custom Labeled 20 Data Cartridges Library Pack without Cases",
-          "0",
-          "1,530.46",
-          "NA",
-          "10/23/2017",
-          "09/30/2031"
-        ],
-        [
-          "C7976AL",
-          "HPE LTO-6 Ultrium 6.25TB RW Custom Labeled 20 Data Cartridges with Cases",
-          "0",
-          "1,530.47",
-          "NA",
-          "10/23/2017",
-          "09/30/2031"
-        ],
-        [
-          "C7976A",
-          "HPE LTO-6 Ultrium 6.25TB RW Data Cartridge",
-          "0",
-          "76.53",
-          "NA",
-          "10/23/2017",
-          "09/30/2031"
-        ],
-        [
-          "C7976AN",
-          "HPE LTO-6 Ultrium 6.25TB RW Non Custom Labeled 20 Data Cartridges with Cases",
-          "0",
-          "1,530.47",
-          "NA",
-          "10/23/2017",
-          "09/30/2031"
-        ],
-        [
-          "C7976WL",
-          "HPE LTO-6 Ultrium 6.25TB WORM Custom Labeled 20 Data Cartridges with Cases",
-          "0",
-          "2,176.50",
-          "NA",
-          "10/23/2017",
-          "09/30/2031"
-        ],
-        [
-          "C7976W",
-          "HPE LTO-6 Ultrium 6.25TB WORM Data Cartridge",
-          "0",
-          "108.82",
-          "NA",
-          "10/23/2017",
-          "09/30/2031"
-        ],
-        [
-          "Q2013A",
-          "HPE LTO-6 Ultrium RW Bar Code Label Pack",
-          "0",
-          "92.99",
-          "NA",
-          "10/23/2017",
-          "09/30/2031"
-        ],
-        [
-          "C7977AH",
-          "HPE LTO-7 Ultrium 15TB Eco Case Data Cartridge 20 Pack",
-          "0",
-          "2,205.96",
-          "NA",
-          "10/23/2017",
-          "10/31/2036"
-        ],
-        [
-          "C7977A",
-          "HPE LTO-7 Ultrium 15TB RW Data Cartridge",
-          "0",
-          "110.30",
-          "NA",
-          "10/23/2017",
-          "10/31/2036"
-        ],
-        [
-          "C7977AN",
-          "HPE LTO-7 Ultrium Non Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "2,205.96",
-          "NA",
-          "10/23/2017",
-          "10/31/2036"
-        ],
-        [
-          "C7977AF [OB]",
-          "HPE LTO-7 Ultrium RFID RW Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "10/31/2018"
-        ],
-        [
-          "Q2014A",
-          "HPE LTO-7 Ultrium RW Bar Code Label Pack",
-          "0",
-          "92.99",
-          "NA",
-          "10/23/2017",
-          "10/31/2036"
-        ],
-        [
-          "C7977AL",
-          "HPE LTO-7 Ultrium RW Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "2,205.96",
-          "NA",
-          "10/23/2017",
-          "10/31/2036"
-        ],
-        [
-          "C7977AC",
-          "HPE LTO-7 Ultrium RW No Case Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "2,205.96",
-          "NA",
-          "10/23/2017",
-          "10/31/2036"
-        ],
-        [
-          "Q2078MC [OB]",
-          "HPE LTO-7 Ultrium Type M 22.5TB RW 20 Data Cartridges Custom Labeled Library Pack without Cases",
-          "0",
-          "1,617.88",
-          "NA",
-          "02/05/2018",
-          "07/01/2023"
-        ],
-        [
-          "Q2078ML [OB]",
-          "HPE LTO-7 Ultrium Type M 22.5TB RW 20 Data Cartridges Custom Labeled with Cases",
-          "0",
-          "1,617.88",
-          "NA",
-          "02/05/2018",
-          "07/01/2023"
-        ],
-        [
-          "Q2078MN [OB]",
-          "HPE LTO-7 Ultrium Type M 22.5TB RW 20 Data Cartridges Non Custom Labeled with Cases",
-          "0",
-          "1,617.88",
-          "NA",
-          "02/05/2018",
-          "07/01/2023"
-        ],
-        [
-          "Q2016A [OB]",
-          "HPE LTO-7 Ultrium Type M RW Bar Code Label Pack",
-          "0",
-          "199.05",
-          "NA",
-          "02/05/2018",
-          "07/01/2023"
-        ],
-        [
-          "C7977WL",
-          "HPE LTO-7 Ultrium WORM Custom Labeled Data Cartridge 20 Pack",
-          "0",
-          "3,044.17",
-          "NA",
-          "10/23/2017",
-          "10/31/2036"
-        ],
-        [
-          "C7977W",
-          "HPE LTO-7 Ultrium WORM Data Cartridge",
-          "0",
-          "152.20",
-          "NA",
-          "10/23/2017",
-          "10/31/2036"
-        ],
-        [
-          "Q2078AH",
-          "HPE LTO-8 Ultrium 30TB RW 20 Data Cartridges Library Pack without Cases",
-          "0",
-          "2,348.24",
-          "NA",
-          "08/14/2019",
-          "10/31/2036"
-        ],
-        [
-          "Q2078AL",
-          "HPE LTO-8 Ultrium 30TB RW Custom Labeled Library Pack 20 Data Cartridges with Cases",
-          "0",
-          "2,348.24",
-          "NA",
-          "08/14/2019",
-          "10/31/2036"
-        ],
-        [
-          "Q2078AC",
-          "HPE LTO-8 Ultrium 30TB RW Custom Labeled Library Pack 20 Data Cartridges without Cases",
-          "0",
-          "2,348.24",
-          "NA",
-          "08/14/2019",
-          "10/31/2036"
-        ],
-        [
-          "Q2078A",
-          "HPE LTO-8 Ultrium 30TB RW Data Cartridge",
-          "0",
-          "117.43",
-          "NA",
-          "08/14/2019",
-          "10/31/2036"
-        ],
-        [
-          "Q2078AN",
-          "HPE LTO-8 Ultrium 30TB RW Non Custom Labeled Library Pack 20 Data Cartridges with Cases",
-          "0",
-          "2,348.24",
-          "NA",
-          "08/14/2019",
-          "10/31/2036"
-        ],
-        [
-          "Q2078WL",
-          "HPE LTO-8 Ultrium 30TB WORM Custom Labeled 20 Data Cartridges with Cases",
-          "0",
-          "3,240.72",
-          "NA",
-          "08/14/2019",
-          "10/31/2036"
-        ],
-        [
-          "Q2078W",
-          "HPE LTO-8 Ultrium 30TB WORM Data Cartridge",
-          "0",
-          "162.07",
-          "NA",
-          "08/14/2019",
-          "10/31/2036"
-        ],
-        [
-          "Q2015A",
-          "HPE LTO-8 Ultrium RW Bar Code Label Pack",
-          "0",
-          "92.99",
-          "NA",
-          "12/04/2017",
-          "10/31/2036"
-        ],
-        [
-          "Q2079AH",
-          "HPE LTO-9 Ultrium 45TB RW 20 Data Cartridges Library Pack without Cases",
-          "0",
-          "2,911.01",
-          "NA",
-          "09/07/2021",
-          "11/30/2030"
-        ],
-        [
-          "Q2079AL",
-          "HPE LTO-9 Ultrium 45TB RW Custom Labeled 20 Data Cartridges with Cases",
-          "0",
-          "2,911.01",
-          "NA",
-          "09/07/2021",
-          "11/30/2030"
-        ],
-        [
-          "Q2079AC",
-          "HPE LTO-9 Ultrium 45TB RW Custom Labeled Library Pack 20 Data Cartridges without Cases",
-          "0",
-          "2,911.01",
-          "NA",
-          "09/07/2021",
-          "11/30/2030"
-        ],
-        [
-          "Q2079A",
-          "HPE LTO-9 Ultrium 45TB RW Data Cartridge",
-          "0",
-          "145.56",
-          "NA",
-          "09/07/2021",
-          "11/30/2030"
-        ],
-        [
-          "Q2079AN",
-          "HPE LTO-9 Ultrium 45TB RW Non Custom Labeled 20 Data Cartridges with Cases",
-          "0",
-          "2,911.01",
-          "NA",
-          "09/07/2021",
-          "11/30/2030"
-        ],
-        [
-          "Q2079WL",
-          "HPE LTO-9 Ultrium 45TB WORM Custom Labeled 20 Data Cartridges with Cases",
-          "0",
-          "3,976.02",
-          "NA",
-          "09/07/2021",
-          "11/30/2030"
-        ],
-        [
-          "Q2079W",
-          "HPE LTO-9 Ultrium 45TB WORM Data Cartridge",
-          "0",
-          "198.80",
-          "NA",
-          "09/07/2021",
-          "11/30/2030"
-        ],
-        [
-          "Q2017A",
-          "HPE LTO-9 Ultrium RW Bar Code Label Pack",
-          "0",
-          "92.99",
-          "NA",
-          "09/07/2021",
-          "11/30/2030"
-        ],
-        [
-          "C7972A [OB]",
-          "HPE LTO2 Ultrium 400GB RW Data Tape",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "10/31/2017"
-        ],
-        [
-          "C7974A [OB]",
-          "HPE LTO4 Ultrium 1.6TB Read/Write Data Cartridge",
-          "0",
-          "58.24",
-          "NA",
-          "10/23/2017",
-          "05/31/2022"
-        ],
-        [
-          "C7974W [OB]",
-          "HPE LTO4 Ultrium 1.6TB WORM Data Tape Cartridge",
-          "0",
-          "41.63",
-          "NA",
-          "10/23/2017",
-          "01/31/2024"
-        ],
-        [
-          "Q2007A [OB]",
-          "HPE Ultrium 3 RW Bar Code Label Pack",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "10/31/2018"
-        ],
-        [
-          "Q2008A [OB]",
-          "HPE Ultrium 3 WORM Bar Code Label Pack",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "10/31/2018"
-        ],
-        [
-          "C7972AN [OB]",
-          "HPE Ultrium 400GB Non-custom Label 20 Pack",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "12/31/2017"
-        ],
-        [
-          "C7973AN [OB]",
-          "HPE Ultrium 800GB Non-custom Label 20 Pack",
-          "0",
-          "NA",
-          "NA",
-          "10/23/2017",
-          "10/31/2018"
-        ],
-        [
-          "C7978A",
-          "HPE Ultrium Universal Cleaning Cartridge",
-          "0",
-          "77.62",
-          "NA",
-          "10/23/2017",
-          "10/31/2036"
-        ],
-        [
           "Software"
         ],
         [
           "Software (no max)"
-        ],
-        [
-          "TC406AAE [OB]",
-          "Available",
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "Start",
-          "Discontinued",
-          "TC406AAE [OB]",
-          "HPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced E-LTU",
-          "0",
-          "2,500.00",
-          "NA",
-          "10/23/2017",
-          "10/31/2028",
-          "TC406A [OB]",
-          "HPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced LTU",
-          "0",
-          "2,500.00",
-          "NA",
-          "10/23/2017",
-          "10/31/2028",
-          "Q8K43AAE [OB]",
-          "HPE StoreEver MSL3040 Command View for Tape Libraries - Data Verification 100 Cartridges E-LTU",
-          "1",
-          "1,750.00",
-          "1,750.00",
-          "12/04/2017",
-          "12/31/2028",
-          "Q8K96AAE [OB]",
-          "HPE StoreEver MSL3040 High Availability LTO-6 Control Path Failover E-LTU",
-          "0",
-          "3,000.00",
-          "NA",
-          "12/04/2017",
-          "05/01/2024",
-          "Q8K96A [OB]",
-          "HPE StoreEver MSL3040 High Availability LTO-6 Control Path Failover LTU",
-          "0",
-          "3,000.00",
-          "NA",
-          "12/04/2017",
-          "03/31/2023",
-          "Q8K97AAE [OB]",
-          "HPE StoreEver MSL3040 High Availability LTO-6 Data Path Failover E-LTU",
-          "0",
-          "3,000.00",
-          "NA",
-          "12/04/2017",
-          "05/01/2024",
-          "Q8K97A [OB]",
-          "HPE StoreEver MSL3040 High Availability LTO-6 Data Path Failover LTU",
-          "0",
-          "3,000.00",
-          "NA",
-          "12/04/2017",
-          "03/31/2023",
-          "Q8K98AAE [OB]",
-          "HPE StoreEver MSL3040 KMIP Key Manager E-LTU",
-          "0",
-          "6,000.00",
-          "NA",
-          "12/04/2017",
-          "10/31/2028",
-          "Q8K98A [OB]",
-          "HPE StoreEver MSL3040 KMIP Key Manager LTU",
-          "0",
-          "6,000.00",
-          "NA",
-          "12/04/2017",
-          "12/31/2028",
-          "Q8L00AAE [OB]",
-          "HPE StoreEver MSL3040 LTO-7+ Path Failover E-LTU",
-          "0",
-          "6,000.00",
-          "NA",
-          "12/04/2017",
-          "10/31/2028",
-          "Q8L00A [OB]",
-          "HPE StoreEver MSL3040 LTO-7+ Path Failover LTU",
-          "0",
-          "6,000.00",
-          "NA",
-          "12/04/2017",
-          "12/31/2028",
-          "Q8K99AAE [OB]",
-          "HPE StoreEver MSL3040 Secure Manager E-LTU",
-          "0",
-          "2,000.00",
-          "NA",
-          "12/04/2017",
-          "10/31/2028",
-          "Q8K99A [OB]",
-          "HPE StoreEver MSL3040 Secure Manager LTU",
-          "0",
-          "2,000.00",
-          "NA",
-          "12/04/2017",
-          "12/31/2028"
-        ],
-        [
-          "Available"
-        ],
-        [
-          "Product #",
-          "Description",
-          "Quantity",
-          "Price (USD)",
-          "Extended Price (USD)",
-          "Start",
-          "Discontinued"
-        ],
-        [
-          "TC406AAE",
-          "HPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced E-LTU",
-          "0",
-          "2,500.00",
-          "NA",
-          "10/23/2017",
-          "10/31/2028"
-        ],
-        [
-          "TC406A",
-          "HPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced LTU",
-          "0",
-          "2,500.00",
-          "NA",
-          "10/23/2017",
-          "10/31/2028"
-        ],
-        [
-          "Q8K43AAE",
-          "HPE StoreEver MSL3040 Command View for Tape Libraries - Data Verification 100 Cartridges E-LTU",
-          "1",
-          "1,750.00",
-          "1,750.00",
-          "12/04/2017",
-          "12/31/2028"
-        ],
-        [
-          "Q8K96AAE [OB]",
-          "HPE StoreEver MSL3040 High Availability LTO-6 Control Path Failover E-LTU",
-          "0",
-          "3,000.00",
-          "NA",
-          "12/04/2017",
-          "05/01/2024"
-        ],
-        [
-          "Q8K96A [OB]",
-          "HPE StoreEver MSL3040 High Availability LTO-6 Control Path Failover LTU",
-          "0",
-          "3,000.00",
-          "NA",
-          "12/04/2017",
-          "03/31/2023"
-        ],
-        [
-          "Q8K97AAE [OB]",
-          "HPE StoreEver MSL3040 High Availability LTO-6 Data Path Failover E-LTU",
-          "0",
-          "3,000.00",
-          "NA",
-          "12/04/2017",
-          "05/01/2024"
-        ],
-        [
-          "Q8K97A [OB]",
-          "HPE StoreEver MSL3040 High Availability LTO-6 Data Path Failover LTU",
-          "0",
-          "3,000.00",
-          "NA",
-          "12/04/2017",
-          "03/31/2023"
-        ],
-        [
-          "Q8K98AAE",
-          "HPE StoreEver MSL3040 KMIP Key Manager E-LTU",
-          "0",
-          "6,000.00",
-          "NA",
-          "12/04/2017",
-          "10/31/2028"
-        ],
-        [
-          "Q8K98A",
-          "HPE StoreEver MSL3040 KMIP Key Manager LTU",
-          "0",
-          "6,000.00",
-          "NA",
-          "12/04/2017",
-          "12/31/2028"
-        ],
-        [
-          "Q8L00AAE",
-          "HPE StoreEver MSL3040 LTO-7+ Path Failover E-LTU",
-          "0",
-          "6,000.00",
-          "NA",
-          "12/04/2017",
-          "10/31/2028"
-        ],
-        [
-          "Q8L00A",
-          "HPE StoreEver MSL3040 LTO-7+ Path Failover LTU",
-          "0",
-          "6,000.00",
-          "NA",
-          "12/04/2017",
-          "12/31/2028"
-        ],
-        [
-          "Q8K99AAE",
-          "HPE StoreEver MSL3040 Secure Manager E-LTU",
-          "0",
-          "2,000.00",
-          "NA",
-          "12/04/2017",
-          "10/31/2028"
-        ],
-        [
-          "Q8K99A",
-          "HPE StoreEver MSL3040 Secure Manager LTU",
-          "0",
-          "2,000.00",
-          "NA",
-          "12/04/2017",
-          "12/31/2028"
         ],
         [
           "Ad-Hoc"
@@ -2468,7 +155,8 @@
           "Price (USD)",
           "Quantity",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "",
@@ -2479,15 +167,14 @@
           "",
           "",
           "",
-          ""
-        ],
-        [
+          "",
           ""
         ]
       ]
     },
     {
       "tableIndex": 1,
+      "tableId": "",
       "rowCount": 10,
       "rows": [
         [
@@ -2499,8 +186,10 @@
           "Quantity",
           "Price (USD)",
           "Extended Price (USD)",
+          "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "C0H28A [OB]",
@@ -2508,8 +197,10 @@
           "0",
           "5,300.00",
           "NA",
+          "",
           "10/23/2017",
-          "04/30/2024"
+          "04/30/2024",
+          "05/31/2024"
         ],
         [
           "C0H27A [OB]",
@@ -2517,8 +208,10 @@
           "0",
           "5,100.00",
           "NA",
+          "",
           "10/23/2017",
-          "11/30/2023"
+          "11/30/2023",
+          "12/31/2023"
         ],
         [
           "N7P36A [OB]",
@@ -2526,8 +219,10 @@
           "0",
           "9,362.00",
           "NA",
+          "",
           "10/23/2017",
-          "07/17/2026"
+          "07/17/2026",
+          "07/31/2026"
         ],
         [
           "N7P37A [OB]",
@@ -2535,8 +230,10 @@
           "0",
           "9,010.00",
           "NA",
+          "",
           "10/23/2017",
-          "07/17/2026"
+          "07/17/2026",
+          "07/31/2026"
         ],
         [
           "Q6Q67A",
@@ -2544,8 +241,10 @@
           "0",
           "21,600.00",
           "NA",
+          "4",
           "02/05/2018",
-          "05/31/2030"
+          "05/31/2030",
+          "06/30/2030"
         ],
         [
           "Q6Q68A",
@@ -2553,8 +252,10 @@
           "0",
           "16,800.00",
           "NA",
+          "14",
           "02/05/2018",
-          "05/31/2030"
+          "05/31/2030",
+          "06/30/2030"
         ],
         [
           "R6Q74A",
@@ -2562,8 +263,10 @@
           "0",
           "33,000.00",
           "NA",
+          "42",
           "01/10/2022",
-          "05/31/2030"
+          "05/31/2030",
+          "06/30/2030"
         ],
         [
           "R6Q75A",
@@ -2571,13 +274,16 @@
           "0",
           "24,000.00",
           "NA",
+          "14",
           "01/10/2022",
-          "05/31/2030"
+          "05/31/2030",
+          "06/30/2030"
         ]
       ]
     },
     {
       "tableIndex": 2,
+      "tableId": "",
       "rowCount": 3,
       "rows": [
         [
@@ -2589,8 +295,10 @@
           "Quantity",
           "Price (USD)",
           "Extended Price (USD)",
+          "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "AM495A",
@@ -2598,13 +306,16 @@
           "0",
           "2,500.00",
           "NA",
+          "4",
           "10/23/2017",
-          "09/30/2027"
+          "09/30/2027",
+          "10/31/2027"
         ]
       ]
     },
     {
       "tableIndex": 3,
+      "tableId": "",
       "rowCount": 3,
       "rows": [
         [
@@ -2616,8 +327,10 @@
           "Quantity",
           "Price (USD)",
           "Extended Price (USD)",
+          "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "Q6Q64A",
@@ -2625,13 +338,16 @@
           "0",
           "780.00",
           "NA",
+          "4",
           "12/04/2017",
-          "09/30/2031"
+          "09/30/2031",
+          "10/31/2031"
         ]
       ]
     },
     {
       "tableIndex": 4,
+      "tableId": "",
       "rowCount": 12,
       "rows": [
         [
@@ -2644,8 +360,10 @@
           "Price (USD)",
           "Extended Price (USD)",
           "HPE Recommended",
+          "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "AJ838A",
@@ -2654,8 +372,10 @@
           "208.00",
           "NA",
           "",
+          "3",
           "10/23/2017",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "AJ836A",
@@ -2664,8 +384,10 @@
           "115.00",
           "NA",
           "",
+          "3",
           "10/23/2017",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "AJ839A",
@@ -2674,8 +396,10 @@
           "253.00",
           "NA",
           "",
+          "3",
           "10/23/2017",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "QK732A",
@@ -2684,8 +408,10 @@
           "115.00",
           "NA",
           "",
+          "3",
           "10/23/2017",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "QK737A",
@@ -2694,8 +420,10 @@
           "415.00",
           "NA",
           "",
+          "3",
           "10/23/2017",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "AJ837A",
@@ -2704,8 +432,10 @@
           "162.00",
           "NA",
           "",
+          "4",
           "10/23/2017",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "QK735A",
@@ -2714,8 +444,10 @@
           "195.00",
           "NA",
           "",
+          "14",
           "10/23/2017",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "QK733A",
@@ -2724,8 +456,10 @@
           "130.00",
           "NA",
           "",
+          "14",
           "10/23/2017",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "QK736A",
@@ -2734,8 +468,10 @@
           "239.00",
           "NA",
           "",
+          "4",
           "10/23/2017",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "QK734A",
@@ -2744,13 +480,16 @@
           "147.00",
           "NA",
           "",
+          "14",
           "10/23/2017",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ]
       ]
     },
     {
       "tableIndex": 5,
+      "tableId": "",
       "rowCount": 10,
       "rows": [
         [
@@ -2763,8 +502,10 @@
           "Price (USD)",
           "Extended Price (USD)",
           "HPE Recommended",
+          "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "716191-B21",
@@ -2773,8 +514,10 @@
           "221.00",
           "NA",
           "",
+          "3",
           "10/23/2017",
-          "08/31/2030"
+          "08/31/2030",
+          "09/30/2030"
         ],
         [
           "716193-B21",
@@ -2783,8 +526,10 @@
           "324.00",
           "NA",
           "",
+          "3",
           "10/23/2017",
-          "08/31/2030"
+          "08/31/2030",
+          "09/30/2030"
         ],
         [
           "K2R10A",
@@ -2793,8 +538,10 @@
           "501.00",
           "NA",
           "",
+          "3",
           "10/23/2017",
-          "05/31/2027"
+          "05/31/2027",
+          "06/30/2027"
         ],
         [
           "AE470A [OB]",
@@ -2803,8 +550,10 @@
           "78.00",
           "NA",
           "",
+          "",
           "10/23/2017",
-          "05/31/2022"
+          "05/31/2022",
+          "06/30/2022"
         ],
         [
           "AE465A [OB]",
@@ -2813,8 +562,10 @@
           "110.00",
           "NA",
           "",
+          "",
           "10/23/2017",
-          "01/31/2022"
+          "01/31/2022",
+          "02/01/2022"
         ],
         [
           "AN975A [OB]",
@@ -2823,8 +574,10 @@
           "264.00",
           "NA",
           "",
+          "",
           "10/23/2017",
-          "08/31/2025"
+          "08/31/2025",
+          "09/30/2025"
         ],
         [
           "AN976A [OB]",
@@ -2833,8 +586,10 @@
           "410.00",
           "NA",
           "",
+          "",
           "10/23/2017",
-          "08/31/2025"
+          "08/31/2025",
+          "09/30/2025"
         ],
         [
           "K2R09A",
@@ -2843,13 +598,16 @@
           "358.00",
           "NA",
           "",
+          "4",
           "10/23/2017",
-          "05/31/2027"
+          "05/31/2027",
+          "06/30/2027"
         ]
       ]
     },
     {
       "tableIndex": 6,
+      "tableId": "",
       "rowCount": 6,
       "rows": [
         [
@@ -2862,8 +620,10 @@
           "Price (USD)",
           "Extended Price (USD)",
           "HPE Recommended",
+          "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "716197-B21",
@@ -2872,8 +632,10 @@
           "177.00",
           "NA",
           "",
+          "3",
           "10/23/2017",
-          "08/31/2030"
+          "08/31/2030",
+          "09/30/2030"
         ],
         [
           "716199-B21",
@@ -2882,8 +644,10 @@
           "287.00",
           "NA",
           "",
+          "3",
           "10/23/2017",
-          "08/31/2030"
+          "08/31/2030",
+          "09/30/2030"
         ],
         [
           "P35176-B21",
@@ -2892,8 +656,10 @@
           "206.00",
           "NA",
           "",
+          "14",
           "01/10/2022",
-          "08/31/2030"
+          "08/31/2030",
+          "09/30/2030"
         ],
         [
           "P35175-B21",
@@ -2902,13 +668,16 @@
           "369.00",
           "NA",
           "",
+          "8",
           "01/10/2022",
-          "08/31/2030"
+          "08/31/2030",
+          "09/30/2030"
         ]
       ]
     },
     {
       "tableIndex": 7,
+      "tableId": "",
       "rowCount": 3,
       "rows": [
         [
@@ -2920,8 +689,10 @@
           "Quantity",
           "Price (USD)",
           "Extended Price (USD)",
+          "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "Q6Q63A",
@@ -2929,13 +700,16 @@
           "0",
           "7,275.00",
           "NA",
+          "4",
           "12/04/2017",
-          "09/30/2031"
+          "09/30/2031",
+          "10/31/2031"
         ]
       ]
     },
     {
       "tableIndex": 8,
+      "tableId": "",
       "rowCount": 20,
       "rows": [
         [
@@ -2948,18 +722,10 @@
           "Price (USD)",
           "Extended Price (USD)",
           "HPE Recommended",
+          "Est. Lead Time",
           "Start",
-          "Discontinued"
-        ],
-        [
-          "AF570A",
-          "HPE C13 - BS-1363A UK/HK/SG 250V 10Amp 1.83m Power Cord",
-          "0",
-          "55.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "09/30/2028"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "AF568A",
@@ -2968,18 +734,10 @@
           "71.00",
           "NA",
           "",
+          "3",
           "10/23/2017",
-          "10/31/2031"
-        ],
-        [
-          "AF557A",
-          "HPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord",
-          "0",
-          "156.00",
-          "NA",
-          "",
-          "10/23/2017",
-          "10/31/2031"
+          "10/31/2031",
+          "11/30/2031"
         ],
         [
           "AF556A",
@@ -2988,8 +746,10 @@
           "55.00",
           "NA",
           "",
+          "3",
           "10/23/2017",
-          "09/30/2028"
+          "06/30/2029",
+          "07/31/2029"
         ],
         [
           "AF569A",
@@ -2998,18 +758,34 @@
           "65.00",
           "NA",
           "",
+          "11",
           "10/23/2017",
-          "09/30/2028"
+          "06/30/2029",
+          "07/31/2029"
         ],
         [
-          "142257-002 [90]",
+          "AF570A",
+          "HPE C13 - BS-1363A UK/HK/SG 250V 10Amp 1.83m Power Cord",
+          "0",
+          "55.00",
+          "NA",
+          "",
+          "13",
+          "10/23/2017",
+          "06/30/2029",
+          "07/31/2029"
+        ],
+        [
+          "142257-002",
           "HPE C13 - C14 WW 250V 10Amp 2.5m Jumper Cord",
           "0",
           "34.00",
           "NA",
           "",
+          "8",
           "10/23/2017",
-          "11/30/2026"
+          "06/30/2029",
+          "07/31/2029"
         ],
         [
           "AF571A [OB]",
@@ -3018,8 +794,10 @@
           "NA",
           "NA",
           "",
+          "",
           "10/23/2017",
-          "09/30/2018"
+          "09/30/2018",
+          "10/31/2018"
         ],
         [
           "AF561A",
@@ -3028,8 +806,10 @@
           "55.00",
           "NA",
           "",
+          "14",
           "10/23/2017",
-          "09/30/2028"
+          "06/30/2029",
+          "07/31/2029"
         ],
         [
           "AF566A",
@@ -3038,8 +818,22 @@
           "55.00",
           "NA",
           "",
+          "11",
           "10/23/2017",
-          "09/30/2028"
+          "06/30/2029",
+          "07/31/2029"
+        ],
+        [
+          "AF557A",
+          "HPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord",
+          "0",
+          "156.00",
+          "NA",
+          "",
+          "21",
+          "10/23/2017",
+          "10/31/2031",
+          "11/30/2031"
         ],
         [
           "AF558A",
@@ -3048,8 +842,10 @@
           "65.00",
           "NA",
           "",
+          "4",
           "10/23/2017",
-          "09/30/2028"
+          "06/30/2029",
+          "07/31/2029"
         ],
         [
           "AF562A",
@@ -3058,8 +854,10 @@
           "194.00",
           "NA",
           "",
+          "4",
           "10/23/2017",
-          "10/31/2031"
+          "10/31/2031",
+          "11/30/2031"
         ],
         [
           "SG579A [OB]",
@@ -3068,8 +866,10 @@
           "142.00",
           "NA",
           "",
+          "",
           "11/19/2018",
-          "11/30/2022"
+          "11/30/2022",
+          "12/31/2022"
         ],
         [
           "AF572A",
@@ -3078,8 +878,10 @@
           "60.00",
           "NA",
           "",
+          "4",
           "10/23/2017",
-          "09/30/2028"
+          "06/30/2029",
+          "07/31/2029"
         ],
         [
           "AF560A",
@@ -3088,8 +890,10 @@
           "55.00",
           "NA",
           "",
+          "4",
           "10/23/2017",
-          "09/30/2028"
+          "06/30/2029",
+          "07/31/2029"
         ],
         [
           "AF559A",
@@ -3098,8 +902,10 @@
           "55.00",
           "NA",
           "",
+          "4",
           "10/23/2017",
-          "09/30/2028"
+          "06/30/2029",
+          "07/31/2029"
         ],
         [
           "AF567A",
@@ -3108,8 +914,10 @@
           "65.00",
           "NA",
           "",
+          "4",
           "10/23/2017",
-          "09/30/2028"
+          "06/30/2029",
+          "07/31/2029"
         ],
         [
           "AF565A",
@@ -3118,8 +926,10 @@
           "55.00",
           "NA",
           "",
+          "11",
           "10/23/2017",
-          "09/30/2028"
+          "06/30/2029",
+          "07/31/2029"
         ],
         [
           "AF564A",
@@ -3128,13 +938,16 @@
           "55.00",
           "NA",
           "",
+          "4",
           "10/23/2017",
-          "09/30/2028"
+          "06/30/2029",
+          "07/31/2029"
         ]
       ]
     },
     {
       "tableIndex": 9,
+      "tableId": "",
       "rowCount": 66,
       "rows": [
         [
@@ -3146,8 +959,10 @@
           "Quantity",
           "Price (USD)",
           "Extended Price (USD)",
+          "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "C7973A [OB]",
@@ -3155,8 +970,10 @@
           "0",
           "61.35",
           "NA",
+          "",
           "10/23/2017",
-          "10/31/2018"
+          "10/31/2018",
+          "03/31/2019"
         ],
         [
           "C7973W [OB]",
@@ -3164,8 +981,10 @@
           "0",
           "NA",
           "NA",
+          "",
           "10/23/2017",
-          "10/31/2018"
+          "10/31/2018",
+          "11/01/2018"
         ],
         [
           "C7973AL [OB]",
@@ -3173,8 +992,10 @@
           "0",
           "NA",
           "NA",
+          "",
+          "10/23/2017",
           "10/31/2018",
-          "10/31/2018"
+          "11/01/2018"
         ],
         [
           "C7974AN [OB]",
@@ -3182,8 +1003,10 @@
           "0",
           "695.91",
           "NA",
+          "",
           "10/23/2017",
-          "01/31/2023"
+          "01/31/2023",
+          "02/28/2023"
         ],
         [
           "C7974AL [OB]",
@@ -3191,8 +1014,10 @@
           "0",
           "1,182.63",
           "NA",
+          "",
           "10/31/2018",
-          "04/28/2022"
+          "04/28/2022",
+          "04/30/2022"
         ],
         [
           "Q2009A [OB]",
@@ -3200,8 +1025,10 @@
           "0",
           "197.87",
           "NA",
+          "",
           "10/23/2017",
-          "05/31/2022"
+          "05/31/2022",
+          "06/30/2022"
         ],
         [
           "Q2010A [OB]",
@@ -3209,8 +1036,10 @@
           "0",
           "199.05",
           "NA",
+          "",
           "10/23/2017",
-          "01/31/2024"
+          "01/31/2024",
+          "02/29/2024"
         ],
         [
           "C7975AL [OB]",
@@ -3218,8 +1047,10 @@
           "0",
           "929.43",
           "NA",
+          "",
           "10/23/2017",
-          "03/15/2025"
+          "03/15/2025",
+          "03/31/2025"
         ],
         [
           "C7975AA [OB]",
@@ -3227,17 +1058,21 @@
           "0",
           "NA",
           "NA",
+          "",
           "12/03/2018",
-          "03/15/2025"
+          "03/15/2025",
+          "03/31/2025"
         ],
         [
-          "C7975A [DS]",
+          "C7975A [OB]",
           "HPE LTO-5 Ultrium 3TB RW Data Cartridge",
           "0",
           "46.46",
           "NA",
+          "",
           "10/23/2017",
-          "07/31/2026"
+          "07/31/2026",
+          "10/31/2026"
         ],
         [
           "C7975W [OB]",
@@ -3245,8 +1080,10 @@
           "0",
           "53.12",
           "NA",
+          "",
           "10/23/2017",
-          "11/30/2023"
+          "11/30/2023",
+          "12/01/2023"
         ],
         [
           "C7975AN [OB]",
@@ -3254,17 +1091,21 @@
           "0",
           "929.43",
           "NA",
+          "",
           "10/23/2017",
-          "12/23/2025"
+          "12/23/2025",
+          "12/31/2025"
         ],
         [
-          "Q2011A [DS]",
+          "Q2011A [OB]",
           "HPE LTO-5 Ultrium RW Bar Code Label Pack",
           "0",
           "92.99",
           "NA",
+          "",
           "10/23/2017",
-          "07/31/2026"
+          "07/31/2026",
+          "10/31/2026"
         ],
         [
           "Q2012A [OB]",
@@ -3272,8 +1113,10 @@
           "0",
           "199.05",
           "NA",
+          "",
           "10/23/2017",
-          "02/28/2024"
+          "02/28/2024",
+          "02/29/2024"
         ],
         [
           "C7976BL [OB]",
@@ -3281,8 +1124,10 @@
           "0",
           "1,146.39",
           "NA",
+          "",
           "10/23/2017",
-          "03/15/2025"
+          "03/15/2025",
+          "03/31/2025"
         ],
         [
           "C7976B [OB]",
@@ -3290,8 +1135,10 @@
           "0",
           "57.32",
           "NA",
+          "",
           "10/23/2017",
-          "07/07/2025"
+          "07/07/2025",
+          "08/31/2025"
         ],
         [
           "C7976BN [OB]",
@@ -3299,8 +1146,10 @@
           "0",
           "1,293.13",
           "NA",
+          "",
           "10/23/2017",
-          "04/20/2026"
+          "04/20/2026",
+          "07/31/2026"
         ],
         [
           "C7976BW [OB]",
@@ -3308,8 +1157,10 @@
           "0",
           "86.76",
           "NA",
+          "",
           "10/23/2017",
-          "04/20/2026"
+          "04/20/2026",
+          "07/31/2026"
         ],
         [
           "C7976AF [OB]",
@@ -3317,8 +1168,10 @@
           "0",
           "NA",
           "NA",
+          "",
           "10/23/2017",
-          "10/31/2018"
+          "10/31/2018",
+          "11/01/2018"
         ],
         [
           "C7976AA",
@@ -3326,8 +1179,10 @@
           "0",
           "NA",
           "NA",
+          "8",
           "12/03/2018",
-          "09/30/2031"
+          "09/30/2031",
+          "10/31/2031"
         ],
         [
           "C7976AC",
@@ -3335,8 +1190,10 @@
           "0",
           "1,530.46",
           "NA",
+          "8",
           "10/23/2017",
-          "09/30/2031"
+          "09/30/2031",
+          "10/31/2031"
         ],
         [
           "C7976AL",
@@ -3344,8 +1201,10 @@
           "0",
           "1,530.47",
           "NA",
+          "8",
           "10/23/2017",
-          "09/30/2031"
+          "09/30/2031",
+          "10/31/2031"
         ],
         [
           "C7976A",
@@ -3353,8 +1212,10 @@
           "0",
           "76.53",
           "NA",
+          "4",
           "10/23/2017",
-          "09/30/2031"
+          "09/30/2031",
+          "10/31/2031"
         ],
         [
           "C7976AN",
@@ -3362,8 +1223,10 @@
           "0",
           "1,530.47",
           "NA",
+          "6",
           "10/23/2017",
-          "09/30/2031"
+          "09/30/2031",
+          "10/31/2031"
         ],
         [
           "C7976WL",
@@ -3371,8 +1234,10 @@
           "0",
           "2,176.50",
           "NA",
+          "8",
           "10/23/2017",
-          "09/30/2031"
+          "09/30/2031",
+          "10/31/2031"
         ],
         [
           "C7976W",
@@ -3380,8 +1245,10 @@
           "0",
           "108.82",
           "NA",
+          "4",
           "10/23/2017",
-          "09/30/2031"
+          "09/30/2031",
+          "10/31/2031"
         ],
         [
           "Q2013A",
@@ -3389,8 +1256,10 @@
           "0",
           "92.99",
           "NA",
+          "4",
           "10/23/2017",
-          "09/30/2031"
+          "09/30/2031",
+          "10/31/2031"
         ],
         [
           "C7977AH",
@@ -3398,8 +1267,10 @@
           "0",
           "2,205.96",
           "NA",
+          "8",
           "10/23/2017",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "C7977A",
@@ -3407,8 +1278,10 @@
           "0",
           "110.30",
           "NA",
+          "8",
           "10/23/2017",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "C7977AN",
@@ -3416,8 +1289,10 @@
           "0",
           "2,205.96",
           "NA",
+          "4",
           "10/23/2017",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "C7977AF [OB]",
@@ -3425,8 +1300,10 @@
           "0",
           "NA",
           "NA",
+          "",
           "10/23/2017",
-          "10/31/2018"
+          "10/31/2018",
+          "11/01/2018"
         ],
         [
           "Q2014A",
@@ -3434,8 +1311,10 @@
           "0",
           "92.99",
           "NA",
+          "4",
           "10/23/2017",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "C7977AL",
@@ -3443,8 +1322,10 @@
           "0",
           "2,205.96",
           "NA",
+          "9",
           "10/23/2017",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "C7977AC",
@@ -3452,8 +1333,10 @@
           "0",
           "2,205.96",
           "NA",
+          "8",
           "10/23/2017",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "Q2078MC [OB]",
@@ -3461,8 +1344,10 @@
           "0",
           "1,617.88",
           "NA",
+          "",
           "02/05/2018",
-          "07/01/2023"
+          "07/01/2023",
+          "07/31/2023"
         ],
         [
           "Q2078ML [OB]",
@@ -3470,8 +1355,10 @@
           "0",
           "1,617.88",
           "NA",
+          "",
           "02/05/2018",
-          "07/01/2023"
+          "07/01/2023",
+          "07/31/2023"
         ],
         [
           "Q2078MN [OB]",
@@ -3479,8 +1366,10 @@
           "0",
           "1,617.88",
           "NA",
+          "",
           "02/05/2018",
-          "07/01/2023"
+          "07/01/2023",
+          "07/31/2023"
         ],
         [
           "Q2016A [OB]",
@@ -3488,8 +1377,10 @@
           "0",
           "199.05",
           "NA",
+          "",
           "02/05/2018",
-          "07/01/2023"
+          "07/01/2023",
+          "07/31/2023"
         ],
         [
           "C7977WL",
@@ -3497,8 +1388,10 @@
           "0",
           "3,044.17",
           "NA",
+          "8",
           "10/23/2017",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "C7977W",
@@ -3506,8 +1399,10 @@
           "0",
           "152.20",
           "NA",
+          "4",
           "10/23/2017",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "Q2078AH",
@@ -3515,8 +1410,10 @@
           "0",
           "2,348.24",
           "NA",
+          "4",
           "08/14/2019",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "Q2078AL",
@@ -3524,8 +1421,10 @@
           "0",
           "2,348.24",
           "NA",
+          "14",
           "08/14/2019",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "Q2078AC",
@@ -3533,8 +1432,10 @@
           "0",
           "2,348.24",
           "NA",
+          "8",
           "08/14/2019",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "Q2078A",
@@ -3542,8 +1443,10 @@
           "0",
           "117.43",
           "NA",
+          "14",
           "08/14/2019",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "Q2078AN",
@@ -3551,8 +1454,10 @@
           "0",
           "2,348.24",
           "NA",
+          "14",
           "08/14/2019",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "Q2078WL",
@@ -3560,8 +1465,10 @@
           "0",
           "3,240.72",
           "NA",
+          "14",
           "08/14/2019",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "Q2078W",
@@ -3569,8 +1476,10 @@
           "0",
           "162.07",
           "NA",
+          "14",
           "08/14/2019",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "Q2015A",
@@ -3578,8 +1487,10 @@
           "0",
           "92.99",
           "NA",
+          "4",
           "12/04/2017",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ],
         [
           "Q2079AH",
@@ -3587,8 +1498,10 @@
           "0",
           "2,911.01",
           "NA",
+          "4",
           "09/07/2021",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "Q2079AL",
@@ -3596,8 +1509,10 @@
           "0",
           "2,911.01",
           "NA",
+          "10",
           "09/07/2021",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "Q2079AC",
@@ -3605,8 +1520,10 @@
           "0",
           "2,911.01",
           "NA",
+          "9",
           "09/07/2021",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "Q2079A",
@@ -3614,8 +1531,10 @@
           "0",
           "145.56",
           "NA",
+          "8",
           "09/07/2021",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "Q2079AN",
@@ -3623,8 +1542,10 @@
           "0",
           "2,911.01",
           "NA",
+          "4",
           "09/07/2021",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "Q2079WL",
@@ -3632,8 +1553,10 @@
           "0",
           "3,976.02",
           "NA",
+          "14",
           "09/07/2021",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "Q2079W",
@@ -3641,8 +1564,10 @@
           "0",
           "198.80",
           "NA",
+          "14",
           "09/07/2021",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "Q2017A",
@@ -3650,8 +1575,10 @@
           "0",
           "92.99",
           "NA",
+          "4",
           "09/07/2021",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "C7972A [OB]",
@@ -3659,7 +1586,9 @@
           "0",
           "NA",
           "NA",
+          "",
           "10/23/2017",
+          "10/31/2017",
           "10/31/2017"
         ],
         [
@@ -3668,8 +1597,10 @@
           "0",
           "58.24",
           "NA",
+          "",
           "10/23/2017",
-          "05/31/2022"
+          "05/31/2022",
+          "06/30/2022"
         ],
         [
           "C7974W [OB]",
@@ -3677,8 +1608,10 @@
           "0",
           "41.63",
           "NA",
+          "",
           "10/23/2017",
-          "01/31/2024"
+          "01/31/2024",
+          "02/29/2024"
         ],
         [
           "Q2007A [OB]",
@@ -3686,8 +1619,10 @@
           "0",
           "NA",
           "NA",
+          "",
           "10/23/2017",
-          "10/31/2018"
+          "10/31/2018",
+          "12/31/2018"
         ],
         [
           "Q2008A [OB]",
@@ -3695,8 +1630,10 @@
           "0",
           "NA",
           "NA",
+          "",
           "10/23/2017",
-          "10/31/2018"
+          "10/31/2018",
+          "12/31/2018"
         ],
         [
           "C7972AN [OB]",
@@ -3704,8 +1641,10 @@
           "0",
           "NA",
           "NA",
+          "",
           "10/23/2017",
-          "12/31/2017"
+          "12/31/2017",
+          "01/01/2018"
         ],
         [
           "C7973AN [OB]",
@@ -3713,8 +1652,10 @@
           "0",
           "NA",
           "NA",
+          "",
           "10/23/2017",
-          "10/31/2018"
+          "10/31/2018",
+          "11/01/2018"
         ],
         [
           "C7978A",
@@ -3722,13 +1663,16 @@
           "0",
           "77.62",
           "NA",
+          "4",
           "10/23/2017",
-          "10/31/2036"
+          "10/31/2036",
+          "11/30/2036"
         ]
       ]
     },
     {
       "tableIndex": 10,
+      "tableId": "",
       "rowCount": 15,
       "rows": [
         [
@@ -3740,8 +1684,10 @@
           "Quantity",
           "Price (USD)",
           "Extended Price (USD)",
+          "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "TC406AAE",
@@ -3749,8 +1695,10 @@
           "0",
           "2,500.00",
           "NA",
+          "",
           "10/23/2017",
-          "10/31/2028"
+          "10/31/2028",
+          "11/30/2028"
         ],
         [
           "TC406A",
@@ -3758,8 +1706,10 @@
           "0",
           "2,500.00",
           "NA",
+          "",
           "10/23/2017",
-          "10/31/2028"
+          "10/31/2028",
+          "11/30/2028"
         ],
         [
           "Q8K43AAE",
@@ -3767,8 +1717,10 @@
           "1",
           "1,750.00",
           "1,750.00",
+          "",
           "12/04/2017",
-          "12/31/2028"
+          "12/31/2028",
+          "01/31/2029"
         ],
         [
           "Q8K96AAE [OB]",
@@ -3776,8 +1728,10 @@
           "0",
           "3,000.00",
           "NA",
+          "",
           "12/04/2017",
-          "05/01/2024"
+          "05/01/2024",
+          "05/02/2024"
         ],
         [
           "Q8K96A [OB]",
@@ -3785,8 +1739,10 @@
           "0",
           "3,000.00",
           "NA",
+          "",
           "12/04/2017",
-          "03/31/2023"
+          "03/31/2023",
+          "04/30/2023"
         ],
         [
           "Q8K97AAE [OB]",
@@ -3794,8 +1750,10 @@
           "0",
           "3,000.00",
           "NA",
+          "",
           "12/04/2017",
-          "05/01/2024"
+          "05/01/2024",
+          "05/02/2024"
         ],
         [
           "Q8K97A [OB]",
@@ -3803,8 +1761,10 @@
           "0",
           "3,000.00",
           "NA",
+          "",
           "12/04/2017",
-          "03/31/2023"
+          "03/31/2023",
+          "04/30/2023"
         ],
         [
           "Q8K98AAE",
@@ -3812,8 +1772,10 @@
           "0",
           "6,000.00",
           "NA",
+          "",
           "12/04/2017",
-          "10/31/2028"
+          "10/31/2028",
+          "11/30/2028"
         ],
         [
           "Q8K98A",
@@ -3821,8 +1783,10 @@
           "0",
           "6,000.00",
           "NA",
+          "",
           "12/04/2017",
-          "12/31/2028"
+          "12/31/2028",
+          "01/31/2029"
         ],
         [
           "Q8L00AAE",
@@ -3830,8 +1794,10 @@
           "0",
           "6,000.00",
           "NA",
+          "",
           "12/04/2017",
-          "10/31/2028"
+          "10/31/2028",
+          "11/30/2028"
         ],
         [
           "Q8L00A",
@@ -3839,8 +1805,10 @@
           "0",
           "6,000.00",
           "NA",
+          "",
           "12/04/2017",
-          "12/31/2028"
+          "12/31/2028",
+          "01/31/2029"
         ],
         [
           "Q8K99AAE",
@@ -3848,8 +1816,10 @@
           "0",
           "2,000.00",
           "NA",
+          "",
           "12/04/2017",
-          "10/31/2028"
+          "10/31/2028",
+          "11/30/2028"
         ],
         [
           "Q8K99A",
@@ -3857,721 +1827,1225 @@
           "0",
           "2,000.00",
           "NA",
+          "",
           "12/04/2017",
-          "12/31/2028"
+          "12/31/2028",
+          "01/31/2029"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 0,
+      "tableId": "sui-components-tree",
+      "rowCount": 4,
+      "rows": [
+        [
+          "",
+          "Qty",
+          "Reactive support",
+          "Install",
+          "Device specific services"
+        ],
+        [
+          "Icon #1 - OCA Config 2\nIcon ID: I158519560-01EDT: 14 - 18 days",
+          "1",
+          "",
+          "",
+          ""
+        ],
+        [
+          "MSL3040 #1\nQ6Q62C",
+          "1",
+          "HU4A6A5#YJR HPE 5Y Tech Care Essential Service",
+          "HA114A1#5UE HPE Installation and Startup Service",
+          ""
+        ],
+        [
+          "HPE StoreEver MSL3040 Command View for Tape Libraries - Data Verification 100 Cartridges E-LTU",
+          "",
+          "HU4A6A5#YJY HPE 5Y Tech Care Essential Service",
+          "N/A",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 1,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE Product and Package Labeling Service",
+          "HA849A1",
+          ""
+        ],
+        [
+          "HPE FE Tamper Evident Pack Overpack SVC",
+          "H29BWA1",
+          ""
+        ],
+        [
+          "HPE FE Tamper Evident Pack UoS SVC",
+          "H29BXA1",
+          ""
+        ],
+        [
+          "HPE Hardware Customization Service",
+          "HA838A1",
+          ""
+        ],
+        [
+          "HPE Standard Product Reporting Service",
+          "HA867A1",
+          ""
+        ],
+        [
+          "HPE Enhanced Product Reporting Service",
+          "HA868A1",
+          ""
+        ],
+        [
+          "HPE Integration Center Routing Service",
+          "HC790A",
+          ""
+        ],
+        [
+          "HPE Server Customization Package",
+          "ZU706A",
+          ""
+        ],
+        [
+          "HPE Add Generic Packaging Kit",
+          "469776-715",
+          ""
+        ],
+        [
+          "HPE Factory Express Standard Unit of SVC",
+          "H4F41A1",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 2,
+      "tableId": "",
+      "rowCount": 1,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 3,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE NSS Improvement Unit of Service",
+          "H0JT1A1",
+          ""
+        ],
+        [
+          "HPE Zerto Virtual TAM 4yr 8x5 Remote SVC",
+          "H36NRA4",
+          ""
+        ],
+        [
+          "HPE Zerto Virtual TAM 5yr 8x5 Remote SVC",
+          "H36NRA5",
+          ""
+        ],
+        [
+          "HPE Zerto Health Check per Site SVC",
+          "H36NSA1",
+          ""
+        ],
+        [
+          "HPE Zerto Custom UoS SVC",
+          "H36NTA1",
+          ""
+        ],
+        [
+          "HPE Synergy First Frame Rmt Str SVC",
+          "H39VQA1#V0F",
+          ""
+        ],
+        [
+          "HPE Perf Analysis Comp Option1 Rmt1 SVC",
+          "H42ZHA1",
+          ""
+        ],
+        [
+          "HPE Perf Analysis Comp Option2 Rmt1 SVC",
+          "H42ZJA1",
+          ""
+        ],
+        [
+          "HPE Perf Analysis Comp Option3 Rmt1 SVC",
+          "H42ZKA1",
+          ""
+        ],
+        [
+          "HPE Perf Analysis DB Option1 Rmt1 SVC",
+          "H42ZLA1",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 4,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE NSS Implementation Unit of Service",
+          "H0JT2A1",
+          ""
+        ],
+        [
+          "HPE Cray Team Day SVC",
+          "H29BRA1",
+          ""
+        ],
+        [
+          "HPE Storage Servers Install Hourly SVC",
+          "H29BSA1",
+          ""
+        ],
+        [
+          "HPE Zerto Quick Cloud Remote SVC",
+          "H36NLA1",
+          ""
+        ],
+        [
+          "HPE Zerto Quick Start Remote SVC",
+          "H36NMA1",
+          ""
+        ],
+        [
+          "HPE Zerto Quick Migration Remote SVC",
+          "H36NNA1",
+          ""
+        ],
+        [
+          "HPE Zerto Quick Advisor Remote SVC",
+          "H36NPA1",
+          ""
+        ],
+        [
+          "HPE Zerto Strutd TAM 1yr 12x5 Remote SVC",
+          "H36NQA1",
+          ""
+        ],
+        [
+          "HPE Zerto Strutd TAM 3yr 12x5 Remote SVC",
+          "H36NQA3",
+          ""
+        ],
+        [
+          "HPE Zerto Strutd TAM 4yr 12x5 Remote SVC",
+          "H36NQA4",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 5,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE Consolidated Delivery Service",
+          "AG629A",
+          ""
+        ],
+        [
+          "HPE Fixed Delivery Appointment Service",
+          "P1F75A",
+          ""
+        ],
+        [
+          "HPE Unloading Logistic Service",
+          "P1F74A",
+          ""
+        ],
+        [
+          "HPE Pre-Delivery Site Survey SVC",
+          "P1F76A",
+          ""
+        ],
+        [
+          "HPE Delivery Any Day at 1300 Hours Service",
+          "P1F79A",
+          ""
+        ],
+        [
+          "HPE Delivery Any Day at 0800 Hours Service",
+          "P1F78A",
+          ""
+        ],
+        [
+          "HPE Delivery Site Above Ground Floor Service",
+          "P1F69A",
+          ""
+        ],
+        [
+          "HPE Delivery Any Day at 1000 Hours Service",
+          "P1F80A",
+          ""
+        ],
+        [
+          "HPE Delivery Any Day at 1500 Hours Service",
+          "P1F82A",
+          ""
+        ],
+        [
+          "HPE Special Delivery Truck Size Service",
+          "P1F71A",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 6,
+      "tableId": "",
+      "rowCount": 4,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE Expedite Shipment Large Logistic Service",
+          "BQ337A",
+          ""
+        ],
+        [
+          "HPE Expedite Shipment Small Logistic Service",
+          "BQ335A",
+          ""
+        ],
+        [
+          "HPE Special Equipment Service",
+          "AG628A",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 7,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE Data Migration Readiness Assess Svc",
+          "H0JD1A1",
+          ""
+        ],
+        [
+          "HPE Quickstart File Data Mig10TB SVC",
+          "H0JD7A1",
+          ""
+        ],
+        [
+          "HPE Energy Efficiency Analysis SVC",
+          "H1Y26A1#002",
+          ""
+        ],
+        [
+          "HPE Infra Condition and Cap Analysis SVC",
+          "H1Y26A1#003",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph2 Redht Onsite SVC",
+          "H30RYA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph1 Anths Onsite SVC",
+          "H30SDA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph2 Anths Rem SVC",
+          "H30SFA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph2 Anths Onsite SVC",
+          "H30SGA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph3 Anths Rem SVC",
+          "H30SHA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph3 Anths Onsite SVC",
+          "H30SJA1",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 9,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE Zerto Quick Upgrade Remote SVC",
+          "H36NVA1",
+          ""
+        ],
+        [
+          "HPE GPU on RHOCP Integrat SVC",
+          "H36XCA1#006",
+          ""
+        ],
+        [
+          "HPE Education 5 Day Remote SVC",
+          "H57GHA1",
+          ""
+        ],
+        [
+          "HPE Education 5 Day Onsite SVC",
+          "H57GJA1",
+          ""
+        ],
+        [
+          "HPE Education 1 Day Remote SVC",
+          "H57GKA1",
+          ""
+        ],
+        [
+          "HPE Multi-Cloud Mgmt Adoption Remote SVC",
+          "HV9X1A1#001",
+          ""
+        ],
+        [
+          "HPE Education - Learning Credits 1Yr SVC",
+          "H33XSA1",
+          ""
+        ],
+        [
+          "HPE Education - Learning Credits 2Yr SVC",
+          "H33XTA2",
+          ""
+        ],
+        [
+          "HPE Education - Learning Credits 3Yr SVC",
+          "H33XVA3",
+          ""
+        ],
+        [
+          "HPE Education - Learning Credits 4Yr SVC",
+          "H33XWA4",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 10,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE File Data Migration 100TB SVC",
+          "H0JD9A1",
+          ""
+        ],
+        [
+          "HPE Scality Integration Basic SVC",
+          "H1WU9A1",
+          ""
+        ],
+        [
+          "HPE Scality Integration Advanced SVC",
+          "H1WV0A1",
+          ""
+        ],
+        [
+          "HPE Risk Assessment 10 Functions SVC",
+          "H1XF9A1",
+          ""
+        ],
+        [
+          "HPE Business Imp Anlys 15 Process SVC",
+          "H1XG0A1",
+          ""
+        ],
+        [
+          "HPE AI Video Analytics Assessment SVC",
+          "H1XG7A1",
+          ""
+        ],
+        [
+          "HPE Energy Efficiency Analysis SVC",
+          "H1Y25A1#002",
+          ""
+        ],
+        [
+          "HPE Infra Condition and Cap Analysis SVC",
+          "H1Y25A1#003",
+          ""
+        ],
+        [
+          "HPE Remot NW Conf and IntHr BusHrs SVC",
+          "H2S79A1",
+          ""
+        ],
+        [
+          "HPE Onsite NW Conf and Int Bus Hrs SVC",
+          "H2S81A1",
+          ""
         ]
       ]
     },
     {
       "tableIndex": 11,
-      "rowCount": 3,
+      "tableId": "",
+      "rowCount": 11,
       "rows": [
         [
-          "Node",
-          "Level",
-          "Quantity",
+          "Description",
           "Product Number",
-          "Support",
-          "Install",
-          "Action"
+          "Quantity"
         ],
         [
-          "Q8K43AAEHPE StoreEver MSL3040 Command View for Tape Libraries - Data Verification 100 Cartridges E-LTU",
-          "Standard",
-          "1",
-          "Q8K43AAE",
-          "HU4A6A5#YJYHPE 5Y Tech Care Essential Service",
-          "N/A",
+          "HPE Cray Custom Operations SVC",
+          "H29BQA1",
           ""
         ],
         [
-          "MSL3040 #1HPE MSL3040 Scalable Base Module",
-          "Standard",
-          "1",
-          "Q6Q62C",
-          "HU4A6A5#YJRHPE 5Y Tech Care Essential Service",
-          "HA114A1#5UEHPE Installation and Startup Service",
+          "HPE Container Adopt Ph3 Redht Onsite SVC",
+          "H30SBA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph1 Anths Rem SVC",
+          "H30SCA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph1 Rnchr Onsite SVC",
+          "H30SLA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph2 Rnchr Rem SVC",
+          "H30SMA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph2 Rnchr Onsite SVC",
+          "H30SNA1",
+          ""
+        ],
+        [
+          "HPE Zerto Virtual TAM 3yr 8x5 Remote SVC",
+          "H36NRA3",
+          ""
+        ],
+        [
+          "HPE Zerto Virtual TAM 1mo 8x5 Remote SVC",
+          "H36PBA1",
+          ""
+        ],
+        [
+          "HPE Zerto Virtual TAM 3mo 8x5 Remote SVC",
+          "H36PCA1",
+          ""
+        ],
+        [
+          "HPE Zerto Virtual TAM 6mo 8x5 Remote SVC",
+          "H36PDA1",
           ""
         ]
       ]
     },
     {
       "tableIndex": 12,
+      "tableId": "",
       "rowCount": 2,
       "rows": [
         [
-          "Status",
-          "Node",
-          "Quantity",
-          "Product Number",
           "Description",
-          "Category",
-          "Action"
+          "Product Number",
+          "Quantity"
         ],
         [
-          "",
-          "MSL3040 #1",
-          "1",
-          "AG467A",
-          "HPE Medium Standard Delivery-Door/Dock Service",
-          "Tier 1 Basic Delivery",
+          "HPE Private Cloud AI with X10000 St SVC",
+          "HA124A1#V5K",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 13,
+      "tableId": "",
+      "rowCount": 7,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE Perf Analysis SAP Option2 Rmt1 SVC",
+          "H42ZQA1",
+          ""
+        ],
+        [
+          "HPE Perf Analysis SAP Option3 Rmt1 SVC",
+          "H42ZRA1",
+          ""
+        ],
+        [
+          "HPE Priv Cloud AI Deployment SVC",
+          "H43BCA1",
+          ""
+        ],
+        [
+          "HPE Data Sanitization HPC T1 NSH SVC",
+          "H44MDA1",
+          ""
+        ],
+        [
+          "HPE Compute Firmware Onsite SVC",
+          "H44NJA1",
+          ""
+        ],
+        [
+          "HPE Synergy Ecosystem Health Review SVC",
+          "HU7D2A1",
           ""
         ]
       ]
     },
     {
       "tableIndex": 14,
+      "tableId": "",
       "rowCount": 11,
       "rows": [
         [
           "Description",
           "Product Number",
-          "List Price (USD)",
           "Quantity"
         ],
         [
-          "HPE SVT In-Country ONS or Rem SW SVC",
-          "HA124A1#5MF",
-          "4,667.00",
+          "HPE 1Y Service Credits Qty 10 SVC",
+          "H0JD4A1#WFH",
           ""
         ],
         [
-          "HPE SVT Remote SW St SVC",
-          "HA124A1#5LZ",
-          "2,435.00",
+          "HPE 1Y Service Credits Qty 10 SVC",
+          "H0JD4A1#WFK",
           ""
         ],
         [
-          "HPE Stor System ONS Strt Base SW SVC",
-          "HA124A1#5R5",
-          "9,080.00",
+          "HPE 1Y Service Credits Qty 10 SVC",
+          "H0JD4A1#WFM",
           ""
         ],
         [
-          "HPE StoreOnce Sing N Catalys Startup SVC",
-          "HA124A1#5T7",
-          "5,449.00",
+          "HPE 1Y Service Credits Qty 10 SVC",
+          "H0JD4A1#Y65",
           ""
         ],
         [
-          "HPE Custom Storage Deployment SVC",
-          "HA546A1",
-          "0.00",
+          "HPE 1Y Service Credits Qty 10 SVC",
+          "H0JD4A1#Y6B",
           ""
         ],
         [
-          "HPE Startup Storage Addl One Day SVC",
-          "HA124A1#5B1",
-          "3,203.00",
+          "HPE 1Y Service Credits Qty 10 SVC",
+          "H0JD4A1008E",
           ""
         ],
         [
-          "HPE SAN C Class Blades Only Startup SVC",
-          "HA124A1#5VY",
-          "4,388.00",
+          "HPE 1Y Service Credits Qty 10 SVC",
+          "H0JD4A10BK5",
           ""
         ],
         [
-          "HPE Strge Systm Startup 4Wy Base Fld SVC",
-          "HA124A1#5SY",
-          "5,711.00",
+          "HPE 3Y Service Credits Qty 30 SVC",
+          "H0JD4A3#WFH",
           ""
         ],
         [
-          "HPE Strge System Startup 2N Base Fld SVC",
-          "HA124A1#5SH",
-          "5,968.00",
+          "HPE 3Y Service Credits Qty 30 SVC",
+          "H0JD4A3#WFK",
           ""
         ],
         [
-          "HPE Custom Compute Deployment SVC",
-          "HA545A1",
-          "0.00",
+          "HPE 3Y Service Credits Qty 30 SVC",
+          "H0JD4A3#WFM",
           ""
         ]
       ]
     },
     {
       "tableIndex": 15,
+      "tableId": "",
       "rowCount": 11,
       "rows": [
         [
           "Description",
           "Product Number",
-          "List Price (USD)",
           "Quantity"
         ],
         [
-          "HPE Education - Learning Credits 1Yr SVC",
-          "H33XSA1",
-          "100.00",
+          "HPE 3Y CC - HPC AI Perf Optimization SVC",
+          "H56JTA3#Y34",
           ""
         ],
         [
-          "HPE Education - Learning Credits 3Yr SVC",
-          "H33XVA3",
-          "100.00",
+          "HPE 4Y CC - HPC AI Perf Optimization SVC",
+          "H56JTA4#Y34",
           ""
         ],
         [
-          "HPE Education - Learning Credits 4Yr SVC",
-          "H33XWA4",
-          "100.00",
+          "HPE 5Y CC - HPC AI Perf Optimization SVC",
+          "H56JTA5#Y34",
           ""
         ],
         [
-          "HPE Education - Learning Credits 5Yr SVC",
-          "H33XXA5",
-          "100.00",
+          "HPE 3Y CC SB ATS Compute Base SVC",
+          "H39DJA3#Y35",
           ""
         ],
         [
-          "HPE DL 1Yr Other 1GB Content Hosted SVC",
-          "HA0Z0A1",
-          "1,620.00",
+          "HPE 4Y CC SB ATS Compute Base SVC",
+          "H39DJA4#Y35",
           ""
         ],
         [
-          "HPE Education - Learning Credits 2Yr SVC",
-          "H33XTA2",
-          "100.00",
+          "HPE 5Y CC SB ATS Compute Base SVC",
+          "H39DJA5#Y35",
           ""
         ],
         [
-          "HPE Digital Learner Bronze 1Yr Subs SVC",
-          "HR2R4A1",
-          "4,000.00",
+          "HPE 3Y CC SB ATS Compute Ext SVC",
+          "H39DKA3#Y35",
           ""
         ],
         [
-          "HPE Digital Learner Silver 1Yr Subs SVC",
-          "HR2R5A1",
-          "5,000.00",
+          "HPE 4Y CC SB ATS Compute Ext SVC",
+          "H39DKA4#Y35",
           ""
         ],
         [
-          "HPE Digital Learner Gold 1Yr Subs SVC",
-          "HR2R6A1",
-          "8,000.00",
+          "HPE 5Y CC SB ATS Compute Ext SVC",
+          "H39DKA5#Y35",
           ""
         ],
         [
-          "HPE Digital Learner SMB 1Yr Subs SVC",
-          "HV9V8A1",
-          "1,300.00",
+          "HPE 3Y CC SB ATS Storage Base SVC",
+          "H39DLA3#Y36",
           ""
         ]
       ]
     },
     {
       "tableIndex": 16,
+      "tableId": "",
       "rowCount": 11,
       "rows": [
         [
           "Description",
           "Product Number",
-          "List Price (USD)",
-          "Quantity"
-        ],
-        [
-          "HPE Storage VM Migration 50 VM SVC",
-          "H36VWA1",
-          "17,520.00",
-          ""
-        ],
-        [
-          "HPE Storage VM Migration 150 VM SVC",
-          "H36VXA1",
-          "29,760.00",
-          ""
-        ],
-        [
-          "HPE Storage VM Migration 5 VM Zerto SVC",
-          "H36WBA1",
-          "7,140.00",
-          ""
-        ],
-        [
-          "HPE AI Soltns and Platfrms 5 Day Rem SVC",
-          "H36WNA1",
-          "13,800.00",
-          ""
-        ],
-        [
-          "HPE AI Solns and Pltfrms 5 Day Onste SVC",
-          "H36WMA1",
-          "23,400.00",
-          ""
-        ],
-        [
-          "HPE AI Soltns and Platfrms 1 Day Rem SVC",
-          "H36WQA1",
-          "2,760.00",
-          ""
-        ],
-        [
-          "HPE Data and AI Security 5 Day Rem SVC",
-          "H46RMA1",
-          "9,000.00",
-          ""
-        ],
-        [
-          "HPE Data and AI Security 5 Day Onste SVC",
-          "H46RNA1",
-          "18,540.00",
-          ""
-        ],
-        [
-          "HPE Data and AI Security 1 Day Rem SVC",
-          "H46RLA1",
-          "2,640.00",
-          ""
-        ],
-        [
-          "HPE Data Sltn and Pltfrms 5 Day Rem SVC",
-          "H57FDA1",
-          "13,800.00",
-          ""
-        ]
-      ]
-    },
-    {
-      "tableIndex": 17,
-      "rowCount": 2,
-      "rows": [
-        [
-          "Description",
-          "Product Number",
-          "List Price (USD)",
-          "Quantity"
-        ],
-        [
-          "There is no data!"
-        ]
-      ]
-    },
-    {
-      "tableIndex": 18,
-      "rowCount": 2,
-      "rows": [
-        [
-          "Description",
-          "Product Number",
-          "List Price (USD)",
-          "Quantity"
-        ],
-        [
-          "There is no data!"
-        ]
-      ]
-    },
-    {
-      "tableIndex": 19,
-      "rowCount": 2,
-      "rows": [
-        [
-          "Description",
-          "Product Number",
-          "List Price (USD)",
-          "Quantity"
-        ],
-        [
-          "There is no data!"
-        ]
-      ]
-    },
-    {
-      "tableIndex": 20,
-      "rowCount": 2,
-      "rows": [
-        [
-          "Description",
-          "Product Number",
-          "List Price (USD)",
-          "Quantity"
-        ],
-        [
-          "There is no data!"
-        ]
-      ]
-    },
-    {
-      "tableIndex": 21,
-      "rowCount": 1,
-      "rows": [
-        [
-          "Description",
-          "Qty"
-        ]
-      ]
-    },
-    {
-      "tableIndex": 22,
-      "rowCount": 21,
-      "rows": [
-        [
-          "Description",
-          "Product Number",
-          "Feature Code",
-          "List Price (USD)",
-          "Qty"
-        ],
-        [
-          "HPE Add Generic Packaging Kit",
-          "469776-715",
-          "",
-          "1.00",
-          ""
-        ],
-        [
-          "HPE Factory Express Standard Unit of SVC",
-          "H4F41A1",
-          "",
-          "19.00",
-          ""
-        ],
-        [
-          "HPE Factory Express Complex Unit of SVC",
-          "H4F42A1",
-          "",
-          "1,850.00",
-          ""
-        ],
-        [
-          "HPE Factory Express 3PAR OS Backrev SVC",
-          "H7M73A1",
-          "",
-          "1,575.00",
-          ""
-        ],
-        [
-          "HPE FE Proliant Svr Pkg 3 SVC",
-          "HA453A1-001",
-          "",
-          "205.00",
-          ""
-        ],
-        [
-          "HPE FE Multi-node Svr Pkg 3 SVC",
-          "HA453A1-003",
-          "",
-          "315.00",
-          ""
-        ],
-        [
-          "HPE FE High End Storage Pkg 3 SVC",
-          "HA453A1-023",
-          "",
-          "384.00",
-          ""
-        ],
-        [
-          "HPE Hardware Customization Service",
-          "HA838A1",
-          "",
-          "29.00",
-          ""
-        ],
-        [
-          "HPE Supplied Asset Tag Service",
-          "HA840A1",
-          "",
-          "15.00",
-          ""
-        ],
-        [
-          "HPE Customer Supplied Asset Tag Service",
-          "HA841A1",
-          "",
-          "26.00",
-          ""
-        ],
-        [
-          "HPE Product and Package Labeling Service",
-          "HA849A1",
-          "",
-          "25.00",
-          ""
-        ],
-        [
-          "HPE FE Personalized Install SVC",
-          "HA861A1",
-          "",
-          "2,105.00",
-          ""
-        ],
-        [
-          "HPE Standard Product Reporting Service",
-          "HA867A1",
-          "",
-          "13.00",
-          ""
-        ],
-        [
-          "HPE Enhanced Product Reporting Service",
-          "HA868A1",
-          "",
-          "38.00",
-          ""
-        ],
-        [
-          "HPE Special Factory Service",
-          "HA875A1",
-          "",
-          "1.00",
-          ""
-        ],
-        [
-          "HPE Integration Center Routing Service",
-          "HC790A",
-          "",
-          "0.00",
-          ""
-        ],
-        [
-          "HPE Factory Express Standard Custom SVC",
-          "HF481A1",
-          "",
-          "0.00",
-          ""
-        ],
-        [
-          "HPE FE OEM Customization UOS SVC",
-          "HU7D3A1",
-          "",
-          "65.00",
-          ""
-        ],
-        [
-          "HPE Server Customization Package",
-          "ZU706A",
-          "",
-          "149.00",
-          ""
-        ],
-        [
-          "HPE Customization Service",
-          "ZU723A",
-          "",
-          "110.00",
-          ""
-        ]
-      ]
-    },
-    {
-      "tableIndex": 23,
-      "rowCount": 11,
-      "rows": [
-        [
-          "Description",
-          "Product Number",
-          "List Price (USD)",
-          "Quantity"
-        ],
-        [
-          "HPE Consolidated Delivery Service",
-          "AG629A",
-          "25.00",
-          ""
-        ],
-        [
-          "HPE Delivery Site Above Ground Floor Service",
-          "P1F69A",
-          "289.00",
-          ""
-        ],
-        [
-          "HPE Forklift at Delivery Service",
-          "P1F70A",
-          "1,399.00",
-          ""
-        ],
-        [
-          "HPE Special Delivery Truck Size Service",
-          "P1F71A",
-          "292.00",
-          ""
-        ],
-        [
-          "HPE Two People at Delivery SVC",
-          "P1F72A",
-          "466.00",
-          ""
-        ],
-        [
-          "HPE Campus Delivery Service",
-          "P1F73A",
-          "104.00",
-          ""
-        ],
-        [
-          "HPE Unloading Logistic Service",
-          "P1F74A",
-          "350.00",
-          ""
-        ],
-        [
-          "HPE Fixed Delivery Appointment Service",
-          "P1F75A",
-          "466.00",
-          ""
-        ],
-        [
-          "HPE Pre-Delivery Site Survey SVC",
-          "P1F76A",
-          "758.00",
-          ""
-        ],
-        [
-          "HPE Delivery Any Day at 0800 Hours Service",
-          "P1F78A",
-          "350.00",
-          ""
-        ]
-      ]
-    },
-    {
-      "tableIndex": 24,
-      "rowCount": 5,
-      "rows": [
-        [
-          "Description",
-          "Product Number",
-          "List Price (USD)",
-          "Quantity"
-        ],
-        [
-          "HPE Special Equipment Service",
-          "AG628A",
-          "816.00",
-          ""
-        ],
-        [
-          "HPE Expedite Shipment Small Logistic Service",
-          "BQ335A",
-          "44.00",
-          ""
-        ],
-        [
-          "HPE Expedite Shipment Large Logistic Service",
-          "BQ337A",
-          "100.00",
-          ""
-        ],
-        [
-          "Total",
-          "0"
-        ]
-      ]
-    },
-    {
-      "tableIndex": 25,
-      "rowCount": 2,
-      "rows": [
-        [
-          "Description",
-          "Product Number",
-          "List Price (USD)",
-          "Quantity"
-        ],
-        [
-          "There is no data!"
-        ]
-      ]
-    },
-    {
-      "tableIndex": 26,
-      "rowCount": 2,
-      "rows": [
-        [
-          "Description",
-          "Product Number",
-          "Feature Code",
-          "List Price (USD)",
-          "Qty"
-        ],
-        [
-          "There is no data!"
-        ]
-      ]
-    },
-    {
-      "tableIndex": 28,
-      "rowCount": 12,
-      "rows": [
-        [
-          "Description",
-          "Product Number",
-          "List Price (USD)",
           "Quantity"
         ],
         [
           "HPE 3Y AL STG Block Pro-SAM T1 Service",
           "H46SGA3",
-          "0.00",
           ""
         ],
         [
           "HPE 4Y AL STG Block Pro-SAM T1 Service",
           "H46SGA4",
-          "0.00",
           ""
         ],
         [
           "HPE 5Y AL STG Block Pro-SAM T1 Service",
           "H46SGA5",
-          "0.00",
           ""
         ],
         [
           "HPE 3Y AL STG Block Pro-SAM T2 Service",
           "H46SHA3",
-          "0.00",
           ""
         ],
         [
           "HPE 4Y AL STG Block Pro-SAM T2 Service",
           "H46SHA4",
-          "0.00",
           ""
         ],
         [
           "HPE 5Y AL STG Block Pro-SAM T2 Service",
           "H46SHA5",
-          "0.00",
           ""
         ],
         [
           "HPE 3Y AL STG File/Object Pro-SAM T1 Service",
           "H46SJA3",
-          "0.00",
           ""
         ],
         [
           "HPE 4Y AL STG File/Object Pro-SAM T1 Service",
           "H46SJA4",
-          "0.00",
           ""
         ],
         [
           "HPE 5Y AL STG File/Object Pro-SAM T1 Service",
           "H46SJA5",
-          "0.00",
           ""
         ],
         [
           "HPE 3Y AL STG File/Object Pro-SAM T2 Service",
           "H46SKA3",
-          "0.00",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 11,
+      "tableId": "sui-components-tree",
+      "rowCount": 4,
+      "rows": [
+        [
+          "",
+          "Qty",
+          "Reactive support",
+          "Install",
+          "Device specific services"
+        ],
+        [
+          "Icon #1 - OCA Config 2Icon ID: I158519560-01EDT: 14 - 18 days",
+          "1",
+          "",
+          "",
           ""
         ],
         [
-          "Total",
-          "0"
+          "MSL3040 #1Q6Q62C",
+          "1",
+          "HU4A6A5#YJR HPE 5Y Tech Care Essential Service",
+          "HA114A1#5UE HPE Installation and Startup Service",
+          ""
+        ],
+        [
+          "HPE StoreEver MSL3040 Command View for Tape Libraries - Data Verification 100 Cartridges E-LTU",
+          "",
+          "HU4A6A5#YJY HPE 5Y Tech Care Essential Service",
+          "N/A",
+          ""
         ]
       ]
     }
   ],
-  "tableCount": 27,
-  "chassisDiscovery": null
+  "tableCount": 28,
+  "conditionalSkus": [
+    {
+      "sku": "716197-B21",
+      "badge": "",
+      "ruleContext": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "scopeProvenance": {
+        "baseSku": "Q6Q62C",
+        "ownerProduct": "MSL3040_Tape",
+        "ownerConfiguration": "HPE MSL3040 Scalable Base Module [Q6Q62C]",
+        "region": "US",
+        "selectorState": "Supported on LTO-9 SAS Drive (R6Q75A) Only."
+      }
+    },
+    {
+      "sku": "716199-B21",
+      "badge": "",
+      "ruleContext": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "scopeProvenance": {
+        "baseSku": "Q6Q62C",
+        "ownerProduct": "MSL3040_Tape",
+        "ownerConfiguration": "HPE MSL3040 Scalable Base Module [Q6Q62C]",
+        "region": "US",
+        "selectorState": "Supported on LTO-9 SAS Drive (R6Q75A) Only."
+      }
+    },
+    {
+      "sku": "P35176-B21",
+      "badge": "",
+      "ruleContext": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "scopeProvenance": {
+        "baseSku": "Q6Q62C",
+        "ownerProduct": "MSL3040_Tape",
+        "ownerConfiguration": "HPE MSL3040 Scalable Base Module [Q6Q62C]",
+        "region": "US",
+        "selectorState": "Supported on LTO-9 SAS Drive (R6Q75A) Only."
+      }
+    },
+    {
+      "sku": "P35175-B21",
+      "badge": "",
+      "ruleContext": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "scopeProvenance": {
+        "baseSku": "Q6Q62C",
+        "ownerProduct": "MSL3040_Tape",
+        "ownerConfiguration": "HPE MSL3040 Scalable Base Module [Q6Q62C]",
+        "region": "US",
+        "selectorState": "Supported on LTO-9 SAS Drive (R6Q75A) Only."
+      }
+    }
+  ],
+  "conditionalSkusCount": 4,
+  "conditionalDiscovery": "HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED",
+  "unavailableRules": [
+    {
+      "ruleId": "RULE_1",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Cables",
+      "reason": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "affectedSkusCount": 4,
+      "affectedSkus": [
+        "716197-B21",
+        "716199-B21",
+        "P35176-B21",
+        "P35175-B21"
+      ]
+    }
+  ],
+  "unavailableRulesCount": 1,
+  "unavailableSkus": [
+    {
+      "sku": "716197-B21",
+      "rawSku": "716197-B21",
+      "isPrivateSku": false,
+      "description": "HPE External 2.0m (6ft) Mini-SAS HD 4x to Mini-SAS HD 4x Cable",
+      "listPrice": 177,
+      "startDate": "10/23/2017",
+      "discontinuedDate": "08/31/2030",
+      "section": "Cables",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "Q6Q62C",
+        "ownerProduct": "MSL3040_Tape",
+        "ownerConfiguration": "HPE MSL3040 Scalable Base Module [Q6Q62C]",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "716199-B21",
+      "rawSku": "716199-B21",
+      "isPrivateSku": false,
+      "description": "HPE External 4.0m (13ft) Mini-SAS HD 4x to Mini-SAS HD 4x Cable",
+      "listPrice": 287,
+      "startDate": "10/23/2017",
+      "discontinuedDate": "08/31/2030",
+      "section": "Cables",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "Q6Q62C",
+        "ownerProduct": "MSL3040_Tape",
+        "ownerConfiguration": "HPE MSL3040 Scalable Base Module [Q6Q62C]",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "P35176-B21",
+      "rawSku": "P35176-B21",
+      "isPrivateSku": false,
+      "description": "HPE External 12Gb Mini SAS High Density to Mini SAS High Density 4-lane 2m Fanout Cable",
+      "listPrice": 206,
+      "startDate": "01/10/2022",
+      "discontinuedDate": "08/31/2030",
+      "section": "Cables",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "Q6Q62C",
+        "ownerProduct": "MSL3040_Tape",
+        "ownerConfiguration": "HPE MSL3040 Scalable Base Module [Q6Q62C]",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "P35175-B21",
+      "rawSku": "P35175-B21",
+      "isPrivateSku": false,
+      "description": "HPE External 12Gb Mini SAS High Density to Mini SAS High Density 4-lane 4m Fanout Cable",
+      "listPrice": 369,
+      "startDate": "01/10/2022",
+      "discontinuedDate": "08/31/2030",
+      "section": "Cables",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "Q6Q62C",
+        "ownerProduct": "MSL3040_Tape",
+        "ownerConfiguration": "HPE MSL3040 Scalable Base Module [Q6Q62C]",
+        "region": "US",
+        "selectorState": "default"
+      }
+    }
+  ],
+  "unavailableSkusCount": 4,
+  "networkSniffedRules": [],
+  "networkSniffedRulesCount": 0,
+  "networkCoverage": {
+    "capturedResponses": 0,
+    "pendingResponses": 0,
+    "failures": [],
+    "scope": "OBSERVED_REQUESTS_ONLY"
+  },
+  "chassisDiscovery": {
+    "query": "MSL3040",
+    "selectedSku": "Q6Q62C",
+    "source": "HPE OCA Product Search via authenticated CDP session",
+    "capturedAt": "2026-11-20T08:21:21.735Z",
+    "deliveryEstimate": "EDT 17 - 21 days",
+    "candidates": [
+      {
+        "type": "dropdown-option",
+        "cardSelector": "[data-cand-idx=\"0\"]",
+        "optionValue": "Q6Q62C",
+        "text": "Q6Q62C - HPE MSL3040 Scalable Base Module",
+        "sku": "Q6Q62C",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "EDT 17 - 21 days",
+        "deliveryLabel": "",
+        "isBto": false,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": true
+      },
+      {
+        "type": "dropdown-option",
+        "cardSelector": "[data-cand-idx=\"3\"]",
+        "optionValue": "5142761175-01",
+        "text": "5142761175-01 - OCA Config 3-MSL3040 Scalable Base Module",
+        "sku": "5142761175-01",
+        "listPriceUsd": 0,
+        "availability": "Not published by OCA",
+        "leadTime": "EDT 17 - 21 days",
+        "deliveryLabel": "",
+        "isBto": false,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": true
+      }
+    ],
+    "excludedCandidates": [
+      {
+        "type": "dropdown-option",
+        "cardSelector": "[data-cand-idx=\"1\"]",
+        "optionValue": "P77037-B25",
+        "text": "P77037-B25 - HPE Storage MSL3040 Tape Library 1x MSL LTO-9 SAS Drive 20x LTO-9 45TB Data Cartridges",
+        "sku": "P77037-B25",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "dropdown-option",
+        "cardSelector": "[data-cand-idx=\"1\"]",
+        "optionValue": "P84147-B25",
+        "text": "P84147-B25 - HPE Storage MSL3040 Tape Library 1x MSL LTO-9 Fibre Channel 20x LTO-9 45TB Data Cartridges",
+        "sku": "P84147-B25",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "dropdown-option",
+        "cardSelector": "[data-cand-idx=\"2\"]",
+        "optionValue": "Q6Q64A",
+        "text": "Q6Q64A - HPE StoreEver MSL3040 Upgrade Power Supply Kit",
+        "sku": "Q6Q64A",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "dropdown-option",
+        "cardSelector": "[data-cand-idx=\"3\"]",
+        "optionValue": "5155536970-01",
+        "text": "5155536970-01 - 13-Servers-1-Storage_11x-DL380-Gen11_1x-DL580-Gen12_1x-DL380a-Gen12_1x-MSL3040",
+        "sku": "5155536970-01",
+        "listPriceUsd": 0,
+        "availability": "Not published by OCA",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "dropdown-option",
+        "cardSelector": "[data-cand-idx=\"3\"]",
+        "optionValue": "5154346172-01",
+        "text": "5154346172-01 - MSL6480_MSL3040_Adhoc-HPEStoreEver_MSA2060",
+        "sku": "5154346172-01",
+        "listPriceUsd": 0,
+        "availability": "Not published by OCA",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "dropdown-option",
+        "cardSelector": "[data-cand-idx=\"3\"]",
+        "optionValue": "5154347081-01",
+        "text": "5154347081-01 - MSL6480_MSL3040_Adhoc-HPEStoreEver_MSA2060",
+        "sku": "5154347081-01",
+        "listPriceUsd": 0,
+        "availability": "Not published by OCA",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"4\"]",
+        "text": "Tape HPE MSL3040 MSL LTO9 FC 20LTO9 45T Crtg HPE Storage MSL3040 Tape Library 1x MSL LTO-9 Fibre Channel 20x LTO-9 45TB Data Cartridges - Not Applicable - Not Applicable - Not Applicable i Unlocked Compare STs USD 34,236.00 Estimated Net Price Customize Quote",
+        "sku": "MSL3040",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"5\"]",
+        "text": "Tape HPE Stg MSL3040 LTO9 SAS Drv 20LTO9 Crtg HPE Storage MSL3040 Tape Library 1x MSL LTO-9 SAS Drive 20x LTO-9 45TB Data Cartridges - Not Applicable - Not Applicable - Not Applicable i Unlocked Compare STs USD 31,624.04 Estimated Net Price Customize Quote",
+        "sku": "MSL3040",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      }
+    ]
+  }
 }

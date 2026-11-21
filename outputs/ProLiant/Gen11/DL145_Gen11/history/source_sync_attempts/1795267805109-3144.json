@@ -1,0 +1,22 @@
+{
+  "product": "DL145_Gen11",
+  "notebookId": "7a48061a-331a-429b-8477-7e0473491714",
+  "replacementSourceId": "3d63671a-957f-4177-a639-9cea482f52dd",
+  "verifiedAt": "2026-11-21T13:30:05.110Z",
+  "contentFingerprints": null,
+  "legacyFingerprint": "495fcdb165316147de4c05cfceef1970d284ef820cfa22854855fc654575eeba",
+  "retirementRequested": true,
+  "plannedRetirementIds": [
+    "3c8a9870-cd36-46ea-88ec-5bcacecf80cd",
+    "79aad128-6967-4643-8083-850ae09bb7d1",
+    "eecef01e-cfa7-4aef-a3ce-4ec7ac0d5eb5"
+  ],
+  "status": "CONSOLIDATED",
+  "retiredSourceIds": [
+    "3c8a9870-cd36-46ea-88ec-5bcacecf80cd",
+    "79aad128-6967-4643-8083-850ae09bb7d1",
+    "eecef01e-cfa7-4aef-a3ce-4ec7ac0d5eb5"
+  ],
+  "remainingSourceIds": [],
+  "retirementErrors": []
+}

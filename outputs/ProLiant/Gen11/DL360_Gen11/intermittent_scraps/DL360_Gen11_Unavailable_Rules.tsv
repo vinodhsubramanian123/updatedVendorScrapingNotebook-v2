@@ -1,0 +1,36 @@
+Rule ID	Rule Type	Section	Constraint / Reason	Affected SKU Count	Affected SKUs
+RULE_1	CONDITIONAL_VISIBILITY	Processor	Max quantity of product limited by space available.	4	P48905-B21, P48906-B21, P62026-B21, P62029-B21
+RULE_2	CONDITIONAL_VISIBILITY	Memory	Mixing of x4 and x8 memory is not allowed	2	P43328-F21, P43322-F21
+RULE_3	CONDITIONAL_VISIBILITY	Memory	This Processor supports only PC5-4800B Memory	8	P64706-F21, P64707-F21, P64708-F21, P64705-F21, P64709-B21, P64710-F21, P69976-F21, P90554-F21
+RULE_4	CONDITIONAL_VISIBILITY	Memory	BTO Memories are not allowed in CTO Base Model.	11	P43322-B21, P43328-B21, P43331-B21, P64705-B21, P64706-B21, P64706-S25, P64707-B21, P64708-B21, P66675-B21, P69974-B21, P69976-B21
+RULE_5	CONDITIONAL_VISIBILITY	Memory	128GB 2Rx4 PC5-4800B-R memory cannot be mixed with any other memory	2	P43334-B21, P69974-F21
+RULE_6	CONDITIONAL_VISIBILITY	Memory	Mixing of 3DS and Non 3DS memory is not allowed	2	P43337-F21, P90550-F21
+RULE_7	CONDITIONAL_VISIBILITY	Memory	96GB Memory cannot be mixed with any other Memory	1	P66675-F21
+RULE_8	CONDITIONAL_VISIBILITY	Storage Devices	The SFF products are not supported with LFF model The LFF products are not supported with SFF model	2	P48913-B21, P51897-B21
+RULE_9	CONDITIONAL_VISIBILITY	Storage Devices	Supported with EDSFF CTO Model only.	2	P73000-B21, P73001-B21
+RULE_10	CONDITIONAL_VISIBILITY	Storage Devices	Private Product is not valid for current customer account	1	P78127-B21
+RULE_11	CONDITIONAL_VISIBILITY	Storage Devices	The SFF products are not supported with LFF model The LFF products are not supported with SFF model	1	P48914-B21
+RULE_12	CONDITIONAL_VISIBILITY	Storage Devices	BTO products are not allowed in CTO Base Model.	1	701498-B21
+RULE_13	CONDITIONAL_VISIBILITY	Storage Devices	BTO products are not allowed in CTO Base Model.	2	807878-B21, 666987-B21
+RULE_14	CONDITIONAL_VISIBILITY	Factory Configuration Settings	Supported only for NEBS Models	1	P40010-B21
+RULE_15	CONDITIONAL_VISIBILITY	Riser Cards	BTO products are not allowed in CTO Base Model.	1	P75407-B21
+RULE_16	CONDITIONAL_VISIBILITY	OS Boot Device	Private Product is not valid for current customer account	1	P61852-B21
+RULE_17	CONDITIONAL_VISIBILITY	Networking	Private Product is not valid for current customer account	1	P77627-B21
+RULE_18	CONDITIONAL_VISIBILITY	Networking	Private Product is not valid for current customer account	3	P31618-B21, P36208-B21, P80855-B21
+RULE_19	CONDITIONAL_VISIBILITY	Networking	Private Product is not valid for current customer account	3	P36205-B21, P46857-B21, P71812-B21
+RULE_20	CONDITIONAL_VISIBILITY	Networking	Private Product is not valid for current customer account	1	P81273-B21
+RULE_21	CONDITIONAL_VISIBILITY	Power and Cooling	Mixing of different Power supply SKU is not allowed.	4	P38995-B21, P38997-B21, P44712-B21, 865438-B21
+RULE_22	CONDITIONAL_VISIBILITY	Power and Cooling	The SFF products are not supported with LFF model The LFF products are not supported with SFF model	1	865408-B21
+RULE_23	CONDITIONAL_VISIBILITY	Power and Cooling	AC Power cord can only be selected with AC Power supply	1	P17023-B21
+RULE_24	CONDITIONAL_VISIBILITY	Power and Cooling	If Standard Heatsink is selected, then Performance fan cannot be selected.	1	P48908-B21
+RULE_25	CONDITIONAL_VISIBILITY	Power and Cooling	Max quantity of product limited by space available.	1	P62046-B21
+RULE_26	CONDITIONAL_VISIBILITY	Power and Cooling	AC Power cord can only be selected with AC Power supply	1	P36877-B21
+RULE_27	CONDITIONAL_VISIBILITY	Power and Cooling	AC Power cord can only be selected with AC Power supply	1	P22173-B21
+RULE_28	CONDITIONAL_VISIBILITY	Power and Cooling	BTO products are not allowed in CTO Base Model.	2	A0K02A, A0N33A
+RULE_29	CONDITIONAL_VISIBILITY	Accessories	The SFF products are not supported with LFF model The LFF products are not supported with SFF model	1	P48928-B21
+RULE_30	CONDITIONAL_VISIBILITY	Rack Options	The SFF products are not supported with LFF model The LFF products are not supported with SFF model	1	P52343-B21
+RULE_31	CONDITIONAL_VISIBILITY	Graphics Options	Private Product is not valid for current customer account	1	R9Q63C
+RULE_32	CONDITIONAL_VISIBILITY	Virtualization	Private Product is not valid for current customer account	12	S4F93AAE, S4F95AAE, S4F99AAE, S4G01AAE, S4R66AAE, S4R67AAE, S4R68AAE, S4R69AAE, S4R70AAE, S4R71AAE, S4R75AAE, S4R77AAE
+RULE_33	CONDITIONAL_VISIBILITY	Virtualization	Private Product is not valid for current customer account	3	S4R76AAE, S4F94AAE, S4G00AAE
+RULE_34	CONDITIONAL_VISIBILITY	Virtualization	Private Product is not valid for current customer account	6	S4R78AAE, S4F96AAE, S4G02AAE, S4R79AAE, S4F97AAE, S4G03AAE
+RULE_35	CONDITIONAL_VISIBILITY	Private Cloud Business Edition	Not Supported ProStack Server Software	7	S1T84A, S1T85A, S3V79A, S3V80A, S3V87A, S4V16A, S6F19A

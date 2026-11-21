@@ -1,1 +1,1122 @@
-{}
+{
+  "P57803-B21": {
+    "productNumber": "P57803-B21",
+    "description": "HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM PM1743 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P63930-B21": {
+    "productNumber": "P63930-B21",
+    "description": "HPE 3.84TB NVMe Gen4 Mainstream Performance Very Read Optimized E3S EC1 EDSFF P5430 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P63934-B21": {
+    "productNumber": "P63934-B21",
+    "description": "HPE 7.68TB NVMe Gen4 Mainstream Performance Very Read Optimized E3S EC1 EDSFF P5430 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P69237-B21": {
+    "productNumber": "P69237-B21",
+    "description": "HPE 3.84TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 CD8P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P70669-B21": {
+    "productNumber": "P70669-B21",
+    "description": "HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3S EC1 Self-encrypting FIPS 140-3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P70672-B21": {
+    "productNumber": "P70672-B21",
+    "description": "HPE 6.4TB NVMe Gen5 High Performance Mixed Use E3S EC1 Self-encrypting FIPS 140-3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P78787-B21": {
+    "productNumber": "P78787-B21",
+    "description": "HPE 6.4TB NVMe Gen5 High Performance Mixed Use E3.S EC1 PM1755 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P87719-B21": {
+    "productNumber": "P87719-B21",
+    "description": "HPE 1.92TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 Self-encrypting 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P91084-B21": {
+    "productNumber": "P91084-B21",
+    "description": "HPE 1.6TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P91086-B21": {
+    "productNumber": "P91086-B21",
+    "description": "HPE 3.2TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P91088-B21": {
+    "productNumber": "P91088-B21",
+    "description": "HPE 6.4TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P91090-B21": {
+    "productNumber": "P91090-B21",
+    "description": "HPE 1.92TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P91092-B21": {
+    "productNumber": "P91092-B21",
+    "description": "HPE 3.84TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P91094-B21": {
+    "productNumber": "P91094-B21",
+    "description": "HPE 7.68TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P91096-B21": {
+    "productNumber": "P91096-B21",
+    "description": "HPE 15.36TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P91098-B21": {
+    "productNumber": "P91098-B21",
+    "description": "HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P91100-B21": {
+    "productNumber": "P91100-B21",
+    "description": "HPE 6.4TB NVMe Gen5 High Performance Mixed Use E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P91102-B21": {
+    "productNumber": "P91102-B21",
+    "description": "HPE 12.8TB NVMe Gen5 High Performance Mixed Use E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P91229-B21": {
+    "productNumber": "P91229-B21",
+    "description": "HPE 3.84TB NVMe Gen5 High Performance Read Intensive E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P61183-B21": {
+    "productNumber": "P61183-B21",
+    "description": "HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P69239-B21": {
+    "productNumber": "P69239-B21",
+    "description": "HPE 7.68TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 CD8P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P78923-B21": {
+    "productNumber": "P78923-B21",
+    "description": "HPE 30.72TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 EDSFF SPDM PM9D3a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P85121-B21": {
+    "productNumber": "P85121-B21",
+    "description": "HPE 1.92TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 SPDM 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P85735-B21": {
+    "productNumber": "P85735-B21",
+    "description": "HPE 12.8TB NVMe Gen5 High Performance Mixed Use E3.S EC1 E3 Thin PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P87717-B21": {
+    "productNumber": "P87717-B21",
+    "description": "HPE 3.2TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 Self-encrypting 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P87721-B21": {
+    "productNumber": "P87721-B21",
+    "description": "HPE 3.84TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 Self-encrypting 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P87723-B21": {
+    "productNumber": "P87723-B21",
+    "description": "HPE 7.68TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 Self-encrypting 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P61179-B21": {
+    "productNumber": "P61179-B21",
+    "description": "HPE 3.84TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P61187-B21": {
+    "productNumber": "P61187-B21",
+    "description": "HPE 15.36TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P61191-B21": {
+    "productNumber": "P61191-B21",
+    "description": "HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3S EC1 EDSFF SPDM CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P61195-B21": {
+    "productNumber": "P61195-B21",
+    "description": "HPE 6.4TB NVMe Gen5 High Performance Mixed Use E3S EC1 EDSFF SPDM CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P63938-B21": {
+    "productNumber": "P63938-B21",
+    "description": "HPE 15.36TB NVMe Gen4 Mainstream Performance Very Read Optimized E3S EC1 EDSFF P5430 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P69546-B21": {
+    "productNumber": "P69546-B21",
+    "description": "HPE 15.36TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 CD8P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P70674-B21": {
+    "productNumber": "P70674-B21",
+    "description": "HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3S EC1 Self-encrypting FIPS 140-3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P78784-B21": {
+    "productNumber": "P78784-B21",
+    "description": "HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3.S EC1 PM1755 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P78789-B21": {
+    "productNumber": "P78789-B21",
+    "description": "HPE 3.84TB NVMe Gen5 High Performance Read Intensive E3.S EC1 PM1753 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P78791-B21": {
+    "productNumber": "P78791-B21",
+    "description": "HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3.S EC1 PM1753 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P78793-B21": {
+    "productNumber": "P78793-B21",
+    "description": "HPE 15.36TB NVMe Gen5 High Performance Read Intensive E3.S EC1 PM1753 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P79065-B21": {
+    "productNumber": "P79065-B21",
+    "description": "HPE 30.72TB NVMe Gen4 Mainstream Performance Very Read Optimized E3S EC1 EDSFF P5430 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P79122-B21": {
+    "productNumber": "P79122-B21",
+    "description": "HPE 15.36TB NVMe Gen5 High Performance Read Intensive E3S EC1 Self-encrypting FIPS 140-3 CM7 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P79147-B21": {
+    "productNumber": "P79147-B21",
+    "description": "HPE 30.72TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 EDSFF Self-encrypting PM9D3a SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P79615-B21": {
+    "productNumber": "P79615-B21",
+    "description": "HPE 30.72TB NVMe Gen5 Mainstream Performance Very Read Optimized E3.S EC1 EDSFF 6550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P79618-B21": {
+    "productNumber": "P79618-B21",
+    "description": "HPE 61.44TB NVMe Gen5 Mainstream Performance Very Read Optimized E3.S EC1 EDSFF 6550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P79620-B21": {
+    "productNumber": "P79620-B21",
+    "description": "HPE 30.72TB NVMe Gen5 Mainstream Performance Very Read Optimized EC1 EDSFF Self-encrypting 6550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P79623-B21": {
+    "productNumber": "P79623-B21",
+    "description": "HPE 61.44TB NVMe Gen5 Mainstream Performance Very Read Optimized EC1 EDSFF Self-encrypting 6550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P79965-B21": {
+    "productNumber": "P79965-B21",
+    "description": "HPE 30.72TB NVMe Gen5 High Performance Read Intensive E3.S EC1 EDSFF SPDM 9550 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P85114-B21": {
+    "productNumber": "P85114-B21",
+    "description": "HPE 1.6TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 SPDM 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P85117-B21": {
+    "productNumber": "P85117-B21",
+    "description": "HPE 3.2TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 SPDM 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P85119-B21": {
+    "productNumber": "P85119-B21",
+    "description": "HPE 6.4TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 SPDM 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P85124-B21": {
+    "productNumber": "P85124-B21",
+    "description": "HPE 3.84TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 SPDM 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P85126-B21": {
+    "productNumber": "P85126-B21",
+    "description": "HPE 7.68TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 SPDM 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P85128-B21": {
+    "productNumber": "P85128-B21",
+    "description": "HPE 15.36TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 SPDM 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P85731-B21": {
+    "productNumber": "P85731-B21",
+    "description": "HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3.S EC1 E3 Thin PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P85733-B21": {
+    "productNumber": "P85733-B21",
+    "description": "HPE 6.4TB NVMe Gen5 High Performance Mixed Use E3.S EC1 E3 Thin PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P85739-B21": {
+    "productNumber": "P85739-B21",
+    "description": "HPE 3.84TB NVMe Gen5 High Performance Read Intensive E3.S EC1 E3 Thin PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P85741-B21": {
+    "productNumber": "P85741-B21",
+    "description": "HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3.S EC1 E3 Thin PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P85743-B21": {
+    "productNumber": "P85743-B21",
+    "description": "HPE 15.36TB NVMe Gen5 High Performance Read Intensive E3.S EC1 E3 Thin PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P85745-B21": {
+    "productNumber": "P85745-B21",
+    "description": "HPE 30.72TB NVMe Gen5 High Performance Read Intensive E3.S EC1 E3 Thin PQC27 CM9 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P86016-B21": {
+    "productNumber": "P86016-B21",
+    "description": "HPE 1.6TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 E3 Thin PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P86018-B21": {
+    "productNumber": "P86018-B21",
+    "description": "HPE 3.2TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 E3 Thin PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P86020-B21": {
+    "productNumber": "P86020-B21",
+    "description": "HPE 6.4TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 E3 Thin PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P86024-B21": {
+    "productNumber": "P86024-B21",
+    "description": "HPE 1.92TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P86026-B21": {
+    "productNumber": "P86026-B21",
+    "description": "HPE 3.84TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P86028-B21": {
+    "productNumber": "P86028-B21",
+    "description": "HPE 7.68TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P86030-B21": {
+    "productNumber": "P86030-B21",
+    "description": "HPE 15.36TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P86032-B21": {
+    "productNumber": "P86032-B21",
+    "description": "HPE 30.72TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 E3 Thin PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P86746-B21": {
+    "productNumber": "P86746-B21",
+    "description": "HPE 61.44TB NVMe Gen5 Mainstream Performance Very Read Optimized E3.S EC1 Self-encrypting 6600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P86748-B21": {
+    "productNumber": "P86748-B21",
+    "description": "HPE 122.8TB NVMe Gen5 Mainstream Performance Very Read Optimized E3.S EC1 Self-encrypting 6600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P87715-B21": {
+    "productNumber": "P87715-B21",
+    "description": "HPE 1.6TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 Self-encrypting 7600 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P88535-B21": {
+    "productNumber": "P88535-B21",
+    "description": "HPE 1.6TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 PQC27 Self-encrypting CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P88537-B21": {
+    "productNumber": "P88537-B21",
+    "description": "HPE 3.2TB NVMe Gen5 Mainstream Performance Mixed Use E3.S EC1 PQC27 Self-encrypting CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P88539-B21": {
+    "productNumber": "P88539-B21",
+    "description": "HPE 3.84TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 PQC27 Self-encrypting CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P88541-B21": {
+    "productNumber": "P88541-B21",
+    "description": "HPE 7.68TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 PQC27 Self-encrypting CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P88543-B21": {
+    "productNumber": "P88543-B21",
+    "description": "HPE 15.36TB NVMe Gen5 Mainstream Performance Read Intensive E3.S EC1 PQC27 Self-encrypting CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P90655-B21": {
+    "productNumber": "P90655-B21",
+    "description": "HPE 6.4TB NVMe Gen6 High Performance Mixed Use E3.S EC1 Self-encrypting 9650 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P90658-B21": {
+    "productNumber": "P90658-B21",
+    "description": "HPE 12.8TB NVMe Gen6 High Performance Mixed Use E3.S EC1 Self-encrypting 9650 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P90660-B21": {
+    "productNumber": "P90660-B21",
+    "description": "HPE 7.68TB NVMe Gen6 High Performance Read Intensive E3.S EC1 Self-encrypting 9650 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P90663-B21": {
+    "productNumber": "P90663-B21",
+    "description": "HPE 15.36TB NVMe Gen6 High Performance Read Intensive E3.S EC1 Self-encrypting 9650 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P90665-B21": {
+    "productNumber": "P90665-B21",
+    "description": "HPE 30.72TB NVMe Gen6 High Performance Read Intensive E3.S EC1 Self-encrypting 9650 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P91231-B21": {
+    "productNumber": "P91231-B21",
+    "description": "HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "P91233-B21": {
+    "productNumber": "P91233-B21",
+    "description": "HPE 15.36TB NVMe Gen5 High Performance Read Intensive E3.S EC1 E3 Thin Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "339781-B21": {
+    "productNumber": "339781-B21",
+    "description": "HPE RAID FIO Advanced Data Guarding Option",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "RAID Settings",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q35AAE": {
+    "productNumber": "R3Q35AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 1-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q37AAE": {
+    "productNumber": "R3Q37AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 3-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q38AAE": {
+    "productNumber": "R3Q38AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 4-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q39AAE": {
+    "productNumber": "R3Q39AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q40AAE": {
+    "productNumber": "R3Q40AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q42AAE": {
+    "productNumber": "R3Q42AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education 3-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q44AAE": {
+    "productNumber": "R3Q44AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 1-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q46AAE": {
+    "productNumber": "R3Q46AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 3-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q47AAE": {
+    "productNumber": "R3Q47AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 4-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q48AAE": {
+    "productNumber": "R3Q48AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q49AAE": {
+    "productNumber": "R3Q49AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 1-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q51AAE": {
+    "productNumber": "R3Q51AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 3-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q52AAE": {
+    "productNumber": "R3Q52AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 4-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q53AAE": {
+    "productNumber": "R3Q53AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q63AAE": {
+    "productNumber": "R3Q63AAE",
+    "description": "NVIDIA RTX Virtual Workstation SUMS 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q67AAE": {
+    "productNumber": "R3Q67AAE",
+    "description": "NVIDIA RTX Virtual Workstation SUMS 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q68AAE": {
+    "productNumber": "R3Q68AAE",
+    "description": "NVIDIA RTX Virtual Workstation SUMS 1 Concurrent User Education 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q72AAE": {
+    "productNumber": "R3Q72AAE",
+    "description": "NVIDIA RTX Virtual Workstation SUMS 1 Concurrent User Education 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q73AAE": {
+    "productNumber": "R3Q73AAE",
+    "description": "NVIDIA Virtual Applications SUMS 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q77AAE": {
+    "productNumber": "R3Q77AAE",
+    "description": "NVIDIA Virtual Applications SUMS 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q79AAE": {
+    "productNumber": "R3Q79AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q81AAE": {
+    "productNumber": "R3Q81AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User 3-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q93AAE": {
+    "productNumber": "R3Q93AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Perpetual E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q94AAE": {
+    "productNumber": "R3Q94AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education Perpetual E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3Q95AAE": {
+    "productNumber": "R3Q95AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R01AAE": {
+    "productNumber": "R3R01AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User Perpetual E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R02AAE": {
+    "productNumber": "R3R02AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R03AAE": {
+    "productNumber": "R3R03AAE",
+    "description": "NVIDIA Virtual Applications 1 Concurrent User 3-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R06AAE": {
+    "productNumber": "R3R06AAE",
+    "description": "NVIDIA Virtual PC 1 Concurrent User Perpetual E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R07AAE": {
+    "productNumber": "R3R07AAE",
+    "description": "NVIDIA Virtual PC SUMS 1 Concurrent User 1-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R12AAE": {
+    "productNumber": "R3R12AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User 3-year Subscription Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R21AAE": {
+    "productNumber": "R3R21AAE",
+    "description": "NVIDIA Virtual PC SUMS 1 Concurrent User 5-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R26AAE": {
+    "productNumber": "R3R26AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education 1-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R3R27AAE": {
+    "productNumber": "R3R27AAE",
+    "description": "NVIDIA RTX Virtual Workstation 1 Concurrent User Education 3-year Subscription E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S16AAE": {
+    "productNumber": "S2S16AAE",
+    "description": "NVIDIA AI Enterprise per GPU 1-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S17AAE": {
+    "productNumber": "S2S17AAE",
+    "description": "NVIDIA AI Enterprise per GPU 3-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S18AAE": {
+    "productNumber": "S2S18AAE",
+    "description": "NVIDIA AI Enterprise per GPU 5-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S19AAE": {
+    "productNumber": "S2S19AAE",
+    "description": "NVIDIA AI Enterprise per GPU 1-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S20AAE": {
+    "productNumber": "S2S20AAE",
+    "description": "NVIDIA AI Enterprise per GPU 3-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S21AAE": {
+    "productNumber": "S2S21AAE",
+    "description": "NVIDIA AI Enterprise per GPU 5-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S22AAE": {
+    "productNumber": "S2S22AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 1-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S23AAE": {
+    "productNumber": "S2S23AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 3-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S24AAE": {
+    "productNumber": "S2S24AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 5-year Subscription 9x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S25AAE": {
+    "productNumber": "S2S25AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 1-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S26AAE": {
+    "productNumber": "S2S26AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 3-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S27AAE": {
+    "productNumber": "S2S27AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 5-year Subscription 9x5 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S28AAE": {
+    "productNumber": "S2S28AAE",
+    "description": "NVIDIA AI Enterprise per GPU 1-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S29AAE": {
+    "productNumber": "S2S29AAE",
+    "description": "NVIDIA AI Enterprise per GPU 3-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S30AAE": {
+    "productNumber": "S2S30AAE",
+    "description": "NVIDIA AI Enterprise per GPU 5-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S31AAE": {
+    "productNumber": "S2S31AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 1-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S32AAE": {
+    "productNumber": "S2S32AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 3-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S33AAE": {
+    "productNumber": "S2S33AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 5-year 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S34AAE": {
+    "productNumber": "S2S34AAE",
+    "description": "NVIDIA AI Enterprise per GPU 1-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S35AAE": {
+    "productNumber": "S2S35AAE",
+    "description": "NVIDIA AI Enterprise per GPU 3-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S36AAE": {
+    "productNumber": "S2S36AAE",
+    "description": "NVIDIA AI Enterprise per GPU 5-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S37AAE": {
+    "productNumber": "S2S37AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 1-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S38AAE": {
+    "productNumber": "S2S38AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 3-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2S39AAE": {
+    "productNumber": "S2S39AAE",
+    "description": "NVIDIA AI Enterprise Educational per GPU 5-year 24x7 Support Renewal E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  }
+}

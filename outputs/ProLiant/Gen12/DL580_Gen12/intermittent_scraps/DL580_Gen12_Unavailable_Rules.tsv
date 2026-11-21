@@ -1,0 +1,15 @@
+Rule ID	Rule Type	Section	Constraint / Reason	Affected SKU Count	Affected SKUs
+RULE_1	CONDITIONAL_VISIBILITY	Processor	4P Mezz Enable kit cannot be selected with either UPI 2P FIO Cbl kit or 2P Air Baffle kit.	1	P80445-B21
+RULE_2	CONDITIONAL_VISIBILITY	Memory	BTO Memories are not allowed in CTO Base Model.	4	P69728-B21, P69729-B21, P69730-B21, P73447-B21
+RULE_3	CONDITIONAL_VISIBILITY	Memory	Mixing of memory DIMMs of different capacities is not allowed.	3	P69729-F21, P69730-F21, P73447-F21
+RULE_4	CONDITIONAL_VISIBILITY	Storage Devices	MR408i-p / MR408i-o controller can be selected with Qty 1 8SFF x1 drive cage only. No other drive cage combinations is allowed with this controller Allowed Drive Cage combinations with MR408i-p / MR408i-o controllers - - Qty 1 8SFF x1 - Qty 1 8SFF x1 + Universal Media Bay Kit - Qty 1 8SFF x1 + Universal Media Bay Kit + 2SFF Drive cage.	2	P58335-B21, P74775-B21
+RULE_5	CONDITIONAL_VISIBILITY	Storage Devices	12W Smart Hybrid Capacitor OR 16W Smart Hybrid Capacitor OR 96W Smart Storage Battery can be selected only if MR416i/ MR408i controller is selected.	2	P02381-B21, P01367-B21
+RULE_6	CONDITIONAL_VISIBILITY	Storage Devices	BTO products are not allowed in CTO Base Model.	1	701498-B21
+RULE_7	CONDITIONAL_VISIBILITY	Storage Devices	BTO products are not allowed in CTO Base Model.	1	666987-B21
+RULE_8	CONDITIONAL_VISIBILITY	Networking	BTO products are not allowed in CTO Base Model.	1	487655-B21
+RULE_9	CONDITIONAL_VISIBILITY	Manufacturing Services	Power cord cannot be selected if HPE Remove Standard Power Cords(469774-409) is in the configuration.	1	469774-409
+RULE_10	CONDITIONAL_VISIBILITY	Power and Cooling	Mixing of Power Supplies is not allowed.	3	P67248-B21, P73210-B21, P67244-B21
+RULE_11	CONDITIONAL_VISIBILITY	Power and Cooling	Supports C19/ C19-C20 Power Cords only.	27	AF556A, AF568A, P73874-B21, AF557A, AF558A, AF559A, AF560A, AF561A, AF562A, AF564A, AF565A, AF566A, AF567A, AF569A, AF570A, AF572A, AF573A, AF591A, P78130-B21, P78131-B21, P78144-B21, P78145-B21, P78147-B21, P78156-B21, P78940-B21, P78941-B21, R1C65A
+RULE_12	CONDITIONAL_VISIBILITY	Power and Cooling	Mixing of Power cords is not allowed	4	P78148-B21, P78155-B21, P78164-B21, P78157-B21
+RULE_13	CONDITIONAL_VISIBILITY	Power and Cooling	BTO products are not allowed in CTO Base Model.	2	A0K02A, A0N33A
+RULE_14	CONDITIONAL_VISIBILITY	Virtualization	Private Product is not valid for current customer account	3	S4F94AAE, S4G00AAE, S4R76AAE

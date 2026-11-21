@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "1.0.0",
+  "product": "DL580_Gen12",
+  "generatedAt": "2026-11-21T11:58:27.471Z",
+  "rejectedCount": 11,
+  "rows": [
+    {
+      "tableIndex": 2,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Ambient Temperature"
+      ]
+    },
+    {
+      "tableIndex": 3,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HDD Blank Kit"
+      ]
+    },
+    {
+      "tableIndex": 4,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "M.2"
+      ]
+    },
+    {
+      "tableIndex": 10,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Smart IO (SW)"
+      ]
+    },
+    {
+      "tableIndex": 11,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Graphics Options"
+      ]
+    },
+    {
+      "tableIndex": 12,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Private Cloud Business Edition"
+      ]
+    },
+    {
+      "tableIndex": 14,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HPE Complete Software"
+      ]
+    },
+    {
+      "tableIndex": 15,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HPE Security Compliance Software"
+      ]
+    },
+    {
+      "tableIndex": 19,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "SGI Software"
+      ]
+    },
+    {
+      "tableIndex": 97,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Hardware",
+        "USD98,499.00",
+        "Support",
+        "USD32,911.00"
+      ]
+    },
+    {
+      "tableIndex": 100,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    }
+  ]
+}

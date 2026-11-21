@@ -1,6 +1,382 @@
 [
   {
     "summary": {
+      "runId": "run_DL380_Gen12_1795262280605",
+      "sessionName": "DL380_Gen12",
+      "startTime": "2026-11-21T11:58:00.604Z",
+      "endTime": "2026-11-21T11:58:11.025Z",
+      "durationMs": 10421,
+      "durationSec": "10.42",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 1410,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 777,
+      "validationStats": {
+        "totalEntries": 161,
+        "totalSKUs": 1410,
+        "validSKUs": 1410,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 5,
+        "zeroPriceSKUs": 76,
+        "priceErrors": 0,
+        "ruleCount": 506,
+        "categoryCount": 13
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-21T11:58:00.605Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/ProLiant/Gen12/DL380_Gen12/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_Catalog.json",
+          "chassisLabel": "DL380 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:03.347Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 69,
+          "totalUniqueSKUs": 777,
+          "incrementalStats": {
+            "totalScrapedSkus": 777,
+            "unchangedSkusCount": 552,
+            "modifiedSkusCount": 162,
+            "addedSkusCount": 63,
+            "removedSkusCount": 3,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:03.388Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 161,
+            "totalSKUs": 1410,
+            "validSKUs": 1410,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 5,
+            "zeroPriceSKUs": 76,
+            "priceErrors": 0,
+            "ruleCount": 506,
+            "categoryCount": 13
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:11.023Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 1410,
+      "classified": 1410,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380_Gen12_1795169894527",
+      "sessionName": "DL380_Gen12",
+      "startTime": "2026-11-20T10:18:14.526Z",
+      "endTime": "2026-11-20T10:18:23.265Z",
+      "durationMs": 8739,
+      "durationSec": "8.74",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 1289,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 717,
+      "validationStats": {
+        "totalEntries": 157,
+        "totalSKUs": 1289,
+        "validSKUs": 1289,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 5,
+        "zeroPriceSKUs": 76,
+        "priceErrors": 0,
+        "ruleCount": 502,
+        "categoryCount": 14
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-20T10:18:14.527Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs\\ProLiant\\Gen12\\DL380_Gen12\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "outputs\\ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json",
+          "chassisLabel": "DL380 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-20T10:18:17.950Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 72,
+          "totalUniqueSKUs": 717,
+          "incrementalStats": {
+            "totalScrapedSkus": 717,
+            "unchangedSkusCount": 712,
+            "modifiedSkusCount": 5,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T10:18:18.009Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 157,
+            "totalSKUs": 1289,
+            "validSKUs": 1289,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 5,
+            "zeroPriceSKUs": 76,
+            "priceErrors": 0,
+            "ruleCount": 502,
+            "categoryCount": 14
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T10:18:23.264Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs\\ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 1289,
+      "classified": 1289,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380_Gen12_1795169645970",
+      "sessionName": "DL380_Gen12",
+      "startTime": "2026-11-20T10:14:05.969Z",
+      "endTime": "2026-11-20T10:14:12.979Z",
+      "durationMs": 7010,
+      "durationSec": "7.01",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 1289,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 717,
+      "validationStats": {
+        "totalEntries": 157,
+        "totalSKUs": 1289,
+        "validSKUs": 1289,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 5,
+        "zeroPriceSKUs": 76,
+        "priceErrors": 0,
+        "ruleCount": 502,
+        "categoryCount": 14
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-20T10:14:05.970Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs\\ProLiant\\Gen12\\DL380_Gen12\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "outputs\\ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json",
+          "chassisLabel": "DL380 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-20T10:14:08.664Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 72,
+          "totalUniqueSKUs": 717,
+          "incrementalStats": {
+            "totalScrapedSkus": 717,
+            "unchangedSkusCount": 712,
+            "modifiedSkusCount": 5,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T10:14:08.691Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 157,
+            "totalSKUs": 1289,
+            "validSKUs": 1289,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 5,
+            "zeroPriceSKUs": 76,
+            "priceErrors": 0,
+            "ruleCount": 502,
+            "categoryCount": 14
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T10:14:12.978Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs\\ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 1289,
+      "classified": 1289,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380_Gen12_1795168598791",
+      "sessionName": "DL380_Gen12",
+      "startTime": "2026-11-20T09:56:38.789Z",
+      "endTime": "2026-11-20T09:56:45.365Z",
+      "durationMs": 6576,
+      "durationSec": "6.58",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 1289,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 717,
+      "validationStats": {
+        "totalEntries": 157,
+        "totalSKUs": 1289,
+        "validSKUs": 1289,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 5,
+        "zeroPriceSKUs": 76,
+        "priceErrors": 0,
+        "ruleCount": 502,
+        "categoryCount": 14
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-20T09:56:38.792Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/.catalog-staging/staging_DL380_Gen12_1795168598181/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/.catalog-staging/staging_DL380_Gen12_1795168598181/DL380_Gen12_Catalog.json",
+          "chassisLabel": "DL380 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-20T09:56:44.410Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 72,
+          "totalUniqueSKUs": 717,
+          "incrementalStats": {
+            "totalScrapedSkus": 717,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 717,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T09:56:44.442Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 157,
+            "totalSKUs": 1289,
+            "validSKUs": 1289,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 5,
+            "zeroPriceSKUs": 76,
+            "priceErrors": 0,
+            "ruleCount": 502,
+            "categoryCount": 14
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T09:56:45.365Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/.catalog-staging/staging_DL380_Gen12_1795168598181/DL380_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 1289,
+      "classified": 1289,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_DL380_Gen12_1794480672817",
       "sessionName": "DL380_Gen12",
       "startTime": "2026-11-12T10:51:12.816Z",
@@ -31,8 +407,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_DL380_Gen12_1794480672346\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_DL380_Gen12_1794480672346\\DL380_Gen12_Catalog.json",
+          "rawInputPath": "outputs/.catalog-staging/staging_DL380_Gen12_1794480672346/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/.catalog-staging/staging_DL380_Gen12_1794480672346/DL380_Gen12_Catalog.json",
           "chassisLabel": "DL380 Gen12"
         }
       },
@@ -80,7 +456,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_DL380_Gen12_1794480672346\\DL380_Gen12_Catalog.json"
+          "path": "outputs/.catalog-staging/staging_DL380_Gen12_1794480672346/DL380_Gen12_Catalog.json"
         }
       }
     ],
@@ -219,8 +595,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380_Gen12_1793255235919\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380_Gen12_1793255235919\\DL380_Gen12_Catalog.json",
+          "rawInputPath": "outputs/temp/staging_DL380_Gen12_1793255235919/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/staging_DL380_Gen12_1793255235919/DL380_Gen12_Catalog.json",
           "chassisLabel": "DL380 Gen12"
         }
       },
@@ -268,7 +644,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380_Gen12_1793255235919\\DL380_Gen12_Catalog.json"
+          "path": "outputs/temp/staging_DL380_Gen12_1793255235919/DL380_Gen12_Catalog.json"
         }
       }
     ],
@@ -407,8 +783,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380_Gen12_1792239991302\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380_Gen12_1792239991302\\DL380_Gen12_Catalog.json",
+          "rawInputPath": "outputs/temp/staging_DL380_Gen12_1792239991302/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/staging_DL380_Gen12_1792239991302/DL380_Gen12_Catalog.json",
           "chassisLabel": "DL380 Gen12"
         }
       },
@@ -456,7 +832,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380_Gen12_1792239991302\\DL380_Gen12_Catalog.json"
+          "path": "outputs/temp/staging_DL380_Gen12_1792239991302/DL380_Gen12_Catalog.json"
         }
       }
     ],
@@ -1065,8 +1441,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380_Gen12_1790793929470\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380_Gen12_1790793929470\\DL380_Gen12_Catalog.json",
+          "rawInputPath": "outputs/temp/staging_DL380_Gen12_1790793929470/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/staging_DL380_Gen12_1790793929470/DL380_Gen12_Catalog.json",
           "chassisLabel": "DL380 Gen12"
         }
       },
@@ -1114,7 +1490,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380_Gen12_1790793929470\\DL380_Gen12_Catalog.json"
+          "path": "outputs/temp/staging_DL380_Gen12_1790793929470/DL380_Gen12_Catalog.json"
         }
       }
     ],
@@ -4388,391 +4764,6 @@
     "skuSummary": {
       "total": 261,
       "classified": 261,
-      "ambiguous": 0,
-      "failed": 0
-    }
-  },
-  {
-    "summary": {
-      "runId": "run_DL380_Gen12_SFF_1786878259089",
-      "sessionName": "DL380_Gen12_SFF",
-      "startTime": "2026-08-16T11:04:19.089Z",
-      "endTime": "2026-08-16T11:04:19.520Z",
-      "durationMs": 431,
-      "durationSec": "0.43",
-      "overallStatus": "COMPLETED",
-      "totalSteps": 4,
-      "totalSKUsProcessed": 261,
-      "warningCount": 0,
-      "errorCount": 0,
-      "totalUniqueSKUs": 261,
-      "validationStats": {
-        "totalEntries": 66,
-        "totalSKUs": 261,
-        "validSKUs": 261,
-        "invalidSKUs": 0,
-        "baseVariantsCount": 6,
-        "zeroPriceSKUs": 7,
-        "priceErrors": 0,
-        "ruleCount": 28,
-        "categoryCount": 13
-      }
-    },
-    "steps": [
-      {
-        "timestamp": "2026-08-16T11:04:19.089Z",
-        "stepName": "Initialize Classification Engine",
-        "status": "SUCCESS",
-        "details": {
-          "rawInputPath": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
-          "jsonOutputPath": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
-        }
-      },
-      {
-        "timestamp": "2026-08-16T11:04:19.434Z",
-        "stepName": "Step 5: Catalog Diff Engine",
-        "status": "SUCCESS",
-        "details": {
-          "totalSubcategories": 2,
-          "totalUniqueSKUs": 261,
-          "incrementalStats": {
-            "totalScrapedSkus": 261,
-            "unchangedSkusCount": 261,
-            "modifiedSkusCount": 0,
-            "addedSkusCount": 0,
-            "removedSkusCount": 0,
-            "estimatedTokensSaved": 39150,
-            "estimatedProcessingTimeSavedMs": 52200
-          }
-        }
-      },
-      {
-        "timestamp": "2026-08-16T11:04:19.440Z",
-        "stepName": "Pre-Commit Data Integrity Validation",
-        "status": "SUCCESS",
-        "details": {
-          "isValid": true,
-          "errorCount": 0,
-          "warningCount": 0,
-          "stats": {
-            "totalEntries": 66,
-            "totalSKUs": 261,
-            "validSKUs": 261,
-            "invalidSKUs": 0,
-            "baseVariantsCount": 6,
-            "zeroPriceSKUs": 7,
-            "priceErrors": 0,
-            "ruleCount": 28,
-            "categoryCount": 13
-          }
-        }
-      },
-      {
-        "timestamp": "2026-08-16T11:04:19.519Z",
-        "stepName": "Step 6: Atomic Save Output JSON",
-        "status": "SUCCESS",
-        "details": {
-          "path": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
-        }
-      }
-    ],
-    "warnings": [],
-    "errors": [],
-    "skuSummary": {
-      "total": 261,
-      "classified": 261,
-      "ambiguous": 0,
-      "failed": 0
-    }
-  },
-  {
-    "summary": {
-      "runId": "run_DL380_Gen12_SFF_1786878228590",
-      "sessionName": "DL380_Gen12_SFF",
-      "startTime": "2026-08-16T11:03:48.589Z",
-      "endTime": "2026-08-16T11:03:48.962Z",
-      "durationMs": 373,
-      "durationSec": "0.37",
-      "overallStatus": "COMPLETED",
-      "totalSteps": 4,
-      "totalSKUsProcessed": 261,
-      "warningCount": 0,
-      "errorCount": 0,
-      "totalUniqueSKUs": 261,
-      "validationStats": {
-        "totalEntries": 66,
-        "totalSKUs": 261,
-        "validSKUs": 261,
-        "invalidSKUs": 0,
-        "baseVariantsCount": 15,
-        "zeroPriceSKUs": 7,
-        "priceErrors": 0,
-        "ruleCount": 28,
-        "categoryCount": 13
-      }
-    },
-    "steps": [
-      {
-        "timestamp": "2026-08-16T11:03:48.590Z",
-        "stepName": "Initialize Classification Engine",
-        "status": "SUCCESS",
-        "details": {
-          "rawInputPath": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
-          "jsonOutputPath": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
-        }
-      },
-      {
-        "timestamp": "2026-08-16T11:03:48.875Z",
-        "stepName": "Step 5: Catalog Diff Engine",
-        "status": "SUCCESS",
-        "details": {
-          "totalSubcategories": 2,
-          "totalUniqueSKUs": 261,
-          "incrementalStats": {
-            "totalScrapedSkus": 261,
-            "unchangedSkusCount": 255,
-            "modifiedSkusCount": 0,
-            "addedSkusCount": 6,
-            "removedSkusCount": 0,
-            "estimatedTokensSaved": 38250,
-            "estimatedProcessingTimeSavedMs": 51000
-          }
-        }
-      },
-      {
-        "timestamp": "2026-08-16T11:03:48.884Z",
-        "stepName": "Pre-Commit Data Integrity Validation",
-        "status": "SUCCESS",
-        "details": {
-          "isValid": true,
-          "errorCount": 0,
-          "warningCount": 0,
-          "stats": {
-            "totalEntries": 66,
-            "totalSKUs": 261,
-            "validSKUs": 261,
-            "invalidSKUs": 0,
-            "baseVariantsCount": 15,
-            "zeroPriceSKUs": 7,
-            "priceErrors": 0,
-            "ruleCount": 28,
-            "categoryCount": 13
-          }
-        }
-      },
-      {
-        "timestamp": "2026-08-16T11:03:48.961Z",
-        "stepName": "Step 6: Atomic Save Output JSON",
-        "status": "SUCCESS",
-        "details": {
-          "path": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
-        }
-      }
-    ],
-    "warnings": [],
-    "errors": [],
-    "skuSummary": {
-      "total": 261,
-      "classified": 261,
-      "ambiguous": 0,
-      "failed": 0
-    }
-  },
-  {
-    "summary": {
-      "runId": "run_DL380_Gen12_SFF_1786878150477",
-      "sessionName": "DL380_Gen12_SFF",
-      "startTime": "2026-08-16T11:02:30.476Z",
-      "endTime": "2026-08-16T11:02:30.861Z",
-      "durationMs": 385,
-      "durationSec": "0.39",
-      "overallStatus": "COMPLETED",
-      "totalSteps": 4,
-      "totalSKUsProcessed": 255,
-      "warningCount": 0,
-      "errorCount": 0,
-      "totalUniqueSKUs": 255,
-      "validationStats": {
-        "totalEntries": 65,
-        "totalSKUs": 255,
-        "validSKUs": 255,
-        "invalidSKUs": 0,
-        "baseVariantsCount": 9,
-        "zeroPriceSKUs": 7,
-        "priceErrors": 0,
-        "ruleCount": 27,
-        "categoryCount": 12
-      }
-    },
-    "steps": [
-      {
-        "timestamp": "2026-08-16T11:02:30.477Z",
-        "stepName": "Initialize Classification Engine",
-        "status": "SUCCESS",
-        "details": {
-          "rawInputPath": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
-          "jsonOutputPath": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
-        }
-      },
-      {
-        "timestamp": "2026-08-16T11:02:30.781Z",
-        "stepName": "Step 5: Catalog Diff Engine",
-        "status": "SUCCESS",
-        "details": {
-          "totalSubcategories": 1,
-          "totalUniqueSKUs": 255,
-          "incrementalStats": {
-            "totalScrapedSkus": 255,
-            "unchangedSkusCount": 240,
-            "modifiedSkusCount": 0,
-            "addedSkusCount": 15,
-            "removedSkusCount": 37,
-            "estimatedTokensSaved": 36000,
-            "estimatedProcessingTimeSavedMs": 48000
-          }
-        }
-      },
-      {
-        "timestamp": "2026-08-16T11:02:30.788Z",
-        "stepName": "Pre-Commit Data Integrity Validation",
-        "status": "SUCCESS",
-        "details": {
-          "isValid": true,
-          "errorCount": 0,
-          "warningCount": 0,
-          "stats": {
-            "totalEntries": 65,
-            "totalSKUs": 255,
-            "validSKUs": 255,
-            "invalidSKUs": 0,
-            "baseVariantsCount": 9,
-            "zeroPriceSKUs": 7,
-            "priceErrors": 0,
-            "ruleCount": 27,
-            "categoryCount": 12
-          }
-        }
-      },
-      {
-        "timestamp": "2026-08-16T11:02:30.861Z",
-        "stepName": "Step 6: Atomic Save Output JSON",
-        "status": "SUCCESS",
-        "details": {
-          "path": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
-        }
-      }
-    ],
-    "warnings": [],
-    "errors": [],
-    "skuSummary": {
-      "total": 255,
-      "classified": 255,
-      "ambiguous": 0,
-      "failed": 0
-    }
-  },
-  {
-    "summary": {
-      "runId": "run_DL380_Gen12_SFF_1786710999228",
-      "sessionName": "DL380_Gen12_SFF",
-      "startTime": "2026-08-14T12:36:39.227Z",
-      "endTime": "2026-08-14T12:36:39.694Z",
-      "durationMs": 467,
-      "durationSec": "0.47",
-      "overallStatus": "COMPLETED",
-      "totalSteps": 4,
-      "totalSKUsProcessed": 284,
-      "warningCount": 3,
-      "errorCount": 0,
-      "totalUniqueSKUs": 284,
-      "validationStats": {
-        "totalEntries": 70,
-        "totalSKUs": 284,
-        "validSKUs": 284,
-        "invalidSKUs": 0,
-        "baseVariantsCount": 13,
-        "zeroPriceSKUs": 8,
-        "priceErrors": 0,
-        "ruleCount": 27,
-        "categoryCount": 9
-      }
-    },
-    "steps": [
-      {
-        "timestamp": "2026-08-14T12:36:39.228Z",
-        "stepName": "Initialize Classification Engine",
-        "status": "SUCCESS",
-        "details": {
-          "rawInputPath": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
-          "jsonOutputPath": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
-        }
-      },
-      {
-        "timestamp": "2026-08-14T12:36:39.551Z",
-        "stepName": "Step 5: Catalog Diff Engine",
-        "status": "SUCCESS",
-        "details": {
-          "totalSubcategories": 1,
-          "totalUniqueSKUs": 284,
-          "incrementalStats": {
-            "totalScrapedSkus": 284,
-            "unchangedSkusCount": 284,
-            "modifiedSkusCount": 0,
-            "addedSkusCount": 0,
-            "removedSkusCount": 0,
-            "estimatedTokensSaved": 42600,
-            "estimatedProcessingTimeSavedMs": 56800
-          }
-        }
-      },
-      {
-        "timestamp": "2026-08-14T12:36:39.559Z",
-        "stepName": "Pre-Commit Data Integrity Validation",
-        "status": "SUCCESS",
-        "details": {
-          "isValid": true,
-          "errorCount": 0,
-          "warningCount": 3,
-          "stats": {
-            "totalEntries": 70,
-            "totalSKUs": 284,
-            "validSKUs": 284,
-            "invalidSKUs": 0,
-            "baseVariantsCount": 13,
-            "zeroPriceSKUs": 8,
-            "priceErrors": 0,
-            "ruleCount": 27,
-            "categoryCount": 9
-          }
-        }
-      },
-      {
-        "timestamp": "2026-08-14T12:36:39.694Z",
-        "stepName": "Step 6: Atomic Save Output JSON",
-        "status": "SUCCESS",
-        "details": {
-          "path": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
-        }
-      }
-    ],
-    "warnings": [
-      {
-        "timestamp": "2026-08-14T12:36:39.559Z",
-        "message": "Base Chassis Variant SKU [P78064-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
-      },
-      {
-        "timestamp": "2026-08-14T12:36:39.559Z",
-        "message": "Base Chassis Variant SKU [P78058-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
-      },
-      {
-        "timestamp": "2026-08-14T12:36:39.559Z",
-        "message": "Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
-      }
-    ],
-    "errors": [],
-    "skuSummary": {
-      "total": 284,
-      "classified": 284,
       "ambiguous": 0,
       "failed": 0
     }

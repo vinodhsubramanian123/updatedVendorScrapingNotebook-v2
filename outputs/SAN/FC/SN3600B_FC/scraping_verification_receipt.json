@@ -1,0 +1,61 @@
+{
+  "verifiedAt": "2026-11-21T13:24:49.226Z",
+  "productId": "SN3600B_FC",
+  "family": "SAN",
+  "generation": "FC",
+  "preflight": {
+    "recordedAt": "2026-09-22T00:00:00.000Z",
+    "pass": true,
+    "product": {
+      "pass": true,
+      "productId": "SN3600B_FC",
+      "family": "SAN",
+      "generation": "FC",
+      "pillar": "NETWORKING",
+      "notebookId": "d7f84352-1cdb-4842-84ca-39d2a10b91eb",
+      "canonicalDriveEnabled": false,
+      "publishDriveWorkbook": true,
+      "expectedWorkbookSheets": 8,
+      "requiredSheetsCount": 0
+    },
+    "notebookLm": {
+      "pass": true,
+      "status": "VERIFIED_HEALTHY"
+    },
+    "googleWorkspace": {
+      "pass": true,
+      "status": "VERIFIED_SCOPES",
+      "account": "authenticated",
+      "hasSheetsScope": true,
+      "hasDriveScope": true
+    },
+    "vendorPolicy": {
+      "vendor": "HPE",
+      "anchorTabUrl": "https://partner.hpe.com/group/prp",
+      "handoffMechanism": "SAML_POST_NEW_TAB",
+      "allowInPlaceReload": false,
+      "recoveryProtocol": "CLOSE_CONFIG_TAB_RETURN_TO_TAB1_CLICK_QUICK_LINK"
+    }
+  },
+  "postflight": {
+    "pass": true,
+    "status": "VERIFIED",
+    "qualityAuditPassed": true,
+    "diffSummaryError": null,
+    "hwSkuCount": 58,
+    "serviceSkuCount": 12,
+    "totalSkuCount": 70,
+    "conditionalSkusCount": 0,
+    "unavailableRulesCount": 6,
+    "diffSummaryPresent": true,
+    "cloudSyncState": "CLOUD_VERIFIED",
+    "notebookId": "d7f84352-1cdb-4842-84ca-39d2a10b91eb",
+    "verifiedSourceId": "2483f3f9-89f2-4842-809e-62e3917adefe",
+    "verifiedSourceName": "SN3600B_FC_OCA_Catalog_2026-09-22",
+    "payloadSha256": "678c37430d96b9b480789fc86192957418b978aba9ec3f85ee197598919da3b2",
+    "cloudVerifiedAt": "2026-11-21T13:24:49.226Z",
+    "readbackVerified": true,
+    "canaryVerified": true
+  },
+  "overallPass": true
+}

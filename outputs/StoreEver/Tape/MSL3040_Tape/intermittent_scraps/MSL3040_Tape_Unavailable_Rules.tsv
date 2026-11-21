@@ -1,0 +1,2 @@
+Rule ID	Rule Type	Section	Constraint / Reason	Affected SKU Count	Affected SKUs
+RULE_1	CONDITIONAL_VISIBILITY	Cables	Supported on LTO-9 SAS Drive (R6Q75A) Only.	4	716197-B21, 716199-B21, P35176-B21, P35175-B21

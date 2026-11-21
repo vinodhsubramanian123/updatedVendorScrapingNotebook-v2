@@ -1,6 +1,194 @@
 [
   {
     "summary": {
+      "runId": "run_DL380a_Gen12_1795262298283",
+      "sessionName": "DL380a_Gen12",
+      "startTime": "2026-11-21T11:58:18.282Z",
+      "endTime": "2026-11-21T11:58:21.495Z",
+      "durationMs": 3213,
+      "durationSec": "3.21",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 520,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 520,
+      "validationStats": {
+        "totalEntries": 63,
+        "totalSKUs": 520,
+        "validSKUs": 520,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 24,
+        "priceErrors": 0,
+        "ruleCount": 88,
+        "categoryCount": 14
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-21T11:58:18.283Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/ProLiant/Gen12/DL380a_Gen12/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/ProLiant/Gen12/DL380a_Gen12/DL380a_Gen12_Catalog.json",
+          "chassisLabel": "DL380a Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:19.922Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 44,
+          "totalUniqueSKUs": 520,
+          "incrementalStats": {
+            "totalScrapedSkus": 520,
+            "unchangedSkusCount": 407,
+            "modifiedSkusCount": 51,
+            "addedSkusCount": 62,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:19.930Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 63,
+            "totalSKUs": 520,
+            "validSKUs": 520,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 24,
+            "priceErrors": 0,
+            "ruleCount": 88,
+            "categoryCount": 14
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:21.495Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/ProLiant/Gen12/DL380a_Gen12/DL380a_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 520,
+      "classified": 520,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380a_Gen12_1795172620578",
+      "sessionName": "DL380a_Gen12",
+      "startTime": "2026-11-20T11:03:40.577Z",
+      "endTime": "2026-11-20T11:03:43.369Z",
+      "durationMs": 2792,
+      "durationSec": "2.79",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 458,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 458,
+      "validationStats": {
+        "totalEntries": 61,
+        "totalSKUs": 458,
+        "validSKUs": 458,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 24,
+        "priceErrors": 0,
+        "ruleCount": 86,
+        "categoryCount": 15
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-20T11:03:40.578Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/.catalog-staging/staging_DL380a_Gen12_1795172620234/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/.catalog-staging/staging_DL380a_Gen12_1795172620234/DL380a_Gen12_Catalog.json",
+          "chassisLabel": "DL380a Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-20T11:03:42.877Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 45,
+          "totalUniqueSKUs": 458,
+          "incrementalStats": {
+            "totalScrapedSkus": 458,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 458,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T11:03:42.891Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 61,
+            "totalSKUs": 458,
+            "validSKUs": 458,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 24,
+            "priceErrors": 0,
+            "ruleCount": 86,
+            "categoryCount": 15
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T11:03:43.368Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/.catalog-staging/staging_DL380a_Gen12_1795172620234/DL380a_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 458,
+      "classified": 458,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_DL380a_Gen12_1793255368670",
       "sessionName": "DL380a_Gen12",
       "startTime": "2026-10-29T06:29:28.659Z",
@@ -125,8 +313,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1793254439486\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1793254439486\\DL380a_Gen12_Catalog.json",
+          "rawInputPath": "outputs/temp/staging_DL380a_Gen12_1793254439486/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/staging_DL380a_Gen12_1793254439486/DL380a_Gen12_Catalog.json",
           "chassisLabel": "DL380a Gen12"
         }
       },
@@ -174,7 +362,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1793254439486\\DL380a_Gen12_Catalog.json"
+          "path": "outputs/temp/staging_DL380a_Gen12_1793254439486/DL380a_Gen12_Catalog.json"
         }
       }
     ],
@@ -313,8 +501,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1792239370111\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1792239370111\\DL380a_Gen12_Catalog.json",
+          "rawInputPath": "outputs/temp/staging_DL380a_Gen12_1792239370111/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/staging_DL380a_Gen12_1792239370111/DL380a_Gen12_Catalog.json",
           "chassisLabel": "DL380a Gen12"
         }
       },
@@ -362,7 +550,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1792239370111\\DL380a_Gen12_Catalog.json"
+          "path": "outputs/temp/staging_DL380a_Gen12_1792239370111/DL380a_Gen12_Catalog.json"
         }
       }
     ],
@@ -407,8 +595,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1792239082224\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1792239082224\\DL380a_Gen12_Catalog.json",
+          "rawInputPath": "outputs/temp/staging_DL380a_Gen12_1792239082224/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/staging_DL380a_Gen12_1792239082224/DL380a_Gen12_Catalog.json",
           "chassisLabel": "DL380a Gen12"
         }
       },
@@ -456,7 +644,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1792239082224\\DL380a_Gen12_Catalog.json"
+          "path": "outputs/temp/staging_DL380a_Gen12_1792239082224/DL380a_Gen12_Catalog.json"
         }
       }
     ],
@@ -595,8 +783,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1790795933567\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1790795933567\\DL380a_Gen12_Catalog.json",
+          "rawInputPath": "outputs/temp/staging_DL380a_Gen12_1790795933567/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/staging_DL380a_Gen12_1790795933567/DL380a_Gen12_Catalog.json",
           "chassisLabel": "DL380a Gen12"
         }
       },
@@ -644,7 +832,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1790795933567\\DL380a_Gen12_Catalog.json"
+          "path": "outputs/temp/staging_DL380a_Gen12_1790795933567/DL380a_Gen12_Catalog.json"
         }
       }
     ],

@@ -1,0 +1,288 @@
+{
+  "schemaVersion": 1,
+  "product": "Alletra_MP_X10000",
+  "vendor": "HPE",
+  "capturedAt": "2026-11-21T12:18:55.119Z",
+  "auditedAt": "2026-11-21T12:18:58.548Z",
+  "incompleteLegacyBaselinePreserved": false,
+  "mode": "FIRST_CAPTURE",
+  "status": "LOCAL_PROMOTED",
+  "provenance": {
+    "baseSku": "S3L12A",
+    "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+    "solutionDomain": "STORAGE",
+    "observedUrl": "https://oca.ext.hpe.com/oca/OCAInternalLogin"
+  },
+  "coverage": {
+    "textExtractionMode": "FULL_BODY_TEXT",
+    "outsideTableNotesCaptured": true,
+    "conditionalDiscovery": "HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED",
+    "ownedMenuDiscovery": {
+      "status": "ACTIVE_SCOPE_UNVERIFIED"
+    },
+    "baseSku": "S3L12A",
+    "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+    "solutionDomain": "STORAGE",
+    "observedSelectors": [
+      {
+        "selector": "#extended_overview_menu",
+        "value": "EXPANDED"
+      },
+      {
+        "selector": "ambientTemperature",
+        "value": "DEFAULT_AND_SWEEP_RESTORED"
+      }
+    ],
+    "missingProvenance": [],
+    "completeness": "CAPTURED_STATES_ONLY",
+    "policy": {
+      "valid": true,
+      "reason": "",
+      "profileProduct": "Alletra_MP_X10000",
+      "scope": "PROFILE_MINIMUM_CAPTURE"
+    },
+    "qualityGate": {
+      "passed": true,
+      "skipped": false,
+      "warningsCount": 0,
+      "replayResults": [
+        {
+          "id": "GENERIC_ACTIVE_PRICED",
+          "issues": [],
+          "returnedCount": 50,
+          "evidenceStatus": "PARTIAL",
+          "passed": true,
+          "status": "PASSED"
+        }
+      ],
+      "replayExecutedCount": 1,
+      "replaySuiteVersion": "1.0.0",
+      "replaySuiteSha256": "28a363da16934a4ed4df98cc957e13246b3e1f21824432ea0b283173e090323a",
+      "replayInputHashes": {
+        "Catalog.json": "3bfe851280840d6c3f26fdf12625804a3629983fcd09efbf8489c665a3eedd69",
+        "Services.json": "ccd6e6b5bc9f32e6f0d85da5f1e3f046dc840b695628f1a295ec190b8b3960d9",
+        "Catalog_Rules.json": "e1f45768aefc035fc71bb30e80e54a5b2620d85430a343ac601fc73dc363876a",
+        "OCA_Catalog.xlsx": "d29f959d13b81a46117fe1aa3a85efdad2e1c5395c1c8b0bb5d6320e9a9da19f",
+        "conditional_skus.json": "5071c9dcf30972014d9004a591f4c82e4d07b14e4c3a9dbd26e81fe8b2449584"
+      }
+    }
+  },
+  "counts": {
+    "hardware": 82,
+    "services": 3,
+    "rules": 70,
+    "categories": 7,
+    "retainedHardware": 82,
+    "hardwareTombstones": 0
+  },
+  "previousCounts": null,
+  "hashes": {
+    "Catalog.json": "3bfe851280840d6c3f26fdf12625804a3629983fcd09efbf8489c665a3eedd69",
+    "Services.json": "ccd6e6b5bc9f32e6f0d85da5f1e3f046dc840b695628f1a295ec190b8b3960d9",
+    "Catalog_Rules.json": "e1f45768aefc035fc71bb30e80e54a5b2620d85430a343ac601fc73dc363876a",
+    "OCA_Catalog.xlsx": "d29f959d13b81a46117fe1aa3a85efdad2e1c5395c1c8b0bb5d6320e9a9da19f"
+  },
+  "rawSha256": "674c30f1cb047c8c989a784bd8a7afa76f248f3790147b602957e02b95e8b8be",
+  "sheets": [
+    {
+      "name": "Category Summary",
+      "rows": 34
+    },
+    {
+      "name": "All SKUs",
+      "rows": 83
+    },
+    {
+      "name": "Chassis Variants",
+      "rows": 4
+    },
+    {
+      "name": "Chassis Options Matrix",
+      "rows": 4
+    },
+    {
+      "name": "Rules & Constraints",
+      "rows": 84
+    },
+    {
+      "name": "Unavailable Rules & Gates",
+      "rows": 16
+    },
+    {
+      "name": "Support Services",
+      "rows": 4
+    },
+    {
+      "name": "Price History Timeline",
+      "rows": 86
+    },
+    {
+      "name": "Networking",
+      "rows": 11
+    },
+    {
+      "name": "Power Supplies",
+      "rows": 10
+    },
+    {
+      "name": "Chassis",
+      "rows": 4
+    },
+    {
+      "name": "Accessories & Infrastructure",
+      "rows": 5
+    },
+    {
+      "name": "Storage Controllers",
+      "rows": 3
+    },
+    {
+      "name": "Cables & Enablement Kits",
+      "rows": 42
+    },
+    {
+      "name": "Drive Enclosures  Drives",
+      "rows": 14
+    },
+    {
+      "name": "Supply Chain & Lead Times",
+      "rows": 86
+    },
+    {
+      "name": "Metadata",
+      "rows": 23
+    }
+  ],
+  "deltas": {
+    "hardware": {
+      "added": [
+        "S3L12A",
+        "S7Z87A",
+        "S6W29A",
+        "R7C75A",
+        "R7C71A",
+        "R7C71B",
+        "R7C76A",
+        "R7C78A",
+        "R9Z97A",
+        "R9R55A",
+        "R9S00A",
+        "R9R52A",
+        "R9R53A",
+        "R9R54A",
+        "R9R56A",
+        "R9R57A",
+        "R9R58A",
+        "R9R59A",
+        "R9R60A",
+        "R9R61A",
+        "R9R62A",
+        "R9R63A",
+        "R9R64A",
+        "R9R65A",
+        "R9S01A",
+        "S3L68A",
+        "S3L69A",
+        "S3L70A",
+        "S3L71A",
+        "P22173-B21",
+        "P36877-B21",
+        "G2H95A",
+        "Q9N54A",
+        "S1J10A",
+        "S2T35A",
+        "Q2F19A",
+        "R9F76A",
+        "R9F79A",
+        "R9F80A",
+        "R9F81A",
+        "S1D25A",
+        "S1D26A",
+        "S1D27A",
+        "S1D28A",
+        "R9H71B",
+        "R9H73B",
+        "R9H72B",
+        "S4P49A",
+        "S1Z68A",
+        "R9H67A",
+        "R9H66A",
+        "R9H69A",
+        "R9H68A",
+        "S4P40A",
+        "S3L74A",
+        "S3L73A",
+        "S0U79A",
+        "S1R08A",
+        "S6L90A",
+        "S1S69A",
+        "S0A95A",
+        "C7535A",
+        "C7536A",
+        "C7537A",
+        "C7542A",
+        "487655-B21",
+        "537963-B21",
+        "844477-B21",
+        "844483-B21",
+        "845416-B21",
+        "J9283D",
+        "J9285D",
+        "JD097C",
+        "JG081C",
+        "JG330A",
+        "JG331A",
+        "K2Q21A",
+        "K2Q22A",
+        "Q9S67A",
+        "Q9S68A",
+        "QK701A",
+        "S6X66A"
+      ],
+      "removed": [],
+      "modified": []
+    },
+    "services": {
+      "added": [
+        "581817-B21",
+        "H44JMAS",
+        "N9Z52A"
+      ],
+      "removed": [],
+      "modified": []
+    },
+    "modifiedCount": 0,
+    "modifiedSkus": [],
+    "rulesChanged": true,
+    "hardwareChanges": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 82,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "serviceChanges": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 3,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    }
+  },
+  "cloud": {
+    "status": "CLOUD_FAILED",
+    "success": false,
+    "sourceId": null,
+    "consolidationVerified": false,
+    "error": null
+  },
+  "promotedAt": "2026-11-21T12:57:04.440Z"
+}

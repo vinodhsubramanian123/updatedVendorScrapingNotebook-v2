@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "1.0.0",
+  "product": "DL360_Gen12",
+  "generatedAt": "2026-11-21T11:57:51.620Z",
+  "rejectedCount": 20,
+  "rows": [
+    {
+      "tableIndex": 2,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Smart Chassis"
+      ]
+    },
+    {
+      "tableIndex": 3,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Ambient Temperature"
+      ]
+    },
+    {
+      "tableIndex": 5,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HDD Blank Kit"
+      ]
+    },
+    {
+      "tableIndex": 6,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "NEBS Enablement"
+      ]
+    },
+    {
+      "tableIndex": 13,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Hybrid RAID"
+      ]
+    },
+    {
+      "tableIndex": 14,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Private Cloud Business Edition"
+      ]
+    },
+    {
+      "tableIndex": 15,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HPE Complete Software"
+      ]
+    },
+    {
+      "tableIndex": 20,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "SGI Software"
+      ]
+    },
+    {
+      "tableIndex": 102,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Hardware",
+        "USD5,842.00",
+        "Support",
+        "USD14,149.00"
+      ]
+    },
+    {
+      "tableIndex": 105,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    },
+    {
+      "tableIndex": 123,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    },
+    {
+      "tableIndex": 124,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Hardware",
+        "USD5,842.00",
+        "Support",
+        "USD14,149.00"
+      ]
+    },
+    {
+      "tableIndex": 144,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Smart Chassis"
+      ]
+    },
+    {
+      "tableIndex": 145,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Ambient Temperature"
+      ]
+    },
+    {
+      "tableIndex": 147,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HDD Blank Kit"
+      ]
+    },
+    {
+      "tableIndex": 148,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "NEBS Enablement"
+      ]
+    },
+    {
+      "tableIndex": 155,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Hybrid RAID"
+      ]
+    },
+    {
+      "tableIndex": 156,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Private Cloud Business Edition"
+      ]
+    },
+    {
+      "tableIndex": 157,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HPE Complete Software"
+      ]
+    },
+    {
+      "tableIndex": 162,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "SGI Software"
+      ]
+    }
+  ]
+}

@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-12",
     "scrapeTimestamp": "2026-11-12T03:22:14.338Z",
-    "builtAt": "2026-11-12T03:22:56.020Z",
+    "builtAt": "2026-11-21T11:59:06.101Z",
     "totalSubcategories": 6,
     "totalUniqueSKUs": 24,
     "totalTables": 6,
@@ -86,9 +86,18 @@
         }
       }
     },
-    "snapshotFingerprint": "000491ebf26630b026eed9510509d4457090d6bf8bbc5c12fc8716a4b1f9c965",
+    "incrementalStats": {
+      "totalScrapedSkus": 24,
+      "unchangedSkusCount": 1,
+      "modifiedSkusCount": 23,
+      "addedSkusCount": 0,
+      "removedSkusCount": 0,
+      "estimatedTokensSaved": 0,
+      "estimatedProcessingTimeSavedMs": 0
+    },
+    "snapshotFingerprint": "263a4067b39dbb242762a192d8d06ed6e3f9789bef9ccbf1394e877e7deebf43",
     "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-11-12T03:22:56.093Z"
+    "rulesGeneratedAt": "2026-11-21T11:59:06.282Z"
   },
   "chassisVariants": [
     {
@@ -98,8 +107,8 @@
       "listPrice": 63999,
       "listPriceFormatted": "$63999.00",
       "optionType": "CTO",
-      "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "",
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
@@ -116,8 +125,8 @@
       "listPrice": 63999,
       "listPriceFormatted": "$63999.00",
       "optionType": "CTO",
-      "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "",
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
@@ -130,125 +139,6 @@
   "solutionManifest": null,
   "subcategories": [],
   "rules": [
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "D4U69AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "D4U69AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Software for Brocade Switches",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q2E58A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q2E58A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Software for Brocade Switches",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q2E60A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q2E60A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Software for Brocade Switches",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "5517AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "5517AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Software for Brocade Switches",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "5527AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "5527AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Software for Brocade Switches",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "TC464BAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "TC464BAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Software for Brocade Switches",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "TC514AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "TC514AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Software for Brocade Switches",
-      "constraint": "",
-      "maxQty": ""
-    },
     {
       "parentCategory": "Chassis",
       "subCategory": "Variants",
@@ -288,21 +178,21 @@
       "parentCategory": "Software & Licenses",
       "subCategory": "Software for Brocade Switches",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Software for Brocade Switches: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "SANnav - New License",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for SANnav - New License: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "SANnav - Renewal License",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for SANnav - Renewal License: no max"
     }
   ]

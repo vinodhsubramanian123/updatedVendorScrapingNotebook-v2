@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-11",
     "scrapeTimestamp": "2026-11-11T18:49:10.220Z",
-    "builtAt": "2026-11-11T18:49:15.455Z",
+    "builtAt": "2026-11-21T11:58:49.047Z",
     "totalSubcategories": 2,
     "totalUniqueSKUs": 2,
     "totalTables": 2
@@ -21,6 +21,7 @@
       "constraint": "max 1",
       "minQty": 0,
       "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
       "rules": [
         "Selection constraint for License Upgrade: max 1"
       ],
@@ -54,25 +55,48 @@
           "lifecycleStatus": "Active",
           "lifecycleBadge": "",
           "Availability": "Available",
-          "Lead Time Source": "Unpublished",
+          "leadTime": "Unpublished",
           "leadTimeDays": null,
           "Lead Time Days": "",
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "Lead Time Source": "Unpublished",
           "Speed Tier": "Unpublished",
           "HPE Recommended": "No",
           "vendorRecommended": false,
+          "lifecycleCanonical": "Active",
           "List Price (USD)": "2999.00",
           "listPrice": 2999,
+          "priceState": "PRICED",
+          "priceStatus": "PRICED",
           "Cost (USD)": "",
           "costPrice": null,
+          "rowType": "SOFTWARE_SUBSCRIPTION",
           "vendorAttributes": {
-            "listPrice": 2999
+            "leadTime": "Unpublished",
+            "lifecycleCanonical": "Active",
+            "listPrice": 2999,
+            "priceState": "PRICED",
+            "priceStatus": "PRICED",
+            "rowType": "SOFTWARE_SUBSCRIPTION"
           },
+          "Component Role": "Operating System / License",
+          "rawSubCategory": "License Upgrade",
+          "ownerProduct": "SY100Gb_F32_Module",
+          "subCategory": "License Upgrade",
+          "canonicalSpecs": {
+            "vendor": "HPE",
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "retention": "NONE"
+          },
+          "Price State": "PRICED",
           "Previous List Price (USD)": "2999.00",
-          "Attribute Deltas": "Discontinued Date: \"09/30/2027\" → \"10/31/2027\"",
+          "Attribute Deltas": "Component Role: \"(None)\" → \"Operating System / License\" | Discontinued Date: \"09/30/2027\" → \"10/31/2027\" | Vendor Attributes: \"{\"listPrice\":2999}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2999,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\"",
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-10-30: $2999.00 → 2026-11-11: $2999.00"
+          "Price History Trail": "2026-10-30: $2999.00 → 2026-11-11: $2999.00 [Δ Attr: Component Role: \"(None)\" -> \"Operating System / License\"; Discontinued Date: \"09/30/2027\" -> \"10/31/2027\"; Vendor Attributes: \"{\"listPrice\":2999}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2999,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\"]"
         }
       ]
     },
@@ -81,7 +105,8 @@
       "subCategory": "System Options",
       "constraint": "",
       "minQty": 0,
-      "maxQty": "",
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
       "rules": [],
       "headers": [
         "Product #",
@@ -107,27 +132,50 @@
           "lifecycleBadge": "",
           "Availability": "Not published by OCA",
           "Lead Time": "Unpublished",
-          "Lead Time Source": "Unpublished",
+          "leadTime": "Unpublished",
           "leadTimeDays": null,
           "Lead Time Days": "",
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "Lead Time Source": "Unpublished",
           "Speed Tier": "Unpublished",
           "HPE Recommended": "No",
           "vendorRecommended": false,
+          "lifecycleCanonical": "Active",
           "Current Qty": "0",
           "List Price (USD)": "",
           "listPrice": null,
+          "priceState": "UNPRICED",
+          "priceStatus": "UNPRICED",
           "Cost (USD)": "",
           "costPrice": null,
+          "rowType": "SUPPORT_SERVICE",
           "vendorAttributes": {
             "Owner Configuration": "40DFBA5F21575295DAD5FE86F2C55A9A",
-            "Evidence Scope": "Observed selected service; alternatives not enumerated"
+            "Evidence Scope": "Observed selected service; alternatives not enumerated",
+            "leadTime": "Unpublished",
+            "lifecycleCanonical": "Active",
+            "priceState": "UNPRICED",
+            "priceStatus": "UNPRICED",
+            "rowType": "SUPPORT_SERVICE"
           },
+          "Component Role": "Service & Support",
+          "ownerProduct": "SY100Gb_F32_Module",
+          "subCategory": "System Options",
+          "canonicalSpecs": {
+            "vendor": "HPE",
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 5,
+            "retention": "NONE"
+          },
+          "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
-          "Attribute Deltas": "Vendor Attributes: \"{\"Evidence Scope\":\"Observed selected service; alternatives not enumerated\",\"Owner Configuration\":\"CE45087D126BB28FD3A232EBB77B29B2\"}\" → \"{\"Evidence Scope\":\"Observed selected service; alternatives not enumerated\",\"Owner Configuration\":\"40DFBA5F21575295DAD5FE86F2C55A9A\"}\"",
+          "Attribute Deltas": "Component Role: \"(None)\" → \"Service & Support\" | Vendor Attributes: \"{\"Evidence Scope\":\"Observed selected service; alternatives not enumerated\",\"Owner Configuration\":\"CE45087D126BB28FD3A232EBB77B29B2\"}\" → \"{\"Evidence Scope\":\"Observed selected service; alternatives not enumerated\",\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"Owner Configuration\":\"40DFBA5F21575295DAD5FE86F2C55A9A\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"SUPPORT_SERVICE\"}\"",
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-10-30: (no price) → 2026-11-11: (no price)"
+          "Price History Trail": "2026-10-30: (no price) → 2026-11-11: (no price) [Δ Attr: Component Role: \"(None)\" -> \"Service & Support\"; Vendor Attributes: \"{\"Evidence Scope\":\"Observed selected service; alternatives not enumerated\",\"Owner Configuration\":\"CE45087D126BB28FD3A232EBB77B29B2\"}\" -> \"{\"Evidence Scope\":\"Observed selected service; alternatives not enumerated\",\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"Owner Configuration\":\"40DFBA5F21575295DAD5FE86F2C55A9A\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"SUPPORT_SERVICE\"}\"]"
         }
       ]
     }

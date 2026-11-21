@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-09-13T07:18:39.842Z",
-  "targetDir": "/home/vinodh/vendorNotebookSolution/outputs/ProLiant/Gen11/DL380_Gen11",
+  "timestamp": "2026-11-21T13:05:03.598Z",
+  "targetDir": "outputs/ProLiant/Gen11/DL380_Gen11",
   "missingQuickspecsSkusCount": 24,
   "missingQuickspecsSkus": [
     "L9R4LV",

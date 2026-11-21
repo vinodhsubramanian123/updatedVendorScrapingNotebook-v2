@@ -18,5 +18,45 @@
     "field": "Vendor Attributes",
     "oldValue": "{\"Evidence Scope\":\"Observed selected service; alternatives not enumerated\",\"Owner Configuration\":\"CE45087D126BB28FD3A232EBB77B29B2\"}",
     "newValue": "{\"Evidence Scope\":\"Observed selected service; alternatives not enumerated\",\"Owner Configuration\":\"40DFBA5F21575295DAD5FE86F2C55A9A\"}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "R3P67AAE",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "License Upgrade",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "R3P67AAE",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "License Upgrade",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":2999}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2999,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "HU4D5A5#Z1R",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "HU4D5A5#Z1R",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Evidence Scope\":\"Observed selected service; alternatives not enumerated\",\"Owner Configuration\":\"CE45087D126BB28FD3A232EBB77B29B2\"}",
+    "newValue": "{\"Evidence Scope\":\"Observed selected service; alternatives not enumerated\",\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"Owner Configuration\":\"40DFBA5F21575295DAD5FE86F2C55A9A\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"SUPPORT_SERVICE\"}"
   }
 ]

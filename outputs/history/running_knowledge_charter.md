@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-11-16T21:01:04.090Z<br>
-**Total Deduplicated Learned Rules:** 165<br>
+**Last Synchronized:** 2026-11-21T14:15:27.052Z<br>
+**Total Deduplicated Learned Rules:** 184<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -168,7 +168,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **165**.
+Total verified rules indexed in this build: **184**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -187,6 +187,7 @@ Total verified rules indexed in this build: **165**.
 | 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_RECONCILIATION_UNSPLIT_AND_SERVICES_LOOKUP` | `null` | `—` | Two-baseline BOM reconciliation must resolve unsplit customer baseline items directly from parsed workbook lines scaled  | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_TOPOLOGY_CATEGORY_AND_CABLE_ENFORCEMENT` | `null` | `—` | Physical validation must distinguish backplane-to-controller storage signal cables, CPU-to-slot OCP enablement cables, a | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_FAST_SHIP_TOPOLOGY_AND_CLIC_CARRYFORWARD` | `null` | `—` | Fast-ship candidate synthesis must resolve coupled cabling and enablement paths and pass full multi-aspect physical reva | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_BLINDSPOT_SUPPORT_PARITY_AND_MULTIVENDOR_BOM` | `null` | `—` | Universal portfolio intelligence, support governance & multi-vendor attribute mapping rules (INV-242, INV-243): (1) Inde | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SUPPORT_POLICY` | `undefined` | `—` | Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified o | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `undefined` | `—` | Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to- | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `undefined` | `—` | When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Q | 1x |
@@ -209,10 +210,6 @@ Total verified rules indexed in this build: **165**.
 | 📦 CHASSIS | `DL380_Gen12` | `THERMAL_TRACKING` | `P73282-B21` | `P79558-B21` | P79558-B21 tracks 25C ambient baseline for Gen12 chassis. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `COOLING_MANDATE` | `P74507-B21` | `P48820-B21` | CPUs > 185W TDP mandate High-Performance Fan Kit P48820-B21 and High-Performance Heatsink P74792-B21. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY` | `HU4B2A30C4V` | `P73282-B21` | Every HPE ProLiant DL380 Gen12 server (P73282-B21) requires a hardware maintenance support contract. Common customer err | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `PROCESSOR_FAMILY` | `P71964-B21` | `—` | DL145 Gen11 is single-socket AMD EPYC 8004 only. No dual-socket configurations supported. | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `DRIVE_CAGE_FORMAT` | `P71985-B21` | `P77271-B21` | DL145 Gen11 uses EDSFF E3.S form factor drives only. Standard SFF/LFF drives are incompatible. | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `PSU_WATTAGE_LIMIT` | `P71964-B21` | `P54290-B21` | DL145 Gen11 supports maximum 1000W PSUs. 1600W/2400W PSUs are physically incompatible. | 1x |
-| 📦 CHASSIS | `DL145_Gen11` | `EXTENDED_AMBIENT_TRACKING` | `P71964-B21` | `P73021-B21` | DL145 Gen11 edge deployments use P73021-B21 for extended -5C to 45C ambient temperature tracking. | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `MEMORY_POPULATION_CONSTRAINT` | `P52534-B21` | `MEMORY_KIT_MIN1_MAX16` | When ordering P52534-B21 (DL380 Gen11 8SFF NC CTO), minimum 1 and maximum 16 memory DIMMs must be ordered per processor. | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `SUPPLY_CONSTRAINT_FIO_SUBSTITUTION` | `P64707-B21` | `P64707-F21` | Standalone SKU P64707-B21 constrained; must substitute factory-integrated P64707-F21 for CTO factory build. | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `OPERATING_SYSTEM_ADVISORY` | `P52534-B21` | `—` | Advisory: Selection of an Operating System is recommended for factory deployment. | 1x |
@@ -258,6 +255,12 @@ Total verified rules indexed in this build: **165**.
 | 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_MODULAR_SKILL_TOKEN_OPTIMIZATION` | `undefined` | `—` | Monolithic skills exceeding 25KB must be modularized into a concise core execution SKILL.md (<=250 lines) plus dedicated | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_UNIVERSAL_CC30_AND_QUALITY_CEILING` | `undefined` | `—` | Every function across all repository scripts and test fixtures must strictly comply with the universal cyclomatic comple | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_SPECIALIZED_ARCHITECTURAL_DISPATCH` | `undefined` | `—` | Incoming presales inquiries must be classified and dispatched by presales-query-router across 34 specialized skill track | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_SI_NO_SILENT_DEFAULT_CONVERSION` | `undefined` | `—` | Evaluators, sizing calculators, and serializers MUST preserve null or UNKNOWN for missing node capacity, unpriced items, | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_SI_STRICT_DOCUMENT_REVIEW_GATE` | `undefined` | `—` | Bare { success: true } on ephemeralSourceValidation MUST NOT be promoted to VERIFIED or DOUBLE_CHECK_PASSED. Customer pr | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_SI_INDEPENDENT_WAVE_VERIFICATION` | `undefined` | `—` | Parallel implementation waves with disjoint file ownership MUST pass independent counterexample verification before seam | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_SI_NON_PHYSICAL_SEGREGATION` | `undefined` | `—` | Active knowledge routing MUST segregate operational incidents, user preferences, and agent self-explanations into segreg | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_SI_PORTAL_SEVEN_COLUMN_PRESERVATION` | `undefined` | `—` | Analytical SolutionIntelligenceEnvelope views (Decision & Evidence sheet, Markdown sections, dashboard banners, and MCP  | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_SI_CHECKPOINT_AND_ISOLATION` | `undefined` | `—` | Long multi-milestone engineering plans run with disjoint worker file ownership on inherit workspaces, persist disk check | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P76453-B21` | `—` | Portal validation flagged restriction on P76453-B21. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P76449-B21` | `P76450-B21` | Portal validation flagged restriction on P76450-B21. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `PREPROCESSING_SPLIT_CONFIRMED` | `undefined` | `—` | Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1 | 1x |
@@ -290,7 +293,7 @@ Total verified rules indexed in this build: **165**.
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_VENDOR_OBSERVATION_ADVISORY` | `S3U30C` | `—` | Live OCA evidence on commercial DL380 Gen12 base P73282-B21: S3U30C NVIDIA H200 NVL 141GB was already present in the DOM | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CHASSIS_CLASSIFICATION_ADVISORY` | `undefined` | `—` | Use the registered product and its component role for catalog coverage. Server and compute-module catalogs require proce | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_SCOPE_ISOLATION_ADVISORY` | `P36877-B21` | `—` | Passive accessories such as DC lug terminal kits (P36877-B21), power cords, and rail kits are architecture-invariant and | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_DOM_EXTRACTION_ADVISORY` | `undefined` | `—` | WebLogic OCA table expansion in cdp.js must explicitly toggle show_cost alongside show_price and trigger change events o | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_DOM_EXTRACTION_ADVISORY` | `undefined` | `—` | When HPE OCA renders only a Smart CTO card with _CTOLITE options and no standard CTO card is returned, allowCtolite fall | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `PROCESSOR_ARCHITECTURAL_MATCH_STRATEGY` | `P74571-B21` | `P74577-B21` | When modernizing Cascade Lake Xeon Gold 6258R (28c, 2.7GHz, 38.5MB L3, 205W), Xeon 6530P (32c, 2.3GHz, 144MB L3, 225W, $ | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `MEMORY_CHANNEL_POPULATION_STRATEGY` | `P69728-F21` | `P69729-F21` | On Intel Xeon 6 (8 memory channels per CPU, 16 channels dual socket), legacy 6-channel memory capacities (such as 1,152  | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `THERMAL_HEATSINK_RIGHT_SIZING_RULE` | `P74794-B21` | `P74792-B21` | On HPE ProLiant DL380 Gen12 (P73282-B21), processors with 185W < TDP <= 270W (such as Intel Xeon 6530P 225W P74571-B21)  | 1x |
@@ -314,6 +317,22 @@ Total verified rules indexed in this build: **165**.
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_NLM_SYNC_RESILIENCE_ADVISORY` | `undefined` | `—` | Idempotent NotebookLM read RPCs (source list, source content, canary notebook query) MUST fail over from CDP to httpx vi | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CAPTURE_RECEIPT_ADVISORY` | `undefined` | `—` | Local catalog rebuild scripts (build_catalog.js, generate_xlsx.js) MUST invoke reconcileRebuiltCaptureReceipt() to refre | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_QUARANTINE_GOVERNANCE_ADVISORY` | `undefined` | `—` | Quarantined knowledge deltas MUST pass _checkSemanticExtractionIntegrity() (rejecting inverted discontinued-SKU dependen | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_SI_NO_SILENT_DEFAULT_CONVERSION` | `undefined` | `—` | Evaluators, sizing calculators, and serializers MUST preserve null or UNKNOWN for missing node capacity, unpriced items, | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_SI_STRICT_DOCUMENT_REVIEW_GATE` | `undefined` | `—` | Bare { success: true } on ephemeralSourceValidation MUST NOT be promoted to VERIFIED or DOUBLE_CHECK_PASSED. Customer pr | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_SI_INDEPENDENT_WAVE_VERIFICATION` | `undefined` | `—` | Parallel implementation waves with disjoint file ownership MUST pass independent counterexample verification before seam | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_SI_NON_PHYSICAL_SEGREGATION` | `undefined` | `—` | Active knowledge routing MUST segregate operational incidents, user preferences, and agent self-explanations into segreg | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_SI_PORTAL_SEVEN_COLUMN_PRESERVATION` | `undefined` | `—` | Analytical SolutionIntelligenceEnvelope views (Decision & Evidence sheet, Markdown sections, dashboard banners, and MCP  | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_SI_CHECKPOINT_AND_ISOLATION` | `undefined` | `—` | Long multi-milestone engineering plans run with disjoint worker file ownership on inherit workspaces, persist disk check | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_TIMING_ADVISORY` | `undefined` | `—` | 4-socket enterprise servers have significantly more configuration options than 2-socket servers (73+ category tables vs  | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_LIFECYCLE_BADGE_ADVISORY` | `P73835-B21` | `—` | HPE OCA marks supply-constrained SKUs with [CS] badge (red background, class supply_restricted, tooltip "This SKU is cur | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_DOM_EXTRACTION_ADVISORY` | `undefined` | `—` | WebLogic OCA table expansion in cdp.js must explicitly toggle show_cost alongside show_price and trigger change events o | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_DOM_EXTRACTION_ADVISORY` | `undefined` | `—` | Commercial CTO cards (data-type="cto" without "Smart CTO") must be sorted and prioritized first over Smart CTO cards. OC | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_DOM_EXTRACTION_ADVISORY` | `undefined` | `—` | WebLogic OCA injects 100+ .blockUI.blockOverlay DIVs with opacity:0 and display:block across all accordion containers, s | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_LIFECYCLE_BADGE_ADVISORY` | `undefined` | `—` | build_catalog.js must preserve extracted [CS], [OB], [DS], [90], and [EOL] lifecycle badges against column-default Activ | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_STORAGE_SIZING_HANDOFF_ADVISORY` | `undefined` | `—` | For flagship HPE Alletra Storage MP B10000 and X10000, size core storage architecture (controller nodes, Switchless B101 | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_TIMING_ADVISORY` | `undefined` | `—` | In navigate_oca.js, _sortAndFilterEligibleCandidates ranks global commercial CTO and Wizard cards ahead of KSA/Disconnec | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CAPTURE_COVERAGE_ADVISORY` | `undefined` | `—` | attribute_vectors.js loads multi-vendor matchers from scripts/config/vendors/*/policy.json and materializes compact cano | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_NLM_AUTH_PERSISTENCE_ADVISORY` | `undefined` | `—` | To prevent daily NotebookLM AuthenticationError expiration of rotating Google cookies (__Secure-1PSIDRTS, SIDCC, SNlM0e) | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `EXCLUSION_UNBUILDABLE` | `R3P67A` | `Q2E58AAE` | On HPE Synergy 12000 Frames (P51174-B21) populated solely with SY480 Gen12 compute nodes (P68217-B21), selecting Virtual | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `STANDALONE_ORDERING_TAXONOMY` | `R3P67A` | `R3P67AAE` | R3P67A is a Factory Integrated Option (FIO LTU) ending in 'A', which strictly requires sub-iteming under a factory CTO c | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `MULTI_ORDER_PARTITIONING_PATTERN` | `P51174-B21` | `Q2E58AAE` | When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial orders (Option B | 1x |

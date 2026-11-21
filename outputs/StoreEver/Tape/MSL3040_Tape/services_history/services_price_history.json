@@ -3,56 +3,104 @@
     {
       "date": "2026-09-09",
       "price": 10232017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 10232017,
+        "suspectedReason": "Date parsed as price integer"
+      }
     }
   ],
   "C0H27A": [
     {
       "date": "2026-09-09",
       "price": 10232017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 10232017,
+        "suspectedReason": "Date parsed as price integer"
+      }
     }
   ],
   "N7P36A": [
     {
       "date": "2026-09-09",
       "price": 10232017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 10232017,
+        "suspectedReason": "Date parsed as price integer"
+      }
     }
   ],
   "N7P37A": [
     {
       "date": "2026-09-09",
       "price": 10232017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 10232017,
+        "suspectedReason": "Date parsed as price integer"
+      }
     }
   ],
   "Q6Q67A": [
     {
       "date": "2026-09-09",
       "price": 2052018,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 2052018,
+        "suspectedReason": "Date parsed as price integer"
+      }
     }
   ],
   "Q6Q68A": [
     {
       "date": "2026-09-09",
       "price": 2052018,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 2052018,
+        "suspectedReason": "Date parsed as price integer"
+      }
     }
   ],
   "R6Q74A": [
     {
       "date": "2026-09-09",
       "price": 1102022,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 1102022,
+        "suspectedReason": "Date parsed as price integer"
+      }
     }
   ],
   "R6Q75A": [
     {
       "date": "2026-09-09",
       "price": 1102022,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 1102022,
+        "suspectedReason": "Date parsed as price integer"
+      }
     }
   ],
   "AF570A": [
@@ -94,7 +142,8 @@
     {
       "date": "2026-09-09",
       "price": 142257,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "AF571A": [
@@ -185,91 +234,295 @@
     {
       "date": "2026-09-09",
       "price": 10232017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 10232017,
+        "suspectedReason": "Date parsed as price integer"
+      }
+    },
+    {
+      "date": "2026-11-20",
+      "price": 2500,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Description: \"2,500.00\" -> \"HPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced E-LTU\"",
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "Discontinued Date: \"10/31/2028\" -> \"11/30/2028\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Availability: \"HPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced E-LTU\" -> \"Available\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"10/31/2028\",\"TC406AAE [OB]\":\"TC406AAE\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2500,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "TC406A": [
     {
       "date": "2026-09-09",
       "price": 10232017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 10232017,
+        "suspectedReason": "Date parsed as price integer"
+      }
     }
   ],
   "Q8K43AAE": [
     {
       "date": "2026-09-09",
       "price": 12042017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 12042017,
+        "suspectedReason": "Date parsed as price integer"
+      }
+    },
+    {
+      "date": "2026-11-20",
+      "price": 1750,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Description: \"1,750.00\" -> \"HPE StoreEver MSL3040 Command View for Tape Libraries - Data Verification 100 Cartridges E-LTU\"",
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "Discontinued Date: \"12/31/2028\" -> \"01/31/2029\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Availability: \"HPE StoreEver MSL3040 Command View for Tape Libraries - Data Verification 100 Cartridges E-LTU\" -> \"Available\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"12/31/2028\",\"TC406AAE [OB]\":\"Q8K43AAE\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":1750,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "Q8K96AAE": [
     {
       "date": "2026-09-09",
       "price": 12042017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 12042017,
+        "suspectedReason": "Date parsed as price integer"
+      }
+    },
+    {
+      "date": "2026-11-20",
+      "price": 3000,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Description: \"3,000.00\" -> \"HPE StoreEver MSL3040 High Availability LTO-6 Control Path Failover E-LTU\"",
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "Discontinued Date: \"05/01/2024\" -> \"05/02/2024\"",
+        "CLIC Status: \"Obsolete (OB)\" -> \"Unpublished\"",
+        "Availability: \"HPE StoreEver MSL3040 High Availability LTO-6 Control Path Failover E-LTU\" -> \"Obsolete (OB)\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"05/01/2024\",\"TC406AAE [OB]\":\"Q8K96AAE [OB]\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":3000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "Q8K96A": [
     {
       "date": "2026-09-09",
       "price": 12042017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 12042017,
+        "suspectedReason": "Date parsed as price integer"
+      }
     }
   ],
   "Q8K97AAE": [
     {
       "date": "2026-09-09",
       "price": 12042017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 12042017,
+        "suspectedReason": "Date parsed as price integer"
+      }
+    },
+    {
+      "date": "2026-11-20",
+      "price": 3000,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Description: \"3,000.00\" -> \"HPE StoreEver MSL3040 High Availability LTO-6 Data Path Failover E-LTU\"",
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "Discontinued Date: \"05/01/2024\" -> \"05/02/2024\"",
+        "CLIC Status: \"Obsolete (OB)\" -> \"Unpublished\"",
+        "Availability: \"HPE StoreEver MSL3040 High Availability LTO-6 Data Path Failover E-LTU\" -> \"Obsolete (OB)\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"05/01/2024\",\"TC406AAE [OB]\":\"Q8K97AAE [OB]\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":3000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "Q8K97A": [
     {
       "date": "2026-09-09",
       "price": 12042017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 12042017,
+        "suspectedReason": "Date parsed as price integer"
+      }
     }
   ],
   "Q8K98AAE": [
     {
       "date": "2026-09-09",
       "price": 12042017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 12042017,
+        "suspectedReason": "Date parsed as price integer"
+      }
+    },
+    {
+      "date": "2026-11-20",
+      "price": 6000,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Description: \"6,000.00\" -> \"HPE StoreEver MSL3040 KMIP Key Manager E-LTU\"",
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "Discontinued Date: \"10/31/2028\" -> \"11/30/2028\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Availability: \"HPE StoreEver MSL3040 KMIP Key Manager E-LTU\" -> \"Available\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"10/31/2028\",\"TC406AAE [OB]\":\"Q8K98AAE\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":6000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "Q8K98A": [
     {
       "date": "2026-09-09",
       "price": 12042017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 12042017,
+        "suspectedReason": "Date parsed as price integer"
+      }
     }
   ],
   "Q8L00AAE": [
     {
       "date": "2026-09-09",
       "price": 12042017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 12042017,
+        "suspectedReason": "Date parsed as price integer"
+      }
+    },
+    {
+      "date": "2026-11-20",
+      "price": 6000,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Description: \"6,000.00\" -> \"HPE StoreEver MSL3040 LTO-7+ Path Failover E-LTU\"",
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "Discontinued Date: \"10/31/2028\" -> \"11/30/2028\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Availability: \"HPE StoreEver MSL3040 LTO-7+ Path Failover E-LTU\" -> \"Available\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"10/31/2028\",\"TC406AAE [OB]\":\"Q8L00AAE\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":6000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "Q8L00A": [
     {
       "date": "2026-09-09",
       "price": 12042017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 12042017,
+        "suspectedReason": "Date parsed as price integer"
+      }
     }
   ],
   "Q8K99AAE": [
     {
       "date": "2026-09-09",
       "price": 12042017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 12042017,
+        "suspectedReason": "Date parsed as price integer"
+      }
+    },
+    {
+      "date": "2026-11-20",
+      "price": 2000,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Description: \"2,000.00\" -> \"HPE StoreEver MSL3040 Secure Manager E-LTU\"",
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "Discontinued Date: \"10/31/2028\" -> \"11/30/2028\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Availability: \"HPE StoreEver MSL3040 Secure Manager E-LTU\" -> \"Available\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"10/31/2028\",\"TC406AAE [OB]\":\"Q8K99AAE\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "Q8K99A": [
     {
       "date": "2026-09-09",
       "price": 12042017,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "quarantined": true,
+      "validationState": "SUSPECTED_DATE_PARSE",
+      "anomalyProvenance": {
+        "observedPrice": 12042017,
+        "suspectedReason": "Date parsed as price integer"
+      }
     }
   ],
   "HA546A1": [
@@ -290,245 +543,566 @@
     {
       "date": "2026-09-09",
       "price": 100,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Processor\" -> \"Support Services\"",
+        "Sub-Category: \"Intel Xeon Scalable Processors\" -> \"Support & Deployment Services\"",
+        "Constraint: \"min 1, max 2\" -> \"max 8\"",
+        "Rule/Note: \"Selection constraint for Intel Xeon Scalable Processors: min 1, max 2\" -> \"Selection constraint for OCP3 Networking Adapters: max 8\"",
+        "Max Qty: \"2\" -> \"8\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"100.00\",\"Product Number\":\"H33XSA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XSA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H33XVA3": [
     {
       "date": "2026-09-09",
       "price": 100,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Processor\" -> \"Support Services\"",
+        "Sub-Category: \"Intel Xeon Scalable Processors\" -> \"Support & Deployment Services\"",
+        "Constraint: \"min 1, max 2\" -> \"max 8\"",
+        "Rule/Note: \"Selection constraint for Intel Xeon Scalable Processors: min 1, max 2\" -> \"Selection constraint for OCP3 Networking Adapters: max 8\"",
+        "Max Qty: \"2\" -> \"8\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"100.00\",\"Product Number\":\"H33XVA3\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XVA3\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H33XWA4": [
     {
       "date": "2026-09-09",
       "price": 100,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Processor\" -> \"Support Services\"",
+        "Sub-Category: \"Intel Xeon Scalable Processors\" -> \"Support & Deployment Services\"",
+        "Constraint: \"min 1, max 2\" -> \"max 8\"",
+        "Rule/Note: \"Selection constraint for Intel Xeon Scalable Processors: min 1, max 2\" -> \"Selection constraint for OCP3 Networking Adapters: max 8\"",
+        "Max Qty: \"2\" -> \"8\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"100.00\",\"Product Number\":\"H33XWA4\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XWA4\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H33XXA5": [
     {
       "date": "2026-09-09",
       "price": 100,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 100,
+      "status": "REMOVED"
     }
   ],
   "HA0Z0A1": [
     {
       "date": "2026-09-09",
       "price": 1620,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 1620,
+      "status": "REMOVED"
     }
   ],
   "H33XTA2": [
     {
       "date": "2026-09-09",
       "price": 100,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Processor\" -> \"Support Services\"",
+        "Sub-Category: \"Intel Xeon Scalable Processors\" -> \"Support & Deployment Services\"",
+        "Constraint: \"min 1, max 2\" -> \"max 8\"",
+        "Rule/Note: \"Selection constraint for Intel Xeon Scalable Processors: min 1, max 2\" -> \"Selection constraint for OCP3 Networking Adapters: max 8\"",
+        "Max Qty: \"2\" -> \"8\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"100.00\",\"Product Number\":\"H33XTA2\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XTA2\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "HR2R4A1": [
     {
       "date": "2026-09-09",
       "price": 4000,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 4000,
+      "status": "REMOVED"
     }
   ],
   "HR2R5A1": [
     {
       "date": "2026-09-09",
       "price": 5000,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 5000,
+      "status": "REMOVED"
     }
   ],
   "HR2R6A1": [
     {
       "date": "2026-09-09",
       "price": 8000,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 8000,
+      "status": "REMOVED"
     }
   ],
   "HV9V8A1": [
     {
       "date": "2026-09-09",
       "price": 1300,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 1300,
+      "status": "REMOVED"
     }
   ],
   "H36VWA1": [
     {
       "date": "2026-09-09",
       "price": 17520,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 17520,
+      "status": "REMOVED"
     }
   ],
   "H36VXA1": [
     {
       "date": "2026-09-09",
       "price": 29760,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 29760,
+      "status": "REMOVED"
     }
   ],
   "H36WBA1": [
     {
       "date": "2026-09-09",
       "price": 7140,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 7140,
+      "status": "REMOVED"
     }
   ],
   "H36WNA1": [
     {
       "date": "2026-09-09",
       "price": 13800,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 13800,
+      "status": "REMOVED"
     }
   ],
   "H36WMA1": [
     {
       "date": "2026-09-09",
       "price": 23400,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 23400,
+      "status": "REMOVED"
     }
   ],
   "H36WQA1": [
     {
       "date": "2026-09-09",
       "price": 2760,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 2760,
+      "status": "REMOVED"
     }
   ],
   "H46RMA1": [
     {
       "date": "2026-09-09",
       "price": 9000,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 9000,
+      "status": "REMOVED"
     }
   ],
   "H46RNA1": [
     {
       "date": "2026-09-09",
       "price": 18540,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 18540,
+      "status": "REMOVED"
     }
   ],
   "H46RLA1": [
     {
       "date": "2026-09-09",
       "price": 2640,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 2640,
+      "status": "REMOVED"
     }
   ],
   "H57FDA1": [
     {
       "date": "2026-09-09",
       "price": 13800,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 13800,
+      "status": "REMOVED"
     }
   ],
   "469776-715": [
     {
       "date": "2026-09-09",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "H4F41A1": [
     {
       "date": "2026-09-09",
       "price": 19,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Chassis\" -> \"Support Services\"",
+        "Sub-Category: \"Encryption Kit\" -> \"System Options\"",
+        "Constraint: \"max 999\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for Encryption Kit: max 999\" -> \"(None)\"",
+        "Max Qty: \"999\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Option Type: \"CTO\" -> \"Service\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"19.00\",\"Product Number\":\"H4F41A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H4F41A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H4F42A1": [
     {
       "date": "2026-09-09",
       "price": 1850,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 1850,
+      "status": "REMOVED"
     }
   ],
   "H7M73A1": [
     {
       "date": "2026-09-09",
       "price": 1575,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 1575,
+      "status": "REMOVED"
     }
   ],
   "HA453A1-001": [
     {
       "date": "2026-09-09",
       "price": 205,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "HA453A1-003": [
     {
       "date": "2026-09-09",
       "price": 315,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "HA453A1-023": [
     {
       "date": "2026-09-09",
       "price": 384,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "HA838A1": [
     {
       "date": "2026-09-09",
       "price": 29,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Chassis\" -> \"Support Services\"",
+        "Sub-Category: \"Encryption Kit\" -> \"System Options\"",
+        "Constraint: \"max 999\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for Encryption Kit: max 999\" -> \"(None)\"",
+        "Max Qty: \"999\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Option Type: \"CTO\" -> \"Service\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"29.00\",\"Product Number\":\"HA838A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HA838A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "HA840A1": [
     {
       "date": "2026-09-09",
       "price": 15,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 15,
+      "status": "REMOVED"
     }
   ],
   "HA841A1": [
     {
       "date": "2026-09-09",
       "price": 26,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 26,
+      "status": "REMOVED"
     }
   ],
   "HA849A1": [
     {
       "date": "2026-09-09",
       "price": 25,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Chassis\" -> \"Support Services\"",
+        "Sub-Category: \"Encryption Kit\" -> \"System Options\"",
+        "Constraint: \"max 999\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for Encryption Kit: max 999\" -> \"(None)\"",
+        "Max Qty: \"999\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Option Type: \"CTO\" -> \"Service\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"25.00\",\"Product Number\":\"HA849A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HA849A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "HA861A1": [
     {
       "date": "2026-09-09",
       "price": 2105,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 2105,
+      "status": "REMOVED"
     }
   ],
   "HA867A1": [
     {
       "date": "2026-09-09",
       "price": 13,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Chassis\" -> \"Support Services\"",
+        "Sub-Category: \"Encryption Kit\" -> \"System Options\"",
+        "Constraint: \"max 999\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for Encryption Kit: max 999\" -> \"(None)\"",
+        "Max Qty: \"999\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Option Type: \"CTO\" -> \"Service\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"13.00\",\"Product Number\":\"HA867A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HA867A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "HA868A1": [
     {
       "date": "2026-09-09",
       "price": 38,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Chassis\" -> \"Support Services\"",
+        "Sub-Category: \"Encryption Kit\" -> \"System Options\"",
+        "Constraint: \"max 999\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for Encryption Kit: max 999\" -> \"(None)\"",
+        "Max Qty: \"999\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Option Type: \"CTO\" -> \"Service\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"38.00\",\"Product Number\":\"HA868A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HA868A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "HA875A1": [
     {
       "date": "2026-09-09",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 1,
+      "status": "REMOVED"
     }
   ],
   "HC790A": [
@@ -536,6 +1110,26 @@
       "date": "2026-09-09",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Chassis\" -> \"Support Services\"",
+        "Sub-Category: \"Encryption Kit\" -> \"System Options\"",
+        "Constraint: \"max 999\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for Encryption Kit: max 999\" -> \"(None)\"",
+        "Max Qty: \"999\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Option Type: \"CTO\" -> \"Service\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"0.00\",\"Product Number\":\"HC790A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HC790A\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "HF481A1": [
@@ -549,21 +1143,34 @@
     {
       "date": "2026-09-09",
       "price": 65,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 65,
+      "status": "REMOVED"
     }
   ],
   "ZU706A": [
     {
       "date": "2026-09-09",
       "price": 149,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
     }
   ],
   "ZU723A": [
     {
       "date": "2026-09-09",
       "price": 110,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "H46SGA3": [
@@ -571,6 +1178,20 @@
       "date": "2026-09-09",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SGA3\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SGA3\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SGA4": [
@@ -578,6 +1199,20 @@
       "date": "2026-09-09",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SGA4\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SGA4\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SGA5": [
@@ -585,6 +1220,20 @@
       "date": "2026-09-09",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SGA5\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SGA5\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SHA3": [
@@ -592,6 +1241,20 @@
       "date": "2026-09-09",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SHA3\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SHA3\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SHA4": [
@@ -599,6 +1262,20 @@
       "date": "2026-09-09",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SHA4\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SHA4\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SHA5": [
@@ -606,6 +1283,20 @@
       "date": "2026-09-09",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SHA5\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SHA5\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SJA3": [
@@ -613,6 +1304,20 @@
       "date": "2026-09-09",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SJA3\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SJA3\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SJA4": [
@@ -620,6 +1325,20 @@
       "date": "2026-09-09",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SJA4\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SJA4\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SJA5": [
@@ -627,6 +1346,20 @@
       "date": "2026-09-09",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SJA5\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SJA5\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SKA3": [
@@ -634,6 +1367,824 @@
       "date": "2026-09-09",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SKA3\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SKA3\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
+    }
+  ],
+  "H29BWA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H29BXA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JT1A1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NRA4": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NRA5": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NSA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NTA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39VQA1#V0F": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H42ZHA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H42ZJA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H42ZKA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H42ZLA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JT2A1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H29BRA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H29BSA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NLA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NMA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NNA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NPA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NQA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NQA3": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NQA4": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AG629A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"25.00\",\"Product Number\":\"AG629A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AG629A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
+    }
+  ],
+  "P1F75A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"466.00\",\"Product Number\":\"P1F75A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F75A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
+    }
+  ],
+  "P1F74A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"350.00\",\"Product Number\":\"P1F74A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F74A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
+    }
+  ],
+  "P1F76A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"758.00\",\"Product Number\":\"P1F76A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F76A\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
+    }
+  ],
+  "P1F79A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P1F78A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"350.00\",\"Product Number\":\"P1F78A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F78A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
+    }
+  ],
+  "P1F69A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"289.00\",\"Product Number\":\"P1F69A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F69A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
+    }
+  ],
+  "P1F80A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P1F82A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P1F71A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"292.00\",\"Product Number\":\"P1F71A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F71A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
+    }
+  ],
+  "BQ337A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"100.00\",\"Product Number\":\"BQ337A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"BQ337A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
+    }
+  ],
+  "BQ335A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"44.00\",\"Product Number\":\"BQ335A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"BQ335A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
+    }
+  ],
+  "AG628A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"List Price (USD)\":\"816.00\",\"Product Number\":\"AG628A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AG628A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
+    }
+  ],
+  "H0JD1A1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD7A1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1Y26A1#002": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1Y26A1#003": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30RYA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SDA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SFA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SGA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SHA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SJA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NVA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36XCA1#006": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H57GHA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H57GJA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H57GKA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "HV9X1A1#001": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD9A1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1WU9A1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1WV0A1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1XF9A1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1XG0A1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1XG7A1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1Y25A1#002": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1Y25A1#003": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H2S79A1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H2S81A1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H29BQA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SBA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SCA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SLA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SMA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SNA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NRA3": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36PBA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36PCA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36PDA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "HA124A1#V5K": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H42ZQA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H42ZRA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H43BCA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H44MDA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H44NJA1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "HU7D2A1": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A1#WFH": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A1#WFK": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A1#WFM": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A1#Y65": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A1#Y6B": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A1008E": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A10BK5": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A3#WFH": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A3#WFK": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A3#WFM": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H56JTA3#Y34": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H56JTA4#Y34": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H56JTA5#Y34": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DJA3#Y35": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DJA4#Y35": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DJA5#Y35": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DKA3#Y35": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DKA4#Y35": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DKA5#Y35": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DLA3#Y36": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "AG467A": [
+    {
+      "date": "2026-11-20",
+      "price": 1,
+      "status": "REMOVED"
+    }
+  ],
+  "P1F70A": [
+    {
+      "date": "2026-11-20",
+      "price": 1399,
+      "status": "REMOVED"
+    }
+  ],
+  "P1F72A": [
+    {
+      "date": "2026-11-20",
+      "price": 466,
+      "status": "REMOVED"
+    }
+  ],
+  "P1F73A": [
+    {
+      "date": "2026-11-20",
+      "price": 104,
+      "status": "REMOVED"
     }
   ]
 }

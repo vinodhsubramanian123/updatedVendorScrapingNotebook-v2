@@ -4,81 +4,94 @@
     "model": "MSL3040_Tape",
     "family": "StoreEver",
     "generation": "Tape",
-    "scrapeDate": "2026-09-09",
-    "scrapeTimestamp": "2026-09-09T08:21:34.147Z",
-    "totalSubcategories": 9,
-    "totalUniqueSKUs": 104,
-    "totalTables": 17,
+    "pillar": "STORAGE",
+    "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
+    "scrapeDate": "2026-11-20",
+    "scrapeTimestamp": "2026-11-20T08:21:40.880Z",
+    "builtAt": "2026-11-21T11:58:39.110Z",
+    "totalSubcategories": 10,
+    "totalUniqueSKUs": 124,
+    "totalTables": 12,
     "diffSummary": {
-      "added": 193,
-      "removed": 0,
+      "added": 2,
+      "removed": 1,
+      "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 0,
+      "attributeChanged": 121,
       "priceAndAttributeChanged": 0,
       "unchanged": 0,
       "reinstated": 0,
-      "discontinuedTotal": 0
+      "discontinuedTotal": 1
     },
-    "historySnapshot": "catalog_2026-09-09.json",
+    "historySnapshot": "catalog_2026-11-20.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-09-09",
+      "scrapeDate": "2026-11-20",
       "categoryBreakdown": {
         "Chassis": {
-          "totalSKUs": 1,
-          "totalPrice": 4500,
+          "totalSKUs": 2,
+          "totalPrice": 9000,
           "minPrice": 4500,
           "maxPrice": 4500,
           "subcategories": {
             "Variants": {
-              "totalSKUs": 1,
-              "totalPrice": 4500,
+              "totalSKUs": 2,
+              "totalPrice": 9000,
               "avgPrice": 4500
             }
           },
           "avgPrice": 4500
         },
-        "Accessories & Infrastructure": {
-          "totalSKUs": 67,
-          "totalPrice": 626065676,
-          "minPrice": 2500,
-          "maxPrice": 12042017,
+        "Storage Controllers": {
+          "totalSKUs": 61,
+          "totalPrice": 184906.38999999993,
+          "minPrice": 41.63,
+          "maxPrice": 33000,
           "subcategories": {
-            "Encryption Kit": {
-              "totalSKUs": 2,
-              "totalPrice": 10234517,
-              "avgPrice": 5117258.5
-            },
-            "Expansion Modules": {
-              "totalSKUs": 1,
-              "totalPrice": 12042017,
-              "avgPrice": 12042017
+            "Fibre Channel Host Bus Adapters": {
+              "totalSKUs": 8,
+              "totalPrice": 124172,
+              "avgPrice": 15521.5
             },
             "Storage Media": {
-              "totalSKUs": 64,
-              "totalPrice": 603789142,
-              "avgPrice": 9434205.34375
+              "totalSKUs": 53,
+              "totalPrice": 60734.39,
+              "avgPrice": 1145.9318867924528
             }
           },
-          "avgPrice": 9344263.820895523
+          "avgPrice": 3031.252295081966
+        },
+        "MSL Options": {
+          "totalSKUs": 1,
+          "totalPrice": 2500,
+          "minPrice": 2500,
+          "maxPrice": 2500,
+          "subcategories": {
+            "Encryption Kit": {
+              "totalSKUs": 1,
+              "totalPrice": 2500,
+              "avgPrice": 2500
+            }
+          },
+          "avgPrice": 2500
         },
         "Power Supplies": {
-          "totalSKUs": 2,
-          "totalPrice": 12042797,
+          "totalSKUs": 1,
+          "totalPrice": 780,
           "minPrice": 780,
-          "maxPrice": 12042017,
+          "maxPrice": 780,
           "subcategories": {
             "Power Supply": {
-              "totalSKUs": 2,
-              "totalPrice": 12042797,
-              "avgPrice": 6021398.5
+              "totalSKUs": 1,
+              "totalPrice": 780,
+              "avgPrice": 780
             }
           },
-          "avgPrice": 6021398.5
+          "avgPrice": 780
         },
         "Cables & Enablement Kits": {
-          "totalSKUs": 11,
-          "totalPrice": 1980,
-          "minPrice": 1,
+          "totalSKUs": 27,
+          "totalPrice": 3271,
+          "minPrice": 34,
           "maxPrice": 415,
           "subcategories": {
             "FibreChannel Cables": {
@@ -87,12 +100,12 @@
               "avgPrice": 197.9
             },
             "Power Cord": {
-              "totalSKUs": 1,
-              "totalPrice": 1,
-              "avgPrice": 1
+              "totalSKUs": 17,
+              "totalPrice": 1292,
+              "avgPrice": 76
             }
           },
-          "avgPrice": 180
+          "avgPrice": 121.14814814814815
         },
         "Drive Enclosures / Drives": {
           "totalSKUs": 13,
@@ -108,61 +121,81 @@
           },
           "avgPrice": 813.8461538461538
         },
-        "Storage Controllers": {
-          "totalSKUs": 53,
-          "totalPrice": 60734.39,
-          "minPrice": 41.63,
-          "maxPrice": 3976.02,
-          "subcategories": {
-            "Storage Media": {
-              "totalSKUs": 53,
-              "totalPrice": 60734.39,
-              "avgPrice": 1145.9318867924528
-            }
-          },
-          "avgPrice": 1145.9318867924528
-        },
         "Software & Licenses": {
-          "totalSKUs": 13,
-          "totalPrice": 5459,
-          "minPrice": 25,
-          "maxPrice": 1399,
+          "totalSKUs": 6,
+          "totalPrice": 22500,
+          "minPrice": 2000,
+          "maxPrice": 6000,
           "subcategories": {
             "Software": {
-              "totalSKUs": 13,
-              "totalPrice": 5459,
-              "avgPrice": 419.9230769230769
+              "totalSKUs": 6,
+              "totalPrice": 22500,
+              "avgPrice": 3750
             }
           },
-          "avgPrice": 419.9230769230769
+          "avgPrice": 3750
+        },
+        "Accessories & Infrastructure": {
+          "totalSKUs": 0,
+          "totalPrice": 0,
+          "minPrice": 0,
+          "maxPrice": 0,
+          "subcategories": {
+            "Accessories & Infrastructure Options": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
+            }
+          },
+          "avgPrice": 0
         }
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 193,
-      "unchangedSkusCount": 1,
-      "modifiedSkusCount": 0,
-      "addedSkusCount": 192,
-      "removedSkusCount": 1,
-      "estimatedTokensSaved": 150,
-      "estimatedProcessingTimeSavedMs": 200
+      "totalScrapedSkus": 124,
+      "unchangedSkusCount": 118,
+      "modifiedSkusCount": 6,
+      "addedSkusCount": 0,
+      "removedSkusCount": 0,
+      "estimatedTokensSaved": 0,
+      "estimatedProcessingTimeSavedMs": 0
     },
-    "chassisVariantCount": 2,
-    "rulesGeneratedAt": "2026-09-09T08:21:34.295Z"
+    "snapshotFingerprint": "8868879615aa93d5a0dd1301105d0fb95f2d15c082660aaffa99b635a4c2745b",
+    "chassisVariantCount": 3,
+    "rulesGeneratedAt": "2026-11-21T11:58:39.492Z"
   },
   "chassisVariants": [
     {
-      "sku": "Q2R41A",
-      "description": "HPE StoreEver MSL3040 Tape Library Base Module CTO Chassis",
+      "sku": "Q6Q62C",
+      "description": "HPE MSL3040 Scalable Base Module",
       "formFactor": "Unknown",
       "listPrice": 4500,
       "listPriceFormatted": "$4500.00",
       "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "",
       "discontinuedDate": "",
-      "constraint": "min 1, max 1 — Active OCA Base Chassis",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-09.json"
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-11-20: $4500.00"
+    },
+    {
+      "sku": "Q2R41A",
+      "description": "[REMOVED SKU] HPE StoreEver MSL3040 Tape Library Base Module CTO Chassis",
+      "formFactor": "Unknown",
+      "listPrice": 4500,
+      "listPriceFormatted": "$4500.00",
+      "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
+      "startDate": "2026-09-09",
+      "discontinuedDate": "2026-11-20",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "REMOVED",
+      "priceHistoryTrail": "2026-09-09: $4500.00 → 2026-11-20: $4500.00 (✕ REMOVED)"
     },
     {
       "sku": "Q2R42A",
@@ -171,6 +204,8 @@
       "listPrice": 2800,
       "listPriceFormatted": "$2800.00",
       "optionType": "CTO",
+      "hpeRecommended": "Unknown",
+      "HPE Recommended": "Unknown",
       "startDate": "2026-08-10",
       "discontinuedDate": "",
       "constraint": "Chassis Standard (Max 1)",
@@ -179,18 +214,37 @@
     }
   ],
   "chassisVariantMatrix": {
-    "Q2R41A": {
-      "sku": "Q2R41A",
-      "description": "HPE StoreEver MSL3040 Tape Library Base Module CTO Chassis",
+    "Q6Q62C": {
+      "sku": "Q6Q62C",
+      "description": "HPE MSL3040 Scalable Base Module",
       "formFactor": "Unknown",
       "listPrice": 4500,
       "listPriceFormatted": "$4500.00",
       "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "",
       "discontinuedDate": "",
-      "constraint": "min 1, max 1 — Active OCA Base Chassis",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-09.json"
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-11-20: $4500.00"
+    },
+    "Q2R41A": {
+      "sku": "Q2R41A",
+      "description": "[REMOVED SKU] HPE StoreEver MSL3040 Tape Library Base Module CTO Chassis",
+      "formFactor": "Unknown",
+      "listPrice": 4500,
+      "listPriceFormatted": "$4500.00",
+      "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
+      "startDate": "2026-09-09",
+      "discontinuedDate": "2026-11-20",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "REMOVED",
+      "priceHistoryTrail": "2026-09-09: $4500.00 → 2026-11-20: $4500.00 (✕ REMOVED)"
     },
     "Q2R42A": {
       "sku": "Q2R42A",
@@ -199,6 +253,8 @@
       "listPrice": 2800,
       "listPriceFormatted": "$2800.00",
       "optionType": "CTO",
+      "hpeRecommended": "Unknown",
+      "HPE Recommended": "Unknown",
       "startDate": "2026-08-10",
       "discontinuedDate": "",
       "constraint": "Chassis Standard (Max 1)",
@@ -206,17 +262,148 @@
       "sourceSnapshot": "catalog_2026-08-10.json"
     }
   },
-  "subcategories": [],
+  "smartChassisCombinations": [],
+  "solutionManifest": {
+    "commercialBreakdown": null,
+    "deliveryAndSupport": {
+      "iconId": "I158519560-01",
+      "edt": "14 - 18 days",
+      "configName": "OCA Config 2",
+      "attachedServices": [
+        {
+          "deviceTarget": "MSL3040 #1\nQ6Q62C",
+          "reactiveSupport": "HU4A6A5#YJR HPE 5Y Tech Care Essential Service",
+          "installation": "HA114A1#5UE HPE Installation and Startup Service",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE StoreEver MSL3040 Command View for Tape Libraries - Data Verification 100 Cartridges E-LTU",
+          "reactiveSupport": "HU4A6A5#YJY HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        }
+      ]
+    },
+    "baselineHierarchy": []
+  },
+  "subcategories": [
+    {
+      "parentCategory": "MSL Options",
+      "name": "Encryption Kit",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "maxQtySemantics": "BOUNDED"
+    }
+  ],
   "rules": [
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "716197-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "716197-B21 conditional visibility: portal selector activation required (Supported on LTO-9 SAS Drive (R6Q75A) Only.); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SAS Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "716199-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "716199-B21 conditional visibility: portal selector activation required (Supported on LTO-9 SAS Drive (R6Q75A) Only.); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SAS Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P35176-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P35176-B21 conditional visibility: portal selector activation required (Supported on LTO-9 SAS Drive (R6Q75A) Only.); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SAS Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P35175-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P35175-B21 conditional visibility: portal selector activation required (Supported on LTO-9 SAS Drive (R6Q75A) Only.); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SAS Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Cables",
+      "subCategory": "Configuration Rules",
+      "constraint": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "716197-B21",
+        "716199-B21",
+        "P35176-B21",
+        "P35175-B21"
+      ],
+      "ineligibilityReason": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
     {
       "parentCategory": "Chassis",
       "subCategory": "Variants",
-      "constraint": "min 1, max 1 — Active OCA Base Chassis",
+      "constraint": "min 1, max 1 — Active OCA CTO chassis",
       "maxQty": 1,
-      "rule": "Base chassis captured from the active OCA configuration summary"
+      "rule": "Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis"
     },
     {
-      "parentCategory": "Accessories & Infrastructure",
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Fibre Channel Host Bus Adapters",
+      "constraint": "max 3",
+      "maxQty": 3,
+      "rule": "Selection constraint for Fibre Channel Host Bus Adapters: max 3"
+    },
+    {
+      "parentCategory": "MSL Options",
       "subCategory": "Encryption Kit",
       "constraint": "max 999",
       "maxQty": 999,
@@ -244,20 +431,6 @@
       "rule": "Selection constraint for SAS Cables: max 999"
     },
     {
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "Expansion Modules",
-      "constraint": "max 15",
-      "maxQty": 15,
-      "rule": "Selection constraint for Expansion Modules: max 15"
-    },
-    {
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "Storage Media",
-      "constraint": "max 999",
-      "maxQty": 999,
-      "rule": "Selection constraint for Storage Media: max 999"
-    },
-    {
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "SAS Cables",
       "constraint": "max 999",
@@ -265,6 +438,13 @@
       "rule": "Supported on LTO-9 SAS Drive (R6Q75A) Only."
     },
     {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Power Cord",
+      "constraint": "no max",
+      "maxQty": "",
+      "rule": "Selection constraint for Power Cord: no max"
+    },
+    {
       "parentCategory": "Storage Controllers",
       "subCategory": "Storage Media",
       "constraint": "max 999",
@@ -272,25 +452,11 @@
       "rule": "Selection constraint for Storage Media: max 999"
     },
     {
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Power Cord",
-      "constraint": "no max",
-      "maxQty": -1,
-      "rule": "Selection constraint for Power Cord: no max"
-    },
-    {
       "parentCategory": "Software & Licenses",
       "subCategory": "Software",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Software: no max"
-    },
-    {
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Tape Drives",
-      "constraint": "max 3",
-      "maxQty": 3,
-      "rule": "Selection constraint for Tape Drives: max 3"
     },
     {
       "parentCategory": "Support Services",
@@ -300,11 +466,25 @@
       "rule": "Selection constraint for Storage Media: max 999"
     },
     {
+      "parentCategory": "Support Services",
+      "subCategory": "Support & Deployment Services",
+      "constraint": "max 8",
+      "maxQty": 8,
+      "rule": "Selection constraint for OCP3 Networking Adapters: max 8"
+    },
+    {
+      "parentCategory": "Processor",
+      "subCategory": "Intel Xeon Scalable Processors",
+      "constraint": "Discontinued",
+      "maxQty": "",
+      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
+    },
+    {
       "parentCategory": "Chassis",
       "subCategory": "Encryption Kit",
-      "constraint": "max 999",
-      "maxQty": 999,
-      "rule": "Selection constraint for Encryption Kit: max 999"
+      "constraint": "Discontinued",
+      "maxQty": "",
+      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
     }
   ]
 }

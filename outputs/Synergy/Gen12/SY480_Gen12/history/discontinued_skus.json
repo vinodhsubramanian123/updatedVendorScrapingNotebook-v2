@@ -1022,5 +1022,13 @@
     "subCategory": "GPU Accelerators",
     "firstSeenDate": "2026-11-12",
     "status": "ACTIVE"
+  },
+  "339781-B21": {
+    "productNumber": "339781-B21",
+    "description": "HPE RAID FIO Advanced Data Guarding Option",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "RAID Settings",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
   }
 }

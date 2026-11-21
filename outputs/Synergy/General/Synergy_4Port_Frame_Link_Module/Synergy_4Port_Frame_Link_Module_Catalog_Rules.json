@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-12",
     "scrapeTimestamp": "2026-11-12T03:18:03.540Z",
-    "builtAt": "2026-11-12T03:18:15.454Z",
+    "builtAt": "2026-11-21T11:59:02.401Z",
     "totalSubcategories": 7,
     "totalUniqueSKUs": 62,
     "totalTables": 9,
@@ -91,20 +91,29 @@
         }
       }
     },
-    "snapshotFingerprint": "e3c2648c27eab5bd70077f5666b58a019566052626a2f490898211b6f59e7ac9",
+    "incrementalStats": {
+      "totalScrapedSkus": 62,
+      "unchangedSkusCount": 1,
+      "modifiedSkusCount": 61,
+      "addedSkusCount": 0,
+      "removedSkusCount": 0,
+      "estimatedTokensSaved": 0,
+      "estimatedProcessingTimeSavedMs": 0
+    },
+    "snapshotFingerprint": "5a808517a3cbcc845934808ae1e232f31f094a4001b4129bec0974ff9e43dd99",
     "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-11-12T03:18:15.573Z"
+    "rulesGeneratedAt": "2026-11-21T11:59:02.687Z"
   },
   "chassisVariants": [
     {
       "sku": "876852-B21",
       "description": "HPE Synergy 4-port Frame Link Module [876852-B21]",
       "formFactor": "Unknown",
-      "listPrice": 0,
-      "listPriceFormatted": "$0.00",
+      "listPrice": null,
+      "listPriceFormatted": "",
       "optionType": "CTO",
-      "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "",
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
@@ -118,11 +127,11 @@
       "sku": "876852-B21",
       "description": "HPE Synergy 4-port Frame Link Module [876852-B21]",
       "formFactor": "Unknown",
-      "listPrice": 0,
-      "listPriceFormatted": "$0.00",
+      "listPrice": null,
+      "listPriceFormatted": "",
       "optionType": "CTO",
-      "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "",
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
@@ -676,23 +685,6 @@
       "rule": "JD096C conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
       "subCategory": "SFP Transceivers",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "861414-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "861414-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "CAT6A Cables",
       "constraint": "",
       "maxQty": ""
     },

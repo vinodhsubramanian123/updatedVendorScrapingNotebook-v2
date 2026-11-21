@@ -1,0 +1,123 @@
+{
+  "success": true,
+  "spreadsheetId": "19YmKUDwdJXm-1_QnveMteTMWIt26q7CfcirvH0JPMNk",
+  "backupFile": "outputs/history/drive_backups/drive_backup_d8c5e9ad-e6f1-41a0-9df1-a5373a3f6c6f.json",
+  "tabsWritten": [
+    {
+      "title": "Certified Catalog",
+      "rows": 83
+    },
+    {
+      "title": "Verified Learnings",
+      "rows": 212
+    },
+    {
+      "title": "Change Log",
+      "rows": 83
+    },
+    {
+      "title": "Sync Metadata",
+      "rows": 10
+    },
+    {
+      "title": "Category Summary",
+      "rows": 34
+    },
+    {
+      "title": "All SKUs",
+      "rows": 83
+    },
+    {
+      "title": "Chassis Variants",
+      "rows": 4
+    },
+    {
+      "title": "Chassis Options Matrix",
+      "rows": 4
+    },
+    {
+      "title": "Rules & Constraints",
+      "rows": 84
+    },
+    {
+      "title": "Unavailable Rules & Gates",
+      "rows": 16
+    },
+    {
+      "title": "Support Services",
+      "rows": 4
+    },
+    {
+      "title": "Price History Timeline",
+      "rows": 86
+    },
+    {
+      "title": "Networking",
+      "rows": 11
+    },
+    {
+      "title": "Power Supplies",
+      "rows": 10
+    },
+    {
+      "title": "Chassis",
+      "rows": 4
+    },
+    {
+      "title": "Accessories & Infrastructure",
+      "rows": 5
+    },
+    {
+      "title": "Storage Controllers",
+      "rows": 3
+    },
+    {
+      "title": "Cables & Enablement Kits",
+      "rows": 42
+    },
+    {
+      "title": "Drive Enclosures  Drives",
+      "rows": 14
+    },
+    {
+      "title": "Supply Chain & Lead Times",
+      "rows": 86
+    },
+    {
+      "title": "Metadata",
+      "rows": 23
+    }
+  ],
+  "readbackVerified": true,
+  "readbackFingerprints": {
+    "Certified Catalog": "fec1da863c9cb2ded627548276be07e733f9b24971e7f66bcbd09027fcda8546",
+    "Verified Learnings": "6a458ac1dec53f88a0a30fbff3f985b4b66e63c35815a1efbcb41f1cce30a103",
+    "Change Log": "190822e4d7189d0e70dc18d843946d2007a82baf06e357aba76eb0d0fc8caef1",
+    "Sync Metadata": "5c528fdcf1f7a6788b2b7276f25c6876971b971a7beee22880c9dc8da97decc7",
+    "Category Summary": "c62496d0b3cf65c732b14bdd8057880431d1d3d9ea8eab82d9bd9b6cf344b443",
+    "All SKUs": "6855a7e02a4716e431586f8090e0f93ab3ac71c8ec5019f1b51a6da1abc9af1c",
+    "Chassis Variants": "796238e8d2e2747c3c225054d79a1f7ad4528a6167bbc331996e54f8ff56e698",
+    "Chassis Options Matrix": "3f87d75a2035c5dc67c1827b0117b01a444d03be3f9bbf9dc8f18703b7140eb5",
+    "Rules & Constraints": "59812882fd920a7273ebb365810fdad0b397c550c3cd659169fa9dd0fe10f0d5",
+    "Unavailable Rules & Gates": "0126e00648213b10b81e019fbdae77d2537378c21f8ebfe961a791932f9062dd",
+    "Support Services": "e9b4131d046e8950d6c262c76fd7845ef3751ff5de97a569126cd91019e102fd",
+    "Price History Timeline": "d49f8ad4917ca40b952afb77d0521fae7010944ee365d1200dfa0e5746f8e6d6",
+    "Networking": "cd4e4e8e19dcd06643d64f3840313c59c51148747691b54193bbb734cf755aa2",
+    "Power Supplies": "17f05d63e93cc7f88f9f02d7e29f5a90c07d55987c0c5808cec3c94ecfc9671f",
+    "Chassis": "e0e3824b65e51a1395a3b7af414b0e9c7bddf7b552021cbdb27c1dfeb1fc9cbe",
+    "Accessories & Infrastructure": "88069f33cc87373693275293eff041d2fc9f515f143553096dcc6db35853276c",
+    "Storage Controllers": "8462bea53181185bb2db5d5a6abcc939dfaa1db878a775a3fa3318d07bd2b2c1",
+    "Cables & Enablement Kits": "2314c88b98e8ebf8b12276512f92aeb351097666e180cd1c87409c0b96146f6e",
+    "Drive Enclosures  Drives": "bf3cb1a9b7c748bbc940ff31133dc9c3e65b144931eb9a229beaf8f5ab8a4298",
+    "Supply Chain & Lead Times": "c9fe2a7da0bc4f7a913539100e0d3394f74910b15dcad47754fb1f87fcff6d70",
+    "Metadata": "9e6a09f155a53ce1c3a5e71b67c03fc1699056fa100139d04b35265b8deaf3a7"
+  },
+  "verifiedAt": "2026-11-21T13:22:47.906Z",
+  "fingerprints": {
+    "catalog": "fec1da863c9cb2ded627548276be07e733f9b24971e7f66bcbd09027fcda8546",
+    "learnings": "8d92805217086ac3fe0df53c97d9fa207737ff8f4cef7b2f7b71581e04f512d3",
+    "changes": "190822e4d7189d0e70dc18d843946d2007a82baf06e357aba76eb0d0fc8caef1",
+    "workbook": "c7b986d8644fb9333ac589545413ae8fbdc732402eefbbaee34fae2fd42f30d3",
+    "combined": "6bd9ceabb255403f182d6aabbdeb2ee9e7b569d459be80fb041ac9bcaf2c4fda"
+  }
+}

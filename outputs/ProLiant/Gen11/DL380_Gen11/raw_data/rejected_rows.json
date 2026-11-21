@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "product": "DL380_Gen11",
+  "generatedAt": "2026-11-21T11:57:31.542Z",
+  "rejectedCount": 6,
+  "rows": [
+    {
+      "tableIndex": 3,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Component Removal/Replacement Setting"
+      ]
+    },
+    {
+      "tableIndex": 5,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Optical Drive Accessories"
+      ]
+    },
+    {
+      "tableIndex": 8,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Accessories"
+      ]
+    },
+    {
+      "tableIndex": 14,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Smart IO (SW)"
+      ]
+    },
+    {
+      "tableIndex": 18,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HPE Security Compliance Software"
+      ]
+    },
+    {
+      "tableIndex": 21,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Private Cloud Business Edition"
+      ]
+    }
+  ]
+}

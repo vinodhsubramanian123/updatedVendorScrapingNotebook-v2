@@ -1,0 +1,844 @@
+{
+  "version": "1.0.0",
+  "chassis": "Alletra_MP_B10000",
+  "generatedAt": "2026-11-21T12:46:05.865Z",
+  "executionDurationMs": 1861,
+  "summary": {
+    "totalRawTables": 71,
+    "validProductTables": 50,
+    "skippedTablesCount": 16,
+    "rejectedRowsCount": 5,
+    "parseFailedPriceCount": 0,
+    "unmeasuredLeadTimeCount": 36,
+    "selfHealedTablesCount": 0,
+    "selfHealedSkusCount": 0,
+    "totalExtractedSKUs": 202,
+    "totalUniqueSKUs": 202,
+    "totalRulesExtracted": 132,
+    "chassisVariantsCount": 1
+  },
+  "skippedTables": [
+    {
+      "tableIndex": 0,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 1,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 2,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 3,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 4,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 5,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 6,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 7,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 8,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 9,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 10,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 11,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 12,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 29,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 71,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 74,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    }
+  ],
+  "rejectedRows": [
+    {
+      "tableIndex": 1,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Country Power Cords Options"
+      ]
+    },
+    {
+      "tableIndex": 2,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Adapters"
+      ]
+    },
+    {
+      "tableIndex": 3,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "DC Power Cables"
+      ]
+    },
+    {
+      "tableIndex": 29,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Label",
+        "Qty",
+        "UCID",
+        "Price",
+        "Status",
+        "Summary",
+        "CI",
+        "Services"
+      ]
+    },
+    {
+      "tableIndex": 71,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    }
+  ],
+  "selfHealedTables": [],
+  "tableDecisions": [
+    {
+      "tableIndex": 26,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 28,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 30,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 31,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 33,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 34,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Power Supply",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 35,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Power Supply",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 36,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 36,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 37,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 39,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 38,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 40,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Drive Cage / Drive",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 42,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Transceiver",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 9,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 43,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Transceiver",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 44,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 6,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 45,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Transceiver",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 46,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Drive Cage / Drive",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 5,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 48,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Drive Cage / Drive",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 49,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Drive Cage / Drive",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 50,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Drive Cage / Drive",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 51,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 52,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 53,
+      "subCategory": "Chassis Infrastructure & Rail Kits",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Chassis Infrastructure",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 54,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "SAN Switch",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 13,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 55,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "SAN Switch",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 13,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 56,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Network Switch",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 57,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Network Switch",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 8,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 58,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Network Switch",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 59,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Network Switch",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 60,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 61,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 62,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 6,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 63,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 64,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Transceiver",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 17,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 65,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Transceiver",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 66,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 67,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 68,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 69,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 70,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 72,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 73,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 75,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 76,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 77,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 78,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 79,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 80,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 6,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 81,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 82,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 83,
+      "subCategory": "Software LTU",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    }
+  ],
+  "categoryDistribution": {
+    "Chassis": 1,
+    "Accessories & Infrastructure": 4,
+    "Storage Controllers": 10,
+    "Power Supplies": 4,
+    "Cables & Enablement Kits": 91,
+    "Software & Licenses": 48,
+    "Networking": 31,
+    "Drive Enclosures / Drives": 12,
+    "Support Services": 1
+  },
+  "chassisVariantsMatrix": {
+    "S7U66A": {
+      "description": "S7U66A/S7U67A - HPE Alletra Storage MP B10000 KSA",
+      "formFactor": "Unknown",
+      "listPrice": 0,
+      "diffStatus": "BASELINE"
+    }
+  },
+  "dataAnomalies": {
+    "priceInconsistencies": [],
+    "unparseablePrices": [],
+    "filteredPhantomSKUs": [],
+    "duplicateSKUs": []
+  },
+  "attributeFidelity": {
+    "skusWithLeadTime": 166,
+    "skusWithCost": 0,
+    "skusWithPriceDelta": 0,
+    "skusWithPricePerGb": 0,
+    "clicStatusDistribution": {
+      "Valid": 1,
+      "Unpublished": 201
+    },
+    "lifecycleStatusDistribution": {
+      "Active": 180,
+      "Obsolete (OB)": 20,
+      "EOL Warning (90-Day)": 1,
+      "Direct Ship (DS)": 1
+    }
+  }
+}

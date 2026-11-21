@@ -1,0 +1,22 @@
+{
+  "metadata": {
+    "chassis": "Cray GX5000 General Rack",
+    "family": "Cray",
+    "gen": "General",
+    "pillar": "HPC",
+    "coverageStatus": "UNSCRAPED_SEED_PARTIAL",
+    "rulesCount": 1,
+    "disclosure": "Unscraped 2-SKU baseline seed without raw OCA capture; live OCA scrape required for complete rules."
+  },
+  "rules": [
+    {
+      "ruleId": "RULE_GX5000_BASE_CHASSIS_SEED",
+      "rule": "Mandatory base chassis selection required for solution build (seed disclosure: full option matrix pending live OCA scrape).",
+      "ruleText": "Mandatory base chassis selection required for solution build (seed disclosure: full option matrix pending live OCA scrape).",
+      "description": "Mandatory base chassis selection required for solution build (seed disclosure: full option matrix pending live OCA scrape).",
+      "parentCategory": "Chassis",
+      "subCategory": "Variants",
+      "type": "UNSCRAPED_SEED_DISCLOSURE"
+    }
+  ]
+}

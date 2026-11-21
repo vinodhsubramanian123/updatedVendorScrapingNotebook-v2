@@ -1,10 +1,10 @@
 {
-  "verifiedAt": "2026-11-12T10:53:26.113Z",
+  "verifiedAt": "2026-11-21T13:53:24.781Z",
   "productId": "DL380_Gen12",
   "family": "ProLiant",
   "generation": "Gen12",
   "preflight": {
-    "recordedAt": "2026-11-12T10:44:38.356Z",
+    "recordedAt": "2026-11-20T09:51:12.593Z",
     "pass": true,
     "product": {
       "pass": true,
@@ -25,7 +25,7 @@
     "googleWorkspace": {
       "pass": true,
       "status": "VERIFIED_SCOPES",
-      "account": "vinodhsubramanian@gmail.com",
+      "account": "authenticated",
       "hasSheetsScope": true,
       "hasDriveScope": true
     },
@@ -38,24 +38,35 @@
     }
   },
   "postflight": {
-    "pass": false,
-    "status": "ACTION_REQUIRED",
+    "pass": true,
+    "status": "VERIFIED",
+    "qualityAuditPassed": true,
     "diffSummaryError": null,
-    "hwSkuCount": 619,
-    "serviceSkuCount": 553,
-    "totalSkuCount": 1172,
-    "conditionalSkusCount": 540,
-    "unavailableRulesCount": 36,
+    "hwSkuCount": 717,
+    "serviceSkuCount": 523,
+    "totalSkuCount": 1240,
+    "conditionalSkusCount": 308,
+    "unavailableRulesCount": 37,
     "diffSummaryPresent": true,
     "diffCounts": {
-      "ADDED": 15,
-      "MODIFIED": 27,
+      "ADDED": 98,
+      "MODIFIED": 1709,
+      "PRICE_CHANGED": 0,
+      "ATTRIBUTE_CHANGED": 1699,
+      "PRICE_AND_ATTRIBUTE_CHANGED": 10,
+      "REINSTATED": 0,
       "REMOVED": 0,
       "DISCONTINUED": 0,
-      "UNCHANGED": 1149
+      "UNCHANGED": 5
     },
     "cloudSyncState": "CLOUD_VERIFIED",
-    "verifiedSourceId": "a87a92fc-5ef0-40e5-a810-04ce76927d8c"
+    "notebookId": "1d190853-4e9c-48df-aa70-eae66c6f2c1f",
+    "verifiedSourceId": "82aa2ae9-95a1-4d06-93e3-eda707812ea8",
+    "verifiedSourceName": "DL380_Gen12_OCA_Catalog_2026-11-20",
+    "payloadSha256": "8084217e29cb6508f3427b0bf6b1f2651b195b6de5c03408a3ef61d1794d13f8",
+    "cloudVerifiedAt": "2026-11-21T13:53:24.781Z",
+    "readbackVerified": true,
+    "canaryVerified": true
   },
-  "overallPass": false
+  "overallPass": true
 }

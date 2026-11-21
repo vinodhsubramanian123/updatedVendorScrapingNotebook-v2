@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-11-12T11:06:35.035Z",
+  "verifiedAt": "2026-11-21T05:35:16.165Z",
   "productId": "Synergy_12000_Frame",
   "family": "Synergy",
   "generation": "General",
@@ -36,7 +36,7 @@
   },
   "postflight": {
     "pass": true,
-    "status": "VERIFIED",
+    "status": "PASS",
     "diffSummaryError": null,
     "hwSkuCount": 228,
     "serviceSkuCount": 216,
@@ -51,6 +51,13 @@
       "DISCONTINUED": 0,
       "UNCHANGED": 228
     },
-    "cloudSyncState": "CLOUD_VERIFIED"
+    "cloudSyncState": "CLOUD_VERIFIED",
+    "verifiedSourceId": "ce36c2c9-ff2b-4905-a2f0-3ee7b931893c",
+    "cloudVerifiedAt": "2026-11-21T13:46:58.395Z",
+    "readbackVerified": true,
+    "canaryVerified": true,
+    "notebookId": "5b9ddeda-0d03-44ee-80c8-766f494ea34c",
+    "verifiedSourceName": "Synergy_12000_Frame_OCA_Catalog_2026-11-12",
+    "payloadSha256": "8cd8946c05e1a26a772e74b4f0d87cb7341c8efded89b5f166fc9be7d6426671"
   }
 }

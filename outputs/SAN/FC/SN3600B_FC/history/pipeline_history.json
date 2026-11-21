@@ -1,6 +1,194 @@
 [
   {
     "summary": {
+      "runId": "run_SN3600B_FC_1795265792008",
+      "sessionName": "SN3600B_FC",
+      "startTime": "2026-11-21T12:56:32.007Z",
+      "endTime": "2026-11-21T12:56:33.506Z",
+      "durationMs": 1499,
+      "durationSec": "1.50",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 79,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 79,
+      "validationStats": {
+        "totalEntries": 11,
+        "totalSKUs": 79,
+        "validSKUs": 79,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 22,
+        "priceErrors": 0,
+        "ruleCount": 11,
+        "categoryCount": 5
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-21T12:56:32.009Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/SAN/FC/SN3600B_FC/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/SAN/FC/SN3600B_FC/SN3600B_FC_Catalog.json",
+          "chassisLabel": "SN3600B FC"
+        }
+      },
+      {
+        "timestamp": "2026-11-21T12:56:33.357Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 11,
+          "totalUniqueSKUs": 79,
+          "incrementalStats": {
+            "totalScrapedSkus": 79,
+            "unchangedSkusCount": 57,
+            "modifiedSkusCount": 1,
+            "addedSkusCount": 21,
+            "removedSkusCount": 4,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T12:56:33.360Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 11,
+            "totalSKUs": 79,
+            "validSKUs": 79,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 22,
+            "priceErrors": 0,
+            "ruleCount": 11,
+            "categoryCount": 5
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T12:56:33.506Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/SAN/FC/SN3600B_FC/SN3600B_FC_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 79,
+      "classified": 79,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_SN3600B_FC_1795262315722",
+      "sessionName": "SN3600B_FC",
+      "startTime": "2026-11-21T11:58:35.721Z",
+      "endTime": "2026-11-21T11:58:37.276Z",
+      "durationMs": 1555,
+      "durationSec": "1.55",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 63,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 62,
+      "validationStats": {
+        "totalEntries": 11,
+        "totalSKUs": 63,
+        "validSKUs": 63,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 6,
+        "priceErrors": 0,
+        "ruleCount": 11,
+        "categoryCount": 5
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-21T11:58:35.722Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/SAN/FC/SN3600B_FC/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/SAN/FC/SN3600B_FC/SN3600B_FC_Catalog.json",
+          "chassisLabel": "SN3600B FC"
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:37.126Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 11,
+          "totalUniqueSKUs": 62,
+          "incrementalStats": {
+            "totalScrapedSkus": 62,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 58,
+            "addedSkusCount": 4,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:37.131Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 11,
+            "totalSKUs": 63,
+            "validSKUs": 63,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 6,
+            "priceErrors": 0,
+            "ruleCount": 11,
+            "categoryCount": 5
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:37.276Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/SAN/FC/SN3600B_FC/SN3600B_FC_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 63,
+      "classified": 63,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_SN3600B_FC_1790044527504",
       "sessionName": "SN3600B_FC",
       "startTime": "2026-09-22T02:35:27.502Z",
@@ -31,8 +219,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SN3600B_FC_1790044527244\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SN3600B_FC_1790044527244\\SN3600B_FC_Catalog.json",
+          "rawInputPath": "outputs/temp/staging_SN3600B_FC_1790044527244/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/staging_SN3600B_FC_1790044527244/SN3600B_FC_Catalog.json",
           "chassisLabel": "SN3600B FC"
         }
       },
@@ -80,7 +268,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SN3600B_FC_1790044527244\\SN3600B_FC_Catalog.json"
+          "path": "outputs/temp/staging_SN3600B_FC_1790044527244/SN3600B_FC_Catalog.json"
         }
       }
     ],
@@ -125,8 +313,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SN3600B_FC_1789994485278\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SN3600B_FC_1789994485278\\SN3600B_FC_Catalog.json",
+          "rawInputPath": "outputs/temp/staging_SN3600B_FC_1789994485278/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/staging_SN3600B_FC_1789994485278/SN3600B_FC_Catalog.json",
           "chassisLabel": "SN3600B FC"
         }
       },
@@ -174,7 +362,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SN3600B_FC_1789994485278\\SN3600B_FC_Catalog.json"
+          "path": "outputs/temp/staging_SN3600B_FC_1789994485278/SN3600B_FC_Catalog.json"
         }
       }
     ],

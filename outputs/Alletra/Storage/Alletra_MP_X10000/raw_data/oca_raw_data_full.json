@@ -1,0 +1,5462 @@
+{
+  "timestamp": "2026-11-21T12:18:55.119Z",
+  "vendor": "HPE",
+  "portalUrl": "https://oca.ext.hpe.com/oca/OCAInternalLogin",
+  "pageTitle": "External OCA  | Hewlett Packard Enterprise",
+  "url": "https://oca.ext.hpe.com/oca/OCAInternalLogin",
+  "nodeText": "HPE Alletra Storage MP X10000 Base #1 Group",
+  "qsLink": "",
+  "selectedBaseSku": "S3L12A",
+  "baseSku": "S3L12A",
+  "ownerProduct": "Alletra_MP_X10000",
+  "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+  "parentConfiguration": null,
+  "parentBaseSku": null,
+  "parentOfferPriceUsd": null,
+  "supportCoverageStatus": "NOT_PROBED",
+  "columnCoverage": {
+    "verified": true,
+    "present": {
+      "sku": true,
+      "description": true,
+      "price": true,
+      "leadTime": true,
+      "lifecycleDates": false
+    },
+    "missing": [
+      "lifecycleDates"
+    ],
+    "observedHeaders": [
+      "Cloud Connectivity",
+      "Connectivity\n Cloud connectivity is required for the Registration and Activation of this HPE Alletra Storage MP offering.\nIf cloud connectivity will not be available for Registration and Activation then the system cannot be activated.\nAir-gapped solutions are not supported.\n\n(Connectivity)",
+      "Description\tQuantity\tPrice (USD)\tPrice Delta (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\nCloud connectivity requirement can be met\t\n0\n\tNA\tNA\tNA\t\t01/01/2000\t12/31/3999\t01/01/9999",
+      "Available",
+      "Product #",
+      "Description",
+      "Quantity",
+      "Price (USD)",
+      "Price Delta (USD)",
+      "Extended Price (USD)",
+      "Est. Lead Time",
+      "Start",
+      "Discontinued",
+      "Obsolete",
+      "isConnectiveHomeFleet",
+      "Cloud connectivity requirement can be met",
+      "0",
+      "NA",
+      "01/01/2000",
+      "12/31/3999",
+      "01/01/9999",
+      "Storage Preferences",
+      "Arcus_1Ph_NA_JP",
+      "AC Power - Single Phase for NA/Jpn",
+      "Arcus_3Ph_NA_JP",
+      "AC Power – Three Phase for NA/Jpn",
+      "Arcus_1600_Watt",
+      "AC Power 1600w",
+      "1",
+      "Selected",
+      "Arcus_2200_Watt",
+      "AC Power 2200w (Lot9)",
+      "Arcus_Int_PDU_PowerCord",
+      "PDU International/Worldwide Power Cord",
+      "04/03/2023",
+      "11/30/2032",
+      "12/31/2032",
+      "Arcus_IN_PDU_PowerCord",
+      "PDU India PowerCord",
+      "Arcus_1_4m_PowerCord",
+      "1.4m Power Cord",
+      "Arcus_2m_PowerCord",
+      "2m Power Cord",
+      "HPE Recommended",
+      "Arcus_Europe_PowerCord",
+      "Europe PowerCord",
+      "Arcus_Australia_PowerCord",
+      "Australia PowerCord",
+      "dHCIAlletraSwInstallation",
+      "Remote Complete Deployment with Onsite Hardware Installation",
+      "dHCIAlletraInstSoftware",
+      "Onsite Complete Deployment with Onsite Hardware Installation",
+      "R7C75A",
+      "HPE Alletra Storage MP 10000 2U Chassis",
+      "2",
+      "13,749.00",
+      "27,498.00",
+      "3",
+      "11/30/2029",
+      "12/31/2029",
+      "No Mixing of Chassis",
+      "S0U32A",
+      "HPE Alletra Storage MP 10000 2U TAA-compliant Chassis",
+      "14",
+      "R7C71A",
+      "HPE Alletra Storage MP X10250 Controller Node",
+      "403,464.00",
+      "11/18/2024",
+      "09/30/2028",
+      "10/31/2028",
+      "B series nodes only supported for upgrades",
+      "R7C71B",
+      "HPE Alletra Storage MP X10250 Controller Node Field Upgrade",
+      "524,503.00",
+      "08/04/2025",
+      "09/30/2031",
+      "10/31/2031",
+      "S3L11B",
+      "HPE Alletra Storage MP X10250 TAA-compliant Controller Node Field Upgrade",
+      "TAA isSelected",
+      "S3L11A",
+      "HPE Alletra Storage MP X10250 TAA-compliant Controller Node",
+      "R7C76A",
+      "HPE Alletra Storage MP C14 1600W AC Power Supply",
+      "4",
+      "2,327.00",
+      "9,308.00",
+      "No Mix PowerSupply",
+      "R7C78A",
+      "HPE Alletra Storage MP 1600W -48VDC Power Supply",
+      "11,842.00",
+      "10/02/2023",
+      "R9Z97A",
+      "HPE Alletra Storage MP C14 2200W AC Power Supply",
+      "3,332.00",
+      "R9R55A",
+      "HPE C13 - Schuko 250V 10Amp EU Power Cord",
+      "64.00",
+      "R9S00A",
+      "HPE C13 - C14 250V 10Amp Gray 1.4m WW Power Cord",
+      "23.00",
+      "46.00",
+      "If single Phase or threePhase is selected then DC Power Cables not supported 1",
+      "P22173-B21",
+      "HPE 1600W -48VDC 600V 3.5m Power Cable Kit\n        \n             If single Phase or threePhase is selected then DC Power Cables not supported 3",
+      "818.00",
+      "12/07/2020",
+      "06/30/2028",
+      "07/31/2028",
+      "P36877-B21",
+      "HPE 1600W -48VDC Power Cable Lug Kit\n        \n             If single Phase or threePhase is selected then DC Power Cables not supported 3",
+      "135.00",
+      "06/30/2029",
+      "07/31/2029",
+      "Breaker Panel can be selected only if R7C78A is selected",
+      "G2H95A",
+      "E-T-A S541 2x16 Output DC Breaker Panels",
+      "5,682.00",
+      "12/12/2013",
+      "11/30/2031",
+      "Q9N54A",
+      "E-T-A 6401 Two Grounding Bars w/ Screws",
+      "196.00",
+      "12/01/2017",
+      "S7V58A_Switch",
+      "S7V58A HPE Alletra Storage MP X10000 High Performance Data Intelligence 100TB Metadata and 1000 Vectors",
+      "08/03/2026",
+      "01/31/2030",
+      "02/28/2030",
+      "There are no \"HPE Recommended products\" available. Please use the toggle to show potential alternatives.",
+      "P69728-B21_GPU",
+      "P69728-B21 HPE 64GB 2Rx4 PC-5-6400B R Smart Kit",
+      "09/24/2024",
+      "06/30/2030",
+      "07/31/2030",
+      "If (S7V58A ) is selected, Then show the option to select S6A73C,S6W21C",
+      "S6A73C_GPU",
+      "S6A73C NVIDIA RTX PRO 6000 Blackwell Server Edition 96GB PCIe Accelerator for HPE",
+      "07/07/2025",
+      "12/31/2028",
+      "01/31/2029",
+      "DataIntlSaas",
+      "HPE Alletra Storage MP X10000 Data Intl 1T Met/10K Vec SaaS",
+      "S5S80A_Switch",
+      "S5S80A HPE Data Protection Accelerator for X10000",
+      "06/02/2025",
+      "S1J10A",
+      "HPE Alletra Storage MP 10001 NVMe Configure-to-order Expansion Shelf",
+      "19,654.00",
+      "S0S46A",
+      "HPE Alletra Storage MP 10001 NVMe Configure-to-order TAA-compliant Expansion Shelf",
+      "Max quantity of product limited by space available.",
+      "S2T35A",
+      "HPE Storage 100GbE QSFP28 SR4 Extended Temperature Pull Tab Transceiver",
+      "3,299.00",
+      "02/05/2024",
+      "Q2F19A",
+      "HPE 100GbE QSFP28 SR4 100m Transceiver",
+      "2,425.00",
+      "09/25/2017",
+      "11/30/2028",
+      "Back-End Connectivity cables are not supported",
+      "R9F76A",
+      "HPE Aruba Networking 100G QSFP28 to QSFP28 2m Active Optical Cable",
+      "2,649.00",
+      "12/06/2021",
+      "R9F79A",
+      "HPE Aruba Networking 100G QSFP28 to QSFP28 7m Active Optical Cable",
+      "2,739.00",
+      "Max quantity of product class limited by space available.",
+      "R9H71B",
+      "HPE Alletra Storage MP 3.84TB NVMe Read Intensive FIPS 140-3 Encrypted SSD\n        \n             Max 24 drive supported",
+      "58,713.00",
+      "R9H73B",
+      "HPE Alletra Storage MP 15.36TB NVMe Read Intensive FIPS 140-3 Encrypted SSD\n        \n             Max 24 drive supported",
+      "235,872.00",
+      "S0Q04B",
+      "HPE Alletra Storage MP 15.36TB NVMe Read Intensive FIPS 140-3 Encrypted TAA-compliant SSD\n        \n             Max 24 drive supported",
+      "S1Z68A",
+      "HPE Alletra Storage MP 30.72TB NVMe SFF Self-encrypting SSD\n        \n             Max 24 drive supported",
+      "342,214.00",
+      "11/30/2023",
+      "12/31/2027",
+      "01/31/2028",
+      "R9H67A",
+      "HPE Alletra Storage MP 3.84TB NVMe SFF Self-encrypting SSD\n        \n             Max 24 drive supported",
+      "53,373.00",
+      "01/08/2024",
+      "S4P40A",
+      "HPE Alletra Storage MP 61.44TB NVMe SFF QLC SSD\n        \n             Max 24 drive supported",
+      "420,983.00",
+      "08/31/2027",
+      "09/30/2027",
+      "S0U79A",
+      "HPE Alletra Storage MP CDM Bluetooth Connect Kit",
+      "197.00",
+      "8",
+      "S1R08A",
+      "HPE Alletra Storage MP 32-port 100GbE Switch Bundle",
+      "43,467.00"
+    ]
+  },
+  "ownedMenuDiscovery": {
+    "status": "ACTIVE_SCOPE_UNVERIFIED"
+  },
+  "componentServiceEvidence": null,
+  "unscopedServiceTables": [],
+  "solutionDomain": "STORAGE",
+  "observedSelectors": [
+    {
+      "selector": "#extended_overview_menu",
+      "value": "EXPANDED"
+    },
+    {
+      "selector": "ambientTemperature",
+      "value": "DEFAULT_AND_SWEEP_RESTORED"
+    }
+  ],
+  "finalSelectorsRestored": true,
+  "scrollHeight": 689,
+  "textLength": 14745,
+  "textExtractionMode": "FULL_BODY_TEXT",
+  "outsideTableNotesCaptured": true,
+  "fullText": "Home\nConfigure\n❯\nOCA Config 2\nWork-In-Progress\nConfig Status\nUnbuildable\nView/Resolve issues\nUCID\nTempUCID\nSolution Type\nIcon Separation\nEDT\n22 - 28 days\nQuote ID\nNot quoted\nLock Type\nUnlocked\nQuotation Mode\nBuy\nIQ with aaS Compatible\nSolution List Price\n⇄\nUSD 41,076.00\nAdd Opportunity\nQuote\nSave\nExport\nAdd Product\nAuto Updates\nSearch Icon\nNew Delegation\nDesign Solution / Add Product\nPrice\nComplete Quote\nOCA Config 2\n>\nIcon #1 - OCA Config 2\n>\nHPE Alletra Storage MP X10000 Base #1 Group\nSummary\nComponents\nMenu\nPower\nBOM\nCustomer Intent\nServices\nWhere Used\nCollapse All\nExpand All\nExpand Subsections\nUndo Selection\nRemove Defaults\nView HPE Recommended only\nHPE Alletra Storage MP X10000 Base Configuration [N/A]\nCloud Connectivity\nStorage Preferences\nInstallation Options\nController Node Models\nPower Supplies\nData Intelligent Node\nData protection accelerator node\nDrive Enclosure\nCapacity\nBlueTooth Connectivity Kit\nBack-End Switches\nCables\nDAC Cables\nConfiguration Indicators\nAd-Hoc\n Cloud Connectivity\n\n\nConnectivity\n Cloud connectivity is required for the Registration and Activation of this HPE Alletra Storage MP offering.\nIf cloud connectivity will not be available for Registration and Activation then the system cannot be activated.\nAir-gapped solutions are not supported.\n\n(Connectivity)\n\n\n\n\nDescription\tQuantity\tPrice (USD)\tPrice Delta (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\nCloud connectivity requirement can be met\t\n0\n\tNA\tNA\tNA\t\t01/01/2000\t12/31/3999\t01/01/9999\n\n\n Storage Preferences\n\n\nPower Level Options (required)\n\n\n\nDescription\tQuantity\tPrice (USD)\tPrice Delta (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\nAC Power - Single Phase for NA/Jpn\t\n0\n\tNA\tNA\tNA\t\t01/01/2000\t12/31/3999\t01/01/9999\nAC Power – Three Phase for NA/Jpn\t\n0\n\tNA\tNA\tNA\t\t01/01/2000\t12/31/3999\t01/01/9999\nAC Power - Single Phase for WW/Intl\t\n1\n\tNA\tSelected\tNA\t\t01/01/2000\t12/31/3999\t01/01/9999\nAC Power – Three Phase for WW/Intl\t\n0\n\tNA\tNA\tNA\t\t01/01/2000\t12/31/3999\t01/01/9999\nDC power\t\n0\n\tNA\tNA\tNA\t\t10/02/2023\t11/30/2032\t12/31/2032\n\n\nPower Watt Options (required)\n\n\n\nDescription\tQuantity\tPrice (USD)\tPrice Delta (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\nAC Power 1600w\t\n1\n\tNA\tSelected\tNA\t\t01/01/2000\t12/31/3999\t01/01/9999\nAC Power 2200w (Lot9)\t\n0\n\tNA\tNA\tNA\t\t01/01/2000\t12/31/3999\t01/01/9999\n\n\nPDU Power Cords Options\n\n\n\nDescription\tQuantity\tPrice (USD)\tPrice Delta (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\nPDU International/Worldwide Power Cord\t\n1\n\tNA\tSelected\tNA\t\t04/03/2023\t11/30/2032\t12/31/2032\nPDU India PowerCord\t\n0\n\tNA\tNA\tNA\t\t04/03/2023\t11/30/2032\t12/31/2032\n\n\nPower Cords Length (required)\n Note: Cable length will be applied to the chassis and enclosures.For Back-end Switches require only 2m cable ( Power Cords Length)\n\n\n\nDescription\tQuantity\tPrice (USD)\tPrice Delta (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n1.4m Power Cord\t\n1\n\tNA\tSelected\tNA\t\t01/01/2000\t12/31/3999\t01/01/9999\n2m Power Cord\t\n0\n\tNA\tNA\tNA\t\t01/01/2000\t12/31/3999\t01/01/9999\n\n\nCountry Power Cords Options\n\n\n\nDescription\tQuantity\tPrice (USD)\tPrice Delta (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\nEurope PowerCord\t\n0\n\tNA\tNA\tNA\t\n\t\t04/03/2023\t11/30/2032\t12/31/2032\nAustralia PowerCord\t\n0\n\tNA\tNA\tNA\t\n\t\t04/03/2023\t11/30/2032\t12/31/2032\nUK PowerCord\t\n0\n\tNA\tNA\tNA\t\n\t\t04/03/2023\t11/30/2032\t12/31/2032\nUS PowerCord\t\n0\n\tNA\tNA\tNA\t\n\t\t04/03/2023\t11/30/2032\t12/31/2032\nChina PowerCord\t\n0\n\tNA\tNA\tNA\t\n\t\t04/03/2023\t11/30/2032\t12/31/2032\nTaiwan/Japan PowerCord\t\n0\n\tNA\tNA\tNA\t\n\t\t04/03/2023\t11/30/2032\t12/31/2032\nJapan PowerCord\t\n0\n\tNA\tNA\tNA\t\n\t\t04/03/2023\t11/30/2032\t12/31/2032\nIndia PowerCord\t\n0\n\tNA\tNA\tNA\t\n\t\t04/03/2023\t11/30/2032\t12/31/2032\nSouth Africa PowerCord\t\n0\n\tNA\tNA\tNA\t\n\t\t04/03/2023\t11/30/2032\t12/31/2032\nIsrael PowerCord\t\n0\n\tNA\tNA\tNA\t\n\t\t04/03/2023\t11/30/2032\t12/31/2032\nItaly PowerCord\t\n0\n\tNA\tNA\tNA\t\n\t\t04/03/2023\t11/30/2032\t12/31/2032\nKorea PowerCord\t\n0\n\tNA\tNA\tNA\t\n\t\t04/03/2023\t11/30/2032\t12/31/2032\n\n\n Installation Options\n\n\nInstallation Services (required)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tPrice Delta (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  dHCIAlletraSwInstallation\tRemote Complete Deployment with Onsite Hardware Installation\t\n1\n\tNA\tSelected\tNA\t\t01/01/2000\t12/31/3999\t01/01/9999\n  dHCIAlletraInstSoftware\tOnsite Complete Deployment with Onsite Hardware Installation\t\n0\n\tNA\tNA\tNA\t\t01/01/2000\t12/31/3999\t01/01/9999\n\n\n Controller Node Models\n\n\nNode Chassis (max 8)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  R7C75A\tHPE Alletra Storage MP 10000 2U Chassis\t\n2\n\t13,749.00\t27,498.00\t\n\t3\t04/03/2023\t11/30/2029\t12/31/2029\n\n\n\nNode (max 4)\n Minimum 3 Node selection required (Node)\n TAA Compliant Nodes are compatible with TAA and Non-TAA Drives (Node)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  R7C71A\tHPE Alletra Storage MP X10250 Controller Node\t\n0\n\t403,464.00\tNA\t\n\t3\t11/18/2024\t09/30/2028\t10/31/2028\n\n\n\n\n Power Supplies\n\n\nPower Supplies (max 4)\n Power Supplies are added automaticaly according to selection in Power Level section under Storage Preference (Power Supplies)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  R7C76A\tHPE Alletra Storage MP C14 1600W AC Power Supply\t\n4\n\t2,327.00\t9,308.00\t4\t04/03/2023\t11/30/2032\t12/31/2032\n\n\n\nPower Cord (max 8)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  R9R55A\tHPE C13 - Schuko 250V 10Amp EU Power Cord\t\n0\n\t64.00\tNA\t\n\t3\t04/03/2023\t11/30/2032\t12/31/2032\n  R9S00A\tHPE C13 - C14 250V 10Amp Gray 1.4m WW Power Cord\t\n2\n\t23.00\t46.00\t\n\t3\t04/03/2023\t11/30/2032\t12/31/2032\n  R9R52A\tHPE C13 - C14 250V 10Amp Black 1.4m WW Power Cord\t\n2\n\t83.00\t166.00\t\n\t8\t04/03/2023\t11/30/2032\t12/31/2032\n  R9R53A\tHPE C13 - C14 250V 10Amp Black 1.37m IN Power Cord\t\n0\n\t59.00\tNA\t\n\t8\t04/03/2023\t11/30/2032\t12/31/2032\n  R9R54A\tHPE C13 - AS3112 250V 10Amp AU Power Cord\t\n0\n\t196.00\tNA\t\n\t8\t04/03/2023\t11/30/2032\t12/31/2032\n  R9R56A\tHPE C13 - BS1363 250V 10Amp UK Power Cord\t\n0\n\t36.00\tNA\t\n\t8\t04/03/2023\t11/30/2032\t12/31/2032\n  R9R57A\tHPE C13 - NEMA 5-15P 250V 10Amp US Power Cord\t\n0\n\t21.00\tNA\t\n\t4\t04/03/2023\t11/30/2032\t12/31/2032\n  R9R58A\tHPE C13 - GB2099 250V 10Amp CN Power Cord\t\n0\n\t26.00\tNA\t\n\t8\t04/03/2023\t11/30/2032\t12/31/2032\n  R9R59A\tHPE C13 - JIS8303 125V 11Amp TW/JP Power Cord\t\n0\n\t148.00\tNA\t\n\t8\t04/03/2023\t11/30/2032\t12/31/2032\n  R9R60A\tHPE C13 - JIS8303 6-15P 250V 12Amp JP Power Cord\t\n0\n\t43.00\tNA\t\n\t8\t04/03/2023\t11/30/2032\t12/31/2032\n  R9R61A\tHPE C13 - IN1293 250V 16Amp IN Power Cord\t\n0\n\t61.00\tNA\t\n\t8\t04/03/2023\t11/30/2032\t12/31/2032\n  R9R62A\tHPE C13 - SANS164-1 250V 16Amp ZA Power Cord\t\n0\n\t21.00\tNA\t\n\t8\t04/03/2023\t11/30/2032\t12/31/2032\n  R9R63A\tHPE C13 - SI32 250V 16Amp IL Power Cord\t\n0\n\t24.00\tNA\t\n\t14\t04/03/2023\t11/30/2032\t12/31/2032\n  R9R64A\tHPE C13 - CEI23-16 250V 10Amp IT Power Cord\t\n0\n\t29.00\tNA\t\n\t8\t04/03/2023\t11/30/2032\t12/31/2032\n  R9R65A\tHPE C13 - WS-010A 250V 10Amp KR Power Cord\t\n0\n\t31.00\tNA\t\n\t8\t04/03/2023\t11/30/2032\t12/31/2032\n  R9S01A\tHPE C13 - C14 250V 10Amp Gray 1.37m IN Power Cord\t\n0\n\t59.00\tNA\t\n\t8\t04/03/2023\t11/30/2032\t12/31/2032\n  S3L68A\tHPE C13 - C14 250V 10Amp Black 2m WW Power Cord\t\n0\n\t23.00\tNA\t\n\t4\t02/05/2024\t11/30/2032\t12/31/2032\n  S3L69A\tHPE C13 - C14 250V 10Amp Gray 2m WW Power Cord\t\n0\n\t123.00\tNA\t\n\t8\t02/05/2024\t11/30/2032\t12/31/2032\n  S3L70A\tHPE C13 - C14 250V 10Amp Black 2m IN Power Cord\t\n0\n\t76.00\tNA\t\n\t8\t02/05/2024\t11/30/2032\t12/31/2032\n  S3L71A\tHPE C13 - C14 250V 10Amp Gray 2m IN Power Cord\t\n0\n\t72.00\tNA\t\n\t8\t02/05/2024\t11/30/2032\t12/31/2032\n\n\nDC Power Cables\n\n\n\nBreaker Panel Options\n\n\n\n Data Intelligent Node\n\n\nData Intelligent Node (max 3)\n\n\n\nDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\nS7V58A HPE Alletra Storage MP X10000 High Performance Data Intelligence 100TB Metadata and 1000 Vectors\t\n0\n\tNA\tNA\t\t08/03/2026\t01/31/2030\t02/28/2030\n\n\nData Intelligence GPUs (no max)\n\n\n\nDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\nP69728-B21 HPE 64GB 2Rx4 PC-5-6400B R Smart Kit\t\n0\n\tNA\tNA\t\t09/24/2024\t06/30/2030\t07/31/2030\n\n\n\nData Intelligence SaaS (max 5)\n\n\n\nDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\nHPE Alletra Storage MP X10000 Data Intl 1T Met/10K Vec SaaS\t\n0\n\tNA\tNA\t\t01/01/2000\t12/31/3999\t01/01/9999\n\n\n Data protection accelerator node\n\n\nData protection accelerator node (no max)\n\n\n\nDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\nS5S80A HPE Data Protection Accelerator for X10000\t\n0\n\tNA\tNA\t\t06/02/2025\t09/30/2028\t10/31/2028\n\n\n Drive Enclosure\n\n\nDrive Enclosure (max 16)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  S1J10A\tHPE Alletra Storage MP 10001 NVMe Configure-to-order Expansion Shelf\t\n0\n\t19,654.00\tNA\t\n\t3\t10/02/2023\t11/30/2032\t12/31/2032\n\n\n\nBack-End Connectivity Cables\n\n\n\n\n Capacity\n\n\nNVMe SFF FE SSDs\n Minimum 24 drives required per Enclosure. Min 24 required for this configuration (Current 0 configured) ( NVMe SFF FE SSDs , NVMe FE TAA Compliant SSDs , NVMe SFF SED SSDs , NVMe QLC SSDs )\n\n\n\nNVMe FE TAA Compliant SSDs\n Minimum 24 drives required per Enclosure. Min 24 required for this configuration (Current 0 configured) ( NVMe SFF FE SSDs , NVMe FE TAA Compliant SSDs , NVMe SFF SED SSDs , NVMe QLC SSDs )\n\n\n\nNVMe SFF SED SSDs\n Minimum 24 drives required per Enclosure. Min 24 required for this configuration (Current 0 configured) ( NVMe SFF FE SSDs , NVMe FE TAA Compliant SSDs , NVMe SFF SED SSDs , NVMe QLC SSDs )\n\n\n\nNVMe QLC SSDs\n Minimum 24 drives required per Enclosure. Min 24 required for this configuration (Current 0 configured) ( NVMe SFF FE SSDs , NVMe FE TAA Compliant SSDs , NVMe SFF SED SSDs , NVMe QLC SSDs )\n\n\n\n BlueTooth Connectivity Kit\n\n\nBlueTooth Connectivity Kit (max 1)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  S0U79A\tHPE Alletra Storage MP CDM Bluetooth Connect Kit\t\n1\n\t197.00\t197.00\t8\t04/03/2023\t11/30/2032\t12/31/2032\n\n\n Back-End Switches\n\n\nBack-End Switches (max 2)\n Min 2 Back End Switch ( Back-End Switches )\n For S1R08A: Node count and JBOF count are Expandable up to 8\nFor S1S69A: Node count and JBOF count are Expandable up to 8\nFor S6L90A: Node count and JBOF count are Expandable up to 16 ( Back-End Switches )\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  S1R08A\tHPE Alletra Storage MP 32-port 100GbE Switch Bundle\t\n0\n\t43,467.00\tNA\t\n\t5\t04/03/2023\t02/29/2040\t03/31/2040\n  S6L90A\tHPE Alletra Storage MP 9300-32D 32-port 400Gb Switch Bundle\t\n0\n\t128,140.00\tNA\t\n\t8\t04/06/2026\t11/30/2032\t12/31/2032\n\n\n\nBack-End Switch Rail Kits (max 8)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  S0A95A\tHPE Switch Pair Installation Kit with 4U Cable Tray\t\n0\n\t3,075.00\tNA\t\n\t3\t04/03/2023\t11/30/2032\t12/31/2032\n\n\n Cables\n\n\nManagement Cables (no max)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  C7535A\tHPE RJ45 to RJ45 Cat5e Black M/M 7.6ft 1-pack Data Cable\t\n0\n\t20.00\tNA\t\n\t3\t04/01/2001\t07/31/2027\t08/31/2027\n  C7536A\tHPE 4.3m/14ft CAT5 RJ45 M/M Ethernet Cable\t\n0\n\t21.00\tNA\t\n\t3\t03/01/2001\t07/31/2027\t08/31/2027\n  C7537A\tHPE 7.6m/25ft CAT5 RJ45 M/M Ethernet Cable\t\n0\n\t46.00\tNA\t\n\t3\t04/01/2001\t07/31/2027\t08/31/2027\n  C7542A\tHPE 15.2m/50ft CAT5 RJ45 M/M Ethernet Cable\t\n0\n\t86.00\tNA\t\n\t3\t04/01/2001\t07/31/2027\t08/31/2027\n\n\n DAC Cables\n\n\nDAC Cables (no max)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  487655-B21\tHPE BladeSystem c-Class 10GbE SFP+ to SFP+ 3m Direct Attach Copper Cable\t\n0\n\t285.00\tNA\t\n\t3\t12/01/2008\t07/31/2027\t08/30/2027\n  537963-B21\tHPE BladeSystem c-Class 10GbE SFP+ to SFP+ 5m Direct Attach Copper Cable\t\n0\n\t327.00\tNA\t\n\t3\t09/14/2009\t07/31/2027\t08/30/2027\n  844477-B21\tHPE 25Gb SFP28 to SFP28 3m Direct Attach Copper Cable\t\n0\n\t392.00\tNA\t\n\t3\t06/06/2016\t07/31/2027\t08/31/2027\n  844483-B21\tHPE 25Gb SFP28 to SFP28 7m Active Optical Cable\t\n0\n\t2,451.00\tNA\t\n\t3\t12/03/2018\t07/31/2027\t08/30/2027\n  845416-B21\tHPE 100Gb QSFP28 to 4x25Gb SFP28 3m Direct Attach Copper Cable\t\n0\n\t916.00\tNA\t\n\t3\t06/06/2016\t07/31/2028\t08/31/2028\n  J9283D\tHPE Aruba Networking 10G SFP+ to SFP+ 3m Direct Attach Copper Cable\t\n0\n\t315.00\tNA\t\n\t13\t12/04/2017\t12/30/2099\t12/31/2099\n  J9285D\tHPE Aruba Networking 10G SFP+ to SFP+ 7m Direct Attach Copper Cable\t\n0\n\t430.00\tNA\t\n\t13\t12/04/2017\t12/30/2099\t12/31/2099\n  JD097C\tHPE Networking X240 10G SFP+ SFP+ 3m DAC Cable\t\n0\n\t314.00\tNA\t\n\t13\t05/14/2012\t12/30/2099\t12/31/2099\n  JG081C\tHPE Networking X240 10G SFP+ SFP+ 5m DAC Cable\t\n0\n\t346.00\tNA\t\n\t13\t05/14/2012\t12/30/2099\t12/31/2099\n  JG330A\tHPE Networking Comware X240 40G QSFP+ to 4x10G SFP+ 3m Direct Attach Copper Splitter Cable\t\n0\n\t850.00\tNA\t\n\t13\t02/13/2012\t12/30/2099\t12/31/2099\n  JG331A\tHPE Networking Comware X240 40G QSFP+ to 4x10G SFP+ 5m Direct Attach Copper Splitter Cable\t\n0\n\t986.00\tNA\t\n\t13\t02/13/2012\t12/30/2099\t12/31/2099\n  Q9S67A\tHPE 25GbE SFP28 to SFP28 3m Smart Active Optical Cable\t\n0\n\t975.00\tNA\t\n\t49\t09/04/2018\t11/30/2028\t12/31/2028\n  Q9S68A\tHPE 25GbE SFP28 to SFP28 5m Smart Active Optical Cable\t\n0\n\t1,075.00\tNA\t\n\t35\t09/04/2018\t11/30/2028\t12/31/2028\n\n\n Configuration Indicators\n\n\nConfiguration Indicators (max 2)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  581817-B21\tHPE Configurator Defined Build Instruction Option\t\n1\n\t1.00\t1.00\t\t11/01/2009\t11/30/2098\t12/31/2098\n  H44JMAS\tHPE Alletra Storage MP X10000 SVC\t\n1\n\tNA\t0.00\t\t02/12/2024\t12/31/2099\t12/31/2099\n  N9Z52A\tHPE Storage Field Integration Configuration\t\n0\n\t1.00\tNA\t1\t08/05/2019\t04/30/2028\t05/31/2028\n\n\nCommvault Tracking SKU (max 1)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  S6X66A\tHPE Alletra Storage MP X10000 Solution for Commvault HyperScale Flex FIO Tracking\t\n0\n\t1.00\tNA\t\t12/01/2025\t03/31/2027\t04/30/2027\n\n\n Ad-Hoc\n\nThe Ad-Hoc functionality is not available at product level for complex products with C2B XML\n+/-\tProduct #\tDescription\toption\tMultiply With Node\tSub-item\tPrice (USD) \tQuantity\tStart\tDiscontinued\tObsolete\n\nCLIC Check\nLive chat\nLoading...",
+  "sections": [
+    {
+      "tagName": "H3",
+      "text": "Process Guide",
+      "className": ""
+    }
+  ],
+  "tables": [
+    {
+      "tableIndex": 0,
+      "tableId": "",
+      "rowCount": 47,
+      "rows": [
+        [
+          "Cloud Connectivity"
+        ],
+        [
+          "Connectivity\n Cloud connectivity is required for the Registration and Activation of this HPE Alletra Storage MP offering.\nIf cloud connectivity will not be available for Registration and Activation then the system cannot be activated.\nAir-gapped solutions are not supported.\n\n(Connectivity)"
+        ],
+        [
+          "Storage Preferences"
+        ],
+        [
+          "Power Level Options (required)"
+        ],
+        [
+          "Power Watt Options (required)"
+        ],
+        [
+          "PDU Power Cords Options"
+        ],
+        [
+          "Power Cords Length (required)\n Note: Cable length will be applied to the chassis and enclosures.For Back-end Switches require only 2m cable ( Power Cords Length)"
+        ],
+        [
+          "Country Power Cords Options"
+        ],
+        [
+          "Installation Options"
+        ],
+        [
+          "Installation Services (required)"
+        ],
+        [
+          "Controller Node Models"
+        ],
+        [
+          "Node Chassis (max 8)"
+        ],
+        [
+          "Node (max 4)\n Minimum 3 Node selection required (Node)\n TAA Compliant Nodes are compatible with TAA and Non-TAA Drives (Node)"
+        ],
+        [
+          "Power Supplies"
+        ],
+        [
+          "Power Supplies (max 4)\n Power Supplies are added automaticaly according to selection in Power Level section under Storage Preference (Power Supplies)"
+        ],
+        [
+          "Power Cord (max 8)"
+        ],
+        [
+          "DC Power Cables"
+        ],
+        [
+          "Breaker Panel Options"
+        ],
+        [
+          "Data Intelligent Node"
+        ],
+        [
+          "Data Intelligent Node (max 3)"
+        ],
+        [
+          "Data Intelligence GPUs (no max)"
+        ],
+        [
+          "Data Intelligence SaaS (max 5)"
+        ],
+        [
+          "Data protection accelerator node"
+        ],
+        [
+          "Data protection accelerator node (no max)"
+        ],
+        [
+          "Drive Enclosure"
+        ],
+        [
+          "Drive Enclosure (max 16)"
+        ],
+        [
+          "Back-End Connectivity Cables"
+        ],
+        [
+          "Capacity"
+        ],
+        [
+          "NVMe SFF FE SSDs\n Minimum 24 drives required per Enclosure. Min 24 required for this configuration (Current 0 configured) ( NVMe SFF FE SSDs , NVMe FE TAA Compliant SSDs , NVMe SFF SED SSDs , NVMe QLC SSDs )"
+        ],
+        [
+          "NVMe FE TAA Compliant SSDs\n Minimum 24 drives required per Enclosure. Min 24 required for this configuration (Current 0 configured) ( NVMe SFF FE SSDs , NVMe FE TAA Compliant SSDs , NVMe SFF SED SSDs , NVMe QLC SSDs )"
+        ],
+        [
+          "NVMe SFF SED SSDs\n Minimum 24 drives required per Enclosure. Min 24 required for this configuration (Current 0 configured) ( NVMe SFF FE SSDs , NVMe FE TAA Compliant SSDs , NVMe SFF SED SSDs , NVMe QLC SSDs )"
+        ],
+        [
+          "NVMe QLC SSDs\n Minimum 24 drives required per Enclosure. Min 24 required for this configuration (Current 0 configured) ( NVMe SFF FE SSDs , NVMe FE TAA Compliant SSDs , NVMe SFF SED SSDs , NVMe QLC SSDs )"
+        ],
+        [
+          "BlueTooth Connectivity Kit"
+        ],
+        [
+          "BlueTooth Connectivity Kit (max 1)"
+        ],
+        [
+          "Back-End Switches"
+        ],
+        [
+          "Back-End Switches (max 2)\n Min 2 Back End Switch ( Back-End Switches )\n For S1R08A: Node count and JBOF count are Expandable up to 8\nFor S1S69A: Node count and JBOF count are Expandable up to 8\nFor S6L90A: Node count and JBOF count are Expandable up to 16 ( Back-End Switches )"
+        ],
+        [
+          "Back-End Switch Rail Kits (max 8)"
+        ],
+        [
+          "Cables"
+        ],
+        [
+          "Management Cables (no max)"
+        ],
+        [
+          "DAC Cables"
+        ],
+        [
+          "DAC Cables (no max)"
+        ],
+        [
+          "Configuration Indicators"
+        ],
+        [
+          "Configuration Indicators (max 2)"
+        ],
+        [
+          "Commvault Tracking SKU (max 1)"
+        ],
+        [
+          "Ad-Hoc"
+        ],
+        [
+          "The Ad-Hoc functionality is not available at product level for complex products with C2B XML"
+        ],
+        [
+          "+/-",
+          "Product #",
+          "Description",
+          "option",
+          "Multiply With Node",
+          "Sub-item",
+          "Price (USD)",
+          "Quantity",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 1,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Price Delta (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "isConnectiveHomeFleet",
+          "Cloud connectivity requirement can be met",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "01/01/2000",
+          "12/31/3999",
+          "01/01/9999"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 2,
+      "tableId": "",
+      "rowCount": 7,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Price Delta (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "Arcus_1Ph_NA_JP",
+          "AC Power - Single Phase for NA/Jpn",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "01/01/2000",
+          "12/31/3999",
+          "01/01/9999"
+        ],
+        [
+          "Arcus_3Ph_NA_JP",
+          "AC Power – Three Phase for NA/Jpn",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "01/01/2000",
+          "12/31/3999",
+          "01/01/9999"
+        ],
+        [
+          "Arcus_1Ph_WW_Intl",
+          "AC Power - Single Phase for WW/Intl",
+          "1",
+          "NA",
+          "Selected",
+          "NA",
+          "",
+          "01/01/2000",
+          "12/31/3999",
+          "01/01/9999"
+        ],
+        [
+          "Arcus_3Ph_WW_Intl",
+          "AC Power – Three Phase for WW/Intl",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "01/01/2000",
+          "12/31/3999",
+          "01/01/9999"
+        ],
+        [
+          "Arcus_DC_Power_WW_Intl",
+          "DC power",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "10/02/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 3,
+      "tableId": "",
+      "rowCount": 4,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Price Delta (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "Arcus_1600_Watt",
+          "AC Power 1600w",
+          "1",
+          "NA",
+          "Selected",
+          "NA",
+          "",
+          "01/01/2000",
+          "12/31/3999",
+          "01/01/9999"
+        ],
+        [
+          "Arcus_2200_Watt",
+          "AC Power 2200w (Lot9)",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "01/01/2000",
+          "12/31/3999",
+          "01/01/9999"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 4,
+      "tableId": "",
+      "rowCount": 4,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Price Delta (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "Arcus_Int_PDU_PowerCord",
+          "PDU International/Worldwide Power Cord",
+          "1",
+          "NA",
+          "Selected",
+          "NA",
+          "",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "Arcus_IN_PDU_PowerCord",
+          "PDU India PowerCord",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 5,
+      "tableId": "",
+      "rowCount": 4,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Price Delta (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "Arcus_1_4m_PowerCord",
+          "1.4m Power Cord",
+          "1",
+          "NA",
+          "Selected",
+          "NA",
+          "",
+          "01/01/2000",
+          "12/31/3999",
+          "01/01/9999"
+        ],
+        [
+          "Arcus_2m_PowerCord",
+          "2m Power Cord",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "01/01/2000",
+          "12/31/3999",
+          "01/01/9999"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 6,
+      "tableId": "",
+      "rowCount": 14,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Price Delta (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "Arcus_Europe_PowerCord",
+          "Europe PowerCord",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "Arcus_Australia_PowerCord",
+          "Australia PowerCord",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "Arcus_UK_PowerCord",
+          "UK PowerCord",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "Arcus_US_PowerCord",
+          "US PowerCord",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "Arcus_China_PowerCord",
+          "China PowerCord",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "Arcus_TW_JP_PowerCord",
+          "Taiwan/Japan PowerCord",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "Arcus_Japan_PowerCord",
+          "Japan PowerCord",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "Arcus_India_PowerCord",
+          "India PowerCord",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "Arcus_SA_PowerCord",
+          "South Africa PowerCord",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "Arcus_Israel_PowerCord",
+          "Israel PowerCord",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "Arcus_Italy_PowerCord",
+          "Italy PowerCord",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "Arcus_Korea_PowerCord",
+          "Korea PowerCord",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 7,
+      "tableId": "",
+      "rowCount": 4,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Price Delta (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "dHCIAlletraSwInstallation",
+          "Remote Complete Deployment with Onsite Hardware Installation",
+          "1",
+          "NA",
+          "Selected",
+          "NA",
+          "",
+          "01/01/2000",
+          "12/31/3999",
+          "01/01/9999"
+        ],
+        [
+          "dHCIAlletraInstSoftware",
+          "Onsite Complete Deployment with Onsite Hardware Installation",
+          "0",
+          "NA",
+          "NA",
+          "NA",
+          "",
+          "01/01/2000",
+          "12/31/3999",
+          "01/01/9999"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 8,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "R7C75A",
+          "HPE Alletra Storage MP 10000 2U Chassis",
+          "2",
+          "13,749.00",
+          "27,498.00",
+          "",
+          "3",
+          "04/03/2023",
+          "11/30/2029",
+          "12/31/2029"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 9,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "No Mixing of Chassis"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S0U32A",
+          "HPE Alletra Storage MP 10000 2U TAA-compliant Chassis",
+          "0",
+          "13,749.00",
+          "NA",
+          "",
+          "14",
+          "04/03/2023",
+          "11/30/2029",
+          "12/31/2029"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 10,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "R7C71A",
+          "HPE Alletra Storage MP X10250 Controller Node",
+          "0",
+          "403,464.00",
+          "NA",
+          "",
+          "3",
+          "11/18/2024",
+          "09/30/2028",
+          "10/31/2028"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 11,
+      "tableId": "",
+      "rowCount": 4,
+      "rows": [
+        [
+          "B series nodes only supported for upgrades"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "R7C71B",
+          "HPE Alletra Storage MP X10250 Controller Node Field Upgrade",
+          "0",
+          "524,503.00",
+          "NA",
+          "",
+          "3",
+          "08/04/2025",
+          "09/30/2031",
+          "10/31/2031"
+        ],
+        [
+          "S3L11B",
+          "HPE Alletra Storage MP X10250 TAA-compliant Controller Node Field Upgrade",
+          "0",
+          "524,503.00",
+          "NA",
+          "",
+          "3",
+          "08/04/2025",
+          "09/30/2031",
+          "10/31/2031"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 12,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "TAA isSelected"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S3L11A",
+          "HPE Alletra Storage MP X10250 TAA-compliant Controller Node",
+          "0",
+          "403,464.00",
+          "NA",
+          "",
+          "14",
+          "11/18/2024",
+          "09/30/2028",
+          "10/31/2028"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 13,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "R7C76A",
+          "HPE Alletra Storage MP C14 1600W AC Power Supply",
+          "4",
+          "2,327.00",
+          "9,308.00",
+          "4",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 14,
+      "tableId": "",
+      "rowCount": 4,
+      "rows": [
+        [
+          "No Mix PowerSupply"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "R7C78A",
+          "HPE Alletra Storage MP 1600W -48VDC Power Supply",
+          "0",
+          "11,842.00",
+          "NA",
+          "4",
+          "10/02/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9Z97A",
+          "HPE Alletra Storage MP C14 2200W AC Power Supply",
+          "0",
+          "3,332.00",
+          "NA",
+          "14",
+          "10/02/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 15,
+      "tableId": "",
+      "rowCount": 22,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "R9R55A",
+          "HPE C13 - Schuko 250V 10Amp EU Power Cord",
+          "0",
+          "64.00",
+          "NA",
+          "",
+          "3",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9S00A",
+          "HPE C13 - C14 250V 10Amp Gray 1.4m WW Power Cord",
+          "2",
+          "23.00",
+          "46.00",
+          "",
+          "3",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9R52A",
+          "HPE C13 - C14 250V 10Amp Black 1.4m WW Power Cord",
+          "2",
+          "83.00",
+          "166.00",
+          "",
+          "8",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9R53A",
+          "HPE C13 - C14 250V 10Amp Black 1.37m IN Power Cord",
+          "0",
+          "59.00",
+          "NA",
+          "",
+          "8",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9R54A",
+          "HPE C13 - AS3112 250V 10Amp AU Power Cord",
+          "0",
+          "196.00",
+          "NA",
+          "",
+          "8",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9R56A",
+          "HPE C13 - BS1363 250V 10Amp UK Power Cord",
+          "0",
+          "36.00",
+          "NA",
+          "",
+          "8",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9R57A",
+          "HPE C13 - NEMA 5-15P 250V 10Amp US Power Cord",
+          "0",
+          "21.00",
+          "NA",
+          "",
+          "4",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9R58A",
+          "HPE C13 - GB2099 250V 10Amp CN Power Cord",
+          "0",
+          "26.00",
+          "NA",
+          "",
+          "8",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9R59A",
+          "HPE C13 - JIS8303 125V 11Amp TW/JP Power Cord",
+          "0",
+          "148.00",
+          "NA",
+          "",
+          "8",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9R60A",
+          "HPE C13 - JIS8303 6-15P 250V 12Amp JP Power Cord",
+          "0",
+          "43.00",
+          "NA",
+          "",
+          "8",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9R61A",
+          "HPE C13 - IN1293 250V 16Amp IN Power Cord",
+          "0",
+          "61.00",
+          "NA",
+          "",
+          "8",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9R62A",
+          "HPE C13 - SANS164-1 250V 16Amp ZA Power Cord",
+          "0",
+          "21.00",
+          "NA",
+          "",
+          "8",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9R63A",
+          "HPE C13 - SI32 250V 16Amp IL Power Cord",
+          "0",
+          "24.00",
+          "NA",
+          "",
+          "14",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9R64A",
+          "HPE C13 - CEI23-16 250V 10Amp IT Power Cord",
+          "0",
+          "29.00",
+          "NA",
+          "",
+          "8",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9R65A",
+          "HPE C13 - WS-010A 250V 10Amp KR Power Cord",
+          "0",
+          "31.00",
+          "NA",
+          "",
+          "8",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "R9S01A",
+          "HPE C13 - C14 250V 10Amp Gray 1.37m IN Power Cord",
+          "0",
+          "59.00",
+          "NA",
+          "",
+          "8",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "S3L68A",
+          "HPE C13 - C14 250V 10Amp Black 2m WW Power Cord",
+          "0",
+          "23.00",
+          "NA",
+          "",
+          "4",
+          "02/05/2024",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "S3L69A",
+          "HPE C13 - C14 250V 10Amp Gray 2m WW Power Cord",
+          "0",
+          "123.00",
+          "NA",
+          "",
+          "8",
+          "02/05/2024",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "S3L70A",
+          "HPE C13 - C14 250V 10Amp Black 2m IN Power Cord",
+          "0",
+          "76.00",
+          "NA",
+          "",
+          "8",
+          "02/05/2024",
+          "11/30/2032",
+          "12/31/2032"
+        ],
+        [
+          "S3L71A",
+          "HPE C13 - C14 250V 10Amp Gray 2m IN Power Cord",
+          "0",
+          "72.00",
+          "NA",
+          "",
+          "8",
+          "02/05/2024",
+          "11/30/2032",
+          "12/31/2032"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 16,
+      "tableId": "",
+      "rowCount": 4,
+      "rows": [
+        [
+          "If single Phase or threePhase is selected then DC Power Cables not supported 1"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "P22173-B21",
+          "HPE 1600W -48VDC 600V 3.5m Power Cable Kit\n        \n             If single Phase or threePhase is selected then DC Power Cables not supported 3",
+          "0",
+          "818.00",
+          "NA",
+          "",
+          "3",
+          "12/07/2020",
+          "06/30/2028",
+          "07/31/2028"
+        ],
+        [
+          "P36877-B21",
+          "HPE 1600W -48VDC Power Cable Lug Kit\n        \n             If single Phase or threePhase is selected then DC Power Cables not supported 3",
+          "0",
+          "135.00",
+          "NA",
+          "",
+          "3",
+          "12/07/2020",
+          "06/30/2029",
+          "07/31/2029"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 17,
+      "tableId": "",
+      "rowCount": 4,
+      "rows": [
+        [
+          "Breaker Panel can be selected only if R7C78A is selected"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "G2H95A",
+          "E-T-A S541 2x16 Output DC Breaker Panels",
+          "0",
+          "5,682.00",
+          "NA",
+          "4",
+          "12/12/2013",
+          "10/31/2031",
+          "11/30/2031"
+        ],
+        [
+          "Q9N54A",
+          "E-T-A 6401 Two Grounding Bars w/ Screws",
+          "0",
+          "196.00",
+          "NA",
+          "4",
+          "12/01/2017",
+          "10/31/2031",
+          "11/30/2031"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 18,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S7V58A_Switch",
+          "S7V58A HPE Alletra Storage MP X10000 High Performance Data Intelligence 100TB Metadata and 1000 Vectors",
+          "0",
+          "NA",
+          "NA",
+          "",
+          "08/03/2026",
+          "01/31/2030",
+          "02/28/2030"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 19,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "Available",
+          "There are no \"HPE Recommended products\" available. Please use the toggle to show potential alternatives."
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "P69728-B21_GPU",
+          "P69728-B21 HPE 64GB 2Rx4 PC-5-6400B R Smart Kit",
+          "0",
+          "NA",
+          "NA",
+          "",
+          "09/24/2024",
+          "06/30/2030",
+          "07/31/2030"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 20,
+      "tableId": "",
+      "rowCount": 5,
+      "rows": [
+        [
+          "If (S7V58A ) is selected, Then show the option to select S6A73C,S6W21C"
+        ],
+        [
+          "There are no \"HPE Recommended products\" available. Please use the toggle to show potential alternatives."
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S6A73C_GPU",
+          "S6A73C NVIDIA RTX PRO 6000 Blackwell Server Edition 96GB PCIe Accelerator for HPE",
+          "0",
+          "NA",
+          "NA",
+          "",
+          "07/07/2025",
+          "12/31/2028",
+          "01/31/2029"
+        ],
+        [
+          "S6W21C_GPU",
+          "S6W21C\tNVIDIA RTX PRO 6000D 84GB PCIe Accelerator for HPE",
+          "0",
+          "NA",
+          "NA",
+          "",
+          "03/02/2026",
+          "12/31/2028",
+          "01/31/2029"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 21,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "DataIntlSaas",
+          "HPE Alletra Storage MP X10000 Data Intl 1T Met/10K Vec SaaS",
+          "0",
+          "NA",
+          "NA",
+          "",
+          "01/01/2000",
+          "12/31/3999",
+          "01/01/9999"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 22,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S5S80A_Switch",
+          "S5S80A HPE Data Protection Accelerator for X10000",
+          "0",
+          "NA",
+          "NA",
+          "",
+          "06/02/2025",
+          "09/30/2028",
+          "10/31/2028"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 23,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S1J10A",
+          "HPE Alletra Storage MP 10001 NVMe Configure-to-order Expansion Shelf",
+          "0",
+          "19,654.00",
+          "NA",
+          "",
+          "3",
+          "10/02/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 24,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "TAA isSelected"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S0S46A",
+          "HPE Alletra Storage MP 10001 NVMe Configure-to-order TAA-compliant Expansion Shelf",
+          "0",
+          "19,654.00",
+          "NA",
+          "",
+          "14",
+          "10/02/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 25,
+      "tableId": "",
+      "rowCount": 4,
+      "rows": [
+        [
+          "Max quantity of product limited by space available."
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S2T35A",
+          "HPE Storage 100GbE QSFP28 SR4 Extended Temperature Pull Tab Transceiver",
+          "0",
+          "3,299.00",
+          "NA",
+          "",
+          "3",
+          "02/05/2024",
+          "06/30/2029",
+          "07/31/2029"
+        ],
+        [
+          "Q2F19A",
+          "HPE 100GbE QSFP28 SR4 100m Transceiver",
+          "0",
+          "2,425.00",
+          "NA",
+          "",
+          "14",
+          "09/25/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 26,
+      "tableId": "",
+      "rowCount": 10,
+      "rows": [
+        [
+          "Back-End Connectivity cables are not supported"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "R9F76A",
+          "HPE Aruba Networking 100G QSFP28 to QSFP28 2m Active Optical Cable",
+          "0",
+          "2,649.00",
+          "NA",
+          "",
+          "",
+          "12/06/2021",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "R9F79A",
+          "HPE Aruba Networking 100G QSFP28 to QSFP28 7m Active Optical Cable",
+          "0",
+          "2,739.00",
+          "NA",
+          "",
+          "",
+          "12/06/2021",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "R9F80A",
+          "HPE Aruba Networking 100G QSFP28 to QSFP28 15m Active Optical Cable",
+          "0",
+          "2,959.00",
+          "NA",
+          "",
+          "",
+          "12/06/2021",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "R9F81A",
+          "HPE Aruba Networking 100G QSFP28 to QSFP28 30m Active Optical Cable",
+          "0",
+          "2,959.00",
+          "NA",
+          "",
+          "",
+          "12/06/2021",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "S1D25A",
+          "HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 3m Active Optical Cable",
+          "0",
+          "5,039.00",
+          "NA",
+          "",
+          "78",
+          "02/06/2023",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "S1D26A",
+          "HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 7m Active Optical Cable",
+          "0",
+          "5,039.00",
+          "NA",
+          "",
+          "78",
+          "02/06/2023",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "S1D27A",
+          "HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 15m Active Optical Cable",
+          "0",
+          "6,829.00",
+          "NA",
+          "",
+          "78",
+          "02/06/2023",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "S1D28A",
+          "HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 30m Active Optical Cable",
+          "0",
+          "6,829.00",
+          "NA",
+          "",
+          "78",
+          "02/06/2023",
+          "11/30/2029",
+          "12/31/2029"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 27,
+      "tableId": "",
+      "rowCount": 6,
+      "rows": [
+        [
+          "Max quantity of product class limited by space available."
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "R9H71B",
+          "HPE Alletra Storage MP 3.84TB NVMe Read Intensive FIPS 140-3 Encrypted SSD\n        \n             Max 24 drive supported",
+          "0",
+          "58,713.00",
+          "NA",
+          "",
+          "4",
+          "08/04/2025",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "R9H73B",
+          "HPE Alletra Storage MP 15.36TB NVMe Read Intensive FIPS 140-3 Encrypted SSD\n        \n             Max 24 drive supported",
+          "0",
+          "235,872.00",
+          "NA",
+          "",
+          "4",
+          "08/04/2025",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "R9H72B",
+          "HPE Alletra Storage MP 7.68TB NVMe Read Intensive FIPS 140-3 Encrypted SSD\n        \n             Max 24 drive supported",
+          "0",
+          "131,890.00",
+          "NA",
+          "",
+          "4",
+          "08/04/2025",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "S4P49A",
+          "HPE Alletra Storage MP 30.72TB NVMe SFF FIPS Encrypted SSD\n        \n             Max 24 drive supported",
+          "0",
+          "376,435.00",
+          "NA",
+          "",
+          "4",
+          "06/02/2025",
+          "12/31/2027",
+          "01/31/2028"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 28,
+      "tableId": "",
+      "rowCount": 6,
+      "rows": [
+        [
+          "Max quantity of product class limited by space available."
+        ],
+        [
+          "There are no \"HPE Recommended products\" available. Please use the toggle to show potential alternatives."
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S0Q04B",
+          "HPE Alletra Storage MP 15.36TB NVMe Read Intensive FIPS 140-3 Encrypted TAA-compliant SSD\n        \n             Max 24 drive supported",
+          "0",
+          "235,872.00",
+          "NA",
+          "4",
+          "08/04/2025",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "S0Q03B",
+          "HPE Alletra Storage MP 7.68TB NVMe Read Intensive FIPS 140-3 Encrypted TAA-compliant SSD\n        \n             Max 24 drive supported",
+          "0",
+          "131,890.00",
+          "NA",
+          "4",
+          "08/04/2025",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "S0Q02B",
+          "HPE Alletra Storage MP 3.84TB NVMe Read Intensive FIPS 140-3 Encrypted TAA-compliant SSD\n        \n             Max 24 drive supported",
+          "0",
+          "58,713.00",
+          "NA",
+          "4",
+          "08/04/2025",
+          "11/30/2029",
+          "12/31/2029"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 29,
+      "tableId": "",
+      "rowCount": 7,
+      "rows": [
+        [
+          "Max quantity of product class limited by space available."
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S1Z68A",
+          "HPE Alletra Storage MP 30.72TB NVMe SFF Self-encrypting SSD\n        \n             Max 24 drive supported",
+          "0",
+          "342,214.00",
+          "NA",
+          "",
+          "3",
+          "11/30/2023",
+          "12/31/2027",
+          "01/31/2028"
+        ],
+        [
+          "R9H67A",
+          "HPE Alletra Storage MP 3.84TB NVMe SFF Self-encrypting SSD\n        \n             Max 24 drive supported",
+          "0",
+          "53,373.00",
+          "NA",
+          "",
+          "4",
+          "01/08/2024",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "R9H66A",
+          "HPE Alletra Storage MP 1.92TB NVMe SFF Self-encrypting SSD\n        \n             Max 24 drive supported",
+          "0",
+          "36,109.00",
+          "NA",
+          "",
+          "3",
+          "01/08/2024",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "R9H69A",
+          "HPE Alletra Storage MP 15.36TB NVMe SFF Self-encrypting SSD\n        \n             Max 24 drive supported",
+          "0",
+          "214,426.00",
+          "NA",
+          "",
+          "3",
+          "01/08/2024",
+          "11/30/2029",
+          "12/31/2029"
+        ],
+        [
+          "R9H68A",
+          "HPE Alletra Storage MP 7.68TB NVMe SFF Self-encrypting SSD\n        \n             Max 24 drive supported",
+          "0",
+          "119,901.00",
+          "NA",
+          "",
+          "3",
+          "01/08/2024",
+          "11/30/2029",
+          "12/31/2029"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 30,
+      "tableId": "",
+      "rowCount": 6,
+      "rows": [
+        [
+          "Max quantity of product class limited by space available."
+        ],
+        [
+          "There are no \"HPE Recommended products\" available. Please use the toggle to show potential alternatives."
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S4P40A",
+          "HPE Alletra Storage MP 61.44TB NVMe SFF QLC SSD\n        \n             Max 24 drive supported",
+          "0",
+          "420,983.00",
+          "NA",
+          "",
+          "4",
+          "06/02/2025",
+          "08/31/2027",
+          "09/30/2027"
+        ],
+        [
+          "S3L74A",
+          "HPE Alletra Storage MP 30.72TB NVMe SFF QLC SSD\n        \n             Max 24 drive supported",
+          "0",
+          "241,214.00",
+          "NA",
+          "",
+          "4",
+          "10/07/2024",
+          "08/31/2027",
+          "09/30/2027"
+        ],
+        [
+          "S3L73A",
+          "HPE Alletra Storage MP 15.36TB NVMe SFF QLC SSD\n        \n             Max 24 drive supported",
+          "0",
+          "126,796.00",
+          "NA",
+          "",
+          "3",
+          "10/07/2024",
+          "08/31/2027",
+          "09/30/2027"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 31,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S0U79A",
+          "HPE Alletra Storage MP CDM Bluetooth Connect Kit",
+          "1",
+          "197.00",
+          "197.00",
+          "8",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 32,
+      "tableId": "",
+      "rowCount": 4,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S1R08A",
+          "HPE Alletra Storage MP 32-port 100GbE Switch Bundle",
+          "0",
+          "43,467.00",
+          "NA",
+          "",
+          "5",
+          "04/03/2023",
+          "02/29/2040",
+          "03/31/2040"
+        ],
+        [
+          "S6L90A",
+          "HPE Alletra Storage MP 9300-32D 32-port 400Gb Switch Bundle",
+          "0",
+          "128,140.00",
+          "NA",
+          "",
+          "8",
+          "04/06/2026",
+          "11/30/2032",
+          "12/31/2032"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 33,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "If “acPowerFlag” is selected then S1S69A not supported"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S1S69A",
+          "HPE Alletra Storage MP 32-port 100GbE -48VDC Switch Bundle",
+          "0",
+          "49,176.00",
+          "NA",
+          "",
+          "3",
+          "02/05/2024",
+          "02/29/2040",
+          "03/31/2040"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 34,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S0A95A",
+          "HPE Switch Pair Installation Kit with 4U Cable Tray",
+          "0",
+          "3,075.00",
+          "NA",
+          "",
+          "3",
+          "04/03/2023",
+          "11/30/2032",
+          "12/31/2032"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 35,
+      "tableId": "",
+      "rowCount": 6,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "C7535A",
+          "HPE RJ45 to RJ45 Cat5e Black M/M 7.6ft 1-pack Data Cable",
+          "0",
+          "20.00",
+          "NA",
+          "",
+          "3",
+          "04/01/2001",
+          "07/31/2027",
+          "08/31/2027"
+        ],
+        [
+          "C7536A",
+          "HPE 4.3m/14ft CAT5 RJ45 M/M Ethernet Cable",
+          "0",
+          "21.00",
+          "NA",
+          "",
+          "3",
+          "03/01/2001",
+          "07/31/2027",
+          "08/31/2027"
+        ],
+        [
+          "C7537A",
+          "HPE 7.6m/25ft CAT5 RJ45 M/M Ethernet Cable",
+          "0",
+          "46.00",
+          "NA",
+          "",
+          "3",
+          "04/01/2001",
+          "07/31/2027",
+          "08/31/2027"
+        ],
+        [
+          "C7542A",
+          "HPE 15.2m/50ft CAT5 RJ45 M/M Ethernet Cable",
+          "0",
+          "86.00",
+          "NA",
+          "",
+          "3",
+          "04/01/2001",
+          "07/31/2027",
+          "08/31/2027"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 36,
+      "tableId": "",
+      "rowCount": 18,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "487655-B21",
+          "HPE BladeSystem c-Class 10GbE SFP+ to SFP+ 3m Direct Attach Copper Cable",
+          "0",
+          "285.00",
+          "NA",
+          "",
+          "3",
+          "12/01/2008",
+          "07/31/2027",
+          "08/30/2027"
+        ],
+        [
+          "537963-B21",
+          "HPE BladeSystem c-Class 10GbE SFP+ to SFP+ 5m Direct Attach Copper Cable",
+          "0",
+          "327.00",
+          "NA",
+          "",
+          "3",
+          "09/14/2009",
+          "07/31/2027",
+          "08/30/2027"
+        ],
+        [
+          "844477-B21",
+          "HPE 25Gb SFP28 to SFP28 3m Direct Attach Copper Cable",
+          "0",
+          "392.00",
+          "NA",
+          "",
+          "3",
+          "06/06/2016",
+          "07/31/2027",
+          "08/31/2027"
+        ],
+        [
+          "844483-B21",
+          "HPE 25Gb SFP28 to SFP28 7m Active Optical Cable",
+          "0",
+          "2,451.00",
+          "NA",
+          "",
+          "3",
+          "12/03/2018",
+          "07/31/2027",
+          "08/30/2027"
+        ],
+        [
+          "845416-B21",
+          "HPE 100Gb QSFP28 to 4x25Gb SFP28 3m Direct Attach Copper Cable",
+          "0",
+          "916.00",
+          "NA",
+          "",
+          "3",
+          "06/06/2016",
+          "07/31/2028",
+          "08/31/2028"
+        ],
+        [
+          "J9283D",
+          "HPE Aruba Networking 10G SFP+ to SFP+ 3m Direct Attach Copper Cable",
+          "0",
+          "315.00",
+          "NA",
+          "",
+          "13",
+          "12/04/2017",
+          "12/30/2099",
+          "12/31/2099"
+        ],
+        [
+          "J9285D",
+          "HPE Aruba Networking 10G SFP+ to SFP+ 7m Direct Attach Copper Cable",
+          "0",
+          "430.00",
+          "NA",
+          "",
+          "13",
+          "12/04/2017",
+          "12/30/2099",
+          "12/31/2099"
+        ],
+        [
+          "JD097C",
+          "HPE Networking X240 10G SFP+ SFP+ 3m DAC Cable",
+          "0",
+          "314.00",
+          "NA",
+          "",
+          "13",
+          "05/14/2012",
+          "12/30/2099",
+          "12/31/2099"
+        ],
+        [
+          "JG081C",
+          "HPE Networking X240 10G SFP+ SFP+ 5m DAC Cable",
+          "0",
+          "346.00",
+          "NA",
+          "",
+          "13",
+          "05/14/2012",
+          "12/30/2099",
+          "12/31/2099"
+        ],
+        [
+          "JG330A",
+          "HPE Networking Comware X240 40G QSFP+ to 4x10G SFP+ 3m Direct Attach Copper Splitter Cable",
+          "0",
+          "850.00",
+          "NA",
+          "",
+          "13",
+          "02/13/2012",
+          "12/30/2099",
+          "12/31/2099"
+        ],
+        [
+          "JG331A",
+          "HPE Networking Comware X240 40G QSFP+ to 4x10G SFP+ 5m Direct Attach Copper Splitter Cable",
+          "0",
+          "986.00",
+          "NA",
+          "",
+          "13",
+          "02/13/2012",
+          "12/30/2099",
+          "12/31/2099"
+        ],
+        [
+          "K2Q21A [OB]",
+          "HPE C-series 3M Passive Copper SFP+ Cable",
+          "0",
+          "467.00",
+          "NA",
+          "",
+          "",
+          "12/01/2014",
+          "10/22/2026",
+          "10/23/2026"
+        ],
+        [
+          "K2Q22A [OB]",
+          "HPE C-series 5M Passive Copper SFP+ Cable",
+          "0",
+          "535.00",
+          "NA",
+          "",
+          "",
+          "12/01/2014",
+          "10/22/2026",
+          "10/23/2026"
+        ],
+        [
+          "Q9S67A",
+          "HPE 25GbE SFP28 to SFP28 3m Smart Active Optical Cable",
+          "0",
+          "975.00",
+          "NA",
+          "",
+          "49",
+          "09/04/2018",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "Q9S68A",
+          "HPE 25GbE SFP28 to SFP28 5m Smart Active Optical Cable",
+          "0",
+          "1,075.00",
+          "NA",
+          "",
+          "35",
+          "09/04/2018",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "QK701A [OB]",
+          "HPE C-series SFP+ to SFP+ Active Copper 7.0m Direct Attach Cable",
+          "0",
+          "1,216.00",
+          "NA",
+          "",
+          "",
+          "05/09/2011",
+          "10/22/2026",
+          "10/23/2026"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 37,
+      "tableId": "",
+      "rowCount": 5,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "581817-B21",
+          "HPE Configurator Defined Build Instruction Option",
+          "1",
+          "1.00",
+          "1.00",
+          "",
+          "11/01/2009",
+          "11/30/2098",
+          "12/31/2098"
+        ],
+        [
+          "H44JMAS",
+          "HPE Alletra Storage MP X10000 SVC",
+          "1",
+          "NA",
+          "0.00",
+          "",
+          "02/12/2024",
+          "12/31/2099",
+          "12/31/2099"
+        ],
+        [
+          "N9Z52A",
+          "HPE Storage Field Integration Configuration",
+          "0",
+          "1.00",
+          "NA",
+          "1",
+          "08/05/2019",
+          "04/30/2028",
+          "05/31/2028"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 38,
+      "tableId": "",
+      "rowCount": 3,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S6X66A",
+          "HPE Alletra Storage MP X10000 Solution for Commvault HyperScale Flex FIO Tracking",
+          "0",
+          "1.00",
+          "NA",
+          "",
+          "12/01/2025",
+          "03/31/2027",
+          "04/30/2027"
+        ]
+      ]
+    }
+  ],
+  "tableCount": 39,
+  "conditionalSkus": [
+    {
+      "sku": "S0U32A",
+      "badge": "",
+      "ruleContext": "No Mixing of Chassis",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: No Mixing of Chassis",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "No Mixing of Chassis"
+      }
+    },
+    {
+      "sku": "R7C71B",
+      "badge": "",
+      "ruleContext": "B series nodes only supported for upgrades",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: B series nodes only supported for upgrades",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "B series nodes only supported for upgrades"
+      }
+    },
+    {
+      "sku": "S3L11B",
+      "badge": "",
+      "ruleContext": "B series nodes only supported for upgrades",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: B series nodes only supported for upgrades",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "B series nodes only supported for upgrades"
+      }
+    },
+    {
+      "sku": "S3L11A",
+      "badge": "",
+      "ruleContext": "TAA isSelected",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: TAA isSelected",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "TAA isSelected"
+      }
+    },
+    {
+      "sku": "R7C78A",
+      "badge": "",
+      "ruleContext": "No Mix PowerSupply",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: No Mix PowerSupply",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "No Mix PowerSupply"
+      }
+    },
+    {
+      "sku": "R9Z97A",
+      "badge": "",
+      "ruleContext": "No Mix PowerSupply",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: No Mix PowerSupply",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "No Mix PowerSupply"
+      }
+    },
+    {
+      "sku": "P22173-B21",
+      "badge": "",
+      "ruleContext": "If single Phase or threePhase is selected then DC Power Cables not supported 1",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: If single Phase or threePhase is selected then DC Power Cables not supported 1",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "If single Phase or threePhase is selected then DC Power Cables not supported 1"
+      }
+    },
+    {
+      "sku": "P36877-B21",
+      "badge": "",
+      "ruleContext": "If single Phase or threePhase is selected then DC Power Cables not supported 1",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: If single Phase or threePhase is selected then DC Power Cables not supported 1",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "If single Phase or threePhase is selected then DC Power Cables not supported 1"
+      }
+    },
+    {
+      "sku": "G2H95A",
+      "badge": "",
+      "ruleContext": "Breaker Panel can be selected only if R7C78A is selected",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Breaker Panel can be selected only if R7C78A is selected",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Breaker Panel can be selected only if R7C78A is selected"
+      }
+    },
+    {
+      "sku": "Q9N54A",
+      "badge": "",
+      "ruleContext": "Breaker Panel can be selected only if R7C78A is selected",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Breaker Panel can be selected only if R7C78A is selected",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Breaker Panel can be selected only if R7C78A is selected"
+      }
+    },
+    {
+      "sku": "S6A73C_GPU",
+      "badge": "",
+      "ruleContext": "If (S7V58A ) is selected, Then show the option to select S6A73C,S6W21C",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod hideProdId",
+      "parentClass": "item_prod hideProdId",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: If (S7V58A ) is selected, Then show the option to select S6A73C,S6W21C",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "If (S7V58A ) is selected, Then show the option to select S6A73C,S6W21C"
+      }
+    },
+    {
+      "sku": "S6W21C_GPU",
+      "badge": "",
+      "ruleContext": "If (S7V58A ) is selected, Then show the option to select S6A73C,S6W21C",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod hideProdId",
+      "parentClass": "item_prod hideProdId",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: If (S7V58A ) is selected, Then show the option to select S6A73C,S6W21C",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "If (S7V58A ) is selected, Then show the option to select S6A73C,S6W21C"
+      }
+    },
+    {
+      "sku": "S0S46A",
+      "badge": "",
+      "ruleContext": "TAA isSelected",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: TAA isSelected",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "TAA isSelected"
+      }
+    },
+    {
+      "sku": "S2T35A",
+      "badge": "",
+      "ruleContext": "Max quantity of product limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product limited by space available."
+      }
+    },
+    {
+      "sku": "Q2F19A",
+      "badge": "",
+      "ruleContext": "Max quantity of product limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product limited by space available."
+      }
+    },
+    {
+      "sku": "R9F76A",
+      "badge": "",
+      "ruleContext": "Back-End Connectivity cables are not supported",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Back-End Connectivity cables are not supported",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Back-End Connectivity cables are not supported"
+      }
+    },
+    {
+      "sku": "R9F79A",
+      "badge": "",
+      "ruleContext": "Back-End Connectivity cables are not supported",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Back-End Connectivity cables are not supported",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Back-End Connectivity cables are not supported"
+      }
+    },
+    {
+      "sku": "R9F80A",
+      "badge": "",
+      "ruleContext": "Back-End Connectivity cables are not supported",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Back-End Connectivity cables are not supported",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Back-End Connectivity cables are not supported"
+      }
+    },
+    {
+      "sku": "R9F81A",
+      "badge": "",
+      "ruleContext": "Back-End Connectivity cables are not supported",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Back-End Connectivity cables are not supported",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Back-End Connectivity cables are not supported"
+      }
+    },
+    {
+      "sku": "S1D25A",
+      "badge": "",
+      "ruleContext": "Back-End Connectivity cables are not supported",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Back-End Connectivity cables are not supported",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Back-End Connectivity cables are not supported"
+      }
+    },
+    {
+      "sku": "S1D26A",
+      "badge": "",
+      "ruleContext": "Back-End Connectivity cables are not supported",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Back-End Connectivity cables are not supported",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Back-End Connectivity cables are not supported"
+      }
+    },
+    {
+      "sku": "S1D27A",
+      "badge": "",
+      "ruleContext": "Back-End Connectivity cables are not supported",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Back-End Connectivity cables are not supported",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Back-End Connectivity cables are not supported"
+      }
+    },
+    {
+      "sku": "S1D28A",
+      "badge": "",
+      "ruleContext": "Back-End Connectivity cables are not supported",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Back-End Connectivity cables are not supported",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Back-End Connectivity cables are not supported"
+      }
+    },
+    {
+      "sku": "R9H71B",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "R9H73B",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "R9H72B",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "S4P49A",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "S0Q04B",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "S0Q03B",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "S0Q02B",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "S1Z68A",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "R9H67A",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "R9H66A",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "R9H69A",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "R9H68A",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "S4P40A",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "S3L74A",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "S3L73A",
+      "badge": "",
+      "ruleContext": "Max quantity of product class limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product class limited by space available.",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "Max quantity of product class limited by space available."
+      }
+    },
+    {
+      "sku": "S1S69A",
+      "badge": "",
+      "ruleContext": "If “acPowerFlag” is selected then S1S69A not supported",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: If “acPowerFlag” is selected then S1S69A not supported",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "If “acPowerFlag” is selected then S1S69A not supported"
+      }
+    }
+  ],
+  "conditionalSkusCount": 39,
+  "conditionalDiscovery": "HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED",
+  "unavailableRules": [
+    {
+      "ruleId": "RULE_1",
+      "ruleType": "CHASSIS_GATE",
+      "section": "Controller Node Models",
+      "reason": "No Mixing of Chassis",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "S0U32A"
+      ]
+    },
+    {
+      "ruleId": "RULE_2",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Controller Node Models",
+      "reason": "B series nodes only supported for upgrades",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "R7C71B",
+        "S3L11B"
+      ]
+    },
+    {
+      "ruleId": "RULE_3",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Controller Node Models",
+      "reason": "TAA isSelected",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "S3L11A"
+      ]
+    },
+    {
+      "ruleId": "RULE_4",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Power Supplies",
+      "reason": "No Mix PowerSupply",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "R7C78A",
+        "R9Z97A"
+      ]
+    },
+    {
+      "ruleId": "RULE_5",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Power Supplies",
+      "reason": "If single Phase or threePhase is selected then DC Power Cables not supported 1",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "P22173-B21",
+        "P36877-B21"
+      ]
+    },
+    {
+      "ruleId": "RULE_6",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Power Supplies",
+      "reason": "Breaker Panel can be selected only if R7C78A is selected",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "G2H95A",
+        "Q9N54A"
+      ]
+    },
+    {
+      "ruleId": "RULE_7",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Data Intelligent Node",
+      "reason": "If (S7V58A ) is selected, Then show the option to select S6A73C,S6W21C",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "S6A73C_GPU",
+        "S6W21C_GPU"
+      ]
+    },
+    {
+      "ruleId": "RULE_8",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Drive Enclosure",
+      "reason": "TAA isSelected",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "S0S46A"
+      ]
+    },
+    {
+      "ruleId": "RULE_9",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Drive Enclosure",
+      "reason": "Max quantity of product limited by space available.",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "S2T35A",
+        "Q2F19A"
+      ]
+    },
+    {
+      "ruleId": "RULE_10",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Drive Enclosure",
+      "reason": "Back-End Connectivity cables are not supported",
+      "affectedSkusCount": 8,
+      "affectedSkus": [
+        "R9F76A",
+        "R9F79A",
+        "R9F80A",
+        "R9F81A",
+        "S1D25A",
+        "S1D26A",
+        "S1D27A",
+        "S1D28A"
+      ]
+    },
+    {
+      "ruleId": "RULE_11",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Capacity",
+      "reason": "Max quantity of product class limited by space available.",
+      "affectedSkusCount": 4,
+      "affectedSkus": [
+        "R9H71B",
+        "R9H73B",
+        "R9H72B",
+        "S4P49A"
+      ]
+    },
+    {
+      "ruleId": "RULE_12",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Capacity",
+      "reason": "Max quantity of product class limited by space available.",
+      "affectedSkusCount": 3,
+      "affectedSkus": [
+        "S0Q04B",
+        "S0Q03B",
+        "S0Q02B"
+      ]
+    },
+    {
+      "ruleId": "RULE_13",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Capacity",
+      "reason": "Max quantity of product class limited by space available.",
+      "affectedSkusCount": 5,
+      "affectedSkus": [
+        "S1Z68A",
+        "R9H67A",
+        "R9H66A",
+        "R9H69A",
+        "R9H68A"
+      ]
+    },
+    {
+      "ruleId": "RULE_14",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Capacity",
+      "reason": "Max quantity of product class limited by space available.",
+      "affectedSkusCount": 3,
+      "affectedSkus": [
+        "S4P40A",
+        "S3L74A",
+        "S3L73A"
+      ]
+    },
+    {
+      "ruleId": "RULE_15",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Back-End Switches",
+      "reason": "If “acPowerFlag” is selected then S1S69A not supported",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "S1S69A"
+      ]
+    }
+  ],
+  "unavailableRulesCount": 15,
+  "unavailableSkus": [
+    {
+      "sku": "S0U32A",
+      "rawSku": "S0U32A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 10000 2U TAA-compliant Chassis",
+      "listPrice": 13749,
+      "startDate": "04/03/2023",
+      "discontinuedDate": "11/30/2029",
+      "section": "Controller Node Models",
+      "ruleType": "CHASSIS_GATE",
+      "ineligibilityReason": "No Mixing of Chassis",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "R7C71B",
+      "rawSku": "R7C71B",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP X10250 Controller Node Field Upgrade",
+      "listPrice": 524503,
+      "startDate": "08/04/2025",
+      "discontinuedDate": "09/30/2031",
+      "section": "Controller Node Models",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "B series nodes only supported for upgrades",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S3L11B",
+      "rawSku": "S3L11B",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP X10250 TAA-compliant Controller Node Field Upgrade",
+      "listPrice": 524503,
+      "startDate": "08/04/2025",
+      "discontinuedDate": "09/30/2031",
+      "section": "Controller Node Models",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "B series nodes only supported for upgrades",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S3L11A",
+      "rawSku": "S3L11A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP X10250 TAA-compliant Controller Node",
+      "listPrice": 403464,
+      "startDate": "11/18/2024",
+      "discontinuedDate": "09/30/2028",
+      "section": "Controller Node Models",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "TAA isSelected",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "R7C78A",
+      "rawSku": "R7C78A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 1600W -48VDC Power Supply",
+      "listPrice": 11842,
+      "startDate": "10/02/2023",
+      "discontinuedDate": "11/30/2032",
+      "section": "Power Supplies",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "No Mix PowerSupply",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "R9Z97A",
+      "rawSku": "R9Z97A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP C14 2200W AC Power Supply",
+      "listPrice": 3332,
+      "startDate": "10/02/2023",
+      "discontinuedDate": "11/30/2032",
+      "section": "Power Supplies",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "No Mix PowerSupply",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "P22173-B21",
+      "rawSku": "P22173-B21",
+      "isPrivateSku": false,
+      "description": "HPE 1600W -48VDC 600V 3.5m Power Cable Kit\n        \n             If single Phase or threePhase is selected then DC Power Cables not supported 3",
+      "listPrice": 818,
+      "startDate": "12/07/2020",
+      "discontinuedDate": "06/30/2028",
+      "section": "Power Supplies",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "If single Phase or threePhase is selected then DC Power Cables not supported 1",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "P36877-B21",
+      "rawSku": "P36877-B21",
+      "isPrivateSku": false,
+      "description": "HPE 1600W -48VDC Power Cable Lug Kit\n        \n             If single Phase or threePhase is selected then DC Power Cables not supported 3",
+      "listPrice": 135,
+      "startDate": "12/07/2020",
+      "discontinuedDate": "06/30/2029",
+      "section": "Power Supplies",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "If single Phase or threePhase is selected then DC Power Cables not supported 1",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "G2H95A",
+      "rawSku": "G2H95A",
+      "isPrivateSku": false,
+      "description": "E-T-A S541 2x16 Output DC Breaker Panels",
+      "listPrice": 5682,
+      "startDate": "12/12/2013",
+      "discontinuedDate": "10/31/2031",
+      "section": "Power Supplies",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Breaker Panel can be selected only if R7C78A is selected",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "Q9N54A",
+      "rawSku": "Q9N54A",
+      "isPrivateSku": false,
+      "description": "E-T-A 6401 Two Grounding Bars w/ Screws",
+      "listPrice": 196,
+      "startDate": "12/01/2017",
+      "discontinuedDate": "10/31/2031",
+      "section": "Power Supplies",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Breaker Panel can be selected only if R7C78A is selected",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S6A73C_GPU",
+      "rawSku": "S6A73C_GPU",
+      "isPrivateSku": false,
+      "description": "S6A73C NVIDIA RTX PRO 6000 Blackwell Server Edition 96GB PCIe Accelerator for HPE",
+      "listPrice": 0,
+      "startDate": "07/07/2025",
+      "discontinuedDate": "12/31/2028",
+      "section": "Data Intelligent Node",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "If (S7V58A ) is selected, Then show the option to select S6A73C,S6W21C",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S6W21C_GPU",
+      "rawSku": "S6W21C_GPU",
+      "isPrivateSku": false,
+      "description": "S6W21C\tNVIDIA RTX PRO 6000D 84GB PCIe Accelerator for HPE",
+      "listPrice": 0,
+      "startDate": "03/02/2026",
+      "discontinuedDate": "12/31/2028",
+      "section": "Data Intelligent Node",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "If (S7V58A ) is selected, Then show the option to select S6A73C,S6W21C",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S0S46A",
+      "rawSku": "S0S46A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 10001 NVMe Configure-to-order TAA-compliant Expansion Shelf",
+      "listPrice": 19654,
+      "startDate": "10/02/2023",
+      "discontinuedDate": "11/30/2032",
+      "section": "Drive Enclosure",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "TAA isSelected",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S2T35A",
+      "rawSku": "S2T35A",
+      "isPrivateSku": false,
+      "description": "HPE Storage 100GbE QSFP28 SR4 Extended Temperature Pull Tab Transceiver",
+      "listPrice": 3299,
+      "startDate": "02/05/2024",
+      "discontinuedDate": "06/30/2029",
+      "section": "Drive Enclosure",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "Q2F19A",
+      "rawSku": "Q2F19A",
+      "isPrivateSku": false,
+      "description": "HPE 100GbE QSFP28 SR4 100m Transceiver",
+      "listPrice": 2425,
+      "startDate": "09/25/2017",
+      "discontinuedDate": "11/30/2028",
+      "section": "Drive Enclosure",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "R9F76A",
+      "rawSku": "R9F76A",
+      "isPrivateSku": false,
+      "description": "HPE Aruba Networking 100G QSFP28 to QSFP28 2m Active Optical Cable",
+      "listPrice": 2649,
+      "startDate": "12/06/2021",
+      "discontinuedDate": "11/30/2029",
+      "section": "Drive Enclosure",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Back-End Connectivity cables are not supported",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "R9F79A",
+      "rawSku": "R9F79A",
+      "isPrivateSku": false,
+      "description": "HPE Aruba Networking 100G QSFP28 to QSFP28 7m Active Optical Cable",
+      "listPrice": 2739,
+      "startDate": "12/06/2021",
+      "discontinuedDate": "11/30/2029",
+      "section": "Drive Enclosure",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Back-End Connectivity cables are not supported",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "R9F80A",
+      "rawSku": "R9F80A",
+      "isPrivateSku": false,
+      "description": "HPE Aruba Networking 100G QSFP28 to QSFP28 15m Active Optical Cable",
+      "listPrice": 2959,
+      "startDate": "12/06/2021",
+      "discontinuedDate": "11/30/2029",
+      "section": "Drive Enclosure",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Back-End Connectivity cables are not supported",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "R9F81A",
+      "rawSku": "R9F81A",
+      "isPrivateSku": false,
+      "description": "HPE Aruba Networking 100G QSFP28 to QSFP28 30m Active Optical Cable",
+      "listPrice": 2959,
+      "startDate": "12/06/2021",
+      "discontinuedDate": "11/30/2029",
+      "section": "Drive Enclosure",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Back-End Connectivity cables are not supported",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S1D25A",
+      "rawSku": "S1D25A",
+      "isPrivateSku": false,
+      "description": "HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 3m Active Optical Cable",
+      "listPrice": 5039,
+      "startDate": "02/06/2023",
+      "discontinuedDate": "11/30/2029",
+      "section": "Drive Enclosure",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Back-End Connectivity cables are not supported",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S1D26A",
+      "rawSku": "S1D26A",
+      "isPrivateSku": false,
+      "description": "HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 7m Active Optical Cable",
+      "listPrice": 5039,
+      "startDate": "02/06/2023",
+      "discontinuedDate": "11/30/2029",
+      "section": "Drive Enclosure",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Back-End Connectivity cables are not supported",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S1D27A",
+      "rawSku": "S1D27A",
+      "isPrivateSku": false,
+      "description": "HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 15m Active Optical Cable",
+      "listPrice": 6829,
+      "startDate": "02/06/2023",
+      "discontinuedDate": "11/30/2029",
+      "section": "Drive Enclosure",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Back-End Connectivity cables are not supported",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S1D28A",
+      "rawSku": "S1D28A",
+      "isPrivateSku": false,
+      "description": "HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 30m Active Optical Cable",
+      "listPrice": 6829,
+      "startDate": "02/06/2023",
+      "discontinuedDate": "11/30/2029",
+      "section": "Drive Enclosure",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Back-End Connectivity cables are not supported",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "R9H71B",
+      "rawSku": "R9H71B",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 3.84TB NVMe Read Intensive FIPS 140-3 Encrypted SSD\n        \n             Max 24 drive supported",
+      "listPrice": 58713,
+      "startDate": "08/04/2025",
+      "discontinuedDate": "11/30/2029",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "R9H73B",
+      "rawSku": "R9H73B",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 15.36TB NVMe Read Intensive FIPS 140-3 Encrypted SSD\n        \n             Max 24 drive supported",
+      "listPrice": 235872,
+      "startDate": "08/04/2025",
+      "discontinuedDate": "11/30/2029",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "R9H72B",
+      "rawSku": "R9H72B",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 7.68TB NVMe Read Intensive FIPS 140-3 Encrypted SSD\n        \n             Max 24 drive supported",
+      "listPrice": 131890,
+      "startDate": "08/04/2025",
+      "discontinuedDate": "11/30/2029",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S4P49A",
+      "rawSku": "S4P49A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 30.72TB NVMe SFF FIPS Encrypted SSD\n        \n             Max 24 drive supported",
+      "listPrice": 376435,
+      "startDate": "06/02/2025",
+      "discontinuedDate": "12/31/2027",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S0Q04B",
+      "rawSku": "S0Q04B",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 15.36TB NVMe Read Intensive FIPS 140-3 Encrypted TAA-compliant SSD\n        \n             Max 24 drive supported",
+      "listPrice": 235872,
+      "startDate": "08/04/2025",
+      "discontinuedDate": "11/30/2029",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S0Q03B",
+      "rawSku": "S0Q03B",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 7.68TB NVMe Read Intensive FIPS 140-3 Encrypted TAA-compliant SSD\n        \n             Max 24 drive supported",
+      "listPrice": 131890,
+      "startDate": "08/04/2025",
+      "discontinuedDate": "11/30/2029",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S0Q02B",
+      "rawSku": "S0Q02B",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 3.84TB NVMe Read Intensive FIPS 140-3 Encrypted TAA-compliant SSD\n        \n             Max 24 drive supported",
+      "listPrice": 58713,
+      "startDate": "08/04/2025",
+      "discontinuedDate": "11/30/2029",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S1Z68A",
+      "rawSku": "S1Z68A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 30.72TB NVMe SFF Self-encrypting SSD\n        \n             Max 24 drive supported",
+      "listPrice": 342214,
+      "startDate": "11/30/2023",
+      "discontinuedDate": "12/31/2027",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "R9H67A",
+      "rawSku": "R9H67A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 3.84TB NVMe SFF Self-encrypting SSD\n        \n             Max 24 drive supported",
+      "listPrice": 53373,
+      "startDate": "01/08/2024",
+      "discontinuedDate": "11/30/2029",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "R9H66A",
+      "rawSku": "R9H66A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 1.92TB NVMe SFF Self-encrypting SSD\n        \n             Max 24 drive supported",
+      "listPrice": 36109,
+      "startDate": "01/08/2024",
+      "discontinuedDate": "11/30/2029",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "R9H69A",
+      "rawSku": "R9H69A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 15.36TB NVMe SFF Self-encrypting SSD\n        \n             Max 24 drive supported",
+      "listPrice": 214426,
+      "startDate": "01/08/2024",
+      "discontinuedDate": "11/30/2029",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "R9H68A",
+      "rawSku": "R9H68A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 7.68TB NVMe SFF Self-encrypting SSD\n        \n             Max 24 drive supported",
+      "listPrice": 119901,
+      "startDate": "01/08/2024",
+      "discontinuedDate": "11/30/2029",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S4P40A",
+      "rawSku": "S4P40A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 61.44TB NVMe SFF QLC SSD\n        \n             Max 24 drive supported",
+      "listPrice": 420983,
+      "startDate": "06/02/2025",
+      "discontinuedDate": "08/31/2027",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S3L74A",
+      "rawSku": "S3L74A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 30.72TB NVMe SFF QLC SSD\n        \n             Max 24 drive supported",
+      "listPrice": 241214,
+      "startDate": "10/07/2024",
+      "discontinuedDate": "08/31/2027",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S3L73A",
+      "rawSku": "S3L73A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 15.36TB NVMe SFF QLC SSD\n        \n             Max 24 drive supported",
+      "listPrice": 126796,
+      "startDate": "10/07/2024",
+      "discontinuedDate": "08/31/2027",
+      "section": "Capacity",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product class limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    },
+    {
+      "sku": "S1S69A",
+      "rawSku": "S1S69A",
+      "isPrivateSku": false,
+      "description": "HPE Alletra Storage MP 32-port 100GbE -48VDC Switch Bundle",
+      "listPrice": 49176,
+      "startDate": "02/05/2024",
+      "discontinuedDate": "02/29/2040",
+      "section": "Back-End Switches",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "If “acPowerFlag” is selected then S1S69A not supported",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL",
+      "scopeProvenance": {
+        "baseSku": "S3L12A",
+        "ownerProduct": "Alletra_MP_X10000",
+        "ownerConfiguration": "HPE Alletra Storage MP X10000 Base #1 Group",
+        "region": "US",
+        "selectorState": "default"
+      }
+    }
+  ],
+  "unavailableSkusCount": 39,
+  "networkSniffedRules": [],
+  "networkSniffedRulesCount": 0,
+  "networkCoverage": {
+    "capturedResponses": 0,
+    "pendingResponses": 0,
+    "failures": [],
+    "scope": "OBSERVED_REQUESTS_ONLY"
+  },
+  "chassisDiscovery": {
+    "query": "Alletra Storage MP X10000",
+    "selectedSku": "S3L12A",
+    "source": "HPE OCA Product Search via authenticated CDP session",
+    "capturedAt": "2026-11-21T12:18:39.966Z",
+    "deliveryEstimate": "",
+    "candidates": [
+      {
+        "type": "dropdown-option",
+        "cardSelector": "[data-cand-idx=\"0\"]",
+        "optionValue": "homeFleetSol",
+        "text": "S3L12A - HPE Alletra Storage MP X10000 Base Configuration",
+        "sku": "S3L12A",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": false,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": true,
+        "isWizard": false
+      },
+      {
+        "type": "dropdown-option",
+        "cardSelector": "[data-cand-idx=\"0\"]",
+        "optionValue": "homefleetKSAsol",
+        "text": "S7Z87A - HPE Alletra Storage MP X10000 KSA",
+        "sku": "S7Z87A",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": false,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": true,
+        "isWizard": false
+      },
+      {
+        "type": "dropdown-option",
+        "cardSelector": "[data-cand-idx=\"0\"]",
+        "optionValue": "homefleetUpgKSASol",
+        "text": "S6W29A - HPE Alletra Storage MP X10000 Disconnected Add-on KSA",
+        "sku": "S6W29A",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": false,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": true,
+        "isWizard": false
+      },
+      {
+        "type": "dropdown-option",
+        "cardSelector": "[data-cand-idx=\"0\"]",
+        "optionValue": "homefleetUpgSol",
+        "text": "S6W29A - HPE Alletra Storage MP X10000 Disconnected Solution Add-on",
+        "sku": "S6W29A",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": false,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": true,
+        "isWizard": false
+      },
+      {
+        "type": "dropdown-option",
+        "cardSelector": "[data-cand-idx=\"1\"]",
+        "optionValue": "homefleetdisconnectedKSASol",
+        "text": "homefleetdisconnectedKSASol - HPE Alletra Storage MP X10000 Disconnected KSA",
+        "sku": "X10000",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": false,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": true,
+        "isWizard": true
+      },
+      {
+        "type": "dropdown-option",
+        "cardSelector": "[data-cand-idx=\"1\"]",
+        "optionValue": "homefleetdisconnectedSol",
+        "text": "homefleetdisconnectedSol - HPE Alletra Storage MP X10000 Disconnected",
+        "sku": "X10000",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": false,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": true,
+        "isWizard": true
+      }
+    ],
+    "excludedCandidates": [
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"2\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_LG_16GPU-X10K_5yr HPE Private Cloud AI G2 Large Two Node-16GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Racks with 3Phase PDU and 5-year Licencing - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 3,900,138.23 Estimated Net Price Customize Quote",
+        "sku": "16GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"3\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_LG_X10K with 2 Exp-Rack_48GPU_5yr HPE Private Cloud AI G2 Large +2 Exp Rack, Six Node-48GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Four Racks with 3Phase PDUs and 5-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 8,553,620.64 Estimated Net Price Customize Quote",
+        "sku": "48GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"4\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_MD_8GPU-X10K_3yr HPE Private Cloud AI G2 Medium Two Node-8GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 3-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 2,138,464.65 Estimated Net Price Customize Quote",
+        "sku": "400GBE",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"5\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_LG_X10K with 3 Exp-Rack_64GPU_5yr HPE Private Cloud AI G2 Large +3 Exp Rack, Eight Node-64GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Four Racks with 3Phase PDUs and 5-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 10,932,225.83 Estimated Net Price Customize Quote",
+        "sku": "64GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"6\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_LG_X10K with 1 Exp-Rack_32GPU_3yr HPE Private Cloud AI G2 Large +1 Exp Rack, Four Node-32GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Three Racks with 3Phase PDUs and 3-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 5,662,670.91 Estimated Net Price Customize Quote",
+        "sku": "32GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"7\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_MD_X10K with 1 Exp-Rack_24GPU_5yr HPE Private Cloud AI G2 Medium +1 Exp Rack, Four Node-24GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Two Racks with 3 Phase PDUs and 5-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 4,939,729.20 Estimated Net Price Customize Quote",
+        "sku": "24GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"8\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG_RTX_X10K with 1 RTX Exp-Rack_32GPU_3yr HPE Private Cloud AI G2 Large RTX +1 Exp Rack, Four Node-32GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Three Racks with 3Phase PDUs and 3-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 4,250,043.30 Estimated Net Price Customize Quote",
+        "sku": "32GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"9\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG_RTX_X10K with 1 RTX Exp-Rack_32GPU_5yr HPE Private Cloud AI G2 Large RTX +1 Exp Rack, Four Node-32GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Three Racks with 3Phase PDUs and 5-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 4,695,653.10 Estimated Net Price Customize Quote",
+        "sku": "32GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"10\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_MD_8GPU-X10K_5yr HPE Private Cloud AI G2 Medium Two Node-8GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 5-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 2,284,777.24 Estimated Net Price Customize Quote",
+        "sku": "400GBE",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"11\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small_1Node_RTX_X10K _5Yr HPE Private Cloud AI G2 Small RTX Pro 6000 One Node-4GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 5-year Licencing - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 1,759,689.40 Estimated Net Price Customize Quote",
+        "sku": "400GBE",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"12\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small_1Node_RTX_X10K _With 1 Exp-Rack_12GPU_3Yr HPE Private Cloud AI G2 Small RTX Pro 6000 Two Node +1 Exp Rack, 12GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Two Racks with 3Phase PDU and 3-year Licencing - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 2,394,321.39 Estimated Net Price Customize Quote",
+        "sku": "12GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"13\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_LG_X10K with 3 Exp-Rack_64GPU_3yr HPE Private Cloud AI G2 Large +3 Exp Rack, Eight Node-64GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Four Racks with 3Phase PDUs and 3-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 9,811,650.27 Estimated Net Price Customize Quote",
+        "sku": "64GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"14\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small_2Node_RTX_X10K _With 1 Exp-Rack_16GPU_3yr HPE Private Cloud AI G2 Small RTX Pro 6000 Two Node +1 Exp Rack, 16GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Two Racks with 3Phase PDU and 3-year Licensing - Intel/AMD - Not Applicable - Not Applicable i Unlocked Compare STs USD 2,896,717.09 Estimated Net Price Customize Quote",
+        "sku": "16GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"15\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small_2Node_RTX_X10K _3Yr HPE Private Cloud AI G2 Small RTX Pro 6000 Two Node-8GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 3-year Licencing - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 2,119,708.36 Estimated Net Price Customize Quote",
+        "sku": "400GBE",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"16\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG_RTX_X10K_16GPU_5Yr HPE Private Cloud AI G2 Large RTX Pro 6000 Two Node-16GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Racks with 3Phase PDU and 5-year Licencing - Intel/AMD - 256GB - Not Applicable i HW/SW Lock Compare STs USD 3,085,897.41 Estimated Net Price Customize Quote",
+        "sku": "16GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"17\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG Air-Gapped_RTX_X10K with 1 RTX Exp-Rack_32GPU_5yr HPE Private Cloud AI G2 Large Air-gapped RTX +1 Exp Rack, Four Node-32GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Rack with 3Phase PDUs and 5-year Terms. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 4,441,933.90 Estimated Net Price Customize Quote",
+        "sku": "32GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"18\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_LG Air-Gapped_16GPU-X10K_3yr HPE Private Cloud AI G2 Large Air-gapped Two Node-16GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 3-year Terms - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 2,949,482.21 Estimated Net Price Customize Quote",
+        "sku": "16GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"19\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG_RTX_X10K_16GPU_3Yr HPE Private Cloud AI G2 Large RTX Pro 6000 Two Node-16GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Racks with 3Phase PDU and 3-year Licencing - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 2,859,207.69 Estimated Net Price Customize Quote",
+        "sku": "16GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"20\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_LG_X10K with 1 Exp-Rack_32GPU_5yr HPE Private Cloud AI G2 Large +1 Exp Rack, Four Node-32GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Three Racks with 3Phase PDUs and 5-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 6,259,171.56 Estimated Net Price Customize Quote",
+        "sku": "32GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"21\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small_1Node_RTX_X10K _With 1 Exp-Rack_12GPU_5Yr HPE Private Cloud AI G2 Small RTX Pro 6000 Two Node +1 Exp Rack, 12GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Two Racks with 3Phase PDU and 5-year Licensing - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 3,034,951.38 Estimated Net Price Customize Quote",
+        "sku": "12GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"22\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG_RTX_X10K with 3 RTX Exp-Rack_64GPU_5yr HPE Private Cloud AI G2 Large RTX +3 Exp Rack, Eight Node-64GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Four Racks with 3Phase PDUs and 5-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 6,345,090.38 Estimated Net Price Customize Quote",
+        "sku": "64GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"23\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small Air-Gapped_1Node_RTX_X10K _3Yr HPE Private Cloud AI G2 Small Air-gapped RTX Pro 6000 One Node-4GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 3-year Terms - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 960,665.86 Estimated Net Price Customize Quote",
+        "sku": "400GBE",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"24\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small Air-Gapped_1Node_RTX_X10K _5Yr HPE Private Cloud AI G2 Small Air-gapped RTX Pro 6000 One Node-4GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 5-year Terms. - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 1,047,470.99 Estimated Net Price Customize Quote",
+        "sku": "400GBE",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"25\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_MD Air-Gapped_8GPU-X10K_5yr HPE Private Cloud AI G2 Medium Air-gapped Two Node-8GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 5-year Terms. - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 1,616,226.00 Estimated Net Price Customize Quote",
+        "sku": "400GBE",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"26\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG Air-Gapped_RTX_X10K with 1 RTX Exp-Rack_32GPU_3yr HPE Private Cloud AI G2 Large Air-gapped RTX +1 Exp Rack, Four Node-32GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Rack with 3Phase PDUs and 3-year Terms - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 3,845,605.64 Estimated Net Price Customize Quote",
+        "sku": "32GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"27\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG Air-Gapped_X10K with 3 Exp-Rack_64GPU_5yr HPE Private Cloud AI G2 Large Air-gapped +3 Exp Rack, Eight Node-64GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Rack with 3Phase PDUs and 5-year Terms. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 10,202,604.10 Estimated Net Price Customize Quote",
+        "sku": "64GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"28\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG Air-Gapped_RTX_X10K with 2 RTX Exp-Rack_48GPU_5yr HPE Private Cloud AI G2 Large Air-gapped RTX +2 Exp Rack, Six Node-48GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Rack with 3Phase PDUs and 5-year Terms. - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 5,893,542.87 Estimated Net Price Customize Quote",
+        "sku": "48GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"29\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small Air-Gapped_2Node_RTX_X10K _With 1 Exp-Rack_16GPU_5yr HPE Private Cloud AI G2 Small Air-gapped RTX Pro 6000 Two Node +1 Exp Rack, 16GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 5-year Terms. - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 2,311,115.94 Estimated Net Price Customize Quote",
+        "sku": "16GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"30\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_MD Air-Gapped_X10K with 1 Exp-Rack_24GPU_5yr HPE Private Cloud AI G2 Medium Air-gapped +1 Exp Rack, Four Node-24GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Two Rack with 3Phase PDUs and 5-year Terms. - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 3,997,660.36 Estimated Net Price Customize Quote",
+        "sku": "24GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"31\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_LG Air-Gapped_X10K with 2 Exp-Rack_48GPU_5yr HPE Private Cloud AI G2 Large Air-gapped +2 Exp Rack, Six Node-48GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Rack with 3Phase PDUs and 5-year Terms. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 5,572,397.03 Estimated Net Price Customize Quote",
+        "sku": "48GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"32\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_LG Air-Gapped_16GPU-X10K_5yr HPE Private Cloud AI G2 Large Air-gapped Two Node-16GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 5-year Terms. - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 3,308,731.93 Estimated Net Price Customize Quote",
+        "sku": "16GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"33\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_LG Air-Gapped_X10K with 1 Exp-Rack_32GPU_5yr HPE Private Cloud AI G2 Large Air-gapped +1 Exp Rack, Four Node-32GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Rack with 3Phase PDUs and 5-year Terms. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 5,639,723.14 Estimated Net Price Customize Quote",
+        "sku": "32GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"34\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG Air-Gapped_RTX_X10K with 3 RTX Exp-Rack_64GPU_5yr HPE Private Cloud AI G2 Large Air-gapped RTX +3 Exp Rack, Eight Node-64GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Rack with 3Phase PDUs and 5-year Terms. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 7,302,603.00 Estimated Net Price Customize Quote",
+        "sku": "64GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"35\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small Air-Gapped_1Node_RTX_X10K _With 1 Exp-Rack_12GPU_3Yr HPE Private Cloud AI G2 Small Air-gapped RTX Pro 6000 Two Node +1 Exp Rack, 12GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 3-year Terms - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 1,663,219.95 Estimated Net Price Customize Quote",
+        "sku": "12GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"36\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small_1Node_RTX_X10K _3Yr HPE Private Cloud AI G2 Small RTX Pro 6000 One Node-4GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 3-year Licencing - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 1,621,532.20 Estimated Net Price Customize Quote",
+        "sku": "400GBE",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"37\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_MD_X10K with 1 Exp-Rack_24GPU_3yr HPE Private Cloud AI G2 Medium +1 Exp Rack, Four Node-24GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Two Racks with 3Phase PDUs and 3-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 4,453,599.43 Estimated Net Price Customize Quote",
+        "sku": "24GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"38\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG_RTX_X10K with 2 RTX Exp-Rack_48GPU_3yr HPE Private Cloud AI G2 Large RTX +2 Exp Rack, Six Node-48GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Four Racks with 3Phase PDUs and 3-year Licensing. - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 5,688,619.07 Estimated Net Price Customize Quote",
+        "sku": "48GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"39\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_LG_16GPU-X10K_3yr HPE Private Cloud AI G2 Large Two Node-16GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Racks with 3Phase PDU and 3-year Licencing - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 3,527,624.43 Estimated Net Price Customize Quote",
+        "sku": "16GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"40\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small_2Node_RTX_X10K _5Yr HPE Private Cloud AI G2 Small RTX Pro 6000 Two Node-8GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 5-year Licencing - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 2,329,922.34 Estimated Net Price Customize Quote",
+        "sku": "400GBE",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"41\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small Air-Gapped_2Node_RTX_X10K _With 1 Exp-Rack_16GPU_3yr HPE Private Cloud AI G2 Small Air-gapped RTX Pro 6000 Two Node +1 Exp Rack, 16GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 3-year Terms - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 2,012,774.42 Estimated Net Price Customize Quote",
+        "sku": "16GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"42\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG Air-Gapped_RTX_X10K with 2 RTX Exp-Rack_48GPU_3yr HPE Private Cloud AI G2 Large Air-gapped RTX +3 Exp Rack, Eight Node-64GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Rack with 3Phase PDUs and 3-year Terms - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 6,237,182.01 Estimated Net Price Customize Quote",
+        "sku": "64GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"43\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2 Air-Gapped_LG_X10K with 1 Exp-Rack_32GPU_3yr HPE Private Cloud AI G2 Large Air-gapped +1 Exp Rack, Four Node-32GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Rack with 3Phase PDUs and 3-year Terms - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 4,960,454.74 Estimated Net Price Customize Quote",
+        "sku": "32GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"44\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small Air-Gapped_2Node_RTX_X10K _3Yr HPE Private Cloud AI G2 Small Air-gapped RTX Pro 6000 Two Node-8GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 3-year Terms - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 1,313,906.55 Estimated Net Price Customize Quote",
+        "sku": "400GBE",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"45\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG_RTX_X10K with 3 RTX Exp-Rack_64GPU_3yr HPE Private Cloud AI G2 Large RTX +3 Exp Rack, Eight Node-64GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Four Racks with 3Phase PDUs and 3-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 7,319,744.98 Estimated Net Price Customize Quote",
+        "sku": "64GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"46\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG Air-Gapped_RTX_X10K_16GPU_5Yr HPE Private Cloud AI G2 Large Air-gapped RTX Pro 6000 Two Node-16GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 5-year Terms. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 2,953,363.74 Estimated Net Price Customize Quote",
+        "sku": "16GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"47\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG_RTX_X10K with 2 RTX Exp-Rack_48GPU_5yr HPE Private Cloud AI G2 Large RTX +2 Exp Rack, Six Node-48GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Four Racks with 3Phase PDUs and 5-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 6,315,655.50 Estimated Net Price Customize Quote",
+        "sku": "48GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"48\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG Air-Gapped_RTX_X10K with 2 RTX Exp-Rack_48GPU_3yr HPE Private Cloud AI G2 Large Air-gapped RTX +2 Exp Rack, Six Node-48GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Rack with 3Phase PDUs and 3-year Terms - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 5,033,169.73 Estimated Net Price Customize Quote",
+        "sku": "48GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"49\"]",
+        "text": "HPE Private Cloud AI PC_AI_Gen2_LG Air-Gapped_RTX_X10K_16GPU_3Yr HPE Private Cloud AI G2 Large Air-gapped RTX Pro 6000 Two Node-16GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 3-year Terms - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 2,664,084.30 Estimated Net Price Customize Quote",
+        "sku": "16GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"50\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small Air-Gapped_1Node_RTX_X10K _With 1 Exp-Rack_12GPU_5Yr HPE Private Cloud AI G2 Small Air-gapped RTX Pro 6000 Two Node +1 Exp Rack, 12GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 5-year Terms. - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 1,903,322.05 Estimated Net Price Customize Quote",
+        "sku": "12GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"51\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2 Air-Gapped_LG_X10K with 2 Exp-Rack_48GPU_3yr HPE Private Cloud AI G2 Large Air-gapped +2 Exp Rack, Six Node-48GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Rack with 3Phase PDUs and 3-year Terms - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 7,061,225.46 Estimated Net Price Customize Quote",
+        "sku": "48GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"52\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_MD Air-Gapped_X10K with 1 Exp-Rack_24GPU_3yr HPE Private Cloud AI G2 Medium Air-gapped +1 Exp Rack, Four Node-24GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Two Rack with 3Phase PDUs and 3-year Terms - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 3,471,949.12 Estimated Net Price Customize Quote",
+        "sku": "24GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"53\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small Air-Gapped_2Node_RTX_X10K _5Yr HPE Private Cloud AI G2 Small Air-gapped RTX Pro 6000 Two Node-8GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 5-year Terms. - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 1,463,788.40 Estimated Net Price Customize Quote",
+        "sku": "400GBE",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"54\"]",
+        "text": "HPE Private Cloud AI PC_AI-Small_2Node_RTX_X10K _With 1 Exp-Rack_16GPU_5yr HPE Private Cloud AI G2 Small RTX Pro 6000 Two Node +1 Exp Rack, 16GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Two Racks with 3Phase PDU and 5-year Licensing - Intel/AMD - Not Applicable - Not Applicable i Full-Lock Compare STs USD 3,624,994.95 Estimated Net Price Customize Quote",
+        "sku": "16GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"55\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_LG_X10K with 2 Exp-Rack_48GPU_3yr HPE Private Cloud AI G2 Large +2 Exp Rack, Six Node-48GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Four Racks with 3Phase PDUs and 3-year Licensing. - Intel/AMD - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 7,729,356.83 Estimated Net Price Customize Quote",
+        "sku": "48GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"56\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_MD Air-Gapped_8GPU-X10K_3yr HPE Private Cloud AI G2 Medium Air-gapped Two Node-8GPU Solution. X10k-62TB File/Object Storage, 400GbE Networking, Single Rack with 3Phase PDU and 3-year Terms - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 1,450,107.33 Estimated Net Price Customize Quote",
+        "sku": "400GBE",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      },
+      {
+        "type": "direct-button",
+        "cardSelector": "[data-cand-idx=\"57\"]",
+        "text": "HPE Private Cloud AI PC_AI_G2_LG Air-Gapped_X10K with 3 Exp-Rack_64GPU_3yr HPE Private Cloud AI G2 Large Air-gapped +3 Exp Rack, Eight Node-64GPU Solution. X10k-124TB File/Object Storage, 400GbE Networking, Two Rack with 3Phase PDUs and 3-year Terms - Not Applicable - Not Applicable - Not Applicable i HW/SW Lock Compare STs USD 9,024,058.53 Estimated Net Price Customize Quote",
+        "sku": "64GPU",
+        "listPriceUsd": 0,
+        "availability": "Available in OCA product catalog",
+        "leadTime": "",
+        "deliveryLabel": "",
+        "isBto": true,
+        "isTaa": false,
+        "isGta": false,
+        "isCto": false
+      }
+    ]
+  }
+}

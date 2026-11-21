@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "product": "Alletra_MP_X10000",
+  "generatedAt": "2026-11-21T12:18:56.773Z",
+  "rejectedCount": 3,
+  "rows": [
+    {
+      "tableIndex": 1,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Country Power Cords Options"
+      ]
+    },
+    {
+      "tableIndex": 4,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "DC Power Cables"
+      ]
+    },
+    {
+      "tableIndex": 7,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Back-End Connectivity Cables"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+Rule ID	Rule Type	Section	Constraint / Reason	Affected SKU Count	Affected SKUs
+RULE_1	CONDITIONAL_VISIBILITY	Rack Options	"HPE DL145 Gen11 Desk/Wall Mount Kit" and "HPE DL145 Gen11 Rack enable kit" cannot be selected together.	1	P72006-B21
+RULE_2	CONDITIONAL_VISIBILITY	Memory	All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.	8	P50312-F21, P64986-F21, P50309-F21, P64985-F21, P64987-F21, P64988-F21, P66676-F21, P69982-F21
+RULE_3	CONDITIONAL_VISIBILITY	Memory	BTO Memories are not allowed in CTO Base Model.	9	P50309-B21, P50311-B21, P50312-B21, P64984-B21, P64985-B21, P64986-B21, P64987-B21, P64988-B21, P66676-B21
+RULE_4	CONDITIONAL_VISIBILITY	Storage Devices	If HPE DL145 Gen11 Opt ACC FIO Config is selected, then these EDSFF drives cannot be selected with direct attach. (Only controller mode).	4	P79615-B21, P79618-B21, P79620-B21, P79623-B21
+RULE_5	CONDITIONAL_VISIBILITY	Factory Configuration Settings	CE Mark label SKU (P35876-B21) should be visible only when selecting Lot9 SKU's in the configuration	1	P35876-B21
+RULE_6	CONDITIONAL_VISIBILITY	Networking	Max quantity of product limited by space available.	7	P10097-B21, P10115-B21, P42041-B21, P08449-B21, P10106-B21, P26256-B21, P26269-B21
+RULE_7	CONDITIONAL_VISIBILITY	Power and Cooling	Mixing of Power Supplies is not allowed.	2	P44975-B21, P43150-B21
+RULE_8	CONDITIONAL_VISIBILITY	Power and Cooling	If AC Power Supply is selected then only AC Power Cords should be in the drop-down.	1	Q0H80A
+RULE_9	CONDITIONAL_VISIBILITY	Power and Cooling	BTO products are not allowed in CTO Base Model.	2	A0K02A, A0N33A

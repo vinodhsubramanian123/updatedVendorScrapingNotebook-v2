@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0.0",
+  "product": "DL145_Gen11",
+  "generatedAt": "2026-11-21T11:57:18.002Z",
+  "rejectedCount": 2,
+  "rows": [
+    {
+      "tableIndex": 8,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Virtualization"
+      ]
+    },
+    {
+      "tableIndex": 18,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Partner Software"
+      ]
+    }
+  ]
+}

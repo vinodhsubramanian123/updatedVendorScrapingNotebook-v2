@@ -422,7 +422,7 @@
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
     "hardwareCompatibilityCertified": false,
-    "timestamp": "2026-11-11T13:31:02.342Z"
+    "timestamp": "2026-11-21T06:03:31.064Z"
   },
   {
     "deltaId": "LEARN_DL380_GEN12_RUNTIME_DISCOVERY_20260930",
@@ -440,7 +440,7 @@
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
     "hardwareCompatibilityCertified": false,
-    "timestamp": "2026-11-11T13:31:02.376Z"
+    "timestamp": "2026-11-21T06:03:31.106Z"
   },
   {
     "deltaId": "LEARN_DL380_GEN12_COVERAGE_BOUNDARY_20260930",
@@ -458,7 +458,7 @@
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
     "hardwareCompatibilityCertified": false,
-    "timestamp": "2026-11-11T13:31:02.409Z"
+    "timestamp": "2026-11-21T06:03:31.145Z"
   },
   {
     "deltaId": "LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001",
@@ -477,7 +477,7 @@
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
     "hardwareCompatibilityCertified": false,
-    "timestamp": "2026-11-11T13:31:02.289Z"
+    "timestamp": "2026-11-21T06:03:30.973Z"
   },
   {
     "deltaId": "LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012",
@@ -495,7 +495,7 @@
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
     "hardwareCompatibilityCertified": false,
-    "timestamp": "2026-11-11T13:31:02.441Z"
+    "timestamp": "2026-11-21T06:03:31.190Z"
   },
   {
     "deltaId": "LEARN_UNIVERSAL_ACCESSORY_SCOPE_ISOLATION_20261012",
@@ -514,12 +514,12 @@
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
     "hardwareCompatibilityCertified": false,
-    "timestamp": "2026-11-11T13:31:02.475Z"
+    "timestamp": "2026-11-21T06:03:31.228Z"
   },
   {
-    "deltaId": "LEARN_WEBLOGIC_EXPAND_SECTIONS_COST_CAPTURE_20261012",
+    "deltaId": "LEARN_SMART_CTO_WAKEUP_PROTOCOL_20261121",
     "ruleType": "WORKFLOW_DOM_EXTRACTION_ADVISORY",
-    "rawMessage": "WebLogic OCA table expansion in cdp.js must explicitly toggle show_cost alongside show_price and trigger change events on all discovered showmore inputs. Omitting show_cost prevents cost column rendering, leaving tabular price-breakdown structures incomplete (INV-161).",
+    "rawMessage": "When HPE OCA renders only a Smart CTO card with _CTOLITE options and no standard CTO card is returned, allowCtolite fallback mode ensures non-empty candidate extraction. If the Select Product dropdown is unselected, auto-selecting the first non-placeholder option triggers the jQuery change event and wakes WebLogic XHR, unlocking the disabled Customize button and preventing unhandled navigation timeouts (INV-258).",
     "vendor": "HPE",
     "pillar": "SERVER",
     "family": "ProLiant",
@@ -532,7 +532,7 @@
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
     "hardwareCompatibilityCertified": false,
-    "timestamp": "2026-11-11T13:31:02.509Z"
+    "timestamp": "2026-11-21T06:03:31.420Z"
   },
   {
     "deltaId": "DELTA_DL380_GEN12_CPU_PARITY_AND_SST_CP_LEARNING",
@@ -1032,5 +1032,186 @@
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-11-19T17:11:57.742Z",
     "chassis": "DL380_Gen12"
+  },
+  {
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "chassis": "DL380_Gen12",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/INVARIANTS.md#inv-255",
+    "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
+    "hardwareCompatibilityCertified": false,
+    "deltaId": "LEARN_4SOCKET_ENTERPRISE_WORKSPACE_TIMEOUT_20261120",
+    "ruleType": "WORKFLOW_TIMING_ADVISORY",
+    "rawMessage": "4-socket enterprise servers have significantly more configuration options than 2-socket servers (73+ category tables vs ~40). WebLogic takes 30-90 seconds to initialize the configuration workspace after clicking Customize, compared to 5-15 seconds for 2-socket servers. _pollForActiveOcaReadiness must allow at least 45 seconds (not 15s) with 10-second inner wait (not 3s), and _verifyConfigWorkspaceReady must allow 120 seconds (not 60s). These timeouts are universal and safe for all server classes (INV-255).",
+    "timestamp": "2026-11-21T13:40:40.009Z"
+  },
+  {
+    "deltaId": "LEARN_CS_SUPPLY_CONSTRAINT_BADGE_20261120",
+    "ruleType": "WORKFLOW_LIFECYCLE_BADGE_ADVISORY",
+    "affectedSku": "P73835-B21",
+    "rawMessage": "HPE OCA marks supply-constrained SKUs with [CS] badge (red background, class supply_restricted, tooltip \"This SKU is currently unavailable based on supply constraints\"). The CS badge must be recognized alongside OB (Obsolete), DS (Direct Ship), EOL, and 90 (90-Day Warning) in field_parsers.js, sku.js, and build_catalog.js. When a customer BOQ contains a CS-badged SKU, the presales advisory must recommend functionally equivalent alternatives with active availability (e.g. green lead-time items). CS maps to lifecycleCanonical \"Constrained Supply\", vendorSupplyStatus \"CONSTRAINED_SUPPLY\", and isClearanceOrRestricted true (INV-256).",
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "chassis": "DL380_Gen12",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/audits/2026-09-30-scraping-independent-review.md",
+    "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
+    "hardwareCompatibilityCertified": false,
+    "timestamp": "2026-11-21T06:03:31.356Z"
+  },
+  {
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "chassis": "DL380_Gen12",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/INVARIANTS.md#inv-161",
+    "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
+    "hardwareCompatibilityCertified": false,
+    "deltaId": "LEARN_WEBLOGIC_EXPAND_SECTIONS_COST_CAPTURE_20261012",
+    "ruleType": "WORKFLOW_DOM_EXTRACTION_ADVISORY",
+    "rawMessage": "WebLogic OCA table expansion in cdp.js must explicitly toggle show_cost alongside show_price and trigger change events on all discovered showmore inputs. Omitting show_cost prevents cost column rendering, leaving tabular price-breakdown structures incomplete (INV-161).",
+    "timestamp": "2026-11-21T06:14:23.814Z"
+  },
+  {
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "chassis": "DL380_Gen12",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/INVARIANTS.md#inv-257",
+    "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
+    "hardwareCompatibilityCertified": false,
+    "deltaId": "LEARN_NORMAL_CTO_CARD_PRIORITY_ASYNC_XHR_20261121",
+    "ruleType": "WORKFLOW_DOM_EXTRACTION_ADVISORY",
+    "rawMessage": "Commercial CTO cards (data-type=\"cto\" without \"Smart CTO\") must be sorted and prioritized first over Smart CTO cards. OCA change handler executes an async XHR before removing dqe-disabled from the Customize button; a flat timeout causes race conditions. Polling up to 15s with a jQuery change retry at attempt 20 ensures reliable button unlock. In addition, cosmetic .maui-loading-div elements inside .blockMsg or .blockUI overlays must be filtered out during search input wait to prevent artificial timeouts (INV-257).",
+    "timestamp": "2026-11-21T06:14:24.085Z"
+  },
+  {
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "chassis": "DL380_Gen12",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/INVARIANTS.md#inv-254",
+    "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
+    "hardwareCompatibilityCertified": false,
+    "deltaId": "LEARN_BLOCKUI_OPACITY_ZERO_FALSE_POSITIVE_20261120",
+    "ruleType": "WORKFLOW_DOM_EXTRACTION_ADVISORY",
+    "rawMessage": "WebLogic OCA injects 100+ .blockUI.blockOverlay DIVs with opacity:0 and display:block across all accordion containers, sub-tabs, and panels. These are transparent residual overlays with no visual or functional blocking effect. The globalBusy check in catalog_tab_capture.js MUST NOT match these; only .blockOverlay elements with opacity > 0.1 are truly blocking. Matching by class .blockUI alone causes permanent false-positive busy detection, blocking all tab switching (INV-254). The same applies to .maui-loading-div elements inside .blockMsg containers — they are cosmetic spinners for the blockUI modal, not content loading indicators, and must be excluded from workspace readiness predicates in CONFIG_WORKSPACE_READY_PREDICATE via .closest(\".blockMsg, .blockUI\") filter.",
+    "timestamp": "2026-11-21T13:37:30.955Z"
+  },
+  {
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "chassis": "DL380_Gen12",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/INVARIANTS.md#inv-265",
+    "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
+    "hardwareCompatibilityCertified": false,
+    "deltaId": "LEARN_CS_ANTI_OVERWRITE_AND_OPTION_SUFFIX_20261121",
+    "ruleType": "WORKFLOW_LIFECYCLE_BADGE_ADVISORY",
+    "rawMessage": "build_catalog.js must preserve extracted [CS], [OB], [DS], [90], and [EOL] lifecycle badges against column-default Active overwrites, partition SOFTWARE_SUBSCRIPTION and SUPPORT_SERVICE rows out of hardware GPU/Transceiver tables, and preserve 6-character hardware localization suffixes such as R7R97A#AC3 ($0.00 No Localization) distinct from the base chassis SKU R7R97A ($19,746.00) while stripping factory FIO tags (#0D1/#OD1/#B19/#B21) (INV-265).",
+    "timestamp": "2026-11-21T13:37:31.010Z"
+  },
+  {
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "chassis": "DL380_Gen12",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/INVARIANTS.md#inv-266",
+    "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
+    "hardwareCompatibilityCertified": false,
+    "deltaId": "LEARN_ALLETRA_MP_NINJA_CORE_OCA_ADAPTATION_20261121",
+    "ruleType": "WORKFLOW_STORAGE_SIZING_HANDOFF_ADVISORY",
+    "rawMessage": "For flagship HPE Alletra Storage MP B10000 and X10000, size core storage architecture (controller nodes, Switchless B10100 S0B84A [up to 24 internal drives, 0-3 JBOFs, max 24/72 drives, no backend switches] vs. Switched B10200 S1R06A [0 internal drives, 1-8 mandatory JBOFs, max 384 drives, mandatory backend NVMe-oF switches], NVMe drives, DRR capacity, performance, and power) in HPE Ninja Online (capture_ninja_online_sizing.js) and export OCA JSON. After importing the JSON back into HPE OCA, adapt optical transceivers (SFPs/QSFPs), cabling, and Pointnext/Tech Care support services (Services -> Edit) and run final CLIC validation in OCA. Never mix B101xx switchless and B102xx switched controller nodes (INV-266).",
+    "timestamp": "2026-11-21T13:37:31.067Z"
+  },
+  {
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "chassis": "DL380_Gen12",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/INVARIANTS.md#inv-266",
+    "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
+    "hardwareCompatibilityCertified": false,
+    "deltaId": "LEARN_COLD_OCA_STEP1_DEFERRED_CLICK_20261121",
+    "ruleType": "WORKFLOW_TIMING_ADVISORY",
+    "rawMessage": "In navigate_oca.js, _sortAndFilterEligibleCandidates ranks global commercial CTO and Wizard cards ahead of KSA/Disconnected/Add-on variants. To prevent first-time cold WebLogic Step 1 timeouts, _clientSelectDropdownControls checks alreadyReady before re-firing change, buildSelectAndClickExpression defers button.click() via setTimeout(..., 50) so page navigation cannot destroy the CDP evaluation context before returning, and searchAndConfigureChassis uses a 120000ms selection timeout (INV-266).",
+    "timestamp": "2026-11-21T13:37:31.148Z"
+  },
+  {
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "chassis": "DL380_Gen12",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/INVARIANTS.md#inv-267",
+    "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
+    "hardwareCompatibilityCertified": false,
+    "deltaId": "LEARN_CANONICAL_SPECS_REPLAY_AND_NLM_FAILOVER_20261121",
+    "ruleType": "WORKFLOW_CAPTURE_COVERAGE_ADVISORY",
+    "rawMessage": "attribute_vectors.js loads multi-vendor matchers from scripts/config/vendors/*/policy.json and materializes compact canonicalSpecs on all active catalog rows for catalog_query_engine.js (Alletra 10k/B10000/X10000, DDR<N>, TDP/core bounds, hardware-only GPU filtering). portfolio_blindspots.js distinguishes PORTAL_COST_COLUMN_UNENTITLED and PRIVATE_UNPRICED/REGIONAL_NA_UNPRICED from zero-price anomalies, and nlm_transport.js fails over from cdp to httpx when headless CDP profile cookies expire after port 18801 disk-token healing (INV-267, INV-268).",
+    "timestamp": "2026-11-21T13:37:31.225Z"
+  },
+  {
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "chassis": "DL380_Gen12",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/INVARIANTS.md#inv-269",
+    "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
+    "hardwareCompatibilityCertified": false,
+    "deltaId": "LEARN_NLM_UNIFIED_PROFILE_WMI_PORT_MAP_20261121",
+    "ruleType": "WORKFLOW_NLM_AUTH_PERSISTENCE_ADVISORY",
+    "rawMessage": "To prevent daily NotebookLM AuthenticationError expiration of rotating Google cookies (__Secure-1PSIDRTS, SIDCC, SNlM0e), nlm_interactive_auth.js (port 18801) and notebooklm-mcp-cli / gemini-notebook-mcp (run_headless_auth) MUST share the unified profile directory ~/.notebooklm-mcp-cli/chrome-profiles/<profile> (with one-time Local State + Default/Network/Cookies migration from %LOCALAPPDATA%\\NlmInteractiveChrome via syncLegacyInteractiveProfile). On Windows, spawnChromeDetached MUST launch Chrome via WMI Win32_Process.Create (without detached:true when windowsHide:true is set on the PowerShell launcher) to escape KILL_ON_JOB_CLOSE, and registerPortMapEntry MUST use netstat.exe -ano -p tcp to write {\"18801\":{\"profile\":\"default\",\"pid\":<pid>}} to ~/.notebooklm-mcp-cli/chrome-port-map.json so find_existing_nlm_chrome and run_headless_auth reuse port 18801 directly without spawning conflicting port 9223 browsers (INV-269).",
+    "timestamp": "2026-11-21T13:37:31.273Z"
   }
 ]

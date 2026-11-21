@@ -1,6 +1,288 @@
 [
   {
     "summary": {
+      "runId": "run_DL385_Gen11_1795262259324",
+      "sessionName": "DL385_Gen11",
+      "startTime": "2026-11-21T11:57:39.323Z",
+      "endTime": "2026-11-21T11:57:44.380Z",
+      "durationMs": 5057,
+      "durationSec": "5.06",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 750,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 750,
+      "validationStats": {
+        "totalEntries": 102,
+        "totalSKUs": 750,
+        "validSKUs": 750,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 5,
+        "zeroPriceSKUs": 26,
+        "priceErrors": 0,
+        "ruleCount": 181,
+        "categoryCount": 15
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-21T11:57:39.324Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/ProLiant/Gen11/DL385_Gen11/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/ProLiant/Gen11/DL385_Gen11/DL385_Gen11_Catalog.json",
+          "chassisLabel": "DL385 Gen11"
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:57:41.259Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 71,
+          "totalUniqueSKUs": 750,
+          "incrementalStats": {
+            "totalScrapedSkus": 750,
+            "unchangedSkusCount": 669,
+            "modifiedSkusCount": 18,
+            "addedSkusCount": 63,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:57:41.269Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 102,
+            "totalSKUs": 750,
+            "validSKUs": 750,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 5,
+            "zeroPriceSKUs": 26,
+            "priceErrors": 0,
+            "ruleCount": 181,
+            "categoryCount": 15
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:57:44.379Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/ProLiant/Gen11/DL385_Gen11/DL385_Gen11_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 750,
+      "classified": 750,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL385_Gen11_1795196059965",
+      "sessionName": "DL385_Gen11",
+      "startTime": "2026-11-20T17:34:19.962Z",
+      "endTime": "2026-11-20T17:34:30.737Z",
+      "durationMs": 10775,
+      "durationSec": "10.78",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 687,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 687,
+      "validationStats": {
+        "totalEntries": 101,
+        "totalSKUs": 687,
+        "validSKUs": 687,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 5,
+        "zeroPriceSKUs": 26,
+        "priceErrors": 0,
+        "ruleCount": 180,
+        "categoryCount": 15
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-20T17:34:19.965Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/.catalog-staging/staging_DL385_Gen11_1795196058847/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/.catalog-staging/staging_DL385_Gen11_1795196058847/DL385_Gen11_Catalog.json",
+          "chassisLabel": "DL385 Gen11"
+        }
+      },
+      {
+        "timestamp": "2026-11-20T17:34:29.307Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 71,
+          "totalUniqueSKUs": 687,
+          "incrementalStats": {
+            "totalScrapedSkus": 687,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 687,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T17:34:29.336Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 101,
+            "totalSKUs": 687,
+            "validSKUs": 687,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 5,
+            "zeroPriceSKUs": 26,
+            "priceErrors": 0,
+            "ruleCount": 180,
+            "categoryCount": 15
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T17:34:30.737Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/.catalog-staging/staging_DL385_Gen11_1795196058847/DL385_Gen11_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 687,
+      "classified": 687,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL385_Gen11_1795195760738",
+      "sessionName": "DL385_Gen11",
+      "startTime": "2026-11-20T17:29:20.736Z",
+      "endTime": "2026-11-20T17:29:24.543Z",
+      "durationMs": 3807,
+      "durationSec": "3.81",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 687,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 687,
+      "validationStats": {
+        "totalEntries": 101,
+        "totalSKUs": 687,
+        "validSKUs": 687,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 5,
+        "zeroPriceSKUs": 26,
+        "priceErrors": 0,
+        "ruleCount": 180,
+        "categoryCount": 15
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-20T17:29:20.738Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/.catalog-staging/staging_DL385_Gen11_1795195760400/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/.catalog-staging/staging_DL385_Gen11_1795195760400/DL385_Gen11_Catalog.json",
+          "chassisLabel": "DL385 Gen11"
+        }
+      },
+      {
+        "timestamp": "2026-11-20T17:29:24.032Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 71,
+          "totalUniqueSKUs": 687,
+          "incrementalStats": {
+            "totalScrapedSkus": 687,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 687,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T17:29:24.048Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 101,
+            "totalSKUs": 687,
+            "validSKUs": 687,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 5,
+            "zeroPriceSKUs": 26,
+            "priceErrors": 0,
+            "ruleCount": 180,
+            "categoryCount": 15
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T17:29:24.543Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/.catalog-staging/staging_DL385_Gen11_1795195760400/DL385_Gen11_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 687,
+      "classified": 687,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_DL385_Gen11_1792574601376",
       "sessionName": "DL385_Gen11",
       "startTime": "2026-10-21T09:23:21.371Z",
@@ -31,8 +313,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL385_Gen11_1792574600640\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL385_Gen11_1792574600640\\DL385_Gen11_Catalog.json",
+          "rawInputPath": "outputs/temp/staging_DL385_Gen11_1792574600640/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/staging_DL385_Gen11_1792574600640/DL385_Gen11_Catalog.json",
           "chassisLabel": "DL385 Gen11"
         }
       },
@@ -80,7 +362,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL385_Gen11_1792574600640\\DL385_Gen11_Catalog.json"
+          "path": "outputs/temp/staging_DL385_Gen11_1792574600640/DL385_Gen11_Catalog.json"
         }
       }
     ],

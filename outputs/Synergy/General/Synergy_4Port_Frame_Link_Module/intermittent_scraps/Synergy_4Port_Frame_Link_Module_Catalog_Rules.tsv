@@ -44,6 +44,5 @@ Networking	SFP Transceivers	max 4	Configuration Rule	JD096C conditional visibili
 Cables & Enablement Kits	OM3 Fibre Cables	max 4	Configuration Rule	Selection constraint for OM3 Fibre Cables: max 4
 Cables & Enablement Kits	OM4 Fibre Cables	max 4	Configuration Rule	Selection constraint for OM4 Fibre Cables: max 4
 Cables & Enablement Kits	CAT6A Cables	max 4	Configuration Rule	Selection constraint for CAT6A Cables: max 4
-Cables & Enablement Kits	CAT6A Cables	max 4	Configuration Rule	861414-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Networking	1Gb Transceivers for Management Ports Only	max 2	Configuration Rule	Selection constraint for 1Gb Transceivers for Management Ports Only: max 2
 Transceivers	Configuration Rules	Max quantity of product limited by space available.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Max quantity of product limited by space available.

@@ -1,0 +1,22 @@
+Rule ID	Rule Type	Section	Constraint / Reason	Affected SKU Count	Affected SKUs
+RULE_1	CONDITIONAL_VISIBILITY	Storage Preferences	R7C77A is only supported on rack-less solutions for S0R21A, S0S41A, S0S38A, S0S40A, S0S39A, S0S43A, S4V66A, S4V67A, S0R21B, S0S41B, S4V66B, S4V67B nodes	1	Arcus_ACPower_LowLine_WW_Intl
+RULE_2	CONDITIONAL_VISIBILITY	Installation Options	Not applicable for S1R06A, S5S40A, R7D02A, R7D03A, S0S42A and S0R20A	1	No_Installation_Services
+RULE_3	CONDITIONAL_VISIBILITY	Controller Node Models	Max 2 Chassis	1	S0U32A
+RULE_4	CONDITIONAL_VISIBILITY	Controller Node Models	B series nodes only supported for upgrades	8	R7D02B, R7D03B, S0R20B, S0R21B, S0S41B, S0S42B, S4V66B, S4V67B
+RULE_5	CONDITIONAL_VISIBILITY	Controller Node Models	Max quantity of product limited by space available.	4	S4V66A, R7D03A, S0R21A, S0S38A
+RULE_6	CONDITIONAL_VISIBILITY	Controller Node Models	TAA isSelected	5	S4V67A, S0R20A, S0S40A, S0S41A, S0S42A
+RULE_7	CONDITIONAL_VISIBILITY	Controller Node Models	Hide B10140	2	S0S39A, S0S43A
+RULE_8	CONDITIONAL_VISIBILITY	Power Supplies	No Mix PowerSupply	3	R7C77A, R7C78A, R9Z97A
+RULE_9	CONDITIONAL_VISIBILITY	Power Supplies	If single Phase or threePhase is selected then DC Power Cables not supported 2	39	295633-B22, AF556A, AF568A, AF593A, P22173-B21, P36877-B21, P78148-B21, P78155-B21, P78164-B21, R1C66A, A0K02A, A0N33A, AF557A, AF558A, AF559A, AF560A, AF561A, AF562A, AF564A, AF565A, AF566A, AF567A, AF569A, AF570A, AF572A, AF573A, AF591A, P08315-B21, P78130-B21, P78131-B21, P78144-B21, P78145-B21, P78147-B21, P78156-B21, P78157-B21, P78384-B21, P78940-B21, P78941-B21, R1C65A
+RULE_10	CONDITIONAL_VISIBILITY	Power Supplies	Breaker Panel can be selected only if R7C78A is selected	2	G2H95A, Q9N54A
+RULE_11	CONDITIONAL_VISIBILITY	Drive Enclosure	TAA isSelected	1	S0S46A
+RULE_12	CONDITIONAL_VISIBILITY	Drive Enclosure	When S1J10A/S0S46A is selected, do not allow R8M59A to be selected	1	R8M59A
+RULE_13	CONDITIONAL_VISIBILITY	Drive Enclosure	Max quantity of product limited by space available.	6	S2T35A, JL271A, Q2F19A, R0Z25A, R0Z27A, R8M61A
+RULE_14	CONDITIONAL_VISIBILITY	Drive Enclosure	When R7D02A or R7D03A or S0S42A or S0R20A or R7D02B or R7D03B or S0S42B or S0R20B is selected, do not allow R8M59A or R9F77A to be selected (for new configurations and upgrades)	1	R9F77A
+RULE_15	CONDITIONAL_VISIBILITY	Capacity	Mixing is not allowed for initial configuration.	4	S1Z68A, R9H66A, R9H69A, R9H68A
+RULE_16	CONDITIONAL_VISIBILITY	Capacity	Mixing is not allowed for initial configuration.	2	S3L74A, S3L73A
+RULE_17	CONDITIONAL_VISIBILITY	Back-End Switches	If “dcPowerFlag” is selected then S1S69A not supported	1	S1S69A
+RULE_18	CONDITIONAL_VISIBILITY	Back-End Switches	S0A95A cannot be ordered with S3V78A/S4Q37A	2	S4Q37A, S3V78A
+RULE_19	CONDITIONAL_VISIBILITY	Software	The S0A99AAE / S0A98AAE applicable for the drives configured as Add-ons/upgrades only	2	S0A98AAE, S0A99AAE
+RULE_20	CONDITIONAL_VISIBILITY	Software	Max quantity of product limited by space available.	1	S0A99A
+RULE_21	CONDITIONAL_VISIBILITY	Software	This SKU can be selected only when HPE GreenLake = Yes	1	S1S85AAE

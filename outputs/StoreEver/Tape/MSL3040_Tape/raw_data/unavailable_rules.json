@@ -1,0 +1,87 @@
+{
+  "timestamp": "2026-11-20T08:21:40.903Z",
+  "chassisName": "MSL3040_Tape",
+  "totalUnavailableRules": 1,
+  "totalUnavailableSkus": 4,
+  "rules": [
+    {
+      "ruleId": "RULE_1",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Cables",
+      "reason": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "affectedSkusCount": 4,
+      "affectedSkus": [
+        "716197-B21",
+        "716199-B21",
+        "P35176-B21",
+        "P35175-B21"
+      ]
+    }
+  ],
+  "skus": [
+    {
+      "sku": "716197-B21",
+      "rawSku": "716197-B21",
+      "isPrivateSku": false,
+      "description": "HPE External 2.0m (6ft) Mini-SAS HD 4x to Mini-SAS HD 4x Cable",
+      "listPrice": 177,
+      "startDate": "10/23/2017",
+      "discontinuedDate": "08/31/2030",
+      "section": "Cables",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "716199-B21",
+      "rawSku": "716199-B21",
+      "isPrivateSku": false,
+      "description": "HPE External 4.0m (13ft) Mini-SAS HD 4x to Mini-SAS HD 4x Cable",
+      "listPrice": 287,
+      "startDate": "10/23/2017",
+      "discontinuedDate": "08/31/2030",
+      "section": "Cables",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P35176-B21",
+      "rawSku": "P35176-B21",
+      "isPrivateSku": false,
+      "description": "HPE External 12Gb Mini SAS High Density to Mini SAS High Density 4-lane 2m Fanout Cable",
+      "listPrice": 206,
+      "startDate": "01/10/2022",
+      "discontinuedDate": "08/31/2030",
+      "section": "Cables",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P35175-B21",
+      "rawSku": "P35175-B21",
+      "isPrivateSku": false,
+      "description": "HPE External 12Gb Mini SAS High Density to Mini SAS High Density 4-lane 4m Fanout Cable",
+      "listPrice": 369,
+      "startDate": "01/10/2022",
+      "discontinuedDate": "08/31/2030",
+      "section": "Cables",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    }
+  ]
+}

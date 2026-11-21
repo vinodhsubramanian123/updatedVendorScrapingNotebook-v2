@@ -1,7 +1,7 @@
 {
   "success": true,
   "spreadsheetId": "1GCEWGLOnkAaCWT7hY1Byy_MaWcols-kYCLxGxprsoMg",
-  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_f6a959c8-e68b-45b5-a019-e1fb538a7575.json",
+  "backupFile": "outputs/history/drive_backups/drive_backup_011f0249-1299-4f9b-bf26-e062efc7f342.json",
   "tabsWritten": [
     {
       "title": "Certified Catalog",
@@ -9,11 +9,11 @@
     },
     {
       "title": "Verified Learnings",
-      "rows": 117
+      "rows": 148
     },
     {
       "title": "Change Log",
-      "rows": 25
+      "rows": 28
     },
     {
       "title": "Sync Metadata",
@@ -37,7 +37,7 @@
     },
     {
       "title": "Rules & Constraints",
-      "rows": 23
+      "rows": 16
     },
     {
       "title": "Software & Licenses",
@@ -61,35 +61,33 @@
     },
     {
       "title": "Metadata",
-      "rows": 22
+      "rows": 23
     }
   ],
   "readbackVerified": true,
   "readbackFingerprints": {
-    "Certified Catalog": "12fbb1cff9802a3c0306af9f45ef81d56e511fd60d35bdc8798a45a1ae2e316f",
-    "Verified Learnings": "31f15a15a0dcc5e1a83caddc05668a305316874c481abf29771e88e204514fa1",
-    "Change Log": "49a978cb8061c189e00b3e7d4e67e9aa82c9afb606c9c5f93db87d1f89990d9b",
-    "Sync Metadata": "d112701fcdea3382ac7b0b143d9ed0347fb2c8a14488d8bf9b1e1d0e1c4b5129",
-    "Category Summary": "82fa7e3e818a1ebeb4f92c2bbd29c54f0a740df2a73debcd5e977462591aa10e",
-    "All SKUs": "82e9a2727f96df2ea7e063ad1813d18f5742ea4843a6b008ea9c0eb7194b836b",
-    "Chassis Variants": "6b1e10d30e254460eac17dfebbee04fcfe63f228521e24efa9a065e360a7d63e",
+    "Certified Catalog": "f00ae9c0249ce0c494b97fff39b9cc7d90904183b05735fa53137187dd3d4239",
+    "Verified Learnings": "db9aee399067164d074c9965fe6a98fe7e859996caab815ec19f22d60f3c94e9",
+    "Change Log": "9014ff73d1f56f9da7be736d50b404dab9104db270e42f860845741854314661",
+    "Sync Metadata": "caebb4dc4473b8d77e5920fc5fd19c059267ce3138efa257bd2a9ff201c0808a",
+    "Category Summary": "85ee5ecfdd8a21937c3fd8b262f55d8e190d6dea4911d90229958bd8e4a62960",
+    "All SKUs": "158c928eb07d894a954f0a9f7666e8d2cba08ad3820fe20cd119e41164e14b91",
+    "Chassis Variants": "842c3c500fe14e442403c037684d100c7c18e876b4b7ebd981861b51f459fffc",
     "Chassis Options Matrix": "5464c885a6563525371f95164a120300160c6ee9747b353a771ce6959dbf3f71",
-    "Rules & Constraints": "a761388c167aeb93f567f3593b5ba62b7fc1ab2307fddbf54c60992640339929",
-    "Software & Licenses": "34131cca4cfe9043e9e479d1840014c3e66e2aca2aabacd96db8402b0fcad5a2",
-    "Price History Timeline": "14a758d7c6c5a79b31e27d4a55d8e1db12403c33c18b9447cd253c54aa6d0d33",
-    "Chassis": "01e58ce93e286fa73b0d281c8ad4497f4522a09bc7ffa4997ac83987762fda43",
-    "Cables & Enablement Kits": "efc7de40efdda527cf8bb93c041991dd6f7df49088c23612b90e0ffe0c05c392",
+    "Rules & Constraints": "dbdd2609d71d9bfc5f0d97b2779842d2b566adcb175c929f987cfe5f6c4a2e43",
+    "Software & Licenses": "901ce453351d7cb05b23cad3163ab8c9708824ece51aeacbafe6842a0d88301c",
+    "Price History Timeline": "bda5fdd6a00cf9f67778e14242083da4042434cdbd7be8154b6bfee528185d6d",
+    "Chassis": "62682d9a4b457e557239f231e8578490ed5eabaeefb8d18b6df44c7225dd355a",
+    "Cables & Enablement Kits": "799b196a48ed9f28da797fa52f3a26e62d9eabff414b6c858537807037c95acf",
     "Supply Chain & Lead Times": "dc8c7c48eaef7f95d9a0d01f1e31ddd3b21f407ea4eae07f4cc8f691c5844b1e",
-    "Metadata": "660e4669c4f96d95288e486a1379cceefbec0e211d3ba8c9a168d60793b85cd3"
+    "Metadata": "8705c0056b8d48419a09c2b8baae5397b6a38e52000bf58cc24d833011374de9"
   },
-  "verifiedAt": "2026-11-12T03:26:55.755Z",
+  "verifiedAt": "2026-11-21T13:48:46.820Z",
   "fingerprints": {
-    "catalog": "12fbb1cff9802a3c0306af9f45ef81d56e511fd60d35bdc8798a45a1ae2e316f",
-    "learnings": "64a95b9108cd6890a947bd85aecafa32b0d3cf1a69017ea017f2236f352c84f2",
-    "changes": "49a978cb8061c189e00b3e7d4e67e9aa82c9afb606c9c5f93db87d1f89990d9b",
-    "workbook": "fd6a2ebb37f715a7881929143bf3cef520a1f655469a27b909852a9b61ec1440",
-    "combined": "1c57aae8878a5831c32177dcb6c1b36b4df2310c700807df1f2c6513e406c2a5"
-  },
-  "created": true,
-  "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1GCEWGLOnkAaCWT7hY1Byy_MaWcols-kYCLxGxprsoMg/edit"
+    "catalog": "f00ae9c0249ce0c494b97fff39b9cc7d90904183b05735fa53137187dd3d4239",
+    "learnings": "36be4d34a60b2028a40d241128e94ef5d87ee38b0c9409f6d0e210775ef33bf8",
+    "changes": "9014ff73d1f56f9da7be736d50b404dab9104db270e42f860845741854314661",
+    "workbook": "1ded4cf724888199274d5ff91b728c1ab5f4da70d37e6a1645356b250b3522fe",
+    "combined": "b6e4ff1f9b5856333e331b60c01b8299158a71fbb3f340d5bef3fcb8f0cdb546"
+  }
 }

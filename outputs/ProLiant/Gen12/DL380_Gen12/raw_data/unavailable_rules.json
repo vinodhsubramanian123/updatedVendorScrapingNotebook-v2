@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-11-12T10:51:12.425Z",
+  "timestamp": "2026-11-20T09:56:38.295Z",
   "chassisName": "DL380_Gen12",
-  "totalUnavailableRules": 36,
-  "totalUnavailableSkus": 115,
+  "totalUnavailableRules": 37,
+  "totalUnavailableSkus": 121,
   "rules": [
     {
       "ruleId": "RULE_1",
@@ -30,6 +30,21 @@
     },
     {
       "ruleId": "RULE_3",
+      "ruleType": "BTO_DISALLOWED",
+      "section": "Memory",
+      "reason": "BTO Memories are not allowed in CTO Base Model.",
+      "affectedSkusCount": 6,
+      "affectedSkus": [
+        "P69726-B21",
+        "P69727-B21",
+        "P69728-B21",
+        "P69729-B21",
+        "P69730-B21",
+        "P73447-B21"
+      ]
+    },
+    {
+      "ruleId": "RULE_4",
       "ruleType": "MEMORY_MIXING",
       "section": "Memory",
       "reason": "96GB Memory cannot be mixed with any other Memory.",
@@ -40,7 +55,7 @@
       ]
     },
     {
-      "ruleId": "RULE_4",
+      "ruleId": "RULE_5",
       "ruleType": "MEMORY_MIXING",
       "section": "Memory",
       "reason": "128GB Memory cannot be mixed with any other Memory.",
@@ -51,7 +66,7 @@
       ]
     },
     {
-      "ruleId": "RULE_5",
+      "ruleId": "RULE_6",
       "ruleType": "MEMORY_MIXING",
       "section": "Memory",
       "reason": "Mixing of 3DS and non 3DS memory is not allowed.",
@@ -61,7 +76,7 @@
       ]
     },
     {
-      "ruleId": "RULE_6",
+      "ruleId": "RULE_7",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Memory",
       "reason": "Mixing of 6400B and 8000B Memory is NOT allowed.",
@@ -71,7 +86,7 @@
       ]
     },
     {
-      "ruleId": "RULE_7",
+      "ruleId": "RULE_8",
       "ruleType": "CHASSIS_GATE",
       "section": "Smart Chassis",
       "reason": "Supported with EDSFF CTO Server only.",
@@ -81,7 +96,7 @@
       ]
     },
     {
-      "ruleId": "RULE_8",
+      "ruleId": "RULE_9",
       "ruleType": "CHASSIS_GATE",
       "section": "Smart Chassis",
       "reason": "Supported with 8LFF and 12LFF CTO Server only.",
@@ -94,7 +109,7 @@
       ]
     },
     {
-      "ruleId": "RULE_9",
+      "ruleId": "RULE_10",
       "ruleType": "CHASSIS_GATE",
       "section": "Smart Chassis",
       "reason": "Supported with 8LFF CTO Server only.",
@@ -104,7 +119,7 @@
       ]
     },
     {
-      "ruleId": "RULE_10",
+      "ruleId": "RULE_11",
       "ruleType": "CHASSIS_GATE",
       "section": "Smart Chassis",
       "reason": "Nvme option not available with 8sff smart chassis choice.",
@@ -130,7 +145,7 @@
       ]
     },
     {
-      "ruleId": "RULE_11",
+      "ruleId": "RULE_12",
       "ruleType": "SLOT_COLLISION",
       "section": "Smart Chassis",
       "reason": "Tertiary x8x16 Riser and OCPA x16/ CPU1 OCPB x8 cannot be selected together.",
@@ -140,7 +155,7 @@
       ]
     },
     {
-      "ruleId": "RULE_12",
+      "ruleId": "RULE_13",
       "ruleType": "CHASSIS_GATE",
       "section": "Smart Chassis",
       "reason": "Supported with EDSFF CTO Server only.",
@@ -151,7 +166,7 @@
       ]
     },
     {
-      "ruleId": "RULE_13",
+      "ruleId": "RULE_14",
       "ruleType": "CHASSIS_GATE",
       "section": "Smart Chassis",
       "reason": "Selected Smart Chassis Configuration is not valid",
@@ -163,7 +178,7 @@
       ]
     },
     {
-      "ruleId": "RULE_14",
+      "ruleId": "RULE_15",
       "ruleType": "CHASSIS_GATE",
       "section": "Storage Devices",
       "reason": "Supported with 8LFF and 12LFF CTO Server only.",
@@ -178,7 +193,7 @@
       ]
     },
     {
-      "ruleId": "RULE_15",
+      "ruleId": "RULE_16",
       "ruleType": "CHASSIS_GATE",
       "section": "Storage Devices",
       "reason": "Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.",
@@ -190,7 +205,7 @@
       ]
     },
     {
-      "ruleId": "RULE_16",
+      "ruleId": "RULE_17",
       "ruleType": "CHASSIS_GATE",
       "section": "Storage Devices",
       "reason": "Supported with 12EDSFF CTO Server only.",
@@ -202,7 +217,7 @@
       ]
     },
     {
-      "ruleId": "RULE_17",
+      "ruleId": "RULE_18",
       "ruleType": "BTO_DISALLOWED",
       "section": "Storage Devices",
       "reason": "BTO products are not allowed in CTO Base Model.",
@@ -212,7 +227,7 @@
       ]
     },
     {
-      "ruleId": "RULE_18",
+      "ruleId": "RULE_19",
       "ruleType": "CHASSIS_GATE",
       "section": "Storage Devices",
       "reason": "Supported with 8LFF CTO Server only.",
@@ -222,7 +237,7 @@
       ]
     },
     {
-      "ruleId": "RULE_19",
+      "ruleId": "RULE_20",
       "ruleType": "BTO_DISALLOWED",
       "section": "Storage Devices",
       "reason": "BTO products are not allowed in CTO Base Model.",
@@ -233,7 +248,7 @@
       ]
     },
     {
-      "ruleId": "RULE_20",
+      "ruleId": "RULE_21",
       "ruleType": "CHASSIS_GATE",
       "section": "Factory Configuration Settings",
       "reason": "Supported with 12EDSFF CTO Server only.",
@@ -244,7 +259,7 @@
       ]
     },
     {
-      "ruleId": "RULE_21",
+      "ruleId": "RULE_22",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Networking",
       "reason": "Private Product is not valid for current customer account",
@@ -254,7 +269,7 @@
       ]
     },
     {
-      "ruleId": "RULE_22",
+      "ruleId": "RULE_23",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Networking",
       "reason": "Private Product is not valid for current customer account",
@@ -264,7 +279,7 @@
       ]
     },
     {
-      "ruleId": "RULE_23",
+      "ruleId": "RULE_24",
       "ruleType": "BTO_DISALLOWED",
       "section": "Networking",
       "reason": "BTO products are not allowed in CTO Base Model.",
@@ -279,7 +294,7 @@
       ]
     },
     {
-      "ruleId": "RULE_24",
+      "ruleId": "RULE_25",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Networking",
       "reason": "Private Product is not valid for current customer account",
@@ -290,7 +305,7 @@
       ]
     },
     {
-      "ruleId": "RULE_25",
+      "ruleId": "RULE_26",
       "ruleType": "AMBIENT_GATE",
       "section": "Graphics Options",
       "reason": "RTX Pro 6000/ RTX Pro 6000D/ H200 NVL GPU and 30C Ambient Temperature cannot be selected together.",
@@ -302,7 +317,7 @@
       ]
     },
     {
-      "ruleId": "RULE_26",
+      "ruleId": "RULE_27",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Graphics Options",
       "reason": "Private Product is not valid for current customer account",
@@ -312,7 +327,7 @@
       ]
     },
     {
-      "ruleId": "RULE_27",
+      "ruleId": "RULE_28",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Power Supplies",
       "reason": "Mixing of Power supplies are not allowed.",
@@ -324,7 +339,7 @@
       ]
     },
     {
-      "ruleId": "RULE_28",
+      "ruleId": "RULE_29",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Power Supplies",
       "reason": "If AC Power Supply is selected then only AC Power Cords should be in the drop-down.",
@@ -334,7 +349,7 @@
       ]
     },
     {
-      "ruleId": "RULE_29",
+      "ruleId": "RULE_30",
       "ruleType": "PAIRED_KIT_REQUIRED",
       "section": "Power Supplies",
       "reason": "HPE 1600W -48VDC Pwr Cbl Lug Kit(P36877-B21) Supported only with HPE 1600W FS -48VDC Ht Plg PS Kit (P17023-B21).",
@@ -344,7 +359,7 @@
       ]
     },
     {
-      "ruleId": "RULE_30",
+      "ruleId": "RULE_31",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Power Supplies",
       "reason": "Max quantity of product limited by space available.",
@@ -378,7 +393,7 @@
       ]
     },
     {
-      "ruleId": "RULE_31",
+      "ruleId": "RULE_32",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Power Supplies",
       "reason": "If AC Power Supply is selected then only AC Power Cords should be in the drop-down.",
@@ -388,7 +403,7 @@
       ]
     },
     {
-      "ruleId": "RULE_32",
+      "ruleId": "RULE_33",
       "ruleType": "BTO_DISALLOWED",
       "section": "Power Supplies",
       "reason": "BTO products are not allowed in CTO Base Model.",
@@ -399,7 +414,7 @@
       ]
     },
     {
-      "ruleId": "RULE_33",
+      "ruleId": "RULE_34",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Private Cloud Business Edition",
       "reason": "Not Supported ProStack Server Software",
@@ -409,7 +424,7 @@
       ]
     },
     {
-      "ruleId": "RULE_34",
+      "ruleId": "RULE_35",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "HPE Compute Ops Management",
       "reason": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
@@ -420,7 +435,7 @@
       ]
     },
     {
-      "ruleId": "RULE_35",
+      "ruleId": "RULE_36",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "HPE Compute Ops Management",
       "reason": "For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers",
@@ -432,7 +447,7 @@
       ]
     },
     {
-      "ruleId": "RULE_36",
+      "ruleId": "RULE_37",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Virtualization",
       "reason": "Private Product is not valid for current customer account",
@@ -536,6 +551,102 @@
       "section": "Memory",
       "ruleType": "MEMORY_MIXING",
       "ineligibilityReason": "Mixing of x4 and x8 memory is not allowed",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P69726-B21",
+      "rawSku": "P69726-B21",
+      "isPrivateSku": false,
+      "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+      "listPrice": 7439,
+      "startDate": "02/24/2025",
+      "discontinuedDate": "11/30/2027",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P69727-B21",
+      "rawSku": "P69727-B21",
+      "isPrivateSku": false,
+      "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+      "listPrice": 13909,
+      "startDate": "09/24/2024",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P69728-B21",
+      "rawSku": "P69728-B21",
+      "isPrivateSku": false,
+      "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+      "listPrice": 28532,
+      "startDate": "09/24/2024",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P69729-B21",
+      "rawSku": "P69729-B21",
+      "isPrivateSku": false,
+      "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+      "listPrice": 47056,
+      "startDate": "11/04/2024",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P69730-B21",
+      "rawSku": "P69730-B21",
+      "isPrivateSku": false,
+      "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+      "listPrice": 60190,
+      "startDate": "09/24/2024",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P73447-B21",
+      "rawSku": "P73447-B21",
+      "isPrivateSku": false,
+      "description": "HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart Memory Kit",
+      "listPrice": 133186,
+      "startDate": "02/24/2025",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
       "supplyBadge": "",
       "supplyTitle": "",
       "isSelectable": false,

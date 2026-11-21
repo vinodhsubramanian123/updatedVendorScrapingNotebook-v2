@@ -2,7 +2,7 @@
   "query": "DL360 Gen12",
   "selectedSku": "P72176-B21",
   "source": "HPE OCA Product Search via authenticated CDP session",
-  "capturedAt": "2026-11-16T17:55:14.322Z",
+  "capturedAt": "2026-11-20T08:49:26.392Z",
   "deliveryEstimate": "",
   "candidates": [
     {
@@ -173,7 +173,7 @@
     {
       "type": "direct-button",
       "cardSelector": "[data-cand-idx=\"7\"]",
-      "text": "DL360 Gen12 Compute-intensive, data-driven workloads in enterprise data centers and hybrid cloud environments The HPE ProLiant DL360 Gen12 Configure to Order Server with two Intel Xeon 6527P 24 core processors, 256 GB total DDR5 6400 MHz memory, and two 1.92TB SATA read-intensive SSDs is optimized for virtualization environments, supporting large-scale virtual machine deployments and containerized workloads. It is well-suited for database management, particularly for transactional and analytical workloads that benefit from fast read operations. The server also excels in data analytics, artificial intelligence, and machine learning tasks that require high processing capacity and memory bandwidth. - 2x 3.0GHz 24-core - 256GB - 1.92TB SATA 6G Read Intensive SFF BC Multi Vendor SSD i Unlocked Compare STs USD 34,412.42 Estimated Net Price Customize Quote",
+      "text": "DL360 Gen12 Versatile Performance, High-Capacity Storage, Five-Year Management The HPE ProLiant DL360 Gen12 10SFF/20EDSFF Hybrid NC Configure-to-order Server combines versatility and performance for modern data center needs. Dual Intel Xeon 6515P 16-core processors and 256GB (8x32GB) DDR5 memory deliver robust compute power for virtualization, business applications, and cloud workloads. Four high-capacity 7.68TB NVMe Gen5 EDSFF SSDs provide ultra-fast, read-optimized storage for rapid data access and scalability. The included 5-year HPE Compute Ops Management Standard SaaS ensures secure, streamlined cloud-based server management for ongoing operational efficiency. - i Unlocked Compare STs USD 73,572.38 Estimated Net Price Customize Quote",
       "sku": "DL360",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
@@ -186,8 +186,8 @@
     },
     {
       "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"9\"]",
-      "text": "DL360 Gen12 Versatile Performance, High-Capacity Storage, Five-Year Management The HPE ProLiant DL360 Gen12 10SFF/20EDSFF Hybrid NC Configure-to-order Server combines versatility and performance for modern data center needs. Dual Intel Xeon 6515P 16-core processors and 256GB (8x32GB) DDR5 memory deliver robust compute power for virtualization, business applications, and cloud workloads. Four high-capacity 7.68TB NVMe Gen5 EDSFF SSDs provide ultra-fast, read-optimized storage for rapid data access and scalability. The included 5-year HPE Compute Ops Management Standard SaaS ensures secure, streamlined cloud-based server management for ongoing operational efficiency. - i Unlocked Compare STs USD 73,572.38 Estimated Net Price Customize Quote",
+      "cardSelector": "[data-cand-idx=\"8\"]",
+      "text": "DL360 Gen12 DL360 Gen12 Optimized for Virtualization, Containers, Networking, Edge, Caching & Read-Heavy NVMe Workloads The HPE ProLiant Compute DL360 Gen12 Configure to Order Server with two Intel Xeon 6505P 12-core processors, 128 GB DDR5-6400 memory, and two 3.84 TB NVMe Read Intensive SSDs is best suited to compact, high-density infrastructure workloads that need balanced CPU capacity, fast read performance, and moderate memory. With HPE Zerto disaster recovery SW helping organizations move faster, recover smarter, and operate through disruption with continuous protection, application mobility, and resilience built for the AI era. - 2x 2.2GHz 12-core - 128GB - HPE 3.84TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 Static V2 Multi Vendor SSD i Unlocked Compare STs USD 47,367.71 Estimated Net Price Customize Quote",
       "sku": "DL360",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
@@ -1266,7 +1266,7 @@
     },
     {
       "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"8\"]",
+      "cardSelector": "[data-cand-idx=\"9\"]",
       "text": "DL360 Gen12 High-Capacity Server for Enterprise Data-Driven Workloads The HPE ProLiant DL360 Gen12 is a performance-driven 1U server designed to meet the demands of enterprise workloads requiring a balance of compute power, memory, and high-capacity storage. Featuring an Intel Xeon 6737P 32-core processor, 1024GB of memory, and a dual-storage configuration with 30.72TB SATA 6G read-intensive SSD and 7.68TB NVMe Gen4 high-performance read-intensive SSD, it excels in virtualization, data analytics, and storage-heavy applications. Supported by HPE 3-Year Tech Care Essential Service, this server ensures robust performance and dependable support for critical operations. - i Unlocked Compare STs USD 105,857.59 Estimated Net Price Customize Quote",
       "sku": "DL360",
       "listPriceUsd": 0,
@@ -1283,20 +1283,6 @@
       "cardSelector": "[data-cand-idx=\"10\"]",
       "text": "DL360 Gen12 High-Performance Server for Demanding Enterprise Workloads The HPE ProLiant DL360 Gen12 is a cutting-edge, high-performance 1U server designed for enterprise workloads requiring massive compute power, memory capacity, and storage scalability. Equipped with an Intel Xeon 6737P 32-core processor, an unmatched 4096GB of memory, and a combination of 15.36TB NVMe Gen5 mainstream performance SSD and 30.72TB SATA 6G read-intensive SSD storage, this server is ideal for virtualization, big data analytics, and high-performance computing (HPC) applications. Supported by HPE 3-Year Tech Care Essential Service, it ensures reliable performance and comprehensive support for mission-critical operations. - i Unlocked Compare STs USD 756,361.92 Estimated Net Price Customize Quote",
       "sku": "DL360",
-      "listPriceUsd": 0,
-      "availability": "Available in OCA product catalog",
-      "leadTime": "",
-      "deliveryLabel": "",
-      "isBto": true,
-      "isTaa": false,
-      "isGta": false,
-      "isCto": false
-    },
-    {
-      "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"11\"]",
-      "text": "DL360Gen12 DL360Gen12_6527P_256GB Test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test - i Unlocked Compare STs USD 48,572.37 Estimated Net Price Customize Quote",
-      "sku": "DL360GEN12",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",

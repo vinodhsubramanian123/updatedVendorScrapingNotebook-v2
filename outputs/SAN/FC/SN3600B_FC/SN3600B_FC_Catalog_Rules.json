@@ -4,19 +4,22 @@
     "model": "SN3600B_FC",
     "family": "SAN",
     "generation": "FC",
+    "pillar": "NETWORKING",
+    "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-09-22",
-    "scrapeTimestamp": "2026-09-22T02:35:27.880Z",
-    "totalSubcategories": 9,
-    "totalUniqueSKUs": 58,
-    "totalTables": 9,
+    "scrapeTimestamp": "2026-09-22T02:35:27.250Z",
+    "builtAt": "2026-11-21T12:56:33.112Z",
+    "totalSubcategories": 11,
+    "totalUniqueSKUs": 79,
+    "totalTables": 11,
     "diffSummary": {
-      "added": 1,
+      "added": 22,
       "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
       "attributeChanged": 34,
-      "priceAndAttributeChanged": 22,
-      "unchanged": 1,
+      "priceAndAttributeChanged": 23,
+      "unchanged": 0,
       "reinstated": 0,
       "discontinuedTotal": 0
     },
@@ -25,18 +28,18 @@
       "scrapeDate": "2026-09-22",
       "categoryBreakdown": {
         "Chassis": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 19746,
+          "minPrice": 19746,
+          "maxPrice": 19746,
           "subcategories": {
             "Variants": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 19746,
+              "avgPrice": 19746
             }
           },
-          "avgPrice": 0
+          "avgPrice": 19746
         },
         "Networking": {
           "totalSKUs": 16,
@@ -58,6 +61,11 @@
               "totalSKUs": 7,
               "totalPrice": 90554,
               "avgPrice": 12936.285714285714
+            },
+            "Optical Transceivers & DAC Cables": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
             }
           },
           "avgPrice": 11481.3125
@@ -96,6 +104,11 @@
               "totalSKUs": 8,
               "totalPrice": 3960,
               "avgPrice": 495
+            },
+            "Switch-PDU Power Cord": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
             }
           },
           "avgPrice": 175.94736842105263
@@ -117,30 +130,34 @@
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 58,
-      "unchangedSkusCount": 34,
-      "modifiedSkusCount": 23,
-      "addedSkusCount": 1,
-      "removedSkusCount": 0,
-      "estimatedTokensSaved": 5100,
-      "estimatedProcessingTimeSavedMs": 6800
+      "totalScrapedSkus": 79,
+      "unchangedSkusCount": 57,
+      "modifiedSkusCount": 1,
+      "addedSkusCount": 21,
+      "removedSkusCount": 4,
+      "estimatedTokensSaved": 0,
+      "estimatedProcessingTimeSavedMs": 0
     },
+    "snapshotFingerprint": "c5692c8824ab04c4204e32f968b43ab76afbaa2875b99a6bef69cf1c8dff74b4",
     "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-09-22T02:35:28.049Z"
+    "rulesGeneratedAt": "2026-11-21T12:56:33.412Z"
   },
   "chassisVariants": [
     {
       "sku": "R7R97A",
       "description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
       "formFactor": "Unknown",
-      "listPrice": 0,
-      "listPriceFormatted": "$0.00",
+      "listPrice": 19746,
+      "listPriceFormatted": "$19746.00",
       "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "2026-09-21",
       "discontinuedDate": "05/31/2028",
-      "constraint": "min 1, max 1 — Active OCA CTO chassis",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-22.json"
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-09-21: (no price) → 2026-09-22: $19746.00 [Δ Attr: CLIC Status: \"Active\" -> \"Valid\"; Speed Tier: \"(None)\" -> \"Unpublished\"]"
     }
   ],
   "chassisVariantMatrix": {
@@ -148,15 +165,115 @@
       "sku": "R7R97A",
       "description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
       "formFactor": "Unknown",
-      "listPrice": 0,
-      "listPriceFormatted": "$0.00",
+      "listPrice": 19746,
+      "listPriceFormatted": "$19746.00",
       "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "2026-09-21",
       "discontinuedDate": "05/31/2028",
-      "constraint": "min 1, max 1 — Active OCA CTO chassis",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-09-22.json"
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-09-21: (no price) → 2026-09-22: $19746.00 [Δ Attr: CLIC Status: \"Active\" -> \"Valid\"; Speed Tier: \"(None)\" -> \"Unpublished\"]"
     }
+  },
+  "smartChassisCombinations": [],
+  "solutionManifest": {
+    "commercialBreakdown": {
+      "hardware": 21306,
+      "support": 2705,
+      "services": 537,
+      "software": 0,
+      "total": 24548
+    },
+    "deliveryAndSupport": {
+      "iconId": "I155845745-01",
+      "edt": "14 - 18 days",
+      "configName": "OCA Config 2",
+      "attachedServices": [
+        {
+          "deviceTarget": "SN3600B/CN3360B Switch #1\nR7R97A",
+          "reactiveSupport": "HU4A6A5#ZTL HPE 5Y Tech Care Essential Service",
+          "installation": "HA113A1#5GA HPE Installation Service",
+          "deviceSpecific": ""
+        }
+      ]
+    },
+    "baselineHierarchy": [
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "R7R97A",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
+        "configName": "SN3600B/CN3360B Switch #1",
+        "unitPrice": 19746,
+        "extPrice": 19746,
+        "startDate": "06/07/2021",
+        "discDate": "06/30/2027"
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "QK735A",
+        "optionCode": "",
+        "quantity": 8,
+        "description": "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 15m Cable",
+        "configName": "SN3600B/CN3360B Switch #1",
+        "unitPrice": 195,
+        "extPrice": 1560,
+        "startDate": "03/03/2017",
+        "discDate": "11/30/2028"
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "HA113A1",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE Installation Service",
+        "configName": "SN3600B/CN3360B Switch #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "03/03/2017",
+        "discDate": "12/31/2050"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "HA113A1",
+        "optionCode": "5GA",
+        "quantity": 1,
+        "description": "HPE LowEnd SAN/Edge Switch/HAFM Inst SVC",
+        "configName": "SN3600B/CN3360B Switch #1",
+        "unitPrice": 537,
+        "extPrice": 537,
+        "startDate": "03/03/2017",
+        "discDate": "12/31/2050"
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "HU4A6A5",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE 5Y Tech Care Essential Service",
+        "configName": "SN3600B/CN3360B Switch #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "03/01/2021",
+        "discDate": "12/31/2050"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "HU4A6A5",
+        "optionCode": "ZTL",
+        "quantity": 1,
+        "description": "HPE SN3600B 24/8 8p 32G Swch Support",
+        "configName": "SN3600B/CN3360B Switch #1",
+        "unitPrice": 2705,
+        "extPrice": 2705,
+        "startDate": "03/01/2021",
+        "discDate": "12/31/2050"
+      }
+    ]
   },
   "subcategories": [],
   "rules": [
@@ -171,21 +288,21 @@
       "parentCategory": "Networking",
       "subCategory": "Active Port Transceivers",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Active Port Transceivers: no max"
     },
     {
       "parentCategory": "Networking",
       "subCategory": "16Gb Transceivers",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for 16Gb Transceivers: no max"
     },
     {
       "parentCategory": "Networking",
       "subCategory": "32Gb Transceivers",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for 32Gb Transceivers: no max"
     },
     {
@@ -206,43 +323,57 @@
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "OM3 LC-LC type connectors cable",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for OM3 LC-LC type connectors cable: no max"
     },
     {
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "Premier Flex OM4",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Premier Flex OM4: no max"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Switch-PDU Power Cord",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Switch-PDU Power Cord: max 1"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "max 8",
+      "maxQty": 8,
+      "rule": "Each base model only accepts its own localization option."
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Port Upgrade Licenses",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Port Upgrade Licenses: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "SANnav - New License",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for SANnav - New License: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "SANnav - Renewal License",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for SANnav - Renewal License: no max"
     },
     {
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "System Options",
-      "constraint": "optional",
-      "maxQty": -3,
-      "rule": "Selection constraint for System Options: optional"
+      "parentCategory": "Support Services",
+      "subCategory": "Support & Deployment Services",
+      "constraint": "max 8",
+      "maxQty": 8,
+      "rule": "Selection constraint for OCP3 Networking Adapters: max 8"
     }
   ]
 }

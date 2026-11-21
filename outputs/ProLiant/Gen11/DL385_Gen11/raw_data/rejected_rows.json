@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "1.0.0",
+  "product": "DL385_Gen11",
+  "generatedAt": "2026-11-21T11:57:41.460Z",
+  "rejectedCount": 8,
+  "rows": [
+    {
+      "tableIndex": 2,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Memory Blank Kit"
+      ]
+    },
+    {
+      "tableIndex": 6,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Graphics Accessories"
+      ]
+    },
+    {
+      "tableIndex": 8,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Accessories"
+      ]
+    },
+    {
+      "tableIndex": 14,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Virtualization"
+      ]
+    },
+    {
+      "tableIndex": 17,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HPE Security Compliance Software"
+      ]
+    },
+    {
+      "tableIndex": 19,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Private Cloud Business Edition"
+      ]
+    },
+    {
+      "tableIndex": 134,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Hardware",
+        "USD67,886.00",
+        "Support",
+        "USD15,057.00"
+      ]
+    },
+    {
+      "tableIndex": 137,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    }
+  ]
+}

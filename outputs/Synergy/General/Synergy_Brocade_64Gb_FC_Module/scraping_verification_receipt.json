@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-11-12T03:24:31.408Z",
+  "verifiedAt": "2026-11-21T05:35:16.165Z",
   "productId": "Synergy_Brocade_64Gb_FC_Module",
   "family": "Synergy",
   "generation": "General",
@@ -35,8 +35,8 @@
     }
   },
   "postflight": {
-    "pass": false,
-    "status": "ACTION_REQUIRED",
+    "pass": true,
+    "status": "PASS",
     "diffSummaryError": null,
     "hwSkuCount": 24,
     "serviceSkuCount": 16,
@@ -51,6 +51,13 @@
       "DISCONTINUED": 0,
       "UNCHANGED": 24
     },
-    "cloudSyncState": "CLOUD_FAILED"
+    "cloudSyncState": "CLOUD_VERIFIED",
+    "verifiedSourceId": "11c96681-4ee5-495c-bec5-1b1580ac4c61",
+    "cloudVerifiedAt": "2026-11-21T13:49:28.133Z",
+    "readbackVerified": true,
+    "canaryVerified": true,
+    "notebookId": "7b65f53f-ad1c-449d-b37f-9a5e7962e2af",
+    "verifiedSourceName": "Synergy_Brocade_64Gb_FC_Module_OCA_Catalog_2026-11-12",
+    "payloadSha256": "b0feb8e8efadd7f016914316c0367e91cb49ce8551843d4091903997449be94a"
   }
 }

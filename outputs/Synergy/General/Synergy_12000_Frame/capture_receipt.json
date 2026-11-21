@@ -58,14 +58,59 @@
       "reason": "",
       "profileProduct": "Synergy_12000_Frame",
       "scope": "PROFILE_MINIMUM_CAPTURE"
+    },
+    "columnCoverage": {
+      "verified": true,
+      "present": {
+        "sku": true,
+        "description": true,
+        "price": true,
+        "leadTime": true,
+        "lifecycleDates": false
+      },
+      "missing": [
+        "lifecycleDates"
+      ],
+      "derivedFromRaw": true
+    },
+    "qualityGate": {
+      "passed": true,
+      "skipped": false,
+      "warningsCount": 0,
+      "replayResults": [
+        {
+          "id": "SY12000_P68217_OPTION",
+          "issues": [],
+          "passed": true,
+          "status": "PASSED"
+        },
+        {
+          "id": "SY12000_ACTIVE_PRICED",
+          "issues": [],
+          "returnedCount": 50,
+          "evidenceStatus": "PARTIAL",
+          "passed": true,
+          "status": "PASSED"
+        }
+      ],
+      "replayExecutedCount": 2,
+      "replaySuiteVersion": "1.1.0",
+      "replaySuiteSha256": "b8b507b9fde1f7013524a6700cad414341341f9316cde9ecbbce5a8e860256c5",
+      "replayInputHashes": {
+        "Catalog.json": "f0111709175ec53ab7ed190035e22e0d376de69de82a42ac7cf2361ccdbcbddc",
+        "Services.json": "9c33f9e0a8106cd5c7575a4107143e77b990f41395417ccefe2e04a1508e50ec",
+        "Catalog_Rules.json": "d6d7f22c2092f6ffb8364b87dd7a0aef77a439f5f667f783dec134bb298141d5",
+        "OCA_Catalog.xlsx": "e0d4a94fe28c767121373a4a1ea995c000581541cc9306aadb47a01f6cc9b9f7",
+        "conditional_skus.json": "46adc5a8a167d2c62aaf587437ab7b5912335736e10f602d41941282b5e7f538"
+      }
     }
   },
   "counts": {
-    "hardware": 228,
-    "services": 216,
-    "rules": 381,
+    "hardware": 257,
+    "services": 187,
+    "rules": 147,
     "categories": 11,
-    "retainedHardware": 228,
+    "retainedHardware": 257,
     "hardwareTombstones": 0
   },
   "previousCounts": {
@@ -75,10 +120,10 @@
     "categories": 12
   },
   "hashes": {
-    "Catalog.json": "281e301b5775ad057903edf02f0bb48ac81a86ac46f6eb672c12240925599c91",
-    "Services.json": "af78eb0114affec9778ae369704dccb7717319bf05bfdba77d2b1f99232d0722",
-    "Catalog_Rules.json": "31a41c8565d93dbaddbae0d01d50a924b2b6951d871ae10e301b2aa0e922c7c3",
-    "OCA_Catalog.xlsx": "8b6845a91276890ebb522bbb279963ac8f8fc1fd3e1879952e32514da1cd124d"
+    "Catalog.json": "f0111709175ec53ab7ed190035e22e0d376de69de82a42ac7cf2361ccdbcbddc",
+    "Services.json": "9c33f9e0a8106cd5c7575a4107143e77b990f41395417ccefe2e04a1508e50ec",
+    "Catalog_Rules.json": "d6d7f22c2092f6ffb8364b87dd7a0aef77a439f5f667f783dec134bb298141d5",
+    "OCA_Catalog.xlsx": "e0d4a94fe28c767121373a4a1ea995c000581541cc9306aadb47a01f6cc9b9f7"
   },
   "rawSha256": "e6aeba7ebc8d261538b31a0607bcfe658a796979acc18d87b5b2698484fb07d3",
   "sheets": [
@@ -219,5 +264,6 @@
     "consolidationVerified": false,
     "error": "Uploaded and canary-verified \"Synergy_12000_Frame_OCA_Catalog_2026-11-12\" in NotebookLM (5b9ddeda-0d03-44ee-80c8-766f494ea34c). Existing sources were preserved unless explicit retirement was confirmed."
   },
-  "promotedAt": "2026-11-12T11:06:34.231Z"
+  "promotedAt": "2026-11-12T11:06:34.231Z",
+  "rebuiltAt": "2026-11-21T12:57:24.182Z"
 }

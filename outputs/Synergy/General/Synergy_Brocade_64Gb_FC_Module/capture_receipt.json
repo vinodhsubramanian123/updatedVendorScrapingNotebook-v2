@@ -62,22 +62,67 @@
       "reason": "",
       "profileProduct": "Synergy_Brocade_64Gb_FC_Module",
       "scope": "PROFILE_MINIMUM_CAPTURE"
+    },
+    "columnCoverage": {
+      "verified": true,
+      "present": {
+        "sku": true,
+        "description": true,
+        "price": true,
+        "leadTime": true,
+        "lifecycleDates": false
+      },
+      "missing": [
+        "lifecycleDates"
+      ],
+      "derivedFromRaw": true
+    },
+    "qualityGate": {
+      "passed": true,
+      "skipped": false,
+      "warningsCount": 0,
+      "replayResults": [
+        {
+          "id": "SYFC64_P77653_MODULE",
+          "issues": [],
+          "passed": true,
+          "status": "PASSED"
+        },
+        {
+          "id": "SYFC64_ACTIVE_PRICED",
+          "issues": [],
+          "returnedCount": 1,
+          "evidenceStatus": "PASSED",
+          "passed": true,
+          "status": "PASSED"
+        }
+      ],
+      "replayExecutedCount": 2,
+      "replaySuiteVersion": "1.1.0",
+      "replaySuiteSha256": "b8b507b9fde1f7013524a6700cad414341341f9316cde9ecbbce5a8e860256c5",
+      "replayInputHashes": {
+        "Catalog.json": "f991ef8e559039727feb7e01629093bb0004ffa8314ac8929a3f33ed29fcbf8a",
+        "Services.json": "ab17a3cbe449c6df7c29946fe69d0ee4cda25946ea8b6f2a4195dd2b26a96fd0",
+        "Catalog_Rules.json": "656737e70bab7f2b9f370ad8a40c226a2009faeb813f6792a32f581a3a1d0428",
+        "OCA_Catalog.xlsx": "128ca80c9e7e71cf16efb03babdbcb4afa918b981d1b7f2b73a27c8d71b9d22a",
+        "conditional_skus.json": "8163aa4f617ef4247798cbe51b02924ae755cd72f28e4bacdffcd188e6df340e"
+      }
     }
   },
   "counts": {
     "hardware": 24,
     "services": 16,
-    "rules": 15,
+    "rules": 8,
     "categories": 3,
     "retainedHardware": 24,
     "hardwareTombstones": 0
   },
   "previousCounts": null,
   "hashes": {
-    "Catalog.json": "00b104bfadada6c8030d6fca768477f9a76bfdfdd620b7273f407734e2ca75b6",
-    "Services.json": "aff0b690d44f795d2a311a3d2c6340b7b3f83e53e179ecb4cf15ac4bccfd86e5",
-    "Catalog_Rules.json": "6aa6f22c64b96e92a975bcdcd98acc5e7ef54ddee171b2c343fd8488d3be2dd2",
-    "OCA_Catalog.xlsx": "86cfbe31771efd43a81f6efefeab13d9db743c2e9a187d9b503f0e9499d9091d"
+    "Catalog.json": "f991ef8e559039727feb7e01629093bb0004ffa8314ac8929a3f33ed29fcbf8a",
+    "Services.json": "ab17a3cbe449c6df7c29946fe69d0ee4cda25946ea8b6f2a4195dd2b26a96fd0",
+    "Catalog_Rules.json": "656737e70bab7f2b9f370ad8a40c226a2009faeb813f6792a32f581a3a1d0428",
+    "OCA_Catalog.xlsx": "128ca80c9e7e71cf16efb03babdbcb4afa918b981d1b7f2b73a27c8d71b9d22a"
   },
   "rawSha256": "fb2fe78c6799578f86c1bccdc5c0c61ab097b78bfb697f2fbae4eae5030de6c8",
   "sheets": [
@@ -206,7 +251,8 @@
     "success": false,
     "sourceId": null,
     "consolidationVerified": false,
-    "error": "WORKFLOW_BUSY: notebook-catalog-sync; acquisition transaction at C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\locks\\notebook-catalog-sync.lock; workflow lease busy"
+    "error": "WORKFLOW_BUSY: notebook-catalog-sync; acquisition transaction at outputs/history/locks/notebook-catalog-sync.lock; workflow lease busy"
   },
-  "promotedAt": "2026-11-12T03:24:30.597Z"
+  "promotedAt": "2026-11-12T03:24:30.597Z",
+  "rebuiltAt": "2026-11-21T12:57:24.465Z"
 }

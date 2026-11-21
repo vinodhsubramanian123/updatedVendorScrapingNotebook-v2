@@ -5,52 +5,8 @@ Cables	Cables	max 8	Quantity Constraint	Quantity: max 8
 License Upgrade	License Upgrade	max 1	Quantity Constraint	Quantity: max 1
 Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
 Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	Selection constraint for Optical Transceivers & DAC Cables: max 8
-Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	817040-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	845972-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	JH420A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	JH673A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	JL307A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	JL310A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	P90358-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	R0Z25A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Networking	Optical Transceivers & DAC Cables	max 8	Configuration Rule	R0Z26A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Networking	Optical Transceivers & DAC Cables	max 16	Configuration Rule	Selection constraint for Optical Transceivers & DAC Cables: max 16
-Networking	Optical Transceivers & DAC Cables	max 16	Configuration Rule	P9H32A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	Selection constraint for Cables: max 8
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	876680-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	876692-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	876698-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ833A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ836A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ838A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ839A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	H6Z30A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	P64635-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	P64638-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	P64641-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	Q1H65A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	QK731A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	QK732A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	QK737A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	720199-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	720202-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	845424-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	876689-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ834A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ835A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ837A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	AP818A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	AP819A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	AP820A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	K2Q21A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	K2Q22A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	K2Q46A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	K2Q47A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	QK701A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	QK729A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	QK733A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	QK734A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	QK735A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	Max quantity of product limited by space available.
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	487655-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	C7533A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
@@ -114,9 +70,9 @@ Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	JG331A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	QK702A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	QK736A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
-Networking	Optical Transceivers & DAC Cables	max 16	Configuration Rule	Product is obsolete
-Networking	Optical Transceivers & DAC Cables	max 16	Configuration Rule	AP784A conditional visibility: portal selector activation required (Product is obsolete); PORTAL_CONDITIONAL
-Networking	Optical Transceivers & DAC Cables	max 16	Configuration Rule	AP785A conditional visibility: portal selector activation required (Product is obsolete); PORTAL_CONDITIONAL
+Cables & Enablement Kits	SFP Options	max 16	Configuration Rule	Product is obsolete
+Cables & Enablement Kits	SFP Options	max 16	Configuration Rule	AP784A conditional visibility: portal selector activation required (Product is obsolete); PORTAL_CONDITIONAL
+Cables & Enablement Kits	SFP Options	max 16	Configuration Rule	AP785A conditional visibility: portal selector activation required (Product is obsolete); PORTAL_CONDITIONAL
 Software & Licenses	License Upgrade	max 1	Configuration Rule	Selection constraint for License Upgrade: max 1
 Software & Licenses	License Upgrade	max 1	Configuration Rule	License not compatible for selected VC.
 Software & Licenses	License Upgrade	max 1	Configuration Rule	N3R43A conditional visibility: portal selector activation required (License not compatible for selected VC.); PORTAL_CONDITIONAL

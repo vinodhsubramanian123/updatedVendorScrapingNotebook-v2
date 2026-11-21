@@ -4,25 +4,28 @@
     "model": "DL145_Gen11",
     "family": "ProLiant",
     "generation": "Gen11",
-    "scrapeDate": "2026-09-13",
-    "scrapeTimestamp": "2026-09-13T07:46:52.205Z",
-    "totalSubcategories": 42,
-    "totalUniqueSKUs": 413,
-    "totalTables": 54,
+    "pillar": "SERVER",
+    "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
+    "scrapeDate": "2026-11-20",
+    "scrapeTimestamp": "2026-11-20T17:42:34.793Z",
+    "builtAt": "2026-11-21T11:57:17.312Z",
+    "totalSubcategories": 44,
+    "totalUniqueSKUs": 487,
+    "totalTables": 58,
     "diffSummary": {
-      "added": 56,
-      "removed": 0,
+      "added": 96,
+      "removed": 4,
       "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 39,
-      "priceAndAttributeChanged": 0,
-      "unchanged": 318,
+      "attributeChanged": 271,
+      "priceAndAttributeChanged": 171,
+      "unchanged": 0,
       "reinstated": 0,
-      "discontinuedTotal": 0
+      "discontinuedTotal": 4
     },
-    "historySnapshot": "catalog_2026-09-13.json",
+    "historySnapshot": "catalog_2026-11-20.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-09-13",
+      "scrapeDate": "2026-11-20",
       "categoryBreakdown": {
         "Chassis": {
           "totalSKUs": 1,
@@ -39,25 +42,15 @@
           "avgPrice": 2375
         },
         "Accessories & Infrastructure": {
-          "totalSKUs": 10,
-          "totalPrice": 1060,
+          "totalSKUs": 5,
+          "totalPrice": 659,
           "minPrice": 1,
           "maxPrice": 373,
           "subcategories": {
             "Chassis Infrastructure & Rail Kits": {
-              "totalSKUs": 7,
-              "totalPrice": 940,
-              "avgPrice": 134.28571428571428
-            },
-            "System Options": {
-              "totalSKUs": 1,
-              "totalPrice": 118,
-              "avgPrice": 118
-            },
-            "Acoustics": {
-              "totalSKUs": 1,
-              "totalPrice": 1,
-              "avgPrice": 1
+              "totalSKUs": 4,
+              "totalPrice": 658,
+              "avgPrice": 164.5
             },
             "vSAN Tracking SKUs": {
               "totalSKUs": 1,
@@ -65,7 +58,40 @@
               "avgPrice": 1
             }
           },
-          "avgPrice": 106
+          "avgPrice": 131.8
+        },
+        "Cooling / Thermal": {
+          "totalSKUs": 6,
+          "totalPrice": 1580,
+          "minPrice": 1,
+          "maxPrice": 692,
+          "subcategories": {
+            "Heatsink Kit": {
+              "totalSKUs": 5,
+              "totalPrice": 1457,
+              "avgPrice": 291.4
+            },
+            "Power Cooling Options": {
+              "totalSKUs": 1,
+              "totalPrice": 123,
+              "avgPrice": 123
+            }
+          },
+          "avgPrice": 263.3333333333333
+        },
+        "Rack Options": {
+          "totalSKUs": 1,
+          "totalPrice": 1,
+          "minPrice": 1,
+          "maxPrice": 1,
+          "subcategories": {
+            "Acoustics": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            }
+          },
+          "avgPrice": 1
         },
         "Processor": {
           "totalSKUs": 19,
@@ -80,25 +106,6 @@
             }
           },
           "avgPrice": 5689.8421052631575
-        },
-        "Cooling / Thermal": {
-          "totalSKUs": 2,
-          "totalPrice": 325,
-          "minPrice": 123,
-          "maxPrice": 202,
-          "subcategories": {
-            "Heatsink Kit": {
-              "totalSKUs": 1,
-              "totalPrice": 202,
-              "avgPrice": 202
-            },
-            "Power Cooling Options": {
-              "totalSKUs": 1,
-              "totalPrice": 123,
-              "avgPrice": 123
-            }
-          },
-          "avgPrice": 162.5
         },
         "Memory": {
           "totalSKUs": 20,
@@ -115,15 +122,20 @@
           "avgPrice": 31425.2
         },
         "Storage Controllers": {
-          "totalSKUs": 13,
-          "totalPrice": 16164,
+          "totalSKUs": 16,
+          "totalPrice": 20628,
           "minPrice": 1,
-          "maxPrice": 5999,
+          "maxPrice": 7649,
           "subcategories": {
             "SAS Controller": {
               "totalSKUs": 4,
-              "totalPrice": 15872,
-              "avgPrice": 3968
+              "totalPrice": 19432,
+              "avgPrice": 4858
+            },
+            "Smart Storage Batteries": {
+              "totalSKUs": 3,
+              "totalPrice": 904,
+              "avgPrice": 301.3333333333333
             },
             "Storage Controller Cables": {
               "totalSKUs": 3,
@@ -136,55 +148,11 @@
               "avgPrice": 1
             }
           },
-          "avgPrice": 1243.3846153846155
-        },
-        "Cables & Enablement Kits": {
-          "totalSKUs": 13,
-          "totalPrice": 37895,
-          "minPrice": 1,
-          "maxPrice": 14299,
-          "subcategories": {
-            "Smart Storage Batteries": {
-              "totalSKUs": 3,
-              "totalPrice": 904,
-              "avgPrice": 301.3333333333333
-            },
-            "System Options": {
-              "totalSKUs": 1,
-              "totalPrice": 1,
-              "avgPrice": 1
-            },
-            "Solid State Drives (NVMe/SAS/SATA)": {
-              "totalSKUs": 4,
-              "totalPrice": 36477,
-              "avgPrice": 9119.25
-            },
-            "Power Cords": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            },
-            "Flex Slot Power Supplies": {
-              "totalSKUs": 1,
-              "totalPrice": 181,
-              "avgPrice": 181
-            },
-            "Power Cords & Jumper Cables": {
-              "totalSKUs": 2,
-              "totalPrice": 112,
-              "avgPrice": 56
-            },
-            "Management Hardware": {
-              "totalSKUs": 2,
-              "totalPrice": 220,
-              "avgPrice": 110
-            }
-          },
-          "avgPrice": 2915
+          "avgPrice": 1289.25
         },
         "Drive Enclosures / Drives": {
-          "totalSKUs": 108,
-          "totalPrice": 7081438,
+          "totalSKUs": 145,
+          "totalPrice": 8512380,
           "minPrice": 225,
           "maxPrice": 400156,
           "subcategories": {
@@ -194,12 +162,12 @@
               "avgPrice": 343.75
             },
             "SSD - EDSFF NVME Read Intensive": {
-              "totalSKUs": 104,
-              "totalPrice": 7080063,
-              "avgPrice": 68077.52884615384
+              "totalSKUs": 141,
+              "totalPrice": 8511005,
+              "avgPrice": 60361.73758865248
             }
           },
-          "avgPrice": 65568.87037037036
+          "avgPrice": 58706.06896551724
         },
         "Factory Configuration Settings": {
           "totalSKUs": 1,
@@ -216,50 +184,70 @@
           "avgPrice": 1
         },
         "Software & Licenses": {
-          "totalSKUs": 15,
-          "totalPrice": 109996,
+          "totalSKUs": 240,
+          "totalPrice": 3005873,
           "minPrice": 1,
           "maxPrice": 99999,
           "subcategories": {
-            "iLO Common Password": {
+            "Server Management & Operating System Licenses": {
+              "totalSKUs": 90,
+              "totalPrice": 1232308,
+              "avgPrice": 13692.31111111111
+            },
+            "VMWare Core Editions": {
+              "totalSKUs": 12,
+              "totalPrice": 202334,
+              "avgPrice": 16861.166666666668
+            },
+            "Compute Ops Management SKUs": {
               "totalSKUs": 1,
               "totalPrice": 1,
               "avgPrice": 1
             },
-            "VMWare Core Editions": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+            "MS Windows Server Additional License": {
+              "totalSKUs": 17,
+              "totalPrice": 225911,
+              "avgPrice": 13288.882352941177
             },
-            "Server Management & Operating System Licenses": {
+            "MS Windows Server CALs": {
+              "totalSKUs": 27,
+              "totalPrice": 341336,
+              "avgPrice": 12642.074074074075
+            },
+            "MS Windows Server Not Preinstalled": {
+              "totalSKUs": 11,
+              "totalPrice": 414086,
+              "avgPrice": 37644.181818181816
+            },
+            "MS Windows Server Preinstalled": {
               "totalSKUs": 3,
               "totalPrice": 102134,
               "avgPrice": 34044.666666666664
             },
             "SUSE Add-ons": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 2040,
+              "avgPrice": 2040
             },
-            "SUSE containers": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+            "SUSE Operating Systems": {
+              "totalSKUs": 24,
+              "totalPrice": 240990,
+              "avgPrice": 10041.25
             },
             "SUSE SAP Operating Systems": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 2,
+              "totalPrice": 20808,
+              "avgPrice": 10404
             },
             "OneView Management Software": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 6,
+              "totalPrice": 4125,
+              "avgPrice": 687.5
             },
             "Integrated Lights Out Software": {
-              "totalSKUs": 8,
-              "totalPrice": 3470,
-              "avgPrice": 433.75
+              "totalSKUs": 36,
+              "totalPrice": 204128,
+              "avgPrice": 5670.222222222223
             },
             "Proliant Software Media Kits": {
               "totalSKUs": 2,
@@ -267,9 +255,9 @@
               "avgPrice": 2071
             },
             "Linux Value Added Software": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 6,
+              "totalPrice": 11231,
+              "avgPrice": 1871.8333333333333
             },
             "HPC Software Products": {
               "totalSKUs": 1,
@@ -277,12 +265,12 @@
               "avgPrice": 249
             },
             "High Availability Computing - Cluster Software": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 50,
+              "avgPrice": 50
             }
           },
-          "avgPrice": 7333.066666666667
+          "avgPrice": 12524.470833333333
         },
         "PCIe Risers": {
           "totalSKUs": 2,
@@ -322,16 +310,50 @@
           },
           "avgPrice": 1558.3636363636363
         },
+        "Cables & Enablement Kits": {
+          "totalSKUs": 27,
+          "totalPrice": 42312,
+          "minPrice": 20,
+          "maxPrice": 14999,
+          "subcategories": {
+            "Solid State Drives (NVMe/SAS/SATA)": {
+              "totalSKUs": 4,
+              "totalPrice": 40477,
+              "avgPrice": 10119.25
+            },
+            "Power Cords": {
+              "totalSKUs": 18,
+              "totalPrice": 1322,
+              "avgPrice": 73.44444444444444
+            },
+            "HPE Virtualization": {
+              "totalSKUs": 1,
+              "totalPrice": 181,
+              "avgPrice": 181
+            },
+            "Power Cords & Jumper Cables": {
+              "totalSKUs": 2,
+              "totalPrice": 112,
+              "avgPrice": 56
+            },
+            "Management Hardware": {
+              "totalSKUs": 2,
+              "totalPrice": 220,
+              "avgPrice": 110
+            }
+          },
+          "avgPrice": 1567.111111111111
+        },
         "Graphics & GPU": {
-          "totalSKUs": 2,
-          "totalPrice": 68,
+          "totalSKUs": 5,
+          "totalPrice": 61751,
           "minPrice": 24,
-          "maxPrice": 44,
+          "maxPrice": 32212,
           "subcategories": {
             "Graphics": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 3,
+              "totalPrice": 61683,
+              "avgPrice": 20561
             },
             "Graphics Accessories": {
               "totalSKUs": 2,
@@ -339,54 +361,50 @@
               "avgPrice": 34
             }
           },
-          "avgPrice": 34
+          "avgPrice": 12350.2
         },
         "Power Supplies": {
-          "totalSKUs": 3,
-          "totalPrice": 2027,
-          "minPrice": 444,
+          "totalSKUs": 1,
+          "totalPrice": 891,
+          "minPrice": 891,
           "maxPrice": 891,
           "subcategories": {
             "Power Supplies": {
               "totalSKUs": 1,
               "totalPrice": 891,
               "avgPrice": 891
-            },
-            "-48VDC Power Supplies & Cable Kits": {
-              "totalSKUs": 2,
-              "totalPrice": 1136,
-              "avgPrice": 568
             }
           },
-          "avgPrice": 675.6666666666666
+          "avgPrice": 891
         },
-        "HPE Compute Ops Management": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+        "Security Options": {
+          "totalSKUs": 3,
+          "totalPrice": 282,
+          "minPrice": 81,
+          "maxPrice": 112,
           "subcategories": {
-            "Compute Ops Management SKUs": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+            "Security Hardware": {
+              "totalSKUs": 3,
+              "totalPrice": 282,
+              "avgPrice": 94
             }
           },
-          "avgPrice": 0
+          "avgPrice": 94
         }
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 413,
-      "unchangedSkusCount": 413,
-      "modifiedSkusCount": 0,
-      "addedSkusCount": 0,
+      "totalScrapedSkus": 487,
+      "unchangedSkusCount": 424,
+      "modifiedSkusCount": 2,
+      "addedSkusCount": 61,
       "removedSkusCount": 0,
-      "estimatedTokensSaved": 61950,
-      "estimatedProcessingTimeSavedMs": 82600
+      "estimatedTokensSaved": 0,
+      "estimatedProcessingTimeSavedMs": 0
     },
+    "snapshotFingerprint": "ad0c7f98b7a12d335452b3b58d99eca6db0727b7c49fb9465320495c6070d816",
     "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-09-13T07:46:52.551Z"
+    "rulesGeneratedAt": "2026-11-21T11:57:18.026Z"
   },
   "chassisVariants": [
     {
@@ -396,12 +414,14 @@
       "listPrice": 2375,
       "listPriceFormatted": "$2375.00",
       "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "",
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-09-09: $2375.00 → 2026-09-10: $2375.00"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-09-09: $2375.00 → 2026-09-10: $2375.00 [Δ Attr] → 2026-11-20: $2375.00 [Δ Attr: CLIC Status: \"Active\" -> \"Valid\"; Lead Time: \"EDT 22 - 28 days\" -> \"(None)\"; Lead Time Source: \"OCA selected configuration estimate\" -> \"Not published by OCA\"; Speed Tier: \"(None)\" -> \"Unpublished\"]"
     }
   ],
   "chassisVariantMatrix": {
@@ -412,66 +432,886 @@
       "listPrice": 2375,
       "listPriceFormatted": "$2375.00",
       "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "",
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-09-09: $2375.00 → 2026-09-10: $2375.00"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-09-09: $2375.00 → 2026-09-10: $2375.00 [Δ Attr] → 2026-11-20: $2375.00 [Δ Attr: CLIC Status: \"Active\" -> \"Valid\"; Lead Time: \"EDT 22 - 28 days\" -> \"(None)\"; Lead Time Source: \"OCA selected configuration estimate\" -> \"Not published by OCA\"; Speed Tier: \"(None)\" -> \"Unpublished\"]"
     }
   },
+  "smartChassisCombinations": [],
+  "solutionManifest": null,
   "subcategories": [
+    {
+      "parentCategory": "Rack Options",
+      "name": "Acoustics",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED"
+    },
     {
       "parentCategory": "Processor",
       "name": "Processors",
       "constraint": "max 1",
       "minQty": 0,
-      "maxQty": 1
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Memory",
       "name": "Memory",
       "constraint": "max 6",
       "minQty": 0,
-      "maxQty": 6
+      "maxQty": 6,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Factory Configuration Settings",
       "name": "Factory Configuration Settings",
       "constraint": "max 2",
       "minQty": 0,
-      "maxQty": 2
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Networking",
       "name": "Ethernet PCIe",
       "constraint": "max 1",
       "minQty": 0,
-      "maxQty": 1
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Networking",
       "name": "OCP Ethernet",
       "constraint": "max 1",
       "minQty": 0,
-      "maxQty": 1
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Networking",
       "name": "Transceivers",
       "constraint": "max 16",
       "minQty": 0,
-      "maxQty": 16
+      "maxQty": 16,
+      "maxQtySemantics": "BOUNDED"
     },
     {
-      "parentCategory": "HPE Compute Ops Management",
-      "name": "Compute Ops Management SKUs",
-      "constraint": "required",
-      "minQty": 1,
-      "maxQty": -2
+      "parentCategory": "Security Options",
+      "name": "Security Hardware",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED"
     }
   ],
   "rules": [
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P72006-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P72006-B21 conditional visibility: portal selector activation required (\"HPE DL145 Gen11 Desk/Wall Mount Kit\" and \"HPE DL145 Gen11 Rack enable kit\" cannot be selected together.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cooling / Thermal",
+      "subCategory": "Heatsink Kit",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50312-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P50312-F21 conditional visibility: portal selector activation required (All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64986-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P64986-F21 conditional visibility: portal selector activation required (All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50309-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P50309-F21 conditional visibility: portal selector activation required (All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64985-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P64985-F21 conditional visibility: portal selector activation required (All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64987-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P64987-F21 conditional visibility: portal selector activation required (All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64988-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P64988-F21 conditional visibility: portal selector activation required (All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P66676-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P66676-F21 conditional visibility: portal selector activation required (All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P69982-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P69982-F21 conditional visibility: portal selector activation required (All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50309-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P50309-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50311-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P50311-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50312-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P50312-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64984-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P64984-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64985-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P64985-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64986-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P64986-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64987-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P64987-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64988-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P64988-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P66676-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P66676-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P79615-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P79615-B21 conditional visibility: portal selector activation required (If HPE DL145 Gen11 Opt ACC FIO Config is selected, then these EDSFF drives cannot be selected with direct attach. (Only controller mode).); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - EDSFF NVME Read Intensive",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P79618-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P79618-B21 conditional visibility: portal selector activation required (If HPE DL145 Gen11 Opt ACC FIO Config is selected, then these EDSFF drives cannot be selected with direct attach. (Only controller mode).); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - EDSFF NVME Read Intensive",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P79620-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P79620-B21 conditional visibility: portal selector activation required (If HPE DL145 Gen11 Opt ACC FIO Config is selected, then these EDSFF drives cannot be selected with direct attach. (Only controller mode).); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - EDSFF NVME Read Intensive",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P79623-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P79623-B21 conditional visibility: portal selector activation required (If HPE DL145 Gen11 Opt ACC FIO Config is selected, then these EDSFF drives cannot be selected with direct attach. (Only controller mode).); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - EDSFF NVME Read Intensive",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P35876-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P35876-B21 conditional visibility: portal selector activation required (CE Mark label SKU (P35876-B21) should be visible only when selecting Lot9 SKU's in the configuration); PORTAL_CONDITIONAL",
+      "parentCategory": "Cooling / Thermal",
+      "subCategory": "Heatsink Kit",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P10097-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P10097-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "OCP Ethernet",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P10115-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P10115-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "OCP Ethernet",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P42041-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P42041-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "OCP Ethernet",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P08449-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P08449-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "OCP Ethernet",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P10106-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P10106-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "OCP Ethernet",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P26256-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P26256-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "OCP Ethernet",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P26269-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P26269-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "OCP Ethernet",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P44975-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P44975-B21 conditional visibility: portal selector activation required (Mixing of Power Supplies is not allowed.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cooling / Thermal",
+      "subCategory": "Heatsink Kit",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P43150-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P43150-B21 conditional visibility: portal selector activation required (Mixing of Power Supplies is not allowed.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cooling / Thermal",
+      "subCategory": "Heatsink Kit",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "Q0H80A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "Q0H80A conditional visibility: portal selector activation required (If AC Power Supply is selected then only AC Power Cords should be in the drop-down.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "HPE Virtualization",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "A0K02A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "A0K02A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Power Cords & Jumper Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "A0N33A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "A0N33A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Power Cords & Jumper Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Rack Options",
+      "subCategory": "Configuration Rules",
+      "constraint": "\"HPE DL145 Gen11 Desk/Wall Mount Kit\" and \"HPE DL145 Gen11 Rack enable kit\" cannot be selected together.",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] \"HPE DL145 Gen11 Desk/Wall Mount Kit\" and \"HPE DL145 Gen11 Rack enable kit\" cannot be selected together.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P72006-B21"
+      ],
+      "ineligibilityReason": "\"HPE DL145 Gen11 Desk/Wall Mount Kit\" and \"HPE DL145 Gen11 Rack enable kit\" cannot be selected together.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MEMORY_MIXING",
+      "parentCategory": "Memory",
+      "subCategory": "Configuration Rules",
+      "constraint": "All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.",
+      "maxQty": "",
+      "rule": "[MEMORY_MIXING] All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.",
+      "conditionKey": "memoryType",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P50312-F21",
+        "P64986-F21",
+        "P50309-F21",
+        "P64985-F21",
+        "P64987-F21",
+        "P64988-F21",
+        "P66676-F21",
+        "P69982-F21"
+      ],
+      "ineligibilityReason": "All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "BTO_DISALLOWED",
+      "parentCategory": "Memory",
+      "subCategory": "Configuration Rules",
+      "constraint": "BTO Memories are not allowed in CTO Base Model.",
+      "maxQty": "",
+      "rule": "[BTO_DISALLOWED] BTO Memories are not allowed in CTO Base Model.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P50309-B21",
+        "P50311-B21",
+        "P50312-B21",
+        "P64984-B21",
+        "P64985-B21",
+        "P64986-B21",
+        "P64987-B21",
+        "P64988-B21",
+        "P66676-B21"
+      ],
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "CHASSIS_GATE",
+      "parentCategory": "Storage Devices",
+      "subCategory": "Configuration Rules",
+      "constraint": "If HPE DL145 Gen11 Opt ACC FIO Config is selected, then these EDSFF drives cannot be selected with direct attach. (Only controller mode).",
+      "maxQty": "",
+      "rule": "[CHASSIS_GATE] If HPE DL145 Gen11 Opt ACC FIO Config is selected, then these EDSFF drives cannot be selected with direct attach. (Only controller mode).",
+      "conditionKey": "chassisModel",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P79615-B21",
+        "P79618-B21",
+        "P79620-B21",
+        "P79623-B21"
+      ],
+      "ineligibilityReason": "If HPE DL145 Gen11 Opt ACC FIO Config is selected, then these EDSFF drives cannot be selected with direct attach. (Only controller mode).",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Factory Configuration Settings",
+      "subCategory": "Configuration Rules",
+      "constraint": "CE Mark label SKU (P35876-B21) should be visible only when selecting Lot9 SKU's in the configuration",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] CE Mark label SKU (P35876-B21) should be visible only when selecting Lot9 SKU's in the configuration",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P35876-B21"
+      ],
+      "ineligibilityReason": "CE Mark label SKU (P35876-B21) should be visible only when selecting Lot9 SKU's in the configuration",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Networking",
+      "subCategory": "Configuration Rules",
+      "constraint": "Max quantity of product limited by space available.",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Max quantity of product limited by space available.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P10097-B21",
+        "P10115-B21",
+        "P42041-B21",
+        "P08449-B21",
+        "P10106-B21",
+        "P26256-B21",
+        "P26269-B21"
+      ],
+      "ineligibilityReason": "Max quantity of product limited by space available.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Power and Cooling",
+      "subCategory": "Configuration Rules",
+      "constraint": "Mixing of Power Supplies is not allowed.",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Mixing of Power Supplies is not allowed.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P44975-B21",
+        "P43150-B21"
+      ],
+      "ineligibilityReason": "Mixing of Power Supplies is not allowed.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Power and Cooling",
+      "subCategory": "Configuration Rules",
+      "constraint": "If AC Power Supply is selected then only AC Power Cords should be in the drop-down.",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] If AC Power Supply is selected then only AC Power Cords should be in the drop-down.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "Q0H80A"
+      ],
+      "ineligibilityReason": "If AC Power Supply is selected then only AC Power Cords should be in the drop-down.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "BTO_DISALLOWED",
+      "parentCategory": "Power and Cooling",
+      "subCategory": "Configuration Rules",
+      "constraint": "BTO products are not allowed in CTO Base Model.",
+      "maxQty": "",
+      "rule": "[BTO_DISALLOWED] BTO products are not allowed in CTO Base Model.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "A0K02A",
+        "A0N33A"
+      ],
+      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
     {
       "parentCategory": "Chassis",
       "subCategory": "Variants",
@@ -487,14 +1327,14 @@
       "rule": "Selection constraint for Chassis Infrastructure & Rail Kits: max 4"
     },
     {
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "System Options",
-      "constraint": "optional",
-      "maxQty": -3,
-      "rule": "\"HPE DL145 Gen11 Desk/Wall Mount Kit\" and \"HPE DL145 Gen11 Rack enable kit\" cannot be selected together."
+      "parentCategory": "Cooling / Thermal",
+      "subCategory": "Heatsink Kit",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Heatsink Kit: max 1"
     },
     {
-      "parentCategory": "Accessories & Infrastructure",
+      "parentCategory": "Rack Options",
       "subCategory": "Acoustics",
       "constraint": "max 1",
       "maxQty": 1,
@@ -508,13 +1348,6 @@
       "rule": "Selection constraint for Processors: max 1"
     },
     {
-      "parentCategory": "Cooling / Thermal",
-      "subCategory": "Heatsink Kit",
-      "constraint": "max 1",
-      "maxQty": 1,
-      "rule": "Selection constraint for Heatsink Kit: max 1"
-    },
-    {
       "parentCategory": "Memory",
       "subCategory": "Memory",
       "constraint": "max 6",
@@ -526,14 +1359,7 @@
       "subCategory": "Memory",
       "constraint": "max 6",
       "maxQty": 6,
-      "rule": "All DIMMs selected in a server configuration must be of the same part number, capacity size, rank etc."
-    },
-    {
-      "parentCategory": "Memory",
-      "subCategory": "Memory",
-      "constraint": "max 6",
-      "maxQty": 6,
-      "rule": "These products are hidden due to Supply constraints"
+      "rule": "BTO Memories are not allowed in CTO Base Model."
     },
     {
       "parentCategory": "Storage Controllers",
@@ -543,7 +1369,7 @@
       "rule": "Selection constraint for SAS Controller: max 2"
     },
     {
-      "parentCategory": "Cables & Enablement Kits",
+      "parentCategory": "Storage Controllers",
       "subCategory": "Smart Storage Batteries",
       "constraint": "max 1",
       "maxQty": 1,
@@ -578,20 +1404,6 @@
       "rule": "Selection constraint for SSD - EDSFF NVME Read Intensive: max 4"
     },
     {
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "SSD - EDSFF NVME Read Intensive",
-      "constraint": "max 4",
-      "maxQty": 4,
-      "rule": "If HPE DL145 Gen11 Opt ACC FIO Config is selected, then these EDSFF drives cannot be selected with direct attach. (Only controller mode)."
-    },
-    {
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "SSD - EDSFF NVME Read Intensive",
-      "constraint": "max 4",
-      "maxQty": 4,
-      "rule": "Product is not yet available"
-    },
-    {
       "parentCategory": "Factory Configuration Settings",
       "subCategory": "Factory Configuration Settings",
       "constraint": "max 2",
@@ -599,22 +1411,15 @@
       "rule": "Selection constraint for Factory Configuration Settings: max 2"
     },
     {
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "System Options",
-      "constraint": "",
-      "maxQty": "",
-      "rule": "CE Mark label SKU (P35876-B21) should be visible only when selecting Lot9 SKU's in the configuration"
-    },
-    {
       "parentCategory": "Accessories & Infrastructure",
       "subCategory": "vSAN Tracking SKUs",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for vSAN Tracking SKUs: no max"
     },
     {
       "parentCategory": "Software & Licenses",
-      "subCategory": "iLO Common Password",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "Selection constraint for iLO Common Password: max 1"
@@ -658,7 +1463,7 @@
       "parentCategory": "Software & Licenses",
       "subCategory": "VMWare Core Editions",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for VMWare Core Editions: no max"
     },
     {
@@ -697,10 +1502,10 @@
       "rule": "Selection constraint for Power Supplies: max 2"
     },
     {
-      "parentCategory": "Power Supplies",
-      "subCategory": "-48VDC Power Supplies & Cable Kits",
-      "constraint": "min 1, max 2",
-      "maxQty": 2,
+      "parentCategory": "Cooling / Thermal",
+      "subCategory": "Heatsink Kit",
+      "constraint": "max 1",
+      "maxQty": 1,
       "rule": "Mixing of Power Supplies is not allowed."
     },
     {
@@ -712,24 +1517,24 @@
     },
     {
       "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Flex Slot Power Supplies",
+      "subCategory": "HPE Virtualization",
       "constraint": "no max",
-      "maxQty": -1,
-      "rule": "If AC Power Supply is selected then only AC Power Cords should be in the drop-down."
+      "maxQty": "",
+      "rule": "Selection constraint for HPE Virtualization: no max"
     },
     {
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "Power Cords & Jumper Cables",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "BTO products are not allowed in CTO Base Model."
     },
     {
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "Chassis Infrastructure & Rail Kits",
+      "parentCategory": "Security Options",
+      "subCategory": "Security Hardware",
       "constraint": "no max",
-      "maxQty": -1,
-      "rule": "Selection constraint for Chassis Infrastructure & Rail Kits: no max"
+      "maxQty": "",
+      "rule": "Selection constraint for Security Hardware: no max"
     },
     {
       "parentCategory": "Cables & Enablement Kits",
@@ -739,95 +1544,123 @@
       "rule": "Selection constraint for Management Hardware: max 2"
     },
     {
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "subCategory": "Compute Ops Management SKUs",
       "constraint": "required",
-      "maxQty": -2,
+      "maxQty": "",
       "rule": "Selection constraint for Compute Ops Management SKUs: required"
     },
     {
       "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "required",
-      "maxQty": -2,
-      "rule": "Selection constraint for Server Management & Operating System Licenses: required"
+      "subCategory": "MS Windows Server Additional License",
+      "constraint": "max 999",
+      "maxQty": 999,
+      "rule": "Selection constraint for MS Windows Server Additional License: max 999"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "MS Windows Server CALs",
+      "constraint": "no max",
+      "maxQty": "",
+      "rule": "Selection constraint for MS Windows Server CALs: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "MS Windows Server Not Preinstalled",
+      "constraint": "no max",
+      "maxQty": "",
+      "rule": "Selection constraint for MS Windows Server Not Preinstalled: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "MS Windows Server Preinstalled",
+      "constraint": "no max",
+      "maxQty": "",
+      "rule": "Selection constraint for MS Windows Server Preinstalled: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "SUSE Add-ons",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for SUSE Add-ons: no max"
     },
     {
       "parentCategory": "Software & Licenses",
-      "subCategory": "SUSE containers",
+      "subCategory": "SUSE Operating Systems",
       "constraint": "no max",
-      "maxQty": -1,
-      "rule": "Selection constraint for SUSE containers: no max"
+      "maxQty": "",
+      "rule": "Selection constraint for SUSE Operating Systems: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "SUSE SAP Operating Systems",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for SUSE SAP Operating Systems: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "OneView Management Software",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for OneView Management Software: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": "",
+      "rule": "Selection constraint for NVIDIA GPU SW: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Integrated Lights Out Software",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Integrated Lights Out Software: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Server Management & Operating System Licenses",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Integrated Lights Out Software: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Proliant Software Media Kits",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Proliant Software Media Kits: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Linux Value Added Software",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Linux Value Added Software: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "HPC Software Products",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for HPC Software Products: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for High Availability Computing - Cluster Software: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "max 5994",
-      "maxQty": 5994,
-      "rule": "Selection constraint for Partner Software - Operating System 8pks: max 5994"
+      "constraint": "no max",
+      "maxQty": "",
+      "rule": "Selection constraint for Server Management & Operating System Licenses: no max"
     },
     {
       "parentCategory": "Support Services",
@@ -838,38 +1671,17 @@
     },
     {
       "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "no max",
-      "maxQty": -1,
-      "rule": "Selection constraint for Server Management & Operating System Licenses: no max"
-    },
-    {
-      "parentCategory": "Support Services",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "required",
-      "maxQty": -2,
-      "rule": "Selection constraint for Server Management & Operating System Licenses: required"
-    },
-    {
-      "parentCategory": "Software & Licenses",
       "subCategory": "Red Hat Operating Systems",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Red Hat Operating Systems: no max"
     },
     {
-      "parentCategory": "Graphics & GPU",
-      "subCategory": "NVIDIA GPU SW",
-      "constraint": "no max",
-      "maxQty": -1,
-      "rule": "Selection constraint for NVIDIA GPU SW: no max"
-    },
-    {
       "parentCategory": "Software & Licenses",
-      "subCategory": "AI-at-Scale",
+      "subCategory": "SUSE containers",
       "constraint": "no max",
-      "maxQty": -1,
-      "rule": "Selection constraint for AI-at-Scale: no max"
+      "maxQty": "",
+      "rule": "Selection constraint for SUSE containers: no max"
     },
     {
       "parentCategory": "Software & Licenses",

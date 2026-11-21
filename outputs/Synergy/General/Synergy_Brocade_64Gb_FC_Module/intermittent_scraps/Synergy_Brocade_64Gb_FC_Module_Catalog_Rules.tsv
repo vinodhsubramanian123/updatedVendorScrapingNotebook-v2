@@ -12,12 +12,5 @@ Cables & Enablement Kits	Premier Flex OM4 LC-LC	max 8	Configuration Rule	Selecti
 Cables & Enablement Kits	QSFP to 4xLC Breakout	max 4	Configuration Rule	Selection constraint for QSFP to 4xLC Breakout: max 4
 Cables & Enablement Kits	MPO/MPO Multi-mode	max 4	Configuration Rule	Selection constraint for MPO/MPO Multi-mode: max 4
 Software & Licenses	Software for Brocade Switches	no max	Configuration Rule	Selection constraint for Software for Brocade Switches: no max
-Software & Licenses	Software for Brocade Switches	no max	Configuration Rule	Q2E58A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Software for Brocade Switches	no max	Configuration Rule	Q2E60A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Software for Brocade Switches	no max	Configuration Rule	5517AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Software for Brocade Switches	no max	Configuration Rule	5527AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Software for Brocade Switches	no max	Configuration Rule	TC464BAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Software for Brocade Switches	no max	Configuration Rule	D4U69AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Software for Brocade Switches	no max	Configuration Rule	TC514AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	SANnav - New License	no max	Configuration Rule	Selection constraint for SANnav - New License: no max
 Software & Licenses	SANnav - Renewal License	no max	Configuration Rule	Selection constraint for SANnav - Renewal License: no max

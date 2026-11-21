@@ -1,0 +1,18 @@
+{
+  "product": "MSL3040_Tape",
+  "notebookId": "644020e5-42f9-4c4b-95cc-fcf82122685c",
+  "replacementSourceId": "a753a1a9-787d-445b-8dfc-2cef3cd05a54",
+  "verifiedAt": "2026-11-21T13:42:28.504Z",
+  "contentFingerprints": null,
+  "legacyFingerprint": "75f4ebe534d3bef3615b8c386eaffb13ef47051eee928eb2c89674fae3f0a340",
+  "retirementRequested": true,
+  "plannedRetirementIds": [
+    "c5c11f87-9467-473b-8820-9ca130091974"
+  ],
+  "status": "CONSOLIDATED",
+  "retiredSourceIds": [
+    "c5c11f87-9467-473b-8820-9ca130091974"
+  ],
+  "remainingSourceIds": [],
+  "retirementErrors": []
+}

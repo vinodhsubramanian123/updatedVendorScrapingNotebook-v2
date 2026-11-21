@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "1.0.0",
+  "product": "Synergy_12000_Frame",
+  "generatedAt": "2026-11-21T11:58:56.996Z",
+  "rejectedCount": 6,
+  "rows": [
+    {
+      "tableIndex": 2,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Frame Options"
+      ]
+    },
+    {
+      "tableIndex": 6,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Keyboard and Mouse"
+      ]
+    },
+    {
+      "tableIndex": 21,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Label",
+        "Qty",
+        "UCID",
+        "Price",
+        "Status",
+        "Summary",
+        "CI",
+        "Services"
+      ]
+    },
+    {
+      "tableIndex": 26,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Label",
+        "Qty",
+        "UCID",
+        "Price",
+        "Status",
+        "Summary",
+        "CI",
+        "Services"
+      ]
+    },
+    {
+      "tableIndex": 49,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    },
+    {
+      "tableIndex": 66,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    }
+  ]
+}

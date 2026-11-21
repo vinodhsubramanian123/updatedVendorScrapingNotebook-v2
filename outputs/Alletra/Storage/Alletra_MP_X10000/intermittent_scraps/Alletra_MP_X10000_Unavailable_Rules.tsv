@@ -1,0 +1,16 @@
+Rule ID	Rule Type	Section	Constraint / Reason	Affected SKU Count	Affected SKUs
+RULE_1	CONDITIONAL_VISIBILITY	Controller Node Models	No Mixing of Chassis	1	S0U32A
+RULE_2	CONDITIONAL_VISIBILITY	Controller Node Models	B series nodes only supported for upgrades	2	R7C71B, S3L11B
+RULE_3	CONDITIONAL_VISIBILITY	Controller Node Models	TAA isSelected	1	S3L11A
+RULE_4	CONDITIONAL_VISIBILITY	Power Supplies	No Mix PowerSupply	2	R7C78A, R9Z97A
+RULE_5	CONDITIONAL_VISIBILITY	Power Supplies	If single Phase or threePhase is selected then DC Power Cables not supported 1	2	P22173-B21, P36877-B21
+RULE_6	CONDITIONAL_VISIBILITY	Power Supplies	Breaker Panel can be selected only if R7C78A is selected	2	G2H95A, Q9N54A
+RULE_7	CONDITIONAL_VISIBILITY	Data Intelligent Node	If (S7V58A ) is selected, Then show the option to select S6A73C,S6W21C	2	S6A73C_GPU, S6W21C_GPU
+RULE_8	CONDITIONAL_VISIBILITY	Drive Enclosure	TAA isSelected	1	S0S46A
+RULE_9	CONDITIONAL_VISIBILITY	Drive Enclosure	Max quantity of product limited by space available.	2	S2T35A, Q2F19A
+RULE_10	CONDITIONAL_VISIBILITY	Drive Enclosure	Back-End Connectivity cables are not supported	8	R9F76A, R9F79A, R9F80A, R9F81A, S1D25A, S1D26A, S1D27A, S1D28A
+RULE_11	CONDITIONAL_VISIBILITY	Capacity	Max quantity of product class limited by space available.	4	R9H71B, R9H73B, R9H72B, S4P49A
+RULE_12	CONDITIONAL_VISIBILITY	Capacity	Max quantity of product class limited by space available.	3	S0Q04B, S0Q03B, S0Q02B
+RULE_13	CONDITIONAL_VISIBILITY	Capacity	Max quantity of product class limited by space available.	5	S1Z68A, R9H67A, R9H66A, R9H69A, R9H68A
+RULE_14	CONDITIONAL_VISIBILITY	Capacity	Max quantity of product class limited by space available.	3	S4P40A, S3L74A, S3L73A
+RULE_15	CONDITIONAL_VISIBILITY	Back-End Switches	If “acPowerFlag” is selected then S1S69A not supported	1	S1S69A

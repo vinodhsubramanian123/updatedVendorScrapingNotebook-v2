@@ -9,7 +9,12 @@
     {
       "date": "2026-11-11",
       "price": 2999,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "Discontinued Date: \"09/30/2027\" -> \"10/31/2027\"",
+        "Vendor Attributes: \"{\"listPrice\":2999}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2999,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "HU4D5A5#Z1R": [
@@ -21,7 +26,11 @@
     {
       "date": "2026-11-11",
       "price": 0,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Vendor Attributes: \"{\"Evidence Scope\":\"Observed selected service; alternatives not enumerated\",\"Owner Configuration\":\"CE45087D126BB28FD3A232EBB77B29B2\"}\" -> \"{\"Evidence Scope\":\"Observed selected service; alternatives not enumerated\",\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"Owner Configuration\":\"40DFBA5F21575295DAD5FE86F2C55A9A\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ]
 }

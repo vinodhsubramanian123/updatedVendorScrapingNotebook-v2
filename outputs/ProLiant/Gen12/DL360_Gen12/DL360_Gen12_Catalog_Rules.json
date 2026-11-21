@@ -6,26 +6,26 @@
     "generation": "Gen12",
     "pillar": "SERVER",
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
-    "scrapeDate": "2026-11-16",
-    "scrapeTimestamp": "2026-11-16T17:57:29.261Z",
-    "builtAt": "2026-11-16T20:55:46.783Z",
-    "totalSubcategories": 59,
-    "totalUniqueSKUs": 626,
-    "totalTables": 91,
+    "scrapeDate": "2026-11-20",
+    "scrapeTimestamp": "2026-11-20T08:53:18.946Z",
+    "builtAt": "2026-11-21T11:57:50.166Z",
+    "totalSubcategories": 57,
+    "totalUniqueSKUs": 766,
+    "totalTables": 93,
     "diffSummary": {
-      "added": 0,
+      "added": 140,
       "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 0,
-      "priceAndAttributeChanged": 0,
-      "unchanged": 887,
+      "attributeChanged": 835,
+      "priceAndAttributeChanged": 49,
+      "unchanged": 3,
       "reinstated": 0,
       "discontinuedTotal": 0
     },
-    "historySnapshot": "catalog_2026-11-16.json",
+    "historySnapshot": "catalog_2026-11-20.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-11-16",
+      "scrapeDate": "2026-11-20",
       "categoryBreakdown": {
         "Chassis": {
           "totalSKUs": 1,
@@ -192,10 +192,10 @@
           "avgPrice": 993.6590909090909
         },
         "Drive Enclosures / Drives": {
-          "totalSKUs": 96,
-          "totalPrice": 3203828,
+          "totalSKUs": 177,
+          "totalPrice": 9211383,
           "minPrice": 41,
-          "maxPrice": 191675,
+          "maxPrice": 400156,
           "subcategories": {
             "Drive Cage": {
               "totalSKUs": 3,
@@ -213,12 +213,12 @@
               "avgPrice": 162.66666666666666
             },
             "Hot Plug SFF Drives (2SFF Stacking Backplane)": {
-              "totalSKUs": 89,
-              "totalPrice": 3202743,
-              "avgPrice": 35985.87640449438
+              "totalSKUs": 170,
+              "totalPrice": 9210298,
+              "avgPrice": 54178.22352941176
             }
           },
-          "avgPrice": 33373.208333333336
+          "avgPrice": 52041.71186440678
         },
         "OS Boot Device": {
           "totalSKUs": 1,
@@ -236,7 +236,7 @@
         },
         "Storage Controllers": {
           "totalSKUs": 46,
-          "totalPrice": 54883,
+          "totalPrice": 54285,
           "minPrice": 1,
           "maxPrice": 12999,
           "subcategories": {
@@ -250,41 +250,22 @@
               "totalPrice": 942,
               "avgPrice": 235.5
             },
-            "Storage Controllers Options": {
-              "totalSKUs": 4,
-              "totalPrice": 4,
+            "RAID Settings": {
+              "totalSKUs": 6,
+              "totalPrice": 6,
               "avgPrice": 1
             },
             "Internal Storage Controller Cables": {
               "totalSKUs": 28,
               "totalPrice": 3599,
               "avgPrice": 128.53571428571428
-            },
-            "Rack Options": {
-              "totalSKUs": 2,
-              "totalPrice": 600,
-              "avgPrice": 300
             }
           },
-          "avgPrice": 1193.108695652174
-        },
-        "Support Services": {
-          "totalSKUs": 1,
-          "totalPrice": 1,
-          "minPrice": 1,
-          "maxPrice": 1,
-          "subcategories": {
-            "Support Services Options": {
-              "totalSKUs": 1,
-              "totalPrice": 1,
-              "avgPrice": 1
-            }
-          },
-          "avgPrice": 1
+          "avgPrice": 1180.108695652174
         },
         "Software & Licenses": {
-          "totalSKUs": 449,
-          "totalPrice": 6295337,
+          "totalSKUs": 509,
+          "totalPrice": 6456502,
           "minPrice": 1,
           "maxPrice": 99999,
           "subcategories": {
@@ -294,9 +275,9 @@
               "avgPrice": 1
             },
             "Server Management & Operating System Licenses": {
-              "totalSKUs": 59,
-              "totalPrice": 2114555,
-              "avgPrice": 35839.91525423729
+              "totalSKUs": 119,
+              "totalPrice": 2276090,
+              "avgPrice": 19126.806722689074
             },
             "Proliant Software Media Kits": {
               "totalSKUs": 3,
@@ -350,13 +331,13 @@
             },
             "MS Windows Server": {
               "totalSKUs": 52,
-              "totalPrice": 1081982,
-              "avgPrice": 20807.346153846152
+              "totalPrice": 1081672,
+              "avgPrice": 20801.384615384617
             },
             "MS Windows Server - Essentials": {
               "totalSKUs": 64,
-              "totalPrice": 603956,
-              "avgPrice": 9436.8125
+              "totalPrice": 603812,
+              "avgPrice": 9434.5625
             },
             "SUSE Linux Enterprise Server": {
               "totalSKUs": 32,
@@ -365,8 +346,8 @@
             },
             "Microsoft Windows CAL Packs": {
               "totalSKUs": 54,
-              "totalPrice": 682588,
-              "avgPrice": 12640.518518518518
+              "totalPrice": 682672,
+              "avgPrice": 12642.074074074075
             },
             "Red Hat Enterprise Linux Server-Virtualization": {
               "totalSKUs": 36,
@@ -374,7 +355,7 @@
               "avgPrice": 5902.833333333333
             }
           },
-          "avgPrice": 14020.795100222716
+          "avgPrice": 12684.679764243614
         },
         "PCIe Risers": {
           "totalSKUs": 3,
@@ -397,7 +378,7 @@
         },
         "Networking": {
           "totalSKUs": 74,
-          "totalPrice": 318330,
+          "totalPrice": 320236,
           "minPrice": 17,
           "maxPrice": 15334,
           "subcategories": {
@@ -413,8 +394,8 @@
             },
             "InfiniBand PCIe": {
               "totalSKUs": 14,
-              "totalPrice": 103591,
-              "avgPrice": 7399.357142857143
+              "totalPrice": 105497,
+              "avgPrice": 7535.5
             },
             "OCP Ethernet": {
               "totalSKUs": 14,
@@ -437,7 +418,7 @@
               "avgPrice": 17
             }
           },
-          "avgPrice": 4301.756756756757
+          "avgPrice": 4327.513513513513
         },
         "Power Supplies": {
           "totalSKUs": 5,
@@ -470,49 +451,49 @@
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 626,
-      "unchangedSkusCount": 597,
-      "modifiedSkusCount": 29,
-      "addedSkusCount": 0,
+      "totalScrapedSkus": 766,
+      "unchangedSkusCount": 475,
+      "modifiedSkusCount": 232,
+      "addedSkusCount": 59,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotFingerprint": "09d9fc8880f28ee3babf95482345ca862ebaa19f870bbade27de3eb12a64ecc8",
+    "snapshotFingerprint": "8a67f502971779e2d476125edb584806bc69a0b0bf0bead7fe9a4e46a236b898",
     "chassisVariantCount": 3,
-    "rulesGeneratedAt": "2026-11-16T20:55:47.743Z"
+    "rulesGeneratedAt": "2026-11-21T11:57:51.703Z"
   },
   "chassisVariants": [
     {
       "sku": "P72175-B21",
       "description": "HPE ProLiant Compute DL360 Gen12 8SFF NC Configure-to-order Server",
       "formFactor": "Small Form Factor (8-Bay SFF)",
-      "listPrice": 0,
-      "listPriceFormatted": "$0.00",
+      "listPrice": null,
+      "listPriceFormatted": "",
       "optionType": "CTO",
-      "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "",
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "BASELINE",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-11-16: (no price)"
     },
     {
       "sku": "P72174-B21",
       "description": "HPE ProLiant Compute DL360 Gen12 4LFF NC Configure-to-order Server",
       "formFactor": "Large Form Factor (8-Bay LFF)",
-      "listPrice": 0,
-      "listPriceFormatted": "$0.00",
+      "listPrice": null,
+      "listPriceFormatted": "",
       "optionType": "CTO",
-      "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "",
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "BASELINE",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-11-16: (no price)"
     },
     {
@@ -522,13 +503,13 @@
       "listPrice": 5022,
       "listPriceFormatted": "$5022.00",
       "optionType": "CTO",
-      "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "",
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "BASELINE",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-11-16: $5022.00"
     }
   ],
@@ -537,32 +518,32 @@
       "sku": "P72175-B21",
       "description": "HPE ProLiant Compute DL360 Gen12 8SFF NC Configure-to-order Server",
       "formFactor": "Small Form Factor (8-Bay SFF)",
-      "listPrice": 0,
-      "listPriceFormatted": "$0.00",
+      "listPrice": null,
+      "listPriceFormatted": "",
       "optionType": "CTO",
-      "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "",
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "BASELINE",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-11-16: (no price)"
     },
     "P72174-B21": {
       "sku": "P72174-B21",
       "description": "HPE ProLiant Compute DL360 Gen12 4LFF NC Configure-to-order Server",
       "formFactor": "Large Form Factor (8-Bay LFF)",
-      "listPrice": 0,
-      "listPriceFormatted": "$0.00",
+      "listPrice": null,
+      "listPriceFormatted": "",
       "optionType": "CTO",
-      "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "",
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "BASELINE",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-11-16: (no price)"
     },
     "P72176-B21": {
@@ -572,13 +553,13 @@
       "listPrice": 5022,
       "listPriceFormatted": "$5022.00",
       "optionType": "CTO",
-      "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "",
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "BASELINE",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-11-16: $5022.00"
     }
   },
@@ -592,8 +573,8 @@
       "total": 22643
     },
     "deliveryAndSupport": {
-      "iconId": "I158389620-01",
-      "edt": "24 - 30 days",
+      "iconId": "I158520338-01",
+      "edt": "18 - 23 days",
       "configName": "OCA Config 2",
       "attachedServices": [
         {
@@ -883,70 +864,80 @@
       "name": "Processor",
       "constraint": "max 2",
       "minQty": 0,
-      "maxQty": 2
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Memory",
       "name": "Memory",
       "constraint": "max 32",
       "minQty": 0,
-      "maxQty": 32
+      "maxQty": 32,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Memory",
       "name": "Memory Blank Kit",
       "constraint": "max 1",
       "minQty": 0,
-      "maxQty": 1
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Networking",
       "name": "Ethernet PCIe",
       "constraint": "max 2",
       "minQty": 0,
-      "maxQty": 2
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Networking",
       "name": "InfiniBand PCIe",
       "constraint": "max 2",
       "minQty": 0,
-      "maxQty": 2
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Networking",
       "name": "OCP Ethernet",
       "constraint": "max 2",
       "minQty": 0,
-      "maxQty": 2
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Networking",
       "name": "Fibre Channel HBA",
       "constraint": "max 3",
       "minQty": 0,
-      "maxQty": 3
+      "maxQty": 3,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Networking",
       "name": "Transceivers",
       "constraint": "max 12",
       "minQty": 0,
-      "maxQty": 12
+      "maxQty": 12,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Networking",
       "name": "Networking Accessories",
       "constraint": "max 2",
       "minQty": 0,
-      "maxQty": 2
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Power Supplies",
       "name": "Power Supplies",
       "constraint": "max 2",
       "minQty": 0,
-      "maxQty": 2
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED"
     }
   ],
   "rules": [
@@ -1269,7 +1260,7 @@
       "portalVerificationRequired": true,
       "rule": "S4F94AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL",
       "parentCategory": "Support Services",
-      "subCategory": "Energy Star",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "",
       "maxQty": ""
     },
@@ -1286,7 +1277,7 @@
       "portalVerificationRequired": true,
       "rule": "S4G00AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL",
       "parentCategory": "Support Services",
-      "subCategory": "Energy Star",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "",
       "maxQty": ""
     },
@@ -1303,7 +1294,7 @@
       "portalVerificationRequired": true,
       "rule": "S4R76AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL",
       "parentCategory": "Support Services",
-      "subCategory": "Energy Star",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "",
       "maxQty": ""
     },
@@ -1319,7 +1310,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40497-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40497-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1337,7 +1328,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40498-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40498-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1355,7 +1346,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40499-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40499-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1373,7 +1364,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40500-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40500-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1391,7 +1382,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40504-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40504-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1409,7 +1400,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40509-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40509-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1427,7 +1418,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40510-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40510-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1445,7 +1436,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40511-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40511-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1463,7 +1454,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P49035-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P49035-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1481,7 +1472,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P49041-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P49041-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1499,7 +1490,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P50216-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P50216-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1517,7 +1508,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P50219-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P50219-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1535,7 +1526,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P50224-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P50224-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1553,7 +1544,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P50227-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P50227-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1571,7 +1562,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P50233-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P50233-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1589,7 +1580,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P64842-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P64842-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1607,7 +1598,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P64846-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P64846-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1625,7 +1616,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P84236-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P84236-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1643,7 +1634,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P91241-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P91241-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1661,7 +1652,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P28352-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P28352-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1679,7 +1670,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P28586-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P28586-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1697,7 +1688,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40430-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40430-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1715,7 +1706,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40502-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40502-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1733,7 +1724,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40503-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40503-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1751,7 +1742,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40507-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40507-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1769,7 +1760,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40512-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40512-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1787,7 +1778,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P49031-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P49031-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1805,7 +1796,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P49045-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P49045-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1823,7 +1814,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P49047-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P49047-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1841,7 +1832,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P49049-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P49049-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1859,7 +1850,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P49053-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P49053-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1877,7 +1868,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P49057-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P49057-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1895,7 +1886,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P53561-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P53561-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1913,7 +1904,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P58244-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P58244-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1931,7 +1922,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P64844-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P64844-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1949,7 +1940,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P64848-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P64848-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1967,7 +1958,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P64999-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P64999-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -1985,7 +1976,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P65007-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P65007-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2003,7 +1994,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P65015-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P65015-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2021,7 +2012,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P65023-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P65023-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2039,7 +2030,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P78801-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P78801-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2057,7 +2048,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P78804-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P78804-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2075,7 +2066,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P78806-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P78806-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2093,7 +2084,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P83347-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P83347-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2111,7 +2102,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P84239-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P84239-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2129,7 +2120,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P84242-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P84242-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2147,7 +2138,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P84244-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P84244-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2165,7 +2156,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P91243-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P91243-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2183,7 +2174,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P91247-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P91247-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2201,7 +2192,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P91249-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P91249-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2219,7 +2210,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40506-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40506-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2237,7 +2228,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40508-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40508-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2255,7 +2246,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P85676-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P85676-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2273,7 +2264,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40501-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40501-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2291,7 +2282,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40505-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40505-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2309,7 +2300,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40557-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40557-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2327,7 +2318,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P40560-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P40560-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2345,7 +2336,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P49029-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P49029-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2363,7 +2354,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P50230-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P50230-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2381,7 +2372,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P53562-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P53562-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2399,7 +2390,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P58236-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P58236-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2417,7 +2408,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P61019-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P61019-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2435,7 +2426,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P61027-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P61027-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2453,7 +2444,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P61035-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P61035-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2471,7 +2462,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P61043-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P61043-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2489,7 +2480,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P61051-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P61051-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2507,7 +2498,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P61059-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P61059-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2525,7 +2516,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P78808-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P78808-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2543,7 +2534,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P78810-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P78810-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2561,7 +2552,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P83344-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P83344-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2579,7 +2570,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P83350-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P83350-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2597,7 +2588,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P85662-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P85662-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2615,7 +2606,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P85664-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P85664-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2633,7 +2624,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P85666-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P85666-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2651,7 +2642,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P85668-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P85668-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2669,7 +2660,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P85670-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P85670-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2687,7 +2678,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P85672-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P85672-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2705,7 +2696,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P85674-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P85674-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2723,7 +2714,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P88533-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P88533-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2741,7 +2732,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P91237-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P91237-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2759,7 +2750,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P91239-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P91239-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2777,7 +2768,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P91245-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P91245-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2795,7 +2786,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P92309-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P92309-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2813,7 +2804,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P92311-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P92311-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2831,7 +2822,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P92313-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P92313-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2849,7 +2840,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P92315-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P92315-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2867,7 +2858,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P92317-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P92317-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2885,7 +2876,7 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P92319-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P92319-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -2903,7 +2894,1465 @@
       "thresholdValue": null,
       "selectorTriggerSku": "P72223-B21",
       "portalVerificationRequired": true,
-      "rule": "P92321-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "rule": "P92321-B21 conditional visibility: portal selector activation required (Revealed when P72223-B21 (HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P57803-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P57803-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P63930-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P63930-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P63934-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P63934-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P69237-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P69237-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P70669-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P70669-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P70672-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P70672-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78787-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P78787-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P87719-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P87719-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91084-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91084-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91086-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91086-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91088-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91088-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91090-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91090-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91092-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91092-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91094-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91094-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91096-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91096-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91098-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91098-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91100-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91100-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91102-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91102-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91229-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91229-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P61183-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P61183-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P69239-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P69239-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78923-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P78923-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85121-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85121-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85735-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85735-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P87717-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P87717-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P87721-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P87721-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P87723-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P87723-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P61179-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P61179-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P61187-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P61187-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P61191-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P61191-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P61195-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P61195-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P63938-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P63938-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P69546-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P69546-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P70674-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P70674-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78784-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P78784-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78789-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P78789-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78791-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P78791-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78793-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P78793-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P79065-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P79065-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P79122-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P79122-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P79147-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P79147-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P79615-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P79615-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P79618-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P79618-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P79620-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P79620-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P79623-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P79623-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P79965-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P79965-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85114-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85114-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85117-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85117-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85119-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85119-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85124-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85124-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85126-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85126-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85128-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85128-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85731-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85731-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85733-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85733-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85739-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85739-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85741-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85741-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85743-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85743-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85745-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85745-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P86016-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P86016-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P86018-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P86018-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P86020-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P86020-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P86024-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P86024-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P86026-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P86026-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P86028-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P86028-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P86030-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P86030-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P86032-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P86032-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P86746-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P86746-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P86748-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P86748-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P87715-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P87715-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P88535-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P88535-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P88537-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P88537-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P88539-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P88539-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P88541-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P88541-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P88543-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P88543-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P90655-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P90655-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P90658-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P90658-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P90660-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P90660-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P90663-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P90663-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P90665-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P90665-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91231-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91231-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91233-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72221-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91233-B21 conditional visibility: portal selector activation required (Revealed when P72221-B21 (HPE ProLiant Compute DL3XX Gen12 1U 4EDSFF NVMe Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
       "constraint": "",
@@ -3283,14 +4732,14 @@
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "Optical Transceivers & DAC Cables",
       "constraint": "required",
-      "maxQty": -2,
+      "maxQty": "",
       "rule": "Selection constraint for Optical Transceivers & DAC Cables: required"
     },
     {
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Drive Cage",
       "constraint": "required",
-      "maxQty": -2,
+      "maxQty": "",
       "rule": "Selection constraint for Drive Cage: required"
     },
     {
@@ -3325,7 +4774,7 @@
       "parentCategory": "Accessories & Infrastructure",
       "subCategory": "AmbientTemperature",
       "constraint": "required",
-      "maxQty": -2,
+      "maxQty": "",
       "rule": "Selection constraint for AmbientTemperature: required"
     },
     {
@@ -3337,14 +4786,7 @@
     },
     {
       "parentCategory": "Storage Controllers",
-      "subCategory": "Storage Controllers Options",
-      "constraint": "max 1",
-      "maxQty": 1,
-      "rule": "Selection constraint for RAID Settings: max 1"
-    },
-    {
-      "parentCategory": "Support Services",
-      "subCategory": "Support Services Options",
+      "subCategory": "RAID Settings",
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "Selection constraint for RAID Settings: max 1"
@@ -3360,7 +4802,7 @@
       "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Drive Cage Accessories",
       "constraint": "required",
-      "maxQty": -2,
+      "maxQty": "",
       "rule": "Selection constraint for Drive Cage Accessories: required"
     },
     {
@@ -3451,7 +4893,7 @@
       "parentCategory": "PCIe Risers",
       "subCategory": "Riser Cards",
       "constraint": "required",
-      "maxQty": -2,
+      "maxQty": "",
       "rule": "BTO products are not allowed in CTO Base Model."
     },
     {
@@ -3567,11 +5009,11 @@
       "rule": "Selection constraint for Chassis Infrastructure & Rail Kits: max 2"
     },
     {
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Rack Options",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "max 2",
       "maxQty": 2,
-      "rule": "Selection constraint for Rack Options: max 2"
+      "rule": "Selection constraint for Server Management & Operating System Licenses: max 2"
     },
     {
       "parentCategory": "Accessories & Infrastructure",
@@ -3584,63 +5026,70 @@
       "parentCategory": "Software & Licenses",
       "subCategory": "Proliant Software Media Kits",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Not Supported ProStack Server Software"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for High Availability Computing - Cluster Software: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": "",
+      "rule": "Selection constraint for NVIDIA GPU SW: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Partner Software - Operating System",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Partner Software - Operating System: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Compute Ops Management SKUs",
       "constraint": "required",
-      "maxQty": -2,
+      "maxQty": "",
       "rule": "Selection constraint for Compute Ops Management SKUs: required"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "OEM Software",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for OEM Software: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Proliant Software Media Kits",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Proliant Software Media Kits: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Red Hat (add-ons)",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Red Hat (add-ons): no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "SUSE Add-ons",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for SUSE Add-ons: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "iLO",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for iLO: no max"
     },
     {
@@ -3654,64 +5103,57 @@
       "parentCategory": "Software & Licenses",
       "subCategory": "Supported Operating System",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Supported Operating System: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "MS Windows Server",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for MS Windows Server: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "MS Windows Server - Essentials",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for MS Windows Server - Essentials: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Server Management & Operating System Licenses",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for MS Windows Server - Essentials: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Server Management & Operating System Licenses",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Server Management & Operating System Licenses: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "SUSE Linux Enterprise Server",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for SUSE Linux Enterprise Server: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Microsoft Windows CAL Packs",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Microsoft Windows CAL Packs: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Red Hat Enterprise Linux Server-Virtualization: no max"
-    },
-    {
-      "parentCategory": "Support Services",
-      "subCategory": "RAID Settings",
-      "constraint": "max 1",
-      "maxQty": 1,
-      "rule": "Selection constraint for RAID Settings: max 1"
     },
     {
       "parentCategory": "Support Services",
@@ -3724,15 +5166,8 @@
       "parentCategory": "Software & Licenses",
       "subCategory": "HPC Software Products",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for HPC Software Products: no max"
-    },
-    {
-      "parentCategory": "Graphics & GPU",
-      "subCategory": "NVIDIA GPU SW",
-      "constraint": "no max",
-      "maxQty": -1,
-      "rule": "Selection constraint for NVIDIA GPU SW: no max"
     },
     {
       "parentCategory": "Software & Licenses",
@@ -3745,14 +5180,14 @@
       "parentCategory": "Software & Licenses",
       "subCategory": "Red Hat OpenShift Platform Container",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Red Hat OpenShift Platform Container: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "SUSE containers",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for SUSE containers: no max"
     },
     {
@@ -3764,7 +5199,7 @@
     },
     {
       "parentCategory": "Support Services",
-      "subCategory": "Energy Star",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "Private Product is not valid for current customer account"
@@ -3773,21 +5208,28 @@
       "parentCategory": "Support Services",
       "subCategory": "HPE Virtualization",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for HPE Virtualization: no max"
     },
     {
       "parentCategory": "Support Services",
       "subCategory": "Data Management Framework (SGI DMF)",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Data Management Framework (SGI DMF): no max"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Support & Deployment Services",
+      "constraint": "max 8",
+      "maxQty": 8,
+      "rule": "Selection constraint for OCP3 Networking Adapters: max 8"
     },
     {
       "parentCategory": "Support Services",
       "subCategory": "Cabling Option",
       "constraint": "required",
-      "maxQty": -2,
+      "maxQty": "",
       "rule": "Selection constraint for Cabling Option: required"
     }
   ]

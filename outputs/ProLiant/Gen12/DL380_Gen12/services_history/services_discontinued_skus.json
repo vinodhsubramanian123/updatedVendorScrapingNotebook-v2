@@ -1606,5 +1606,29 @@
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
     "reason": "Vendor marked obsolete/EOL in portal"
+  },
+  "R8W23AAE": {
+    "productNumber": "R8W23AAE",
+    "description": "HPE ML Dev Env SW 1-19 GPU 1yr Sub E-RTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R8W26AAE": {
+    "productNumber": "R8W26AAE",
+    "description": "HPE ML Dev Env SW 20-99 GPU 1y Sub E-RTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "R8W27AAE": {
+    "productNumber": "R8W27AAE",
+    "description": "HPE ML Dev Env SW 100+ GPU 1yr Sub E-RTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
   }
 }

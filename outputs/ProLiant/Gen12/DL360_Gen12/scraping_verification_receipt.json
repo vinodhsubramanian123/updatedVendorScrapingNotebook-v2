@@ -1,10 +1,10 @@
 {
-  "verifiedAt": "2026-11-16T21:07:58.237Z",
+  "verifiedAt": "2026-11-21T13:36:59.032Z",
   "productId": "DL360_Gen12",
   "family": "ProLiant",
   "generation": "Gen12",
   "preflight": {
-    "recordedAt": "2026-11-16T17:54:32.656Z",
+    "recordedAt": "2026-11-20T08:48:42.203Z",
     "pass": true,
     "product": {
       "pass": true,
@@ -25,7 +25,7 @@
     "googleWorkspace": {
       "pass": true,
       "status": "VERIFIED_SCOPES",
-      "account": "vinodhsubramanian@gmail.com",
+      "account": "authenticated",
       "hasSheetsScope": true,
       "hasDriveScope": true
     },
@@ -42,29 +42,29 @@
     "status": "VERIFIED",
     "qualityAuditPassed": true,
     "diffSummaryError": null,
-    "hwSkuCount": 537,
+    "hwSkuCount": 707,
     "serviceSkuCount": 419,
-    "totalSkuCount": 956,
-    "conditionalSkusCount": 110,
+    "totalSkuCount": 1126,
+    "conditionalSkusCount": 284,
     "unavailableRulesCount": 13,
     "diffSummaryPresent": true,
     "diffCounts": {
-      "ADDED": 0,
-      "MODIFIED": 0,
+      "ADDED": 81,
+      "MODIFIED": 1303,
       "PRICE_CHANGED": 0,
-      "ATTRIBUTE_CHANGED": 0,
-      "PRICE_AND_ATTRIBUTE_CHANGED": 0,
+      "ATTRIBUTE_CHANGED": 1254,
+      "PRICE_AND_ATTRIBUTE_CHANGED": 49,
       "REINSTATED": 0,
       "REMOVED": 0,
       "DISCONTINUED": 0,
-      "UNCHANGED": 1217
+      "UNCHANGED": 3
     },
     "cloudSyncState": "CLOUD_VERIFIED",
     "notebookId": "dbe7a857-542f-4d3b-b2f0-e60d3883642b",
-    "verifiedSourceId": "b66dcfc8-4f31-4d4b-b35c-0112418f5817",
-    "verifiedSourceName": "DL360_Gen12_OCA_Catalog_2026-11-16",
-    "payloadSha256": "69d5540f515ba6725f26ef34182f951922c7a5daa09659491de9de15332fff63",
-    "cloudVerifiedAt": "2026-11-16T21:07:58.237Z",
+    "verifiedSourceId": "4d38a289-d5a2-4716-902f-5694f4197a89",
+    "verifiedSourceName": "DL360_Gen12_OCA_Catalog_2026-11-20",
+    "payloadSha256": "114cb5a7f4602d69e98806f86d29e725618d08df6f998f50dae2a545014a4dec",
+    "cloudVerifiedAt": "2026-11-21T13:36:59.032Z",
     "readbackVerified": true,
     "canaryVerified": true
   },

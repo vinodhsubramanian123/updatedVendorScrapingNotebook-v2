@@ -1,6 +1,194 @@
 [
   {
     "summary": {
+      "runId": "run_DL360_Gen11_1795262241264",
+      "sessionName": "DL360_Gen11",
+      "startTime": "2026-11-21T11:57:21.263Z",
+      "endTime": "2026-11-21T11:57:26.163Z",
+      "durationMs": 4900,
+      "durationSec": "4.90",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 761,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 757,
+      "validationStats": {
+        "totalEntries": 102,
+        "totalSKUs": 761,
+        "validSKUs": 761,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 3,
+        "zeroPriceSKUs": 27,
+        "priceErrors": 0,
+        "ruleCount": 174,
+        "categoryCount": 15
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-21T11:57:21.264Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/ProLiant/Gen11/DL360_Gen11/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/ProLiant/Gen11/DL360_Gen11/DL360_Gen11_Catalog.json",
+          "chassisLabel": "DL360 Gen11"
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:57:23.049Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 67,
+          "totalUniqueSKUs": 757,
+          "incrementalStats": {
+            "totalScrapedSkus": 757,
+            "unchangedSkusCount": 674,
+            "modifiedSkusCount": 21,
+            "addedSkusCount": 62,
+            "removedSkusCount": 3,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:57:23.062Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 102,
+            "totalSKUs": 761,
+            "validSKUs": 761,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 3,
+            "zeroPriceSKUs": 27,
+            "priceErrors": 0,
+            "ruleCount": 174,
+            "categoryCount": 15
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:57:26.163Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/ProLiant/Gen11/DL360_Gen11/DL360_Gen11_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 761,
+      "classified": 761,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL360_Gen11_1795195264624",
+      "sessionName": "DL360_Gen11",
+      "startTime": "2026-11-20T17:21:04.603Z",
+      "endTime": "2026-11-20T17:21:09.981Z",
+      "durationMs": 5378,
+      "durationSec": "5.38",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 702,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 698,
+      "validationStats": {
+        "totalEntries": 101,
+        "totalSKUs": 702,
+        "validSKUs": 702,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 3,
+        "zeroPriceSKUs": 27,
+        "priceErrors": 0,
+        "ruleCount": 173,
+        "categoryCount": 15
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-20T17:21:04.624Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/.catalog-staging/staging_DL360_Gen11_1795195263632/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/.catalog-staging/staging_DL360_Gen11_1795195263632/DL360_Gen11_Catalog.json",
+          "chassisLabel": "DL360 Gen11"
+        }
+      },
+      {
+        "timestamp": "2026-11-20T17:21:09.224Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 68,
+          "totalUniqueSKUs": 698,
+          "incrementalStats": {
+            "totalScrapedSkus": 698,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 698,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T17:21:09.252Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 101,
+            "totalSKUs": 702,
+            "validSKUs": 702,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 3,
+            "zeroPriceSKUs": 27,
+            "priceErrors": 0,
+            "ruleCount": 173,
+            "categoryCount": 15
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-20T17:21:09.981Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/.catalog-staging/staging_DL360_Gen11_1795195263632/DL360_Gen11_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 702,
+      "classified": 702,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_DL360_Gen11_1790831453613",
       "sessionName": "DL360_Gen11",
       "startTime": "2026-10-01T05:10:53.609Z",
@@ -783,8 +971,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL360_Gen11_1789567944750\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL360_Gen11_1789567944750\\DL360_Gen11_Catalog.json",
+          "rawInputPath": "outputs/temp/staging_DL360_Gen11_1789567944750/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/staging_DL360_Gen11_1789567944750/DL360_Gen11_Catalog.json",
           "chassisLabel": "DL360 Gen11"
         }
       },
@@ -832,7 +1020,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL360_Gen11_1789567944750\\DL360_Gen11_Catalog.json"
+          "path": "outputs/temp/staging_DL360_Gen11_1789567944750/DL360_Gen11_Catalog.json"
         }
       }
     ],

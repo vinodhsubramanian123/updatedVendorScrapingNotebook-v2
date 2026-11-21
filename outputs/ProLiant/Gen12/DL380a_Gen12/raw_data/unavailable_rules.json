@@ -1,24 +1,42 @@
 {
-  "timestamp": "2026-10-29T06:13:59.528Z",
+  "timestamp": "2026-11-20T11:03:40.283Z",
   "chassisName": "DL380a_Gen12",
-  "totalUnavailableRules": 12,
-  "totalUnavailableSkus": 19,
+  "totalUnavailableRules": 13,
+  "totalUnavailableSkus": 28,
   "rules": [
     {
       "ruleId": "RULE_1",
-      "ruleType": "MEMORY_MIXING",
+      "ruleType": "BTO_DISALLOWED",
       "section": "Memory",
-      "reason": "Mixing of memory is not allowed.",
-      "affectedSkusCount": 4,
+      "reason": "BTO Memories are not allowed in CTO Base Model.",
+      "affectedSkusCount": 6,
       "affectedSkus": [
-        "P69727-F21",
-        "P69729-F21",
-        "P69730-F21",
-        "P73447-F21"
+        "P69727-B21",
+        "P69728-B21",
+        "P69729-B21",
+        "P69730-B21",
+        "P83865-B21",
+        "P83867-B21"
       ]
     },
     {
       "ruleId": "RULE_2",
+      "ruleType": "MEMORY_MIXING",
+      "section": "Memory",
+      "reason": "Mixing of memory is not allowed.",
+      "affectedSkusCount": 7,
+      "affectedSkus": [
+        "P69727-F21",
+        "P69729-F21",
+        "P69730-F21",
+        "P73447-F21",
+        "P83865-F21",
+        "P83867-F21",
+        "P83869-F21"
+      ]
+    },
+    {
+      "ruleId": "RULE_3",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Storage Devices",
       "reason": "Mixing of Drive Cage not allowed.",
@@ -28,7 +46,7 @@
       ]
     },
     {
-      "ruleId": "RULE_3",
+      "ruleId": "RULE_4",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Storage Devices",
       "reason": "This Cable (P76700-B21) can be selected only if MR416i-p controller is selected.",
@@ -38,7 +56,7 @@
       ]
     },
     {
-      "ruleId": "RULE_4",
+      "ruleId": "RULE_5",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Storage Devices",
       "reason": "This Cable (P76702-B21) can be selected only if MR416i-o controller is selected.",
@@ -48,7 +66,7 @@
       ]
     },
     {
-      "ruleId": "RULE_5",
+      "ruleId": "RULE_6",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Networking",
       "reason": "If 4NVMe Direct Attach Cable (P74702-B21) is selected, then HPE DL380a Gen12 OCPB Cbl Kit (P74696-B21) cannot be selected.",
@@ -58,7 +76,7 @@
       ]
     },
     {
-      "ruleId": "RULE_6",
+      "ruleId": "RULE_7",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Power and Cooling",
       "reason": "Mixing of Power Supply is not allowed.",
@@ -69,7 +87,7 @@
       ]
     },
     {
-      "ruleId": "RULE_7",
+      "ruleId": "RULE_8",
       "ruleType": "BTO_DISALLOWED",
       "section": "Power and Cooling",
       "reason": "BTO products are not allowed in CTO Base Model.",
@@ -79,7 +97,7 @@
       ]
     },
     {
-      "ruleId": "RULE_8",
+      "ruleId": "RULE_9",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Power and Cooling",
       "reason": "Supports C19/ C19-C20 Power Cords only.",
@@ -90,7 +108,7 @@
       ]
     },
     {
-      "ruleId": "RULE_9",
+      "ruleId": "RULE_10",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Accessories",
       "reason": "Cannot be selected with HPE DL380a Gen12 8DW/16SW CTO Svr (P76706-B21).",
@@ -100,7 +118,7 @@
       ]
     },
     {
-      "ruleId": "RULE_10",
+      "ruleId": "RULE_11",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "OS Boot Device",
       "reason": "Private Product is not valid for current customer account",
@@ -110,7 +128,7 @@
       ]
     },
     {
-      "ruleId": "RULE_11",
+      "ruleId": "RULE_12",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Manufacturing Services",
       "reason": "Power cord cannot be selected if HPE Remove Standard Power Cords (469774-409) is in the configuration.",
@@ -120,7 +138,7 @@
       ]
     },
     {
-      "ruleId": "RULE_12",
+      "ruleId": "RULE_13",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Virtualization",
       "reason": "Private Product is not valid for current customer account",
@@ -133,6 +151,102 @@
     }
   ],
   "skus": [
+    {
+      "sku": "P69727-B21",
+      "rawSku": "P69727-B21",
+      "isPrivateSku": false,
+      "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+      "listPrice": 13909,
+      "startDate": "09/24/2024",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P69728-B21",
+      "rawSku": "P69728-B21",
+      "isPrivateSku": false,
+      "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+      "listPrice": 28532,
+      "startDate": "09/24/2024",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P69729-B21",
+      "rawSku": "P69729-B21",
+      "isPrivateSku": false,
+      "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+      "listPrice": 47056,
+      "startDate": "11/04/2024",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P69730-B21",
+      "rawSku": "P69730-B21",
+      "isPrivateSku": false,
+      "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+      "listPrice": 60190,
+      "startDate": "09/24/2024",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P83865-B21",
+      "rawSku": "P83865-B21",
+      "isPrivateSku": false,
+      "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart Memory Kit",
+      "listPrice": 32811,
+      "startDate": "11/02/2026",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P83867-B21",
+      "rawSku": "P83867-B21",
+      "isPrivateSku": false,
+      "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart Memory Kit",
+      "listPrice": 54115,
+      "startDate": "11/02/2026",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
     {
       "sku": "P69727-F21",
       "rawSku": "P69727-F21",
@@ -188,6 +302,54 @@
       "description": "HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart FIO Memory Kit",
       "listPrice": 133186,
       "startDate": "04/06/2026",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "MEMORY_MIXING",
+      "ineligibilityReason": "Mixing of memory is not allowed.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P83865-F21",
+      "rawSku": "P83865-F21",
+      "isPrivateSku": false,
+      "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit",
+      "listPrice": 32811,
+      "startDate": "11/02/2026",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "MEMORY_MIXING",
+      "ineligibilityReason": "Mixing of memory is not allowed.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P83867-F21",
+      "rawSku": "P83867-F21",
+      "isPrivateSku": false,
+      "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit",
+      "listPrice": 54115,
+      "startDate": "11/02/2026",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "MEMORY_MIXING",
+      "ineligibilityReason": "Mixing of memory is not allowed.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P83869-F21",
+      "rawSku": "P83869-F21",
+      "isPrivateSku": false,
+      "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit",
+      "listPrice": 69219,
+      "startDate": "11/02/2026",
       "discontinuedDate": "06/30/2030",
       "section": "Memory",
       "ruleType": "MEMORY_MIXING",
@@ -327,17 +489,17 @@
     },
     {
       "sku": "S4X23A",
-      "rawSku": "OB\n         S4X23A",
+      "rawSku": "S4X23A",
       "isPrivateSku": false,
       "description": "HPE Cray XD670 SDG-400 - SDG-300 300V 1m Power Cord",
       "listPrice": 92,
       "startDate": "11/04/2024",
-      "discontinuedDate": "07/31/2026",
+      "discontinuedDate": "06/30/2029",
       "section": "Power and Cooling",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Supports C19/ C19-C20 Power Cords only.",
-      "supplyBadge": "OB",
-      "supplyTitle": "Product is obsolete",
+      "supplyBadge": "",
+      "supplyTitle": "",
       "isSelectable": false,
       "status": "PORTAL_CONDITIONAL"
     },

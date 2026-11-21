@@ -1,1 +1,4072 @@
-[]
+[
+  {
+    "date": "2026-11-20",
+    "productNumber": "TC406AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Description",
+    "oldValue": "2,500.00",
+    "newValue": "HPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced E-LTU"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "TC406AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Max Qty",
+    "oldValue": "-1",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "TC406AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Storage Controller"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "TC406AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "TC406AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "TC406AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Availability",
+    "oldValue": "HPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced E-LTU",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "TC406AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "TC406AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "TC406AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "TC406AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "TC406AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"10/31/2028\",\"TC406AAE [OB]\":\"TC406AAE\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2500,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K43AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Description",
+    "oldValue": "1,750.00",
+    "newValue": "HPE StoreEver MSL3040 Command View for Tape Libraries - Data Verification 100 Cartridges E-LTU"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K43AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Max Qty",
+    "oldValue": "-1",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K43AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Storage Controller"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K43AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2028",
+    "newValue": "01/31/2029"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K43AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K43AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Availability",
+    "oldValue": "HPE StoreEver MSL3040 Command View for Tape Libraries - Data Verification 100 Cartridges E-LTU",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K43AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K43AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K43AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K43AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K43AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"12/31/2028\",\"TC406AAE [OB]\":\"Q8K43AAE\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":1750,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K96AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Description",
+    "oldValue": "3,000.00",
+    "newValue": "HPE StoreEver MSL3040 High Availability LTO-6 Control Path Failover E-LTU"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K96AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Max Qty",
+    "oldValue": "-1",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K96AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Storage Controller"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K96AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Discontinued Date",
+    "oldValue": "05/01/2024",
+    "newValue": "05/02/2024"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K96AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "CLIC Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K96AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Availability",
+    "oldValue": "HPE StoreEver MSL3040 High Availability LTO-6 Control Path Failover E-LTU",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K96AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K96AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K96AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K96AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K96AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"05/01/2024\",\"TC406AAE [OB]\":\"Q8K96AAE [OB]\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":3000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K97AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Description",
+    "oldValue": "3,000.00",
+    "newValue": "HPE StoreEver MSL3040 High Availability LTO-6 Data Path Failover E-LTU"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K97AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Max Qty",
+    "oldValue": "-1",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K97AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Storage Controller"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K97AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Discontinued Date",
+    "oldValue": "05/01/2024",
+    "newValue": "05/02/2024"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K97AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "CLIC Status",
+    "oldValue": "Obsolete (OB)",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K97AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Availability",
+    "oldValue": "HPE StoreEver MSL3040 High Availability LTO-6 Data Path Failover E-LTU",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K97AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K97AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K97AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K97AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K97AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"05/01/2024\",\"TC406AAE [OB]\":\"Q8K97AAE [OB]\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":3000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K98AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Description",
+    "oldValue": "6,000.00",
+    "newValue": "HPE StoreEver MSL3040 KMIP Key Manager E-LTU"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K98AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Max Qty",
+    "oldValue": "-1",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K98AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Storage Controller"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K98AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K98AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K98AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Availability",
+    "oldValue": "HPE StoreEver MSL3040 KMIP Key Manager E-LTU",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K98AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K98AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K98AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K98AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K98AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"10/31/2028\",\"TC406AAE [OB]\":\"Q8K98AAE\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":6000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8L00AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Description",
+    "oldValue": "6,000.00",
+    "newValue": "HPE StoreEver MSL3040 LTO-7+ Path Failover E-LTU"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8L00AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Max Qty",
+    "oldValue": "-1",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8L00AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Storage Controller"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8L00AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8L00AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8L00AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Availability",
+    "oldValue": "HPE StoreEver MSL3040 LTO-7+ Path Failover E-LTU",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8L00AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8L00AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8L00AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8L00AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8L00AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"10/31/2028\",\"TC406AAE [OB]\":\"Q8L00AAE\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":6000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K99AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Description",
+    "oldValue": "2,000.00",
+    "newValue": "HPE StoreEver MSL3040 Secure Manager E-LTU"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K99AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Max Qty",
+    "oldValue": "-1",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K99AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Storage Controller"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K99AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K99AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K99AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Availability",
+    "oldValue": "HPE StoreEver MSL3040 Secure Manager E-LTU",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K99AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K99AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K99AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K99AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K99AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"10/31/2028\",\"TC406AAE [OB]\":\"Q8K99AAE\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA849A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Main Category",
+    "oldValue": "Chassis",
+    "newValue": "Support Services"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA849A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Sub-Category",
+    "oldValue": "Encryption Kit",
+    "newValue": "System Options"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA849A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Constraint",
+    "oldValue": "max 999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA849A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Encryption Kit: max 999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA849A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Max Qty",
+    "oldValue": "999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA849A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA849A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA849A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA849A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA849A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA849A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA849A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA849A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"25.00\",\"Product Number\":\"HA849A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HA849A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA838A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Main Category",
+    "oldValue": "Chassis",
+    "newValue": "Support Services"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA838A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Sub-Category",
+    "oldValue": "Encryption Kit",
+    "newValue": "System Options"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA838A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Constraint",
+    "oldValue": "max 999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA838A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Encryption Kit: max 999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA838A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Max Qty",
+    "oldValue": "999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA838A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA838A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA838A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA838A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA838A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA838A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA838A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA838A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"29.00\",\"Product Number\":\"HA838A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HA838A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA867A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Main Category",
+    "oldValue": "Chassis",
+    "newValue": "Support Services"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA867A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Sub-Category",
+    "oldValue": "Encryption Kit",
+    "newValue": "System Options"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA867A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Constraint",
+    "oldValue": "max 999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA867A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Encryption Kit: max 999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA867A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Max Qty",
+    "oldValue": "999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA867A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA867A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA867A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA867A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA867A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA867A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA867A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA867A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"13.00\",\"Product Number\":\"HA867A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HA867A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA868A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Main Category",
+    "oldValue": "Chassis",
+    "newValue": "Support Services"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA868A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Sub-Category",
+    "oldValue": "Encryption Kit",
+    "newValue": "System Options"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA868A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Constraint",
+    "oldValue": "max 999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA868A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Encryption Kit: max 999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA868A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Max Qty",
+    "oldValue": "999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA868A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA868A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA868A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA868A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA868A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA868A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA868A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HA868A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"38.00\",\"Product Number\":\"HA868A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HA868A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HC790A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Main Category",
+    "oldValue": "Chassis",
+    "newValue": "Support Services"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HC790A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Sub-Category",
+    "oldValue": "Encryption Kit",
+    "newValue": "System Options"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HC790A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Constraint",
+    "oldValue": "max 999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HC790A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Encryption Kit: max 999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HC790A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Max Qty",
+    "oldValue": "999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HC790A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HC790A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HC790A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HC790A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HC790A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HC790A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HC790A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HC790A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"0.00\",\"Product Number\":\"HC790A\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HC790A\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H4F41A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Main Category",
+    "oldValue": "Chassis",
+    "newValue": "Support Services"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H4F41A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Sub-Category",
+    "oldValue": "Encryption Kit",
+    "newValue": "System Options"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H4F41A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Constraint",
+    "oldValue": "max 999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H4F41A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Encryption Kit: max 999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H4F41A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Max Qty",
+    "oldValue": "999",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H4F41A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H4F41A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "CTO",
+    "newValue": "Service"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H4F41A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H4F41A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H4F41A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H4F41A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H4F41A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H4F41A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"19.00\",\"Product Number\":\"H4F41A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H4F41A1\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AG629A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AG629A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AG629A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AG629A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AG629A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AG629A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AG629A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"25.00\",\"Product Number\":\"AG629A\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AG629A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F75A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"466.00\",\"Product Number\":\"P1F75A\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F75A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F74A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"350.00\",\"Product Number\":\"P1F74A\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F74A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F76A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F76A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F76A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F76A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F76A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F76A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F76A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"758.00\",\"Product Number\":\"P1F76A\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F76A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F78A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F78A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F78A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F78A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F78A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F78A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F78A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"350.00\",\"Product Number\":\"P1F78A\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F78A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F69A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F69A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F69A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F69A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F69A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F69A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F69A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"289.00\",\"Product Number\":\"P1F69A\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F69A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F71A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F71A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F71A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F71A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F71A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F71A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F71A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"292.00\",\"Product Number\":\"P1F71A\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F71A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "BQ337A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "BQ337A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "BQ337A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "BQ337A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "BQ337A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "BQ337A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "BQ337A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"100.00\",\"Product Number\":\"BQ337A\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"BQ337A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "BQ335A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "BQ335A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "BQ335A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "BQ335A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "BQ335A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "BQ335A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "BQ335A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"44.00\",\"Product Number\":\"BQ335A\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"BQ335A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AG628A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AG628A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AG628A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AG628A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AG628A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AG628A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AG628A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"816.00\",\"Product Number\":\"AG628A\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AG628A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Main Category",
+    "oldValue": "Processor",
+    "newValue": "Graphics & GPU"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Sub-Category",
+    "oldValue": "Intel Xeon Scalable Processors",
+    "newValue": "GPU Accelerators"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Constraint",
+    "oldValue": "min 1, max 2",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Intel Xeon Scalable Processors: min 1, max 2",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Max Qty",
+    "oldValue": "2",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"100.00\",\"Product Number\":\"H33XSA1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XSA1\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Main Category",
+    "oldValue": "Processor",
+    "newValue": "Graphics & GPU"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Sub-Category",
+    "oldValue": "Intel Xeon Scalable Processors",
+    "newValue": "GPU Accelerators"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Constraint",
+    "oldValue": "min 1, max 2",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Intel Xeon Scalable Processors: min 1, max 2",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Max Qty",
+    "oldValue": "2",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"100.00\",\"Product Number\":\"H33XTA2\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XTA2\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Main Category",
+    "oldValue": "Processor",
+    "newValue": "Graphics & GPU"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Sub-Category",
+    "oldValue": "Intel Xeon Scalable Processors",
+    "newValue": "GPU Accelerators"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Constraint",
+    "oldValue": "min 1, max 2",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Intel Xeon Scalable Processors: min 1, max 2",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Max Qty",
+    "oldValue": "2",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"100.00\",\"Product Number\":\"H33XVA3\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XVA3\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Main Category",
+    "oldValue": "Processor",
+    "newValue": "Graphics & GPU"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Sub-Category",
+    "oldValue": "Intel Xeon Scalable Processors",
+    "newValue": "GPU Accelerators"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Constraint",
+    "oldValue": "min 1, max 2",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Intel Xeon Scalable Processors: min 1, max 2",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Max Qty",
+    "oldValue": "2",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"100.00\",\"Product Number\":\"H33XWA4\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XWA4\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SGA3\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SGA3\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SGA4\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SGA4\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SGA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SGA5\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SGA5\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SHA3\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SHA3\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SHA4\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SHA4\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SHA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SHA5\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SHA5\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SJA3\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SJA3\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SJA4\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SJA4\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SJA5",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SJA5\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SJA5\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SKA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SKA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SKA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SKA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SKA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SKA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H46SKA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"0.00\",\"Product Number\":\"H46SKA3\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SKA3\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "TC406AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "TC406AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"10/31/2028\",\"TC406AAE [OB]\":\"TC406AAE\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2500,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K43AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K43AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"12/31/2028\",\"TC406AAE [OB]\":\"Q8K43AAE\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":1750,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K96AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K96AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"05/01/2024\",\"TC406AAE [OB]\":\"Q8K96AAE [OB]\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":3000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K97AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K97AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"05/01/2024\",\"TC406AAE [OB]\":\"Q8K97AAE [OB]\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":3000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K98AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K98AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"10/31/2028\",\"TC406AAE [OB]\":\"Q8K98AAE\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":6000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8L00AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8L00AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"10/31/2028\",\"TC406AAE [OB]\":\"Q8L00AAE\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":6000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K99AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Operating System / License"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "Q8K99AAE",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"10/31/2028\",\"TC406AAE [OB]\":\"Q8K99AAE\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H4F41A1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"19.00\",\"Product Number\":\"H4F41A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H4F41A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "P1F76A",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"758.00\",\"Product Number\":\"P1F76A\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F76A\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Main Category",
+    "oldValue": "Processor",
+    "newValue": "Support Services"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Sub-Category",
+    "oldValue": "Intel Xeon Scalable Processors",
+    "newValue": "Support & Deployment Services"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Constraint",
+    "oldValue": "min 1, max 2",
+    "newValue": "max 8"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Intel Xeon Scalable Processors: min 1, max 2",
+    "newValue": "Selection constraint for OCP3 Networking Adapters: max 8"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Max Qty",
+    "oldValue": "2",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XSA1",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"100.00\",\"Product Number\":\"H33XSA1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XSA1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Main Category",
+    "oldValue": "Processor",
+    "newValue": "Support Services"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Sub-Category",
+    "oldValue": "Intel Xeon Scalable Processors",
+    "newValue": "Support & Deployment Services"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Constraint",
+    "oldValue": "min 1, max 2",
+    "newValue": "max 8"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Intel Xeon Scalable Processors: min 1, max 2",
+    "newValue": "Selection constraint for OCP3 Networking Adapters: max 8"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Max Qty",
+    "oldValue": "2",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XTA2",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"100.00\",\"Product Number\":\"H33XTA2\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XTA2\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Main Category",
+    "oldValue": "Processor",
+    "newValue": "Support Services"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Sub-Category",
+    "oldValue": "Intel Xeon Scalable Processors",
+    "newValue": "Support & Deployment Services"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Constraint",
+    "oldValue": "min 1, max 2",
+    "newValue": "max 8"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Intel Xeon Scalable Processors: min 1, max 2",
+    "newValue": "Selection constraint for OCP3 Networking Adapters: max 8"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Max Qty",
+    "oldValue": "2",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XVA3",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"100.00\",\"Product Number\":\"H33XVA3\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XVA3\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Main Category",
+    "oldValue": "Processor",
+    "newValue": "Support Services"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Sub-Category",
+    "oldValue": "Intel Xeon Scalable Processors",
+    "newValue": "Support & Deployment Services"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Constraint",
+    "oldValue": "min 1, max 2",
+    "newValue": "max 8"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Intel Xeon Scalable Processors: min 1, max 2",
+    "newValue": "Selection constraint for OCP3 Networking Adapters: max 8"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Max Qty",
+    "oldValue": "2",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "CLIC Status",
+    "oldValue": "Active",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Lead Time",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Lead Time Source",
+    "oldValue": "Not published by OCA",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Speed Tier",
+    "oldValue": "",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Vendor Recommended",
+    "oldValue": "",
+    "newValue": "false"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "H33XWA4",
+    "chassis": "MSL3040 Tape",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"List Price (USD)\":\"100.00\",\"Product Number\":\"H33XWA4\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XWA4\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  }
+]

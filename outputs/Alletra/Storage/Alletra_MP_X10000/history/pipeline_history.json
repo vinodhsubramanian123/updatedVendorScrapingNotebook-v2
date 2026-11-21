@@ -1,0 +1,96 @@
+[
+  {
+    "summary": {
+      "runId": "run_Alletra_MP_X10000_1795263535331",
+      "sessionName": "Alletra_MP_X10000",
+      "startTime": "2026-11-21T12:18:55.321Z",
+      "endTime": "2026-11-21T12:18:56.837Z",
+      "durationMs": 1516,
+      "durationSec": "1.52",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 82,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 82,
+      "validationStats": {
+        "totalEntries": 22,
+        "totalSKUs": 82,
+        "validSKUs": 82,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 3,
+        "zeroPriceSKUs": 3,
+        "priceErrors": 0,
+        "ruleCount": 52,
+        "categoryCount": 7
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-21T12:18:55.331Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/.catalog-staging/staging_Alletra_MP_X10000_1795263535114/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/.catalog-staging/staging_Alletra_MP_X10000_1795263535114/Alletra_MP_X10000_Catalog.json",
+          "chassisLabel": "Alletra MP X10000"
+        }
+      },
+      {
+        "timestamp": "2026-11-21T12:18:56.750Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 15,
+          "totalUniqueSKUs": 82,
+          "incrementalStats": {
+            "totalScrapedSkus": 82,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 82,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T12:18:56.754Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 22,
+            "totalSKUs": 82,
+            "validSKUs": 82,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 3,
+            "zeroPriceSKUs": 3,
+            "priceErrors": 0,
+            "ruleCount": 52,
+            "categoryCount": 7
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T12:18:56.837Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/.catalog-staging/staging_Alletra_MP_X10000_1795263535114/Alletra_MP_X10000_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 82,
+      "classified": 82,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  }
+]

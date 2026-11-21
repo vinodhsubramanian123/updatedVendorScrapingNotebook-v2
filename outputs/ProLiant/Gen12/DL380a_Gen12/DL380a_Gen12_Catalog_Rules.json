@@ -6,26 +6,26 @@
     "generation": "Gen12",
     "pillar": "SERVER",
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
-    "scrapeDate": "2026-10-29",
-    "scrapeTimestamp": "2026-10-29T06:13:59.488Z",
-    "builtAt": "2026-10-29T06:29:29.528Z",
-    "totalSubcategories": 45,
-    "totalUniqueSKUs": 451,
-    "totalTables": 59,
+    "scrapeDate": "2026-11-20",
+    "scrapeTimestamp": "2026-11-20T11:03:40.238Z",
+    "builtAt": "2026-11-21T11:58:19.269Z",
+    "totalSubcategories": 44,
+    "totalUniqueSKUs": 520,
+    "totalTables": 63,
     "diffSummary": {
-      "added": 8,
+      "added": 69,
       "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 193,
-      "priceAndAttributeChanged": 21,
-      "unchanged": 229,
+      "attributeChanged": 432,
+      "priceAndAttributeChanged": 18,
+      "unchanged": 1,
       "reinstated": 0,
       "discontinuedTotal": 15
     },
-    "historySnapshot": "catalog_2026-10-29.json",
+    "historySnapshot": "catalog_2026-11-20.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-10-29",
+      "scrapeDate": "2026-11-20",
       "categoryBreakdown": {
         "Chassis": {
           "totalSKUs": 1,
@@ -80,15 +80,15 @@
           "avgPrice": 735.6
         },
         "Memory": {
-          "totalSKUs": 13,
-          "totalPrice": 580625,
+          "totalSKUs": 19,
+          "totalPrice": 892915,
           "minPrice": 1,
           "maxPrice": 133186,
           "subcategories": {
             "Memory": {
-              "totalSKUs": 12,
-              "totalPrice": 580624,
-              "avgPrice": 48385.333333333336
+              "totalSKUs": 18,
+              "totalPrice": 892914,
+              "avgPrice": 49606.333333333336
             },
             "Memory Setting": {
               "totalSKUs": 1,
@@ -96,7 +96,7 @@
               "avgPrice": 1
             }
           },
-          "avgPrice": 44663.46153846154
+          "avgPrice": 46995.52631578947
         },
         "Graphics & GPU": {
           "totalSKUs": 8,
@@ -118,24 +118,24 @@
           "avgPrice": 509
         },
         "Storage Controllers": {
-          "totalSKUs": 19,
-          "totalPrice": 29034,
+          "totalSKUs": 20,
+          "totalPrice": 33885,
           "minPrice": 1,
-          "maxPrice": 11399,
+          "maxPrice": 12999,
           "subcategories": {
             "SAS Controller": {
               "totalSKUs": 3,
-              "totalPrice": 23097,
-              "avgPrice": 7699
+              "totalPrice": 27947,
+              "avgPrice": 9315.666666666666
             },
             "Internal Storage Controller Cables": {
               "totalSKUs": 10,
               "totalPrice": 5333,
               "avgPrice": 533.3
             },
-            "Storage Controllers Options": {
-              "totalSKUs": 4,
-              "totalPrice": 4,
+            "RAID Settings": {
+              "totalSKUs": 5,
+              "totalPrice": 5,
               "avgPrice": 1
             },
             "INTEL VROC Products": {
@@ -144,11 +144,11 @@
               "avgPrice": 300
             }
           },
-          "avgPrice": 1528.1052631578948
+          "avgPrice": 1694.25
         },
         "Drive Enclosures / Drives": {
           "totalSKUs": 55,
-          "totalPrice": 2901607,
+          "totalPrice": 2649113,
           "minPrice": 227,
           "maxPrice": 191675,
           "subcategories": {
@@ -159,27 +159,22 @@
             },
             "Solid State Drives (NVMe/SAS/SATA)": {
               "totalSKUs": 53,
-              "totalPrice": 2901008,
-              "avgPrice": 54736
+              "totalPrice": 2648514,
+              "avgPrice": 49971.96226415094
             }
           },
-          "avgPrice": 52756.490909090906
+          "avgPrice": 48165.69090909091
         },
         "Software & Licenses": {
-          "totalSKUs": 198,
-          "totalPrice": 2547187,
+          "totalSKUs": 260,
+          "totalPrice": 2726811,
           "minPrice": 1,
           "maxPrice": 99999,
           "subcategories": {
-            "iLO Common Password": {
-              "totalSKUs": 1,
-              "totalPrice": 1,
-              "avgPrice": 1
-            },
             "Server Management & Operating System Licenses": {
-              "totalSKUs": 23,
-              "totalPrice": 756268,
-              "avgPrice": 32881.217391304344
+              "totalSKUs": 86,
+              "totalPrice": 935877,
+              "avgPrice": 10882.290697674418
             },
             "High Availability Computing - Cluster Software": {
               "totalSKUs": 1,
@@ -228,8 +223,8 @@
             },
             "MS Windows Server - Essentials": {
               "totalSKUs": 29,
-              "totalPrice": 201015,
-              "avgPrice": 6931.551724137931
+              "totalPrice": 201031,
+              "avgPrice": 6932.103448275862
             },
             "SUSE Linux Enterprise Server": {
               "totalSKUs": 8,
@@ -247,7 +242,7 @@
               "avgPrice": 5902.833333333333
             }
           },
-          "avgPrice": 12864.580808080807
+          "avgPrice": 10487.734615384616
         },
         "PCIe Risers": {
           "totalSKUs": 5,
@@ -366,14 +361,14 @@
         },
         "OS Boot Device": {
           "totalSKUs": 5,
-          "totalPrice": 45155,
+          "totalPrice": 47555,
           "minPrice": 158,
-          "maxPrice": 14299,
+          "maxPrice": 14999,
           "subcategories": {
             "Solid State Drives (NVMe/SAS/SATA)": {
               "totalSKUs": 4,
-              "totalPrice": 37955,
-              "avgPrice": 9488.75
+              "totalPrice": 40355,
+              "avgPrice": 10088.75
             },
             "OS Boot Device": {
               "totalSKUs": 1,
@@ -381,22 +376,22 @@
               "avgPrice": 7200
             }
           },
-          "avgPrice": 9031
+          "avgPrice": 9511
         }
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 451,
-      "unchangedSkusCount": 438,
-      "modifiedSkusCount": 0,
-      "addedSkusCount": 13,
+      "totalScrapedSkus": 520,
+      "unchangedSkusCount": 407,
+      "modifiedSkusCount": 51,
+      "addedSkusCount": 62,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotFingerprint": "b7874b810cd0c859db70e15850ad9259d682c9ed24cf428aed50ba75f6809512",
+    "snapshotFingerprint": "86fa14857409ce4d7b592d8dde62d55a9e82167788d067ecd98328ac94db7052",
     "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-10-29T06:29:30.039Z"
+    "rulesGeneratedAt": "2026-11-21T11:58:20.081Z"
   },
   "chassisVariants": [
     {
@@ -406,14 +401,14 @@
       "listPrice": 21407,
       "listPriceFormatted": "$21407.00",
       "optionType": "CTO",
-      "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "03/03/2025",
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-09-06: $21407.00 → 2026-09-09: $21407.00 (✕ REMOVED) → 2026-09-10: $21407.00 → 2026-09-30: $21407.00 → 2026-10-17: $21407.00 → 2026-10-29: $21407.00"
+      "diffStatus": "UNCHANGED",
+      "priceHistoryTrail": "2026-09-06: $21407.00 → 2026-09-09: $21407.00 (✕ REMOVED) → 2026-09-10: $21407.00 [Δ Attr] → 2026-09-30: $21407.00 [Δ Attr] → 2026-10-17: $21407.00 [Δ Attr] → 2026-10-29: $21407.00 [Δ Attr]"
     }
   ],
   "chassisVariantMatrix": {
@@ -424,28 +419,28 @@
       "listPrice": 21407,
       "listPriceFormatted": "$21407.00",
       "optionType": "CTO",
-      "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
       "startDate": "03/03/2025",
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-09-06: $21407.00 → 2026-09-09: $21407.00 (✕ REMOVED) → 2026-09-10: $21407.00 → 2026-09-30: $21407.00 → 2026-10-17: $21407.00 → 2026-10-29: $21407.00"
+      "diffStatus": "UNCHANGED",
+      "priceHistoryTrail": "2026-09-06: $21407.00 → 2026-09-09: $21407.00 (✕ REMOVED) → 2026-09-10: $21407.00 [Δ Attr] → 2026-09-30: $21407.00 [Δ Attr] → 2026-10-17: $21407.00 [Δ Attr] → 2026-10-29: $21407.00 [Δ Attr]"
     }
   },
   "smartChassisCombinations": [],
   "solutionManifest": {
     "commercialBreakdown": {
       "hardware": 159340,
-      "support": 33011,
+      "support": 34658,
       "services": 507,
       "software": 1220,
-      "total": 194078
+      "total": 195725
     },
     "deliveryAndSupport": {
-      "iconId": "I157947739-01",
-      "edt": "24 - 30 days",
+      "iconId": "I158524038-01",
+      "edt": "66 - 83 days",
       "configName": "OCA Config 2",
       "attachedServices": [
         {
@@ -824,8 +819,8 @@
         "quantity": 1,
         "description": "HPE HPE DL380a Gen12 Support",
         "configName": "DL380a Gen12 #1",
-        "unitPrice": 32934,
-        "extPrice": 32934,
+        "unitPrice": 34581,
+        "extPrice": 34581,
         "startDate": "03/01/2021",
         "discDate": "12/31/2099"
       }
@@ -837,56 +832,64 @@
       "name": "Processor",
       "constraint": "max 2",
       "minQty": 0,
-      "maxQty": 2
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Memory",
       "name": "Memory",
       "constraint": "max 32",
       "minQty": 0,
-      "maxQty": 32
+      "maxQty": 32,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Networking",
       "name": "InfiniBand PCIe",
       "constraint": "max 2",
       "minQty": 0,
-      "maxQty": 2
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Networking",
       "name": "Ethernet PCIe",
       "constraint": "max 2",
       "minQty": 0,
-      "maxQty": 2
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Networking",
       "name": "Ethernet OCP",
       "constraint": "max 2",
       "minQty": 0,
-      "maxQty": 2
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Networking",
       "name": "Fibre Channel HBA",
       "constraint": "max 2",
       "minQty": 0,
-      "maxQty": 2
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "Networking",
       "name": "Transceivers",
       "constraint": "max 14",
       "minQty": 0,
-      "maxQty": 14
+      "maxQty": 14,
+      "maxQtySemantics": "BOUNDED"
     },
     {
       "parentCategory": "OS Boot Device",
       "name": "OS Boot Device",
       "constraint": "max 2",
       "minQty": 0,
-      "maxQty": 2
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED"
     }
   ],
   "rules": [
@@ -894,16 +897,16 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "P74576-B21"
+        "P69727-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "conditionKey": "portalSelector",
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P74576-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
+      "rule": "P69727-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
       "constraint": "",
       "maxQty": ""
     },
@@ -911,16 +914,16 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "P71119-B21"
+        "P69728-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "conditionKey": "portalSelector",
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P71119-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
+      "rule": "P69728-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
       "constraint": "",
       "maxQty": ""
     },
@@ -928,16 +931,16 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "P71120-B21"
+        "P69729-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "conditionKey": "portalSelector",
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P71120-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
+      "rule": "P69729-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
       "constraint": "",
       "maxQty": ""
     },
@@ -945,16 +948,16 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "P71121-B21"
+        "P69730-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "conditionKey": "portalSelector",
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P71121-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
+      "rule": "P69730-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
       "constraint": "",
       "maxQty": ""
     },
@@ -962,16 +965,16 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "P71122-B21"
+        "P83865-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "conditionKey": "portalSelector",
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P71122-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
+      "rule": "P83865-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
       "constraint": "",
       "maxQty": ""
     },
@@ -979,288 +982,16 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "P71124-B21"
+        "P83867-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "conditionKey": "portalSelector",
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P71124-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P73829-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P73829-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P73831-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P73831-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P73832-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P73832-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P73835-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P73835-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P73837-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P73837-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P73838-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P73838-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P74504-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P74504-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P74507-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P74507-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P74572-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P74572-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P74575-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P74575-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P74577-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P74577-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P74578-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P74578-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P74579-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P74579-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P81591-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P81591-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P85241-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P85241-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P87302-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P87302-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
+      "rule": "P83867-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
       "constraint": "",
       "maxQty": ""
     },
@@ -1336,6 +1067,57 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
+        "P83865-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P83865-F21 conditional visibility: portal selector activation required (Mixing of memory is not allowed.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P83867-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P83867-F21 conditional visibility: portal selector activation required (Mixing of memory is not allowed.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P83869-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P83869-F21 conditional visibility: portal selector activation required (Mixing of memory is not allowed.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
         "P74712-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -1387,822 +1169,6 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "P84244-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P84244-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P91241-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P91241-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P91243-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P91243-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P91247-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P91247-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P91249-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P91249-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P50222-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P50222-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P50224-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P50224-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P50216-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P50216-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P50230-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P50230-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P61019-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P61019-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P61027-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P61027-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P61035-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P61035-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P61043-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P61043-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P61051-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P61051-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P61059-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P61059-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P63829-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P63829-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P63833-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P63833-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P63837-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P63837-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P63841-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P63841-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P63845-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P63845-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P63849-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P63849-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P63853-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P63853-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P78808-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P78808-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P78810-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P78810-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P85662-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P85662-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P85664-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P85664-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P85666-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P85666-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P85668-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P85668-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P85670-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P85670-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P85672-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P85672-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P85674-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P85674-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P85676-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P85676-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P88533-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P88533-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P91237-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P91237-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P91239-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P91239-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P91245-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P91245-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P92309-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P92309-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P92311-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P92311-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P92313-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P92313-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P92315-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P92315-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P92317-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P92317-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P92319-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P92319-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P92321-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P92321-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "829335-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "829335-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "InfiniBand PCIe",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P45641-B23"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P45641-B23 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "InfiniBand PCIe",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P45642-B22"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P45642-B22 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "InfiniBand PCIe",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P45642-H22"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P45642-H22 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "InfiniBand PCIe",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P65333-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P65333-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "InfiniBand PCIe",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
         "P74696-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -2213,108 +1179,6 @@
       "rule": "P74696-B21 conditional visibility: portal selector activation required (If 4NVMe Direct Attach Cable (P74702-B21) is selected, then HPE DL380a Gen12 OCPB Cbl Kit (P74696-B21) cannot be selected.); PORTAL_CONDITIONAL",
       "parentCategory": "Cooling / Thermal",
       "subCategory": "Heatsink Kit",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "845972-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "845972-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Transceivers",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P87585-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P87585-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Transceivers",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P89422-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P89422-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Transceivers",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P89423-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P89423-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Transceivers",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q2F19A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q2F19A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Transceivers",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "R6V66A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "R6V66A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Graphics & GPU",
-      "subCategory": "Graphics Accessories",
       "constraint": "",
       "maxQty": ""
     },
@@ -2458,2777 +1322,6 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "R8V46AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "R8V46AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "R8V48A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "R8V48A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S0W13AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S0W13AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S0W16AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S0W16AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S0W18AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S0W18AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S0W19AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S0W19AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S0W20AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S0W20AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S0W21AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S0W21AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S0W22AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S0W22AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S0W23AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S0W23AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S0W24AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S0W24AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S0W25AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S0W25AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S0W26AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S0W26AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S0W27AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S0W27AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S0W28AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S0W28AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S0W29AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S0W29AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "High Availability Computing - Cluster Software",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q0D30A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q0D30A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q0D30AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q0D30AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W19A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W19A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W19AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W19AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W20A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W20A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W20AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W20AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W21A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W21A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W21AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W21AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W22A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W22A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W22AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W22AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W23A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W23A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W23AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W23AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W24A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W24A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W24AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W24AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W25A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W25A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W25AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W25AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W26A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W26A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q5W26AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q5W26AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U15A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U15A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U15AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U15AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U16A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U16A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U16AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U16AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U17A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U17A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U17AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U17AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U18A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U18A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U18AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U18AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U19A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U19A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U19AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U19AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U20A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U20A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U20AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U20AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U21A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U21A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U21AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U21AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U22A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U22A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q8U22AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q8U22AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3B60AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3B60AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3B61AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3B61AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3B62AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3B62AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3B63AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3B63AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3B64AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3B64AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3B65AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3B65AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3B66AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3B66AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3B67AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3B67AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3B68AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3B68AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3B69AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3B69AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3B70AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3B70AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3B71AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3B71AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S7N77AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S7N77AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S7N78AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S7N78AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S7N87A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S7N87A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S7N88A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S7N88A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S7P10A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S7P10A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S7P11A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S7P11A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S7P12A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S7P12A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S7P13A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S7P13A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Supported Operating System",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P45916-291"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P45916-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P45916-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P45916-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46005-291"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46005-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46005-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46005-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46155-291"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46155-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46155-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46155-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46195-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46195-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46196-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46196-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46199-AA1"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46199-AA1 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46199-AB1"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46199-AB1 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46199-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46199-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46212-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46212-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46213-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46213-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46214-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46214-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77106-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77106-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77107-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77107-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77108-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77108-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77109-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77109-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S6K30A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S6K30A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S6K30B"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S6K30B conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S6L35B"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S6L35B conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P11086-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P11086-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P11086-051"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P11086-051 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P11086-041"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P11086-041 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P11086-061"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P11086-061 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P11086-291"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P11086-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P11086-071"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P11086-071 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P11083-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P11083-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P11083-051"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P11083-051 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P11083-041"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P11083-041 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P11083-061"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P11083-061 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P11083-291"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P11083-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P11083-071"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P11083-071 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P45862-291"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P45862-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P45862-071"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P45862-071 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S6L47A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S6L47A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S6L45A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S6L45A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S6L46A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S6L46A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77125-291"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77125-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S6L48A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S6L48A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77125-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77125-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77124-291"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77124-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S6L43A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S6L43A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77124-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77124-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server - Essentials",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "R6J29AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "R6J29AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Red Hat OpenShift Platform Container",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "R6J34AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "R6J34AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Red Hat OpenShift Platform Container",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "R6J35AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "R6J35AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Red Hat OpenShift Platform Container",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3Z85AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3Z85AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Red Hat OpenShift Platform Container",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3Z87AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3Z87AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Red Hat OpenShift Platform Container",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3Z89AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3Z89AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Red Hat OpenShift Platform Container",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S3Z91AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S3Z91AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Red Hat OpenShift Platform Container",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46123-AA1"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46123-AA1 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46123-AB1"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46123-AB1 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46123-371"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46123-371 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46123-021"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46123-021 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46123-A21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46123-A21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46128-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46128-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46128-291"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46128-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46171-AA1"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46171-AA1 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46171-AB1"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46171-AB1 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46171-371"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46171-371 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46171-021"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46171-021 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46171-A21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46171-A21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77101-371"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77101-371 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77100-AA1"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77100-AA1 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77100-AB1"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77100-AB1 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77100-291"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77100-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S6L38A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S6L38A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77100-021"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77100-021 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77100-A21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77100-A21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77100-371"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77100-371 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Server Management & Operating System Licenses",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46191-AA1"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46191-AA1 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46191-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46191-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46194-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46194-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46215-AA1"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46215-AA1 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46215-AB1"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46215-AB1 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46215-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46215-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46216-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46216-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46217-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46217-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46218-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46218-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46219-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46219-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46220-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46220-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46221-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46221-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P46222-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P46222-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77117-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77117-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77118-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77118-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77119-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77119-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77120-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77120-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77121-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77121-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77122-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77122-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P77123-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77123-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "Microsoft Windows CAL Packs",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S2G27AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S2G27AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Support Services",
-      "subCategory": "System Options",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "S2G28AAE"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "S2G28AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Support Services",
-      "subCategory": "System Options",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
         "S4F94AAE"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -5237,8 +1330,8 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S4F94AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL",
-      "parentCategory": "Support Services",
-      "subCategory": "System Options",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "",
       "maxQty": ""
     },
@@ -5254,8 +1347,8 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S4G00AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL",
-      "parentCategory": "Support Services",
-      "subCategory": "System Options",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "",
       "maxQty": ""
     },
@@ -5271,10 +1364,35 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S4R76AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL",
-      "parentCategory": "Support Services",
-      "subCategory": "System Options",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "",
       "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "BTO_DISALLOWED",
+      "parentCategory": "Memory",
+      "subCategory": "Configuration Rules",
+      "constraint": "BTO Memories are not allowed in CTO Base Model.",
+      "maxQty": "",
+      "rule": "[BTO_DISALLOWED] BTO Memories are not allowed in CTO Base Model.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P69727-B21",
+        "P69728-B21",
+        "P69729-B21",
+        "P69730-B21",
+        "P83865-B21",
+        "P83867-B21"
+      ],
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
     },
     {
       "level": "CHASSIS",
@@ -5293,7 +1411,10 @@
         "P69727-F21",
         "P69729-F21",
         "P69730-F21",
-        "P73447-F21"
+        "P73447-F21",
+        "P83865-F21",
+        "P83867-F21",
+        "P83869-F21"
       ],
       "ineligibilityReason": "Mixing of memory is not allowed.",
       "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
@@ -5556,6 +1677,13 @@
       "subCategory": "Memory",
       "constraint": "max 32",
       "maxQty": 32,
+      "rule": "BTO Memories are not allowed in CTO Base Model."
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "max 32",
+      "maxQty": 32,
       "rule": "Mixing of memory is not allowed."
     },
     {
@@ -5616,14 +1744,14 @@
     },
     {
       "parentCategory": "Storage Controllers",
-      "subCategory": "Storage Controllers Options",
+      "subCategory": "RAID Settings",
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "Selection constraint for RAID Settings: max 1"
     },
     {
       "parentCategory": "Software & Licenses",
-      "subCategory": "iLO Common Password",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "Selection constraint for iLO Common Password: max 1"
@@ -5683,13 +1811,6 @@
       "constraint": "max 3",
       "maxQty": 3,
       "rule": "Selection constraint for OCP3 Networking Adapters: max 3"
-    },
-    {
-      "parentCategory": "Cooling / Thermal",
-      "subCategory": "Heatsink Kit",
-      "constraint": "max 1",
-      "maxQty": 1,
-      "rule": "If 4NVMe Direct Attach Cable (P74702-B21) is selected, then HPE DL380a Gen12 OCPB Cbl Kit (P74696-B21) cannot be selected."
     },
     {
       "parentCategory": "Networking",
@@ -5804,52 +1925,52 @@
       "rule": "Selection constraint for Manufacturing Services: max 2"
     },
     {
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Power Cords",
-      "constraint": "max 8",
-      "maxQty": 8,
-      "rule": "Power cord cannot be selected if HPE Remove Standard Power Cords (469774-409) is in the configuration."
-    },
-    {
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for High Availability Computing - Cluster Software: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": "",
+      "rule": "Selection constraint for NVIDIA GPU SW: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Partner Software - Operating System",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Partner Software - Operating System: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Compute Ops Management SKUs",
       "constraint": "required",
-      "maxQty": -2,
+      "maxQty": "",
       "rule": "Selection constraint for Compute Ops Management SKUs: required"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "OEM Software",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for OEM Software: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Red Hat (add-ons)",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Red Hat (add-ons): no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "iLO",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for iLO: no max"
     },
     {
@@ -5868,80 +1989,73 @@
     },
     {
       "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for INTEL VROC Products: max 1"
+    },
+    {
+      "parentCategory": "Software & Licenses",
       "subCategory": "Supported Operating System",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Supported Operating System: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "MS Windows Server",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for MS Windows Server: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "MS Windows Server - Essentials",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for MS Windows Server - Essentials: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Server Management & Operating System Licenses",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for MS Windows Server - Essentials: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Server Management & Operating System Licenses",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Server Management & Operating System Licenses: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "SUSE Linux Enterprise Server",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for SUSE Linux Enterprise Server: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Microsoft Windows CAL Packs",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Microsoft Windows CAL Packs: no max"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Red Hat Enterprise Linux Server-Virtualization: no max"
-    },
-    {
-      "parentCategory": "Support Services",
-      "subCategory": "RAID Settings",
-      "constraint": "max 1",
-      "maxQty": 1,
-      "rule": "Selection constraint for RAID Settings: max 1"
     },
     {
       "parentCategory": "Software & Licenses",
       "subCategory": "HPC Software Products",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for HPC Software Products: no max"
-    },
-    {
-      "parentCategory": "Graphics & GPU",
-      "subCategory": "NVIDIA GPU SW",
-      "constraint": "no max",
-      "maxQty": -1,
-      "rule": "Selection constraint for NVIDIA GPU SW: no max"
     },
     {
       "parentCategory": "Software & Licenses",
@@ -5954,13 +2068,13 @@
       "parentCategory": "Software & Licenses",
       "subCategory": "Red Hat OpenShift Platform Container",
       "constraint": "no max",
-      "maxQty": -1,
+      "maxQty": "",
       "rule": "Selection constraint for Red Hat OpenShift Platform Container: no max"
     },
     {
-      "parentCategory": "Support Services",
-      "subCategory": "System Options",
-      "constraint": "",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "no max",
       "maxQty": "",
       "rule": "Private Product is not valid for current customer account"
     },
@@ -5977,6 +2091,13 @@
       "constraint": "max 2",
       "maxQty": 2,
       "rule": "Selection constraint for Management Hardware: max 2"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Support & Deployment Services",
+      "constraint": "max 8",
+      "maxQty": 8,
+      "rule": "Selection constraint for OCP3 Networking Adapters: max 8"
     }
   ]
 }

@@ -4,9 +4,19 @@
     "family": "Alletra",
     "gen": "Storage",
     "pillar": "STORAGE",
-    "rulesCount": 3
+    "coverageStatus": "PENDING_LIVE_OCA_SCRAPE",
+    "rulesCount": 4
   },
   "rules": [
+    {
+      "ruleId": "RULE_ALLETRA_STORAGE_SYSTEM_SUPERSEDED_DISCLOSURE",
+      "rule": "PROVENANCE DISCLOSURE (PENDING_LIVE_OCA_SCRAPE): Alletra_Storage_System is an unscraped 3-SKU umbrella registry seed kept only for historical continuity. Flagship HPE Alletra Storage MP workloads MUST use the dedicated live-scraped catalogs Alletra_MP_B10000 (Block: Switchless B10100 S0B84A vs. Switched B10200 S1R06A) and Alletra_MP_X10000 (Object/File: S3L12A), following the Ninja Online core sizing -> OCA JSON import -> OCA transceiver/support adaptation workflow.",
+      "ruleText": "PROVENANCE DISCLOSURE (PENDING_LIVE_OCA_SCRAPE): Alletra_Storage_System is an unscraped 3-SKU umbrella registry seed kept only for historical continuity. Flagship HPE Alletra Storage MP workloads MUST use the dedicated live-scraped catalogs Alletra_MP_B10000 (Block: Switchless B10100 S0B84A vs. Switched B10200 S1R06A) and Alletra_MP_X10000 (Object/File: S3L12A), following the Ninja Online core sizing -> OCA JSON import -> OCA transceiver/support adaptation workflow.",
+      "description": "Unscraped 3-SKU umbrella seed superseded by dedicated Alletra_MP_B10000 and Alletra_MP_X10000 catalogs.",
+      "parentCategory": "Storage Systems",
+      "subCategory": "Grounding Governance",
+      "type": "COVERAGE_DISCLOSURE"
+    },
     {
       "ruleId": "RULE_ALLETRA_MP_B10000_CTO_CHASSIS",
       "rule": "HPE Alletra Storage MP B10000 base storage controller chassis is R0Q37A ($43,200.00). Disaggregated dual-node active-active controllers.",

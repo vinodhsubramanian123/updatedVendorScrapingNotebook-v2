@@ -3,700 +3,2124 @@
     {
       "date": "2026-09-22",
       "price": 7223,
-      "status": "BASELINE"
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "CLIC Status: \"Obsolete (OB)\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":7223,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "R3P47AAE": [
     {
       "date": "2026-09-22",
       "price": 135058,
-      "status": "BASELINE"
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":135058,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "R3P50AAE": [
     {
       "date": "2026-09-22",
       "price": 324137,
-      "status": "BASELINE"
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":324137,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "R4P31AAE": [
     {
       "date": "2026-09-22",
       "price": 540233,
-      "status": "BASELINE"
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":540233,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "R3P45AAE": [
     {
       "date": "2026-09-22",
       "price": 36018,
-      "status": "BASELINE"
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":36018,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "R3P48AAE": [
     {
       "date": "2026-09-22",
       "price": 86443,
-      "status": "BASELINE"
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":86443,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "R4P29AAE": [
     {
       "date": "2026-09-22",
       "price": 144076,
-      "status": "BASELINE"
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":144076,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "R3P46AAE": [
     {
       "date": "2026-09-22",
       "price": 90047,
-      "status": "BASELINE"
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":90047,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "R3P49AAE": [
     {
       "date": "2026-09-22",
       "price": 216111,
-      "status": "BASELINE"
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":216111,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "R4P30AAE": [
     {
       "date": "2026-09-22",
       "price": 360192,
-      "status": "BASELINE"
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":360192,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "S1S58AAE": [
     {
       "date": "2026-09-22",
       "price": 135058,
-      "status": "BASELINE"
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":135058,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "S1S52AAE": [
     {
       "date": "2026-09-22",
       "price": 36018,
-      "status": "BASELINE"
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":36018,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "S1S55AAE": [
     {
       "date": "2026-09-22",
       "price": 90047,
-      "status": "BASELINE"
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0,
+      "attributeDeltas": [
+        "Max Qty: \"-1\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Operating System / License\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":90047,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ]
     }
   ],
   "H29BWA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H29BWA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H29BWA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H29BXA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H29BXA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H29BXA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "HA875A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"HA875A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HA875A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H0JD0A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H0JD0A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H0JD0A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H0JT1A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H0JT1A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H0JT1A1\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "H36NRA4": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36NRA4\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36NRA4\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36NRA5": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36NRA5\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36NRA5\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36NSA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36NSA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36NSA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36NTA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36NTA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36NTA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H42ZHA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H42ZHA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H42ZHA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H42ZJA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H42ZJA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H42ZJA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H42ZKA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H42ZKA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H42ZKA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H0JT2A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H0JT2A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H0JT2A1\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "H29BRA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H29BRA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H29BRA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H29BSA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H29BSA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H29BSA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36NLA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36NLA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36NLA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36NMA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36NMA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36NMA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36NNA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36NNA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36NNA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36NPA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36NPA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36NPA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36NQA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36NQA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36NQA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36NQA3": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36NQA3\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36NQA3\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36NQA4": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36NQA4\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36NQA4\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "AG629A": [
     {
       "date": "2026-09-22",
-      "price": 25,
-      "status": "BASELINE"
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"AG629A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P1F75A": [
     {
       "date": "2026-09-22",
-      "price": 466,
-      "status": "BASELINE"
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"P1F75A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P1F74A": [
     {
       "date": "2026-09-22",
-      "price": 350,
-      "status": "BASELINE"
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"P1F74A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P1F76A": [
     {
       "date": "2026-09-22",
-      "price": 758,
-      "status": "BASELINE"
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"P1F76A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "P1F79A": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P1F78A": [
     {
       "date": "2026-09-22",
-      "price": 350,
-      "status": "BASELINE"
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"P1F78A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P1F69A": [
     {
       "date": "2026-09-22",
-      "price": 289,
-      "status": "BASELINE"
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"P1F69A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P1F80A": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P1F82A": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P1F71A": [
     {
       "date": "2026-09-22",
-      "price": 292,
-      "status": "BASELINE"
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"P1F71A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "BQ337A": [
     {
       "date": "2026-09-22",
-      "price": 100,
-      "status": "BASELINE"
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"BQ337A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "BQ335A": [
     {
       "date": "2026-09-22",
-      "price": 44,
-      "status": "BASELINE"
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"BQ335A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AG628A": [
     {
       "date": "2026-09-22",
-      "price": 816,
-      "status": "BASELINE"
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"AG628A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "G1H96A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"G1H96A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"G1H96A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "G1H97A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"G1H97A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"G1H97A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "G1H98A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"G1H98A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"G1H98A1\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "G1H99A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"G1H99A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"G1H99A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H0JD1A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H0JD1A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H0JD1A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H0JD7A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H0JD7A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H0JD7A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H30RVA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H30RVA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H30RVA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H33XSA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Sub-Category: \"System Options\" -> \"Support & Deployment Services\"",
+        "Constraint: \"optional\" -> \"max 8\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"Selection constraint for OCP3 Networking Adapters: max 8\"",
+        "Max Qty: \"-3\" -> \"8\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H33XSA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XSA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H33XTA2": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Sub-Category: \"System Options\" -> \"Support & Deployment Services\"",
+        "Constraint: \"optional\" -> \"max 8\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"Selection constraint for OCP3 Networking Adapters: max 8\"",
+        "Max Qty: \"-3\" -> \"8\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H33XTA2\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XTA2\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H33XVA3": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Sub-Category: \"System Options\" -> \"Support & Deployment Services\"",
+        "Constraint: \"optional\" -> \"max 8\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"Selection constraint for OCP3 Networking Adapters: max 8\"",
+        "Max Qty: \"-3\" -> \"8\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H33XVA3\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XVA3\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H33XWA4": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Sub-Category: \"System Options\" -> \"Support & Deployment Services\"",
+        "Constraint: \"optional\" -> \"max 8\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"Selection constraint for OCP3 Networking Adapters: max 8\"",
+        "Max Qty: \"-3\" -> \"8\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H33XWA4\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XWA4\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H33XXA5": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Sub-Category: \"System Options\" -> \"Support & Deployment Services\"",
+        "Constraint: \"optional\" -> \"max 8\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"Selection constraint for OCP3 Networking Adapters: max 8\"",
+        "Max Qty: \"-3\" -> \"8\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H33XXA5\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H33XXA5\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36NVA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Sub-Category: \"System Options\" -> \"Support & Deployment Services\"",
+        "Constraint: \"optional\" -> \"max 8\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"Selection constraint for OCP3 Networking Adapters: max 8\"",
+        "Max Qty: \"-3\" -> \"8\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36NVA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36NVA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "HA0Z0A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Sub-Category: \"System Options\" -> \"Support & Deployment Services\"",
+        "Constraint: \"optional\" -> \"max 8\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"Selection constraint for OCP3 Networking Adapters: max 8\"",
+        "Max Qty: \"-3\" -> \"8\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"HA0Z0A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HA0Z0A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "HR2R4A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Sub-Category: \"System Options\" -> \"Support & Deployment Services\"",
+        "Constraint: \"optional\" -> \"max 8\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"Selection constraint for OCP3 Networking Adapters: max 8\"",
+        "Max Qty: \"-3\" -> \"8\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"HR2R4A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HR2R4A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "HR2R5A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Sub-Category: \"System Options\" -> \"Support & Deployment Services\"",
+        "Constraint: \"optional\" -> \"max 8\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"Selection constraint for OCP3 Networking Adapters: max 8\"",
+        "Max Qty: \"-3\" -> \"8\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"HR2R5A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HR2R5A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H0JD9A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H0JD9A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H0JD9A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H1WU9A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H1WU9A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H1WU9A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H1WV0A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H1WV0A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H1WV0A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H1XF9A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H1XF9A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H1XF9A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H1XG0A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H1XG0A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H1XG0A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H1XG7A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H1XG7A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H1XG7A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H2S79A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H2S79A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H2S79A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H2S81A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H2S81A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H2S81A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H29BQA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H29BQA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H29BQA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H30SBA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H30SBA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H30SBA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H30SCA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H30SCA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H30SCA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H30SLA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H30SLA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H30SLA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H30SMA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H30SMA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H30SMA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H30SNA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H30SNA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H30SNA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36NRA3": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36NRA3\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36NRA3\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36PBA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36PBA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36PBA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36PCA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36PCA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36PCA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H36PDA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Main Category: \"Accessories & Infrastructure\" -> \"Support Services\"",
+        "Constraint: \"optional\" -> \"(None)\"",
+        "Rule/Note: \"Selection constraint for System Options: optional\" -> \"(None)\"",
+        "Max Qty: \"-3\" -> \"(None)\"",
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H36PDA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H36PDA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H42ZQA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H42ZQA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H42ZQA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H42ZRA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H42ZRA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H42ZRA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H43BCA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H43BCA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H43BCA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H44MDA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H44MDA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H44MDA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H44NJA1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H44NJA1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H44NJA1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "HU7D2A1": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"HU7D2A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HU7D2A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H0JD4A1008E": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H0JD4A1008E\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H0JD4A1008E\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H0JD4A10BK5": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H0JD4A10BK5\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H0JD4A10BK5\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SGA3": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H46SGA3\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SGA3\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SGA4": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H46SGA4\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SGA4\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SGA5": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H46SGA5\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SGA5\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SHA3": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H46SHA3\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SHA3\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SHA4": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H46SHA4\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SHA4\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SHA5": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H46SHA5\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SHA5\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SJA3": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H46SJA3\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SJA3\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SJA4": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H46SJA4\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SJA4\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SJA5": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H46SJA5\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SJA5\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
   ],
   "H46SKA3": [
     {
       "date": "2026-09-22",
       "price": 0,
-      "status": "BASELINE"
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Component Role: \"(None)\" -> \"Service & Support\"",
+        "Start Date: \"2026-09-21\" -> \"(None)\"",
+        "Discontinued Date: \"05/31/2028\" -> \"(None)\"",
+        "CLIC Status: \"Active\" -> \"Unpublished\"",
+        "Lead Time: \"(None)\" -> \"Unpublished\"",
+        "Lead Time Source: \"Not published by OCA\" -> \"Unpublished\"",
+        "Speed Tier: \"(None)\" -> \"Unpublished\"",
+        "Vendor Recommended: \"(None)\" -> \"false\"",
+        "Vendor Attributes: \"{\"Product Number\":\"H46SKA3\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"H46SKA3\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
     }
-  ]
+  ],
+  "H39VQA1#V0F": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1Y14A1#799": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1Y26A1#002": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1Y26A1#003": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36XCA1#006": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1Y25A1#002": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1Y25A1#003": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "HA124A1#V5K": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A1#WFH": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A1#WFK": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A1#WFM": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A1#Y65": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A1#Y6B": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A3#WFH": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A3#WFK": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD4A3#WFM": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H34MTA3#Y34": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H34MTA4#Y34": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H34MTA5#Y34": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DJA3#Y35": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DJA4#Y35": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DJA5#Y35": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DKA3#Y35": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DKA4#Y35": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DKA5#Y35": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DLA3#Y36": [
+    {
+      "date": "2026-09-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H6Z29A": [
+    {
+      "date": "2026-09-22",
+      "price": 7071,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Networking"
+    }
+  ],
+  "HA546A1": [],
+  "HA545A1": [],
+  "HR2R6A1": [],
+  "HV9V8A1": [],
+  "H36VWA1": [],
+  "H36VXA1": [],
+  "H36WBA1": [],
+  "H36WNA1": [],
+  "H36WMA1": [],
+  "H36WQA1": [],
+  "H46RMA1": [],
+  "H46RNA1": [],
+  "H46RLA1": [],
+  "H57FDA1": [],
+  "P1F70A": [],
+  "P1F72A": [],
+  "P1F73A": []
 }

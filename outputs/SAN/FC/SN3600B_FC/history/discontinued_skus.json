@@ -6,5 +6,205 @@
     "subCategory": "16Gb Transceivers",
     "firstSeenDate": "2026-09-22",
     "status": "ACTIVE"
+  },
+  "R8P28A": {
+    "productNumber": "R8P28A",
+    "description": "HPE 25GbE SFP28 LR 10km 1-pack Extended Temperature Pull Tab Transceiver Include with complete syste",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "R8P29A": {
+    "productNumber": "R8P29A",
+    "description": "HPE 400GbE QSFP-DD/OSFP 5m Active Optical Cable Include with complete system",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "R4G55A": {
+    "productNumber": "R4G55A",
+    "description": "CDC HP SN3600B 16G 24/8 8p SWSFP+FC Swch",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "R4G55B": {
+    "productNumber": "R4G55B",
+    "description": "No Localization",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q2B45A#05Y": {
+    "productNumber": "Q2B45A#05Y",
+    "description": "2.4M JUMPER (IEC320 C13/C14 M/F CEE 22)",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q1H71A#05Y": {
+    "productNumber": "Q1H71A#05Y",
+    "description": "2.4M JUMPER (IEC320 C13/C14 M/F CEE 22)",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q1H72A#05Y": {
+    "productNumber": "Q1H72A#05Y",
+    "description": "2.4M JUMPER (IEC320 C13/C14 M/F CEE 22)",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q2B46A#05Y": {
+    "productNumber": "Q2B46A#05Y",
+    "description": "2.4M JUMPER (IEC320 C13/C14 M/F CEE 22)",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q2B44A#05Y": {
+    "productNumber": "Q2B44A#05Y",
+    "description": "2.4M JUMPER (IEC320 C13/C14 M/F CEE 22)",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q1H70A#05Y": {
+    "productNumber": "Q1H70A#05Y",
+    "description": "2.4M JUMPER (IEC320 C13/C14 M/F CEE 22)",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q1H70A#AC3": {
+    "productNumber": "Q1H70A#AC3",
+    "description": "NO LOCALIZATION",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q1H71A#AC3": {
+    "productNumber": "Q1H71A#AC3",
+    "description": "NO LOCALIZATION",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q1H72A#AC3": {
+    "productNumber": "Q1H72A#AC3",
+    "description": "NO LOCALIZATION",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "R7R97A#AC3": {
+    "productNumber": "R7R97A#AC3",
+    "description": "No Localization",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "R8P28A#AC3": {
+    "productNumber": "R8P28A#AC3",
+    "description": "HPE 25GbE SFP28 LR 10km 1-pack Extended Temperature Pull Tab Transceiver Include with complete syste",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "R8P29A#AC3": {
+    "productNumber": "R8P29A#AC3",
+    "description": "HPE 400GbE QSFP-DD/OSFP 5m Active Optical Cable Include with complete system",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q1H71B#05Y": {
+    "productNumber": "Q1H71B#05Y",
+    "description": "2.4m Jumper (IEC320 C13/C14 M/F CEE 22)",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q1H70B#05Y": {
+    "productNumber": "Q1H70B#05Y",
+    "description": "2.4m Jumper (IEC320 C13/C14 M/F CEE 22)",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "R4G55A#05Y": {
+    "productNumber": "R4G55A#05Y",
+    "description": "CDC HP SN3600B 16G 24/8 8p SWSFP+FC Swch",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q1H72B#05Y": {
+    "productNumber": "Q1H72B#05Y",
+    "description": "CDC HP SN3600B 32G 24/24 Pwr Pk+ FC Swch",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "R4G55B#AC3": {
+    "productNumber": "R4G55B#AC3",
+    "description": "No Localization",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "R4G55A#AC3": {
+    "productNumber": "R4G55A#AC3",
+    "description": "No localization",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q1H72B#AC3": {
+    "productNumber": "Q1H72B#AC3",
+    "description": "No localization",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q1H70B#AC3": {
+    "productNumber": "Q1H70B#AC3",
+    "description": "No localization",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
+  },
+  "Q1H71B#AC3": {
+    "productNumber": "Q1H71B#AC3",
+    "description": "No localization",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-09-22",
+    "status": "ACTIVE"
   }
 }

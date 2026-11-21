@@ -1,0 +1,443 @@
+{
+  "version": "1.0.0",
+  "chassis": "Alletra_MP_X10000",
+  "generatedAt": "2026-11-21T12:18:55.331Z",
+  "executionDurationMs": 1515,
+  "summary": {
+    "totalRawTables": 39,
+    "validProductTables": 22,
+    "skippedTablesCount": 12,
+    "rejectedRowsCount": 3,
+    "parseFailedPriceCount": 0,
+    "unmeasuredLeadTimeCount": 11,
+    "selfHealedTablesCount": 0,
+    "selfHealedSkusCount": 0,
+    "totalExtractedSKUs": 82,
+    "totalUniqueSKUs": 82,
+    "totalRulesExtracted": 70,
+    "chassisVariantsCount": 3
+  },
+  "skippedTables": [
+    {
+      "tableIndex": 0,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 1,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 2,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 3,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 4,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 5,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 6,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 7,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 8,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 9,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 10,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 11,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    }
+  ],
+  "rejectedRows": [
+    {
+      "tableIndex": 1,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Country Power Cords Options"
+      ]
+    },
+    {
+      "tableIndex": 4,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "DC Power Cables"
+      ]
+    },
+    {
+      "tableIndex": 7,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Back-End Connectivity Cables"
+      ]
+    }
+  ],
+  "selfHealedTables": [],
+  "tableDecisions": [
+    {
+      "tableIndex": 20,
+      "subCategory": "Node Chassis",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "fallback_accessories",
+      "detectedRole": "Option Component",
+      "constraint": "max 8",
+      "minQty": 0,
+      "maxQty": 8,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 22,
+      "subCategory": "Node",
+      "parentCategory": "Storage Controllers",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 4",
+      "minQty": 0,
+      "maxQty": 4,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 23,
+      "subCategory": "Node",
+      "parentCategory": "Storage Controllers",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 4",
+      "minQty": 0,
+      "maxQty": 4,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 25,
+      "subCategory": "Power Supplies",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Power Supply",
+      "constraint": "max 4",
+      "minQty": 0,
+      "maxQty": 4,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 26,
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "min 1, max 2",
+      "minQty": 1,
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 27,
+      "subCategory": "Power Cord",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 8",
+      "minQty": 0,
+      "maxQty": 8,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 20,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 28,
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "min 1, max 2",
+      "minQty": 1,
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 29,
+      "subCategory": "System Options",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "optional",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "OPTIONAL",
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 35,
+      "subCategory": "Drive Enclosure",
+      "parentCategory": "Drive Enclosures / Drives",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Drive Cage / Drive",
+      "constraint": "max 16",
+      "minQty": 0,
+      "maxQty": 16,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 37,
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "parentCategory": "Networking",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Transceiver",
+      "constraint": "max 8",
+      "minQty": 0,
+      "maxQty": 8,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 38,
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "parentCategory": "Networking",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Transceiver",
+      "constraint": "max 8",
+      "minQty": 0,
+      "maxQty": 8,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 8,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 39,
+      "subCategory": "Drive Enclosure",
+      "parentCategory": "Drive Enclosures / Drives",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Drive Cage / Drive",
+      "constraint": "max 16",
+      "minQty": 0,
+      "maxQty": 16,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 41,
+      "subCategory": "Drive Enclosure",
+      "parentCategory": "Drive Enclosures / Drives",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Drive Cage / Drive",
+      "constraint": "max 16",
+      "minQty": 0,
+      "maxQty": 16,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 5,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 42,
+      "subCategory": "Drive Enclosure",
+      "parentCategory": "Drive Enclosures / Drives",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Drive Cage / Drive",
+      "constraint": "max 16",
+      "minQty": 0,
+      "maxQty": 16,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 43,
+      "subCategory": "BlueTooth Connectivity Kit",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "portal_text_position",
+      "detectedRole": "Option Component",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 44,
+      "subCategory": "Back-End Switches",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "portal_text_position",
+      "detectedRole": "Network Switch",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 45,
+      "subCategory": "Back-End Switches",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "portal_text_position",
+      "detectedRole": "Network Switch",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 46,
+      "subCategory": "Back-End Switch Rail Kits",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 8",
+      "minQty": 0,
+      "maxQty": 8,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 47,
+      "subCategory": "Management Cables",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 48,
+      "subCategory": "DAC Cables",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Transceiver",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 16,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 49,
+      "subCategory": "Configuration Indicators",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 50,
+      "subCategory": "Commvault Tracking SKU",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Chassis Infrastructure",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    }
+  ],
+  "categoryDistribution": {
+    "Chassis": 3,
+    "Accessories & Infrastructure": 4,
+    "Storage Controllers": 2,
+    "Power Supplies": 9,
+    "Cables & Enablement Kits": 41,
+    "Drive Enclosures / Drives": 13,
+    "Networking": 10
+  },
+  "chassisVariantsMatrix": {
+    "S3L12A": {
+      "description": "HPE Alletra Storage MP X10000 Base Configuration",
+      "formFactor": "Unknown",
+      "listPrice": 0,
+      "diffStatus": "BASELINE"
+    },
+    "S7Z87A": {
+      "description": "HPE Alletra Storage MP X10000 KSA",
+      "formFactor": "Unknown",
+      "listPrice": 0,
+      "diffStatus": "BASELINE"
+    },
+    "S6W29A": {
+      "description": "HPE Alletra Storage MP X10000 Disconnected Add-on KSA",
+      "formFactor": "Unknown",
+      "listPrice": 0,
+      "diffStatus": "BASELINE"
+    }
+  },
+  "dataAnomalies": {
+    "priceInconsistencies": [],
+    "unparseablePrices": [],
+    "filteredPhantomSKUs": [],
+    "duplicateSKUs": []
+  },
+  "attributeFidelity": {
+    "skusWithLeadTime": 71,
+    "skusWithCost": 0,
+    "skusWithPriceDelta": 0,
+    "skusWithPricePerGb": 0,
+    "clicStatusDistribution": {
+      "Valid": 3,
+      "Unpublished": 79
+    },
+    "lifecycleStatusDistribution": {
+      "Active": 79,
+      "Obsolete (OB)": 3
+    }
+  }
+}

@@ -1,0 +1,34 @@
+Main Category	Sub-Category	Constraint	Min Qty	Max Qty	Total SKUs	Has Rules	Rule Count
+Unknown	Power Level Options	required	1	Required	0	No	0
+Unknown	Power Watt Options	required	1	Required	0	No	0
+Power Cords	Power Cords Length	required	1	Required	0	No	0
+Unknown	Installation Services	required	1	Required	0	No	0
+Unknown	Node Chassis	max 8	0	8	0	No	0
+Unknown	Node	max 4	0	4	0	No	0
+Power Supplies	Power Supplies	max 4	0	4	1	Yes	1
+Power Supplies	Power Cord	max 8	0	8	0	No	0
+Power Supplies	Data Intelligent Node	max 3	0	3	0	No	0
+Power Supplies	Data Intelligence GPUs	no max	0	Unlimited	0	No	0
+Power Supplies	Data Intelligence SaaS	max 5	0	5	0	No	0
+Power Supplies	Data protection accelerator node	no max	0	Unlimited	0	No	0
+Power Supplies	Drive Enclosure	max 16	0	16	0	No	0
+Power Supplies	BlueTooth Connectivity Kit	max 1	0	1	1	Yes	1
+Power Supplies	Back-End Switches	max 2	0	2	3	Yes	3
+Power Supplies	Back-End Switch Rail Kits	max 8	0	8	0	No	0
+Cables	Management Cables	no max	0	Unlimited	0	No	0
+Cables	DAC Cables	no max	0	Unlimited	0	No	0
+Cables	Configuration Indicators	max 2	0	2	0	No	0
+Cables	Commvault Tracking SKU	max 1	0	1	0	No	0
+Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	1	1	3	Yes	1
+Accessories & Infrastructure	Node Chassis	max 8	0	8	1	Yes	1
+Storage Controllers	Node	max 4	0	4	2	Yes	3
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	1	2	4	Yes	6
+Cables & Enablement Kits	Power Cord	max 8	0	8	20	Yes	1
+Accessories & Infrastructure	System Options	optional	0	Optional	2	Yes	3
+Drive Enclosures / Drives	Drive Enclosure	max 16	0	16	13	Yes	16
+Networking	Optical Transceivers & DAC Cables	max 8	0	8	10	Yes	12
+Cables & Enablement Kits	Back-End Switch Rail Kits	max 8	0	8	1	Yes	1
+Cables & Enablement Kits	Management Cables	no max	0	Unlimited	4	Yes	1
+Cables & Enablement Kits	DAC Cables	no max	0	Unlimited	16	Yes	1
+Accessories & Infrastructure	Commvault Tracking SKU	max 1	0	1	1	Yes	1
+Support Services	Configuration Indicators	max 2	0	2	3	Yes	1

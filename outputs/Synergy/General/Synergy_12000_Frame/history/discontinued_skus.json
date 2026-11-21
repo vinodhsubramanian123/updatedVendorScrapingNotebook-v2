@@ -1,1 +1,234 @@
-{}
+{
+  "Q5U42AAE": {
+    "productNumber": "Q5U42AAE",
+    "description": "Cloudera Edge Management Less Than 1000 Agents AGPL 1yr Subscription 24x7 Severity 1 Response E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "L4Z37AAE": {
+    "productNumber": "L4Z37AAE",
+    "description": "Cloudera Enterprise 1 Year Subscription 24x7 Support Flex E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9V17AAE": {
+    "productNumber": "P9V17AAE",
+    "description": "Cloudera Enterprise Analytical Database Edition 1yr Subscription per Node 24x7 Gold Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9V16AAE": {
+    "productNumber": "P9V16AAE",
+    "description": "Cloudera Enterprise Analytical Database Edition 1yr Subscription per Node 8x5 Bronze Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9V20AAE": {
+    "productNumber": "P9V20AAE",
+    "description": "Cloudera Enterprise Analytical Database Edition 3yr Subscription per Node 24x7 Gold Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "G7M27AAE": {
+    "productNumber": "G7M27AAE",
+    "description": "Cloudera Enterprise Basic Edition 1 Year Subscription per Node 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "G7M28AAE": {
+    "productNumber": "G7M28AAE",
+    "description": "Cloudera Enterprise Basic Edition 1 Year Subscription per Node 8x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9A41AAE": {
+    "productNumber": "P9A41AAE",
+    "description": "Cloudera Enterprise Basic Edition 3 Year Subscription per Node 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9A42AAE": {
+    "productNumber": "P9A42AAE",
+    "description": "Cloudera Enterprise Basic Edition 3 Year Subscription per Node 8x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9V13AAE": {
+    "productNumber": "P9V13AAE",
+    "description": "Cloudera Enterprise Data Engineering Edition 1yr Subscription per Node 24x7 Gold Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9V12AAE": {
+    "productNumber": "P9V12AAE",
+    "description": "Cloudera Enterprise Data Engineering Edition 1yr Subscription per Node 8x5 Bronze Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9V18AAE": {
+    "productNumber": "P9V18AAE",
+    "description": "Cloudera Enterprise Data Engineering Edition 3yr Subscription per Node 24x7 Gold Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "G7M31AAE": {
+    "productNumber": "G7M31AAE",
+    "description": "Cloudera Enterprise Data Hub Edition 1 Year Subscription per Node 24x7 Premium E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "G7M29AAE": {
+    "productNumber": "G7M29AAE",
+    "description": "Cloudera Enterprise Data Hub Edition 1 Year Subscription per Node 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "G7M30AAE": {
+    "productNumber": "G7M30AAE",
+    "description": "Cloudera Enterprise Data Hub Edition 1 Year Subscription per Node 8x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9A45AAE": {
+    "productNumber": "P9A45AAE",
+    "description": "Cloudera Enterprise Data Hub Edition 3 Year Subscription per Node 24x7 Premium E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9A43AAE": {
+    "productNumber": "P9A43AAE",
+    "description": "Cloudera Enterprise Data Hub Edition 3 Year Subscription per Node 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9A44AAE": {
+    "productNumber": "P9A44AAE",
+    "description": "Cloudera Enterprise Data Hub Edition 3 Year Subscription per Node 8x5 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9V15AAE": {
+    "productNumber": "P9V15AAE",
+    "description": "Cloudera Enterprise Operational Database Edition 1yr Subscription per Node 24x7 Gold Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9V14AAE": {
+    "productNumber": "P9V14AAE",
+    "description": "Cloudera Enterprise Operational Database Edition 1yr Subscription per Node 8x5 Bronze Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9V19AAE": {
+    "productNumber": "P9V19AAE",
+    "description": "Cloudera Enterprise Operational Database Edition 3yr Subscription per Node 24x7 Gold Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "JP408AAE": {
+    "productNumber": "JP408AAE",
+    "description": "Cloudera Hortonworks Data Platform Enterprise Plus 4 Nodes/50TB Raw Storage 1yr 24x7 Support E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "Q5U39AAE": {
+    "productNumber": "Q5U39AAE",
+    "description": "Hortonworks Data Flow Edge 10 Branch Office Nodes 1yr 24x7 Support Severity 1 Response E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "Q5U41AAE": {
+    "productNumber": "Q5U41AAE",
+    "description": "Hortonworks Data Flow Edge 100 Branch Office Nodes 1yr 24x7 Support Severity 1 Response E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "Q5U44AAE": {
+    "productNumber": "Q5U44AAE",
+    "description": "Hortonworks Data Flow Edge 10K Agents (MiNiFi) 1yr 24x7 Support Severity 1 Response E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "Q5U43AAE": {
+    "productNumber": "Q5U43AAE",
+    "description": "Hortonworks Data Flow Edge 1K Agents (MiNiFi) 1yr 24x7 Support Severity 1 Response E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "Q5U40AAE": {
+    "productNumber": "Q5U40AAE",
+    "description": "Hortonworks Data Flow Edge 25 Branch Office Nodes 1yr 24x7 Support Severity 1 Response E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "F5Z52AAE": {
+    "productNumber": "F5Z52AAE",
+    "description": "Hortonworks Data Platform (HDP) Enterprise Subscription 4 N/50TB Raw Strg 1yr 24x7 Supp E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P9P38AAE": {
+    "productNumber": "P9P38AAE",
+    "description": "Hortonworks OnSt Tng Del Ad Stu PD E-LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  }
+}

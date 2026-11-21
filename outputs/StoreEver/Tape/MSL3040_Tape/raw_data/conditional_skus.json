@@ -1,0 +1,59 @@
+{
+  "timestamp": "2026-11-20T08:21:40.895Z",
+  "chassisName": "MSL3040_Tape",
+  "totalConditionalSkus": 4,
+  "skus": [
+    {
+      "sku": "716197-B21",
+      "badge": "",
+      "ruleContext": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Supported on LTO-9 SAS Drive (R6Q75A) Only."
+    },
+    {
+      "sku": "716199-B21",
+      "badge": "",
+      "ruleContext": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Supported on LTO-9 SAS Drive (R6Q75A) Only."
+    },
+    {
+      "sku": "P35176-B21",
+      "badge": "",
+      "ruleContext": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Supported on LTO-9 SAS Drive (R6Q75A) Only."
+    },
+    {
+      "sku": "P35175-B21",
+      "badge": "",
+      "ruleContext": "Supported on LTO-9 SAS Drive (R6Q75A) Only.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Supported on LTO-9 SAS Drive (R6Q75A) Only."
+    }
+  ]
+}

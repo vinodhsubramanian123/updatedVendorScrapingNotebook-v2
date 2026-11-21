@@ -1,0 +1,196 @@
+Main Category	Sub-Category	Constraint	Rule Type	Rule Text
+Unknown	Connectivity	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Unknown	Change Rack	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Unknown	Power Level Options	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Unknown	Power Watt Options	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Power Cords	PDU Power Cords Options	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Power Cords	Power Cords Length	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Unknown	Installation Options	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Unknown	Shipment Options	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Unknown	Node Chassis	max 3	Quantity Constraint	Quantity: max 3
+Unknown	Node	max 2	Quantity Constraint	Quantity: max 2
+Power Supplies	Power Supplies	max 18	Quantity Constraint	Quantity: max 18
+Power Supplies	Power Cord	max 36	Quantity Constraint	Quantity: max 36
+Power Supplies	Drive Enclosure Options	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Power Supplies	Drive Enclosure	max 8	Quantity Constraint	Quantity: max 8
+Power Supplies	Back-End Connectivity Cables	max 40	Quantity Constraint	Quantity: max 40
+Power Supplies	NVMe SFF FE SSDs	max 192	Quantity Constraint	Quantity: max 192
+Power Supplies	NVMe FE TAA Compliant SSDs	max 192	Quantity Constraint	Quantity: max 192
+Power Supplies	NVMe SFF SED SSDs	max 192	Quantity Constraint	Quantity: max 192
+Power Supplies	NVMe QLC SSDs	max 192	Quantity Constraint	Quantity: max 192
+Power Supplies	BlueTooth Connectivity Kit	max 1	Quantity Constraint	Quantity: max 1
+Rack Options	Rack Accessories	max 1	Quantity Constraint	Quantity: max 1
+Rack Options	D Rack Accessories	max 1	Quantity Constraint	Quantity: max 1
+Rack Options	B-Series Fibre Channel Switches	max 2	Quantity Constraint	Quantity: max 2
+Rack Options	C-Series Fibre Channel Switches	max 2	Quantity Constraint	Quantity: max 2
+Rack Options	M-Series Ethernet Channel Switches	max 2	Quantity Constraint	Quantity: max 2
+Rack Options	Aruba Ethernet Switches	max 2	Quantity Constraint	Quantity: max 2
+Rack Options	Back-End Switches	max 2	Quantity Constraint	Quantity: max 2
+Rack Options	Back-End Switch Rail Kits	max 8	Quantity Constraint	Quantity: max 8
+Cables	Host Cables	Unlimited	Quantity Constraint	Quantity: Unlimited
+Cables	Management Cables	Unlimited	Quantity Constraint	Quantity: Unlimited
+Cables	DAC Cables	Unlimited	Quantity Constraint	Quantity: Unlimited
+Cables	Transceivers	Unlimited	Quantity Constraint	Quantity: Unlimited
+Cables	Configuration Indicators	max 2	Quantity Constraint	Quantity: max 2
+Software	Software LTU	max 1	Quantity Constraint	Quantity: max 1
+Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
+Accessories & Infrastructure	Accessories & Infrastructure Options	max 1	Configuration Rule	Selection constraint for Software LTU: max 1
+Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	Selection constraint for Software LTU: max 1
+Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	B series nodes only supported for upgrades
+Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	R7D02B conditional visibility: portal selector activation required (B series nodes only supported for upgrades); PORTAL_CONDITIONAL
+Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	R7D03B conditional visibility: portal selector activation required (B series nodes only supported for upgrades); PORTAL_CONDITIONAL
+Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	S0R21B conditional visibility: portal selector activation required (B series nodes only supported for upgrades); PORTAL_CONDITIONAL
+Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	S4V66B conditional visibility: portal selector activation required (B series nodes only supported for upgrades); PORTAL_CONDITIONAL
+Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	Max quantity of product limited by space available.
+Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	S4V66A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	R7D03A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	S0R21A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	S0S38A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	Hide B10140
+Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	S0S39A conditional visibility: portal selector activation required (Hide B10140); PORTAL_CONDITIONAL
+Power Supplies	Flex Slot Power Supplies	max 1	Configuration Rule	Selection constraint for Software LTU: max 1
+Power Supplies	Flex Slot Power Supplies	max 1	Configuration Rule	No Mix PowerSupply
+Power Supplies	Flex Slot Power Supplies	max 1	Configuration Rule	R7C77A conditional visibility: portal selector activation required (No Mix PowerSupply); PORTAL_CONDITIONAL
+Power Supplies	Flex Slot Power Supplies	max 1	Configuration Rule	R9Z97A conditional visibility: portal selector activation required (No Mix PowerSupply); PORTAL_CONDITIONAL
+Power Supplies	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	No Mix PowerSupply
+Power Supplies	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	R7C78A conditional visibility: portal selector activation required (No Mix PowerSupply); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	Selection constraint for Software LTU: max 1
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	If single Phase or threePhase is selected then DC Power Cables not supported 2
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	295633-B22 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF556A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF568A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF593A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P22173-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P36877-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78148-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78155-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78164-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	R1C66A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	A0K02A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	A0N33A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF557A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF558A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF559A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF560A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF561A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF562A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF564A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF565A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF566A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF567A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF569A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF570A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF572A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF573A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	AF591A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P08315-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78130-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78131-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78144-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78145-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78147-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78156-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78157-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78384-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78940-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P78941-B21 conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	R1C65A conditional visibility: portal selector activation required (If single Phase or threePhase is selected then DC Power Cables not supported 2); PORTAL_CONDITIONAL
+Software & Licenses	Software LTU	max 1	Configuration Rule	Breaker Panel can be selected only if R7C78A is selected
+Software & Licenses	Software LTU	max 1	Configuration Rule	G2H95A conditional visibility: portal selector activation required (Breaker Panel can be selected only if R7C78A is selected); PORTAL_CONDITIONAL
+Software & Licenses	Software LTU	max 1	Configuration Rule	Q9N54A conditional visibility: portal selector activation required (Breaker Panel can be selected only if R7C78A is selected); PORTAL_CONDITIONAL
+Software & Licenses	Software LTU	max 1	Configuration Rule	Selection constraint for Software LTU: max 1
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	Selection constraint for Software LTU: max 1
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	When S1J10A/S0S46A is selected, do not allow R8M59A to be selected
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	R8M59A conditional visibility: portal selector activation required (When S1J10A/S0S46A is selected, do not allow R8M59A to be selected); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	Max quantity of product limited by space available.
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	S2T35A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	JL271A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	Q2F19A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	R0Z25A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	R0Z27A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	R8M61A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	R9F77A conditional visibility: portal selector activation required (When R7D02A or R7D03A or S0S42A or S0R20A or R7D02B or R7D03B or S0S42B or S0R20B is selected, do not allow R8M59A or R9F77A to be selected (for new configurations and upgrades)); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Solid State Drives (NVMe/SAS/SATA)	max 1	Configuration Rule	Selection constraint for Software LTU: max 1
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 1	Configuration Rule	Mixing is not allowed for initial configuration.
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 1	Configuration Rule	S1Z68A conditional visibility: portal selector activation required (Mixing is not allowed for initial configuration.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 1	Configuration Rule	R9H66A conditional visibility: portal selector activation required (Mixing is not allowed for initial configuration.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 1	Configuration Rule	R9H69A conditional visibility: portal selector activation required (Mixing is not allowed for initial configuration.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 1	Configuration Rule	R9H68A conditional visibility: portal selector activation required (Mixing is not allowed for initial configuration.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 1	Configuration Rule	S3L74A conditional visibility: portal selector activation required (Mixing is not allowed for initial configuration.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 1	Configuration Rule	S3L73A conditional visibility: portal selector activation required (Mixing is not allowed for initial configuration.); PORTAL_CONDITIONAL
+Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	max 1	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: max 1
+Software & Licenses	Software LTU	max 1	Configuration Rule	If “dcPowerFlag” is selected then S1S69A not supported
+Software & Licenses	Software LTU	max 1	Configuration Rule	S1S69A conditional visibility: portal selector activation required (If “dcPowerFlag” is selected then S1S69A not supported); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Cables & Enablement Kits Options	max 1	Configuration Rule	Selection constraint for Software LTU: max 1
+Cables & Enablement Kits	Cables & Enablement Kits Options	max 1	Configuration Rule	S0A95A cannot be ordered with S3V78A/S4Q37A
+Cables & Enablement Kits	Cables & Enablement Kits Options	max 1	Configuration Rule	S4Q37A conditional visibility: portal selector activation required (S0A95A cannot be ordered with S3V78A/S4Q37A); PORTAL_CONDITIONAL
+Support Services	Support Services Options	max 1	Configuration Rule	S0A95A cannot be ordered with S3V78A/S4Q37A
+Support Services	Support Services Options	max 1	Configuration Rule	S3V78A conditional visibility: portal selector activation required (S0A95A cannot be ordered with S3V78A/S4Q37A); PORTAL_CONDITIONAL
+Cables & Enablement Kits	PCIe Networking Adapters	max 1	Configuration Rule	Selection constraint for Software LTU: max 1
+Software & Licenses	Software LTU	max 1	Configuration Rule	Max quantity of product limited by space available.
+Software & Licenses	Software LTU	max 1	Configuration Rule	S0A99A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Software & Licenses	Software LTU	max 1	Configuration Rule	S0A98AAE conditional visibility: portal selector activation required (The S0A99AAE / S0A98AAE applicable for the drives configured as Add-ons/upgrades only); PORTAL_CONDITIONAL
+Software & Licenses	Software LTU	max 1	Configuration Rule	S0A99AAE conditional visibility: portal selector activation required (The S0A99AAE / S0A98AAE applicable for the drives configured as Add-ons/upgrades only); PORTAL_CONDITIONAL
+Software & Licenses	Software LTU	max 1	Configuration Rule	This SKU can be selected only when HPE GreenLake = Yes
+Software & Licenses	Software LTU	max 1	Configuration Rule	S1S85AAE conditional visibility: portal selector activation required (This SKU can be selected only when HPE GreenLake = Yes); PORTAL_CONDITIONAL
+Storage Preferences	Configuration Rules	R7C77A is only supported on rack-less solutions for S0R21A, S0S41A, S0S38A, S0S40A, S0S39A, S0S43A, S4V66A, S4V67A, S0R21B, S0S41B, S4V66B, S4V67B nodes	Learned Feedback Rule	[MUTUAL_EXCLUSION] R7C77A is only supported on rack-less solutions for S0R21A, S0S41A, S0S38A, S0S40A, S0S39A, S0S43A, S4V66A, S4V67A, S0R21B, S0S41B, S4V66B, S4V67B nodes
+Installation Options	Configuration Rules	Not applicable for S1R06A, S5S40A, R7D02A, R7D03A, S0S42A and S0R20A	Learned Feedback Rule	[MUTUAL_EXCLUSION] Not applicable for S1R06A, S5S40A, R7D02A, R7D03A, S0S42A and S0R20A
+Controller Node Models	Configuration Rules	Max 2 Chassis	Learned Feedback Rule	[CHASSIS_GATE] Max 2 Chassis
+Controller Node Models	Configuration Rules	B series nodes only supported for upgrades	Learned Feedback Rule	[MUTUAL_EXCLUSION] B series nodes only supported for upgrades
+Controller Node Models	Configuration Rules	Max quantity of product limited by space available.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Max quantity of product limited by space available.
+Controller Node Models	Configuration Rules	TAA isSelected	Learned Feedback Rule	[MUTUAL_EXCLUSION] TAA isSelected
+Controller Node Models	Configuration Rules	Hide B10140	Learned Feedback Rule	[MUTUAL_EXCLUSION] Hide B10140
+Power Supplies	Configuration Rules	No Mix PowerSupply	Learned Feedback Rule	[MUTUAL_EXCLUSION] No Mix PowerSupply
+Power Supplies	Configuration Rules	If single Phase or threePhase is selected then DC Power Cables not supported 2	Learned Feedback Rule	[MUTUAL_EXCLUSION] If single Phase or threePhase is selected then DC Power Cables not supported 2
+Power Supplies	Configuration Rules	Breaker Panel can be selected only if R7C78A is selected	Learned Feedback Rule	[MUTUAL_EXCLUSION] Breaker Panel can be selected only if R7C78A is selected
+Drive Enclosure	Configuration Rules	TAA isSelected	Learned Feedback Rule	[MUTUAL_EXCLUSION] TAA isSelected
+Drive Enclosure	Configuration Rules	When S1J10A/S0S46A is selected, do not allow R8M59A to be selected	Learned Feedback Rule	[MUTUAL_EXCLUSION] When S1J10A/S0S46A is selected, do not allow R8M59A to be selected
+Drive Enclosure	Configuration Rules	Max quantity of product limited by space available.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Max quantity of product limited by space available.
+Drive Enclosure	Configuration Rules	When R7D02A or R7D03A or S0S42A or S0R20A or R7D02B or R7D03B or S0S42B or S0R20B is selected, do not allow R8M59A or R9F77A to be selected (for new configurations and upgrades)	Learned Feedback Rule	[MUTUAL_EXCLUSION] When R7D02A or R7D03A or S0S42A or S0R20A or R7D02B or R7D03B or S0S42B or S0R20B is selected, do not allow R8M59A or R9F77A to be selected (for new configurations and upgrades)
+Capacity	Configuration Rules	Mixing is not allowed for initial configuration.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Mixing is not allowed for initial configuration.
+Back-End Switches	Configuration Rules	If “dcPowerFlag” is selected then S1S69A not supported	Learned Feedback Rule	[MUTUAL_EXCLUSION] If “dcPowerFlag” is selected then S1S69A not supported
+Back-End Switches	Configuration Rules	S0A95A cannot be ordered with S3V78A/S4Q37A	Learned Feedback Rule	[MUTUAL_EXCLUSION] S0A95A cannot be ordered with S3V78A/S4Q37A
+Software	Configuration Rules	The S0A99AAE / S0A98AAE applicable for the drives configured as Add-ons/upgrades only	Learned Feedback Rule	[MUTUAL_EXCLUSION] The S0A99AAE / S0A98AAE applicable for the drives configured as Add-ons/upgrades only
+Software	Configuration Rules	Max quantity of product limited by space available.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Max quantity of product limited by space available.
+Software	Configuration Rules	This SKU can be selected only when HPE GreenLake = Yes	Learned Feedback Rule	[MUTUAL_EXCLUSION] This SKU can be selected only when HPE GreenLake = Yes
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 2
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	102.00	NA	3	01/12/2004	07/31/2028	08/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	55.00	NA	3	03/26/2007	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	71.00	NA	3	11/13/2006	10/31/2031	11/30/2031
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	97.00	NA	3	05/30/2009	07/31/2028	08/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	818.00	NA	3	12/07/2020	06/30/2028	07/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	135.00	NA	3	12/07/2020	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	135.00	NA	3	02/03/2025	07/31/2028	08/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	114.00	NA	3	02/03/2025	07/31/2028	08/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	174.00	NA	3	02/03/2025	07/31/2028	08/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	88.00	NA	3	12/03/2018	10/31/2031	11/30/2031
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	34.00	NA	21	08/30/2011	09/30/2031	10/31/2031
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	78.00	NA	14	08/30/2011	09/30/2031	10/31/2031
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	156.00	NA	21	05/29/2006	10/31/2031	11/30/2031
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	65.00	NA	4	06/30/2006	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	55.00	NA	4	08/13/2008	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	55.00	NA	4	05/29/2006	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	55.00	NA	14	05/29/2006	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	194.00	NA	4	05/29/2006	10/31/2031	11/30/2031
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	55.00	NA	4	12/15/2006	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	55.00	NA	11	12/15/2006	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	55.00	NA	11	11/13/2006	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	65.00	NA	4	11/14/2006	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	65.00	NA	11	11/13/2006	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	55.00	NA	13	04/06/2011	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	60.00	NA	4	04/06/2011	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	38.00	NA	8	07/09/2007	09/30/2031	10/31/2031
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	49.00	NA	8	07/14/2008	10/31/2031	11/30/2031
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	17.00	NA	21	05/22/2018	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	10.00	NA	4	02/03/2025	07/31/2028	08/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	10.00	NA	21	02/03/2025	07/31/2028	08/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	46.00	NA	21	02/03/2025	07/31/2028	08/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	11.00	NA	4	02/03/2025	06/30/2029	07/31/2029
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	77.00	NA	21	02/03/2025	07/31/2028	08/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	14.00	NA	21	02/03/2025	07/31/2028	08/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	72.00	NA	21	02/03/2025	07/31/2028	08/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	20.00	NA	8	02/03/2025	07/31/2028	08/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	130.00	NA	21	02/03/2025	07/31/2028	08/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	110.00	NA	21	02/03/2025	07/31/2028	08/31/2028
+Software	Software LTU		Conditional Rule	If single Phase or threePhase is selected then DC Power Cables not supported 1If single Phase or threePhase is selected then DC Power Cables not supported 3	0	119.00	NA	8	12/03/2018	10/31/2031	11/30/2031
+Software	Software LTU		Conditional Rule	If “dcPowerFlag” is selected then S1S69A not supported

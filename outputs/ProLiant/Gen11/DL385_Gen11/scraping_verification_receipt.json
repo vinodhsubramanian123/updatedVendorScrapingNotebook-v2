@@ -1,10 +1,10 @@
 {
-  "verifiedAt": "2026-10-21T09:26:44.337Z",
+  "verifiedAt": "2026-11-21T13:27:13.273Z",
   "productId": "DL385_Gen11",
   "family": "ProLiant",
   "generation": "Gen11",
   "preflight": {
-    "recordedAt": "2026-10-21T09:22:05.449Z",
+    "recordedAt": "2026-11-20T17:32:31.531Z",
     "pass": true,
     "product": {
       "pass": true,
@@ -14,6 +14,7 @@
       "pillar": "SERVER",
       "notebookId": "52364fcf-acc3-442f-b4ff-f911053d45d2",
       "canonicalDriveEnabled": false,
+      "publishDriveWorkbook": false,
       "expectedWorkbookSheets": 24,
       "requiredSheetsCount": 0
     },
@@ -23,10 +24,10 @@
     },
     "googleWorkspace": {
       "pass": true,
-      "status": "VERIFIED_SCOPES",
-      "account": "vinodhsubramanian@gmail.com",
-      "hasSheetsScope": true,
-      "hasDriveScope": true
+      "status": "SKIPPED_DRIVE_DISABLED",
+      "account": "N/A (Markdown payload mode)",
+      "hasSheetsScope": null,
+      "hasDriveScope": null
     },
     "vendorPolicy": {
       "vendor": "HPE",
@@ -39,20 +40,33 @@
   "postflight": {
     "pass": true,
     "status": "VERIFIED",
+    "qualityAuditPassed": true,
     "diffSummaryError": null,
-    "hwSkuCount": 667,
-    "serviceSkuCount": 734,
-    "totalSkuCount": 1401,
-    "conditionalSkusCount": 883,
-    "unavailableRulesCount": 33,
+    "hwSkuCount": 687,
+    "serviceSkuCount": 759,
+    "totalSkuCount": 1446,
+    "conditionalSkusCount": 100,
+    "unavailableRulesCount": 34,
     "diffSummaryPresent": true,
     "diffCounts": {
-      "ADDED": 0,
-      "MODIFIED": 0,
-      "REMOVED": 0,
+      "ADDED": 52,
+      "MODIFIED": 1360,
+      "PRICE_CHANGED": 0,
+      "ATTRIBUTE_CHANGED": 1315,
+      "PRICE_AND_ATTRIBUTE_CHANGED": 45,
+      "REINSTATED": 0,
+      "REMOVED": 29,
       "DISCONTINUED": 0,
-      "UNCHANGED": 667
+      "UNCHANGED": 5
     },
-    "cloudSyncState": "CLOUD_VERIFIED"
-  }
+    "cloudSyncState": "CLOUD_VERIFIED",
+    "notebookId": "52364fcf-acc3-442f-b4ff-f911053d45d2",
+    "verifiedSourceId": "3a1ba233-b47a-4e70-adee-fa4ef3f0b50c",
+    "verifiedSourceName": "DL385_Gen11_OCA_Catalog_2026-11-20",
+    "payloadSha256": "17b0eb22740039c7676c41c76b9e881bab869b9f76b2263ced66cd2633650acf",
+    "cloudVerifiedAt": "2026-11-21T13:27:13.273Z",
+    "readbackVerified": true,
+    "canaryVerified": true
+  },
+  "overallPass": true
 }

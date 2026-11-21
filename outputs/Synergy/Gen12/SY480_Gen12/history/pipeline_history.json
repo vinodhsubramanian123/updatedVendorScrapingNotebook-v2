@@ -1,6 +1,100 @@
 [
   {
     "summary": {
+      "runId": "run_SY480_Gen12_1795262322099",
+      "sessionName": "SY480_Gen12",
+      "startTime": "2026-11-21T11:58:42.096Z",
+      "endTime": "2026-11-21T11:58:45.318Z",
+      "durationMs": 3222,
+      "durationSec": "3.22",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 309,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 309,
+      "validationStats": {
+        "totalEntries": 38,
+        "totalSKUs": 309,
+        "validSKUs": 309,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 32,
+        "priceErrors": 0,
+        "ruleCount": 45,
+        "categoryCount": 11
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-21T11:58:42.099Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/Synergy/Gen12/SY480_Gen12/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/Synergy/Gen12/SY480_Gen12/SY480_Gen12_Catalog.json",
+          "chassisLabel": "SY480 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:43.957Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 30,
+          "totalUniqueSKUs": 309,
+          "incrementalStats": {
+            "totalScrapedSkus": 309,
+            "unchangedSkusCount": 1,
+            "modifiedSkusCount": 307,
+            "addedSkusCount": 1,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:43.969Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 38,
+            "totalSKUs": 309,
+            "validSKUs": 309,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 32,
+            "priceErrors": 0,
+            "ruleCount": 45,
+            "categoryCount": 11
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-21T11:58:45.318Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/Synergy/Gen12/SY480_Gen12/SY480_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 309,
+      "classified": 309,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_SY480_Gen12_1794454135214",
       "sessionName": "SY480_Gen12",
       "startTime": "2026-11-12T03:28:55.213Z",
@@ -31,8 +125,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\failed_staging_SY480_Gen12_1794454061270\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\failed_staging_SY480_Gen12_1794454061270\\SY480_Gen12_Catalog.json",
+          "rawInputPath": "outputs/.catalog-staging/failed_staging_SY480_Gen12_1794454061270/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/.catalog-staging/failed_staging_SY480_Gen12_1794454061270/SY480_Gen12_Catalog.json",
           "chassisLabel": "SY480 Gen12"
         }
       },
@@ -80,7 +174,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\failed_staging_SY480_Gen12_1794454061270\\SY480_Gen12_Catalog.json"
+          "path": "outputs/.catalog-staging/failed_staging_SY480_Gen12_1794454061270/SY480_Gen12_Catalog.json"
         }
       }
     ],
@@ -125,8 +219,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_SY480_Gen12_1794454057662\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_SY480_Gen12_1794454057662\\SY480_Gen12_Catalog.json",
+          "rawInputPath": "outputs/.catalog-staging/staging_SY480_Gen12_1794454057662/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/.catalog-staging/staging_SY480_Gen12_1794454057662/SY480_Gen12_Catalog.json",
           "chassisLabel": "SY480 Gen12"
         }
       },
@@ -174,7 +268,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_SY480_Gen12_1794454057662\\SY480_Gen12_Catalog.json"
+          "path": "outputs/.catalog-staging/staging_SY480_Gen12_1794454057662/SY480_Gen12_Catalog.json"
         }
       }
     ],
@@ -224,8 +318,8 @@
         "stepName": "Initialize Classification Engine",
         "status": "SUCCESS",
         "details": {
-          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SY480_Gen12_1793255664496\\raw_data\\oca_raw_data_full.json",
-          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SY480_Gen12_1793255664496\\SY480_Gen12_Catalog.json",
+          "rawInputPath": "outputs/temp/staging_SY480_Gen12_1793255664496/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/staging_SY480_Gen12_1793255664496/SY480_Gen12_Catalog.json",
           "chassisLabel": "SY480 Gen12"
         }
       },
@@ -273,7 +367,7 @@
         "stepName": "Step 6: Atomic Save Output JSON",
         "status": "SUCCESS",
         "details": {
-          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SY480_Gen12_1793255664496\\SY480_Gen12_Catalog.json"
+          "path": "outputs/temp/staging_SY480_Gen12_1793255664496/SY480_Gen12_Catalog.json"
         }
       }
     ],

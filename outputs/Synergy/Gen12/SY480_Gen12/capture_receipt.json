@@ -37,14 +37,59 @@
       "reason": "",
       "profileProduct": "SY480_Gen12",
       "scope": "PROFILE_MINIMUM_CAPTURE"
+    },
+    "columnCoverage": {
+      "verified": true,
+      "present": {
+        "sku": true,
+        "description": true,
+        "price": true,
+        "leadTime": true,
+        "lifecycleDates": false
+      },
+      "missing": [
+        "lifecycleDates"
+      ],
+      "derivedFromRaw": true
+    },
+    "qualityGate": {
+      "passed": true,
+      "skipped": false,
+      "warningsCount": 0,
+      "replayResults": [
+        {
+          "id": "SY480_G12_P68217_BASE",
+          "issues": [],
+          "passed": true,
+          "status": "PASSED"
+        },
+        {
+          "id": "SY480_G12_ACTIVE_PRICED",
+          "issues": [],
+          "returnedCount": 50,
+          "evidenceStatus": "PARTIAL",
+          "passed": true,
+          "status": "PASSED"
+        }
+      ],
+      "replayExecutedCount": 2,
+      "replaySuiteVersion": "1.1.0",
+      "replaySuiteSha256": "b8b507b9fde1f7013524a6700cad414341341f9316cde9ecbbce5a8e860256c5",
+      "replayInputHashes": {
+        "Catalog.json": "bf32a622e28f0e3cf64acc399d8803f0132a6dab5881102542f19af078dd0707",
+        "Services.json": "15a72ee143706bcd50dc6d20b53c5a49e2c7b9f2bb3493c17c365094894d3a1c",
+        "Catalog_Rules.json": "118871fcab516d179cf3742a69159fa82689b4b5a80c9a6840b4d74e98b9166b",
+        "OCA_Catalog.xlsx": "83c096f7353acf6027eaf5534c51cd80c95615ae24a6178b5c0fbf5af336ac21",
+        "conditional_skus.json": "d436721c5a3e9f1380a2d3daccd472eba01432b01f1e8d4652a99deabbd8f365"
+      }
     }
   },
   "counts": {
-    "hardware": 308,
-    "services": 293,
-    "rules": 342,
-    "categories": 12,
-    "retainedHardware": 308,
+    "hardware": 309,
+    "services": 292,
+    "rules": 54,
+    "categories": 11,
+    "retainedHardware": 309,
     "hardwareTombstones": 0
   },
   "previousCounts": {
@@ -54,10 +99,10 @@
     "categories": 11
   },
   "hashes": {
-    "Catalog.json": "05a7ff630fb12af6605b6d736e907cf7f3f2f99cf901fb7c3c43d449f4095510",
-    "Services.json": "da057aa387ad85c4f4fb362c11629a7b2388b5194c2fb47c0dec3227de25148f",
-    "Catalog_Rules.json": "38d54f3e1b9b1a696d2d1e70e8e777d0ba797c8e8378394e2376c03b4e4e7ff6",
-    "OCA_Catalog.xlsx": "9f57baa9c0e8d63c7f48ab87f635a726d8cf77550fd1e6eb45f971fb8f127e03"
+    "Catalog.json": "bf32a622e28f0e3cf64acc399d8803f0132a6dab5881102542f19af078dd0707",
+    "Services.json": "15a72ee143706bcd50dc6d20b53c5a49e2c7b9f2bb3493c17c365094894d3a1c",
+    "Catalog_Rules.json": "118871fcab516d179cf3742a69159fa82689b4b5a80c9a6840b4d74e98b9166b",
+    "OCA_Catalog.xlsx": "83c096f7353acf6027eaf5534c51cd80c95615ae24a6178b5c0fbf5af336ac21"
   },
   "rawSha256": "7b1c958d776ba4ba5d46f55bb826cffebd9974ad5878db7828b9fdbb4f0b84a8",
   "sheets": [
@@ -243,7 +288,8 @@
     "success": false,
     "sourceId": null,
     "consolidationVerified": false,
-    "error": "CLI sync unavailable (Product isolation rejected SY480_Gen12 payload: reference to registered product Synergy_12000_Frame). Payload ready at C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\Gen12\\SY480_Gen12\\notebook_sync_payload_SY480_Gen12.md. Upload as \"SY480_Gen12_OCA_Catalog_2026-11-12\" via gemini-notebook-mcp source_add or nlm CLI."
+    "error": "CLI sync unavailable (Product isolation rejected SY480_Gen12 payload: reference to registered product Synergy_12000_Frame). Payload ready at outputs/Synergy/Gen12/SY480_Gen12/notebook_sync_payload_SY480_Gen12.md. Upload as \"SY480_Gen12_OCA_Catalog_2026-11-12\" via gemini-notebook-mcp source_add or nlm CLI."
   },
-  "promotedAt": "2026-11-12T03:29:35.672Z"
+  "promotedAt": "2026-11-12T03:29:35.672Z",
+  "rebuiltAt": "2026-11-21T12:57:22.848Z"
 }

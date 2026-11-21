@@ -1,0 +1,72 @@
+{
+  "verifiedAt": "2026-11-21T13:40:57.132Z",
+  "productId": "DL580_Gen12",
+  "family": "ProLiant",
+  "generation": "Gen12",
+  "preflight": {
+    "recordedAt": "2026-11-20T12:46:56.451Z",
+    "pass": true,
+    "product": {
+      "pass": true,
+      "productId": "DL580_Gen12",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "pillar": "SERVER",
+      "notebookId": "3f5344ce-da79-4f6d-a131-f303d1e43dc3",
+      "canonicalDriveEnabled": false,
+      "publishDriveWorkbook": true,
+      "expectedWorkbookSheets": 24,
+      "requiredSheetsCount": 0
+    },
+    "notebookLm": {
+      "pass": true,
+      "status": "VERIFIED_HEALTHY"
+    },
+    "googleWorkspace": {
+      "pass": true,
+      "status": "VERIFIED_SCOPES",
+      "account": "authenticated",
+      "hasSheetsScope": true,
+      "hasDriveScope": true
+    },
+    "vendorPolicy": {
+      "vendor": "HPE",
+      "anchorTabUrl": "https://partner.hpe.com/group/prp",
+      "handoffMechanism": "SAML_POST_NEW_TAB",
+      "allowInPlaceReload": false,
+      "recoveryProtocol": "CLOSE_CONFIG_TAB_RETURN_TO_TAB1_CLICK_QUICK_LINK"
+    }
+  },
+  "postflight": {
+    "pass": true,
+    "status": "VERIFIED",
+    "qualityAuditPassed": true,
+    "diffSummaryError": null,
+    "hwSkuCount": 519,
+    "serviceSkuCount": 487,
+    "totalSkuCount": 1006,
+    "conditionalSkusCount": 55,
+    "unavailableRulesCount": 14,
+    "diffSummaryPresent": true,
+    "diffCounts": {
+      "ADDED": 173,
+      "MODIFIED": 813,
+      "PRICE_CHANGED": 0,
+      "ATTRIBUTE_CHANGED": 783,
+      "PRICE_AND_ATTRIBUTE_CHANGED": 30,
+      "REINSTATED": 0,
+      "REMOVED": 20,
+      "DISCONTINUED": 0,
+      "UNCHANGED": 0
+    },
+    "cloudSyncState": "CLOUD_VERIFIED",
+    "notebookId": "3f5344ce-da79-4f6d-a131-f303d1e43dc3",
+    "verifiedSourceId": "673dc828-5688-4d3a-8357-c8e151fbc7ee",
+    "verifiedSourceName": "DL580_Gen12_OCA_Catalog_2026-11-20",
+    "payloadSha256": "ffea262981269c5f8f89172891b69d7d09317b1012391b28bd4e8d6305afa4b8",
+    "cloudVerifiedAt": "2026-11-21T13:40:57.132Z",
+    "readbackVerified": true,
+    "canaryVerified": true
+  },
+  "overallPass": true
+}

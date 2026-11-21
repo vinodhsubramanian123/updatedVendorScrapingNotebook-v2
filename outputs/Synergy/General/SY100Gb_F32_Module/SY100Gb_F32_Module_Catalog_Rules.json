@@ -8,8 +8,8 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-11",
     "scrapeTimestamp": "2026-11-11T18:49:10.220Z",
-    "builtAt": "2026-11-11T18:49:15.455Z",
-    "totalSubcategories": 5,
+    "builtAt": "2026-11-21T11:58:49.030Z",
+    "totalSubcategories": 6,
     "totalUniqueSKUs": 141,
     "totalTables": 8,
     "diffSummary": {
@@ -17,9 +17,9 @@
       "removed": 1,
       "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 139,
+      "attributeChanged": 140,
       "priceAndAttributeChanged": 0,
-      "unchanged": 1,
+      "unchanged": 0,
       "reinstated": 0,
       "discontinuedTotal": 2
     },
@@ -65,6 +65,11 @@
               "totalSKUs": 44,
               "totalPrice": 63131,
               "avgPrice": 1434.7954545454545
+            },
+            "SFP Options": {
+              "totalSKUs": 0,
+              "totalPrice": 0,
+              "avgPrice": 0
             }
           },
           "avgPrice": 1434.7954545454545
@@ -99,9 +104,18 @@
         }
       }
     },
-    "snapshotFingerprint": "7c88cd82a18e35c5a230ec97e10899433ce91c6b7ad44132868f82c685c0458d",
-    "chassisVariantCount": 2,
-    "rulesGeneratedAt": "2026-11-11T18:49:15.932Z"
+    "incrementalStats": {
+      "totalScrapedSkus": 141,
+      "unchangedSkusCount": 0,
+      "modifiedSkusCount": 141,
+      "addedSkusCount": 0,
+      "removedSkusCount": 0,
+      "estimatedTokensSaved": 0,
+      "estimatedProcessingTimeSavedMs": 0
+    },
+    "snapshotFingerprint": "92fb42e9541107f59b00ce143d0727a9d61c677bf0cc5c3755249ad8ac6811ec",
+    "chassisVariantCount": 1,
+    "rulesGeneratedAt": "2026-11-21T11:58:50.128Z"
   },
   "chassisVariants": [
     {
@@ -112,28 +126,13 @@
       "listPriceFormatted": "$3200.00",
       "optionType": "CTO",
       "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
+      "HPE Recommended": "Yes",
       "startDate": "",
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-10-30: $3200.00"
-    },
-    {
-      "sku": "P06584-B21",
-      "description": "[REMOVED SKU] HPE Synergy VC 100Gb F32 Interconnect CTO Module",
-      "formFactor": "Unknown",
-      "listPrice": 5400,
-      "listPriceFormatted": "$5400.00",
-      "optionType": "CTO",
-      "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
-      "startDate": "2026-08-10",
-      "discontinuedDate": "2026-10-30",
-      "constraint": "min 1, max 1 — Active OCA CTO chassis",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-10-30.json"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-10-30: $3200.00 → 2026-11-11: $3200.00 [Δ Attr: CLIC Status: \"Valid\" -> \"Not evaluated\"]"
     }
   ],
   "chassisVariantMatrix": {
@@ -145,782 +144,19 @@
       "listPriceFormatted": "$3200.00",
       "optionType": "CTO",
       "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
+      "HPE Recommended": "Yes",
       "startDate": "",
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-10-30: $3200.00"
-    },
-    "P06584-B21": {
-      "sku": "P06584-B21",
-      "description": "[REMOVED SKU] HPE Synergy VC 100Gb F32 Interconnect CTO Module",
-      "formFactor": "Unknown",
-      "listPrice": 5400,
-      "listPriceFormatted": "$5400.00",
-      "optionType": "CTO",
-      "hpeRecommended": "Yes",
-      "HPE Recommended": "Unknown",
-      "startDate": "2026-08-10",
-      "discontinuedDate": "2026-10-30",
-      "constraint": "min 1, max 1 — Active OCA CTO chassis",
-      "maxQty": 1,
-      "sourceSnapshot": "catalog_2026-10-30.json"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-10-30: $3200.00 → 2026-11-11: $3200.00 [Δ Attr: CLIC Status: \"Valid\" -> \"Not evaluated\"]"
     }
   },
   "smartChassisCombinations": [],
   "solutionManifest": null,
   "subcategories": [],
   "rules": [
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "817040-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "817040-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Optical Transceivers & DAC Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "845972-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "845972-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Optical Transceivers & DAC Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "JH420A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "JH420A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Optical Transceivers & DAC Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "JH673A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "JH673A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Optical Transceivers & DAC Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "JL307A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "JL307A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Optical Transceivers & DAC Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "JL310A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "JL310A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Optical Transceivers & DAC Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P90358-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P90358-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Optical Transceivers & DAC Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "R0Z25A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "R0Z25A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Optical Transceivers & DAC Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "R0Z26A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "R0Z26A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Optical Transceivers & DAC Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P9H32A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P9H32A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Optical Transceivers & DAC Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "876680-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "876680-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "876692-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "876692-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "876698-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "876698-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "AJ833A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "AJ833A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "AJ836A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "AJ836A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "AJ838A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "AJ838A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "AJ839A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "AJ839A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "H6Z30A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "H6Z30A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P64635-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P64635-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P64638-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P64638-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P64641-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P64641-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "Q1H65A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "Q1H65A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "QK731A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "QK731A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "QK732A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "QK732A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "QK737A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "QK737A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "720199-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "720199-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "720202-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "720202-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "845424-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "845424-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "876689-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "876689-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "AJ834A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "AJ834A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "AJ835A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "AJ835A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "AJ837A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "AJ837A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "AP818A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "AP818A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "AP819A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "AP819A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "AP820A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "AP820A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "K2Q21A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "K2Q21A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "K2Q22A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "K2Q22A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "K2Q46A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "K2Q46A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "K2Q47A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "K2Q47A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "QK701A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "QK701A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "QK729A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "QK729A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "QK733A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "QK733A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "QK734A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "QK734A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "QK735A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "QK735A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
     {
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
@@ -1987,8 +1223,8 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "AP784A conditional visibility: portal selector activation required (Product is obsolete); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Optical Transceivers & DAC Cables",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "SFP Options",
       "constraint": "",
       "maxQty": ""
     },
@@ -2004,8 +1240,8 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "AP785A conditional visibility: portal selector activation required (Product is obsolete); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Optical Transceivers & DAC Cables",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "SFP Options",
       "constraint": "",
       "maxQty": ""
     },
@@ -2184,8 +1420,8 @@
       "rule": "Max quantity of product limited by space available."
     },
     {
-      "parentCategory": "Networking",
-      "subCategory": "Optical Transceivers & DAC Cables",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "SFP Options",
       "constraint": "max 16",
       "maxQty": 16,
       "rule": "Product is obsolete"

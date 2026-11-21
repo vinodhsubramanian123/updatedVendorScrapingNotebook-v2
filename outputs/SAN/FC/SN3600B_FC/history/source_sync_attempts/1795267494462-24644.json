@@ -1,0 +1,22 @@
+{
+  "product": "SN3600B_FC",
+  "notebookId": "d7f84352-1cdb-4842-84ca-39d2a10b91eb",
+  "replacementSourceId": "2483f3f9-89f2-4842-809e-62e3917adefe",
+  "verifiedAt": "2026-11-21T13:24:54.462Z",
+  "contentFingerprints": null,
+  "legacyFingerprint": "6725bd163d03c7e207dd64daaa2fc76365c6ef5f743e77c4e6b1658cd9c61a5c",
+  "retirementRequested": true,
+  "plannedRetirementIds": [
+    "393dbacc-441b-4475-be94-54b2170cc7a2",
+    "a5cf149d-0aa6-48d9-a059-9fb0cd53b2f3",
+    "6ecd6dce-04df-47b6-8544-d3ef91e03f8c"
+  ],
+  "status": "CONSOLIDATED",
+  "retiredSourceIds": [
+    "393dbacc-441b-4475-be94-54b2170cc7a2",
+    "a5cf149d-0aa6-48d9-a059-9fb0cd53b2f3",
+    "6ecd6dce-04df-47b6-8544-d3ef91e03f8c"
+  ],
+  "remainingSourceIds": [],
+  "retirementErrors": []
+}

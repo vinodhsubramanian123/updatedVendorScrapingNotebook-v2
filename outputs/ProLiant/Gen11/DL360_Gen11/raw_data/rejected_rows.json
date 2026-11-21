@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0.0",
+  "product": "DL360_Gen11",
+  "generatedAt": "2026-11-21T11:57:23.181Z",
+  "rejectedCount": 5,
+  "rows": [
+    {
+      "tableIndex": 4,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HDD Blank Kit"
+      ]
+    },
+    {
+      "tableIndex": 5,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "NEBS Enablement"
+      ]
+    },
+    {
+      "tableIndex": 16,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Smart IO (SW)"
+      ]
+    },
+    {
+      "tableIndex": 18,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HPE Security Compliance Software"
+      ]
+    },
+    {
+      "tableIndex": 21,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Private Cloud Business Edition"
+      ]
+    }
+  ]
+}

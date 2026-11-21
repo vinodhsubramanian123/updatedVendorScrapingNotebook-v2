@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-10-21T09:23:20.702Z",
+  "timestamp": "2026-11-20T17:34:18.999Z",
   "chassisName": "DL385_Gen11",
-  "totalUnavailableRules": 33,
-  "totalUnavailableSkus": 88,
+  "totalUnavailableRules": 34,
+  "totalUnavailableSkus": 100,
   "rules": [
     {
       "ruleId": "RULE_1",
@@ -30,11 +30,13 @@
       "ruleType": "MEMORY_MIXING",
       "section": "Memory",
       "reason": "Mixing of x4 and x8 memory is not allowed",
-      "affectedSkusCount": 3,
+      "affectedSkusCount": 5,
       "affectedSkus": [
         "P50311-F21",
+        "P50309-B21",
         "P50309-F21",
-        "P50310-B21"
+        "P50310-B21",
+        "P50311-B21"
       ]
     },
     {
@@ -42,38 +44,57 @@
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Memory",
       "reason": "9xx4 Processor supports only PC5-4800B Memory.",
-      "affectedSkusCount": 5,
+      "affectedSkusCount": 11,
       "affectedSkus": [
         "P64986-F21",
+        "P64984-B21",
+        "P64985-B21",
         "P64985-F21",
+        "P64986-B21",
+        "P64987-B21",
         "P64987-F21",
+        "P64988-B21",
         "P64988-F21",
+        "P73446-B21",
         "P73446-F21"
       ]
     },
     {
       "ruleId": "RULE_5",
-      "ruleType": "MEMORY_MIXING",
+      "ruleType": "MUTUAL_EXCLUSION",
       "section": "Memory",
-      "reason": "3DS memory and non 3DS memory cannot be mixed",
+      "reason": "Mixing of Pxxxxx-B21 Memory and Pxxxxx-F21 Memory is not allowed",
       "affectedSkusCount": 2,
       "affectedSkus": [
-        "P50314-F21",
-        "P90552-F21"
+        "P50312-B21",
+        "P69982-B21"
       ]
     },
     {
       "ruleId": "RULE_6",
       "ruleType": "MEMORY_MIXING",
       "section": "Memory",
-      "reason": "96GB memory cannot be mixed with any other memory",
-      "affectedSkusCount": 1,
+      "reason": "3DS memory and non 3DS memory cannot be mixed",
+      "affectedSkusCount": 3,
       "affectedSkus": [
-        "P66676-F21"
+        "P50314-B21",
+        "P50314-F21",
+        "P90552-F21"
       ]
     },
     {
       "ruleId": "RULE_7",
+      "ruleType": "MEMORY_MIXING",
+      "section": "Memory",
+      "reason": "96GB memory cannot be mixed with any other memory",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "P66676-B21",
+        "P66676-F21"
+      ]
+    },
+    {
+      "ruleId": "RULE_8",
       "ruleType": "BTO_DISALLOWED",
       "section": "Memory",
       "reason": "BTO products are not allowed in CTO Base Model.",
@@ -83,7 +104,7 @@
       ]
     },
     {
-      "ruleId": "RULE_8",
+      "ruleId": "RULE_9",
       "ruleType": "CHASSIS_GATE",
       "section": "Storage Devices",
       "reason": "This Cable is supported with LFF CTO Server Only.",
@@ -93,7 +114,7 @@
       ]
     },
     {
-      "ruleId": "RULE_9",
+      "ruleId": "RULE_10",
       "ruleType": "CHASSIS_GATE",
       "section": "Storage Devices",
       "reason": "Supported only EDSFF server only",
@@ -103,7 +124,7 @@
       ]
     },
     {
-      "ruleId": "RULE_10",
+      "ruleId": "RULE_11",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Storage Devices",
       "reason": "Private Product is not valid for current customer account",
@@ -113,7 +134,7 @@
       ]
     },
     {
-      "ruleId": "RULE_11",
+      "ruleId": "RULE_12",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Storage Devices",
       "reason": "This drive cage can be selected only with 8LFF model",
@@ -126,7 +147,7 @@
       ]
     },
     {
-      "ruleId": "RULE_12",
+      "ruleId": "RULE_13",
       "ruleType": "CHASSIS_GATE",
       "section": "Storage Devices",
       "reason": "This EDSFF Drive cage bundle kit can be selected only with EDSFF CTO Server.",
@@ -136,7 +157,7 @@
       ]
     },
     {
-      "ruleId": "RULE_13",
+      "ruleId": "RULE_14",
       "ruleType": "BTO_DISALLOWED",
       "section": "Storage Devices",
       "reason": "BTO products are not allowed in CTO Base Model.",
@@ -146,7 +167,7 @@
       ]
     },
     {
-      "ruleId": "RULE_14",
+      "ruleId": "RULE_15",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "OS Boot Device",
       "reason": "HPE DL3X5 G11 NS204i-u NVMe Boot Cbl Kit can be selected only with 8LFF CTO Server",
@@ -156,7 +177,7 @@
       ]
     },
     {
-      "ruleId": "RULE_15",
+      "ruleId": "RULE_16",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "OS Boot Device",
       "reason": "Private Product is not valid for current customer account",
@@ -166,19 +187,19 @@
       ]
     },
     {
-      "ruleId": "RULE_16",
+      "ruleId": "RULE_17",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Graphics Options",
       "reason": "Doublewide GPU can be selected only with GPU CTO Server",
       "affectedSkusCount": 3,
       "affectedSkus": [
         "S6W30C",
-        "S6W21C",
-        "S8A40C"
+        "S8A40C",
+        "S6W21C"
       ]
     },
     {
-      "ruleId": "RULE_17",
+      "ruleId": "RULE_18",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Graphics Options",
       "reason": "This GPU option can be selected only with GPU CTO Server",
@@ -194,7 +215,7 @@
       ]
     },
     {
-      "ruleId": "RULE_18",
+      "ruleId": "RULE_19",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Riser Cards",
       "reason": "Cannot be selected with SFF CTO Server",
@@ -206,7 +227,7 @@
       ]
     },
     {
-      "ruleId": "RULE_19",
+      "ruleId": "RULE_20",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Networking",
       "reason": "Max quantity of product limited by space available.",
@@ -216,25 +237,15 @@
       ]
     },
     {
-      "ruleId": "RULE_20",
+      "ruleId": "RULE_21",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Networking",
       "reason": "Private Product is not valid for current customer account",
       "affectedSkusCount": 3,
       "affectedSkus": [
         "P66104-B21",
-        "30 P71815-B21",
+        "DS     P71815-B21",
         "P80855-B21"
-      ]
-    },
-    {
-      "ruleId": "RULE_21",
-      "ruleType": "MUTUAL_EXCLUSION",
-      "section": "Networking",
-      "reason": "Private Product is not valid for current customer account",
-      "affectedSkusCount": 1,
-      "affectedSkus": [
-        "30 P71812-B21"
       ]
     },
     {
@@ -244,11 +255,21 @@
       "reason": "Private Product is not valid for current customer account",
       "affectedSkusCount": 1,
       "affectedSkus": [
-        "S3K57A"
+        "DS     P71812-B21"
       ]
     },
     {
       "ruleId": "RULE_23",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Networking",
+      "reason": "Private Product is not valid for current customer account",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "S3K57A"
+      ]
+    },
+    {
+      "ruleId": "RULE_24",
       "ruleType": "BTO_DISALLOWED",
       "section": "Accessories",
       "reason": "BTO products are not allowed in CTO Base Model.",
@@ -263,7 +284,7 @@
       ]
     },
     {
-      "ruleId": "RULE_24",
+      "ruleId": "RULE_25",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Power and Cooling",
       "reason": "Maximum 1 quantity can be ordered per base model.",
@@ -273,7 +294,7 @@
       ]
     },
     {
-      "ruleId": "RULE_25",
+      "ruleId": "RULE_26",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Power and Cooling",
       "reason": "One Fan kit can be selected from below Fan Kits DL3X5 Gen11 2U Stnd Fan Kit DL3X5 Gen11 2U Perf Fan Kit DL385 Gen11 2U Max Perf Fan Kit",
@@ -283,7 +304,7 @@
       ]
     },
     {
-      "ruleId": "RULE_26",
+      "ruleId": "RULE_27",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Power and Cooling",
       "reason": "Mixing of different Power supply SKU is not allowed.",
@@ -296,7 +317,7 @@
       ]
     },
     {
-      "ruleId": "RULE_27",
+      "ruleId": "RULE_28",
       "ruleType": "PAIRED_KIT_REQUIRED",
       "section": "Power and Cooling",
       "reason": "HPE 1600W -48VDC Pwr Cbl Lug Kit(P36877-B21) Supported only with HPE 1600W FS -48VDC Ht Plg PS Kit (P17023-B21).",
@@ -306,7 +327,7 @@
       ]
     },
     {
-      "ruleId": "RULE_28",
+      "ruleId": "RULE_29",
       "ruleType": "BTO_DISALLOWED",
       "section": "Power and Cooling",
       "reason": "BTO products are not allowed in CTO Base Model.",
@@ -316,7 +337,7 @@
       ]
     },
     {
-      "ruleId": "RULE_29",
+      "ruleId": "RULE_30",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Virtualization",
       "reason": "Private Product is not valid for current customer account",
@@ -337,7 +358,7 @@
       ]
     },
     {
-      "ruleId": "RULE_30",
+      "ruleId": "RULE_31",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Virtualization",
       "reason": "Private Product is not valid for current customer account",
@@ -349,7 +370,7 @@
       ]
     },
     {
-      "ruleId": "RULE_31",
+      "ruleId": "RULE_32",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Virtualization",
       "reason": "Private Product is not valid for current customer account",
@@ -364,7 +385,7 @@
       ]
     },
     {
-      "ruleId": "RULE_32",
+      "ruleId": "RULE_33",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "3PO",
       "reason": "Private Product is not valid for current customer account",
@@ -374,7 +395,7 @@
       ]
     },
     {
-      "ruleId": "RULE_33",
+      "ruleId": "RULE_34",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Private Cloud Business Edition",
       "reason": "Not Supported ProStack Server Software",
@@ -456,6 +477,22 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
+      "sku": "P50309-B21",
+      "rawSku": "P50309-B21",
+      "isPrivateSku": false,
+      "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-4800 CAS-40-39-39 EC8 Registered Smart Memory Kit",
+      "listPrice": 7439,
+      "startDate": "11/10/2022",
+      "discontinuedDate": "11/30/2028",
+      "section": "Memory",
+      "ruleType": "MEMORY_MIXING",
+      "ineligibilityReason": "Mixing of x4 and x8 memory is not allowed",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
       "sku": "P50309-F21",
       "rawSku": "P50309-F21",
       "isPrivateSku": false,
@@ -488,13 +525,61 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
+      "sku": "P50311-B21",
+      "rawSku": "P50311-B21",
+      "isPrivateSku": false,
+      "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-4800 CAS-40-39-39 EC8 Registered Smart Memory Kit",
+      "listPrice": 13909,
+      "startDate": "11/10/2022",
+      "discontinuedDate": "11/30/2028",
+      "section": "Memory",
+      "ruleType": "MEMORY_MIXING",
+      "ineligibilityReason": "Mixing of x4 and x8 memory is not allowed",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
       "sku": "P64986-F21",
       "rawSku": "P64986-F21",
       "isPrivateSku": false,
       "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
       "listPrice": 28532,
       "startDate": "04/06/2026",
-      "discontinuedDate": "11/30/2028",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "9xx4 Processor supports only PC5-4800B Memory.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P64984-B21",
+      "rawSku": "P64984-B21",
+      "isPrivateSku": false,
+      "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+      "listPrice": 7439,
+      "startDate": "09/03/2024",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "9xx4 Processor supports only PC5-4800B Memory.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P64985-B21",
+      "rawSku": "P64985-B21",
+      "isPrivateSku": false,
+      "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+      "listPrice": 13909,
+      "startDate": "09/03/2024",
+      "discontinuedDate": "06/30/2030",
       "section": "Memory",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "9xx4 Processor supports only PC5-4800B Memory.",
@@ -510,7 +595,39 @@
       "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
       "listPrice": 13909,
       "startDate": "04/06/2026",
-      "discontinuedDate": "11/30/2028",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "9xx4 Processor supports only PC5-4800B Memory.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P64986-B21",
+      "rawSku": "P64986-B21",
+      "isPrivateSku": false,
+      "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+      "listPrice": 28532,
+      "startDate": "09/03/2024",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "9xx4 Processor supports only PC5-4800B Memory.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P64987-B21",
+      "rawSku": "P64987-B21",
+      "isPrivateSku": false,
+      "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+      "listPrice": 47056,
+      "startDate": "09/03/2024",
+      "discontinuedDate": "06/30/2030",
       "section": "Memory",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "9xx4 Processor supports only PC5-4800B Memory.",
@@ -526,7 +643,23 @@
       "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
       "listPrice": 47056,
       "startDate": "04/06/2026",
-      "discontinuedDate": "11/30/2028",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "9xx4 Processor supports only PC5-4800B Memory.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P64988-B21",
+      "rawSku": "P64988-B21",
+      "isPrivateSku": false,
+      "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+      "listPrice": 60190,
+      "startDate": "09/03/2024",
+      "discontinuedDate": "06/30/2030",
       "section": "Memory",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "9xx4 Processor supports only PC5-4800B Memory.",
@@ -542,7 +675,23 @@
       "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
       "listPrice": 60190,
       "startDate": "04/06/2026",
-      "discontinuedDate": "11/30/2028",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "9xx4 Processor supports only PC5-4800B Memory.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P73446-B21",
+      "rawSku": "P73446-B21",
+      "isPrivateSku": false,
+      "description": "HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart Memory Kit",
+      "listPrice": 133186,
+      "startDate": "03/03/2025",
+      "discontinuedDate": "06/30/2030",
       "section": "Memory",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "9xx4 Processor supports only PC5-4800B Memory.",
@@ -558,12 +707,60 @@
       "description": "HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart FIO Memory Kit",
       "listPrice": 133186,
       "startDate": "04/06/2026",
-      "discontinuedDate": "11/30/2028",
+      "discontinuedDate": "06/30/2030",
       "section": "Memory",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "9xx4 Processor supports only PC5-4800B Memory.",
       "supplyBadge": "",
       "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P50312-B21",
+      "rawSku": "P50312-B21",
+      "isPrivateSku": false,
+      "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-4800 CAS-40-39-39 EC8 Registered Smart Memory Kit",
+      "listPrice": 28532,
+      "startDate": "11/10/2022",
+      "discontinuedDate": "11/30/2028",
+      "section": "Memory",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Mixing of Pxxxxx-B21 Memory and Pxxxxx-F21 Memory is not allowed",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P69982-B21",
+      "rawSku": "P69982-B21",
+      "isPrivateSku": false,
+      "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-4800 CAS-40-39-39 EC8 Registered Smart Memory Kit",
+      "listPrice": 60190,
+      "startDate": "05/06/2024",
+      "discontinuedDate": "11/30/2028",
+      "section": "Memory",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Mixing of Pxxxxx-B21 Memory and Pxxxxx-F21 Memory is not allowed",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P50314-B21",
+      "rawSku": "OB\n         P50314-B21",
+      "isPrivateSku": false,
+      "description": "HPE 256GB (1x256GB) Octal Rank x4 DDR5-4800 CAS-46-39-39 EC8 Registered 3DS Smart Memory Kit",
+      "listPrice": 77851,
+      "startDate": "02/06/2023",
+      "discontinuedDate": "02/13/2026",
+      "section": "Memory",
+      "ruleType": "MEMORY_MIXING",
+      "ineligibilityReason": "3DS memory and non 3DS memory cannot be mixed",
+      "supplyBadge": "OB",
+      "supplyTitle": "Product is obsolete",
       "isSelectable": false,
       "status": "PORTAL_CONDITIONAL"
     },
@@ -594,6 +791,22 @@
       "section": "Memory",
       "ruleType": "MEMORY_MIXING",
       "ineligibilityReason": "3DS memory and non 3DS memory cannot be mixed",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P66676-B21",
+      "rawSku": "P66676-B21",
+      "isPrivateSku": false,
+      "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-4800 CAS-46-45-45 EC8 Registered Smart Memory Kit",
+      "listPrice": 47056,
+      "startDate": "09/05/2023",
+      "discontinuedDate": "11/30/2028",
+      "section": "Memory",
+      "ruleType": "MEMORY_MIXING",
+      "ineligibilityReason": "96GB memory cannot be mixed with any other memory",
       "supplyBadge": "",
       "supplyTitle": "",
       "isSelectable": false,
@@ -796,7 +1009,7 @@
       "rawSku": "P61852-B21\n\n    PVT",
       "isPrivateSku": true,
       "description": "HPE NS204i-u Gen11 960GB Spl Boot Dev",
-      "listPrice": 15699,
+      "listPrice": 8849,
       "startDate": "11/12/2022",
       "discontinuedDate": "04/30/2028",
       "section": "OS Boot Device",
@@ -824,13 +1037,13 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "S6W21C",
-      "rawSku": "S6W21C",
+      "sku": "S8A40C",
+      "rawSku": "S8A40C",
       "isPrivateSku": false,
-      "description": "NVIDIA RTX PRO 6000D 84GB PCIe Accelerator for HPE",
-      "listPrice": 37899,
-      "startDate": "03/02/2026",
-      "discontinuedDate": "12/31/2028",
+      "description": "AMD Instinct MI350P 144GB PCIe Accelerator for HPE",
+      "listPrice": 92899,
+      "startDate": "08/03/2026",
+      "discontinuedDate": "07/31/2028",
       "section": "Graphics Options",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Doublewide GPU can be selected only with GPU CTO Server",
@@ -840,13 +1053,13 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "S8A40C",
-      "rawSku": "S8A40C",
+      "sku": "S6W21C",
+      "rawSku": "S6W21C",
       "isPrivateSku": false,
-      "description": "AMD Instinct MI350P 144GB PCIe Accelerator for HPE",
-      "listPrice": 92899,
-      "startDate": "08/03/2026",
-      "discontinuedDate": "07/31/2028",
+      "description": "NVIDIA RTX PRO 6000D 84GB PCIe Accelerator for HPE",
+      "listPrice": 37899,
+      "startDate": "03/02/2026",
+      "discontinuedDate": "12/31/2028",
       "section": "Graphics Options",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Doublewide GPU can be selected only with GPU CTO Server",
@@ -958,7 +1171,7 @@
       "description": "NVIDIA 2-way NVLink Bridge for H200 NVL",
       "listPrice": 1100,
       "startDate": "02/03/2025",
-      "discontinuedDate": "12/31/2027",
+      "discontinuedDate": "06/30/2028",
       "section": "Graphics Options",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "This GPU option can be selected only with GPU CTO Server",
@@ -1048,18 +1261,18 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "30 P71815-B21",
-      "rawSku": "30\n\t\tP71815-B21\n\n    PVT",
+      "sku": "DS     P71815-B21",
+      "rawSku": "DS\n    P71815-B21\n\n    PVT",
       "isPrivateSku": true,
-      "description": "BCM 957508-P2 100Gb/s 2p Spl PCIe Adapter",
+      "description": "BCM 957508-P2 100Gb/s 2p Spl PCIe Adapter\n        \n             Product is discontinued: P71815-B21",
       "listPrice": 0,
       "startDate": "03/15/2024",
       "discontinuedDate": "10/31/2026",
       "section": "Networking",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Private Product is not valid for current customer account",
-      "supplyBadge": "30",
-      "supplyTitle": "Product Lifecycle ends within 30 days",
+      "supplyBadge": "DS",
+      "supplyTitle": "Product is discontinued",
       "isSelectable": false,
       "status": "PORTAL_CONDITIONAL"
     },
@@ -1080,18 +1293,18 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "30 P71812-B21",
-      "rawSku": "30\n\t\tP71812-B21\n\n    PVT",
+      "sku": "DS     P71812-B21",
+      "rawSku": "DS\n    P71812-B21\n\n    PVT",
       "isPrivateSku": true,
-      "description": "BCM 957508-N2 100Gb/s 2p Spl OCP3 Adapter",
+      "description": "BCM 957508-N2 100Gb/s 2p Spl OCP3 Adapter\n        \n             Product is discontinued: P71812-B21",
       "listPrice": 3640,
       "startDate": "03/15/2024",
       "discontinuedDate": "10/31/2026",
       "section": "Networking",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Private Product is not valid for current customer account",
-      "supplyBadge": "30",
-      "supplyTitle": "Product Lifecycle ends within 30 days",
+      "supplyBadge": "DS",
+      "supplyTitle": "Product is discontinued",
       "isSelectable": false,
       "status": "PORTAL_CONDITIONAL"
     },
@@ -1294,7 +1507,7 @@
       "description": "HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit",
       "listPrice": 1561,
       "startDate": "12/07/2020",
-      "discontinuedDate": "06/30/2028",
+      "discontinuedDate": "06/30/2029",
       "section": "Power and Cooling",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Mixing of different Power supply SKU is not allowed.",
@@ -1404,7 +1617,7 @@
       "rawSku": "S4R66AAE\n\n    PVT",
       "isPrivateSku": true,
       "description": "VMware vDefend Advance Threat Prevention Term Add-on to VMware Firewall per Core 1-year 24x7 E-RTU",
-      "listPrice": 138,
+      "listPrice": 192,
       "startDate": "08/05/2024",
       "discontinuedDate": "09/06/2028",
       "section": "Virtualization",
@@ -1420,7 +1633,7 @@
       "rawSku": "S4R67AAE\n\n    PVT",
       "isPrivateSku": true,
       "description": "VMware vDefend Advance Threat Prevention Term Add-on to VMware Firewall per Core 3-year 24x7 E-RTU",
-      "listPrice": 401,
+      "listPrice": 567,
       "startDate": "08/05/2024",
       "discontinuedDate": "09/06/2028",
       "section": "Virtualization",
@@ -1436,7 +1649,7 @@
       "rawSku": "S4R68AAE\n\n    PVT",
       "isPrivateSku": true,
       "description": "VMware vDefend Advance Threat Prevention Term Add-on to VMware Firewall per Core 5-year 24x7 E-RTU",
-      "listPrice": 668,
+      "listPrice": 949,
       "startDate": "08/05/2024",
       "discontinuedDate": "09/06/2028",
       "section": "Virtualization",
@@ -1580,7 +1793,7 @@
       "rawSku": "S4R78AAE\n\n    PVT",
       "isPrivateSku": true,
       "description": "VMware vSAN Term per TiB 1-year 24x7 E-RTU",
-      "listPrice": 278,
+      "listPrice": 392,
       "startDate": "08/05/2024",
       "discontinuedDate": "06/08/2028",
       "section": "Virtualization",
@@ -1596,7 +1809,7 @@
       "rawSku": "S4F96AAE\n\n    PVT",
       "isPrivateSku": true,
       "description": "VMware vSAN Term per TiB 3-year Subscription 24x7 Support E-RTU",
-      "listPrice": 829,
+      "listPrice": 1179,
       "startDate": "07/01/2024",
       "discontinuedDate": "06/08/2028",
       "section": "Virtualization",
@@ -1612,7 +1825,7 @@
       "rawSku": "S4G02AAE\n\n    PVT",
       "isPrivateSku": true,
       "description": "VMware vSAN Term per TiB 5-year Subscription 24x7 Support E-RTU",
-      "listPrice": 1390,
+      "listPrice": 1981,
       "startDate": "07/01/2024",
       "discontinuedDate": "06/08/2028",
       "section": "Virtualization",
@@ -1628,7 +1841,7 @@
       "rawSku": "S4R79AAE\n\n    PVT",
       "isPrivateSku": true,
       "description": "VMware vSphere Foundation Term per Core 1-year 24x7 E-RTU",
-      "listPrice": 252,
+      "listPrice": 356,
       "startDate": "08/05/2024",
       "discontinuedDate": "09/06/2028",
       "section": "Virtualization",
@@ -1644,7 +1857,7 @@
       "rawSku": "S4F97AAE\n\n    PVT",
       "isPrivateSku": true,
       "description": "VMware vSphere Foundation Term per Core 3-year Subscription 24x7 Support E-RTU",
-      "listPrice": 751,
+      "listPrice": 1068,
       "startDate": "07/01/2024",
       "discontinuedDate": "06/08/2028",
       "section": "Virtualization",
@@ -1660,7 +1873,7 @@
       "rawSku": "S4G03AAE\n\n    PVT",
       "isPrivateSku": true,
       "description": "VMware vSphere Foundation Term per Core 5-year Subscription 24x7 Support E-RTU",
-      "listPrice": 1258,
+      "listPrice": 1793,
       "startDate": "07/01/2024",
       "discontinuedDate": "06/08/2028",
       "section": "Virtualization",
@@ -1726,7 +1939,7 @@
       "description": "HPE GreenLake for Private Cloud Business Edition w/AL STG MP Addl ProLiant G11 w/VMware 7.0 FIO SW",
       "listPrice": 1,
       "startDate": "07/01/2024",
-      "discontinuedDate": "09/30/2027",
+      "discontinuedDate": "09/30/2028",
       "section": "Private Cloud Business Edition",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Not Supported ProStack Server Software",
@@ -1742,7 +1955,7 @@
       "description": "HPE GreenLake for Private Cloud Business Edition w/AL STG MP Addl ProLiant G11 w/VMware 8.0 FIO SW",
       "listPrice": 1,
       "startDate": "07/01/2024",
-      "discontinuedDate": "09/30/2027",
+      "discontinuedDate": "09/30/2028",
       "section": "Private Cloud Business Edition",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Not Supported ProStack Server Software",
@@ -1758,7 +1971,7 @@
       "description": "HPE GreenLake for Private Cloud Business Edition w/Alletra STG MP Compatible Servers Tracking",
       "listPrice": 1,
       "startDate": "07/01/2024",
-      "discontinuedDate": "09/30/2027",
+      "discontinuedDate": "09/30/2028",
       "section": "Private Cloud Business Edition",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Not Supported ProStack Server Software",
@@ -1790,7 +2003,7 @@
       "description": "HPE Morpheus VM Essentials Software FIO E-LTU",
       "listPrice": 1,
       "startDate": "07/07/2025",
-      "discontinuedDate": "03/31/2028",
+      "discontinuedDate": "09/30/2028",
       "section": "Private Cloud Business Edition",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Not Supported ProStack Server Software",

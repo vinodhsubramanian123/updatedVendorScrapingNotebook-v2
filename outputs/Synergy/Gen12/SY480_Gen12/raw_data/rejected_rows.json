@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1.0.0",
+  "product": "SY480_Gen12",
+  "generatedAt": "2026-11-21T11:58:44.202Z",
+  "rejectedCount": 9,
+  "rows": [
+    {
+      "tableIndex": 1,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Heatsink and Accessories"
+      ]
+    },
+    {
+      "tableIndex": 3,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Hard Drives\n                         \n                         SFF\n\n\t0\n\t\n\t\t\n\t\t\n\t\t\n\t\t\t0\n\t\t\n\t\n\t0"
+      ]
+    },
+    {
+      "tableIndex": 5,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "vSAN Tracking SKUs"
+      ]
+    },
+    {
+      "tableIndex": 6,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Controllers"
+      ]
+    },
+    {
+      "tableIndex": 9,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HP StoreVirtual Software"
+      ]
+    },
+    {
+      "tableIndex": 10,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "HPE Compute Ops Management"
+      ]
+    },
+    {
+      "tableIndex": 55,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    },
+    {
+      "tableIndex": 72,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Hardware",
+        "USD6,624.00",
+        "Support",
+        "USD325,450.00"
+      ]
+    },
+    {
+      "tableIndex": 75,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
+      ]
+    }
+  ]
+}
