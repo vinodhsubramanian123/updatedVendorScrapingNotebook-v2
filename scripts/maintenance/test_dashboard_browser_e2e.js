@@ -502,13 +502,18 @@ async function verifyOrder2Exports(page, baseUrl, offlineRunId, runsDir, authSec
   assert(seededSummary, `/api/history/runs must expose seeded run ${seeded.runId}, got ${JSON.stringify(histRunsCheck.body?.slice?.(0, 3))}`);
   assert.strictEqual(seededSummary.hasRecoverableResult, true, `Seeded run summary must have hasRecoverableResult=true: ${JSON.stringify(seededSummary)}`);
 
+  const historyPending = page.waitForResponse(
+    res => res.url().endsWith('/api/history/runs') && res.request().method() === 'GET',
+    { timeout: 90000 }
+  );
   await page.locator('[data-tab="pipeline"]').click();
+  const historyResponse = await historyPending;
+  assert.strictEqual(historyResponse.status(), 200, 'Pipeline Ops must load run history on entry');
+  const browserHistory = await historyResponse.json();
+  assert(browserHistory.some(run => run.runId === seeded.runId && run.hasRecoverableResult),
+    'Pipeline Ops history response must contain the recoverable run');
   await page.getByPlaceholder(/Search run ID/i).fill(seeded.runId);
   const seededRow = page.locator('tr', { hasText: seeded.runId });
-  if (await seededRow.count() === 0) {
-    const refreshBtn = page.getByRole('button', { name: /Refresh/i }).first();
-    if (await refreshBtn.isVisible().catch(() => false)) await refreshBtn.click();
-  }
   await seededRow.waitFor({ timeout: 10000 });
   const reopenBtn = seededRow.getByRole('button', { name: /Reopen/i });
   await reopenBtn.waitFor({ timeout: 5000 });
@@ -676,11 +681,22 @@ async function verifyReconcileTopologyAndA11y(page, baseUrl) {
   const recBtn = page.getByRole('button', { name: /Reconcile with Partner Quote/i });
   await recBtn.waitFor({ timeout: 10000 });
   await recBtn.click();
-  await page.getByRole('dialog').waitFor({ timeout: 5000 });
-  const quoteBox = page.getByPlaceholder(/P47777-B21/i);
+  const reconciliationDialog = page.getByRole('dialog', { name: /Partner Quote Reconciliation/i });
+  await reconciliationDialog.waitFor({ timeout: 5000 });
+  const quoteBox = reconciliationDialog.getByPlaceholder(/P47777-B21/i);
   await quoteBox.fill('P53921-B21, 1, HPE ProLiant DL385 Gen11 8SFF Configure-to-order Server');
-  await page.getByRole('button', { name: /Execute Reconciliation/i }).click();
-  await page.locator('text=/Match|Direct|Reconciliation/i').first().waitFor({ timeout: 10000 });
+  const reconciliationPending = page.waitForResponse(
+    res => res.url().endsWith('/api/verify-vendor-bom') && res.request().method() === 'POST',
+    { timeout: 30000 }
+  );
+  await reconciliationDialog.getByRole('button', { name: /Execute Reconciliation/i }).click();
+  const reconciliationResponse = await reconciliationPending;
+  assert.strictEqual(reconciliationResponse.status(), 200, 'Partner quote reconciliation request must succeed');
+  const report = await reconciliationResponse.json();
+  assert.strictEqual(report.totalVendorSkus, 1, 'Report must reconcile the single uploaded quote line');
+  assert.strictEqual(typeof report.is100PercentMatch, 'boolean', 'Report must include the match disposition');
+  const reportHeading = report.is100PercentMatch ? '100% Match Certified with HPE Partner Portal' : 'Partner Portal Discrepancies Detected';
+  await reconciliationDialog.getByRole('heading', { name: reportHeading, exact: true }).waitFor({ timeout: 10000 });
   await page.keyboard.press('Escape');
   await page.getByRole('dialog').waitFor({ state: 'detached', timeout: 5000 });
 
