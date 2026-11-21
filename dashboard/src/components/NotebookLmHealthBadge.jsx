@@ -26,7 +26,9 @@ function getNlmBadgePresentation(status, metrics, isRefreshing) {
   if (status.state === 'HEALTHY') {
     tooltipText = `NotebookLM connection available. Source grounding is checked per query. Average latency: ${metrics.avgNlmResponseTimeMs ?? 'unavailable'}; agreement: ${metrics.nlmAgreementIndex ?? 'unavailable'}`;
   } else if (status.state === 'STANDBY') {
-    tooltipText = `Local knowledge available (${status.raw?.notebooksFound ?? 'unknown'} products mapped); cloud grounding not established`;
+    tooltipText = status.raw?.offline
+      ? 'Server is in local-only mode.'
+      : `Local knowledge available (${status.raw?.notebooksFound ?? 'unknown'} products mapped); cloud grounding not established`;
   }
 
   let icon = <AlertTriangle className="w-3 h-3 text-rose-600" />;

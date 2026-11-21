@@ -77,6 +77,7 @@ async function withServer(run) {
   app.use(express.json());
   app.use('/api', evaluationRouter);
   app.use('/api', notebookRouter);
+  app.use('/api', require('../../dashboard/routes/catalogs.cjs'));
   const server = await new Promise(resolve => {
     const instance = app.listen(0, '127.0.0.1', () => resolve(instance));
   });
@@ -288,6 +289,20 @@ describe('P0 · Enforce Local-Only Policy Before OCR and Grounding', () => {
       const csvBody = await csvPre.json();
       assert.strictEqual(csvBody.status, 'SUCCESS');
       assert.strictEqual(csvBody.effectivePolicy?.offline, true);
+    });
+  });
+
+  it('serves local standby status for NotebookLM and CDP in server offline mode', async () => {
+    process.env.OFFLINE_MODE = '1';
+    await withServer(async baseUrl => {
+      const notebook = await fetch(`${baseUrl}/api/test-notebooklm`);
+      assert.strictEqual(notebook.status, 200);
+      assert.deepStrictEqual(await notebook.json(), { status: 'STANDBY', mode: 'LOCAL_RAG', offline: true });
+      const cdp = await fetch(`${baseUrl}/api/cdp-status`);
+      assert.strictEqual(cdp.status, 200);
+      const status = await cdp.json();
+      assert.strictEqual(status.status, 'STANDBY');
+      assert.strictEqual(status.mode, 'OFFLINE_CACHE');
     });
   });
 

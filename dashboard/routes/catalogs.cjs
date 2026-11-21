@@ -452,6 +452,9 @@ function _buildCdpPortConflictPayload(httpStatus, outputsDir) {
 }
 
 router.get('/cdp-status', async (req, res) => {
+  if (require('../../scripts/lib/system/policy_resolver.js').isTruthyFlag(process.env.OFFLINE_MODE)) {
+    return res.json({ status: 'STANDBY', mode: 'OFFLINE_CACHE', portConflict: false, message: 'Offline catalog mode' });
+  }
   try {
     const response = await fetch('http://127.0.0.1:9222/json', { signal: AbortSignal.timeout(1500) });
     if (!response.ok) {

@@ -321,9 +321,11 @@ router.post('/notebook-query-cancel/:jobId', (req, res) => {
 
 // ── NotebookLM Health Test ────────────────────────────────────────────────────
 router.get('/test-notebooklm', (req, res) => {
+  if (isServerOffline()) return res.json({ status: 'STANDBY', mode: 'LOCAL_RAG', offline: true });
   const testScript = path.join(PROJECT_ROOT, 'tests', 'unit', 'test_notebooklm_mcp.js');
   if (!fs.existsSync(testScript)) return sendErrorResponse(res, 404, 'test_notebooklm_mcp.js not found', { source: 'NOTEBOOK_ROUTER' });
-  execFile('node', [testScript], { cwd: PROJECT_ROOT }, (err, stdout) => {
+  execFile(process.execPath, [testScript], { cwd: PROJECT_ROOT, timeout: 15000, windowsHide: true }, (err, stdout) => {
+    if (err?.killed) return res.json({ status: 'DEGRADED', error: 'NotebookLM health check timed out.' });
     try {
       const lines = stdout.split('\n');
       const start = lines.findIndex(l => l.trim().startsWith('{'));
