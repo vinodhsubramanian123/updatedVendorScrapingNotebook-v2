@@ -30,6 +30,29 @@ describe('Authentic Evidence Quarantine Verification (Feature 7 / Requirement R2
   fs.mkdirSync(sandboxDir, { recursive: true });
   fs.mkdirSync(testSessionsDir, { recursive: true });
 
+  it('reinforces a quarantined rule only when independent cited evidence accumulates', () => {
+    const filePath = path.join(sandboxDir, 'reinforcement.json');
+    const delta = { chassis: 'DL380_Gen12', affectedSku: 'P71117-B21', confidenceScore: 0.78,
+      ruleUpdate: 'Processor configuration requires review', scopeTaxonomy: 'CHASSIS_SPECIFIC' };
+    const reasons = ['Confidence score 0.78 is below automatic promotion threshold (0.85)'];
+    const save = (citations) => saveQuarantinedDelta({ ...delta, citations }, reasons, { filePath });
+    save(['c04111535#Processors']);
+    save(['c04111535#Cooling']);
+    save(['c04111535#Cooling', 'TEST_EVIDENCE']);
+    const replay = save(['c04111535#Processors']);
+    assert.equal(replay.observationCount, 4);
+    assert.equal(replay.evidenceObservationCount, 1);
+    assert.equal(replay.confidenceScore, 0.78);
+    assert.equal(replay.autoPromotable, false);
+    const second = save(['c06701028#Processors']);
+    assert.equal(second.evidenceObservationCount, 2);
+    assert.equal(second.autoPromotable, false);
+    const third = save(['c08436728#Processors']);
+    assert.equal(third.evidenceObservationCount, 3);
+    assert.equal(third.autoPromotable, true);
+    assert.equal(save(['c08436728#Processors']).confidenceScore, third.confidenceScore);
+  });
+
   it('1. isSyntheticOrMockToken identifies prohibited mock tokens and random UUIDs', () => {
     assert.equal(isSyntheticOrMockToken('TEST_EVIDENCE'), true);
     assert.equal(isSyntheticOrMockToken('local_mock'), true);

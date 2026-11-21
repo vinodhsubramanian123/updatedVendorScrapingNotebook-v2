@@ -7,6 +7,8 @@
  * Power Supply, Cooling/Thermal, GPU/Accelerator, Software/Support/Services).
  */
 
+const fs = require('fs');
+const path = require('path');
 const { cleanBaseSKU } = require('./sku.js');
 const { classifyComponentRole } = require('./product_meta.js');
 const {
@@ -17,6 +19,51 @@ const {
   isOnsiteInstallationService,
   isRemoteInstallationService
 } = require('../aspects/support_manufacturing.js');
+
+const VENDORS_CONFIG_DIR = path.resolve(__dirname, '../../config/vendors');
+let cachedVendorMatchers = null;
+
+function _loadVendorMatchers() {
+  if (cachedVendorMatchers) return cachedVendorMatchers;
+  const matchers = [
+    { vendor: 'HPE', pattern: /\b(hpe|proliant|synergy|alletra|storeever|storeonce|ilo\s*\d?|tech\s*care|compute\s*ops)\b/i },
+    { vendor: 'Dell', pattern: /\b(dell|poweredge|powerstore|powervault|powerswitch|idrac|openmanage|perc|boss-n1|prosupport)\b/i },
+    { vendor: 'Huawei', pattern: /\b(huawei|fusionserver|taishan|kunlun|oceanstor|cloudengine|ibmc|imaster|fusiondirector|hi-care)\b/i },
+    { vendor: 'Cisco', pattern: /\b(cisco|ucs|nexus|catalyst|cimc|intersight)\b/i },
+    { vendor: 'Lenovo', pattern: /\b(lenovo|thinksystem|thinkagile|xclarity)\b/i }
+  ];
+  const seen = new Map(matchers.map((entry) => [entry.vendor.toUpperCase(), entry]));
+  try {
+    for (const dirent of fs.readdirSync(VENDORS_CONFIG_DIR, { withFileTypes: true })) {
+      if (!dirent.isDirectory()) continue;
+      const policyPath = path.join(VENDORS_CONFIG_DIR, dirent.name, 'policy.json');
+      if (!fs.existsSync(policyPath)) continue;
+      const policy = JSON.parse(fs.readFileSync(policyPath, 'utf8'));
+      const vendorId = String(policy.vendorId || dirent.name).trim();
+      if (!vendorId) continue;
+      const tokens = [
+        vendorId,
+        policy.vendorName,
+        policy.terminology?.portalName,
+        policy.terminology?.rulesEngine,
+        ...(Array.isArray(policy.aliases) ? policy.aliases : [])
+      ].map((v) => String(v || '').trim()).filter((v) => v.length >= 2);
+      if (!tokens.length) continue;
+      const escaped = tokens.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+      const policyRe = new RegExp(`\\b(?:${escaped.join('|')})\\b`, 'i');
+      const existing = seen.get(vendorId.toUpperCase());
+      if (existing) {
+        existing.pattern = new RegExp(`(?:${existing.pattern.source})|(?:${policyRe.source})`, 'i');
+      } else {
+        const added = { vendor: vendorId, pattern: policyRe };
+        seen.set(vendorId.toUpperCase(), added);
+        matchers.push(added);
+      }
+    }
+  } catch { /* fallback to built-in vendor matchers */ }
+  cachedVendorMatchers = matchers;
+  return matchers;
+}
 
 const CANONICAL_CATEGORY_SCHEMA = Object.freeze({
   Chassis: ['uHeight', 'socketCount', 'bayFormFactor', 'bayCount', 'bmcTier'],
@@ -38,12 +85,10 @@ function _num(text, re) {
 }
 
 function _detectVendor(sku = '', desc = '') {
-  const s = `${sku} ${desc}`.toLowerCase();
-  if (/\b(hpe|proliant|synergy|alletra|storeever|ilo\s*\d?|tech\s*care|compute\s*ops)\b/.test(s)) return 'HPE';
-  if (/\b(dell|poweredge|powerstore|powervault|powerswitch|idrac|openmanage|perc|boss-n1|prosupport)\b/.test(s)) return 'Dell';
-  if (/\b(huawei|fusionserver|taishan|kunlun|oceanstor|cloudengine|ibmc|imaster|fusiondirector|hi-care)\b/.test(s)) return 'Huawei';
-  if (/\b(cisco|ucs|nexus|catalyst|cimc|intersight)\b/.test(s)) return 'Cisco';
-  if (/\b(lenovo|thinksystem|thinkagile|xclarity)\b/.test(s)) return 'Lenovo';
+  const s = `${sku} ${desc}`;
+  for (const { vendor, pattern } of _loadVendorMatchers()) {
+    if (pattern.test(s)) return vendor;
+  }
   return 'UNKNOWN';
 }
 
@@ -65,14 +110,14 @@ function _extractProcessorAttrs(desc) {
 function _extractMemoryAttrs(desc) {
   const capTb = _num(desc, /(\d+(?:\.\d+)?)\s*tb\b/i);
   const capGb = capTb !== null ? Math.round(capTb * 1024) : _num(desc, /(\d+)\s*gb\b/i);
-  const ddrMatch = desc.match(/\bddr([45])\b/i);
+  const ddrMatch = desc.match(/\bddr(\d+)\b/i);
   const rankMatch = desc.match(/\b([124]rx[48])\b/i);
   const lower = desc.toLowerCase();
   const moduleType = lower.includes('mrdimm') ? 'MRDIMM' : (lower.includes('lrdimm') ? 'LRDIMM' : (lower.includes('rdimm') || lower.includes('dimm') ? 'RDIMM' : null));
   return {
     capacityGb: capGb,
     ddrGen: ddrMatch ? `DDR${ddrMatch[1]}` : null,
-    speedMt: _num(desc, /ddr[45]-(\d{4})/i) ?? _num(desc, /(\d{4})\s*(?:mt\/s|mhz)/i),
+    speedMt: _num(desc, /ddr\d+-(\d{4,5})/i) ?? _num(desc, /(\d{4,5})\s*(?:mt\/s|mhz)/i),
     rank: rankMatch ? rankMatch[1].toUpperCase() : null,
     moduleType
   };
@@ -161,22 +206,26 @@ function _extractSoftwareAndServiceAttrs(sku, desc) {
   return { layer: 'SOFTWARE_OTHER', termYears: extractSupportTermYears(sku, desc), slaTier: null, retention: 'NONE' };
 }
 
-function _resolveCanonicalCategory(role, sku, desc) {
+const CANONICAL_CATEGORY_RULES = [
+  { cat: 'Processor', match: (role, desc) => role === 'Processor' || /\b(?:xeon|epyc|kunpeng)\b/i.test(desc) },
+  { cat: 'Memory', match: (role, desc) => role === 'Memory' || /\b(?:rdimm|lrdimm|mrdimm|ddr\d+)\b/i.test(desc) },
+  { cat: 'Boot Device', match: (role, desc) => role === 'Boot Device' || /\b(?:ns204i|boss-n1|boss|m\.2\s*boot)\b/i.test(desc) },
+  { cat: 'Storage Controller', match: (role, desc) => role === 'Storage Controller' || /\b(?:mr\d{3}i|sr\d{3}i|perc\s*h\d+|raid\s*controller|smart\s*array)\b/i.test(desc) },
+  {
+    cat: 'GPU / Accelerator',
+    match: (role, desc) => role === 'GPU / Accelerator' || (/\b(?:h200|h100|b100|b200|gb200|l40s?|l4|a100|rtx|mi\d{3}|gaudi|gpu|accelerator|ascend)\b/i.test(desc) && role !== 'Service & Support' && role !== 'Operating System / License')
+  },
+  { cat: 'Power Supply', match: (role, desc) => role === 'Power Supply' || /\b(?:power\s*supply|psu|flex\s*slot)\b/i.test(desc) },
+  { cat: 'Cooling / Thermal', match: (role, desc) => role === 'Cooling / Thermal' || /\b(?:fan\s*kit|heatsink|heat\s*sink|cold\s*plate|air\s*baffle|liquid\s*cool)\b/i.test(desc) },
+  { cat: 'Networking / FC / Optics', match: (role, desc) => ['Network Adapter', 'Fibre Channel HBA', 'Transceiver'].includes(role) || /\b(?:gbe|sfp28|qsfp|ocp3|infiniband|connectx|fc\s*hba)\b/i.test(desc) },
+  { cat: 'Drive', match: (role, desc) => role === 'Drive Cage / Drive' || (/\b(?:ssd|hdd|nvme|sff|lff|edsff)\b/i.test(desc) && /\b(?:tb|gb)\b/i.test(desc) && !/\b(?:cto|server|chassis)\b/i.test(desc)) },
+  { cat: 'Software / Support / Services', match: (role, _d, lower) => role === 'Service & Support' || role === 'Operating System / License' || /\b(?:tech\s*care|prosupport|hi-care|compute\s*ops|oneview|ilo|idrac|ibmc|saas|windows\s*server|vmware|rhel|startup\s*svc)\b/i.test(lower) },
+  { cat: 'Chassis', match: (role, desc) => role === 'Base Chassis' || /\b(?:poweredge|fusionserver|proliant|thinksystem|ucs\s*[bc]|alletra|cto\s*server)\b/i.test(desc) }
+];
+
+function _resolveCanonicalCategory(role, _sku, desc) {
   const lower = desc.toLowerCase();
-  if (role === 'Processor' || /\b(?:xeon|epyc|kunpeng)\b/i.test(desc)) return 'Processor';
-  if (role === 'Memory' || /\b(?:rdimm|lrdimm|mrdimm|ddr[45])\b/i.test(desc)) return 'Memory';
-  if (role === 'Boot Device' || /\b(?:ns204i|boss-n1|boss|m\.2\s*boot)\b/i.test(desc)) return 'Boot Device';
-  if (role === 'Storage Controller' || /\b(?:mr\d{3}i|sr\d{3}i|perc\s*h\d+|raid\s*controller|smart\s*array)\b/i.test(desc)) return 'Storage Controller';
-  if (role === 'GPU / Accelerator' || /\b(?:h200|h100|b200|l40s|l4|a100|gpu|accelerator|ascend)\b/i.test(desc)) return 'GPU / Accelerator';
-  if (role === 'Power Supply' || /\b(?:power\s*supply|psu|flex\s*slot)\b/i.test(desc)) return 'Power Supply';
-  if (role === 'Cooling / Thermal' || /\b(?:fan\s*kit|heatsink|heat\s*sink|cold\s*plate|air\s*baffle)\b/i.test(desc)) return 'Cooling / Thermal';
-  if (role === 'Network Adapter' || role === 'Fibre Channel HBA' || role === 'Transceiver' || /\b(?:gbe|sfp28|qsfp|ocp3|infiniband|connectx|fc\s*hba)\b/i.test(desc)) return 'Networking / FC / Optics';
-  if (role === 'Drive Cage / Drive' || /\b(?:ssd|hdd|nvme|sff|lff|edsff)\b/i.test(desc) && /\b(?:tb|gb)\b/i.test(desc) && !/\b(?:cto|server|chassis)\b/i.test(desc)) return 'Drive';
-  if (role === 'Service & Support' || /\b(?:tech\s*care|prosupport|hi-care|compute\s*ops|oneview|ilo|idrac|ibmc|saas|windows\s*server|vmware|rhel|startup\s*svc)\b/i.test(lower)) {
-    return 'Software / Support / Services';
-  }
-  if (role === 'Base Chassis' || /\b(?:poweredge|fusionserver|proliant|thinksystem|ucs\s*[bc]|cto\s*server)\b/i.test(desc)) return 'Chassis';
-  return 'Other / Accessory';
+  return CANONICAL_CATEGORY_RULES.find((entry) => entry.match(role, desc, lower))?.cat || 'Other / Accessory';
 }
 
 function _extractStorageControllerAttrs(desc) {
@@ -190,11 +239,48 @@ function _extractStorageControllerAttrs(desc) {
   };
 }
 
+function _extractGpuAttrs(desc) {
+  const modelMatch = desc.match(/\b((?:nvidia\s+)?(?:h100|h200|b100|b200|gb200|l40s?|l4|a100|a40|a30|a16|a2|rtx\s*(?:pro\s*)?\d{4}\s*(?:ada|blackwell)?|instinct\s*mi\d{3}[a-z]?|mi\d{3}[a-z]?|gaudi\s*\d?))\b/i);
+  const gpuModel = modelMatch ? modelMatch[1].replace(/\s+/g, ' ').trim() : null;
+  const tier = /\b(?:h100|h200|b100|b200|gb200|a100|mi\d{3}|gaudi)\b/i.test(desc)
+    ? 'Training / HPC'
+    : (/\b(?:l40s?|l4|a30|a16|a2)\b/i.test(desc)
+      ? 'Inference / AI'
+      : (/\b(?:rtx|quadro)\b/i.test(desc) ? 'Workstation / Viz' : null));
+  const formFactor = /\b(?:sxm\d*|oam)\b/i.test(desc)
+    ? 'SXM/OAM'
+    : (/\b(?:hhhl|low\s*profile|single[\s-]*wide)\b/i.test(desc)
+      ? 'Single-Wide PCIe'
+      : (/\b(?:double[\s-]*wide|dw)\b/i.test(desc) ? 'Double-Wide PCIe' : (/\bpcie\b/i.test(desc) ? 'PCIe' : null)));
+  return {
+    gpuModel,
+    vramGb: _num(desc, /\b(\d{2,3})\s*gb\b/i),
+    tier,
+    tdpWatts: _num(desc, /\b(\d{2,4})\s*w\b/i),
+    formFactor
+  };
+}
+
+function _extractCoolingAttrs(desc) {
+  let thermalType = null;
+  if (/\b(?:dlc|liquid\s*cool|cold\s*plate)\b/i.test(desc)) thermalType = 'Direct Liquid Cooling';
+  else if (/(?:high|max)\s*perf.*fan/i.test(desc)) thermalType = 'High Performance Fan';
+  else if (/\bfan\b/i.test(desc)) thermalType = 'Standard Fan';
+  else if (/(?:high|max)\s*perf.*heat\s*sink/i.test(desc)) thermalType = 'Performance Heat Sink';
+  else if (/\bheat\s*sink\b|\bheatsink\b/i.test(desc)) thermalType = 'Standard Heat Sink';
+  else if (/\bbaffle\b/i.test(desc)) thermalType = 'Air Baffle';
+  const packaging = /\bkit\b/i.test(desc) ? 'Kit' : (/\bmodule\b/i.test(desc) ? 'Module' : (/\bpack\b/i.test(desc) ? 'Pack' : null));
+  return { thermalType, packaging };
+}
+
 function _extractChassisAttrs(desc) {
-  const uHeight = _num(desc, /\b([124])u\b/i)
-    || (/dl360|r660|r670|2288h\s*1u/i.test(desc) ? 1 : (/dl380a|r860|dl580/i.test(desc) ? 4 : 2));
-  const socketCount = /\b4p\b|dl580|r960/i.test(desc) ? 4 : (/\b1p\b|dl145|r650xs/i.test(desc) ? 1 : 2);
-  const bayFormFactor = /\bedsff\b/i.test(desc) ? 'EDSFF' : (/\blff\b/i.test(desc) ? 'LFF' : 'SFF');
+  const explicitU = _num(desc, /\b([1-8])u\b/i);
+  const uHeight = explicitU
+    ?? (/dl360|r6\d{2}|2288h\s*1u/i.test(desc) ? 1 : (/dl380a|r8\d{2}|dl5\d{2}/i.test(desc) ? 4 : (/dl\d{3}|r7\d{2}/i.test(desc) ? 2 : null)));
+  const explicitSockets = _num(desc, /\b([1248])p\b/i) ?? _num(desc, /\b([1248])-?(?:socket|cpu)\b/i);
+  const socketCount = explicitSockets
+    ?? (/dl5\d{2}|r9\d{2}/i.test(desc) ? 4 : (/dl1\d{2}|r[23]50/i.test(desc) ? 1 : 2));
+  const bayFormFactor = /\bedsff\b/i.test(desc) ? 'EDSFF' : (/\blff\b/i.test(desc) ? 'LFF' : (/\bsff\b/i.test(desc) ? 'SFF' : null));
   return {
     uHeight,
     socketCount,
@@ -210,6 +296,8 @@ function _extractAttributesByCategory(category, sku, desc) {
     Drive: () => _extractDriveAttrs(desc),
     'Networking / FC / Optics': () => _extractNetworkingAttrs(desc),
     'Power Supply': () => _extractPowerAttrs(desc),
+    'Cooling / Thermal': () => _extractCoolingAttrs(desc),
+    'GPU / Accelerator': () => _extractGpuAttrs(desc),
     'Software / Support / Services': () => _extractSoftwareAndServiceAttrs(sku, desc),
     'Boot Device': () => ({
       isDedicatedBoot: true,
@@ -235,6 +323,17 @@ function extractCanonicalAttributes(item = {}, catalogEntry = null) {
   return { sku, rawSku, description: desc, vendor, role, category, attributes };
 }
 
+function extractCompactCanonicalSpecs(item = {}, catalogEntry = null) {
+  const extracted = extractCanonicalAttributes(item, catalogEntry);
+  const compact = { vendor: extracted.vendor, category: extracted.category };
+  for (const [key, value] of Object.entries(extracted.attributes || {})) {
+    if (value !== null && value !== undefined && value !== '') {
+      compact[key] = value;
+    }
+  }
+  return compact;
+}
+
 function getCanonicalCategorySchema() {
   return CANONICAL_CATEGORY_SCHEMA;
 }
@@ -242,5 +341,6 @@ function getCanonicalCategorySchema() {
 module.exports = {
   CANONICAL_CATEGORY_SCHEMA,
   extractCanonicalAttributes,
+  extractCompactCanonicalSpecs,
   getCanonicalCategorySchema
 };

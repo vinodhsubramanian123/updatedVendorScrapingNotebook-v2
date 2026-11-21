@@ -165,8 +165,8 @@ class PipelineLogger {
       historyRecords.unshift(runRecord);
       if (historyRecords.length > 50) historyRecords = historyRecords.slice(0, 50);
 
-      const { safeWriteJsonAtomic } = require('./fs_compat.js');
-      safeWriteJsonAtomic(historyJsonPath, historyRecords);
+      const { safeWriteJsonAtomic, sanitizeOperationalEvidence } = require('./fs_compat.js');
+      safeWriteJsonAtomic(historyJsonPath, sanitizeOperationalEvidence(historyRecords));
 
       // 2. Append to human-readable log file
       const logFilePath = path.join(historyDir, 'pipeline_execution.log');

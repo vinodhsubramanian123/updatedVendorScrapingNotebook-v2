@@ -250,6 +250,22 @@ function mergeDirRecursive(sourceDir, destDir) {
   }
 }
 
+function preservePriorProductFiles(target, prepared) {
+  if (!fs.existsSync(target)) return;
+  for (const entry of fs.readdirSync(target, { withFileTypes: true })) {
+    if (!entry.isFile() || !/\.(?:xlsx?|xlsm|csv|pdf)$/i.test(entry.name)) continue;
+    if (/_(?:OCA_Catalog\.xlsx|Master_Catalog\.csv)$/i.test(entry.name)) continue;
+    const destination = path.join(prepared, entry.name);
+    if (!fs.existsSync(destination)) fs.copyFileSync(path.join(target, entry.name), destination);
+  }
+  const legacyDeltas = path.join(target, 'catalog_deltas.json');
+  const archivedDeltas = path.join(prepared, 'history', 'legacy_catalog_deltas.json');
+  if (fs.existsSync(legacyDeltas) && !fs.existsSync(archivedDeltas)) {
+    fs.mkdirSync(path.dirname(archivedDeltas), { recursive: true });
+    fs.copyFileSync(legacyDeltas, archivedDeltas);
+  }
+}
+
 function promotionLease(target) {
   const name = 'promotion-' + require('crypto').createHash('sha256').update(target.toLowerCase()).digest('hex').slice(0, 24);
   return require('./workflow_lease.js').acquireWorkflowLease(name, path.join(path.dirname(target), '.promotion-locks'));
@@ -333,6 +349,7 @@ function promoteStagingDirectory(stagingDir, liveTargetDir) {
       const next = path.join(prepared, folder);
       if (fs.existsSync(prior)) mergeDirRecursive(prior, next);
     }
+    preservePriorProductFiles(target, prepared);
     journal.status = 'PREPARED';
     safeWriteJsonAtomic(journalPath, journal);
     if (fs.existsSync(target)) { moveDirWithFallback(target, backup); baselineMoved = true; }
@@ -407,7 +424,23 @@ function withFileLock(targetFilePath, fn, options = {}) {
   }
 }
 
+// Keep published operational receipts portable without changing captured source bytes.
+function sanitizeOperationalEvidence(value) {
+  const projectRoot = path.resolve(__dirname, '../../..').replace(/\\/g, '/');
+  const escapedRoot = projectRoot.replace(/[.*+?^\x24{}()|[\]\\]/g, '\\$&');
+  const projectPrefix = new RegExp(escapedRoot + '/', process.platform === 'win32' ? 'gi' : 'g');
+  const homePrefix = /\b[A-Z]:[\\/]Users[\\/][^\\/\r\n]+(?=[\\/])/gi;
+  return JSON.parse(JSON.stringify(value, (key, field) => {
+    if (typeof field !== 'string') return field;
+    if (key === 'account' && /^[^@\s]+@[^@\s]+$/.test(field)) return 'authenticated';
+    const normalized = field.replace(/\\/g, '/');
+    const portable = normalized.replace(projectPrefix, '');
+    return (portable !== normalized ? portable : field).replace(homePrefix, '[local-home]');
+  }));
+}
+
 module.exports = {
+  sanitizeOperationalEvidence,
   moveFile,
   toForwardSlash,
   cleanStrayPDFs,

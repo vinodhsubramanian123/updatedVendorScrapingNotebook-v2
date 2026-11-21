@@ -99,3 +99,7 @@ When refactoring functions approaching the CC $\le 30$ threshold:
 - [Master Operating Charter (CC <= 30 Benchmark)](../../../AGENTS.md)
 - [Epistemic Verification Skill](../epistemic-verification-skill/SKILL.md)
 - [System Invariants Directory (INV-229, INV-230, INV-235)](../../../docs/INVARIANTS.md)
+
+### Catalog release verification
+
+Use [the catalog evidence contract](../../../docs/CATALOG_EVIDENCE_AND_LEARNING.md) for staged and portfolio replays, held-out benchmarks, and negative tests for stale exports and incomplete pricing. Verify staged artifacts and durable learning alongside the code.

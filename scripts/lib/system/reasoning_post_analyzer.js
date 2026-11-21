@@ -416,7 +416,7 @@ function _initQueryEvidenceLedger({
   });
   const execStatus = (responseData.status === 'ERROR' || responseData.status === 'FAILED')
     ? 'FAILED'
-    : (responseData.status === 'ACTION_REQUIRED' ? 'ACTION_REQUIRED' : 'PASSED');
+    : (['ACTION_REQUIRED', 'PARTIAL'].includes(responseData.status) ? 'ACTION_REQUIRED' : 'PASSED');
   ledger.completePhase(2, execStatus, {
     status: responseData.status || 'COMPLETED',
     executionTimeMs

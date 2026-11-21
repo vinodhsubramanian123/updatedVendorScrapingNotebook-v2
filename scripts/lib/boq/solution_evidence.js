@@ -1,5 +1,7 @@
 'use strict';
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
 const { outputQuantities } = require('./configuration_context');
 
 function manifestQuantities(part, multiplier) {
@@ -105,6 +107,44 @@ function blocksDependencyAcceptance(boundary) {
   return ['STALE_INVALIDATED', 'UNKNOWN'].includes(dependencyAcceptanceState(boundary));
 }
 
+const CATALOG_EVIDENCE_ROLES = ['Catalog.json', 'Services.json', 'Catalog_Rules.json'];
+
+function _catalogEvidenceRevision(directory, suffix) {
+  const file = path.join(directory, `${path.basename(directory)}_${suffix}`);
+  try {
+    const bytes = fs.readFileSync(file);
+    return crypto.createHash('sha256').update(bytes).digest('hex');
+  } catch (error) {
+    if (error.code === 'ENOENT') return null;
+    throw error;
+  }
+}
+
+function captureCatalogEvidence(chassisDir, catalogBytes) {
+  const directory = path.resolve(chassisDir);
+  const catalogHash = crypto.createHash('sha256').update(catalogBytes).digest('hex');
+  const revisions = { 'Catalog.json': catalogHash };
+  for (const suffix of CATALOG_EVIDENCE_ROLES.slice(1)) {
+    revisions[suffix] = _catalogEvidenceRevision(directory, suffix);
+  }
+  return { directory, revisions };
+}
+
+function catalogEvidenceBoundary(binding) {
+  if (binding == null) return null;
+  try {
+    const { directory, revisions } = binding;
+    if (!path.isAbsolute(directory) || !revisions?.['Catalog.json'] ||
+        !CATALOG_EVIDENCE_ROLES.every(suffix => Object.hasOwn(revisions, suffix))) throw new Error('Invalid catalog evidence binding');
+    const reasons = CATALOG_EVIDENCE_ROLES.filter(suffix => _catalogEvidenceRevision(directory, suffix) !== revisions[suffix]);
+    return reasons.length
+      ? { status: 'STALE_INVALIDATED', canGrantAcceptance: false, isStale: true, reason: 'CATALOG_REVISION_CHANGED', reasons }
+      : { status: 'VALID', canGrantAcceptance: true, isStale: false };
+  } catch {
+    return { status: 'UNKNOWN', canGrantAcceptance: false, isStale: false, reason: 'CATALOG_EVIDENCE_UNREADABLE' };
+  }
+}
+
 function _dependencyFingerprintFields(boundary) {
   return {
     isStale: Boolean(boundary.isStale),
@@ -205,6 +245,7 @@ function deliveryFingerprint(evaluation) {
       }
     } : {}),
     ...(evidenceDigestSha256 ? { evidenceDigestSha256 } : {}),
+    ...(ev.catalogEvidence ? { catalogEvidence: ev.catalogEvidence } : {}),
     selectors: ev.selectors,
     selectorsByConfiguration: ev.selectorsByConfiguration,
     supportPolicy: ev.supportPolicy,
@@ -356,6 +397,8 @@ module.exports = {
   deliveryFingerprint,
   dependencyAcceptanceState,
   blocksDependencyAcceptance,
+  captureCatalogEvidence,
+  catalogEvidenceBoundary,
   candidateReviewCurrent,
   candidateDelta,
   canonicalReviewEnvelope

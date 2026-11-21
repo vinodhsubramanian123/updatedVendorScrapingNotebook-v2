@@ -357,8 +357,9 @@ test('Step 4.3 — Shifted-column 142257-002 recovery in pricing engine and HIGH
     const { compareSkuAcrossSolutions } = require('../../scripts/lib/catalog/cross_solution_pricing.js');
     const cmp = compareSkuAcrossSolutions('142257-002', { catalogs: [catEntry] });
     assert.equal(cmp.matches.length, 1);
-    assert.equal(cmp.matches[0].listPriceUsd, 34);
-    assert.equal(cmp.matches[0].priceStatus, 'PRICED');
+    assert.equal(cmp.matches[0].listPriceUsd, null);
+    assert.equal(cmp.matches[0].priceStatus, 'SHIFTED_COLUMN_REJECTED');
+    assert.equal(cmp.matches[0].priceState, 'PARSE_FAILED');
     assert.equal(cmp.matches[0].description, 'HPE C13 - C14 WW 250V 10Amp 2.5m Jumper Cord');
 
     const audit = auditProductBlindspots(catEntry);

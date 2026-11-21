@@ -154,9 +154,10 @@ function _isActiveCatalogOption(item) {
     item.lifecycleStatus || item.skuData?.['Lifecycle Status'] || item.entry?.lifecycleStatus || '',
     item.diffStatus || '',
     item.sku || item.skuData?.['Product #'] || '',
-    item.skuData?.Description || item.entry?.description || ''
+    item.skuData?.Description || item.entry?.description,
+    item.skuData?.vendorSupplyStatus
   );
-  return !lc.isBlockedForProduction && !lc.isDirectShip;
+  return !lc.isBlockedForProduction && !lc.isDirectShip && !lc.isConstrainedSupply;
 }
 
 function _findStorageExpanderAlternative(skuIndex, catalogDir) {
@@ -984,9 +985,10 @@ function _findDirectSuccessorSku(successorSku, activeSkuMap, catalogData, histPr
           found['Lifecycle Status'] || found.lifecycleStatus || found.Status || '',
           found['Diff Status'] || found.diffStatus || '',
           successorSku,
-          found.Description || found.description || ''
+          found.Description || found.description,
+          found.vendorSupplyStatus
         );
-        if (lc.isBlockedForProduction || lc.isDirectShip) return null;
+        if (lc.isBlockedForProduction || lc.isDirectShip || lc.isConstrainedSupply) return null;
         const price = parseFloat(String(found['Unit Price (USD)'] || found['Price (USD)'] || found.priceUsd || '0').replace(/[^0-9.]/g, '')) || 0;
         return {
           sku: successorSku,
@@ -1013,9 +1015,10 @@ function _collectActiveReplacementCandidates(catalogData, cleanSku, origAttrs, h
         s['Lifecycle Status'] || s.lifecycleStatus || s.Status || '',
         s['Diff Status'] || s.diffStatus || '',
         sSku,
-        s.Description || s.description || ''
+        s.Description || s.description,
+        s.vendorSupplyStatus
       );
-      if (lc.isBlockedForProduction || lc.isDirectShip) return;
+      if (lc.isBlockedForProduction || lc.isDirectShip || lc.isConstrainedSupply) return;
 
       const sDesc = s.Description || s.description || '';
       const sPrice = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || s.priceUsd || '0').replace(/[^0-9.]/g, '')) || 0;
@@ -1092,9 +1095,10 @@ function _buildActiveSkuMap(catalogData) {
         s['Lifecycle Status'] || s.lifecycleStatus || s.Status || '',
         s['Diff Status'] || s.diffStatus || '',
         k,
-        s.Description || s.description || ''
+        s.Description || s.description,
+        s.vendorSupplyStatus
       );
-      if (k && !lc.isBlockedForProduction && !lc.isDirectShip) {
+      if (k && !lc.isBlockedForProduction && !lc.isDirectShip && !lc.isConstrainedSupply) {
         activeSkuMap.set(k, {
           sku: k,
           rawSku,

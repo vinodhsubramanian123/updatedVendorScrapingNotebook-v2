@@ -10,7 +10,7 @@
 
 const assert = require('assert');
 const path = require('path');
-const { spawn } = require('child_process');
+const { spawn, execFileSync } = require('child_process');
 const http = require('http');
 
 let passedTests = 0;
@@ -30,7 +30,7 @@ async function runAsyncTest(name, fn) {
 
 function request(url, options = {}, body = null) {
   return new Promise((resolve, reject) => {
-    const req = http.request(url, options, (res) => {
+    const req = http.request(url, { agent: false, ...options }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -144,6 +144,49 @@ async function main() {
       });
       assert.strictEqual(res.status, 200, 'Query route should return 200 OK');
       assert.strictEqual(res.data.classification.intent, 'CATALOG_INTELLIGENCE');
+    });
+
+    await runAsyncTest('Route Test - Portfolio catalog price changes and continuation', async () => {
+      const options = { method: 'POST', headers: { 'Content-Type': 'application/json' } };
+      const result = await request('http://127.0.0.1:3457/api/query/route', options, {
+        query: 'Last 3 price drifts for memory, CPU and GPU across catalogs',
+        context: { chassisName: 'DL380_Gen12', offline: true }
+      });
+      assert.equal(result.status, 200);
+      assert.equal(result.data.hitlRequired, false);
+      assert.deepEqual(result.data.result.priceDriftScope.categories, ['Memory', 'CPU', 'GPU']);
+      const followup = await request('http://127.0.0.1:3457/api/query/route', options, {
+        query: 'Last 3 price drifts of above',
+        context: { priorPriceDriftRunId: result.data.runId, offline: true }
+      });
+      assert.equal(followup.status, 200);
+      assert.deepEqual(followup.data.result.priceDriftScope, result.data.result.priceDriftScope);
+    });
+
+    await runAsyncTest('Route Test - CLI, HTTP and MCP agree on an unresolved catalog scope', async () => {
+      const query = 'List GPUs for DL999 Gen12 sorted by price';
+      const options = { method: 'POST', headers: { 'Content-Type': 'application/json' } };
+      const response = await request('http://127.0.0.1:3457/api/query/route', options, {
+        query, context: { chassisName: 'DL380_Gen12', offline: true }
+      });
+      assert.equal(response.status, 200);
+      const cli = JSON.parse(execFileSync(process.execPath, [
+        path.join(__dirname, '../../scripts/evaluators/route_query.js'), query, '--chassis', 'DL380_Gen12', '--offline', '--json'
+      ], { encoding: 'utf8', stdio: 'pipe' }));
+      const { executeToolRequest } = require('../../scripts/services/mcp_server.js');
+      const tool = await executeToolRequest({ name: 'query_catalog_db', arguments: { query, chassis_id: 'DL380_Gen12' } });
+      assert.equal(tool.isError, undefined);
+      const mcp = JSON.parse(tool.content[0].text);
+      assert.equal(mcp.schemaVersion, '2.0.0');
+      for (const envelope of [response.data, cli, mcp]) {
+        assert.equal(envelope.result.status, 'ACTION_REQUIRED');
+        assert.deepEqual(envelope.result.catalogSearch.results, []);
+        assert.deepEqual(envelope.result.catalogSearch.filters.unresolvedProducts, ['DL999 Gen12']);
+      }
+      const saved = await request('http://127.0.0.1:3457/api/runs/' + response.data.runId);
+      assert.equal(saved.status, 200);
+      assert.equal(saved.data.stage, 'CATALOG_EVIDENCE_INCOMPLETE');
+      assert.deepEqual(saved.data.queryResult.data.result.catalogSearch.filters, response.data.result.catalogSearch.filters);
     });
 
     await runAsyncTest('Route Test - SSE Event Streaming Connection', async () => {

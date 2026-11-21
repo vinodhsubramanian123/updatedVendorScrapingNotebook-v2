@@ -39,12 +39,14 @@ HALT-NLM3: If candidate ephemeral source cannot be detached after validation (IN
 
 ## 2. Authentication & Health Architecture
 
-### Proactive Headless Pre-Flight & One-Shot Healing (`INV-181`, `INV-227`)
+### Proactive Headless Pre-Flight, Unified Chrome Profile & Zero-Touch Auto-Refresh (`INV-181`, `INV-227`, `INV-269`)
+- **Unified Profile Invariant (`INV-269`)**: Both `nlm_interactive_auth.js` (port `18801`) and `notebooklm-mcp-cli` / `gemini-notebook-mcp` (`run_headless_auth`) share `~/.notebooklm-mcp-cli/chrome-profiles/<profile>` (`getNlmProfileDir(profile)`). Never point port `18801` Chrome at a separate directory (such as the legacy `%LOCALAPPDATA%\NlmInteractiveChrome`, which is auto-migrated once with `Local State` + `Default/Network/Cookies` via `syncLegacyInteractiveProfile()`).
+- **WMI Detachment & `chrome-port-map.json` Registration (`INV-269`)**: On Windows, `spawnChromeDetached` launches Chrome via WMI `Win32_Process.Create` (escaping `KILL_ON_JOB_CLOSE`), and `registerPortMapEntry(18801, profile)` registers the listening PID (resolved via `netstat.exe -ano -p tcp`) in `~/.notebooklm-mcp-cli/chrome-port-map.json` so `find_existing_nlm_chrome` and `run_headless_auth` reuse port `18801` directly to refresh rotating Google cookies (`__Secure-1PSIDRTS`, `SIDCC`, `SNlM0e`) without daily manual intervention.
 ```bash
-# Proactive headless health verification (45s lease timeout)
+# Proactive health verification (auto-heals in CLI mode unless --no-heal / --check-only is passed)
 npm run auth:nlm:check
 
-# Automated one-shot healing (launches isolated Chrome on port 18801 & logs in via openclaw CDP)
+# Automated one-shot healing (ensures WMI-detached Chrome on port 18801, updates chrome-port-map.json & logs in via openclaw CDP)
 npm run auth:nlm:heal
 
 # Hot-reload tokens into active MCP server memory without process restart

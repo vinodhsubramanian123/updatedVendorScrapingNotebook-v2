@@ -3,7 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
+const { safeWriteJsonAtomic, sanitizeOperationalEvidence } = require('../system/fs_compat.js');
+const { EXPECTED_TABLE_COLUMN_GROUPS } = require('../scraper/catalog_tab_capture.js');
 
 const hash = value => crypto.createHash('sha256').update(value).digest('hex');
 function readJson(file) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
@@ -233,6 +234,20 @@ function _loadPreviousCatalogBaseline(liveDir, product) {
 
 // Called after the existing workbook audit and before replacing the live folder.
 // A receipt describes captured coverage; it never certifies every portal state.
+function _replayReceiptFields(dir, hashes, qualityGate) {
+  const conditional = path.join(dir, 'raw_data', 'conditional_skus.json');
+  return {
+    passed: qualityGate.skipped ? null : qualityGate.passed,
+    skipped: qualityGate.skipped === true,
+    warningsCount: (qualityGate.warnings || []).length,
+    replayResults: qualityGate.replay?.results || [],
+    replayExecutedCount: qualityGate.replay?.executedCount || 0,
+    replaySuiteVersion: qualityGate.replay?.suiteVersion || null,
+    replaySuiteSha256: qualityGate.replay?.suiteSha256 || null,
+    replayInputHashes: { ...hashes, 'conditional_skus.json': fs.existsSync(conditional) ? hash(fs.readFileSync(conditional)) : null }
+  };
+}
+
 function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
   _validateTestOnlySkipCoverage(options);
 
@@ -248,6 +263,12 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
   if (!coveragePolicy.valid) throw new Error(`Capture coverage incomplete: ${coveragePolicy.reason}`);
 
   _validateWorkbookSheetsAndSkus(workbook, next);
+  const qualityGate = options.skipCoverageValidation
+    ? { passed: true, skipped: true, blockers: [], warnings: [], replay: { results: [] } }
+    : require('./capture_query_replay.js').evaluateCaptureAndReplayGate(stagingDir, product, options);
+  if (!qualityGate.passed) {
+    throw new Error(`Capture quality and query replay gate failed: ${qualityGate.blockers.join('; ')}`);
+  }
   const { previousFile, previousComplete, previous } = _loadPreviousCatalogBaseline(liveDir, product);
   const { selectedBase, ownerConfig, solutionDomain, observedSelectors, missingProvenance } = _extractCaptureProvenance(raw, options);
   const hwSkuDelta = compareSkus(previous?.catalog, next.catalog);
@@ -284,7 +305,8 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
       observedSelectors,
       missingProvenance,
       completeness: 'CAPTURED_STATES_ONLY',
-      policy: coveragePolicy
+      policy: coveragePolicy,
+      qualityGate: _replayReceiptFields(stagingDir, next.hashes, qualityGate)
     },
     counts: next.counts,
     previousCounts: previous?.counts || null,
@@ -325,10 +347,10 @@ function _applyCloudVerificationToPostflight(sv, sync, promotedAt) {
 
 function finalizeCaptureReceipt(dir, receipt, sync) {
   if (!['STAGING_AUDITED', 'DIAGNOSTIC_CAPTURE'].includes(receipt?.status)) throw new Error('Capture finalization requires a classified receipt.');
-  const completed = { ...receipt, status: receipt.status === 'DIAGNOSTIC_CAPTURE' ? 'DIAGNOSTIC_LOCAL_PROMOTED' : 'LOCAL_PROMOTED', promotedAt: new Date().toISOString(),
+  const completed = sanitizeOperationalEvidence({ ...receipt, status: receipt.status === 'DIAGNOSTIC_CAPTURE' ? 'DIAGNOSTIC_LOCAL_PROMOTED' : 'LOCAL_PROMOTED', promotedAt: new Date().toISOString(),
     cloud: { status: sync?.syncStatus || 'CLOUD_FAILED', success: sync?.success === true,
       sourceId: sync?.uploadResult?.newSourceId || sync?.verifiedSourceId || null, consolidationVerified: sync?.uploadResult?.consolidationVerified === true,
-      error: sync?.error || sync?.uploadResult?.message || null } };
+      error: sync?.error || sync?.uploadResult?.message || null } });
   safeWriteJsonAtomic(path.join(dir, 'capture_receipt.json'), completed);
   const history = path.join(dir, 'history', 'capture_receipts');
   fs.mkdirSync(history, { recursive: true });
@@ -338,12 +360,41 @@ function finalizeCaptureReceipt(dir, receipt, sync) {
     try {
       const sv = JSON.parse(fs.readFileSync(svPath, 'utf8'));
       if (_applyCloudVerificationToPostflight(sv, sync, completed.promotedAt)) {
-        safeWriteJsonAtomic(svPath, sv);
+        safeWriteJsonAtomic(svPath, sanitizeOperationalEvidence(sv));
       }
     } catch (_) { /* preserve receipt if unreadable */ }
   }
+  require('./capture_query_replay.js').replayPromotedCatalogProbes(dir, completed);
   return completed;
 }
+function _deriveColumnCoverageFromRaw(raw, existingCoverage) {
+  if (existingCoverage?.verified === true) return existingCoverage;
+  const headerTexts = [];
+  for (const table of (raw?.tables || [])) {
+    for (const row of (table?.rows || []).slice(0, 4)) {
+      if (!Array.isArray(row)) continue;
+      for (const cell of row) {
+        const text = String(cell || '').trim();
+        if (text && text.length < 80) headerTexts.push(text);
+      }
+    }
+  }
+  if (!headerTexts.length) return existingCoverage || null;
+  const present = {};
+  const missing = [];
+  for (const [key, regex] of Object.entries(EXPECTED_TABLE_COLUMN_GROUPS)) {
+    const ok = headerTexts.some(h => regex.test(h));
+    present[key] = ok;
+    if (!ok) missing.push(key);
+  }
+  return {
+    verified: Boolean(present.sku && present.description),
+    present,
+    missing,
+    derivedFromRaw: true
+  };
+}
+
 function reconcileRebuiltCaptureReceipt(dir, product) {
   if (!dir || !product) return null;
   const receiptPath = path.join(dir, 'capture_receipt.json');
@@ -367,13 +418,28 @@ function reconcileRebuiltCaptureReceipt(dir, product) {
     const workbook = require('xlsx-js-style').readFile(path.join(dir, `${product}_OCA_Catalog.xlsx`));
     _validateWorkbookSheetsAndSkus(workbook, next);
 
+    const qualityGate = require('./capture_query_replay.js').evaluateCaptureAndReplayGate(dir, product);
+    if (!qualityGate.passed) return null;
+
+    const nextReplay = _replayReceiptFields(dir, next.hashes, qualityGate);
+    const prevQg = receipt.coverage?.qualityGate || {};
+    const nextColumnCoverage = _deriveColumnCoverageFromRaw(raw, receipt.coverage?.columnCoverage);
     const hashesChanged = Object.entries(next.hashes).some(([k, v]) => receipt.hashes?.[k] !== v);
-    if (!hashesChanged) return receipt;
+    const replayChanged = prevQg.replaySuiteSha256 !== nextReplay.replaySuiteSha256
+      || prevQg.replaySuiteVersion !== nextReplay.replaySuiteVersion
+      || prevQg.replayExecutedCount !== nextReplay.replayExecutedCount;
+    const colCovChanged = Boolean(nextColumnCoverage?.verified) !== Boolean(receipt.coverage?.columnCoverage?.verified);
+    if (!hashesChanged && !replayChanged && !colCovChanged) return receipt;
 
     const updated = {
       ...receipt,
       counts: next.counts,
       hashes: next.hashes,
+      coverage: {
+        ...receipt.coverage,
+        ...(nextColumnCoverage ? { columnCoverage: nextColumnCoverage } : {}),
+        qualityGate: nextReplay
+      },
       rebuiltAt: new Date().toISOString()
     };
     safeWriteJsonAtomic(receiptPath, updated);

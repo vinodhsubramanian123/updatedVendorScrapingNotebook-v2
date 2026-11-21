@@ -235,11 +235,7 @@ async function auditAndPromoteStaging({
     stage: 'KNOWLEDGE_SYNC', percent: 95, category: meta.cleanName
   });
 
-  const { promoteStagingDirectory, copyDirRecursive } = require('../lib/system/fs_compat.js');
-  const evidenceDir = path.join(liveOutputDir, 'evidence');
-  if (fs.existsSync(evidenceDir)) {
-    copyDirRecursive(evidenceDir, path.join(outputDir, 'evidence'));
-  }
+  const { promoteStagingDirectory } = require('../lib/system/fs_compat.js');
   promoteStagingDirectory(outputDir, liveOutputDir);
 
   const liveCatalogJson = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
@@ -732,8 +728,10 @@ async function discoverSolutionTreeAndMenu(ws, targetHint) {
 
   const menuStateRes = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
+      const menuPane = document.getElementById('extended_overview_menu');
+      const menuHasContent = menuPane ? (menuPane.querySelectorAll('table tr').length > 5 || menuPane.querySelectorAll('.ui-accordion-header, section').length > 3) : false;
       const tableCount = document.querySelectorAll('table').length;
-      const hasMenu = Boolean(document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, a[href*="extended_overview_menu"]') || tableCount > 40);
+      const hasMenu = Boolean(menuHasContent || (tableCount >= 20 && document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div')));
       return { hasMenu, tableCount };
     })()`,
     returnByValue: true
@@ -952,20 +950,7 @@ async function extractPageDomPayload(ws, meta, profile) {
   }
   console.log(`Extracted text: ${totalLen.toLocaleString()} chars`);
 
-  console.log('Extracting tables (row arrays)...');
-  let tables = await extractTablesAsRows(ws, ws._captureComponentSku ? '#extended_overview_menu' : null);
-  const tableKey = table => JSON.stringify({ id: table.tableId || '', rows: table.rows });
-  const seenTableKeys = new Set();
-  const mergedTables = [];
-  for (const t of [...menuTables, ...tables]) {
-    const k = tableKey(t);
-    if (!seenTableKeys.has(k)) {
-      seenTableKeys.add(k);
-      mergedTables.push(t);
-    }
-  }
-  tables = mergedTables;
-  console.log(`Extracted ${tables.length} tables.`);
+  const { tables, columnCoverage } = await _extractAndMergePageTables(ws, sendCommand, menuTables);
 
   const tableDerivedText = deriveTextFromTables(tables);
   let textExtractionMode = 'FULL_BODY_TEXT';
@@ -1031,6 +1016,7 @@ async function extractPageDomPayload(ws, meta, profile) {
 
   return {
     metrics,
+    columnCoverage,
     componentServiceEvidence: ws._componentServiceEvidence || null,
     unscopedServiceTables: ws._unscopedServiceTables || [],
     totalLen,
@@ -1045,6 +1031,117 @@ async function extractPageDomPayload(ws, meta, profile) {
     outsideTableNotesCaptured,
     step4Result,
     step5Result
+  };
+}
+
+async function _extractAndMergePageTables(ws, sendCommand, menuTables) {
+  console.log('Extracting tables (row arrays)...');
+  const { verifyExpectedCatalogColumns } = require('../lib/scraper/catalog_tab_capture.js');
+  const columnCoverage = await verifyExpectedCatalogColumns(ws, sendCommand);
+  if (columnCoverage.missing?.length > 0) {
+    console.warn(`⚠️  Missing expected OCA table column group(s): ${columnCoverage.missing.join(', ')}`);
+  }
+  const selectorScope = ws._captureComponentSku ? '#extended_overview_menu' : null;
+  const tabTables = await extractTablesAsRows(ws, selectorScope);
+  const seenTableKeys = new Set();
+  const mergedTables = [];
+  for (const t of [...menuTables, ...tabTables]) {
+    const key = JSON.stringify({ id: t.tableId || '', rows: t.rows });
+    if (!seenTableKeys.has(key)) {
+      seenTableKeys.add(key);
+      mergedTables.push(t);
+    }
+  }
+  console.log(`Extracted ${mergedTables.length} tables.`);
+  return { tables: mergedTables, columnCoverage };
+}
+
+function _resolveCaptureIdentity(meta, chassisDiscovery, profile, pageHeading) {
+  return {
+    resolvedBaseSku: chassisDiscovery?.selectedSku || resolveBaseSkuForProduct(meta, chassisDiscovery, profile) || null,
+    resolvedOwnerConfig: chassisDiscovery?.ownerConfiguration || pageHeading || meta.cleanName || null
+  };
+}
+
+function _tagConditionalScopeProvenance(items, { resolvedBaseSku, cleanName, resolvedOwnerConfig }) {
+  return (items || []).map((item) => ({
+    ...item,
+    scopeProvenance: {
+      baseSku: resolvedBaseSku,
+      ownerProduct: cleanName,
+      ownerConfiguration: resolvedOwnerConfig,
+      region: 'US',
+      selectorState: item.selectorTriggerSku
+        || item.ruleContext
+        || (item.thresholdDegC != null ? `ambientTempC:${item.thresholdDegC}` : 'default')
+    }
+  }));
+}
+
+function _buildObservedSelectors(chassisDiscovery, domPayload) {
+  return [
+    { selector: '#extended_overview_menu', value: 'EXPANDED' },
+    ...(chassisDiscovery?.scopePath || [])
+      .filter((step) => step.parentOption)
+      .map((step) => ({ selector: 'parentOption', productId: step.productId, value: step.parentOption })),
+    { selector: 'ambientTemperature', value: 'DEFAULT_AND_SWEEP_RESTORED' },
+    ...(domPayload.backplaneSelectors || [])
+  ];
+}
+
+function _buildOcaRawDataRecord({
+  vendor, portalUrl, pageTarget, pageHeading, qsLink,
+  resolvedBaseSku, meta, resolvedOwnerConfig, chassisDiscovery,
+  domPayload, scopedConditionalSkus, scopedUnavailableSkus,
+  networkSniffedRules, networkSniffer
+}) {
+  const { inferPillar } = require('../lib/catalog/product_scope.js');
+  const resolvedVendor = vendor || 'HPE';
+  return {
+    timestamp: new Date().toISOString(),
+    vendor: resolvedVendor,
+    portalUrl: portalUrl || pageTarget?.url || null,
+    pageTitle: pageTarget.title,
+    url: pageTarget.url,
+    nodeText: pageHeading,
+    qsLink,
+    selectedBaseSku: resolvedBaseSku,
+    baseSku: resolvedBaseSku,
+    ownerProduct: meta.cleanName,
+    ownerConfiguration: resolvedOwnerConfig,
+    parentConfiguration: chassisDiscovery?.parentConfiguration || null,
+    parentBaseSku: chassisDiscovery?.parentBaseSku || null,
+    parentOfferPriceUsd: chassisDiscovery?.parentOption?.listPriceUsd ?? null,
+    supportCoverageStatus: domPayload.componentServiceEvidence?.scope || (domPayload.unscopedServiceTables?.length ? 'UNSCOPED_ONLY' : 'NOT_PROBED'),
+    columnCoverage: domPayload.columnCoverage || null,
+    ...(chassisDiscovery?.scopePath ? { scopePath: chassisDiscovery.scopePath } : {}),
+    ownedMenuDiscovery: domPayload.ownedMenuDiscovery,
+    componentServiceEvidence: domPayload.componentServiceEvidence,
+    unscopedServiceTables: domPayload.unscopedServiceTables,
+    solutionDomain: meta.pillar || inferPillar(meta.family, meta.cleanName),
+    observedSelectors: _buildObservedSelectors(chassisDiscovery, domPayload),
+    finalSelectorsRestored: true,
+    scrollHeight: domPayload.metrics.scrollHeight,
+    textLength: domPayload.totalLen,
+    textExtractionMode: domPayload.textExtractionMode,
+    outsideTableNotesCaptured: domPayload.outsideTableNotesCaptured,
+    fullText: domPayload.fullText,
+    sections: domPayload.sections,
+    tables: domPayload.tables,
+    tableCount: domPayload.tables.length,
+    conditionalSkus: scopedConditionalSkus,
+    conditionalSkusCount: scopedConditionalSkus.length,
+    conditionalDiscovery: domPayload.backplaneSelectors?.length
+      ? 'HIDDEN_DOM_AMBIENT_AND_SCOPED_BACKPLANE_SELECTORS_OTHER_MACROS_UNVERIFIED'
+      : 'HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED',
+    unavailableRules: domPayload.unavailableRules,
+    unavailableRulesCount: domPayload.unavailableRules.length,
+    unavailableSkus: scopedUnavailableSkus,
+    unavailableSkusCount: scopedUnavailableSkus.length,
+    networkSniffedRules,
+    networkSniffedRulesCount: networkSniffedRules.length,
+    networkCoverage: networkSniffer?.getCoverage?.() || { scope: 'UNAVAILABLE' },
+    chassisDiscovery
   };
 }
 
@@ -1187,57 +1284,26 @@ async function setupStagingAndPersistRawData({
     console.log(`  📡 Captured ${networkSniffedRules.length} dynamic rule(s) via CDP Network Sniffer.`);
   }
 
-  const resolvedBaseSku = chassisDiscovery?.selectedSku || resolveBaseSkuForProduct(meta, chassisDiscovery, profile);
-  const { inferPillar } = require('../lib/catalog/product_scope.js');
-  const resolvedVendor = vendor || 'HPE';
-  const rawData = {
-    timestamp:  new Date().toISOString(),
-    vendor:     resolvedVendor,
-    portalUrl:  portalUrl || pageTarget?.url || null,
-    pageTitle:  pageTarget.title,
-    url:        pageTarget.url,
-    nodeText:   pageHeading,
+  const { resolvedBaseSku, resolvedOwnerConfig } = _resolveCaptureIdentity(meta, chassisDiscovery, profile, pageHeading);
+  const scopeCtx = { resolvedBaseSku, cleanName: meta.cleanName, resolvedOwnerConfig };
+  const scopedConditionalSkus = _tagConditionalScopeProvenance(domPayload.conditionalSkus, scopeCtx);
+  const scopedUnavailableSkus = _tagConditionalScopeProvenance(domPayload.unavailableSkus, scopeCtx);
+  const rawData = _buildOcaRawDataRecord({
+    vendor,
+    portalUrl,
+    pageTarget,
+    pageHeading,
     qsLink,
-    selectedBaseSku: resolvedBaseSku,
-    baseSku: resolvedBaseSku,
-    ownerConfiguration: chassisDiscovery?.ownerConfiguration || pageHeading || meta.cleanName,
-    parentConfiguration: chassisDiscovery?.parentConfiguration || null,
-    parentBaseSku: chassisDiscovery?.parentBaseSku || null,
-    ...(chassisDiscovery?.scopePath ? { scopePath: chassisDiscovery.scopePath } : {}),
-    ownedMenuDiscovery: domPayload.ownedMenuDiscovery,
-    componentServiceEvidence: domPayload.componentServiceEvidence,
-    unscopedServiceTables: domPayload.unscopedServiceTables,
-    solutionDomain: meta.pillar || inferPillar(meta.family, meta.cleanName),
-    observedSelectors: [
-      { selector: '#extended_overview_menu', value: 'EXPANDED' },
-      ...(chassisDiscovery?.scopePath || []).filter(step => step.parentOption)
-        .map(step => ({ selector: 'parentOption', productId: step.productId, value: step.parentOption })),
-      { selector: 'ambientTemperature', value: 'DEFAULT_AND_SWEEP_RESTORED' },
-      ...(domPayload.backplaneSelectors || [])
-    ],
-    finalSelectorsRestored: true,
-    scrollHeight: domPayload.metrics.scrollHeight,
-    textLength: domPayload.totalLen,
-    textExtractionMode: domPayload.textExtractionMode,
-    outsideTableNotesCaptured: domPayload.outsideTableNotesCaptured,
-    fullText: domPayload.fullText,
-    sections: domPayload.sections,
-    tables: domPayload.tables,
-    tableCount: domPayload.tables.length,
-    conditionalSkus: domPayload.conditionalSkus,
-    conditionalSkusCount: domPayload.conditionalSkus.length,
-    conditionalDiscovery: domPayload.backplaneSelectors?.length
-      ? 'HIDDEN_DOM_AMBIENT_AND_SCOPED_BACKPLANE_SELECTORS_OTHER_MACROS_UNVERIFIED'
-      : 'HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED',
-    unavailableRules: domPayload.unavailableRules,
-    unavailableRulesCount: domPayload.unavailableRules.length,
-    unavailableSkus: domPayload.unavailableSkus,
-    unavailableSkusCount: domPayload.unavailableSkus.length,
+    resolvedBaseSku,
+    meta,
+    resolvedOwnerConfig,
+    chassisDiscovery,
+    domPayload,
+    scopedConditionalSkus,
+    scopedUnavailableSkus,
     networkSniffedRules,
-    networkSniffedRulesCount: networkSniffedRules.length,
-    networkCoverage: networkSniffer?.getCoverage?.() || { scope: 'UNAVAILABLE' },
-    chassisDiscovery
-  };
+    networkSniffer
+  });
   const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
   safeWriteJsonAtomic(rawJsonPath, rawData);
   if (chassisDiscovery) {

@@ -51,7 +51,10 @@ async function auditGoogleWorkspace() {
 function auditNotebookLm() {
   try {
     const { checkAuthHealth } = require('./check_nlm_auth.js');
-    const result = checkAuthHealth({ autoHeal: false });
+    let result = checkAuthHealth({ autoHeal: false });
+    if (!result.valid && !process.argv.includes('--no-heal')) {
+      result = checkAuthHealth({ autoHeal: true });
+    }
     return {
       name: 'Google NotebookLM CLI / MCP',
       status: result.valid ? 'HEALTHY' : 'INVALID',

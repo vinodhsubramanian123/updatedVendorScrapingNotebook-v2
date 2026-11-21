@@ -128,5 +128,11 @@ Retain exported evidence beside the product report in its `evidence/` directory;
 ### Multi-Observation Reinforcement Learning (`INV-224`, `INV-225`)
 The engine promotes verified cloud-grounded rules and reinforces cited quarantined rules across $\ge 3$ observations, tracked via `telemetry.js:recordSelfHealingEvent`. Read [Normative Language Standard](../../rules/normative_language.md).
 
+Quarantine keeps a raw observation count and an evidence-backed observation count. Replaying a QuickSpecs document, citing another section of that document, or repeating a portal manifest adds to the raw count only. Automatic reinforcement requires three observations with new source identities and a confidence-only quarantine. The activation gate still checks the candidate evidence.
+
 ### Runtime Conditional Discovery
 Follow [Shared Runtime Conditional Discovery Contract](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md).
+
+### Fresh-run verification and probe closure
+
+Follow [the learning and replay contract](../../../docs/CATALOG_EVIDENCE_AND_LEARNING.md). Reopen the full seed set after recording. Durable scoped knowledge takes precedence over generated copies. Report retrieval separately from application and require the exact rule ID and graph effect. Close a query miss only after a hashed promoted capture resolves the original typed request.

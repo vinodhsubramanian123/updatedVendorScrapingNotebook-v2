@@ -20,8 +20,38 @@ const { spawn, execFileSync } = require('child_process');
 const NLM_CDP_PORT = 18801;
 const NLM_URL = 'https://notebooklm.google.com/';
 const LOCK_NAMES = ['lockfile', 'SingletonLock', 'SingletonCookie', 'SingletonSocket'];
+const LEGACY_MIGRATION_MARKER = '.nlm_legacy_migrated.json';
+const LEGACY_SESSION_REL_PATHS = [
+  'Local State',
+  path.join('Default', 'Preferences'),
+  path.join('Default', 'Secure Preferences'),
+  path.join('Default', 'Account Web Data'),
+  path.join('Default', 'Account Web Data-journal'),
+  path.join('Default', 'Login Data'),
+  path.join('Default', 'Login Data-journal'),
+  path.join('Default', 'Login Data For Account'),
+  path.join('Default', 'Login Data For Account-journal'),
+  path.join('Default', 'Web Data'),
+  path.join('Default', 'Web Data-journal'),
+  path.join('Default', 'trusted_vault.pb'),
+  path.join('Default', 'Network', 'Cookies'),
+  path.join('Default', 'Network', 'Cookies-journal'),
+  path.join('Default', 'Network', 'Device Bound Sessions'),
+  path.join('Default', 'Network', 'Device Bound Sessions-journal'),
+  path.join('Default', 'Network', 'Network Persistent State'),
+  path.join('Default', 'Network', 'TransportSecurity'),
+  path.join('Default', 'Network', 'Trust Tokens'),
+  path.join('Default', 'Network', 'Trust Tokens-journal')
+];
 
-function getNlmProfileDir() {
+function getNlmProfileDir(profile = 'default') {
+  if (process.env.NLM_PROFILE_DIR) {
+    return process.env.NLM_PROFILE_DIR;
+  }
+  return path.join(os.homedir(), '.notebooklm-mcp-cli', 'chrome-profiles', profile);
+}
+
+function getLegacyNlmProfileDir() {
   if (process.platform === 'win32') {
     const localAppData = process.env.LOCALAPPDATA || path.join(os.homedir(), 'AppData', 'Local');
     return path.join(localAppData, 'NlmInteractiveChrome');
@@ -30,6 +60,91 @@ function getNlmProfileDir() {
     return path.join(os.homedir(), 'Library', 'Application Support', 'NlmInteractiveChrome');
   }
   return path.join(os.homedir(), '.config', 'NlmInteractiveChrome');
+}
+
+function syncLegacyInteractiveProfile(targetProfileDir = getNlmProfileDir()) {
+  if (typeof fs.copyFileSync !== 'function' || typeof fs.writeFileSync !== 'function') {
+    return { migrated: false, reason: 'fs_readonly_mock' };
+  }
+  try {
+    const legacyDir = getLegacyNlmProfileDir();
+    if (!legacyDir || path.resolve(legacyDir) === path.resolve(targetProfileDir)) {
+      return { migrated: false, reason: 'same_dir' };
+    }
+    const markerPath = path.join(targetProfileDir, LEGACY_MIGRATION_MARKER);
+    if (fs.existsSync(markerPath)) {
+      return { migrated: false, reason: 'already_migrated' };
+    }
+    const legacyCookies = path.join(legacyDir, 'Default', 'Network', 'Cookies');
+    const legacyLocalState = path.join(legacyDir, 'Local State');
+    if (!fs.existsSync(legacyCookies) || !fs.existsSync(legacyLocalState)) {
+      return { migrated: false, reason: 'no_legacy_session' };
+    }
+    let copiedCount = 0;
+    for (const relPath of LEGACY_SESSION_REL_PATHS) {
+      const src = path.join(legacyDir, relPath);
+      const dst = path.join(targetProfileDir, relPath);
+      if (!fs.existsSync(src)) continue;
+      const dstDir = path.dirname(dst);
+      if (!fs.existsSync(dstDir) && typeof fs.mkdirSync === 'function') {
+        fs.mkdirSync(dstDir, { recursive: true });
+      }
+      fs.copyFileSync(src, dst);
+      copiedCount++;
+    }
+    fs.writeFileSync(
+      markerPath,
+      JSON.stringify({ migratedFrom: legacyDir, migratedAt: new Date().toISOString(), copiedCount }, null, 2),
+      'utf8'
+    );
+    return { migrated: true, copiedCount };
+  } catch (err) {
+    return { migrated: false, error: err.message };
+  }
+}
+
+function resolveListeningPid(port = NLM_CDP_PORT) {
+  if (process.platform !== 'win32' || typeof execFileSync !== 'function') return null;
+  try {
+    const out = execFileSync('netstat.exe', ['-ano', '-p', 'tcp'], {
+      encoding: 'utf-8',
+      timeout: 5000,
+      stdio: ['ignore', 'pipe', 'ignore'],
+      windowsHide: true
+    });
+    const re = new RegExp(`127\\.0\\.0\\.1:${Number(port)}\\s+\\S+\\s+LISTENING\\s+(\\d+)`, 'i');
+    const match = out.match(re);
+    const pid = match ? parseInt(match[1], 10) : null;
+    return Number.isInteger(pid) && pid > 0 ? pid : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+function registerPortMapEntry(port = NLM_CDP_PORT, profile = 'default', explicitPid = null) {
+  if (typeof fs.writeFileSync !== 'function' || typeof fs.readFileSync !== 'function') return false;
+  try {
+    const pid = explicitPid || resolveListeningPid(port);
+    if (!pid) return false;
+    const mapPath = path.join(os.homedir(), '.notebooklm-mcp-cli', 'chrome-port-map.json');
+    const mapDir = path.dirname(mapPath);
+    if (!fs.existsSync(mapDir) && typeof fs.mkdirSync === 'function') {
+      fs.mkdirSync(mapDir, { recursive: true });
+    }
+    let current = {};
+    if (fs.existsSync(mapPath)) {
+      try {
+        current = JSON.parse(fs.readFileSync(mapPath, 'utf8')) || {};
+      } catch (_) {
+        current = {};
+      }
+    }
+    current[String(port)] = { profile, pid };
+    fs.writeFileSync(mapPath, JSON.stringify(current), 'utf8');
+    return true;
+  } catch (_) {
+    return false;
+  }
 }
 
 function getExtendedPath() {
@@ -104,16 +219,19 @@ function removeLocksInDir(targetDir) {
 
 function cleanStaleProfileLocks(profileDir = getNlmProfileDir()) {
   removeLocksInDir(profileDir);
-  const defaultCliDir = path.join(os.homedir(), '.notebooklm-mcp-cli', 'chrome-profiles', 'default');
-  removeLocksInDir(defaultCliDir);
+  const legacyDir = getLegacyNlmProfileDir();
+  if (legacyDir) removeLocksInDir(legacyDir);
 }
 
 function spawnChromeDetached(chromeBin, chromeArgs) {
   if (process.platform === 'win32') {
-    return spawn('cmd.exe', ['/c', 'start', '""', chromeBin, ...chromeArgs], {
-      detached: true,
+    const quotedArgs = chromeArgs.map(a => a.includes(' ') ? `"${a}"` : a).join(' ');
+    const fullCmd = `"${chromeBin}" ${quotedArgs}`;
+    const wmiScript = `$r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = '${fullCmd.replace(/'/g, "''")}' }; if ($r.ReturnValue -ne 0) { exit [int]$r.ReturnValue }`;
+    const encodedScript = require('buffer').Buffer.from(wmiScript, 'utf16le').toString('base64');
+    return spawn('powershell.exe', ['-NoProfile', '-NonInteractive', '-EncodedCommand', encodedScript], {
       stdio: 'ignore',
-      windowsHide: false
+      windowsHide: true
     });
   }
   return spawn(chromeBin, chromeArgs, {
@@ -125,16 +243,19 @@ function spawnChromeDetached(chromeBin, chromeArgs) {
 
 async function ensureNlmChromeRunning(options = {}) {
   const port = options.port || NLM_CDP_PORT;
+  const profile = options.profile || 'default';
   if (await isCdpAlive(port)) {
+    registerPortMapEntry(port, profile);
     return { ok: true, alreadyRunning: true, port };
   }
 
-  const profileDir = options.profileDir || getNlmProfileDir();
+  const profileDir = options.profileDir || getNlmProfileDir(profile);
   // An unavailable CDP port does not prove that the profile is unused.
   // Let Chrome enforce profile ownership instead of deleting live locks.
-  if (!fs.existsSync(profileDir)) {
+  if (!fs.existsSync(profileDir) && typeof fs.mkdirSync === 'function') {
     fs.mkdirSync(profileDir, { recursive: true });
   }
+  syncLegacyInteractiveProfile(profileDir);
 
   const chromeBin = findChromeExecutable();
   const chromeArgs = [
@@ -164,6 +285,7 @@ async function ensureNlmChromeRunning(options = {}) {
         return { ok: false, error: `Chrome process exited with code ${exitCode}`, port };
       }
       if (await isCdpAlive(port)) {
+        registerPortMapEntry(port, profile);
         return { ok: true, launched: true, port };
       }
     }
@@ -206,7 +328,7 @@ async function loginViaOpenClaw(options = {}) {
   const profile = options.profile || 'default';
   const extendedPath = getExtendedPath();
 
-  const chromeRes = await ensureNlmChromeRunning({ port });
+  const chromeRes = await ensureNlmChromeRunning({ port, profile });
   if (!chromeRes.ok) {
     return {
       ok: false,
@@ -214,6 +336,7 @@ async function loginViaOpenClaw(options = {}) {
       error: chromeRes.error || `Failed to start interactive Chrome browser on port ${port}`
     };
   }
+  registerPortMapEntry(port, profile);
 
   try {
     const loginArgs = [
@@ -250,7 +373,12 @@ async function loginViaOpenClaw(options = {}) {
 async function healNlmAuth(options = {}) {
   const force = options.force === true;
   const profile = options.profile || 'default';
+  const port = options.port || NLM_CDP_PORT;
   const extendedPath = getExtendedPath();
+
+  if (await isCdpAlive(port)) {
+    registerPortMapEntry(port, profile);
+  }
 
   if (!force) {
     const checkRes = verifyNlmCheck(extendedPath, profile);
@@ -274,7 +402,7 @@ async function main() {
   const profile = profileIdx !== -1 && process.argv[profileIdx + 1] ? process.argv[profileIdx + 1] : 'default';
 
   if (openOnly) {
-    const res = await ensureNlmChromeRunning();
+    const res = await ensureNlmChromeRunning({ profile });
     if (asJson) {
       console.log(JSON.stringify(res, null, 2));
     } else {
@@ -319,6 +447,9 @@ if (require.main === module) {
 module.exports = {
   NLM_CDP_PORT,
   getNlmProfileDir,
+  getLegacyNlmProfileDir,
+  syncLegacyInteractiveProfile,
+  registerPortMapEntry,
   isCdpAlive,
   findChromeExecutable,
   cleanStaleProfileLocks,

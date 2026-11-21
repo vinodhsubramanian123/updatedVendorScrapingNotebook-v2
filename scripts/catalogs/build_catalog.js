@@ -19,7 +19,14 @@ const { validateCatalogData } = require('../lib/system/data_validator.js');
 const PipelineLogger = require('../lib/system/pipeline_logger.js');
 const { ClassificationDiagnostics } = require('../lib/catalog/classification_diagnostics.js');
 const { parseProductMeta, synthesizeSubcategoryName, classifyComponentRole } = require('../lib/catalog/product_meta.js');
+const { extractCompactCanonicalSpecs } = require('../lib/catalog/attribute_vectors.js');
 const { loadProfile } = require('../lib/system/profile_loader.js');
+const {
+  parseStrictPrice,
+  parseLeadTimeOrEta,
+  normalizeLifecycleCanonical,
+  classifyRowType
+} = require('../lib/catalog/field_parsers.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 
@@ -144,21 +151,21 @@ const ROLE_TO_PARENT_MAP = Object.freeze({
 });
 
 const CATEGORY_DEFAULT_CONSTRAINTS = Object.freeze({
-  'processor': { constraint: 'min 1, max 2', minQty: 1, maxQty: 2 },
-  'processors': { constraint: 'min 1, max 2', minQty: 1, maxQty: 2 },
-  'memory': { constraint: 'max 32', minQty: 0, maxQty: 32 },
-  'power supplies': { constraint: 'min 1, max 2', minQty: 1, maxQty: 2 },
-  'power supply': { constraint: 'min 1, max 2', minQty: 1, maxQty: 2 },
-  'pcie risers': { constraint: 'max 3', minQty: 0, maxQty: 3 },
-  'pcie riser': { constraint: 'max 3', minQty: 0, maxQty: 3 },
-  'chassis': { constraint: 'min 1, max 1 — Mandatory Base Chassis Selection', minQty: 1, maxQty: 1 },
-  'storage controllers': { constraint: 'max 4', minQty: 0, maxQty: 4 },
-  'storage controller': { constraint: 'max 4', minQty: 0, maxQty: 4 },
-  'drive enclosures / drives': { constraint: 'max 24', minQty: 0, maxQty: 24 },
-  'networking': { constraint: 'max 8', minQty: 0, maxQty: 8 },
-  'cooling / thermal': { constraint: 'max 6', minQty: 0, maxQty: 6 },
-  'software & licenses': { constraint: 'no max', minQty: 0, maxQty: -1 },
-  'accessories & infrastructure': { constraint: 'optional', minQty: 0, maxQty: -3 }
+  'processor': { constraint: 'min 1, max 2', minQty: 1, maxQty: 2, maxQtySemantics: 'BOUNDED' },
+  'processors': { constraint: 'min 1, max 2', minQty: 1, maxQty: 2, maxQtySemantics: 'BOUNDED' },
+  'memory': { constraint: 'max 32', minQty: 0, maxQty: 32, maxQtySemantics: 'BOUNDED' },
+  'power supplies': { constraint: 'min 1, max 2', minQty: 1, maxQty: 2, maxQtySemantics: 'BOUNDED' },
+  'power supply': { constraint: 'min 1, max 2', minQty: 1, maxQty: 2, maxQtySemantics: 'BOUNDED' },
+  'pcie risers': { constraint: 'max 3', minQty: 0, maxQty: 3, maxQtySemantics: 'BOUNDED' },
+  'pcie riser': { constraint: 'max 3', minQty: 0, maxQty: 3, maxQtySemantics: 'BOUNDED' },
+  'chassis': { constraint: 'min 1, max 1 — Mandatory Base Chassis Selection', minQty: 1, maxQty: 1, maxQtySemantics: 'BOUNDED' },
+  'storage controllers': { constraint: 'max 4', minQty: 0, maxQty: 4, maxQtySemantics: 'BOUNDED' },
+  'storage controller': { constraint: 'max 4', minQty: 0, maxQty: 4, maxQtySemantics: 'BOUNDED' },
+  'drive enclosures / drives': { constraint: 'max 24', minQty: 0, maxQty: 24, maxQtySemantics: 'BOUNDED' },
+  'networking': { constraint: 'max 8', minQty: 0, maxQty: 8, maxQtySemantics: 'BOUNDED' },
+  'cooling / thermal': { constraint: 'max 6', minQty: 0, maxQty: 6, maxQtySemantics: 'BOUNDED' },
+  'software & licenses': { constraint: 'no max', minQty: 0, maxQty: null, maxQtySemantics: 'UNBOUNDED' },
+  'accessories & infrastructure': { constraint: 'optional', minQty: 0, maxQty: null, maxQtySemantics: 'OPTIONAL' }
 });
 
 // ============================================================
@@ -213,6 +220,7 @@ function isServiceCategoryEntry(e) {
 function isServiceSkuRow(sku) {
   if (isClearlyPhysicalSkuRow(sku)) return false;
   return sku?.optionType === 'Service' || sku?.['Option Type'] === 'Service' ||
+    sku?.rowType === 'SUPPORT_SERVICE' ||
     isServiceSku(sku?.sku || sku?.['Product #'] || '');
 }
 
@@ -221,7 +229,7 @@ function isClearlyPhysicalSkuRow(sku) {
   if (/\b(?:raid setting|fio setting|raid service|factory setting|custom defined raid|customer defined raid)\b/i.test(description)) {
     return true;
   }
-  if (/\b(?:software|license|subscription|support|service|svc|saas|e-ltu|care pack)\b/i.test(description)) return false;
+  if (/\b(?:software|\bsw\b|license|subscription|\bsub\b|support|service|svc|saas|e-ltu|e-rtu|care\s*pack|education|learning\s*credits|virtual\s*workstation|ml\s*dev\s*env)\b/i.test(description)) return false;
   return /\b(?:adapter|card|cable|cord|kit|rail|drive|ssd|hdd|controller|processor|memory|dimm|transceiver|heatsink|heat sink|fan|riser|power supply|chassis|enclosure|accelerator|gpu|graphics|hba)\b/i.test(description);
 }
 
@@ -238,6 +246,48 @@ function appendRetaxonomizedPhysicalEntries(target, entry, skus) {
   }
   for (const group of groups.values()) {
     target.push({ ...entry, ...group, skuCount: group.skus.length });
+  }
+}
+
+function _isSoftwareRowForPartition(sku) {
+  const desc = String(sku?.Description || sku?.description || '');
+  if (isClearlyPhysicalSkuRow(sku) || sku?.rowType === 'SUPPORT_SERVICE') return false;
+  if (/\b(?:tech\s*care|foundation\s*care|pointnext|prosupport|smartnet|hi-care|integrat(?:ion)?\s*svc|\bsvc\b)\b/i.test(desc)) return false;
+  return sku?.rowType === 'SOFTWARE_SUBSCRIPTION'
+    || /\b(?:e-[lr]tu|saas|ml\s*dev\s*env|virtual\s*workstation|cloudera)\b/i.test(desc);
+}
+
+function _partitionHardwareEntry(entry, hardwareEntries, servicesEntries) {
+  const physicalOverride = /\b(?:\bsw\b|software)\b/i.test(entry.subCategory || '')
+    ? (entry.skus || []).filter(sku => !isServiceSkuRow(sku) && isClearlyPhysicalSkuRow(sku))
+    : [];
+  if (physicalOverride.length > 0) appendRetaxonomizedPhysicalEntries(hardwareEntries, entry, physicalOverride);
+
+  const remaining = physicalOverride.length > 0
+    ? (entry.skus || []).filter(sku => !physicalOverride.includes(sku))
+    : (entry.skus || []);
+  const softwareSkus = remaining.filter(_isSoftwareRowForPartition);
+  const serviceSkus = remaining.filter(sku => !softwareSkus.includes(sku) && isServiceSkuRow(sku));
+  const hardwareSkus = remaining.filter(sku => !serviceSkus.includes(sku) && !softwareSkus.includes(sku));
+
+  if (hardwareSkus.length > 0) hardwareEntries.push({ ...entry, skus: hardwareSkus, skuCount: hardwareSkus.length });
+  if (softwareSkus.length > 0) {
+    hardwareEntries.push({
+      ...entry,
+      parentCategory: 'Software & Licenses',
+      subCategory: 'Server Management & Operating System Licenses',
+      skus: softwareSkus,
+      skuCount: softwareSkus.length
+    });
+  }
+  if (serviceSkus.length > 0) {
+    servicesEntries.push({
+      ...entry,
+      parentCategory: 'Support Services',
+      subCategory: 'Support & Deployment Services',
+      skus: serviceSkus,
+      skuCount: serviceSkus.length
+    });
   }
 }
 
@@ -265,10 +315,7 @@ function partitionCatalogEntries(entries) {
       continue;
     }
 
-    const hardwareSkus = (entry.skus || []).filter(sku => !isServiceSkuRow(sku));
-    const serviceSkus = (entry.skus || []).filter(isServiceSkuRow);
-    if (hardwareSkus.length > 0) hardwareEntries.push({ ...entry, skus: hardwareSkus, skuCount: hardwareSkus.length });
-    if (serviceSkus.length > 0) servicesEntries.push({ ...entry, skus: serviceSkus, skuCount: serviceSkus.length });
+    _partitionHardwareEntry(entry, hardwareEntries, servicesEntries);
   }
   return { hardwareEntries, servicesEntries };
 }
@@ -492,14 +539,23 @@ function loadPortfolioPriceBackfill(historyPriceMap, targetDir) {
 // Pipeline Stage 2: Subcategories & Parent Taxonomy
 // ============================================================
 function parseConstraintMinMax(constraint) {
-  const minMatch = constraint.match(/min\s+(\d+)/i);
-  const maxMatch = constraint.match(/max\s+(\d+)/i);
+  const text = String(constraint || '');
+  const minMatch = text.match(/min\s+(\d+)/i);
+  const maxMatch = text.match(/max\s+(\d+)/i);
   let minQty = minMatch ? parseInt(minMatch[1], 10) : 0;
-  let maxQty = maxMatch ? parseInt(maxMatch[1], 10) : 0;
-  if (/no max/i.test(constraint)) maxQty = -1;
-  if (/required/i.test(constraint)) { maxQty = -2; minQty = minQty || 1; }
-  if (/^optional$/i.test(constraint.trim())) maxQty = -3;
-  return { minQty, maxQty };
+  if (/required/i.test(text)) {
+    return { minQty: minQty || 1, maxQty: null, maxQtySemantics: 'REQUIRED' };
+  }
+  if (/no\s+max/i.test(text)) {
+    return { minQty, maxQty: null, maxQtySemantics: 'UNBOUNDED' };
+  }
+  if (/^optional$/i.test(text.trim()) || /\boptional\b/i.test(text)) {
+    return { minQty, maxQty: null, maxQtySemantics: 'OPTIONAL' };
+  }
+  if (maxMatch) {
+    return { minQty, maxQty: parseInt(maxMatch[1], 10), maxQtySemantics: 'BOUNDED' };
+  }
+  return { minQty, maxQty: null, maxQtySemantics: 'UNBOUNDED' };
 }
 
 function recoverTableSubcategoryConstraints(rawData, fullText, subcatList) {
@@ -515,11 +571,11 @@ function recoverTableSubcategoryConstraints(rawData, fullText, subcatList) {
         const key = `${name.toLowerCase()}|${constraint.toLowerCase()}`;
         if (seenSubcategories.has(key)) continue;
 
-        const { minQty, maxQty } = parseConstraintMinMax(constraint);
+        const { minQty, maxQty, maxQtySemantics } = parseConstraintMinMax(constraint);
         const followingRows = (table.rows || []).slice(rowIndex + 1);
         const firstSku = followingRows.flat().map(value => cleanBaseSKU(value)).find(isValidHpeSKU);
         const textIndex = firstSku ? fullText.indexOf(firstSku) : fullText.indexOf(name);
-        subcatList.push({ name, constraint, minQty, maxQty, textIndex: Math.max(0, textIndex), source: 'OCA table constraint' });
+        subcatList.push({ name, constraint, minQty, maxQty, maxQtySemantics, textIndex: Math.max(0, textIndex), source: 'OCA table constraint' });
         seenSubcategories.add(key);
       }
     }
@@ -563,12 +619,13 @@ function extractSubcategoriesAndParents(fullText, rawData, IS_VERBOSE) {
     const name = match[1].trim().replace(/^[\s\n\r\t]+/, '').trim();
     if (name.length < 3 || name.length > 80 || /^\d{4}/.test(name) || name.includes('\t')) continue;
 
-    const { minQty, maxQty } = parseConstraintMinMax(match[2]);
+    const { minQty, maxQty, maxQtySemantics } = parseConstraintMinMax(match[2]);
     subcatList.push({
       name,
       constraint: match[2],
       minQty,
       maxQty,
+      maxQtySemantics,
       textIndex: match.index
     });
   }
@@ -716,7 +773,7 @@ function normalizeHeaderName(header) {
 
 function extractRowSkuAndLifecycle(row, obj) {
   let rawPN = obj['Product #'] || '';
-  const stripLifecycleBadge = value => String(value || '').replace(/\s*\[(?:OB|DS|90|EOL)\]\s*/ig, '').trim();
+  const stripLifecycleBadge = value => String(value || '').replace(/\s*\[(?:OB|DS|90|EOL|CS)\]\s*/ig, '').trim();
   if (!rawPN || !isValidHpeSKU(cleanBaseSKU(stripLifecycleBadge(rawPN)))) {
     const foundCell = row.find(c => isValidHpeSKU(cleanBaseSKU(stripLifecycleBadge(c))));
     if (foundCell) rawPN = foundCell;
@@ -724,13 +781,14 @@ function extractRowSkuAndLifecycle(row, obj) {
 
   let lifecycleStatus = 'Active';
   let lifecycleBadge = '';
-  const badgeMatch = String(rawPN).match(/^(OB|DS|90|EOL)\b/i) || String(rawPN).match(/\[(OB|DS|90|EOL)\]/i);
+  const badgeMatch = String(rawPN).match(/^(OB|DS|90|EOL|CS)\b/i) || String(rawPN).match(/\[(OB|DS|90|EOL|CS)\]/i);
   if (badgeMatch) {
     lifecycleBadge = badgeMatch[1].toUpperCase();
     if (lifecycleBadge === 'OB') lifecycleStatus = 'Obsolete (OB)';
     else if (lifecycleBadge === 'DS') lifecycleStatus = 'Direct Ship (DS)';
     else if (lifecycleBadge === '90') lifecycleStatus = 'EOL Warning (90-Day)';
     else if (lifecycleBadge === 'EOL') lifecycleStatus = 'End of Life (EOL)';
+    else if (lifecycleBadge === 'CS') lifecycleStatus = 'Constrained Supply (CS)';
   }
 
   if (rawPN) rawPN = cleanBaseSKU(stripLifecycleBadge(rawPN));
@@ -752,21 +810,18 @@ function extractRowDescription(row, obj, pn) {
   }
   descText = descText.replace(/(?:Product is obsolete:\s*[A-Z0-9-]+\s*)+/gi, '').trim().replace(/^(?:OB|DS|90|EOL)\s+/i, '').trim();
   if (!descText || descText.length < 5 || descText === pn) {
-    descText = `HPE ProLiant Server Option (${pn})`;
+    descText = `HPE Hardware Option (${pn})`;
   }
   return descText;
 }
 
-function resolveRowRecommendation(obj, headers, pn) {
+function resolveRowRecommendation(obj, headers) {
   const hasRecommendedHeader = headers.some(h => /^(?:hpe\s*)?recommended$/i.test(String(h).trim()));
   let hpeRecommended = obj['HPE Recommended'] || obj['Recommended'] || '';
   const isExplicitYes = /^(?:yes|true|recommended|selected|✓|✔|√)$/i.test(String(hpeRecommended).trim());
   const isExplicitNo = /^(?:no|false|not recommended)$/i.test(String(hpeRecommended).trim());
 
-  // Canonical known vendor recommended options (verified in OCA portal)
-  const isCanonicalRecommended = pn === 'P01366-B21' || pn === 'P03178-B21';
-
-  if (isExplicitYes || isCanonicalRecommended) {
+  if (isExplicitYes) {
     hpeRecommended = 'Yes';
   } else if (hasRecommendedHeader || isExplicitNo) {
     hpeRecommended = 'No';
@@ -776,43 +831,29 @@ function resolveRowRecommendation(obj, headers, pn) {
   return hpeRecommended;
 }
 
-function resolveRowPrice(_row, _headers, obj) {
+function resolveRowPrice(_row, _headers, obj, pn) {
   // Only the named current price field establishes a price. Quantity,
-  // extended totals and old catalog prices must not fill an unpublished cell.
-  const raw = obj['Unit Price (USD)'] ?? obj['List Price (USD)'] ?? obj['Price (USD)'] ?? obj.Price;
-  const price = String(raw ?? '').replace(/[$,]/g, '').trim();
-  return /^\d+(?:\.\d{1,2})?$/.test(price) ? price : '';
+  // extended totals, dates, and shifted SKUs must not coerce to a price.
+  const raw = obj['List Price (USD)'] ?? obj['Unit Price (USD)'] ?? obj['Price (USD)'] ?? obj.Price;
+  return parseStrictPrice(raw, { row: obj, sku: pn, description: obj.Description || '' });
 }
 
 function populateLeadTimeAndSpeedTier(obj) {
-  const rawLt = String(obj['Lead Time'] || '').trim();
-  obj['Lead Time'] = rawLt || 'Unpublished';
-  obj['Lead Time Source'] = rawLt ? 'OCA row attribute' : 'Unpublished';
-  let ltDays = null;
-  if (rawLt && rawLt !== 'Unpublished') {
-    const range = rawLt.match(/(\d+)\s*(?:-|to)\s*(\d+)/);
-    if (range) {
-      ltDays = Math.round((Number(range[1]) + Number(range[2])) / 2);
-    } else {
-      const single = rawLt.match(/(\d+)/);
-      if (single) ltDays = Number(single[1]);
-    }
-  }
-  obj.leadTimeDays = ltDays;
-  obj['Lead Time Days'] = ltDays !== null ? String(ltDays) : '';
-  let speedTier = 'Unpublished';
-  if (ltDays !== null) {
-    if (ltDays <= 7) speedTier = 'Fast-Ship Certified (<=7d)';
-    else if (ltDays <= 30) speedTier = 'Standard Delivery (8-30d)';
-    else if (ltDays <= 45) speedTier = 'Extended Schedule (31-45d)';
-    else speedTier = 'Constrained / Long Lead Time (>45d)';
-  } else if (/unavailable|out of stock|allocation hold/i.test(obj.Availability || '')) {
-    speedTier = 'Constrained / Allocation Hold';
-  }
-  obj['Speed Tier'] = speedTier;
+  const rawLt = String(obj['Lead Time'] || obj.leadTime || '').trim();
+  const parsed = parseLeadTimeOrEta(rawLt, null, null);
+  obj['Lead Time'] = parsed.raw;
+  obj.leadTime = parsed.raw;
+  obj.leadTimeDays = parsed.days;
+  obj['Lead Time Days'] = parsed.days !== null ? String(parsed.days) : '';
+  obj.leadTimeUnit = parsed.unit;
+  obj.etaDate = parsed.etaDate;
+  obj['Lead Time Source'] = parsed.isPublished ? 'OCA row attribute' : 'Unpublished';
+  obj['Speed Tier'] = (!parsed.isPublished && /unavailable|out of stock|allocation hold/i.test(obj.Availability || ''))
+    ? 'Constrained / Allocation Hold'
+    : parsed.speedTier;
 }
 
-function populateNumericAndPriceAttrs(obj, row, headers, pn, historyPriceMap) {
+function populateNumericAndPriceAttrs(obj, row, headers, pn, historyPriceMap, diagnostics = null) {
   if (obj['Qty Drive Cages']) obj.qtyDriveCages = parseInt(obj['Qty Drive Cages'], 10) || obj['Qty Drive Cages'];
   if (obj['Qty Bays']) obj.qtyBays = parseInt(obj['Qty Bays'], 10) || obj['Qty Bays'];
   if (obj['Qty PCI Slots']) obj.qtyPciSlots = parseInt(obj['Qty PCI Slots'], 10) || obj['Qty PCI Slots'];
@@ -822,15 +863,22 @@ function populateNumericAndPriceAttrs(obj, row, headers, pn, historyPriceMap) {
   obj['Current Qty'] = /^\d+$/.test(rawQty) ? rawQty : '0';
   delete obj['Quantity'];
 
-  const priceStr = resolveRowPrice(row, headers, obj, pn, historyPriceMap);
+  const priceParsed = resolveRowPrice(row, headers, obj, pn, historyPriceMap);
+  const priceStr = priceParsed.priceUsd === null ? '' : priceParsed.priceUsd.toFixed(2);
   obj['Unit Price (USD)'] = priceStr;
   obj['List Price (USD)'] = priceStr;
-  obj.listPrice = priceStr === '' ? null : Number(priceStr);
+  obj.listPrice = priceParsed.priceUsd;
+  obj.priceState = priceParsed.priceState;
+  obj.priceStatus = priceParsed.priceStatus;
+  if (priceParsed.priceState === 'PARSE_FAILED') {
+    diagnostics?.recordAnomaly?.('unparseablePrices', { sku: pn, rawPrice: priceParsed.raw, reason: priceParsed.reason });
+  }
 
-  const rawCost = obj['Cost (USD)'] ? String(obj['Cost (USD)']).replace(/[$,]/g, '').trim() : '';
-  if (rawCost && /^\d+(?:\.\d{1,2})?$/.test(rawCost)) {
-    obj['Cost (USD)'] = rawCost;
-    obj.costPrice = parseFloat(rawCost);
+  const rawCost = obj['Cost (USD)'] ? String(obj['Cost (USD)']).trim() : '';
+  const costParsed = rawCost ? parseStrictPrice(rawCost, { row: obj, sku: pn }) : null;
+  if (costParsed && costParsed.priceUsd !== null) {
+    obj['Cost (USD)'] = costParsed.priceUsd.toFixed(2);
+    obj.costPrice = costParsed.priceUsd;
   } else {
     obj['Cost (USD)'] = '';
     obj.costPrice = null;
@@ -865,9 +913,18 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
   if (!skuInfo) return null;
   const { pn, lifecycleStatus, lifecycleBadge } = skuInfo;
 
-  if (row.some(value => /\[CS\]/i.test(value) && cleanBaseSKU(value).toUpperCase() === pn)) {
+  const isCsBadge = lifecycleBadge === 'CS' || row.some(value => {
+    const text = String(value || '').trim();
+    return /\[CS\]/i.test(text) && (cleanBaseSKU(text).toUpperCase() === pn || /^\[CS\]$/i.test(text));
+  });
+  const effectiveLifecycleStatus = (isCsBadge && lifecycleBadge !== 'OB') ? 'Constrained Supply (CS)' : lifecycleStatus;
+  const effectiveLifecycleBadge = (isCsBadge && lifecycleBadge !== 'OB') ? 'CS' : lifecycleBadge;
+  if (isCsBadge) {
     obj['Vendor Status Badge'] = 'CS';
-    obj.Availability = obj.Availability || 'CS (vendor status; meaning unverified)';
+    obj.isSupplyConstrained = true;
+    obj.Availability = 'Constrained Supply (CS)';
+    obj.vendorSupplyStatus = 'CONSTRAINED_SUPPLY';
+    obj.supplyConstraintDetails = 'This SKU is currently unavailable based on supply constraints. Select equivalent alternative SKU.';
   }
 
   obj['Product #'] = pn;
@@ -876,10 +933,10 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
 
   obj['CLIC Status'] = obj['CLIC Status'] || 'Unpublished';
   obj.clicStatus = obj['CLIC Status'];
-  obj['Lifecycle Status'] = lifecycleStatus;
-  obj.lifecycleStatus = lifecycleStatus;
-  obj.lifecycleBadge = lifecycleBadge;
-  obj.Availability = String(obj.Availability || '').trim() || (lifecycleStatus === 'Active' ? 'Not published by OCA' : lifecycleStatus);
+  obj['Lifecycle Status'] = effectiveLifecycleStatus;
+  obj.lifecycleStatus = effectiveLifecycleStatus;
+  obj.lifecycleBadge = effectiveLifecycleBadge;
+  obj.Availability = String(obj.Availability || '').trim() || (effectiveLifecycleStatus === 'Active' ? 'Not published by OCA' : effectiveLifecycleStatus);
 
   populateLeadTimeAndSpeedTier(obj);
 
@@ -888,11 +945,14 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
   if (dateMatches.length >= 2 && !obj['Discontinued Date']) obj['Discontinued Date'] = dateMatches[1].trim();
 
   const descText = extractRowDescription(row, obj, pn);
-  const hpeRecommended = resolveRowRecommendation(obj, headers, pn);
+  const hpeRecommended = resolveRowRecommendation(obj, headers);
   obj['HPE Recommended'] = hpeRecommended;
   obj.vendorRecommended = (hpeRecommended === 'Yes');
 
+  const lcNorm = normalizeLifecycleCanonical(effectiveLifecycleStatus, false);
+  obj.lifecycleCanonical = lcNorm.lifecycleCanonical;
   populateNumericAndPriceAttrs(obj, row, headers, pn, historyPriceMap);
+  obj.rowType = classifyRowType(obj);
 
   obj.vendorAttributes = Object.fromEntries(Object.entries(obj).filter(([key, value]) =>
     !CANONICAL_ROW_KEYS.has(key) && String(value ?? '').trim()
@@ -959,70 +1019,73 @@ function matchSubcategoryForTable(skus, headers, fullText, subcatList, ti, total
 function resolveTableConstraintBounds(matchedSubcat, parentCat, table, subCat, tableRules) {
   const defaultConstraintObj = CATEGORY_DEFAULT_CONSTRAINTS[parentCat.toLowerCase()] || {};
   let finalConstraint = matchedSubcat?.constraint || defaultConstraintObj.constraint || '';
-  let finalMaxQty = matchedSubcat?.maxQty || defaultConstraintObj.maxQty || '';
-  let finalMinQty = matchedSubcat?.minQty || defaultConstraintObj.minQty || 0;
+  const parsedFinal = finalConstraint ? parseConstraintMinMax(finalConstraint) : null;
+  let finalMaxQty = matchedSubcat?.maxQty !== undefined ? matchedSubcat.maxQty : (parsedFinal?.maxQty ?? defaultConstraintObj.maxQty ?? null);
+  let finalMaxQtySemantics = matchedSubcat?.maxQtySemantics || parsedFinal?.maxQtySemantics || defaultConstraintObj.maxQtySemantics || 'UNBOUNDED';
+  let finalMinQty = matchedSubcat?.minQty !== undefined ? matchedSubcat.minQty : (parsedFinal?.minQty ?? defaultConstraintObj.minQty ?? 0);
 
   if (table.constraintText) {
     finalConstraint = table.constraintText;
-    const minMatch = finalConstraint.match(/min\s+(\d+)/i);
-    const maxMatch = finalConstraint.match(/max\s+(\d+)/i);
-    if (minMatch) finalMinQty = parseInt(minMatch[1], 10);
-    if (maxMatch) finalMaxQty = parseInt(maxMatch[1], 10);
-    if (finalConstraint.includes('no max')) finalMaxQty = -1;
-    if (finalConstraint.includes('required')) { finalMaxQty = -2; finalMinQty = finalMinQty || 1; }
-    if (finalConstraint.includes('optional')) finalMaxQty = -3;
+    const parsedBounds = parseConstraintMinMax(finalConstraint);
+    finalMinQty = parsedBounds.minQty;
+    finalMaxQty = parsedBounds.maxQty;
+    finalMaxQtySemantics = parsedBounds.maxQtySemantics;
   }
 
   if (tableRules.length === 0 && finalConstraint) {
     tableRules.push(`Selection constraint for ${subCat}: ${finalConstraint}`);
   }
-  return { finalConstraint, finalMinQty, finalMaxQty };
+  return { finalConstraint, finalMinQty, finalMaxQty, finalMaxQtySemantics };
 }
 
-function resolveTableTaxonomyAndRole(matchedSubcat, textPos, table, tableRules, profile, skus) {
-  let parentCat = matchedSubcat ? matchedSubcat.parentCategory :
-                  (textPos > -1 ? getParentCategory(textPos, []) : 'Unknown');
-  let subCat    = matchedSubcat ? matchedSubcat.name : (table.label || '(Sub-table)');
-
-  if (table.subTab) parentCat = table.subTab;
-  if (table.label)  subCat    = table.label;
-
-  const sampleDesc = skus.map(s => s['Description'] || '').join(' ');
+function _resolveTaxonomyClassification({ matchedSubcat, textPos, parentCat, subCat, table, tableRules, profile, sampleDesc }) {
   const detectedRole = classifyComponentRole(subCat, sampleDesc, profile);
-
-  if (!subCat || subCat === '(Sub-table)') {
-    subCat = synthesizeSubcategoryName(parentCat, sampleDesc, tableRules);
-  }
-
   const subCatLower = (subCat || '').toLowerCase();
   const matchedMapEntry = SUBCAT_KEYWORD_PARENT_MAP.find(m => m.keywords.some(k => subCatLower.includes(k)));
   const matchedParent = matchedMapEntry ? matchedMapEntry.parent : null;
 
-  let matchedVia = 'fallback_accessories';
   if (matchedParent && matchedParent !== 'Accessories & Infrastructure') {
-    parentCat = matchedParent;
-    matchedVia = 'direct_taxonomy_keyword';
-  } else if (detectedRole && detectedRole !== 'Option Component' && ROLE_TO_PARENT_MAP[detectedRole]) {
-    parentCat = ROLE_TO_PARENT_MAP[detectedRole];
-    matchedVia = 'role_classifier';
-    if (!table.label || subCat === '(Sub-table)' || !subCatLower.includes(parentCat.toLowerCase().split(' ')[0])) {
-      const synthesized = synthesizeSubcategoryName(parentCat, sampleDesc, tableRules);
-      if (synthesized && !synthesized.includes('Options')) {
-        subCat = synthesized;
-      }
-    }
-  } else if (matchedParent) {
-    parentCat = matchedParent;
-    matchedVia = 'direct_taxonomy_keyword';
-  } else if (!parentCat || parentCat === 'Unknown') {
-    parentCat = 'Accessories & Infrastructure';
-  } else {
-    matchedVia = matchedSubcat ? 'portal_text_position' : 'portal_parent';
+    return { parentCat: matchedParent, subCat, detectedRole, matchedParent, matchedVia: 'direct_taxonomy_keyword' };
   }
+  if (detectedRole && detectedRole !== 'Option Component' && ROLE_TO_PARENT_MAP[detectedRole]) {
+    const resolvedParent = ROLE_TO_PARENT_MAP[detectedRole];
+    let resolvedSub = subCat;
+    if (!table.label || subCat === '(Sub-table)' || !subCatLower.includes(resolvedParent.toLowerCase().split(' ')[0])) {
+      const synthesized = synthesizeSubcategoryName(resolvedParent, sampleDesc, tableRules);
+      if (synthesized && !synthesized.includes('Options')) resolvedSub = synthesized;
+    }
+    return { parentCat: resolvedParent, subCat: resolvedSub, detectedRole, matchedParent, matchedVia: 'role_classifier' };
+  }
+  if (matchedParent) {
+    return { parentCat: matchedParent, subCat, detectedRole, matchedParent, matchedVia: 'direct_taxonomy_keyword' };
+  }
+  if (!parentCat || parentCat === 'Unknown') {
+    return { parentCat: 'Accessories & Infrastructure', subCat, detectedRole, matchedParent, matchedVia: 'fallback_accessories' };
+  }
+  return {
+    parentCat,
+    subCat,
+    detectedRole,
+    matchedParent,
+    matchedVia: matchedSubcat ? 'portal_text_position' : 'portal_parent'
+  };
+}
 
-  const { finalConstraint, finalMinQty, finalMaxQty } = resolveTableConstraintBounds(matchedSubcat, parentCat, table, subCat, tableRules);
-
-  return { parentCat, subCat, finalConstraint, finalMinQty, finalMaxQty, detectedRole, matchedParent, matchedVia };
+function resolveTableTaxonomyAndRole(matchedSubcat, textPos, table, tableRules, profile, skus) {
+  let parentCat = table.subTab || (matchedSubcat ? matchedSubcat.parentCategory : (textPos > -1 ? getParentCategory(textPos, []) : 'Unknown'));
+  let subCat    = table.label || (matchedSubcat ? matchedSubcat.name : '(Sub-table)');
+  const rawSubCategory = subCat;
+  const sampleDesc = skus.map(s => s['Description'] || '').join(' ');
+  if (!subCat || subCat === '(Sub-table)') {
+    subCat = synthesizeSubcategoryName(parentCat, sampleDesc, tableRules);
+  }
+  const classified = _resolveTaxonomyClassification({ matchedSubcat, textPos, parentCat, subCat, table, tableRules, profile, sampleDesc });
+  const bounds = resolveTableConstraintBounds(matchedSubcat, classified.parentCat, table, classified.subCat, tableRules);
+  for (const s of skus) {
+    if (!s['Component Role']) s['Component Role'] = classified.detectedRole;
+    if (!s.rawSubCategory && rawSubCategory && rawSubCategory !== '(Sub-table)') s.rawSubCategory = rawSubCategory;
+  }
+  return { ...classified, ...bounds };
 }
 
 function _isSkippedReportTable(table, ti, diagnostics) {
@@ -1095,6 +1158,20 @@ function synthesizeHeaderFromSampleRow(sampleRow) {
   return headers.length >= 4 ? headers : defaultHeaders;
 }
 
+function _isInvalidHeaderCandidateRow(row) {
+  if (!Array.isArray(row) || row.length > 20) return true;
+  const cells = row.map(c => String(c || '').trim()).filter(Boolean);
+  if (cells.length === 0) return true;
+  const hasExplicitProductCol = cells.some(c => /^(?:product\s*#(?:\s*\/\s*option)?|part\s*number|sku)$/i.test(c));
+  if (hasExplicitProductCol) return false;
+  return cells.some(c =>
+    /^\$[\d,]+(?:\.\d{2})?$/.test(c)
+    || /^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(c)
+    || isValidHpeSKU(cleanBaseSKU(c))
+    || c.length > 80
+  );
+}
+
 function _detectTableHeadersAndRules(table, ti, diagnostics) {
   let headerIdx  = -1;
   let headers    = [];
@@ -1103,6 +1180,7 @@ function _detectTableHeadersAndRules(table, ti, diagnostics) {
 
   for (let ri = 0; ri < Math.min(4, table.rows.length); ri++) {
     const row = table.rows[ri];
+    if (_isInvalidHeaderCandidateRow(row)) continue;
     const hasProductHeader = row.some(c => c === 'Product #' || c === 'Product # / Option');
     const hasDescHeader    = row.some(c => c === 'Description' || c === 'Product Description');
 
@@ -1122,17 +1200,35 @@ function _detectTableHeadersAndRules(table, ti, diagnostics) {
   }
 
   if (headerIdx === -1) {
-    const skuRow = table.rows.find(r => r.some(c => isValidHpeSKU(cleanBaseSKU(c.trim()))));
+    const skuRow = table.rows.find(r => Array.isArray(r) && r.length <= 20 && r.some(c => isValidHpeSKU(cleanBaseSKU(String(c || '').trim()))));
     if (skuRow) {
       headers = synthesizeHeaderFromSampleRow(skuRow);
       headerIdx = -1;
     } else {
-      diagnostics.recordSkippedTable(ti, 'No valid SKU or headers detected');
+      diagnostics?.recordSkippedTable?.(ti, 'No valid SKU or headers detected');
+      diagnostics?.recordRejectedRow?.({ tableIndex: ti, reason: 'NO_VALID_HEADER_OR_SKU', sampleCells: (table.rows[0] || []).slice(0, 8) });
       return null;
     }
   }
 
-  return { headerIdx, headers, tableRules, tableAvailability };
+  const isPrivateTable = tableRules.some(r => /private\s+product\s+is\s+not\s+valid\s+for\s+current\s+customer\s+account/i.test(r));
+  return { headerIdx, headers, tableRules, tableAvailability, isPrivateTable };
+}
+
+function _applyPrivateAndRegionalPriceState(obj, row, headerInfo, pn) {
+  const unpriced = obj.listPrice === null || obj.listPrice <= 0;
+  if (!unpriced) return;
+  if (headerInfo.isPrivateTable || /\bPVT\b/i.test(row.join(' '))) {
+    obj.isPrivateSku = true;
+    obj.priceState = 'PRIVATE_UNPRICED';
+    obj.priceStatus = 'PRIVATE_UNPRICED';
+    return;
+  }
+  const rawPriceText = String(obj['Unit Price (USD)'] || obj['List Price (USD)'] || '').trim();
+  if (/-A[AB]1$/i.test(pn) && /^(?:|na|n\/a)$/i.test(rawPriceText)) {
+    obj.priceState = 'REGIONAL_NA_UNPRICED';
+    obj.priceStatus = 'REGIONAL_NA_UNPRICED';
+  }
 }
 
 function _extractSkusFromTable(table, headerInfo, historyPriceMap, allSKUMap) {
@@ -1150,6 +1246,7 @@ function _extractSkusFromTable(table, headerInfo, historyPriceMap, allSKUMap) {
     if (!parsed) continue;
 
     const { obj, pn, descText } = parsed;
+    _applyPrivateAndRegionalPriceState(obj, row, headerInfo, pn);
     if ((!obj.Availability || obj.Availability === 'Not published by OCA') && tableAvailability) {
       obj.Availability = tableAvailability;
     }
@@ -1220,6 +1317,25 @@ function _extractSmartChassisCombinations(table, headerIdx, smartChassisCombinat
   }
 }
 
+function _isStructuralWrapperTable(table, ti, allTables) {
+  if (!Array.isArray(allTables) || allTables.length <= 1 || !Array.isArray(table?.rows)) return false;
+  if (ti === 0 && table.rows.length > 500) return true;
+  const sample = table.rows.slice(0, 20);
+  const maxWidth = Math.max(0, ...sample.map(r => (Array.isArray(r) ? r.length : 0)));
+  if (maxWidth >= 25) return true;
+  const maxCellLen = Math.max(0, ...sample.flat().map(c => String(c || '').length));
+  return maxWidth >= 15 && maxCellLen > 500;
+}
+
+function _applyInheritedEntryMetadata(entry, parentEntry) {
+  entry.parentCategory = parentEntry.parentCategory;
+  entry.subCategory    = parentEntry.subCategory;
+  entry.constraint     = parentEntry.constraint;
+  entry.minQty         = parentEntry.minQty;
+  entry.maxQty         = parentEntry.maxQty;
+  entry.maxQtySemantics = parentEntry.maxQtySemantics;
+}
+
 function _mergeSubtableInheritance(tableEntries) {
   const orderedEntries = [...tableEntries].sort((a, b) => a.tableIndex - b.tableIndex);
   let lastMatchedSubcat = null;
@@ -1229,11 +1345,7 @@ function _mergeSubtableInheritance(tableEntries) {
     if (entry.subCategory !== '(Sub-table)') {
       lastMatchedSubcat = entry;
     } else if (lastMatchedSubcat) {
-      entry.parentCategory = lastMatchedSubcat.parentCategory;
-      entry.subCategory    = lastMatchedSubcat.subCategory;
-      entry.constraint     = lastMatchedSubcat.constraint;
-      entry.minQty         = lastMatchedSubcat.minQty;
-      entry.maxQty         = lastMatchedSubcat.maxQty;
+      _applyInheritedEntryMetadata(entry, lastMatchedSubcat);
       mergedSubtableCount++;
     }
   }
@@ -1340,9 +1452,15 @@ function _recordTableSkusInCatalog(skus, parentCat, subCat, finalConstraint, tab
 function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap, diagnostics, profile, IS_VERBOSE) {
   console.log('\n--- Step 3: Extracting Tables & SKUs ---');
 
-  let sourceTables = tables;
-  if (tables.length > 1 && tables[0].rows && tables[0].rows.length > 500) {
-    sourceTables = tables.slice(1);
+  const sourceTables = [];
+  for (let rawIdx = 0; rawIdx < (tables || []).length; rawIdx++) {
+    const t = tables[rawIdx];
+    if (_isStructuralWrapperTable(t, rawIdx, tables)) {
+      diagnostics?.recordSkippedTable?.(rawIdx, 'Structural outer wrapper table filtered');
+      diagnostics?.recordRejectedRow?.({ tableIndex: rawIdx, reason: 'STRUCTURAL_WRAPPER_TABLE', rowCount: t?.rows?.length || 0, sampleCells: (t?.rows?.[0] || []).slice(0, 8) });
+      continue;
+    }
+    sourceTables.push(t);
   }
 
   const expandedTables = expandTableSections(sourceTables);
@@ -1374,7 +1492,7 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
     }
 
     const { matchedSubcat, textPos } = matchSubcategoryForTable(skus, headerInfo.headers, fullText, subcatList, ti, tables.length);
-    const { parentCat, subCat, finalConstraint, finalMinQty, finalMaxQty, detectedRole, matchedVia } =
+    const { parentCat, subCat, finalConstraint, finalMinQty, finalMaxQty, finalMaxQtySemantics, detectedRole, matchedVia } =
       resolveTableTaxonomyAndRole(matchedSubcat, textPos, table, headerInfo.tableRules, profile, skus);
 
     if (parentCat === 'Chassis' || subCat.toLowerCase().includes('variants') || skus.some(s => (s['Description'] || '').toLowerCase().includes('configure-to-order'))) {
@@ -1382,15 +1500,16 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
     }
 
     tableEntries.push({
-      tableIndex:     ti,
-      parentCategory: parentCat,
-      subCategory:    subCat,
-      constraint:     finalConstraint,
-      minQty:         finalMinQty,
-      maxQty:         finalMaxQty,
-      rules:          headerInfo.tableRules,
-      headers:        headerInfo.headers,
-      skuCount:       skus.length,
+      tableIndex:      ti,
+      parentCategory:  parentCat,
+      subCategory:     subCat,
+      constraint:      finalConstraint,
+      minQty:          finalMinQty,
+      maxQty:          finalMaxQty,
+      maxQtySemantics: finalMaxQtySemantics,
+      rules:           headerInfo.tableRules,
+      headers:         headerInfo.headers,
+      skuCount:        skus.length,
       skus
     });
 
@@ -1403,6 +1522,7 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
       constraint: finalConstraint,
       minQty: finalMinQty,
       maxQty: finalMaxQty,
+      maxQtySemantics: finalMaxQtySemantics,
       skuCount: skus.length,
       rules: headerInfo.tableRules
     });
@@ -1619,7 +1739,7 @@ function buildBaseChassisRecordFromMetadata(effectiveSku, discovered, mapInfo, c
 function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscovery = null, meta = null) {
   const mapInfo = lookupChassisMapBaseSku(chassisLabel, meta, baseSKU);
   const effectiveSku = cleanBaseSKU(baseSKU || mapInfo?.sku || '');
-  if (!effectiveSku) return null;
+  if (!effectiveSku || !isValidHpeSKU(effectiveSku)) return null;
 
   const discovered = (chassisDiscovery?.candidates || []).find(candidate =>
     cleanBaseSKU(candidate.sku) === effectiveSku && candidate.eligible !== false
@@ -1637,6 +1757,7 @@ function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscov
       if (description) {
         const price = Number(mapInfo?.listPrice || 0);
         const leadTime = chassisDiscovery?.deliveryEstimate || '';
+        const hasValidPrice = price > 0;
         return {
           'Product #': effectiveSku,
           sku: effectiveSku,
@@ -1644,14 +1765,17 @@ function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscov
           'Component Role': 'Base Chassis',
           Description: String(description).replace(/^[A-Z0-9-]+\s*-\s*/, '').trim(),
           'Current Qty': '1',
-          'Unit Price (USD)': price > 0 ? price.toFixed(2) : '0.00',
-          listPrice: price,
+          'Unit Price (USD)': hasValidPrice ? price.toFixed(2) : '',
+          'List Price (USD)': hasValidPrice ? price.toFixed(2) : '',
+          listPrice: hasValidPrice ? price : null,
+          priceState: hasValidPrice ? 'PRICED' : 'UNPRICED',
+          rowType: 'BASE_SYSTEM',
           'CLIC Status': 'Active',
           'Lifecycle Status': 'Active',
           lifecycleStatus: 'Active',
           'HPE Recommended': 'Yes',
           Availability: 'Available in active OCA configuration',
-          'Lead Time': leadTime,
+          'Lead Time': leadTime || 'Unpublished',
           'Lead Time Source': leadTime ? 'OCA configuration estimate' : 'Not published by OCA',
           provenance: `OCA active configuration for ${chassisLabel}`
         };
@@ -1661,6 +1785,13 @@ function extractBaseChassisEvidence(tables, baseSKU, chassisLabel, chassisDiscov
   return null;
 }
 
+function _isCanonicalNonProLiantBaseText(family, text) {
+  if (/\b(?:upgrade|license|support|service|kit|expansion|drive|magazine)\b/i.test(text)) return false;
+  if (family === 'SAN') return /\bswitch\b/i.test(text);
+  if (family === 'StoreEver') return /\b(?:base\s+module|library|autoloader)\b/i.test(text);
+  return ['Cray', 'Alletra'].includes(family);
+}
+
 function isCanonicalCtoChassisCandidate(candidate, chassisLabel) {
   const text = String(candidate?.description || candidate?.text || '').trim();
   const sku = cleanBaseSKU(candidate?.sku || '');
@@ -1668,13 +1799,14 @@ function isCanonicalCtoChassisCandidate(candidate, chassisLabel) {
   if (candidate?.isBto || candidate?.isTaa || candidate?.isGta || /\b(?:TAA|GTA|BTO)\b|#GTA/i.test(text)) return false;
   const registeredId = String(chassisLabel).replace(/ /g, '_');
   const expected = require('../config/notebooks.json').notebooks[registeredId]?.captureViaParent ? registeredId : parseProductMeta(chassisLabel).cleanName;
-  const observed = parseProductMeta(text).cleanName;
+  const observedMeta = parseProductMeta(text);
+  const observed = observedMeta.cleanName;
   const registration = require('../config/notebooks.json').notebooks[expected];
   if (registration?.captureViaParent) {
     return registration.baseSku === sku && require('../lib/catalog/catalog_hierarchy').registeredOwnedMenuMatches({ ...registration, productId: expected }, text);
   }
-  const isSanBase = parseProductMeta(text).family === 'SAN' && /\bswitch\b/i.test(text) && !/\b(upgrade|license|support|service|kit)\b/i.test(text);
-  if (expected !== observed || (!isSanBase && !/configure[\s-]+to[\s-]+order|\bcto\b/i.test(text))) return false;
+  const hasCtoOrFamilyBase = /configure[\s-]+to[\s-]+order|\bcto\b/i.test(text) || _isCanonicalNonProLiantBaseText(observedMeta.family, text);
+  if (expected !== observed || !hasCtoOrFamilyBase) return false;
   return !/\b(?:OEM|solutions?|Commvault|Cohesity|Veeam|vSAN|template)\b/i.test(text);
 }
 
@@ -1705,23 +1837,29 @@ async function loadHistoricalChassisEvidence(targetDir, chassisLabel) {
   return result;
 }
 
-function resolveDiscoveredVariantPrice(candidate, previous, chassisLabel, productNumber) {
-  if (candidate.priceVerified && candidate.listPriceUsd === 0) return 0;
+function resolveDiscoveredVariantPriceWithProvenance(candidate, previous, chassisLabel, productNumber) {
+  if (candidate.priceVerified && candidate.listPriceUsd === 0) {
+    return { price: 0, priceProvenance: 'OCA_CANDIDATE_VERIFIED_ZERO' };
+  }
   const currentPrice = Number(candidate.listPriceUsd || 0);
-  if (currentPrice > 0) return currentPrice;
+  if (currentPrice > 0) return { price: currentPrice, priceProvenance: 'OCA_CANDIDATE' };
   const mapInfo = lookupChassisMapBaseSku(chassisLabel, null, productNumber);
   const mapPrice = Number(mapInfo?.listPrice || 0);
-  if (mapPrice > 0) return mapPrice;
+  if (mapPrice > 0) return { price: mapPrice, priceProvenance: 'CHASSIS_MAP_FALLBACK' };
   const registration = require('../config/notebooks.json').notebooks[parseProductMeta(chassisLabel).cleanName];
-  if (registration?.requireExactOcaBase || registration?.captureViaParent) return null;
+  if (registration?.requireExactOcaBase || registration?.captureViaParent) {
+    return { price: null, priceProvenance: 'UNPRICED' };
+  }
   const historicalPrice = Number(previous.listPrice || previous['Unit Price (USD)'] || previous['Price (USD)'] || 0);
-  return historicalPrice > 0 ? historicalPrice : 0;
+  return historicalPrice > 0
+    ? { price: historicalPrice, priceProvenance: 'HISTORICAL_CATALOG_FALLBACK' }
+    : { price: 0, priceProvenance: 'UNPRICED' };
 }
 
 function buildDiscoveredVariantRecord(candidate, previous, productNumber, chassisLabel, chassisDiscovery) {
   const description = String(candidate.description || candidate.text || previous.Description || '')
     .replace(/^\s*[A-Z0-9-]+(?:#GTA)?\s*-\s*/i, '').trim();
-  const price = resolveDiscoveredVariantPrice(candidate, previous, chassisLabel, productNumber);
+  const { price, priceProvenance } = resolveDiscoveredVariantPriceWithProvenance(candidate, previous, chassisLabel, productNumber);
   const isSelectedVariant = cleanBaseSKU(chassisDiscovery.selectedSku || '') === productNumber;
   const leadTime = candidate.leadTime || (isSelectedVariant ? (chassisDiscovery.deliveryEstimate || '') : '');
   const formattedPrice = price === null ? '' : price.toFixed(2);
@@ -1742,6 +1880,7 @@ function buildDiscoveredVariantRecord(candidate, previous, productNumber, chassi
     'Cost (USD)': '',
     costPrice: null,
     listPrice: price,
+    priceProvenance,
     'CLIC Status': clicStatus,
     clicStatus,
     'Lifecycle Status': lifecycleStatus,
@@ -1851,6 +1990,7 @@ async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chas
       constraint: 'min 1, max 1 — Active OCA CTO chassis',
       minQty: 1,
       maxQty: 1,
+      maxQtySemantics: 'BOUNDED',
       rules: ['Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis'],
       headers: ['Product #', 'Description', 'Unit Price (USD)', 'Start Date', 'Discontinued Date', 'Lead Time'],
       skuCount: discoveredVariants.length,
@@ -1871,6 +2011,7 @@ async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chas
         constraint: 'min 1, max 1 — Active OCA Base Chassis',
         minQty: 1,
         maxQty: 1,
+        maxQtySemantics: 'BOUNDED',
         rules: ['Base chassis captured from the active OCA configuration summary'],
         headers: ['Product #', 'Description'],
         skuCount: 1,
@@ -1881,6 +2022,24 @@ async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chas
       console.warn(`  ⚠️  WARNING: No exact-product chassis entry found in scraped data or history for ${chassisLabel}.`);
     }
   }
+}
+
+function _stampCatalogRow(s, e, ownerProduct) {
+  const desc = s.Description || s.description || '';
+  const componentRole = s['Component Role'] || classifyComponentRole(e.parentCategory || e.subCategory || '', desc);
+  const rawLifecycle = s['Lifecycle Status'] || s.lifecycleStatus || 'Active';
+  const lifecycleCanonical = s.lifecycleCanonical || normalizeLifecycleCanonical(rawLifecycle).lifecycleCanonical;
+  const rowType = s.rowType || classifyRowType({ ...s, 'Component Role': componentRole }, { isBase: e.parentCategory === 'Chassis' });
+  const canonicalSpecs = s.canonicalSpecs || extractCompactCanonicalSpecs(s, { parentCategory: e.parentCategory });
+  return {
+    ...s,
+    ownerProduct: s.ownerProduct || ownerProduct,
+    subCategory: s.subCategory || e.subCategory,
+    'Component Role': componentRole,
+    lifecycleCanonical,
+    rowType,
+    canonicalSpecs
+  };
 }
 
 function buildCatalogObject(entries, filePrefix, meta, chassisLabel, subcatList) {
@@ -1900,23 +2059,29 @@ function buildCatalogObject(entries, filePrefix, meta, chassisLabel, subcatList)
       totalTables:        entries.length
     },
     subcategories: subcatList.filter(sc => entries.some(e => e.parentCategory === sc.parentCategory && e.subCategory === sc.name)).map(sc => ({
-      parentCategory: sc.parentCategory,
-      name:           sc.name,
-      constraint:     sc.constraint,
-      minQty:         sc.minQty,
-      maxQty:         sc.maxQty
+      parentCategory:  sc.parentCategory,
+      name:            sc.name,
+      constraint:      sc.constraint,
+      minQty:          sc.minQty,
+      maxQty:          sc.maxQty ?? null,
+      maxQtySemantics: sc.maxQtySemantics || (sc.maxQty !== null && sc.maxQty !== undefined ? 'BOUNDED' : 'UNBOUNDED')
     })),
-    entries: entries.map(e => ({
-      parentCategory: e.parentCategory,
-      subCategory:    e.subCategory,
-      constraint:     e.constraint,
-      minQty:         e.minQty || 0,
-      maxQty:         e.maxQty,
-      rules:          e.rules,
-      headers:        e.headers,
-      skuCount:       e.skuCount,
-      skus:           e.skus
-    }))
+    entries: entries.map(e => {
+      const ownerProduct = filePrefix || meta?.cleanName || null;
+      const stampedSkus = (e.skus || []).map(s => _stampCatalogRow(s, e, ownerProduct));
+      return {
+        parentCategory:  e.parentCategory,
+        subCategory:     e.subCategory,
+        constraint:      e.constraint,
+        minQty:          e.minQty || 0,
+        maxQty:          e.maxQty ?? null,
+        maxQtySemantics: e.maxQtySemantics || (e.maxQty !== null && e.maxQty !== undefined ? 'BOUNDED' : 'UNBOUNDED'),
+        rules:           e.rules,
+        headers:         e.headers,
+        skuCount:        e.skuCount,
+        skus:            stampedSkus
+      };
+    })
   };
 }
 
@@ -2047,22 +2212,44 @@ function isTsvChassisVariantRow(r) {
 
 function mapTsvRowToChassisVariant(r) {
   const desc = r['Description'] || '';
-  const price = parseFloat(String(r['Unit Price (USD)'] || '0').replace(/[$,]/g, '')) || 0;
+  const priceParsed = parseStrictPrice(r['Unit Price (USD)'] ?? r['List Price (USD)'], { description: desc });
+  const price = priceParsed.priceUsd !== null ? priceParsed.priceUsd : 0;
+  const rec = r['HPE Recommended'] || 'Unknown';
   return {
     sku: r['Product #'] || '',
     description: desc,
     formFactor: detectChassisFormFactor(desc),
-    listPrice: price,
-    listPriceFormatted: `$${price.toFixed(2)}`,
+    listPrice: priceParsed.priceUsd,
+    listPriceFormatted: priceParsed.priceUsd !== null ? `$${price.toFixed(2)}` : '',
     optionType: r['Option Type'] || 'CTO',
-    hpeRecommended: 'Yes',
-    'HPE Recommended': 'Unknown',
+    hpeRecommended: rec,
+    'HPE Recommended': rec,
     startDate: r['Start Date'] || '',
     discontinuedDate: r['Discontinued Date'] || '',
     constraint: r['Constraint Text'] || 'max 1 — Mandatory Base Chassis Selection',
     maxQty: r['Subcategory Max Qty'] || '1',
     diffStatus: r['Diff Status'] || '',
     priceHistoryTrail: r['Price History Trail'] || ''
+  };
+}
+
+function _buildHistoricalVariantRecord(s, pn, desc, e, hf) {
+  const priceParsed = parseStrictPrice(s.listPrice ?? s['Unit Price (USD)'] ?? s['List Price (USD)'], { sku: pn, description: desc, row: s });
+  const rec = s['HPE Recommended'] || s.hpeRecommended || 'Unknown';
+  return {
+    sku: pn,
+    description: desc,
+    formFactor: detectChassisFormFactor(desc),
+    listPrice: priceParsed.priceUsd,
+    listPriceFormatted: priceParsed.priceUsd !== null ? `$${priceParsed.priceUsd.toFixed(2)}` : '',
+    optionType: s['Option Type'] || s.optionType || 'CTO',
+    hpeRecommended: rec,
+    'HPE Recommended': rec,
+    startDate: s['Start Date'] || s.startDate || '',
+    discontinuedDate: s['Discontinued Date'] || s.discontinuedDate || '',
+    constraint: e.constraint || 'max 1 — Mandatory Base Chassis Selection',
+    maxQty: e.maxQty ?? '1',
+    sourceSnapshot: hf
   };
 }
 
@@ -2074,27 +2261,10 @@ function appendHistoricalChassisVariantsFromCat(hCat, filePrefix, hf, chassisVar
   for (const e of hChassisEntries) {
     for (const s of (e.skus || [])) {
       const pn = s.sku || s['Product #'] || '';
-      const desc = s.description || s.Description || s['Description'] || '';
+      const desc = s.description || s.Description || '';
       const isBto = String(s['Option Type'] || s.optionType || '').toUpperCase() === 'BTO';
-      if (!pn || chassisVariantMatrix[pn] || !isCanonicalCtoChassisCandidate({ sku: pn, text: desc, isBto }, filePrefix)) {
-        continue;
-      }
-      const price = parseFloat(String(s.listPrice || s['Unit Price (USD)'] || '0').replace(/[$,]/g, '')) || 0;
-      chassisVariantMatrix[pn] = {
-        sku: pn,
-        description: desc,
-        formFactor: detectChassisFormFactor(desc),
-        listPrice: price,
-        listPriceFormatted: `$${price.toFixed(2)}`,
-        optionType: s['Option Type'] || s.optionType || 'CTO',
-        hpeRecommended: 'Yes',
-        'HPE Recommended': 'Unknown',
-        startDate: s['Start Date'] || s.startDate || '',
-        discontinuedDate: s['Discontinued Date'] || s.discontinuedDate || '',
-        constraint: e.constraint || 'max 1 — Mandatory Base Chassis Selection',
-        maxQty: e.maxQty || '1',
-        sourceSnapshot: hf
-      };
+      if (!pn || chassisVariantMatrix[pn] || !isCanonicalCtoChassisCandidate({ sku: pn, text: desc, isBto }, filePrefix)) continue;
+      chassisVariantMatrix[pn] = _buildHistoricalVariantRecord(s, pn, desc, e, hf);
     }
   }
 }
@@ -2130,7 +2300,48 @@ async function backfillVariantMatrixFromHistory(chassisVariantMatrix, targetDir,
   }
 }
 
-async function buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir) {
+function _buildCatalogVariantRecord(s, pn, e, priceParsed) {
+  const desc = s.Description || s.description || '';
+  const rec = s['HPE Recommended'] || s.hpeRecommended || 'Unknown';
+  return {
+    sku: pn,
+    description: desc,
+    formFactor: detectChassisFormFactor(desc),
+    listPrice: priceParsed.priceUsd,
+    listPriceFormatted: priceParsed.priceUsd !== null ? `$${priceParsed.priceUsd.toFixed(2)}` : '',
+    optionType: s['Option Type'] || s.optionType || 'CTO',
+    hpeRecommended: rec,
+    'HPE Recommended': rec,
+    startDate: s['Start Date'] || '',
+    discontinuedDate: s['Discontinued Date'] || '',
+    constraint: e.constraint || 'max 1 — Mandatory Base Chassis Selection',
+    maxQty: e.maxQty ?? null,
+    maxQtySemantics: e.maxQtySemantics || null,
+    priceProvenance: s.priceProvenance || (priceParsed.priceUsd > 0 ? 'CATALOG_ROW' : 'UNPRICED'),
+    diffStatus: s['Diff Status'] || '',
+    priceHistoryTrail: s['Price History Trail'] || ''
+  };
+}
+
+function _reconcileVariantMatrixFromCatalog(chassisVariantMatrix, enrichedCatalog) {
+  if (!enrichedCatalog || !Array.isArray(enrichedCatalog.entries)) return;
+  for (const e of enrichedCatalog.entries) {
+    const isChassis = (e.parentCategory || '').toLowerCase() === 'chassis' || (e.subCategory || '').toLowerCase() === 'variants';
+    for (const s of e.skus || []) {
+      const pn = cleanBaseSKU(s.sku || s['Product #']);
+      if (!pn || !isValidHpeSKU(pn)) continue;
+      if (!isChassis && s['Component Role'] !== 'Base Chassis' && s.rowType !== 'BASE_SYSTEM') continue;
+      const p = parseStrictPrice(s.listPrice ?? s['List Price (USD)'] ?? s['Unit Price (USD)'], { row: s, sku: pn });
+      const existing = chassisVariantMatrix[pn];
+      const existingUnpriced = !existing || existing.listPrice === null || existing.listPrice === 0;
+      if (existingUnpriced && (!existing || (p.priceUsd !== null && p.priceUsd > 0))) {
+        chassisVariantMatrix[pn] = _buildCatalogVariantRecord(s, pn, e, p);
+      }
+    }
+  }
+}
+
+async function buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir, enrichedCatalog = null) {
   const skuTSVRows = parseTSVRows(path.join(scrapsDir, `${filePrefix}_Catalog_SKUs.tsv`));
   const srvTSVRows = parseTSVRows(path.join(scrapsDir, `${filePrefix}_Services_SKUs.tsv`));
   const allTSVRows = [...skuTSVRows, ...srvTSVRows];
@@ -2138,12 +2349,14 @@ async function buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir) {
   const chassisVariants = allTSVRows
     .filter(isTsvChassisVariantRow)
     .map(mapTsvRowToChassisVariant)
-    .filter(v => v.sku && /^[A-Z0-9]+-[A-Z0-9]+$/.test(v.sku));
+    .filter(v => v.sku && isValidHpeSKU(cleanBaseSKU(v.sku)));
 
   const chassisVariantMatrix = {};
   for (const v of chassisVariants) {
-    chassisVariantMatrix[v.sku] = v;
+    chassisVariantMatrix[cleanBaseSKU(v.sku) || v.sku] = v;
   }
+
+  _reconcileVariantMatrixFromCatalog(chassisVariantMatrix, enrichedCatalog);
 
   if (Object.keys(chassisVariantMatrix).length < 6) {
     await backfillVariantMatrixFromHistory(chassisVariantMatrix, targetDir, filePrefix);
@@ -2235,8 +2448,17 @@ async function exportCatalogArtifacts(ctx) {
 
   writeCatalogTsvIntermediates(scrapsDir, filePrefix, mainTSV, rulesTSV, summaryTSV, servicesTSV, ctx.unavailableRules);
 
-  const chassisVariantMatrix = await buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir);
+  const chassisVariantMatrix = await buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir, enrichedCatalog);
   const deduplicatedRules = deduplicateCatalogRules(ctx, allCombinedEntries, existingLearnedRules);
+  if (diagnostics?.trace?.rejectedRows?.length > 0) {
+    safeWriteJsonAtomic(path.join(targetDir, 'raw_data', 'rejected_rows.json'), {
+      schemaVersion: '1.0.0',
+      product: filePrefix,
+      generatedAt: new Date().toISOString(),
+      rejectedCount: diagnostics.trace.summary.rejectedRowsCount || diagnostics.trace.rejectedRows.length,
+      rows: diagnostics.trace.rejectedRows
+    }, { validateSchema: false });
+  }
 
   if (ctx.smartChassisCombinations && ctx.smartChassisCombinations.length > 0) {
     enrichedCatalog.smartChassisCombinations = ctx.smartChassisCombinations;
@@ -2471,5 +2693,9 @@ module.exports = {
   reconcilePriceAndLifecycleHistory,
   buildChassisVariantMatrix,
   detectChassisFormFactor,
-  exportCatalogArtifacts
+  exportCatalogArtifacts,
+  parseConstraintMinMax,
+  _isInvalidHeaderCandidateRow,
+  _isStructuralWrapperTable,
+  _reconcileVariantMatrixFromCatalog
 };

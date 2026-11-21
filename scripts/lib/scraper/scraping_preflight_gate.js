@@ -19,7 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
+const { safeWriteJsonAtomic, sanitizeOperationalEvidence } = require('../system/fs_compat.js');
 const { resolveProductIdentity, inferPillar } = require('../catalog/product_scope.js');
 const { getVendorPortalPolicy } = require('./vendor_portal_router.js');
 
@@ -96,7 +96,7 @@ async function verifyGoogleDriveSheetsPreflight(skipCloudCheck) {
   return {
     pass: true,
     status: 'VERIFIED_SCOPES',
-    account: status.activeAccount || 'authenticated',
+    account: 'authenticated',
     hasSheetsScope: status.hasSheetsScope,
     hasDriveScope: status.hasDriveScope
   };
@@ -473,7 +473,7 @@ function runScrapingPostflightVerification({
   };
 
   const receiptPath = path.join(liveOutputDir, 'scraping_verification_receipt.json');
-  safeWriteJsonAtomic(receiptPath, receipt);
+  safeWriteJsonAtomic(receiptPath, sanitizeOperationalEvidence(receipt));
 
   console.log(`  ✅ Catalog Delta Summary : Added=${diffMetrics.diffCounts.ADDED}, Modified=${diffMetrics.diffCounts.MODIFIED}, Removed=${diffMetrics.diffCounts.REMOVED + diffMetrics.diffCounts.DISCONTINUED}, Unchanged=${diffMetrics.diffCounts.UNCHANGED}`);
   console.log(`  ✅ Explicit Rules & Gates: ${diffMetrics.unavailableRulesCount} Unavailable Rules | ${conditionalSkusCount || 0} Conditional SKUs`);

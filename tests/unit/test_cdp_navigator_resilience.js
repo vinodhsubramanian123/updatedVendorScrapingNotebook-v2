@@ -540,5 +540,17 @@ test('CDP Navigator Resilience Test Suite', async (t) => {
       ws.close();
     }
   });
+
+  await t.test('Test 9: buildSelectAndClickExpression skips redundant XHR relock when ready and defers Customize click', () => {
+    const { buildSelectAndClickExpression } = require('../../scripts/lib/scraper/navigate_oca.js');
+    const expr = buildSelectAndClickExpression({
+      type: 'dropdown-option',
+      optionValue: 'arcusSolwizard',
+      sku: 'B10000',
+      cardSelector: '[data-cand-idx="1"]'
+    });
+    assert.match(expr, /alreadyReady/, 'Must check alreadyReady before firing redundant change event');
+    assert.match(expr, /setTimeout\(\(\)\s*=>\s*\{\s*button\.click\(\);\s*\},\s*50\)/, 'Must defer Customize click past return to avoid CDP teardown timeout');
+  });
 });
 

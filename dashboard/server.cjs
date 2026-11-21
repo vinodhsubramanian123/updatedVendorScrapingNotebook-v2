@@ -134,7 +134,9 @@ async function initAndStartServer() {
       console.log(`⚡ Initializing Vite dev middleware from: ${__dirname}`);
       const { createServer: createViteServer } = require('vite');
       const vite = await createViteServer({
+        configFile: path.resolve(__dirname, 'vite.config.js'),
         server: { middlewareMode: true },
+        optimizeDeps: { noDiscovery: true },
         appType: 'spa',
         root: __dirname
       });

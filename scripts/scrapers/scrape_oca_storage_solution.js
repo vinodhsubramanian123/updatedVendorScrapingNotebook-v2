@@ -7,7 +7,7 @@
 const fs   = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { sendCommand, getOCATarget, connectWS, setupDialogAutoHandler, extractTablesAsRows, extractChunkedText, sleep } = require('../lib/scraper/cdp.js');
+const { sendCommand, getOCATarget, connectWS, setupDialogAutoHandler, extractTablesAsRows, extractChunkedText, waitForDOMPredicate, sleep } = require('../lib/scraper/cdp.js');
 const { emitResult } = require('../lib/system/progress.js');
 const { updateScrapedRegistry } = require('../lib/catalog/registry.js');
 const { parseProductMeta } = require('../lib/catalog/product_meta.js');
@@ -55,7 +55,12 @@ async function extractWizardSubTab(ws, step, index, total, allTables, dropdownSK
     returnByValue: true
   });
 
-  await sleep(2500);
+  await waitForDOMPredicate(ws, `(() => {
+    const busy = Array.from(document.querySelectorAll('.loading_div, .maui-loading-div, .toolbar_loading, .dqe-loading'))
+      .some(el => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden' && getComputedStyle(el).display !== 'none');
+    return !busy;
+  })()`, 30000, 300);
+  await sleep(1000);
 
   const stepDataRes = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
@@ -368,25 +373,22 @@ async function main() {
     const rawDir = path.join(outputDir, 'raw_data');
     fs.mkdirSync(rawDir, { recursive: true });
 
-    const rawJsonPath = path.join(rawDir, 'oca_raw_data_full.json');
-    const rawData = {
-      timestamp:   new Date().toISOString(),
-      vendor:      resolvedVendor,
-      ...(resolvedPortalUrl ? { portalUrl: resolvedPortalUrl } : {}),
-      pageTitle:   pageTarget.title,
-      url:         pageTarget.url,
-      nodeText:    heading,
+    await _persistStorageRawCapture({
+      rawDir,
+      ws,
+      sendCommand,
+      meta,
+      heading,
+      resolvedVendor,
+      resolvedPortalUrl,
+      pageTarget,
       qsLink,
-      textLength:  combinedFullText.length,
-      fullText:    combinedFullText,
-      tables:      allTables,
-      tableCount:  allTables.length,
+      combinedFullText,
+      allTables,
+      subTabs,
       dropdownSKUs
-    };
-
-    const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
-    safeWriteJsonAtomic(rawJsonPath, rawData);
-    console.log(`Raw storage data saved atomically to staging: ${rawJsonPath}`);
+    });
+    console.log(`Raw storage data saved atomically to staging: ${path.join(rawDir, 'oca_raw_data_full.json')}`);
 
     // STEP 4: QuickSpecs Download
     if (qsLink) {
@@ -420,7 +422,85 @@ async function main() {
     { stdio: 'inherit', cwd: PROJECT_ROOT }
   );
 
-  // STEP 6 & 7: Audit and Promote Staging
+  // STEP 6 & 7: Audit, Promote, Sync and Emit
+  await _finalizeStorageWorkspaceAndEmit({
+    outputDir,
+    meta,
+    catalogJson,
+    catalogXlsx,
+    preflightReport,
+    resolvedVendor,
+    resolvedPortalUrl,
+    heading,
+    pdfDestPath,
+    allTables,
+    combinedFullText
+  });
+}
+
+async function _persistStorageRawCapture({
+  rawDir,
+  ws,
+  sendCommand,
+  meta,
+  heading,
+  resolvedVendor,
+  resolvedPortalUrl,
+  pageTarget,
+  qsLink,
+  combinedFullText,
+  allTables,
+  subTabs,
+  dropdownSKUs
+}) {
+  const { verifyExpectedCatalogColumns } = require('../lib/scraper/catalog_tab_capture.js');
+  const columnCoverage = await verifyExpectedCatalogColumns(ws, sendCommand);
+  const baseSkuMatch = `${heading || ''} ${combinedFullText.slice(0, 4000)}`.match(/\b([A-Z0-9]{5,8}(?:-[A-Z0-9]{2,4})?)\b/);
+  const { getChassisMap } = require('../lib/catalog/catalog_discovery.js');
+  const mapEntry = getChassisMap()[meta.cleanName];
+  const selectedBaseSku = mapEntry?.baseSku || (baseSkuMatch ? baseSkuMatch[1] : null) || meta.cleanName;
+
+  const rawJsonPath = path.join(rawDir, 'oca_raw_data_full.json');
+  const rawData = {
+    timestamp:   new Date().toISOString(),
+    vendor:      resolvedVendor,
+    ...(resolvedPortalUrl ? { portalUrl: resolvedPortalUrl } : {}),
+    pageTitle:   pageTarget.title,
+    url:         pageTarget.url,
+    nodeText:    heading,
+    qsLink,
+    selectedBaseSku,
+    baseSku: selectedBaseSku,
+    ownerProduct: meta.cleanName,
+    ownerConfiguration: heading || meta.cleanName,
+    solutionDomain: 'STORAGE',
+    observedSelectors: subTabs.map((t) => ({ selector: t.href || t.id, label: t.text, value: 'VISITED' })),
+    finalSelectorsRestored: true,
+    columnCoverage,
+    textLength:  combinedFullText.length,
+    fullText:    combinedFullText,
+    tables:      allTables,
+    tableCount:  allTables.length,
+    dropdownSKUs
+  };
+
+  const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
+  safeWriteJsonAtomic(rawJsonPath, rawData);
+}
+
+async function _finalizeStorageWorkspaceAndEmit({
+  outputDir,
+  meta,
+  catalogJson,
+  catalogXlsx,
+  preflightReport,
+  resolvedVendor,
+  resolvedPortalUrl,
+  heading,
+  pdfDestPath,
+  allTables,
+  combinedFullText
+}) {
   const liveOutputDir = await auditAndPromoteStorageStaging(outputDir, meta, catalogJson, catalogXlsx, {
     preflightReport,
     vendor: resolvedVendor,
@@ -446,15 +526,13 @@ async function main() {
     textLength:   combinedFullText.length
   });
 
-  // Re-sync all registered catalogs & chassis variants across workspace
   try {
     execSync(`node "${path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'sync_all_registered_catalogs.js')}"`, { stdio: 'inherit', cwd: PROJECT_ROOT });
   } catch (syncErr) {
     console.warn('Warning during sync_all_registered_catalogs execution:', syncErr.message);
   }
 
-  // Clean up staging folder
-  try { if (fs.existsSync(outputDir)) fs.rmSync(outputDir, { recursive: true, force: true }); } catch (_) {}
+  try { if (fs.existsSync(outputDir)) fs.rmSync(outputDir, { recursive: true, force: true }); } catch { /* ignore cleanup error */ }
 
   if (JSON_MODE) {
     emitResult('SUCCESS', {
@@ -470,12 +548,13 @@ async function main() {
       pdfPath: actualPdfPath,
       tablesCount: allTables.length
     });
-  } else {
-    console.log('\n================================================================');
-    console.log(`🎉 STORAGE SCRAPER COMPLETED — Live Workspace Updated:`);
-    console.log(`   ${liveOutputDir}`);
-    console.log('================================================================\n');
+    return;
   }
+
+  console.log('\n================================================================');
+  console.log('🎉 STORAGE SCRAPER COMPLETED — Live Workspace Updated:');
+  console.log(`   ${liveOutputDir}`);
+  console.log('================================================================\n');
 }
 
 if (require.main === module) {

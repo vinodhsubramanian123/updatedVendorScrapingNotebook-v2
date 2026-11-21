@@ -6,7 +6,7 @@ const definitions = [
   ['BOQ_EVALUATION', 'BOQ_CANDIDATE', 'DRAFT', ['items', 'parsedItems', 'rankedSolutions', 'conflictGraph'], 'Resolve candidate violations and obtain exact validation evidence.'],
   ['RFP_SIZING_TO_BOM', 'SIZING_DRAFT', 'DRAFT', ['candidateBOM', 'resolutions', 'constructionPlan'], 'Resolve sizing gaps and evaluate the resulting scoped candidate.'],
   ['BOM_RECONCILIATION', 'RECONCILIATION_REPORT', 'REPORT', ['auditReport'], 'Provide missing baselines/prices or resolve itemized discrepancies.'],
-  ['CATALOG_INTELLIGENCE', 'CATALOG_INTELLIGENCE', 'INFORMATIONAL', ['pricingTrail', 'liveDetails'], 'Supply exact catalog/history scope for missing observations.'],
+  ['CATALOG_INTELLIGENCE', 'CATALOG_INTELLIGENCE', 'INFORMATIONAL', ['pricingTrail', 'liveDetails', 'priceDrifts', 'catalogSearch', 'timelineComparison', 'historicalPricing'], 'Supply exact catalog/history scope for missing observations.'],
   ['OCR_QUOTE_INGESTION', 'INGESTION_DRAFT', 'DRAFT', ['extractedItems', 'ocrResult'], 'Perform OCR, preserve page evidence and resume the requested objective.'],
   ['HETEROGENEOUS_TENDER_MODERNIZATION', 'HETEROGENEOUS_PLANNING', 'DRAFT', ['carrierFleetSummary', 'deliverableSummary'], 'Resolve unparsed/unsupported groups and validate each owned domain.'],
   ['CROSS_VENDOR_TRANSFORMATION', 'CROSS_VENDOR_CONVERSION', 'DRAFT', ['competitorSpec', 'auditReport', 'recommendedBom'], 'Resolve parity/sizing gaps and evaluate a supported target candidate.'],

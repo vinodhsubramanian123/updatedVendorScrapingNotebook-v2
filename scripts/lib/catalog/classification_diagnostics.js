@@ -28,6 +28,9 @@ class ClassificationDiagnostics {
         totalRawTables: 0,
         validProductTables: 0,
         skippedTablesCount: 0,
+        rejectedRowsCount: 0,
+        parseFailedPriceCount: 0,
+        unmeasuredLeadTimeCount: 0,
         selfHealedTablesCount: 0,
         selfHealedSkusCount: 0,
         totalExtractedSKUs: 0,
@@ -36,6 +39,7 @@ class ClassificationDiagnostics {
         chassisVariantsCount: 0,
       },
       skippedTables: [],
+      rejectedRows: [],
       selfHealedTables: [],
       tableDecisions: [],
       categoryDistribution: {},
@@ -71,10 +75,19 @@ class ClassificationDiagnostics {
       detectedRole: decision.detectedRole || 'Unknown',
       constraint: decision.constraint || 'N/A',
       minQty: decision.minQty || 0,
-      maxQty: decision.maxQty !== undefined ? decision.maxQty : -1,
+      maxQty: decision.maxQty !== undefined ? decision.maxQty : null,
+      maxQtySemantics: decision.maxQtySemantics || null,
       skuCount: decision.skuCount || 0,
       rulesCount: (decision.rules || []).length
     });
+  }
+
+  recordRejectedRow(detail) {
+    if (!detail) return;
+    if (this.trace.rejectedRows.length < 200) {
+      this.trace.rejectedRows.push(detail);
+    }
+    this.trace.summary.rejectedRowsCount = (this.trace.summary.rejectedRowsCount || 0) + 1;
   }
 
   recordAnomaly(type, detail) {
@@ -118,7 +131,11 @@ class ClassificationDiagnostics {
         const ls = s['Lifecycle Status'] || 'Active';
         clicDist[cs] = (clicDist[cs] || 0) + 1;
         lifeDist[ls] = (lifeDist[ls] || 0) + 1;
-        if (s['Lead Time'] && s['Lead Time'] !== 'Unpublished') skusWithLeadTime++;
+        if (s['Lead Time'] && s['Lead Time'] !== 'Unpublished' && Number.isFinite(s.leadTimeDays)) skusWithLeadTime++;
+        else this.trace.summary.unmeasuredLeadTimeCount++;
+        if (s.priceState === 'PARSE_FAILED' || s.priceState === 'CONFLICTING_EVIDENCE') {
+          this.trace.summary.parseFailedPriceCount++;
+        }
         if (s['Cost (USD)'] && s['Cost (USD)'] !== '') skusWithCost++;
         if (s['Price Delta (USD)'] && s['Price Delta (USD)'] !== '') skusWithPriceDelta++;
         if (s['Price per GB (USD)'] && s['Price per GB (USD)'] !== '') skusWithPricePerGb++;

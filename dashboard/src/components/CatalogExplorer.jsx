@@ -30,6 +30,7 @@ function normalizeExplorerSkuItem(sku, entry) {
   const rawPrice = resolveExplorerSkuRawPrice(sku);
   const priceDeltaVal = sku['Price Delta (USD)'];
   const defaultDiff = priceDeltaVal && priceDeltaVal !== '-' ? 'PRICE_CHANGED' : 'UNCHANGED';
+  const lifecycleCanonical = sku.lifecycleCanonical || sku.lifecycleStatus || sku['Lifecycle Status'] || 'Active';
 
   return {
     ...sku,
@@ -39,6 +40,10 @@ function normalizeExplorerSkuItem(sku, entry) {
     listPrice: rawPrice,
     diffStatus: sku.diffStatus || sku['Diff Status'] || defaultDiff,
     priceDelta: priceDeltaVal || sku.priceDelta || null,
+    lifecycleCanonical,
+    vendor: sku.vendor || sku.canonicalSpecs?.vendor || null,
+    rowType: sku.rowType || null,
+    canonicalSpecs: sku.canonicalSpecs || null,
     parentCategory: entry.parentCategory || 'Uncategorized',
     subCategory: entry.subCategory || 'General',
     constraint: entry.constraint,
@@ -57,13 +62,19 @@ function extractAllCatalogSkus(catalogData) {
 }
 
 function isServiceOrSupportSku(s) {
-  if (s.optionType === 'Service') return true;
+  if (s.rowType === 'SUPPORT_SERVICE' || s.optionType === 'Service') return true;
   const parentCat = (s.parentCategory || '').toLowerCase();
   const subCat = (s.subCategory || '').toLowerCase();
   const desc = (s.description || '').toLowerCase();
   return /service|support|care/i.test(parentCat) ||
          /service|support|care/i.test(subCat) ||
-         /tech\s*care|warranty|installation|deployment|startup|foundation/i.test(desc);
+         /\b(?:tech\s*care|foundation\s*care|prosupport|smartnet|hi-care|premier\s*support|warranty|installation|deployment|startup|pointnext|svc)\b/i.test(desc);
+}
+
+function isLifecycleAlertSku(s) {
+  if (s.isObsolete || s.isSupplyConstrained || s.diffStatus === 'REMOVED') return true;
+  const statusText = String(s.lifecycleCanonical || s.lifecycleStatus || s['Lifecycle Status'] || '');
+  return /\b(?:obsolete|discontinued|90[\s-]*day|eol\s*warning|constrained\s*supply)\b|\[(?:ob|90|cs)\]/i.test(statusText);
 }
 
 function filterDisplayedSkus(baseSkus, viewMode, activeCategory, activeSubCategory, activeType, showOnlyChanges) {
@@ -71,7 +82,7 @@ function filterDisplayedSkus(baseSkus, viewMode, activeCategory, activeSubCatego
   if (viewMode === 'services') {
     result = result.filter(isServiceOrSupportSku);
   } else if (viewMode === 'obsolete') {
-    result = result.filter(s => s.isObsolete || s.lifecycleStatus === 'DISCONTINUED' || s.lifecycleStatus === 'OBSOLETE' || s.diffStatus === 'REMOVED' || s.lifecycleStatus === '90-DAY WARNING');
+    result = result.filter(isLifecycleAlertSku);
   } else {
     if (activeCategory !== 'ALL') {
       result = result.filter(s => s.parentCategory === activeCategory);
@@ -363,3 +374,5 @@ export default function CatalogExplorer({
     </div>
   );
 }
+
+export { normalizeExplorerSkuItem, isServiceOrSupportSku, isLifecycleAlertSku, filterDisplayedSkus };

@@ -12,6 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const { listAllCatalogs } = require('./catalog_discovery.js');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
+const { parseStrictPrice, isConfirmedZeroByPolicy } = require('./field_parsers.js');
 
 const LIFECYCLE_NORMALIZATION_RULES = [
   { canonical: 'EOL_90_DAY_WARNING', pattern: /90[\s-]*day|\beol\s*warning\b/i },
@@ -51,7 +52,7 @@ function _auditSkippedAndTableDecisions(diag, findings) {
   }
 
   const tableDecisions = Array.isArray(diag?.tableDecisions) ? diag.tableDecisions : [];
-  const sentinelMaxRows = tableDecisions.filter(td => Number.isFinite(td?.maxQty) && td.maxQty < 0);
+  const sentinelMaxRows = tableDecisions.filter(td => Number.isFinite(td?.maxQty) && td.maxQty !== null && td.maxQty < 0 && !td?.maxQtySemantics);
   if (sentinelMaxRows.length > 0) {
     findings.push({
       code: 'SENTINEL_MAX_QTY',
@@ -100,6 +101,15 @@ function _auditLifecycleAndChassisVariants(diag, findings) {
   }
 }
 
+function _rawHasCostColumn(catalogEntry) {
+  if (!catalogEntry?.catalogDir) return null;
+  const raw = _readJsonSafe(path.join(catalogEntry.catalogDir, 'raw_data', 'oca_raw_data_full.json'));
+  if (!raw || !Array.isArray(raw.tables)) return null;
+  return raw.tables.some(t => (t.rows || []).slice(0, 4).some(r =>
+    Array.isArray(r) && r.some(cell => /\bcost\b/i.test(String(cell || '')))
+  ));
+}
+
 function _auditAttributeAndCategoryFidelity(diag, catalogEntry, findings) {
   const totalSkus = Number(diag?.summary?.totalExtractedSKUs || 0);
   const fid = diag?.attributeFidelity || {};
@@ -114,9 +124,11 @@ function _auditAttributeAndCategoryFidelity(diag, catalogEntry, findings) {
       });
     }
     if (Number(fid.skusWithCost || 0) === 0) {
+      const rawHasCost = _rawHasCostColumn(catalogEntry);
       findings.push({
         code: 'ZERO_COST_COLUMN_COVERAGE',
         severity: 'LOW',
+        ...(rawHasCost === false ? { portalEntitlementNote: 'PORTAL_COST_COLUMN_UNENTITLED' } : {}),
         message: `Partner Cost (USD) column is absent/empty across all ${totalSkus} extracted SKUs (list price only).`
       });
     }
@@ -158,15 +170,20 @@ function _auditAttributeAndCategoryFidelity(diag, catalogEntry, findings) {
 function _auditActiveZeroPriceSkus(catalogJson, findings) {
   if (!catalogJson || !Array.isArray(catalogJson.entries)) return;
   const zeroPricedActive = [];
+  const unpricedPrivateOrRegional = [];
   for (const entry of catalogJson.entries) {
     for (const skuRow of (entry.skus || [])) {
       const pn = String(skuRow['Product #'] || skuRow.sku || '').trim();
       const desc = String(skuRow.Description || skuRow.description || '');
       const life = normalizeLifecycleLabel(skuRow['Lifecycle Status'] || skuRow.lifecycleStatus || 'Active');
       const rawPrice = skuRow['Unit Price (USD)'] ?? skuRow['Price (USD)'] ?? skuRow.listPrice;
-      const numPrice = parseFloat(String(rawPrice ?? '').replace(/[$,]/g, ''));
-      const isFioIncluded = Boolean(skuRow.isFio || /\bfio\b|factory\s*integrated|included|no\s*charge|\btracking\b/i.test(desc));
-      if (pn && life === 'ACTIVE' && !isFioIncluded && (!Number.isFinite(numPrice) || numPrice <= 0)) {
+      const parsed = parseStrictPrice(rawPrice, { row: skuRow, sku: pn, description: desc });
+      const isFioIncluded = isConfirmedZeroByPolicy(pn, desc, skuRow);
+      if (!pn || life !== 'ACTIVE' || isFioIncluded || parsed.priceState === 'PARSE_FAILED') continue;
+      if (parsed.priceUsd !== null && parsed.priceUsd > 0) continue;
+      if (skuRow.isPrivateSku === true || skuRow.priceState === 'PRIVATE_UNPRICED' || skuRow.priceState === 'REGIONAL_NA_UNPRICED') {
+        unpricedPrivateOrRegional.push(pn);
+      } else {
         zeroPricedActive.push(pn);
       }
     }
@@ -181,11 +198,21 @@ function _auditActiveZeroPriceSkus(catalogJson, findings) {
       message: `${uniqueZero.length} active non-FIO SKU(s) have $0/unparsed list price (sample: ${uniqueZero.slice(0, 5).join(', ')}).`
     });
   }
+  const uniquePrivateRegional = [...new Set(unpricedPrivateOrRegional)];
+  if (uniquePrivateRegional.length > 0) {
+    findings.push({
+      code: 'UNPRICED_PRIVATE_OR_REGIONAL_SKUS',
+      severity: 'LOW',
+      count: uniquePrivateRegional.length,
+      sampleSkus: uniquePrivateRegional.slice(0, 10),
+      message: `${uniquePrivateRegional.length} private or regional-NA SKU(s) have intentionally unpriced portal status (sample: ${uniquePrivateRegional.slice(0, 5).join(', ')}).`
+    });
+  }
 }
 
 const SHIFTED_PRICE_TOKEN_RE = /[A-Z0-9]{4,8}-[A-Z0-9]{2,4}|\[(?:90|OB|DS|EOL)\]/i;
 
-function _collectShiftedRows(jsonObj, sourceName, out) {
+function _collectShiftedRows(jsonObj, sourceName, out, malformedOut = []) {
   if (!jsonObj || !Array.isArray(jsonObj.entries)) return;
   for (const entry of jsonObj.entries) {
     for (const skuRow of (entry.skus || [])) {
@@ -193,6 +220,15 @@ function _collectShiftedRows(jsonObj, sourceName, out) {
       const rawPrice = String(skuRow['Unit Price (USD)'] ?? skuRow['Price (USD)'] ?? '').trim();
       if (rawPrice && SHIFTED_PRICE_TOKEN_RE.test(rawPrice)) {
         out.push({ sku: pn, rawPrice, sourceName });
+        continue;
+      }
+      if (rawPrice) {
+        const parsed = parseStrictPrice(rawPrice, { row: skuRow, sku: pn });
+        if (parsed.priceState === 'PARSE_FAILED' || parsed.priceState === 'CONFLICTING_EVIDENCE') {
+          malformedOut.push({ sku: pn, rawPrice, priceState: parsed.priceState, reason: parsed.reason, sourceName });
+        }
+      } else if (skuRow.priceState === 'PARSE_FAILED' || skuRow.priceState === 'CONFLICTING_EVIDENCE') {
+        malformedOut.push({ sku: pn, rawPrice: '', priceState: skuRow.priceState, sourceName });
       }
     }
   }
@@ -200,9 +236,10 @@ function _collectShiftedRows(jsonObj, sourceName, out) {
 
 function _auditShiftedColumnRows(catalogEntry, catalogJson, servicesPath, findings) {
   const shifted = [];
-  _collectShiftedRows(catalogJson, path.basename(catalogEntry.catalogJsonPath || ''), shifted);
+  const malformed = [];
+  _collectShiftedRows(catalogJson, path.basename(catalogEntry.catalogJsonPath || ''), shifted, malformed);
   const servicesJson = _readJsonSafe(servicesPath);
-  _collectShiftedRows(servicesJson, path.basename(servicesPath || ''), shifted);
+  _collectShiftedRows(servicesJson, path.basename(servicesPath || ''), shifted, malformed);
   if (shifted.length > 0) {
     findings.push({
       code: 'SHIFTED_COLUMN_CORRUPTION',
@@ -210,6 +247,15 @@ function _auditShiftedColumnRows(catalogEntry, catalogJson, servicesPath, findin
       count: shifted.length,
       sampleRows: shifted.slice(0, 5),
       message: `${shifted.length} catalog row(s) contain shifted SKU/badge tokens inside Unit Price (USD) (e.g. ${shifted[0].sku}: "${shifted[0].rawPrice}").`
+    });
+  }
+  if (malformed.length > 0) {
+    findings.push({
+      code: 'MALFORMED_OR_CONFLICTING_PRICE',
+      severity: 'HIGH',
+      count: malformed.length,
+      sampleRows: malformed.slice(0, 5),
+      message: `${malformed.length} catalog row(s) have date-corrupted, delta-corrupted, or conflicting prices (e.g. ${malformed[0].sku}: "${malformed[0].rawPrice}").`
     });
   }
 }

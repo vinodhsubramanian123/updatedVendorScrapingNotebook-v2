@@ -10,7 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { execFileSync: defaultExecFileSync } = require('child_process');
-const { safeWriteJsonAtomic, withFileLock } = require('../system/fs_compat.js');
+const { safeWriteJsonAtomic, withFileLock, sanitizeOperationalEvidence } = require('../system/fs_compat.js');
 const { normalizeLearningText } = require('./google_sheets_writer.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
@@ -803,10 +803,20 @@ function _runSyncPreflightValidations({ options, execFileSync, extendedPath, pay
         throw new Error('nlm login --check returned invalid authentication');
       }
     } catch (authErr) {
-      throw new Error(
-        `NotebookLM credentials are stale or expired (${authErr.message.trim()}). ` +
-        `Please re-authenticate proactively by running in PowerShell: npm run auth:nlm:heal`
-      );
+      let healedOk = false;
+      try {
+        const { checkAuthHealth } = require('../../maintenance/check_nlm_auth.js');
+        const healed = checkAuthHealth({ autoHeal: true });
+        healedOk = Boolean(healed && healed.valid);
+      } catch {
+        healedOk = false;
+      }
+      if (!healedOk) {
+        throw new Error(
+          `NotebookLM credentials are stale or expired (${authErr.message.trim()}). ` +
+          `Please re-authenticate proactively by running in PowerShell: npm run auth:nlm:heal`
+        );
+      }
     }
   }
 
@@ -851,7 +861,7 @@ function _prepareMarkdownPayloadIfLegacy({ payloadPath, chassisName, cfgEntry, e
     driveSyncStatus = 'HUMAN_WORKBOOK_WRITTEN_AND_READBACK_VERIFIED';
     canonicalDriveSheetId = humanWorkbook.spreadsheetId;
     canonicalDriveSheetUrl = humanWorkbook.spreadsheetUrl || `https://docs.google.com/spreadsheets/d/${humanWorkbook.spreadsheetId}/edit`;
-    safeWriteJsonAtomic(path.join(payloadDir, 'history', 'human_workbook_sync.json'), humanWorkbook);
+    safeWriteJsonAtomic(path.join(payloadDir, 'history', 'human_workbook_sync.json'), sanitizeOperationalEvidence(humanWorkbook));
   }
   const datasets = require('./google_sheets_writer.js').buildKnowledgeWorkbookDatasets(csv, payloadPath, { chassisName });
   const legacyFingerprint = datasets.fingerprints.combined;
@@ -938,7 +948,7 @@ function _syncPostflightVerificationReceipt(payloadDir, newSourceId, details = {
         receipt.verifiedAt = verifiedAt;
         receipt.overallPass = Boolean(receipt.preflight?.pass !== false);
       }
-      safeWriteJsonAtomic(receiptPath, receipt);
+      safeWriteJsonAtomic(receiptPath, sanitizeOperationalEvidence(receipt));
     }
   } catch {}
 }

@@ -238,6 +238,35 @@ function enableSheetUsability(ws, headerFg = 'FF0072C6') {
 }
 
 // ── Convert String Numbers to Native Excel Types (Numeric Math & Sorting) ─────
+const EXCEL_MAX_CELL_LEN = 32700;
+
+function capExcelCellText(value, maxLen = EXCEL_MAX_CELL_LEN) {
+  const str = String(value ?? '');
+  if (str.length <= maxLen) return str;
+  const suffix = ' ... [TRUNCATED - see JSON]';
+  return `${str.slice(0, maxLen - suffix.length)}${suffix}`;
+}
+
+function _parseExcelNumericCell(k, sVal) {
+  if ((k.includes('Price') || k.includes('Cost')) && k !== 'Price History Trail' && !k.includes('(%)')) {
+    if (sVal === 'N/A' || sVal === '-' || sVal.startsWith('[REMOVED') || sVal.includes('(')) {
+      return capExcelCellText(sVal);
+    }
+    const cleanNum = sVal.replace(/[$,\s]/g, '');
+    const num = /^[+-]?\d+(?:\.\d+)?$/.test(cleanNum) ? parseFloat(cleanNum) : NaN;
+    return isNaN(num) ? capExcelCellText(sVal) : num;
+  }
+  if (k.includes('Qty') || k.includes('Count') || k.includes('Unique SKUs') || k.includes('Total SKUs') || k === 'Days Active' || k === 'Lead Time') {
+    if (sVal === 'Unlimited' || sVal === 'Required' || sVal === 'N/A' || sVal === '-' || sVal === 'Standard') {
+      return capExcelCellText(sVal);
+    }
+    const cleanInt = sVal.replace(/[^0-9-]/g, '');
+    const num = parseInt(cleanInt, 10);
+    return isNaN(num) ? capExcelCellText(sVal) : num;
+  }
+  return capExcelCellText(sVal);
+}
+
 function normalizeRowsForExcel(rows) {
   return rows.map(r => {
     const out = {};
@@ -246,30 +275,7 @@ function normalizeRowsForExcel(rows) {
         out[k] = '';
         continue;
       }
-      const sVal = String(v).trim();
-      
-      // Price fields (exclude text trails and percentage changes)
-      if ((k.includes('Price') || k.includes('Cost')) && k !== 'Price History Trail' && !k.includes('(%)')) {
-        if (sVal === 'N/A' || sVal === '-' || sVal.startsWith('[REMOVED') || sVal.includes('(')) {
-          out[k] = sVal;
-        } else {
-          const cleanNum = sVal.replace(/[$,\s]/g, '');
-          const num = /^[+-]?\d+(?:\.\d+)?$/.test(cleanNum) ? parseFloat(cleanNum) : NaN;
-          out[k] = isNaN(num) ? sVal : num;
-        }
-      }
-      // Quantity / Count / Lead Time fields
-      else if (k.includes('Qty') || k.includes('Count') || k.includes('Unique SKUs') || k.includes('Total SKUs') || k === 'Days Active' || k === 'Lead Time') {
-        if (sVal === 'Unlimited' || sVal === 'Required' || sVal === 'N/A' || sVal === '-' || sVal === 'Standard') {
-          out[k] = sVal;
-        } else {
-          const cleanInt = sVal.replace(/[^0-9-]/g, '');
-          const num = parseInt(cleanInt, 10);
-          out[k] = isNaN(num) ? sVal : num;
-        }
-      } else {
-        out[k] = sVal;
-      }
+      out[k] = _parseExcelNumericCell(k, String(v).trim());
     }
     return out;
   });

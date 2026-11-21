@@ -37,7 +37,13 @@ const { auditOpticalLinkEndpoints } = require('../aspects/networking_ocp.js');
 function loadLearnedKnowledgeDeltas(resolvedTargetDir, chassisVariant = '') {
   try {
     const rules = loadActiveKnowledgeRules(chassisVariant, resolvedTargetDir);
-    return rules.allRules.map(r => r.rawDelta || r);
+    return rules.physicalRules.map(rule => ({
+      ...rule.rawDelta,
+      ruleId: rule.ruleId,
+      affectedSku: rule.affectedSku,
+      requiredDependencySku: rule.requiredDependencySku,
+      ruleType: rule.ruleType
+    }));
   } catch (err) {
     const logger = require('../system/pipeline_logger.js');
     logger.warn('CONFLICT_GRAPH', 'Failed to parse historical catalog JSON', err);
@@ -308,8 +314,13 @@ function _isLearnedStrategy(delta) {
     rt.includes('PROCEDURE') || rt.includes('DIAGNOSTIC');
 }
 
+function _recordLearnedAudit(recordAudit, delta, title, status, details, sku = '', applied = true) {
+  recordAudit('LEARNED_DELTA', title, status, details, sku,
+    { ruleId: delta.ruleId, ruleType: delta.ruleType, applied });
+}
+
 function _applyLearnedSubstitution(delta, affectedSku, requiredSku, msg, recordAudit, learnedSubstitutions) {
-  recordAudit('LEARNED_DELTA', `Learned Modernization/Substitution: ${affectedSku} -> ${requiredSku}`, 'INFO', msg, affectedSku);
+  _recordLearnedAudit(recordAudit, delta, `Learned Modernization/Substitution: ${affectedSku} -> ${requiredSku}`, 'INFO', msg, affectedSku, false);
   learnedSubstitutions.push({
     affectedSku,
     requiredSku,
@@ -320,17 +331,18 @@ function _applyLearnedSubstitution(delta, affectedSku, requiredSku, msg, recordA
   });
 }
 
-function _evaluateLearnedDependency(delta, affectedSku, requiredSku, msg, fullBomMap, fullBomList, dependencyEdges, recordAudit, conflicts) {
+function _evaluateLearnedDependency(delta, affectedSku, requiredSku, msg, fullBomMap, dependencyEdges, recordAudit, conflicts) {
   const edgeKey = `${affectedSku}->${requiredSku}`;
   const reverseEdgeKey = `${requiredSku}->${affectedSku}`;
   if (dependencyEdges.has(reverseEdgeKey)) {
     const cycleWarning = `Circular Dependency Cycle Detected between ${affectedSku} and ${requiredSku}. Rule evaluation bypassed to prevent infinite loop.`;
-    recordAudit('LEARNED_DELTA', `Circular Dependency Cycle: ${edgeKey}`, 'WARNING', cycleWarning, affectedSku);
+    _recordLearnedAudit(recordAudit, delta, `Circular Dependency Cycle: ${edgeKey}`, 'WARNING', cycleWarning, affectedSku, false);
     return;
   }
   dependencyEdges.add(edgeKey);
 
-  const hasReq = fullBomMap.has(requiredSku) || fullBomList.some(it => (it.description || '').includes(requiredSku));
+  const requiredPart = fullBomMap.get(requiredSku);
+  const hasReq = requiredPart && !requiredPart.isFix;
   if (!hasReq) {
     const err = `Learned Rule Violation (${delta.deltaId || delta.id || 'LEARNED'}): SKU ${affectedSku} requires mandatory ${requiredSku}. ${msg}`;
     const diagnosticHint = {
@@ -341,20 +353,23 @@ function _evaluateLearnedDependency(delta, affectedSku, requiredSku, msg, fullBo
       referenceNotice: `💡 Diagnostic Hint [${delta.deltaId || 'LEARNED'}]: Past CLIC validation confirmed ${affectedSku} requires ${requiredSku}.${delta.humanReasoning ? ` Engineering Rationale: ${delta.humanReasoning}` : ''}`
     };
     conflicts.push({ level: 'LEARNED_DELTA', type: 'LEARNED_DEPENDENCY', message: err, diagnosticHint });
-    recordAudit('LEARNED_DELTA', `Learned Rule: ${affectedSku} requires ${requiredSku}`, 'FAIL', err, affectedSku);
+    _recordLearnedAudit(recordAudit, delta, `Learned Rule: ${affectedSku} requires ${requiredSku}`, 'FAIL', err, affectedSku);
   } else {
-    recordAudit('LEARNED_DELTA', `Learned Rule: ${affectedSku} requires ${requiredSku}`, 'PASS', `Satisfied: ${requiredSku} present in BOM.`, affectedSku);
+    _recordLearnedAudit(recordAudit, delta, `Learned Rule: ${affectedSku} requires ${requiredSku}`, 'PASS', `Satisfied: ${requiredSku} present in BOM.`, affectedSku);
   }
 }
 
-function _evaluateLearnedMutualExclusion(delta, affectedSku, msg, fullBomMap, fullBomList, recordAudit, conflicts) {
+function _evaluateLearnedMutualExclusion(delta, affectedSku, msg, fullBomMap, recordAudit, conflicts) {
   const isMutualExclusion = delta.ruleType === 'MUTUAL_EXCLUSION' || delta.errorType === 'MUTUAL_EXCLUSION' || delta.ruleType === 'STORAGE_COLLISION' || /cannot be populated simultaneously|prohibits mixing|cannot mix|mutually exclusive/i.test(msg);
   let conflictDetected = false;
   if (isMutualExclusion) {
     const matches = (msg.match(new RegExp(HPE_SKU_EXTRACT_REGEX.source, 'gi')) || [])
       .map(cleanBaseSKU)
       .filter(s => s && s !== affectedSku && isValidHpeSKU(s));
-    const presentConflicts = matches.filter(s => fullBomMap.has(s) || fullBomList.some(it => (it.description || '').includes(s)));
+    const presentConflicts = matches.filter(s => {
+      const part = fullBomMap.get(s);
+      return part && !part.isFix;
+    });
     if (presentConflicts.length > 0) {
       const conflictingSku = presentConflicts[0];
       const err = `Learned Mutual Exclusion Violation (${delta.deltaId || 'LEARNED'}): Cannot mix ${affectedSku} and ${conflictingSku}. ${msg}`;
@@ -366,12 +381,12 @@ function _evaluateLearnedMutualExclusion(delta, affectedSku, msg, fullBomMap, fu
         referenceNotice: `💡 Diagnostic Hint [${delta.deltaId || 'LEARNED'}]: Past CLIC validation confirmed ${affectedSku} and ${conflictingSku} are mutually exclusive.${delta.humanReasoning ? ` Engineering Rationale: ${delta.humanReasoning}` : ''}`
       };
       conflicts.push({ level: 'LEARNED_DELTA', type: 'MUTUAL_EXCLUSION', message: err, diagnosticHint });
-      recordAudit('LEARNED_DELTA', `Learned Mutual Exclusion on ${affectedSku}`, 'FAIL', err, affectedSku);
+      _recordLearnedAudit(recordAudit, delta, `Learned Mutual Exclusion on ${affectedSku}`, 'FAIL', err, affectedSku);
       conflictDetected = true;
     }
   }
   if (!conflictDetected) {
-    recordAudit('LEARNED_DELTA', `Learned Restriction on ${affectedSku}`, 'WARNING', `Portal Rejection History: ${msg}`, affectedSku);
+    _recordLearnedAudit(recordAudit, delta, `Learned Restriction on ${affectedSku}`, 'WARNING', `Portal Rejection History: ${msg}`, affectedSku, false);
   }
 }
 
@@ -461,7 +476,7 @@ function _evaluateVendorBtoCtoRules(fullBomList, chassisInfo, learnedDeltas, rec
   }
 }
 
-function _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetChassis, recordAudit, conflicts, learnedSubstitutions = []) {
+function _evaluateLearnedDeltas(fullBomMap, learnedDeltas, targetChassis, recordAudit, conflicts, learnedSubstitutions = []) {
   const dependencyEdges = new Set();
 
   learnedDeltas.forEach(delta => {
@@ -473,15 +488,15 @@ function _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetCh
     if (!_isDeltaApplicableToTarget(delta, targetChassis)) return;
 
     if (!affectedSku && delta.ruleType === 'COMPATIBILITY_AND_FULFILLMENT_BOUNDARY') {
-      recordAudit('LEARNED_DELTA', `Universal Fulfillment Policy: ${delta.deltaId || 'POLICY'}`, 'INFO', msg);
+      _recordLearnedAudit(recordAudit, delta, `Universal Fulfillment Policy: ${delta.ruleId}`, 'INFO', msg, '', false);
       return;
     }
 
     // Gate 1: SKU validity & Blacklist token check
     if (!_isValidLearnedDeltaSku(affectedSku, requiredSku)) return;
 
-    const hasAffected = fullBomMap.has(affectedSku) || fullBomList.some(it => (it.description || '').includes(affectedSku));
-    if (!hasAffected) return;
+    const affectedPart = fullBomMap.get(affectedSku);
+    if (!affectedPart || affectedPart.isFix) return;
 
     if (requiredSku) {
       if (_isLearnedSubstitution(delta)) {
@@ -489,12 +504,12 @@ function _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetCh
         return;
       }
       if (_isLearnedStrategy(delta)) {
-        recordAudit('LEARNED_DELTA', `Learned Strategy: ${delta.deltaId || 'STRATEGY'}`, 'INFO', msg, affectedSku);
+        _recordLearnedAudit(recordAudit, delta, `Learned Strategy: ${delta.ruleId}`, 'INFO', msg, affectedSku, false);
         return;
       }
-      _evaluateLearnedDependency(delta, affectedSku, requiredSku, msg, fullBomMap, fullBomList, dependencyEdges, recordAudit, conflicts);
+      _evaluateLearnedDependency(delta, affectedSku, requiredSku, msg, fullBomMap, dependencyEdges, recordAudit, conflicts);
     } else if (msg) {
-      _evaluateLearnedMutualExclusion(delta, affectedSku, msg, fullBomMap, fullBomList, recordAudit, conflicts);
+      _evaluateLearnedMutualExclusion(delta, affectedSku, msg, fullBomMap, recordAudit, conflicts);
     }
   });
 }
@@ -827,18 +842,18 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
   const unresolvedConflicts = [];
   const rulesEvaluated = [];
 
-  function recordAudit(level, ruleText, status, details, skuTarget = '') {
-    auditLog.push({ timestamp: new Date().toISOString(), level, ruleText, status, details, skuTarget });
+  function recordAudit(level, ruleText, status, details, skuTarget = '', evidence = {}) {
+    auditLog.push({ timestamp: new Date().toISOString(), level, ruleText, status, details, skuTarget, ...evidence });
   }
 
   const { fullBomMap, fullBomList, depsList } = _buildUnifiedBomMap(boqItems, missingDependencies);
 
   // 1. VENDOR LEVEL (BTO vs CTO Mode, Partner Restrictions) & LEARNED KNOWLEDGE DELTAS VALIDATION
-  const learnedDeltas = loadLearnedKnowledgeDeltas(resolvedTargetDir);
+  const learnedDeltas = loadLearnedKnowledgeDeltas(resolvedTargetDir, chassisVariantOverride);
   const targetChassis = (chassisVariantOverride || (resolvedTargetDir ? path.basename(resolvedTargetDir) : '')).toLowerCase();
   const learnedSubstitutions = [];
   _evaluateVendorBtoCtoRules(fullBomList, chassisInfo, learnedDeltas, recordAudit, conflicts, learnedSubstitutions);
-  _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetChassis, recordAudit, conflicts, learnedSubstitutions);
+  _evaluateLearnedDeltas(fullBomMap, learnedDeltas, targetChassis, recordAudit, conflicts, learnedSubstitutions);
 
   // 2. CHASSIS LEVEL VALIDATION (Form Factor Gates: SFF vs LFF vs EDSFF)
   _evaluateChassisFormFactorRules(catalogData, chassisInfo, fullBomList, rulesEvaluated, recordAudit, conflicts);

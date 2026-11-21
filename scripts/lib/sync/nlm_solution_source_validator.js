@@ -183,10 +183,20 @@ function attachSolutionSource(notebookId, filePath, title, options = {}) {
     const chassisName = Object.keys(config.notebooks || {}).find(key => config.notebooks[key].notebookId === notebookId);
     if (!chassisName) throw new Error('Cannot record source ownership for an unmapped notebook');
     recovery.processSourceRecoveryQueue(notebookId, getNlmEnv().PATH);
-    const before = JSON.parse(execFileSync(nlmExe, ['source', 'list', notebookId, '--json'], {
-      encoding: 'utf8', timeout: require('../notebook/nlm_transport.js').sourceOperationTimeout(options),
-      maxBuffer: 32 * 1024 * 1024, env: getNlmEnv(true)
-    }));
+    const transport = require('../notebook/nlm_transport.js');
+    const beforeRaw = transport.execNlmReadWithFallback(
+      execFileSync,
+      ['source', 'list', notebookId, '--json'],
+      {
+        bin: nlmExe,
+        encoding: 'utf8',
+        timeout: transport.sourceOperationTimeout(options),
+        maxBuffer: 32 * 1024 * 1024,
+        stdio: ['ignore', 'pipe', 'pipe']
+      },
+      getNlmEnv().PATH
+    );
+    const before = JSON.parse(beforeRaw);
     const sources = Array.isArray(before) ? before : before.sources;
     if (!Array.isArray(sources)) throw new Error('Cannot establish source inventory before attachment');
     recoveryAttemptId = recovery.recordSourceRecoveryAction({

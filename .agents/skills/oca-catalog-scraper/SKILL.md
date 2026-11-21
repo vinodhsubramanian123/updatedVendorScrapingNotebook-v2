@@ -207,3 +207,8 @@ Follow [Shared Runtime Conditional Discovery Contract](../../../docs/RUNTIME_CON
 
 ## References
 - [CDP Remote Debugging & WebLogic Modal Interception Reference](references/cdp_modal_interception.md)
+
+### Staged capture and promotion
+
+Follow [the catalog evidence contract](../../../docs/CATALOG_EVIDENCE_AND_LEARNING.md) and [runtime discovery](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md). Bind the replay receipt to staged file hashes. Preserve prior customer workbooks and evidence across promotion. Verify captured base and selector scope before claiming coverage.
+- **Flagship Storage Dual-Source Capture (`Alletra_MP_B10000`, `Alletra_MP_X10000`, `INV-266`)**: Combine live HPE OCA extraction (`scrape_oca_solution.js`) with HPE Ninja Online sizing telemetry (`scripts/scrapers/capture_ninja_online_sizing.js --enrich`). Core storage topology (Switchless `B10100` `S0B84A` [up to 24 internal chassis drives, 0–3 JBOFs, max 24/72 drives, no backend switches] vs. Switched `B10200` `S1R06A` [0 internal drives, 1–8 mandatory JBOFs, up to 384 drives, mandatory backend NVMe-oF switches]) MUST be sized in HPE Ninja Online and exported as OCA JSON; post-import adaptations in HPE OCA cover optical transceivers (SFPs/QSFPs), cabling, Pointnext/Tech Care support services (`Services -> Edit`), and final CLIC validation.

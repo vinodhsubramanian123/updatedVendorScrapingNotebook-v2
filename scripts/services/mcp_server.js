@@ -166,7 +166,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: "query_catalog_db",
-        description: "Queries the local Catalog DB (JSON/CSVs) for SKUs and pricing.",
+        description: "Queries local catalogs. Structured catalog requests return a versioned routed result with scope and evidence.",
         inputSchema: {
           type: "object",
           properties: {
@@ -965,12 +965,22 @@ function handleCompareSkuAcrossSolutionsTool(args = {}) {
   return formatMcpJsonText(payload);
 }
 
+async function handleQueryCatalogDb(args, context, signal) {
+  const { classifyQueryIntent, executeRoutedQuery } = require('../evaluators/route_query.js');
+  const queryContext = { chassisName: context.cat?.id || args.chassis_id, offline: true, signal };
+  if (classifyQueryIntent(args.query, queryContext).intent === 'CATALOG_INTELLIGENCE') {
+    const routed = await executeRoutedQuery(args.query, queryContext);
+    return formatMcpJsonText({ schemaVersion: '2.0.0', ...routed });
+  }
+  return formatMcpJsonText(queryLocalKnowledgeBase(args.query, normalizeChassisName(args.chassis_id)));
+}
+
 async function _dispatchMcpTool(toolName, args, items, context, signal) {
   const aspectResp = _executeAspectMcpTool(toolName, args, items, context);
   if (aspectResp) return aspectResp;
   if (toolName === "query_notebooklm") return await handleQueryNotebookLmTool(args, signal);
   const syncHandlers = {
-    query_catalog_db: () => formatMcpJsonText(queryLocalKnowledgeBase(args.query, normalizeChassisName(args.chassis_id))),
+    query_catalog_db: () => handleQueryCatalogDb(args, context, signal),
     simulate_build: () => handleSimulateBuildTool(args, items),
     record_knowledge_delta: () => handleRecordKnowledgeDeltaTool(args),
     inspect_category_dependencies: () => handleInspectCategoryDependenciesTool(args, items, context),

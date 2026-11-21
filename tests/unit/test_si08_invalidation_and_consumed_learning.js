@@ -113,7 +113,9 @@ test('SI-08 [1/8]: Fresh-process trigger, non-trigger, wrong-scope isolation, an
   assert.ok(promoted && promoted.status === 'PROMOTED');
 
   const activeDelta = { ...promoted, active: true, status: 'ACTIVE', governanceStatus: 'ACTIVE' };
-  safeWriteJsonAtomic(masterPath, { universalRules: [], familyGenRules: [], chassisSpecificRules: [activeDelta] });
+  safeWriteJsonAtomic(masterPath, { universalRules: [], familyGenRules: [], chassisSpecificRules: [
+    { ...activeDelta, rawMessage: 'Superseded generated registry content' }
+  ] });
   safeWriteJsonAtomic(chassisDeltasPath, [activeDelta]);
 
   const idx = createDependencyIndex();
@@ -139,6 +141,7 @@ test('SI-08 [1/8]: Fresh-process trigger, non-trigger, wrong-scope isolation, an
     assert.equal(gen12.allRules.some(r => r.ruleId === ruleId), true);
     assert.equal(gen12.physicalRules.some(r => r.ruleId === ruleId), true);
     assert.equal(gen12.mandatoryDependencies.some(r => r.ruleId === ruleId), true);
+    assert.notEqual(gen12.allRules.find(r => r.ruleId === ruleId).reasoning, 'Superseded generated registry content');
 
     // Trigger on matching BOM SKU
     const matchingBom = [{ sku: 'P73282-B21', quantity: 1 }];

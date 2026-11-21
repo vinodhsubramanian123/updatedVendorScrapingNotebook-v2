@@ -312,6 +312,10 @@ function _captureRoutedEvent(targetRun, event, scoped) {
   ) {
     targetRun.status = 'ACTION_REQUIRED';
     targetRun.stage = 'CLARIFICATION_REQUIRED';
+  } else if ((event.data?.result?.priceDrifts || event.data?.result?.catalogSearch || event.data?.result?.historicalPricing) &&
+      ['ACTION_REQUIRED', 'PARTIAL'].includes(event.data.result.status)) {
+    targetRun.status = 'ACTION_REQUIRED';
+    targetRun.stage = 'CATALOG_EVIDENCE_INCOMPLETE';
   }
   persistRunRecord(targetRun);
 }
@@ -324,7 +328,7 @@ function _captureTaskCompleted(targetRun, event, runId) {
     } else if (event.code === 0) {
       const nextStatus = targetRun.status === 'ACTION_REQUIRED' ? 'ACTION_REQUIRED' : 'COMPLETED';
       targetRun.status = nextStatus;
-      targetRun.stage = nextStatus;
+      if (targetRun.stage !== 'CATALOG_EVIDENCE_INCOMPLETE') targetRun.stage = nextStatus;
     } else {
       targetRun.status = 'FAILED';
       targetRun.stage = 'FAILED';

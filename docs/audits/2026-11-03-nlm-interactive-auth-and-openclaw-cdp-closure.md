@@ -43,21 +43,20 @@ When Chromium is spawned with raw automated test flags (`--headless`, `--disable
 
 ---
 
-## 3. Implemented Architecture (`INV-227`)
+## 3. Implemented Architecture (`INV-227`, Hardened by `INV-269` on 2026-11-21)
 
 ### 3.1 Automated Interactive Engine (`scripts/maintenance/nlm_interactive_auth.js`)
 A dedicated cross-platform lifecycle manager that handles:
-1. **Port Probing**: Checks `http://127.0.0.1:18801/json/version` with connection auto-destruction to verify whether Chrome is already listening.
-2. **Pre-Flight Lock Clearance**: Proactively unlinks stale `SingletonLock` and `lockfile` entries in `%LOCALAPPDATA%\NlmInteractiveChrome` and `~/.notebooklm-mcp-cli/chrome-profiles/default` when port 18801 is inactive.
-3. **Detached Desktop Launch**: Locates the system Chrome binary (supporting 64-bit, 32-bit, LocalAppData, macOS, and Linux) and spawns it detached via `cmd.exe /c start ""` so it runs as a genuine top-level Windows application.
+1. **Unified Chrome Profile Directory (`INV-269`)**: Uses `~/.notebooklm-mcp-cli/chrome-profiles/<profile>` (`getNlmProfileDir(profile)`) — the exact profile directory expected by `notebooklm_tools.utils.auth_browser.run_headless_auth` and `cdp_transport.py`. On first run, `syncLegacyInteractiveProfile()` automatically migrates `Local State` (the Windows DPAPI AES cookie encryption key) and `Default/Network/*` session databases (`20` files) from the legacy `%LOCALAPPDATA%\NlmInteractiveChrome` directory and writes `.nlm_legacy_migrated.json`. **Never split interactive port `18801` Chrome and `notebooklm-mcp-cli` across separate `--user-data-dir` paths**, or automatic headless refresh of rotating Google session cookies (`__Secure-1PSIDRTS`, `SIDCC`, `SNlM0e`) will fail every day.
+2. **Port Probing & `chrome-port-map.json` Registration (`INV-269`)**: Checks `http://127.0.0.1:18801/json/version` and calls `registerPortMapEntry(18801, profile)` (using fast native `netstat.exe -ano -p tcp`) to write `{"18801":{"profile":"default","pid":<pid>}}` into `~/.notebooklm-mcp-cli/chrome-port-map.json`. This allows Python's `find_existing_nlm_chrome('default')` and `run_headless_auth('default')` to reuse the live port `18801` browser directly without spawning a conflicting port `9223` browser against the same profile directory.
+3. **WMI Job-Object Detached Desktop Launch (`INV-253`, `INV-269`)**: On Windows, `spawnChromeDetached` spawns Chrome via WMI `Invoke-CimMethod -ClassName Win32_Process -MethodName Create` (parented by `WmiPrvSE.exe`, without contradictory `detached: true` + `windowsHide: true` flags on the PowerShell launcher). This detaches Chrome from the ephemeral PowerShell tool session's Windows Job Object (`KILL_ON_JOB_CLOSE`) so port `18801` remains alive permanently across turns.
 4. **OpenClaw CDP Extraction**: Executes `nlm login --profile default --provider openclaw --cdp-url http://127.0.0.1:18801 --storage file --force` with `stdio: ['ignore', 'pipe', 'pipe']`, extracting cookies and CSRF tokens in **~2 seconds**.
 5. **Credential Validation**: Validates the extracted session via `nlm login --profile default --check`.
 
-### 3.2 Unified Auto-Heal (`scripts/maintenance/check_nlm_auth.js`)
+### 3.2 Unified Auto-Heal (`scripts/maintenance/check_nlm_auth.js`, `check_all_auth.js`, `nlm_sync_client.js`)
 Updated `checkAuthHealth({ autoHeal: true })`:
-- Deprecated broken calls to `nlm login --force --storage file`.
-- Routes auto-healing synchronously through `nlm_interactive_auth.js --json`.
-- When tokens expire or a pre-flight check fails, the system automatically opens or connects to the port 18801 Chrome instance and refreshes tokens without human prompt friction.
+- Programmatic `checkAuthHealth()` calls default to `autoHeal: false` (strictly read-only probe, never deleting locks or spawning browsers).
+- CLI invocations of `check_nlm_auth.js` (`npm run auth:nlm:check` / `npm run auth:nlm:heal`), `check_all_auth.js` (`auditNotebookLm`), and pre-flight validation in `nlm_sync_client.js` (`_runSyncPreflightValidations`) automatically invoke `checkAuthHealth({ autoHeal: true })` when cached cookies expire, recovering seamlessly via port `18801` and `run_headless_auth`.
 
 ### 3.3 Diagnostic & Sync Client Harmonization
 - [`scripts/lib/notebook/query_diagnostics.js`](file:///scripts/lib/notebook/query_diagnostics.js): Remediation advice updated from raw `nlm login` to `npm run auth:nlm:heal`.

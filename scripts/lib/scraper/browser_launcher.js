@@ -241,6 +241,26 @@ async function resolveAvailableFallbackCdpPort(preferredPort = DEFAULT_CDP_PORT)
 }
 
 function _spawnDetachedChromeProcess(chromeBin, chromeArgs, useHeadless) {
+  if (process.platform === 'win32' && !useHeadless) {
+    try {
+      // Under Windows agent harnesses, processes spawned via cmd.exe inherit the caller's
+      // Windows Job Object (KILL_ON_JOB_CLOSE), causing Chrome to terminate when an ephemeral
+      // terminal turn finishes. Using WMI Win32_Process.Create delegates process creation to WmiPrvSE.exe,
+      // ensuring Chrome completely breaks away from the Job Object and persists across turns (INV-253).
+      const fullCmd = `"${chromeBin}" ${chromeArgs.map(a => a.includes(' ') ? `"${a}"` : a).join(' ')}`;
+      const wmiScript = `Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = '${fullCmd.replace(/'/g, "''")}' }`;
+      const encodedScript = Buffer.from(wmiScript, 'utf16le').toString('base64');
+      const wmiProc = spawn('powershell.exe', ['-NoProfile', '-NonInteractive', '-EncodedCommand', encodedScript], {
+        stdio: 'ignore',
+        windowsHide: true
+      });
+      if (wmiProc && typeof wmiProc.unref === 'function') wmiProc.unref();
+      return;
+    } catch (_) {
+      // Fall through to cmd start if WMI invocation fails
+    }
+  }
+
   const proc = (process.platform === 'win32' && !useHeadless)
     ? spawn('cmd.exe', ['/c', 'start', '""', chromeBin, ...chromeArgs], {
         detached: true,

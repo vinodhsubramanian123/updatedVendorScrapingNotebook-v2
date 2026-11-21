@@ -1,0 +1,328 @@
+{
+  "schemaVersion": "1.1.0",
+  "description": "Golden presales query replay suite executed against every scraped/staged catalog prior to promotion.",
+  "portfolioQueries": [
+    {
+      "id": "PORTFOLIO_MULTI_CATEGORY_DRIFTS",
+      "kind": "priceDrift",
+      "query": "Show last 3 price drifts across Memory, CPU, GPU, Drive, Network Adapter, and Support & Services",
+      "assertNoTrailConflicts": true
+    }
+  ],
+  "productQueries": {
+    "Alletra_MP_B10000": [
+      {
+        "id": "B10000_S0R21A_SWITCHLESS_NODE",
+        "kind": "skuLookup",
+        "sku": "S0R21A",
+        "minPriceUsd": 10000,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "B10000_R7D02A_SWITCHED_NODE",
+        "kind": "skuLookup",
+        "sku": "R7D02A",
+        "minPriceUsd": 10000,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "B10000_R7C75A_CHASSIS",
+        "kind": "skuLookup",
+        "sku": "R7C75A",
+        "minPriceUsd": 1000,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "B10000_ALLETRA_10K_ACTIVE",
+        "kind": "catalogSearch",
+        "query": "List active options for Alletra 10k sorted by price",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      }
+    ],
+    "Alletra_MP_X10000": [
+      {
+        "id": "X10000_R7C75A_CHASSIS",
+        "kind": "skuLookup",
+        "sku": "R7C75A",
+        "minPriceUsd": 1000,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "X10000_R7C71A_CONTROLLER",
+        "kind": "skuLookup",
+        "sku": "R7C71A",
+        "minPriceUsd": 10000,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "X10000_ACTIVE_PRICED",
+        "kind": "catalogSearch",
+        "query": "List active options for Alletra MP X10000 sorted by price",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      }
+    ],
+    "DL145_Gen11": [
+      {
+        "id": "DL145_G11_P71964_BASE",
+        "kind": "skuLookup",
+        "sku": "P71964-B21",
+        "minPriceUsd": 500,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "DL145_G11_ACTIVE_PRICED",
+        "kind": "catalogSearch",
+        "query": "List active options for DL145 Gen11 sorted by price",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      }
+    ],
+    "DL360_Gen11": [
+      {
+        "id": "DL360_G11_P52499_BASE",
+        "kind": "skuLookup",
+        "sku": "P52499-B21",
+        "minPriceUsd": 1000,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "DL360_G11_ACTIVE_PRICED",
+        "kind": "catalogSearch",
+        "query": "List active options for DL360 Gen11 sorted by price",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      }
+    ],
+    "DL360_Gen12": [
+      {
+        "id": "DL360_G12_64GB_DDR5_DIMMS_LT",
+        "kind": "catalogSearch",
+        "query": "List all 64 GB DDR5 DIMMs for DL360 Gen12 and sort by lead time",
+        "allowZeroMatches": false,
+        "verifyLeadTimeMeasured": true,
+        "allowPartial": true
+      }
+    ],
+    "DL380_Gen11": [
+      {
+        "id": "DL380_G11_P52534_BASE",
+        "kind": "skuLookup",
+        "sku": "P52534-B21",
+        "minPriceUsd": 500,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "DL380_G11_ACTIVE_PRICED",
+        "kind": "catalogSearch",
+        "query": "List active options for DL380 Gen11 sorted by price",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      }
+    ],
+    "DL380_Gen12": [
+      {
+        "id": "DL380_G12_TECH_CARE_BASIC_3YR",
+        "kind": "catalogSearch",
+        "query": "Show 3-year Tech Care Basic support SKUs for DL380 Gen12",
+        "allowZeroMatches": true
+      },
+      {
+        "id": "DL380_G12_NVME_SFF_DRIVES",
+        "kind": "catalogSearch",
+        "query": "Find all NVMe SFF drives for DL380 Gen12 sorted by price",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      },
+      {
+        "id": "DL380_G12_100GB_NICS",
+        "kind": "catalogSearch",
+        "query": "Show all 100Gb NICs for DL380 Gen12",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      },
+      {
+        "id": "DL380_G12_CS_SUPPLY_SKU",
+        "kind": "skuLookup",
+        "sku": "P71118-B21",
+        "minPriceUsd": 0,
+        "rejectDatePrices": true
+      }
+    ],
+    "DL380a_Gen12": [
+      {
+        "id": "DL380A_G12_GPUS_UNDER_15K",
+        "kind": "catalogSearch",
+        "query": "Show GPUs under $15000 for DL380a Gen12",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      },
+      {
+        "id": "DL380A_G12_P76706_BASE",
+        "kind": "skuLookup",
+        "sku": "P76706-B21",
+        "minPriceUsd": 1000,
+        "rejectDatePrices": true
+      }
+    ],
+    "DL385_Gen11": [
+      {
+        "id": "DL385_G11_P53921_BASE",
+        "kind": "skuLookup",
+        "sku": "P53921-B21",
+        "minPriceUsd": 500,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "DL385_G11_ACTIVE_PRICED",
+        "kind": "catalogSearch",
+        "query": "List active options for DL385 Gen11 sorted by price",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      }
+    ],
+    "DL580_Gen12": [
+      {
+        "id": "DL580_G12_P75399_BASE",
+        "kind": "skuLookup",
+        "sku": "P75399-B21",
+        "minPriceUsd": 1000,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "DL580_G12_CPUS_ABOVE_250W_TDP",
+        "kind": "catalogSearch",
+        "query": "Show CPUs above 250W TDP for DL580 Gen12",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      },
+      {
+        "id": "DL580_G12_P73835_CS",
+        "kind": "skuLookup",
+        "sku": "P73835-B21",
+        "minPriceUsd": 0,
+        "rejectDatePrices": true
+      }
+    ],
+    "MSL3040_Tape": [
+      {
+        "id": "MSL3040_AM495A_SKU",
+        "kind": "skuLookup",
+        "sku": "AM495A",
+        "minPriceUsd": 100,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "MSL3040_PRICED_OPTIONS",
+        "kind": "catalogSearch",
+        "query": "List options for MSL3040_Tape sorted by price",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      }
+    ],
+    "SN3600B_FC": [
+      {
+        "id": "SN3600B_R7R97A_BASE",
+        "kind": "skuLookup",
+        "sku": "R7R97A",
+        "minPriceUsd": 100,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "SN3600B_ACTIVE_PRICED",
+        "kind": "catalogSearch",
+        "query": "List active options for SN3600B FC sorted by price",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      }
+    ],
+    "SY480_Gen12": [
+      {
+        "id": "SY480_G12_P68217_BASE",
+        "kind": "skuLookup",
+        "sku": "P68217-B21",
+        "minPriceUsd": 1000,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "SY480_G12_ACTIVE_PRICED",
+        "kind": "catalogSearch",
+        "query": "List active options for SY480 Gen12 sorted by price",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      }
+    ],
+    "SY100Gb_F32_Module": [
+      {
+        "id": "SY100GB_867796_MODULE",
+        "kind": "skuLookup",
+        "sku": "867796-B21",
+        "minPriceUsd": 1000,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "SY100GB_ACTIVE_PRICED",
+        "kind": "catalogSearch",
+        "query": "List active options for SY100Gb F32 Module sorted by price",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      }
+    ],
+    "Synergy_12000_Frame": [
+      {
+        "id": "SY12000_P68217_OPTION",
+        "kind": "skuLookup",
+        "sku": "P68217-B21",
+        "minPriceUsd": 1000,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "SY12000_ACTIVE_PRICED",
+        "kind": "catalogSearch",
+        "query": "List active options for Synergy 12000 Frame sorted by price",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      }
+    ],
+    "Synergy_4Port_Frame_Link_Module": [
+      {
+        "id": "SY4FLM_455886_MODULE",
+        "kind": "skuLookup",
+        "sku": "455886-B21",
+        "minPriceUsd": 100,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "SY4FLM_ACTIVE_PRICED",
+        "kind": "catalogSearch",
+        "query": "List active options for Synergy 4Port Frame Link Module sorted by price",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      }
+    ],
+    "Synergy_Brocade_64Gb_FC_Module": [
+      {
+        "id": "SYFC64_P77653_MODULE",
+        "kind": "skuLookup",
+        "sku": "P77653-B21",
+        "minPriceUsd": 1000,
+        "rejectDatePrices": true
+      },
+      {
+        "id": "SYFC64_ACTIVE_PRICED",
+        "kind": "catalogSearch",
+        "query": "List active options for Synergy Brocade 64Gb FC Module sorted by price",
+        "allowZeroMatches": false,
+        "allowPartial": true
+      }
+    ]
+  },
+  "defaultProductQueryTemplate": {
+    "id": "GENERIC_ACTIVE_PRICED",
+    "kind": "catalogSearch",
+    "query": "List active options for {PRODUCT} sorted by price",
+    "allowZeroMatches": true,
+    "allowPartial": true
+  }
+}

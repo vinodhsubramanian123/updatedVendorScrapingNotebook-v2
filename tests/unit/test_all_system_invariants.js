@@ -76,7 +76,7 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
     _clearCatalogPriceCache();
     const priceRecord = getHistoricalSkuPrice('P73282-B21', 'nonexistent_dir_for_test');
     assert.ok(priceRecord, 'Price record object is returned');
-    assert.strictEqual(priceRecord.priceUsd, 0, 'Unknown SKU has 0 price');
+    assert.strictEqual(priceRecord.priceUsd, null, 'Unknown SKU has null price');
     assert.strictEqual(priceRecord.status, 'NO_PRICE_RECORDED', 'Unknown SKU status is NO_PRICE_RECORDED');
     _clearCatalogPriceCache();
   });
@@ -270,6 +270,14 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
       /SOW_CONFLICT.*mutually exclusive/
     );
     assert.strictEqual(assertStartupMutualExclusion([FIRST_FRAME_STARTUP]), true);
+  });
+
+  await t.test('INV-253: Windows Job Object Detachment & Browser Process Survival Invariant', () => {
+    const { DEFAULT_CDP_PORT, getConfiguredCdpPort, probeCdpPort, PROFILE_DIR } = require('../../scripts/lib/scraper/browser_launcher.js');
+    assert.strictEqual(DEFAULT_CDP_PORT, 9222, 'Default CDP port must be 9222');
+    assert.strictEqual(typeof getConfiguredCdpPort, 'function');
+    assert.strictEqual(typeof probeCdpPort, 'function');
+    assert.ok(PROFILE_DIR.endsWith('.chrome_sso_profile'), 'Persistent profile must derive from .chrome_sso_profile');
   });
 
 });

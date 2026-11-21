@@ -142,7 +142,7 @@ function checkAuthHealth(options = {}) {
 
 function main() {
   const asJson = process.argv.includes('--json');
-  const shouldHeal = process.argv.includes('--heal') || process.argv.includes('--fix');
+  const shouldHeal = !process.argv.includes('--no-heal') && !process.argv.includes('--check-only');
   const health = checkAuthHealth({ autoHeal: shouldHeal });
 
   if (asJson) {

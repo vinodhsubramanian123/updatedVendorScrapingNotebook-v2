@@ -129,13 +129,13 @@ describe('Phase 4: Scrape and Chassis Coverage Suite', () => {
     }
   });
 
-  it('7. Riser Cards use maxQty=-2 sentinel (required), not a parse error', () => {
+  it('7. Riser Cards mark REQUIRED maxQty semantics safely (maxQty=null+REQUIRED)', () => {
     const d = CATALOGS.DL380_Gen12();
     const riserEntries = d.entries.filter(e => e.subCategory === 'Riser Cards');
     assert.ok(riserEntries.length > 0, 'DL380 Gen12 must have Riser Cards entries');
     for (const e of riserEntries) {
-      assert.equal(e.maxQty, -2,
-        `Riser Cards entry must use sentinel maxQty=-2 (required), got ${e.maxQty}`);
+      assert.strictEqual(e.maxQty, null, `Riser Cards maxQty must be null, got ${e.maxQty}`);
+      assert.strictEqual(e.maxQtySemantics, 'REQUIRED', `Riser Cards maxQtySemantics must be REQUIRED, got ${e.maxQtySemantics}`);
       assert.equal(e.minQty, 1, 'Riser Cards must have minQty=1');
     }
   });

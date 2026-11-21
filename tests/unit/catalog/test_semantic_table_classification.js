@@ -134,7 +134,7 @@ test('CS-tagged portal SKUs remain in the catalog with the raw status preserved'
   assert.equal(result.obj.sku, 'P71119-B21');
   assert.equal(result.obj['Unit Price (USD)'], '8459.00');
   assert.equal(result.obj.vendorAttributes['Vendor Status Badge'], 'CS');
-  assert.match(result.obj.Availability, /meaning unverified/);
+  assert.match(result.obj.Availability, /Constrained Supply \(CS\)|meaning unverified/);
 });
 
 test('nested OCA table constraints survive flattened body text', () => {
@@ -192,4 +192,65 @@ test('GPU integration SVC is counted as a service in an OCA hardware group', () 
   const { hardwareEntries, servicesEntries } = partitionCatalogEntries([entry]);
   assert.equal(hardwareEntries.length, 0);
   assert.equal(servicesEntries[0].skus[0]['Product #'], 'H36XCA1#006');
+});
+
+test('keeps storage Direct Attach cages out of Transceivers and separates GPU SW/HW cleanly', () => {
+  const { parseProductMeta, classifyComponentRole, synthesizeSubcategoryName } = require('../../../scripts/lib/catalog/product_meta.js');
+  const { applyConditionalDiscovery } = require('../../../scripts/lib/catalog/conditional_discovery.js');
+
+  const cageDesc = 'HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit';
+  assert.notEqual(classifyComponentRole('Networking', cageDesc), 'Transceiver');
+  assert.equal(classifyComponentRole('Networking', cageDesc), 'Drive Cage / Drive');
+  assert.equal(synthesizeSubcategoryName('Networking', cageDesc), 'SFF Drive Cages & Enablement');
+
+  const swDesc = 'HPE ML Dev Env SW 1-19 GPU 1yr Sub E-RTU';
+  assert.equal(classifyComponentRole('Graphics & GPU', swDesc), 'Operating System / License');
+  assert.notEqual(synthesizeSubcategoryName('Graphics & GPU', swDesc), 'GPU Accelerators');
+
+  const gpuDesc = 'NVIDIA RTX Pro 5000 48GB Spl GPU';
+  assert.equal(classifyComponentRole('Graphics & GPU', gpuDesc), 'GPU / Accelerator');
+  assert.equal(synthesizeSubcategoryName('Graphics & GPU', gpuDesc), 'GPU Accelerators');
+
+  const swPartition = partitionCatalogEntries([{
+    parentCategory: 'Graphics & GPU',
+    subCategory: 'NVIDIA GPU SW',
+    skus: [
+      { 'Product #': 'S7J51C', 'Option Type': 'Standard', Description: gpuDesc },
+      { 'Product #': 'R8W23AAE', 'Option Type': 'Standard', Description: swDesc, rowType: 'SOFTWARE_SUBSCRIPTION' }
+    ]
+  }]);
+  assert.ok(swPartition.hardwareEntries.some(e => e.parentCategory === 'Graphics & GPU' && e.skus.some(s => s['Product #'] === 'S7J51C')));
+  assert.ok(swPartition.hardwareEntries.some(e => e.parentCategory === 'Software & Licenses' && e.skus.some(s => s['Product #'] === 'R8W23AAE')));
+
+  const csParsed = parseSingleTableRow(
+    ['P99999-B21 [CS]', 'HPE Test CS Component', '$500.00', '30 days'],
+    ['Product #', 'Description', 'Unit Price (USD)', 'Lead Time'],
+    0,
+    new Map()
+  );
+  assert.equal(csParsed.obj['Lifecycle Status'], 'Constrained Supply (CS)');
+  assert.equal(csParsed.obj.lifecycleCanonical, 'Constrained Supply');
+
+  const discoveredEntries = [];
+  applyConditionalDiscovery([], [{
+    sku: 'P88888-B21',
+    description: 'NVIDIA H200 141GB PCIe GPU Accelerator',
+    lifecycleStatus: '90-Day Warning',
+    numericListPrice: 32000,
+    observedInPortal: true,
+    parentCategory: 'Graphics & GPU',
+    subCategory: 'GPU Accelerators',
+    conditionType: 'AMBIENT_GATE',
+    thresholdDegC: 27,
+    operator: 'lte'
+  }], discoveredEntries);
+  const discoveredRow = discoveredEntries[0].skus[0];
+  assert.equal(discoveredRow['Component Role'], 'GPU / Accelerator');
+  assert.equal(discoveredRow['Lifecycle Status'], 'EOL Warning (90-Day)');
+  assert.equal(discoveredRow.lifecycleCanonical, '90-Day Warning');
+  assert.equal(discoveredRow.rowType, 'HARDWARE_OPTION');
+
+  assert.equal(parseProductMeta('HPE Alletra Storage MP B10000').cleanName, 'Alletra_MP_B10000');
+  assert.equal(parseProductMeta('HPE Alletra Storage MP X10000').cleanName, 'Alletra_MP_X10000');
+  assert.equal(parseProductMeta('HPE Alletra Storage MP B20000').cleanName, 'Alletra_MP_B20000');
 });

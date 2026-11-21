@@ -11,6 +11,11 @@
  * 5. CATALOG_INTELLIGENCE— SKU lifecycle, pricing history, and option discovery
  */
 
+if (require.main === module && process.argv.includes('--json')) {
+  process.env.DOTENV_CONFIG_QUIET = 'true';
+  process.env.DOTENV_CONFIG_DEBUG = 'false';
+}
+
 const fs = require('fs');
 const { observeRouterEntry, observeActualInvocation, resolveEntryTraceId } = require('../lib/system/execution_trace_runtime.js');
 const path = require('path');
@@ -28,6 +33,7 @@ const {
 const { resolveRequirementIntent } = require('../lib/boq/requirement_intent_resolver.js');
 const { verifyVendorBOM, auditSingleVendorBOM } = require('../lib/boq/vendor_bom_verifier.js');
 const catalogDiscovery = require('../lib/catalog/catalog_discovery.js');
+const { parsePriceDriftQuery, findCatalogPriceDrifts } = require('../lib/catalog/catalog_price_drifts.js');
 const getChassisMap = (...args) => catalogDiscovery.getChassisMap(...args);
 const listAllCatalogs = (...args) => catalogDiscovery.listAllCatalogs(...args);
 const { resolveEffectivePolicy } = require('../lib/system/policy_resolver.js');
@@ -56,38 +62,66 @@ function getBaseChassisSku(chassisKey = '') {
   return null;
 }
 
-const BASE_PLATFORM_SIGNATURES = [
-  { key: 'dl380a', pattern: /\b(?:dl\s*380a|dl380a|380a\s*g\d+|380ag\d+|dl380a[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl380a_' },
-  { key: 'dl380', pattern: /\b(?:dl\s*380|dl380|380\s*g\d+|380g\d+|dl380[-_]?(?:gen|g)\d+)\b(?!a\b)/i, prefix: 'dl380_' },
-  { key: 'dl385', pattern: /\b(?:dl\s*385|dl385|385\s*g\d+|385g\d+|dl385[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl385_' },
-  { key: 'dl360', pattern: /\b(?:dl\s*360|dl360|360\s*g\d+|360g\d+|dl360[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl360_' },
-  { key: 'dl145', pattern: /\b(?:dl\s*145|dl145|145\s*g\d+|145g\d+|dl145[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl145_' },
-  { key: 'dl580', pattern: /\b(?:dl\s*580|dl580|580\s*g\d+|580g\d+|dl580[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl580_' },
-  { key: 'synergy12000', pattern: /\b(?:synergy\s*12000|p51174-b21)\b/i, prefix: 'synergy_12000_frame' },
-  { key: 'sy480', pattern: /\b(?:sy\s*480|sy480|synergy\s*480|synergy\s*compute|480\s*g\d+|480g\d+|sy480[-_]?(?:gen|g)\d+)\b/i, prefix: 'sy480_' },
-  { key: 'sy100gb', pattern: /\b(?:sy\s*100gb|sy100gb|f32\s*module|f32|synergy\s*100gb|synergy\s*fabric|synergy\s*switch)\b/i, prefix: 'sy100gb' },
-  { key: 'alletra', pattern: /\b(?:alletra|alletra\s*9000|alletra\s*storage|alletra\s*mp)\b/i, prefix: 'alletra' },
-  { key: 'msl3040', pattern: /\b(?:msl\s*3040|msl3040|storeever|tape\s*library|tape\s*automation)\b/i, prefix: 'msl3040' },
-  { key: 'gx5000', pattern: /\b(?:gx\s*5000|gx5000|cray\s*rack|gx\s*general)\b/i, prefix: 'gx5000' },
-  { key: 'sn3600b', pattern: /\bsn\s*3600b\b/i, prefix: 'sn3600b' }
-];
-
 const COMPETITOR_VENDORS = ['cisco', 'lenovo', 'supermicro', 'dell', 'huawei'];
 const OCR_IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.tiff', '.bmp', '.pdf'];
 
+function _escapeRegex(str) {
+  return String(str || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function _buildDynamicAliasesForModel(keyStem, catalogId, allStems) {
+  const variants = new Set();
+  const spaced = String(catalogId || keyStem).replace(/_/g, ' ').replace(/\bgen\s*(\d+)/i, 'Gen $1').trim();
+  if (spaced) variants.add(_escapeRegex(spaced).replace(/\\ /g, '\\s*'));
+  const compact = keyStem.toLowerCase();
+  const hasLongerSibling = allStems.some((other) => other !== compact && other.startsWith(compact) && /[a-z]/i.test(other.slice(compact.length, compact.length + 1)));
+  const lookahead = hasLongerSibling ? `(?![a-z])` : '';
+  const alphaNum = compact.match(/^([a-z]+)(\d+[a-z]?)$/);
+  if (alphaNum) {
+    variants.add(`${alphaNum[1]}\\s*${alphaNum[2]}${lookahead}`);
+    const tail = `${alphaNum[2]}${lookahead}`;
+    if (alphaNum[2].length >= 3) variants.add(`${tail}\\s*g\\d+`);
+  } else if (compact.length >= 3) {
+    variants.add(`${_escapeRegex(compact)}${lookahead}`);
+  }
+  return variants;
+}
+
 function _buildPlatformSignatures(catalogs) {
-  const signatures = [...BASE_PLATFORM_SIGNATURES];
-  for (const c of catalogs) {
-    const baseId = c.id.split('_')[0].toLowerCase();
-    if (!signatures.some(p => p.key === baseId || c.id.toLowerCase().startsWith(p.prefix || p.key))) {
-      signatures.push({
-        key: baseId,
-        pattern: new RegExp(`\\b${baseId}\\b`, 'i'),
-        prefix: baseId
-      });
+  const chassisMap = getChassisMap();
+  const entries = new Map();
+  for (const [id, meta] of Object.entries(chassisMap)) {
+    entries.set(id, { id, keywords: meta?.aliases || meta?.keywords || [] });
+  }
+  for (const cat of Array.isArray(catalogs) ? catalogs : []) {
+    if (cat?.id && !entries.has(cat.id)) {
+      entries.set(cat.id, { id: cat.id, keywords: [] });
     }
   }
-  return signatures;
+  const stems = [...entries.keys()].map((id) => id.split('_')[0].toLowerCase()).filter(Boolean);
+  const byStem = new Map();
+
+  for (const { id, keywords } of entries.values()) {
+    const stem = id.split('_')[0].toLowerCase();
+    if (!stem) continue;
+    const prefix = id.toLowerCase().replace(/_gen\d+$/i, '') + (id.includes('_Gen') ? '_' : '');
+    const variants = _buildDynamicAliasesForModel(stem, id, stems);
+    for (const kw of Array.isArray(keywords) ? keywords : []) {
+      const escaped = _escapeRegex(String(kw).trim()).replace(/\\ /g, '\\s+');
+      if (escaped) variants.add(escaped);
+    }
+    if (!byStem.has(stem)) {
+      byStem.set(stem, { key: stem, prefix: `${stem}_`, exactPrefix: prefix, variants });
+    } else {
+      for (const v of variants) byStem.get(stem).variants.add(v);
+    }
+  }
+
+  return [...byStem.values()].map((item) => ({
+    key: item.key,
+    prefix: item.key === 'sy100gb' || item.key === 'synergy' ? item.exactPrefix : item.key,
+    pattern: new RegExp(`\\b(?:${[...item.variants].join('|')})\\b`, 'i')
+  }));
 }
 
 function _parseGenerationHints(text, context) {
@@ -197,20 +231,6 @@ function getChassisCatalog(queryText = '', context = {}) {
     catalogs = Array.isArray(context?.availableCatalogs) ? context.availableCatalogs : listAllCatalogs();
   } catch (err) {
     logger.debug('ROUTE_QUERY', `Dynamic catalog discovery note: ${err?.message}`);
-  }
-
-  if (/\b(?:dl\s*360|dl360|360\s*g|360g)\b/i.test(text) && /\b(?:gen\s*12|gen12|g12)\b/i.test(text)) {
-    const hasDl360Gen12 = catalogs.some(c => c.id.toLowerCase().includes('dl360') && c.id.toLowerCase().includes('gen12'));
-    if (!hasDl360Gen12) {
-      return {
-        chassisKey: 'DL360_Gen12_UNSUPPORTED',
-        catalogDir: null,
-        catalogPath: null,
-        catalogData: null,
-        isAmbiguous: true,
-        error: 'DL360 Gen12 is not currently available in portfolio (DL360 Gen11 is available)'
-      };
-    }
   }
 
   const target = String(context.chassisName || context.model || '').toLowerCase().trim();
@@ -687,7 +707,7 @@ function _classifyCatalogSizingOrQa(text, filePath, context) {
   };
 }
 
-function classifyQueryIntent(queryText = '', context = {}) {
+function classifyQueryIntent(queryText = '', context = {}, searchRequest = undefined) {
   const text = String(queryText || '').trim().toLowerCase();
   const filePath = context.filePath || context.file || '';
 
@@ -701,6 +721,15 @@ function classifyQueryIntent(queryText = '', context = {}) {
   if (fileIntent) return fileIntent;
 
   const detectedPath = filePath || (text.match(/[\w\-./\\]+\.(?:png|jpg|jpeg|webp|tiff|bmp|pdf|xlsx|xls|csv|tsv)/i)?.[0] || '');
+  const plannedSearch = searchRequest === undefined && !detectedPath ? _compileCatalogSearch(queryText, context) : searchRequest;
+  if (!detectedPath && (parsePriceDriftQuery(text, context.previousPriceDriftScope) || plannedSearch)) {
+    return {
+      intent: 'CATALOG_INTELLIGENCE',
+      confidence: 0.95,
+      skillTarget: 'catalog-intelligence-skill',
+      rationale: 'Query requests filtered catalog search, SKU/timeline comparison, availability, or dated price changes.'
+    };
+  }
   const advancedIntent = _classifyAdvancedPresalesTracks(text, context, detectedPath);
   if (advancedIntent) return advancedIntent;
 
@@ -1015,54 +1044,179 @@ function _readSkuPriceHistory(catalogDir, targetSku) {
   }
 }
 
-function _mapCatalogSkuDetail(entry, found) {
-  const unitPriceRaw = found['Unit Price (USD)'];
+function _mapCatalogSkuDetail({ entry, row: found, observations, source, price: priceParsed }) {
+  const { buildAvailabilityContract } = require('../lib/catalog/field_parsers.js');
   const leadTime = require('../lib/taxonomy/sku_resolver.js').extractCatalogItemLeadTime(found);
+  const availContract = buildAvailabilityContract({ skuRow: found, conditionalEntry: observations, capturedAt: source?.capturedAt });
   return {
     sku: found.sku || found['Product #'],
     description: found.Description || found.description,
     category: entry.parentCategory || entry.subCategory || found.category || 'General Option',
     subCategory: entry.subCategory || null,
-    lifecycleStatus: found.lifecycleStatus || found['Lifecycle Status'] || found['CLIC Status'] || 'Active',
+    lifecycleStatus: availContract.lifecycleCanonical,
     effectiveStartDate: found['Start Date'] || found.effectiveStartDate || null,
     discontinuedDate: found['Discontinued Date'] || found.discontinuedDate || null,
-    currentPriceUsd: found.listPrice || (unitPriceRaw ? parseFloat(unitPriceRaw) : null),
+    currentPriceUsd: priceParsed.priceUsd,
+    priceState: priceParsed.priceState,
+    priceStatus: priceParsed.priceStatus,
+    priceConflicts: priceParsed.conflicts,
+    evidence: source,
+    conditionalObservations: observations,
+    selectability: availContract.selectability,
     priceHistoryTrail: found['Price History Trail'] || null,
-    availability: found.Availability || null,
+    availability: found.Availability || availContract.availability,
+    availabilityStatus: availContract.availability,
+    visibility: availContract.visibility,
+    compatibility: availContract.compatibility,
+    conditionSummary: availContract.conditionSummary,
     estimatedLeadTimeDays: leadTime.days,
-    leadTimeSource: leadTime.isPublished ? found['Lead Time Source'] || null : null
+    leadTimeRaw: leadTime.raw,
+    leadTimeUnit: leadTime.unit,
+    etaDate: leadTime.etaDate,
+    speedTier: leadTime.speedTier,
+    leadTimeSource: leadTime.isPublished ? (found['Lead Time Source'] || 'OCA Catalog') : null
   };
 }
 
-function _findLiveSkuDetails(catalogData, targetSku) {
-  if (!targetSku || !catalogData?.entries) return null;
-  const allEntries = [...catalogData.entries, ...(catalogData._servicesEntries || [])];
-  for (const entry of allEntries) {
-    if (!Array.isArray(entry.skus)) continue;
-    const found = entry.skus.find(it => cleanBaseSKU(it.sku || it['Product #']) === targetSku);
-    if (found) return _mapCatalogSkuDetail(entry, found);
+function _compileCatalogSearch(queryText, context) {
+  const { parseCatalogSearchQuery } = require('../lib/catalog/catalog_query_engine.js');
+  return parseCatalogSearchQuery(queryText, { catalogs: context.availableCatalogs,
+    selectedProduct: context.chassisName || context.model || (context.chassisDir ? path.basename(context.chassisDir) : null) });
+}
+
+function _selectPriceDriftCatalogs(queryText, context, request) {
+  const { resolveCatalogQueryScope, selectCatalogsForScope } = require('../lib/catalog/catalog_query_engine.js');
+  const catalogs = Array.isArray(context.availableCatalogs) ? context.availableCatalogs : listAllCatalogs();
+  const scope = resolveCatalogQueryScope(queryText, catalogs);
+  if (scope.unresolvedProducts.length || scope.products.length || scope.generations.length) {
+    return selectCatalogsForScope(catalogs, scope);
   }
-  return null;
+  if (/\b(?:across\s+(?:all\s+)?catalogs|(?:the\s+)?entire\s+portfolio|portfolio-wide)\b/i.test(queryText)) return catalogs;
+  const earlierCatalogs = request.referencesEarlier ? context.previousPriceDriftScope?.catalogIds : null;
+  return Array.isArray(earlierCatalogs) ? catalogs.filter(catalog => earlierCatalogs.includes(catalog.id)) : catalogs;
+}
+
+function _handleCatalogPriceDrifts(queryText, context, request) {
+  if (request.needsScope) {
+    return {
+      status: 'ACTION_REQUIRED',
+      code: 'PRICE_DRIFT_SCOPE_REQUIRED',
+      requiresHumanClarification: true,
+      message: 'Which components or SKUs should I use for the price history?'
+    };
+  }
+  const catalogs = _selectPriceDriftCatalogs(queryText, context, request);
+  const priceDrifts = findCatalogPriceDrifts(catalogs, request);
+  const { snapshotsRead, trailConflictCount, issues } = priceDrifts.coverage;
+  const hasChanges = priceDrifts.groups.some(group => group.totalChanges > 0);
+  const status = snapshotsRead === 0 ? 'ACTION_REQUIRED' : (issues.length || trailConflictCount) ? 'PARTIAL' : 'SUCCESS';
+  const message = snapshotsRead === 0 ? 'No readable dated catalog snapshots matched this scope.'
+    : hasChanges ? 'Observed USD list-price changes from dated catalogs.'
+      : 'No list-price changes could be established from the available snapshots for this scope.';
+  return {
+    status,
+    priceDrifts,
+    priceDriftScope: {
+      categories: request.categories,
+      skus: request.skus,
+      catalogIds: catalogs.map(catalog => catalog.id)
+    },
+    message
+  };
+}
+
+// Extracted from _handleCatalogIntelligence to keep that function's CC <= 30.
+// Propagates the resolved chassis key so the U2 acceptance-gate check can
+// correctly identify the target product instead of emitting UNKNOWN.
+function _executeCatalogSearchResponse(searchRequest, context) {
+  const { executeCatalogSearch } = require('../lib/catalog/catalog_query_engine.js');
+  const catalogSearch = executeCatalogSearch(searchRequest, {
+    catalogs: context.availableCatalogs, traceId: context.traceId,
+    recordMiss: process.env.NODE_ENV !== 'test' && context.recordCatalogMiss !== false
+  });
+  const { returnedCount, productsSearched, incompleteCatalogCoverage } = catalogSearch.summary;
+  const chassis = productsSearched.length === 1 ? productsSearched[0] : null;
+  const status = incompleteCatalogCoverage ? (returnedCount ? 'PARTIAL' : 'ACTION_REQUIRED') : (returnedCount ? 'SUCCESS' : 'NO_MATCHES');
+  const message = returnedCount ? 'Matched ' + returnedCount + ' catalog option(s) across ' + productsSearched.join(', ') + '.'
+    : incompleteCatalogCoverage ? 'Catalog evidence is incomplete for the requested scope or fields.'
+      : 'No catalog options matched the specified filters.';
+  return { intent: 'CATALOG_INTELLIGENCE', ...(chassis ? { chassis } : {}), status, catalogSearch, message };
+}
+
+function _catalogSkuScope(queryText, context) {
+  const { resolveCatalogQueryScope, selectCatalogsForScope } = require('../lib/catalog/catalog_query_engine.js');
+  const catalogs = Array.isArray(context.availableCatalogs) ? context.availableCatalogs : listAllCatalogs();
+  const scope = resolveCatalogQueryScope(queryText, catalogs, context.chassisName || context.model);
+  const applicable = selectCatalogsForScope(catalogs, scope);
+  return { ...scope, catalogs: applicable, singleCatalog: applicable.length === 1 ? applicable[0] : null };
+}
+
+function _historicalSkuResponse(queryText, scope, sku) {
+  const dateText = queryText.match(/\b(?:as\s+of|on|in)\s+(\d{4}-\d{2}(?:-\d{2})?|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+20\d{2})\b/i)?.[1];
+  if (!dateText && !/\bas\s+of\b/i.test(queryText)) return null;
+  const catalog = scope.singleCatalog;
+  if (!dateText || !catalog) return { status: 'ACTION_REQUIRED', code: 'CATALOG_QUERY_SCOPE_REQUIRED',
+    requiresHumanClarification: true, message: 'Specify one catalog and a date or month for historical pricing.' };
+  const { getHistoricalSkuPrice } = require('../lib/catalog/sku_versioning.js');
+  const historicalPricing = getHistoricalSkuPrice(sku, dateText, catalog.catalogDir);
+  return { status: historicalPricing.isResolved ? 'SUCCESS' : 'ACTION_REQUIRED', targetSku: sku, chassis: catalog.id, historicalPricing,
+    message: historicalPricing.isResolved ? 'Historical catalog observation retrieved.' : 'No verified price was available on or before the requested date.' };
 }
 
 function _handleCatalogIntelligence(queryText, context) {
+  const driftRequest = parsePriceDriftQuery(queryText, context.previousPriceDriftScope);
+  if (driftRequest) return _handleCatalogPriceDrifts(queryText, context, driftRequest);
+
+  const searchRequest = context.catalogSearchRequest;
+  if (searchRequest) return _executeCatalogSearchResponse(searchRequest, context);
+
   const skuCandidates = (queryText.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/gi) || []).filter(isValidHpeSKU);
-  const chassisInfo = getChassisCatalog(queryText, context);
   const skuCodes = skuCandidates.map(cleanBaseSKU);
+  if (skuCodes.length === 0) {
+    return {
+      status: 'ACTION_REQUIRED',
+      code: 'CATALOG_QUERY_SCOPE_REQUIRED',
+      requiresHumanClarification: true,
+      targetSku: null,
+      pricingTrail: null,
+      liveDetails: null,
+      message: 'Specify an HPE SKU or filtered catalog criteria (product, component, capacity, price ceiling, or lead time) for catalog intelligence.'
+    };
+  }
+
+  const scope = _catalogSkuScope(queryText, context);
+  if (scope.unresolvedProducts.length || !scope.catalogs.length) {
+    return { status: 'ACTION_REQUIRED', code: 'CATALOG_QUERY_SCOPE_REQUIRED', requiresHumanClarification: true,
+      message: 'The requested product or generation has no matching catalog.' };
+  }
+  const chassisInfo = scope.singleCatalog ? getChassisCatalog('', { ...context, model: null, chassisName: scope.singleCatalog.id }) : {};
   const baseSku = getBaseChassisSku(chassisInfo.chassisKey);
   const targetSku = skuCodes.find(sku => sku !== baseSku) || skuCodes[0] || null;
+  const historical = _historicalSkuResponse(queryText, scope, targetSku);
+  if (historical) return historical;
   const skuHistory = _readSkuPriceHistory(chassisInfo.catalogDir, targetSku);
-  const liveSkuDetails = _findLiveSkuDetails(chassisInfo.catalogData, targetSku);
+  const { lookupCatalogSku } = require('../lib/catalog/catalog_query_engine.js');
+  const match = lookupCatalogSku({ id: chassisInfo.chassisKey, catalogJsonPath: chassisInfo.catalogPath,
+    catalogDir: chassisInfo.catalogDir }, targetSku);
+  const liveSkuDetails = match ? _mapCatalogSkuDetail(match) : null;
   const freshness = liveSkuDetails && require('../lib/catalog/catalog_freshness_guard.js')
     .auditCatalogFreshness(chassisInfo.catalogData, { staleWarningDays: 3, criticalOutdatedDays: 30 });
   const platform = getChassisMap()[chassisInfo.chassisKey];
   const commercialFulfillment = targetSku ? classifyCommercialFulfillmentMode(targetSku, liveSkuDetails?.description || '') : null;
   let crossSolutionComparison = null;
+  let timelineComparison = null;
   if (targetSku) {
     try {
       const { compareSkuAcrossSolutions } = require('../lib/catalog/cross_solution_pricing.js');
-      crossSolutionComparison = compareSkuAcrossSolutions(targetSku);
+      crossSolutionComparison = compareSkuAcrossSolutions(targetSku, { catalogs: scope.catalogs,
+        includeRelatedVariants: /\b(?:related|suffix|fio|bto)\s+variants?\b/i.test(queryText) });
     } catch { /* non-blocking if cross-solution catalogs absent */ }
+    if (/\b(?:compare|timeline|across\s+(?:dates|solutions|products|catalogs))\b/i.test(queryText)) {
+      try {
+        const { compareSkuTimelines } = require('../lib/catalog/catalog_price_drifts.js');
+        timelineComparison = compareSkuTimelines(scope.catalogs, { skus: skuCodes });
+      } catch { /* non-blocking */ }
+    }
   }
 
   return {
@@ -1075,6 +1229,7 @@ function _handleCatalogIntelligence(queryText, context) {
     pricingTrail: skuHistory,
     commercialFulfillment,
     crossSolutionComparison,
+    ...(timelineComparison ? { timelineComparison } : {}),
     liveDetails: liveSkuDetails ? {
       description: liveSkuDetails.description,
       category: liveSkuDetails.category,
@@ -1083,9 +1238,23 @@ function _handleCatalogIntelligence(queryText, context) {
       effectiveStartDate: liveSkuDetails.effectiveStartDate,
       discontinuedDate: liveSkuDetails.discontinuedDate,
       currentPriceUsd: liveSkuDetails.currentPriceUsd,
+      priceState: liveSkuDetails.priceState,
+      priceStatus: liveSkuDetails.priceStatus,
+      ...(liveSkuDetails.priceConflicts ? { priceConflicts: liveSkuDetails.priceConflicts } : {}),
       priceHistoryTrail: liveSkuDetails.priceHistoryTrail,
       availability: liveSkuDetails.availability,
+      availabilityStatus: liveSkuDetails.availabilityStatus,
+      visibility: liveSkuDetails.visibility,
+      compatibility: liveSkuDetails.compatibility,
+      conditionSummary: liveSkuDetails.conditionSummary,
+      selectability: liveSkuDetails.selectability,
+      conditionalObservations: liveSkuDetails.conditionalObservations,
+      evidence: liveSkuDetails.evidence,
       estimatedLeadTimeDays: liveSkuDetails.estimatedLeadTimeDays,
+      leadTimeRaw: liveSkuDetails.leadTimeRaw,
+      leadTimeUnit: liveSkuDetails.leadTimeUnit,
+      etaDate: liveSkuDetails.etaDate,
+      speedTier: liveSkuDetails.speedTier,
       leadTimeSource: liveSkuDetails.leadTimeSource,
       capturedAt: freshness.normalizedMetadata.scrapeTimestamp,
       freshnessStatus: freshness.freshnessStatus,
@@ -1101,16 +1270,20 @@ function _handleCatalogIntelligence(queryText, context) {
 
 function _buildClearanceAdvisoryForSku(sku, catalogIndex, chassisInfo, generatePresalesLifecycleAdvisories, formatDualTrackClearanceRemarks) {
   const item = catalogIndex.get(sku);
-  const lc = classifyLifecycleState(item?.lifecycleStatus || '', item?.diffStatus || '', sku, item?.description || '');
+  const lc = classifyLifecycleState(item?.lifecycleStatus, item?.diffStatus, sku, item?.skuData?.Description, item?.skuData?.vendorSupplyStatus);
   const versionAdvisory = chassisInfo.catalogDir
-    ? generatePresalesLifecycleAdvisories(sku, chassisInfo.catalogDir, item?.lifecycleStatus || lc.canonicalStatus || '')
+    ? generatePresalesLifecycleAdvisories([{ sku, lifecycleStatus: item?.lifecycleStatus }], chassisInfo.catalogDir)[0] || null
     : null;
-  const altSku = versionAdvisory?.replacementSku || versionAdvisory?.recommendedAlternative?.sku || '';
+  const proposedSku = cleanBaseSKU(item?.skuData?.['Alternative SKU'] || versionAdvisory?.replacementSku || '');
+  const proposed = catalogIndex.get(proposedSku);
+  const proposedLifecycle = proposed?.lifecycleState;
+  const altSku = proposedLifecycle && !proposedLifecycle.isNonActive ? proposedSku : '';
+  const productionEligible = !lc.isBlockedForProduction && !lc.isDirectShip && !lc.isConstrainedSupply;
   const leadDays = item?.leadTimeDays ?? null;
   const riskNote = leadDays !== null && leadDays >= 21 ? `Estimated availability lead time ${leadDays} days.` : '';
   const commercialRemarks = formatDualTrackClearanceRemarks({
     clearanceSku: (lc.is90DayWarning || lc.isDirectShip || lc.isBlockedForProduction) ? sku : '',
-    productionSku: altSku || (!lc.isBlockedForProduction && !lc.isDirectShip ? sku : ''),
+    productionSku: altSku || (productionEligible ? sku : ''),
     deliveryRiskNote: riskNote
   });
   return {
@@ -1118,7 +1291,7 @@ function _buildClearanceAdvisoryForSku(sku, catalogIndex, chassisInfo, generateP
     description: item?.description || '',
     lifecycleState: lc.canonicalStatus,
     clearanceEligible: lc.is90DayWarning || lc.isDirectShip,
-    productionEligible: !lc.isBlockedForProduction && !lc.isDirectShip,
+    productionEligible,
     leadTimeDays: leadDays,
     recommendedProductionSku: altSku || null,
     versionAdvisory,
@@ -2351,6 +2524,19 @@ function _resolvePlatformSelectionMemory(queryText, initialPlatform, context) {
   return { platformSelectionMemory, updatedContext };
 }
 
+function _resolveRoutedPlatform(queryText, context, classification) {
+  const isCatalogMultiQuery = classification.intent === 'CATALOG_INTELLIGENCE';
+  const initial = isCatalogMultiQuery ? {} : getChassisCatalog(queryText, context);
+  const { platformSelectionMemory, updatedContext } = _resolvePlatformSelectionMemory(queryText, initial, context);
+  let chassisInfoForConf = null;
+  try {
+    if (!isCatalogMultiQuery) chassisInfoForConf = getChassisCatalog(queryText, updatedContext);
+  } catch { chassisInfoForConf = null; }
+  const unresolvedAmbiguity = ['AMBIGUOUS_QUERY', 'AMBIGUOUS_PRODUCT', 'GENERATION_MISMATCH'].includes(chassisInfoForConf?.chassisKey) ||
+    classification.intent === 'AMBIGUOUS_QUERY';
+  return { platformSelectionMemory, updatedContext, chassisInfoForConf, unresolvedAmbiguity };
+}
+
 function _buildAmbiguityResponse(queryText, classification, chassisInfoForConf, traceId) {
   const ambiguityDetails = {
     error: chassisInfoForConf?.error,
@@ -2500,6 +2686,18 @@ function _performReasoningSafe(queryText, context, classification, responseData,
   }
 }
 
+function _routedEnvelopeScope(classification, context, responseData, chassisInfoForConf, unresolvedAmbiguity, dispatched) {
+  const resolvedFilePlatform = (classification.intent === 'BOQ_EVALUATION' && context.filePath &&
+    responseData?.chassis && !['UNKNOWN', 'UNKNOWN_PRODUCT'].includes(responseData.chassis))
+    ? responseData.chassis
+    : null;
+  const resolvedCatalog = classification.intent === 'CATALOG_INTELLIGENCE' ? responseData?.chassis : null;
+  const confidence = resolvedCatalog === context.chassisName && resolvedCatalog ? 1 : dispatched.confidence;
+  const resolvedPlatform = resolvedCatalog || (chassisInfoForConf && !chassisInfoForConf.isAmbiguous ? chassisInfoForConf.chassisKey : null) || resolvedFilePlatform;
+  const isAmbiguous = resolvedFilePlatform ? false : (Boolean(chassisInfoForConf?.isAmbiguous) || unresolvedAmbiguity);
+  return { resolvedPlatform, confidence, isAmbiguous };
+}
+
 async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
   const resolvedPolicy = _resolveContextPolicy(context, { defaultOffline: false });
   context = {
@@ -2509,15 +2707,12 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     offlineMode: resolvedPolicy.offline,
     ...(resolvedPolicy.offline ? { enableCloudValidation: false } : {})
   };
-  const classification = classifyQueryIntent(queryText, context);
+  context.catalogSearchRequest = context.filePath || context.file ? null : _compileCatalogSearch(queryText, context);
+  const classification = classifyQueryIntent(queryText, context, context.catalogSearchRequest);
   const startTime = Date.now();
-  const initialPlatform = getChassisCatalog(queryText, context);
-  const { platformSelectionMemory, updatedContext } = _resolvePlatformSelectionMemory(queryText, initialPlatform, context);
+  const { platformSelectionMemory, updatedContext, chassisInfoForConf, unresolvedAmbiguity } =
+    _resolveRoutedPlatform(queryText, context, classification);
   context = updatedContext;
-
-  let chassisInfoForConf = null;
-  try { chassisInfoForConf = getChassisCatalog(queryText, context); } catch { chassisInfoForConf = null; }
-  const unresolvedAmbiguity = ['AMBIGUOUS_QUERY', 'AMBIGUOUS_PRODUCT', 'GENERATION_MISMATCH'].includes(chassisInfoForConf?.chassisKey) || classification.intent === 'AMBIGUOUS_QUERY';
   let traceId = context.traceId || resolveEntryTraceId(() => `TRC-${Date.now()}-${require('crypto').randomBytes(3).toString('hex').toUpperCase()}`);
   context.traceId = traceId;
 
@@ -2532,12 +2727,9 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
 
   const effectivePolicy = responseData?.effectivePolicy || resolvedPolicy;
   context.effectivePolicy = effectivePolicy;
-  const resolvedFilePlatform = (classification.intent === 'BOQ_EVALUATION' && context.filePath &&
-    responseData?.chassis && !['UNKNOWN', 'UNKNOWN_PRODUCT'].includes(responseData.chassis))
-    ? responseData.chassis
-    : null;
-  const resolvedPlatform = (chassisInfoForConf && !chassisInfoForConf.isAmbiguous ? chassisInfoForConf.chassisKey : null) || resolvedFilePlatform;
-  const isAmbiguous = resolvedFilePlatform ? false : (Boolean(chassisInfoForConf?.isAmbiguous) || unresolvedAmbiguity);
+  const { resolvedPlatform, confidence, isAmbiguous } = _routedEnvelopeScope(
+    classification, context, responseData, chassisInfoForConf, unresolvedAmbiguity, dispatched
+  );
   const envelope = {
     query: queryText,
     classification,
@@ -2546,8 +2738,8 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     reasoningAnalysis,
     traceId,
     executionTimeMs,
-    classificationConfidence: dispatched.confidence,
-    hitlRequired: isAmbiguous || dispatched.confidence < 0.75,
+    classificationConfidence: confidence,
+    hitlRequired: isAmbiguous || confidence < 0.75 || responseData?.requiresHumanClarification === true,
     platformSelectionMemory,
     resolvedPlatform,
     ambiguityDetails: isAmbiguous ? {

@@ -1886,6 +1886,112 @@
       }
     }
   ],
+  "portfolio_products": {
+    "DL380_Gen12": {
+      "family": "ProLiant", "gen": "Gen12", "formFactor": "8SFF", "uHeight": 2,
+      "baseSku": "P73282-B21", "model": "DL380 Gen12", "portalSearchQuery": "DL380 Gen12",
+      "aliases": ["\\bdl\\s*380\\b.*(?:gen\\s*12|gen12|\\bg\\s*12\\b|\\bg12\\b)", "dl380.*gen12"],
+      "excludeAliases": ["\\bdl\\s*380a\\b", "dl380a"]
+    },
+    "DL380_Gen11": {
+      "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "uHeight": 2,
+      "baseSku": "P52534-B21", "model": "DL380 Gen11 8SFF", "portalSearchQuery": "DL380 Gen11",
+      "aliases": ["\\bdl\\s*380\\b.*(?:gen\\s*11|gen11|\\bg\\s*11\\b|\\bg11\\b)", "dl380.*gen11"],
+      "excludeAliases": ["\\bdl\\s*380a\\b", "dl380a"]
+    },
+    "DL380a_Gen12": {
+      "family": "ProLiant", "gen": "Gen12", "formFactor": "8DW/16SW", "uHeight": 4,
+      "baseSku": "P76706-B21", "model": "DL380a Gen12", "portalSearchQuery": "DL380a Gen12",
+      "aliases": ["\\bdl\\s*(?:384|380\\s*a)\\b", "dl380a", "dl384"]
+    },
+    "DL360_Gen12": {
+      "family": "ProLiant", "gen": "Gen12", "formFactor": "10SFF/20EDSFF", "uHeight": 1,
+      "baseSku": "P72176-B21", "model": "DL360 Gen12", "portalSearchQuery": "DL360 Gen12",
+      "aliases": ["(?:\\bdl\\s*360\\b|dl360|360).*(?:gen\\s*12|gen12|\\bg\\s*12\\b|\\bg12\\b)"]
+    },
+    "DL360_Gen11": {
+      "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "uHeight": 1,
+      "baseSku": "P52499-B21", "model": "DL360 Gen11 8SFF", "portalSearchQuery": "DL360 Gen11",
+      "aliases": ["(?:\\bdl\\s*360\\b|dl360|360).*(?:gen\\s*11|gen11|\\bg\\s*11\\b|\\bg11\\b)", "\\bdl\\s*360\\b", "dl360"],
+      "excludeAliases": ["\\b(?:gen\\s*1[2-9]|gen1[2-9]|g\\s*1[2-9]|g1[2-9])\\b"]
+    },
+    "DL145_Gen11": {
+      "family": "ProLiant", "gen": "Gen11", "formFactor": "4EDSFF", "uHeight": 2,
+      "baseSku": "P71964-B21", "model": "DL145 Gen11", "portalSearchQuery": "DL145 Gen11",
+      "aliases": ["\\bdl\\s*145\\b", "dl145"]
+    },
+    "DL385_Gen11": {
+      "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "uHeight": 2,
+      "baseSku": "P53921-B21", "model": "DL385 Gen11", "portalSearchQuery": "DL385 Gen11",
+      "aliases": ["\\bdl\\s*385\\b", "dl385"]
+    },
+    "DL580_Gen12": {
+      "family": "ProLiant", "gen": "Gen12", "formFactor": "SFF", "uHeight": 4,
+      "baseSku": "P75399-B21", "model": "DL580 Gen12", "portalSearchQuery": "DL580 Gen12",
+      "aliases": ["\\bdl\\s*580\\b", "dl580"]
+    },
+    "MSL3040_Tape": {
+      "family": "StoreEver", "gen": "Tape", "formFactor": "Rack", "uHeight": 3,
+      "baseSku": "Q6Q62C", "legacyBaseSkus": ["Q2R41A"], "model": "MSL3040 Tape", "portalSearchQuery": "MSL3040",
+      "aliases": ["\\bmsl\\s*3040\\b", "\\bmsl\\b", "\\btape\\s*library\\b", "\\btape\\b"]
+    },
+    "GX5000_General_RACK": {
+      "family": "Cray", "gen": "General", "formFactor": "Rack", "uHeight": 42,
+      "baseSku": "P57100-B21", "model": "GX5000 General RACK", "portalSearchQuery": "GX5000",
+      "aliases": ["\\bcray\\b", "\\bgx\\s*5000\\b", "\\bgx5000\\b"]
+    },
+    "Synergy_12000_Frame": {
+      "family": "Synergy", "gen": "General", "formFactor": "Frame", "uHeight": 10,
+      "baseSku": "P51174-B21", "model": "Synergy 12000 Frame", "portalSearchQuery": "Synergy 12000",
+      "aliases": ["\\bsynergy\\s*12000\\b", "synergy.*frame", "\\bp51174-b21\\b"],
+      "excludeAliases": ["\\b(service|support)\\b"]
+    },
+    "SY480_Gen12": {
+      "family": "Synergy", "gen": "Gen12", "formFactor": "Compute Module", "uHeight": 0,
+      "baseSku": "P68217-B21", "model": "SY480 Gen12", "portalSearchQuery": "Synergy 480 Gen12",
+      "aliases": ["\\bsy\\s*480\\b", "sy480", "synergy\\s*480", "synergy.*(?:blade|compute)"]
+    },
+    "SY100Gb_F32_Module": {
+      "family": "Synergy", "gen": "General", "formFactor": "Interconnect Module", "uHeight": 0,
+      "baseSku": "867796-B21", "model": "SY100Gb F32 Module", "portalSearchQuery": "Synergy Virtual Connect SE 100Gb F32",
+      "aliases": ["(?:synergy\\s+)?(?:vc\\s*)?100\\s*gb\\s*f32", "synergy.*virtual\\s*connect"],
+      "excludeAliases": ["\\b(service|support|cable|transceiver)\\b"]
+    },
+    "Synergy_4Port_Frame_Link_Module": {
+      "family": "Synergy", "gen": "General", "formFactor": "Management Module", "uHeight": 0,
+      "baseSku": "876852-B21", "model": "Synergy 4-port Frame Link Module", "portalSearchQuery": "Synergy 4-port Frame Link Module",
+      "aliases": ["\\bframe\\s*link\\s*module\\b", "synergy.*4[\\s-]*port\\s*(?:flm|frame\\s*link)", "\\b876852-b21\\b"],
+      "excludeAliases": ["\\b(service|support)\\b"]
+    },
+    "Synergy_Brocade_64Gb_FC_Module": {
+      "family": "Synergy", "gen": "General", "formFactor": "FC Switch Module", "uHeight": 0,
+      "baseSku": "P77653-B21", "model": "Brocade 64Gb FC Module for Synergy", "portalSearchQuery": "Brocade 64Gb FC Module for Synergy",
+      "aliases": ["\\bbrocade\\s*64\\s*gb.*synergy", "synergy.*brocade\\s*64\\s*gb", "\\bp77653-b21\\b"],
+      "excludeAliases": ["\\b(service|support|transceiver|license|upgrade)\\b"]
+    },
+    "Alletra_MP_B10000": {
+      "family": "Alletra", "gen": "Storage", "formFactor": "Array", "uHeight": 4,
+      "baseSku": "S0B84A", "switchlessBaseSku": "S0B84A", "switchedBaseSku": "S1R06A", "chassisSku": "R7C75A", "jbofSku": "S1J10A",
+      "model": "HPE Alletra Storage MP B10000", "portalSearchQuery": "Alletra Storage MP B10000",
+      "aliases": ["alletra(?:\\s+storage)?(?:\\s+mp)?\\s+b10(?:000|100|120|130|140|200|230|240)", "\\bb10(?:000|100|120|130|140|200|230|240)\\b", "alletra(?:\\s+mp)?\\s+10k", "\\bs0b84a\\b", "\\bs1r06a\\b"]
+    },
+    "Alletra_MP_X10000": {
+      "family": "Alletra", "gen": "Storage", "formFactor": "Array", "uHeight": 4,
+      "baseSku": "S3L12A", "chassisSku": "R7C75A", "model": "HPE Alletra Storage MP X10000", "portalSearchQuery": "Alletra Storage MP X10000",
+      "aliases": ["alletra(?:\\s+storage)?(?:\\s+mp)?\\s+x10(?:000|250)", "\\bx10(?:000|250)\\b", "\\bs3l12a\\b", "\\bs3l13a\\b"]
+    },
+    "Alletra_Storage_System": {
+      "family": "Alletra", "gen": "Storage", "formFactor": "Array", "uHeight": 4,
+      "baseSku": "R0Q35A", "model": "Alletra Storage System", "portalSearchQuery": "Alletra",
+      "aliases": ["\\balletra\\b"]
+    },
+    "SN3600B_FC": {
+      "family": "SAN", "gen": "FC", "formFactor": "Switch", "uHeight": 1,
+      "baseSku": "R7R97A", "model": "SN3600B FC Switch", "portalSearchQuery": "SN3600B",
+      "aliases": ["\\bsn\\s*3600b\\b", "\\bsn3600b\\b"],
+      "excludeAliases": ["\\b(service|support|cable|transceiver|license|upgrade)\\b"]
+    }
+  },
   "SN3600B_FC": {
     "family": "SAN",
     "gen": "FC",

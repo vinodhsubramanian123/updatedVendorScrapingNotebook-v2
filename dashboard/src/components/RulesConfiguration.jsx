@@ -92,8 +92,9 @@ function SubcategoryBoundsSection({ activeSubcategories }) {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         {activeSubcategories.map((sc, scIdx) => {
-          const isUnlimited = sc.maxQty === -1 || sc.maxQty === 32;
-          const hasFiniteMax = sc.maxQty !== undefined && sc.maxQty !== -1 && sc.maxQty !== -2;
+          const sem = sc.maxQtySemantics;
+          const isUnlimited = sem === 'UNBOUNDED' || (sc.maxQty === null && sem !== 'REQUIRED' && sem !== 'BOUNDED') || sc.maxQty === -1 || sc.maxQty === 32;
+          const hasFiniteMax = typeof sc.maxQty === 'number' && Number.isFinite(sc.maxQty) && sc.maxQty >= 0 && sem !== 'UNBOUNDED';
           return (
             <div key={scIdx} className="bg-slate-50 border border-slate-200/80 p-3 rounded-xl flex flex-col justify-between hover:border-slate-300 transition-all shadow-2xs">
               <p className="text-[10px] font-bold text-slate-500 uppercase tracking-tight truncate" title={sc.parentCategory}>
@@ -104,10 +105,10 @@ function SubcategoryBoundsSection({ activeSubcategories }) {
               </p>
               <div className="mt-2.5 flex items-center justify-between">
                 <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${isUnlimited ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-800'}`}>
-                  {sc.constraint || 'No Limit'}
+                  {sc.constraint || (sem === 'REQUIRED' ? 'Required' : 'No Limit')}
                 </span>
                 <span className="text-[11px] font-black text-slate-700">
-                  {hasFiniteMax ? `Max ${sc.maxQty}` : '—'}
+                  {hasFiniteMax ? `Max ${sc.maxQty}` : (sem === 'REQUIRED' ? 'Required' : '—')}
                 </span>
               </div>
             </div>

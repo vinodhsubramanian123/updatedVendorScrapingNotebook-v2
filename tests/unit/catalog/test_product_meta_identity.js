@@ -19,4 +19,18 @@ test('product parser preserves DL380a identity and canonicalizes chassis variant
     parseProductMeta('HPE ProLiant DL380a Gen12').cleanName,
     parseProductMeta('HPE ProLiant DL380 Gen12').cleanName
   );
+  assert.deepEqual(parseProductMeta('Q6Q62C - HPE MSL3040 Scalable Base Module'), {
+    family: 'StoreEver',
+    gen: 'Tape',
+    cleanName: 'MSL3040_Tape'
+  });
+  const { isCanonicalCtoChassisCandidate } = require('../../../scripts/catalogs/build_catalog.js');
+  assert.equal(
+    isCanonicalCtoChassisCandidate({ sku: 'Q6Q62C', text: 'Q6Q62C - HPE MSL3040 Scalable Base Module', isBto: false }, 'MSL3040_Tape'),
+    true
+  );
+  assert.equal(
+    isCanonicalCtoChassisCandidate({ sku: 'Q6Q64A', text: 'Q6Q64A - HPE StoreEver MSL3040 Upgrade Power Supply Kit', isBto: false }, 'MSL3040_Tape'),
+    false
+  );
 });

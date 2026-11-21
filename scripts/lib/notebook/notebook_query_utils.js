@@ -352,11 +352,60 @@ function _processCloudQueryOutput(stdout, sanitizedQuery, options, targetNoteboo
   });
 }
 
+function _dispatchQueryChild({
+  nlmExecutable, targetNotebookId, sanitizedQuery, extendedPath, options,
+  attemptRecord, settledRef, startTime, returnedConversationId, finish, reject, resolve, failUnknown, logger,
+  cdpFallbackRetried = false
+}) {
+  const transport = require('./nlm_transport.js');
+  const env = cdpFallbackRetried
+    ? { ...transport.nlmEnvironment(extendedPath, false), NOTEBOOKLM_RPC_TRANSPORT: 'httpx' }
+    : transport.nlmEnvironment(extendedPath, true);
+  const remainingBudget = Math.max(1, options.deadlineAt - Date.now());
+  const currentTimeout = Math.max(1, Math.min(attemptRecord.diagnostic().timeoutMs || remainingBudget, remainingBudget));
+  const queryArgs = buildNotebookQueryArgs(targetNotebookId, sanitizedQuery, options.querySourceIds || [], currentTimeout);
+
+  let child;
+  child = execFile(nlmExecutable, queryArgs, {
+    timeout: currentTimeout, signal: options.signal, env, maxBuffer: 10 * 1024 * 1024
+  }, (error, stdout, stderr) => {
+    const conversationId = returnedConversationId(stdout);
+    if (conversationId) attemptRecord.update({ conversationId });
+    if (settledRef.value) return;
+    try {
+      if (options.signal?.aborted || !error || error.killed || error.signal) {
+        throwIfQueryStopped(options);
+      }
+      if (error && !cdpFallbackRetried && env.NOTEBOOKLM_RPC_TRANSPORT === 'cdp'
+        && transport.isCdpTransportError({ message: error.message, stderr, stdout })) {
+        transport.markCdpTransportUnavailable();
+        logger.info('NOTEBOOK_QUERY', 'Headless CDP transport unavailable before RPC submission; failing over once to httpx.');
+        return _dispatchQueryChild({
+          nlmExecutable, targetNotebookId, sanitizedQuery, extendedPath, options,
+          attemptRecord, settledRef, startTime, returnedConversationId, finish, reject, resolve, failUnknown, logger,
+          cdpFallbackRetried: true
+        });
+      }
+      if (error) {
+        return _handleChildSpawnOrAuthError(error, child, stdout, stderr, finish, reject, failUnknown);
+      }
+      _processCloudQueryOutput(stdout, sanitizedQuery, options, targetNotebookId, startTime, attemptRecord, finish, resolve, failUnknown);
+    } catch (failure) {
+      if ((options.signal?.aborted && Object.is(failure, options.signal.reason)) || failure?.code === 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED') {
+        return finish(reject, failure, { status: failure?.code || 'ABORTED', remoteState: 'REMOTE_STATE_UNKNOWN', verification: 'NOT_VERIFIED' });
+      }
+      failUnknown(failure);
+    }
+  });
+  if (child?.pid) attemptRecord.update({ localChildPid: child.pid });
+  return child;
+}
+
 function _executeCloudQuery(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, options = {}) {
   const logger = require('../system/pipeline_logger.js');
   const { createAttempt, returnedConversationId } = require('./query_attempt_record.js');
   return new Promise((resolve, reject) => {
-    let heartbeat, attemptRecord, child;
+    let heartbeat, attemptRecord;
     const settledRef = { value: false, dispatched: false };
     const cleanup = () => {
       clearInterval(heartbeat);
@@ -396,28 +445,10 @@ function _executeCloudQuery(nlmExecutable, targetNotebookId, sanitizedQuery, tim
       logger.info('NOTEBOOK_QUERY', 'Dispatching one logical NotebookLM query. Ambiguous failure never triggers automatic resubmission.');
       heartbeat = _startCloudQueryHeartbeat(logger, targetNotebookId, currentTimeout, options, startTime);
       settledRef.dispatched = true;
-      child = execFile(nlmExecutable, buildNotebookQueryArgs(targetNotebookId, sanitizedQuery, trustedSourceIds, currentTimeout), {
-        timeout: currentTimeout, signal: options.signal, env: require('./nlm_transport.js').nlmEnvironment(extendedPath, true), maxBuffer: 10 * 1024 * 1024
-      }, (error, stdout, stderr) => {
-        const conversationId = returnedConversationId(stdout);
-        if (conversationId) attemptRecord.update({ conversationId });
-        if (settledRef.value) return;
-        try {
-          if (options.signal?.aborted || !error || error.killed || error.signal) {
-            throwIfQueryStopped(options);
-          }
-          if (error) {
-            return _handleChildSpawnOrAuthError(error, child, stdout, stderr, finish, reject, failUnknown);
-          }
-          _processCloudQueryOutput(stdout, sanitizedQuery, options, targetNotebookId, startTime, attemptRecord, finish, resolve, failUnknown);
-        } catch (failure) {
-          if ((options.signal?.aborted && Object.is(failure, options.signal.reason)) || failure?.code === 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED') {
-            return finish(reject, failure, { status: failure?.code || 'ABORTED', remoteState: 'REMOTE_STATE_UNKNOWN', verification: 'NOT_VERIFIED' });
-          }
-          failUnknown(failure);
-        }
+      _dispatchQueryChild({
+        nlmExecutable, targetNotebookId, sanitizedQuery, extendedPath, options,
+        attemptRecord, settledRef, startTime, returnedConversationId, finish, reject, resolve, failUnknown, logger
       });
-      if (child?.pid) attemptRecord.update({ localChildPid: child.pid });
     } catch (failure) {
       if (settledRef.dispatched) return failUnknown(failure);
       finish(reject, failure, { status: 'LOCAL_EXECUTOR_THROW', remoteState: settledRef.dispatched ? 'REMOTE_STATE_UNKNOWN' : 'NOT_SUBMITTED', verification: 'NOT_VERIFIED' });

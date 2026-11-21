@@ -117,9 +117,9 @@ function _validateCatalogEntry(entry, entryIdx, categoriesFound, seenSKUs, stric
   const subCat = entry.subCategory || 'General';
   categoriesFound.add(parentCat);
 
-  // Validate Subcategory Max Qty Bound (-1=unlimited, -2=required, -3=optional)
-  if (typeof entry.maxQty === 'number' && (isNaN(entry.maxQty) || entry.maxQty < -3)) {
-    errors.push(`Entry #${entryIdx} [${parentCat} > ${subCat}]: Invalid maxQty bound (${entry.maxQty}). Expected integer >= -3.`);
+  // Validate Subcategory Max Qty Bound (null via maxQtySemantics, or legacy -1/-2/-3, or >= 0)
+  if (entry.maxQty !== null && entry.maxQty !== undefined && typeof entry.maxQty === 'number' && (isNaN(entry.maxQty) || entry.maxQty < -3)) {
+    errors.push(`Entry #${entryIdx} [${parentCat} > ${subCat}]: Invalid maxQty bound (${entry.maxQty}). Expected null or integer >= -3.`);
   }
 
   // Rules count
@@ -191,14 +191,22 @@ function parseUsdPrice(priceVal) {
     return { amount: 0, isNaN: false };
   }
   if (typeof priceVal === 'number') {
-    return { amount: priceVal, isNaN: isNaN(priceVal) };
+    return { amount: priceVal, isNaN: !Number.isFinite(priceVal) };
   }
-  const cleanStr = String(priceVal).replace(/[$,\s]/g, '');
-  if (cleanStr === '' || cleanStr.toUpperCase() === 'N/A' || cleanStr.toUpperCase() === 'NA' || cleanStr === '-') {
+  const str = String(priceVal).trim();
+  if (/^(?:|n\/?a|na|-+|unpublished)$/i.test(str)) {
     return { amount: 0, isNaN: false };
   }
-  const num = parseFloat(cleanStr);
-  return { amount: isNaN(num) ? 0 : num, isNaN: isNaN(num) };
+  if (/^(?:-\s*\$?|\$-\s*)(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d{1,4})?$/.test(str)) {
+    const negNum = -Number(str.replace(/[^0-9.]/g, ''));
+    return { amount: negNum, isNaN: !Number.isFinite(negNum) };
+  }
+  const { parseStrictPrice } = require('../catalog/field_parsers.js');
+  const parsed = parseStrictPrice(str);
+  if (parsed.priceState === 'PARSE_FAILED') {
+    return { amount: 0, isNaN: true };
+  }
+  return { amount: parsed.priceUsd !== null ? parsed.priceUsd : 0, isNaN: false };
 }
 
 module.exports = {

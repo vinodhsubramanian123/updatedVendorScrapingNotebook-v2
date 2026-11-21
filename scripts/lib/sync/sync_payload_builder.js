@@ -695,11 +695,45 @@ function _renderSupplyChainLeadTimes(entries) {
   return md;
 }
 
-function _buildSmartChassisAndRecommendedSection(catalogData) {
+function _renderStructuralFidelitySummary(catalogData, servicesData) {
+  const entries = [...(catalogData?.entries || []), ...(servicesData?.entries || [])];
+  if (entries.length === 0) return '';
+  const rowTypeCounts = {};
+  const priceStateCounts = {};
+  const visibilityCounts = {};
+  let numericLeadCount = 0;
+  let etaDateCount = 0;
+  let unpublishedLeadCount = 0;
+
+  for (const e of entries) {
+    for (const s of e.skus || []) {
+      const rt = s.rowType || 'HARDWARE_OPTION';
+      const ps = s.priceState || (s.listPrice > 0 ? 'PRICED' : 'UNPRICED');
+      const vis = s.visibility || s.visibilityState || 'VISIBLE';
+      rowTypeCounts[rt] = (rowTypeCounts[rt] || 0) + 1;
+      priceStateCounts[ps] = (priceStateCounts[ps] || 0) + 1;
+      visibilityCounts[vis] = (visibilityCounts[vis] || 0) + 1;
+      if (Number.isFinite(s.leadTimeDays)) numericLeadCount++;
+      else if (s.etaDate) etaDateCount++;
+      else unpublishedLeadCount++;
+    }
+  }
+
+  const fmtMap = obj => Object.entries(obj).map(([k, v]) => `${k}: ${v}`).join(', ');
+  let md = `### Structural Field & Evidence Coverage\n\n`;
+  md += `- **Row Types**: ${fmtMap(rowTypeCounts)}\n`;
+  md += `- **Price States**: ${fmtMap(priceStateCounts)}\n`;
+  md += `- **Lead-Time Measurement**: Numeric Days: ${numericLeadCount}, ETA Date Only: ${etaDateCount}, Unpublished: ${unpublishedLeadCount}\n`;
+  md += `- **Visibility Coverage**: ${fmtMap(visibilityCounts)}\n\n`;
+  return md;
+}
+
+function _buildSmartChassisAndRecommendedSection(catalogData, servicesData = null) {
   let md = '';
   md += _renderSmartChassisCombinations(catalogData?.smartChassisCombinations);
   md += _renderRecommendedHardwareOptions(catalogData?.entries);
   md += _renderSolutionManifest(catalogData?.solutionManifest);
+  md += _renderStructuralFidelitySummary(catalogData, servicesData);
   md += _renderSupplyChainLeadTimes(catalogData?.entries);
   return md;
 }
@@ -1003,7 +1037,7 @@ function _assembleMarkdownDocument(targetDir, chassisName, ctx) {
     servicesData: ctx.servicesData
   });
   md += _buildSameProductVariantSection(chassisName, ctx.targetIdentity);
-  md += _buildSmartChassisAndRecommendedSection(ctx.catalogData);
+  md += _buildSmartChassisAndRecommendedSection(ctx.catalogData, ctx.servicesData);
   md += _renderLivePortalServices(targetDir, chassisName, ctx.cfg);
   return md;
 }

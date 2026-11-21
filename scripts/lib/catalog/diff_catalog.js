@@ -20,12 +20,23 @@
 const fs   = require('fs');
 const path = require('path');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
+const { parseStrictPrice, isSuspectedDateParseInteger } = require('./field_parsers.js');
+
+function parsePriceWithState(val, row = null, options = {}) {
+  const parsed = parseStrictPrice(val, { row, ...options });
+  return {
+    price: parsed.priceUsd !== null ? parsed.priceUsd : 0,
+    priceUsd: parsed.priceUsd,
+    priceState: parsed.priceState,
+    priceStatus: parsed.priceStatus,
+    reason: parsed.reason
+  };
+}
 
 function parsePrice(val) {
-  if (val === null || val === undefined) return 0;
-  const cleaned = String(val).replace(/[^0-9.-]/g, '').trim();
-  const num = parseFloat(cleaned);
-  return isNaN(num) ? 0 : num;
+  if (val === null || val === undefined || val === '') return 0;
+  const parsed = parseStrictPrice(val);
+  return parsed.priceUsd !== null ? parsed.priceUsd : 0;
 }
 
 function formatDate(dateStr) {
@@ -63,73 +74,92 @@ function appendTrailEvent(trail, event) {
 }
 
 function isSuspectedDateParsePrice(price) {
-  if (!price || price <= 10000) return false;
-  const s = String(Math.round(price));
-  // Matches dates parsed as numbers: DDMMYYYY, DMMYYYY, or YYYYMMDD
-  return /^(0?[1-9]|[12][0-9]|3[01])(0?[1-9]|1[012])(20\d\d)$/.test(s) ||
-         /^(20\d\d)(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$/.test(s);
+  if (!price || price < 1012000) return false;
+  const rounded = Math.round(price);
+  if (isSuspectedDateParseInteger(rounded)) return true;
+  const s = String(rounded);
+  return s.length >= 7 && s.length <= 8 && /^(0?[1-9]|[12][0-9]|3[01])(0?[1-9]|1[012])(20\d\d)$/.test(s);
+}
+
+function _normalizeRawTrailEvent(rawEvent) {
+  const numericPass = typeof rawEvent?.price === 'number';
+  const rawParsed = parsePriceWithState(rawEvent?.price, null, {
+    rejectSuspectedDateInteger: !numericPass
+  });
+  const event = { ...rawEvent, price: rawParsed.price };
+  if (rawParsed.priceState === 'PARSE_FAILED') {
+    event.quarantined = true;
+    event.validationState = rawParsed.reason === 'PRICE_DELTA_TOKEN'
+      ? 'SUSPECTED_PRICE_DELTA_PARSE'
+      : (rawParsed.reason === 'DATE_IN_PRICE_FIELD' || rawParsed.reason === 'SUSPECTED_DATE_PARSE_INTEGER'
+        ? 'SUSPECTED_DATE_PARSE'
+        : 'PARSE_FAILED_PRICE');
+    event.anomalyProvenance = {
+      observedPrice: rawEvent?.price,
+      suspectedReason: rawParsed.reason || 'Malformed legacy price token'
+    };
+  }
+  return event;
+}
+
+function _buildNeighborAnomalyProvenance(event, previous, next, suspectedDate, isolatedSpike, isolatedCollapse) {
+  const maxNeighbor = Math.max(previous.price, next.price);
+  const minNeighbor = Math.min(previous.price, next.price);
+  return {
+    observedPrice: event.price,
+    suspectedReason: suspectedDate
+      ? 'Date parsed as price integer'
+      : (isolatedSpike ? 'Isolated 10x spike between similar neighbors' : 'Isolated 10x collapse between similar neighbors'),
+    neighborBefore: { date: previous.date, price: previous.price },
+    neighborAfter: { date: next.date, price: next.price },
+    suggestedCorrection: previous.price,
+    ratio: isolatedSpike
+      ? parseFloat((event.price / maxNeighbor).toFixed(2))
+      : (isolatedCollapse ? parseFloat((minNeighbor / event.price).toFixed(2)) : null)
+  };
+}
+
+function _evaluateTrailEventAnomaly(event, events, index) {
+  if (event.quarantined || !(event.price > 0)) return;
+  const previous = events.slice(0, index).reverse().find(item => item.price > 0 && !item.quarantined);
+  const next = events.slice(index + 1).find(item => item.price > 0 && !item.quarantined);
+  const suspectedDate = isSuspectedDateParsePrice(event.price);
+
+  if (previous && next) {
+    const neighborsAgree = Math.max(previous.price, next.price) / Math.min(previous.price, next.price) <= 1.2;
+    const isolatedSpike = event.price / Math.max(previous.price, next.price) >= 10;
+    const isolatedCollapse = Math.min(previous.price, next.price) / event.price >= 10;
+    if (neighborsAgree && (isolatedSpike || isolatedCollapse || suspectedDate)) {
+      event.quarantined = true;
+      event.validationState = suspectedDate
+        ? 'SUSPECTED_DATE_PARSE'
+        : (isolatedSpike ? 'ANOMALOUS_PRICE_SPIKE' : 'ANOMALOUS_PRICE_COLLAPSE');
+      event.effectivePrice = previous.price;
+      event.anomalyProvenance = _buildNeighborAnomalyProvenance(event, previous, next, suspectedDate, isolatedSpike, isolatedCollapse);
+      return;
+    }
+  } else if (suspectedDate) {
+    event.quarantined = true;
+    event.validationState = 'SUSPECTED_DATE_PARSE';
+    event.anomalyProvenance = { observedPrice: event.price, suspectedReason: 'Date parsed as price integer' };
+    return;
+  }
+  if (!event.validationState) event.validationState = 'VALIDATED';
 }
 
 function sanitizePriceTrail(trail, options = {}) {
   const byDate = new Map();
   for (const rawEvent of Array.isArray(trail) ? trail : []) {
-    const event = { ...rawEvent, price: parsePrice(rawEvent?.price) };
+    const event = _normalizeRawTrailEvent(rawEvent);
     const existing = byDate.get(event.date);
     if (!existing || STATUS_PRIORITY.indexOf(event.status) >= STATUS_PRIORITY.indexOf(existing.status)) {
       byDate.set(event.date, event);
     }
   }
   const events = [...byDate.values()].sort((left, right) => String(left.date).localeCompare(String(right.date)));
-
   for (let index = 0; index < events.length; index++) {
-    const event = events[index];
-    if (!(event.price > 0)) continue;
-
-    const previous = events.slice(0, index).reverse().find(item => item.price > 0 && !item.quarantined);
-    const next = events.slice(index + 1).find(item => item.price > 0 && !item.quarantined);
-    const suspectedDate = isSuspectedDateParsePrice(event.price);
-
-    if (previous && next) {
-      const neighborsAgree = Math.max(previous.price, next.price) / Math.min(previous.price, next.price) <= 1.2;
-      const isolatedSpike = event.price / Math.max(previous.price, next.price) >= 10;
-      const isolatedCollapse = Math.min(previous.price, next.price) / event.price >= 10;
-
-      if (neighborsAgree && (isolatedSpike || isolatedCollapse || suspectedDate)) {
-        event.quarantined = true;
-        event.validationState = suspectedDate
-          ? 'SUSPECTED_DATE_PARSE'
-          : (isolatedSpike ? 'ANOMALOUS_PRICE_SPIKE' : 'ANOMALOUS_PRICE_COLLAPSE');
-        event.effectivePrice = previous.price;
-        event.anomalyProvenance = {
-          observedPrice: event.price,
-          suspectedReason: suspectedDate
-            ? 'Date parsed as price integer'
-            : (isolatedSpike ? 'Isolated 10x spike between similar neighbors' : 'Isolated 10x collapse between similar neighbors'),
-          neighborBefore: { date: previous.date, price: previous.price },
-          neighborAfter: { date: next.date, price: next.price },
-          suggestedCorrection: previous.price,
-          ratio: isolatedSpike
-            ? parseFloat((event.price / Math.max(previous.price, next.price)).toFixed(2))
-            : (isolatedCollapse ? parseFloat((Math.min(previous.price, next.price) / event.price).toFixed(2)) : null)
-        };
-      } else if (!event.validationState) {
-        event.validationState = 'VALIDATED';
-      }
-    } else {
-      if (suspectedDate && event.price > 100000) {
-        event.quarantined = true;
-        event.validationState = 'SUSPECTED_DATE_PARSE';
-        event.anomalyProvenance = {
-          observedPrice: event.price,
-          suspectedReason: 'Date parsed as price integer'
-        };
-      } else if (!event.validationState) {
-        event.validationState = 'VALIDATED';
-      }
-    }
+    _evaluateTrailEventAnomaly(events[index], events, index);
   }
-
-  // Non-destructive: preserve all events unless explicitly requested otherwise
   if (options.excludeQuarantined) {
     return events.filter(e => !e.quarantined);
   }
@@ -420,49 +450,16 @@ function _diffAddedSku(sku, pn, currPrice, entry, scrapeDate, priceHistory, disc
   }
 }
 
-function _diffExistingSku(sku, pn, currPrice, prevSku, entry, catalogData, scrapeDate, priceHistory, attributeHistory, diffSummary) {
-  const prevPrice = parsePrice(prevSku['Unit Price (USD)'] || prevSku['Price (USD)'] || prevSku['Price'] || prevSku.price);
-  sku['Previous List Price (USD)'] = prevPrice > 0 ? prevPrice.toFixed(2) : 'N/A';
-
-  const currComp = _normalizeComparisonSku(sku, entry);
-  const prevComp = _normalizeComparisonSku(prevSku);
-
-  const attributeDeltas = recordAttributeDeltas(currComp, prevComp, {
-    scrapeDate,
-    productNumber: pn,
-    chassis: catalogData.metadata?.chassis || 'Chassis',
-    mainCategory: entry.parentCategory || prevSku.parentCategory || '',
-    subCategory: entry.subCategory || prevSku.subCategory || ''
-  }, attributeHistory);
-
-  const priceHasChanged = Math.abs(currPrice - prevPrice) > 0.001;
-  const attrsHaveChanged = attributeDeltas.length > 0;
-
-  sku['Attribute Deltas'] = attrsHaveChanged
-    ? attributeDeltas.map(d => `${d.field}: "${d.oldValue}" → "${d.newValue}"`).join(' | ')
-    : 'None';
-
-  const formattedTrailDeltas = attrsHaveChanged
-    ? attributeDeltas.map(d => `${d.field}: "${d.oldValue}" -> "${d.newValue}"`)
-    : [];
-
+function _applyDiffStatusAndTrail({ sku, pn, currPrice, prevPrice, priceHasChanged, attrsHaveChanged, formattedTrailDeltas, scrapeDate, priceHistory, diffSummary }) {
+  const delta = currPrice - prevPrice;
+  const pct = prevPrice > 0 ? (delta / prevPrice * 100) : 0;
   if (priceHasChanged && attrsHaveChanged) {
-    const delta = currPrice - prevPrice;
-    const pct = prevPrice > 0 ? (delta / prevPrice * 100) : 0;
     sku['Diff Status'] = 'PRICE_AND_ATTRIBUTE_CHANGED';
     sku['Price Change (USD)'] = `${delta > 0 ? '+' : ''}$${delta.toFixed(2)}`;
     sku['Price Change (%)'] = `${pct > 0 ? '+' : ''}${pct.toFixed(2)}%`;
-    appendTrailEvent(priceHistory[pn], {
-      date: scrapeDate,
-      price: currPrice,
-      status: 'PRICE_AND_ATTRIBUTE_CHANGED',
-      prevPrice,
-      attributeDeltas: formattedTrailDeltas
-    });
+    appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'PRICE_AND_ATTRIBUTE_CHANGED', prevPrice, attributeDeltas: formattedTrailDeltas });
     diffSummary.priceAndAttributeChanged++;
   } else if (priceHasChanged) {
-    const delta = currPrice - prevPrice;
-    const pct = prevPrice > 0 ? (delta / prevPrice * 100) : 0;
     sku['Diff Status'] = 'PRICE_CHANGED';
     sku['Price Change (USD)'] = `${delta > 0 ? '+' : ''}$${delta.toFixed(2)}`;
     sku['Price Change (%)'] = `${pct > 0 ? '+' : ''}${pct.toFixed(2)}%`;
@@ -472,22 +469,40 @@ function _diffExistingSku(sku, pn, currPrice, prevSku, entry, catalogData, scrap
     sku['Diff Status'] = 'ATTRIBUTE_CHANGED';
     sku['Price Change (USD)'] = '$0.00';
     sku['Price Change (%)'] = '0.00%';
-    appendTrailEvent(priceHistory[pn], {
-      date: scrapeDate,
-      price: currPrice,
-      status: 'ATTRIBUTE_CHANGED',
-      attributeDeltas: formattedTrailDeltas
-    });
+    appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'ATTRIBUTE_CHANGED', attributeDeltas: formattedTrailDeltas });
     diffSummary.attributeChanged++;
   } else {
     sku['Diff Status'] = 'UNCHANGED';
     sku['Price Change (USD)'] = '$0.00';
     sku['Price Change (%)'] = '0.00%';
-    if (priceHistory[pn].length === 0) {
-      appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'BASELINE' });
-    }
+    if (priceHistory[pn].length === 0) appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'BASELINE' });
     diffSummary.unchanged++;
   }
+}
+
+function _diffExistingSku(sku, pn, currPrice, prevSku, entry, catalogData, scrapeDate, priceHistory, attributeHistory, diffSummary) {
+  const currParsed = parsePriceWithState(sku['Unit Price (USD)'] ?? sku['List Price (USD)'] ?? sku['Price (USD)'] ?? sku['Price'] ?? sku.price, sku);
+  const prevParsed = parsePriceWithState(prevSku['Unit Price (USD)'] ?? prevSku['List Price (USD)'] ?? prevSku['Price (USD)'] ?? prevSku['Price'] ?? prevSku.price, prevSku);
+  const prevPrice = prevParsed.price;
+  sku['Previous List Price (USD)'] = prevParsed.priceUsd !== null && prevPrice > 0 ? prevPrice.toFixed(2) : 'N/A';
+  sku['Price State'] = currParsed.priceState;
+
+  const attributeDeltas = recordAttributeDeltas(_normalizeComparisonSku(sku, entry), _normalizeComparisonSku(prevSku), {
+    scrapeDate,
+    productNumber: pn,
+    chassis: catalogData.metadata?.chassis || 'Chassis',
+    mainCategory: entry.parentCategory || prevSku.parentCategory || '',
+    subCategory: entry.subCategory || prevSku.subCategory || ''
+  }, attributeHistory);
+
+  const incomparablePrice = currParsed.priceState === 'PARSE_FAILED' || prevParsed.priceState === 'PARSE_FAILED'
+    || currParsed.priceState === 'UNPRICED' || prevParsed.priceState === 'UNPRICED';
+  const priceHasChanged = !incomparablePrice && Math.abs(currPrice - prevPrice) > 0.001;
+  const attrsHaveChanged = attributeDeltas.length > 0;
+  sku['Attribute Deltas'] = attrsHaveChanged ? attributeDeltas.map(d => `${d.field}: "${d.oldValue}" → "${d.newValue}"`).join(' | ') : 'None';
+  const formattedTrailDeltas = attrsHaveChanged ? attributeDeltas.map(d => `${d.field}: "${d.oldValue}" -> "${d.newValue}"`) : [];
+
+  _applyDiffStatusAndTrail({ sku, pn, currPrice, prevPrice, priceHasChanged, attrsHaveChanged, formattedTrailDeltas, scrapeDate, priceHistory, diffSummary });
 }
 
 function _scorePrevCandidate(cand, currDesc, currOpt, currSub) {
@@ -531,10 +546,14 @@ function _diffSingleCatalogSku(sku, pn, entry, prevCatalog, prevSkuMap, catalogD
     return;
   }
 
-  const currPrice = parsePrice(sku['Unit Price (USD)'] || sku['Price (USD)'] || sku['Price'] || sku.price);
+  const currParsed = parsePriceWithState(sku['List Price (USD)'] ?? sku['Unit Price (USD)'] ?? sku['Price (USD)'] ?? sku['Price'] ?? sku.price, sku);
+  const currPrice = currParsed.price;
+  sku['Price State'] = currParsed.priceState;
   if (!priceHistory[pn]) priceHistory[pn] = [];
 
-  _handleReinstatedSku(pn, currPrice, scrapeDate, priceHistory, discontinuedRegistry, diffSummary);
+  if (currParsed.priceState !== 'PARSE_FAILED' && currParsed.priceState !== 'UNPRICED') {
+    _handleReinstatedSku(pn, currPrice, scrapeDate, priceHistory, discontinuedRegistry, diffSummary);
+  }
 
   if (!prevCatalog) {
     _diffBaselineSku(sku, pn, currPrice, scrapeDate, priceHistory, diffSummary);
@@ -776,6 +795,28 @@ function computeCategoryPriceAnalytics(catalogData, scrapeDate) {
   return { scrapeDate, categoryBreakdown: categoryAnalytics };
 }
 
+function prepareSameDayPriceHistory(catalogData, priceHistory, scrapeDate) {
+  const pricesBySku = new Map();
+  for (const entry of catalogData.entries || []) {
+    for (const row of entry.skus || []) {
+      const sku = row['Product #'];
+      if (!sku || isRemovalTombstone(row)) continue;
+      const prices = pricesBySku.get(sku) || new Set();
+      prices.add(parsePrice(row['Unit Price (USD)'] || row['Price (USD)'] || row['Price'] || row.price));
+      pricesBySku.set(sku, prices);
+    }
+  }
+  for (const [sku, prices] of pricesBySku) {
+    const trail = priceHistory[sku];
+    const existing = trail?.find(event => event.date === scrapeDate);
+    if (!existing || !/^PRICE_(?:AND_ATTRIBUTE_)?CHANGED$/.test(existing.status)) continue;
+    const [price] = prices;
+    if (prices.size !== 1 || price <= 1 || price === existing.price) continue;
+    // The fresh comparison can replace this observation at its normal status priority.
+    trail[trail.indexOf(existing)] = { date: scrapeDate, price, status: 'UNCHANGED' };
+  }
+}
+
 /**
  * Perform diff calculation and history update.
  * @param {object} catalogData    - Structured catalog object from build_catalog.js
@@ -794,7 +835,8 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
   const attributeHistoryPath = path.join(historyDir, `${historyLabel === 'services' ? 'services_' : ''}attribute_history.json`);
   const discontinuedSkusPath = path.join(historyDir, `${historyLabel === 'services' ? 'services_' : ''}discontinued_skus.json`);
 
-  if (fs.existsSync(currentSnapshotPath)) {
+  const sameDayRerun = fs.existsSync(currentSnapshotPath);
+  if (sameDayRerun) {
     console.warn(`  ⚠️  [SAME-DAY RERUN] Snapshot ${path.basename(currentSnapshotPath)} already exists.`);
     console.warn(`      Previous run's snapshot will be replaced with this run's data.`);
   }
@@ -855,6 +897,7 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
   }
 
   // 1. Process current entries & compute diffs
+  if (sameDayRerun) prepareSameDayPriceHistory(catalogData, priceHistory, scrapeDate);
   const currSkuMap = diffCurrentCatalogEntries(
     catalogData, prevCatalog, prevSkuMap, priceHistory, discontinuedRegistry, attributeHistory, scrapeDate, diffSummary
   );
@@ -906,9 +949,12 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
 module.exports = {
   processCatalogDiff,
   parsePrice,
+  parsePriceWithState,
   appendTrailEvent,
   dedupeAttributeHistory,
   sanitizePriceTrail,
+  isSuspectedDateParsePrice,
+  isRemovalTombstone,
   buildTrailString,
   resolvePreviousCatalogAndSkus,
   diffCurrentCatalogEntries,

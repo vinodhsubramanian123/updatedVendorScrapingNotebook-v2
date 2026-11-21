@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "description": "Data-driven zero-price entitlement, FIO trigger, and parent support contract policies.",
+  "confirmedZeroParentContracts": [
+    "HA113A1",
+    "HU4B2A3"
+  ],
+  "confirmedZeroTriggerSkus": [
+    "P35876-B21",
+    "S1A05A"
+  ],
+  "confirmedZeroSkuSuffixes": [
+    "-F21"
+  ],
+  "confirmedZeroSkuSubstrings": [
+    "#0D1"
+  ],
+  "strictFioDescriptionPatterns": [
+    "(?:\\benablement\\b.*\\b(?:fio|zero|config)\\b|\\b(?:fio|zero|config)\\b.*\\benablement\\b)",
+    "(?:\\bfactory\\s+integrated\\b.*\\bkit\\b|\\bkit\\b.*\\bfactory\\s+integrated\\b)"
+  ],
+  "confirmedZeroDescriptionPatterns": [
+    "\\bfio\\b",
+    "factory\\s*integrated",
+    "\\bincluded\\b",
+    "no\\s*charge",
+    "\\btracking\\b",
+    "(?:\\benablement\\b.*\\b(?:fio|zero|config)\\b|\\b(?:fio|zero|config)\\b.*\\benablement\\b)"
+  ]
+}

@@ -47,7 +47,7 @@ test('▶ [SUITE 1]: Dynamic GPL Price Baseline Preservation across Unbundled Vi
 
   // Test 5: Fallback gracefully for unknown non-existent SKU without throwing
   const priceUnknown = getHistoricalSkuPrice('NON-EXISTENT-SKU-999', 'DL380_Gen11');
-  assert.equal(priceUnknown.priceUsd, 0, 'Unknown SKU must return 0 price without throwing error');
+  assert.equal(priceUnknown.priceUsd, null, 'Unknown SKU must remain unpriced without throwing an error');
 });
 
 test('▶ [SUITE 2]: Standardized 7-Column Reconciliation BOM Schema (INV-32)', () => {

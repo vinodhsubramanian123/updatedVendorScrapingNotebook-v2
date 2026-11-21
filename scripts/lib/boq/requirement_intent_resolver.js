@@ -94,6 +94,7 @@ function _buildFlattenedCandidate(skuData, entry) {
     parentCategory: entry.parentCategory || '',
     subCategory: entry.subCategory || '',
     lifecycleStatus: skuData['Lifecycle Status'] || skuData.lifecycleStatus || skuData.Status || '',
+    vendorSupplyStatus: skuData.vendorSupplyStatus,
     diffStatus: skuData['Diff Status'] || skuData.diffStatus || '',
     listPrice: Number(skuData.listPrice || skuData['Unit Price (USD)'] || 0),
     hpeRecommended: skuData['HPE Recommended'] || skuData.hpeRecommended || '',
@@ -144,8 +145,8 @@ function _computeLeadTimeDaysAndBoost(candidate, line) {
 
 function scoreCandidate(candidate, line, suspectedSku, roleInference) {
   if (!roleInference.role || candidate.role !== roleInference.role) return null;
-  const lc = classifyLifecycleState(candidate.lifecycleStatus, candidate.diffStatus, candidate.sku, candidate.description);
-  if (lc.isBlockedForProduction) return null;
+  const lc = classifyLifecycleState(candidate.lifecycleStatus, candidate.diffStatus, candidate.sku, candidate.description, candidate.vendorSupplyStatus);
+  if (lc.isBlockedForProduction || lc.isConstrainedSupply) return null;
 
   const words = jaccard(tokenize(line), tokenize(candidate.description));
   const requestedNumbers = numericTokens(line);

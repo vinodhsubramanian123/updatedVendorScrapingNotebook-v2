@@ -193,7 +193,7 @@ test('Area C4: Rejects 10-node OCP build independently when P72203-B21, P72600-B
     .filter(r => !r.sku.endsWith('0D1'))
     .map(r => ({ sku: r.sku.replace(/\s+(?:AKM|B19)$/i, ''), description: r.description, quantity: r.qty, unitPriceUsd: r.unitPrice }));
 
-  const passRes = evaluatePhysicalMath(intact, catalogData, CHASSIS_DIR, { offline: true });
+  const passRes = evaluatePhysicalMath(intact, catalogData, CHASSIS_DIR, { offline: true, skipSynthesis: true });
   assert.strictEqual(passRes.isMathClean, true);
   assert.strictEqual(passRes.configurationContext?.multiplier, 10);
   const perNodeOcp = passRes.aspectChecks.find(a => a.id === 5)?.operands?.ocpAdapterCount;
@@ -201,16 +201,16 @@ test('Area C4: Rejects 10-node OCP build independently when P72203-B21, P72600-B
   assert.strictEqual(perNodeOcp * passRes.configurationContext.multiplier, 20);
 
   const noSlotB = intact.filter(p => p.sku !== 'P72203-B21');
-  assert.strictEqual(evaluatePhysicalMath(noSlotB, catalogData, CHASSIS_DIR, { offline: true }).isMathClean, false);
+  assert.strictEqual(evaluatePhysicalMath(noSlotB, catalogData, CHASSIS_DIR, { offline: true, skipSynthesis: true }).isMathClean, false);
 
   const noSlotASignal = intact.filter(p => p.sku !== 'P72600-B21');
-  assert.strictEqual(evaluatePhysicalMath(noSlotASignal, catalogData, CHASSIS_DIR, { offline: true }).isMathClean, false);
+  assert.strictEqual(evaluatePhysicalMath(noSlotASignal, catalogData, CHASSIS_DIR, { offline: true, skipSynthesis: true }).isMathClean, false);
 
   const wrongPcieCable = intact.map(p => (p.sku === 'P72600-B21' ? { ...p, sku: 'P72604-B21', description: 'HPE DL360 Gen12 PCIe Slot1 Controller Cable Kit' } : p));
-  assert.strictEqual(evaluatePhysicalMath(wrongPcieCable, catalogData, CHASSIS_DIR, { offline: true }).isMathClean, false);
+  assert.strictEqual(evaluatePhysicalMath(wrongPcieCable, catalogData, CHASSIS_DIR, { offline: true, skipSynthesis: true }).isMathClean, false);
 
   const noSideband = intact.filter(p => p.sku !== 'P48918-B21');
-  assert.strictEqual(evaluatePhysicalMath(noSideband, catalogData, CHASSIS_DIR, { offline: true }).isMathClean, false);
+  assert.strictEqual(evaluatePhysicalMath(noSideband, catalogData, CHASSIS_DIR, { offline: true, skipSynthesis: true }).isMathClean, false);
 });
 
 test('Area A: Selector-revealed P40497-B21 behind P72223-B21 materializes cleanly and matches catalog + receipt provenance', () => {
@@ -455,6 +455,19 @@ test('Area A2: probeBackplaneSelectorSkus captures P40497-B21 when hot-plug driv
   });
   assert.equal(unmatched.reason, 'REQUESTED_BACKPLANE_SELECTOR_UNAVAILABLE');
   assert.deepEqual(unmatched.observedSelectors, []);
+
+  const { _parseRevealedDriveRow } = require('../../scripts/lib/scraper/drive_cage_selector_probe.js');
+  const parsedWithLeadingBlank = _parseRevealedDriveRow({
+    id: 'item_tr_P49031-B21_storage_HotPlugSFFChoice',
+    className: 'item_tr',
+    inUnavail: false,
+    visible: true,
+    headers: ['', 'Product #', 'Description', 'Quantity', 'Price (USD)', 'Est. Lead Time', 'Start', 'Discontinued', 'Obsolete'],
+    cells: ['', 'P49031-B21', 'HPE 15.36TB NVMe RI SFF Drive', '0', '21,580.00', '14', '01/01/2025', '12/31/2029', '']
+  }, new Set(), new Set(), 'P72223-B21', '2SFF Backplane');
+  assert.strictEqual(parsedWithLeadingBlank.sku, 'P49031-B21');
+  assert.strictEqual(parsedWithLeadingBlank.numericListPrice, 21580);
+  assert.strictEqual(parsedWithLeadingBlank.leadTime, '14');
 });
 
 test('Area C5: BOM CLIC Status Warning with zero unbuildables/errors proves portal validation; Unbuildable/spoofed claims fail closed', () => {

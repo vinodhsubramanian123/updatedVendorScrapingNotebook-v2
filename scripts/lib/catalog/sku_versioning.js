@@ -11,6 +11,13 @@ const path = require('path');
 const crypto = require('crypto');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 const { cleanBaseSKU, classifyLifecycleState } = require('./sku.js');
+const {
+  parseStrictPrice,
+  reconcileConflictingPrices,
+  loadZeroPricePolicies,
+  classifyConfirmedZeroByPolicy,
+  normalizeLifecycleCanonical
+} = require('./field_parsers.js');
 
 const catalogPriceCache = new Map();
 
@@ -72,36 +79,6 @@ function _findInSkuMap(histObj, cleanSku, rawSku, rawSkuWithHash) {
   return histObj[cleanSku] || histObj[rawSku] || histObj[rawSkuWithHash] || null;
 }
 
-function _loadPeerPriceTimeline(resolvedChassisDir, cleanSku, rawSku, rawSkuWithHash) {
-  try {
-    const parentDir = path.dirname(resolvedChassisDir);
-    if (!fs.existsSync(parentDir)) return null;
-    const peerDirs = fs.readdirSync(parentDir, { withFileTypes: true })
-      .filter(d => d.isDirectory() && path.join(parentDir, d.name) !== resolvedChassisDir)
-      .map(d => path.join(parentDir, d.name));
-
-    for (const peer of peerDirs) {
-      const peerPriceHistoryPath = path.join(peer, 'history', 'price_history.json');
-      if (fs.existsSync(peerPriceHistoryPath)) {
-        try {
-          const pHist = JSON.parse(fs.readFileSync(peerPriceHistoryPath, 'utf-8'));
-          const pFound = _findInSkuMap(pHist, cleanSku, rawSku, rawSkuWithHash);
-          if (pFound && pFound.some(e => Number(e.price) > 0)) return pFound;
-        } catch (_) {}
-      }
-      const peerServicesPath = path.join(peer, 'services_history', 'services_price_history.json');
-      if (fs.existsSync(peerServicesPath)) {
-        try {
-          const spHist = JSON.parse(fs.readFileSync(peerServicesPath, 'utf-8'));
-          const spFound = _findInSkuMap(spHist, cleanSku, rawSku, rawSkuWithHash);
-          if (spFound && spFound.some(e => Number(e.price) > 0)) return spFound;
-        } catch (_) {}
-      }
-    }
-  } catch (_) {}
-  return null;
-}
-
 function _loadPriceTimeline(historyDir, resolvedChassisDir, cleanSku, rawSku, rawSkuWithHash) {
   let priceTimeline = [];
 
@@ -129,11 +106,6 @@ function _loadPriceTimeline(historyDir, resolvedChassisDir, cleanSku, rawSku, ra
     } catch (err) {
       console.warn(`[sku_versioning] Error reading services_price_history.json: ${err.message}`);
     }
-  }
-
-  // 1c. Cross-chassis fallback within same product generation
-  if (resolvedChassisDir && priceTimeline.every(e => !e.price || e.price <= 0)) {
-    priceTimeline = _loadPeerPriceTimeline(resolvedChassisDir, cleanSku, rawSku, rawSkuWithHash) || priceTimeline;
   }
 
   return priceTimeline;
@@ -178,17 +150,42 @@ function _findSkuInSnapshotEntries(content, cleanSku) {
     const skusList = Array.isArray(entry.skus) ? entry.skus : [];
     for (const s of skusList) {
       const skuCode = s.sku || s['Product #'] || s['SKU'];
-      if (skuCode === cleanSku) {
+      if (cleanBaseSKU(skuCode) === cleanSku) {
         return {
           parentCategory: entry.parentCategory,
           subCategory: entry.subCategory,
           description: s.description || s['Description'] || '',
-          priceUsd: s.priceUsd || s['Unit Price (USD)'] || '0.00',
+          priceUsd: s.priceUsd ?? s['List Price (USD)'] ?? s['Unit Price (USD)'] ?? null,
           optionType: s.optionType || s['Option Type'] || '',
-          lifecycleStatus: s['Lifecycle Status'] || s.lifecycleStatus || s.Status || 'Active',
+          lifecycleStatus: s['Lifecycle Status'] || s.lifecycleStatus || s.Status || '',
+          vendorSupplyStatus: s.vendorSupplyStatus,
+          rawSku: skuCode,
           diffStatus: s['Diff Status'] || s.diffStatus || ''
         };
       }
+    }
+  }
+  return null;
+}
+
+function _resolveObservedSkuLifecycle(details) {
+  const lc = classifyLifecycleState(details.lifecycleStatus, details.diffStatus, details.rawSku, details.description, details.vendorSupplyStatus);
+  if (lc.canonicalStatus === '90_DAY_WARNING') return '90-Day Warning';
+  if (lc.isDirectShip && lc.canonicalStatus === 'DIRECT_SHIP') return 'Direct Ship (DS)';
+  if (lc.canonicalStatus !== 'ACTIVE') return lc.canonicalStatus;
+  return normalizeLifecycleCanonical(details.lifecycleStatus).lifecycleCanonical.toUpperCase();
+}
+
+function _readCurrentSkuDetails(dir, sku) {
+  const product = path.basename(dir);
+  for (const suffix of ['Catalog', 'Services']) {
+    const file = path.join(dir, `${product}_${suffix}.json`);
+    if (!fs.existsSync(file)) continue;
+    try {
+      const details = _findSkuInSnapshotEntries(JSON.parse(fs.readFileSync(file, 'utf8')), sku);
+      if (details) return details;
+    } catch (error) {
+      console.warn(`[sku_versioning] Error reading ${path.basename(file)}: ${error.message}`);
     }
   }
   return null;
@@ -214,12 +211,7 @@ function _scanSnapshotOccurrences(historyDir, cleanSku, initialStatus) {
       const skuDetails = _findSkuInSnapshotEntries(content, cleanSku);
       if (skuDetails) {
         if (currentStatus !== 'DISCONTINUED') {
-          const lc = classifyLifecycleState(skuDetails.lifecycleStatus, skuDetails.diffStatus, cleanSku, skuDetails.description);
-          if (lc.isObsolete) currentStatus = 'OBSOLETE';
-          else if (lc.isHardEol) currentStatus = 'EOL';
-          else if (lc.is90DayWarning) currentStatus = '90-Day Warning';
-          else if (lc.isDirectShip) currentStatus = 'Direct Ship (DS)';
-          else currentStatus = 'ACTIVE';
+          currentStatus = _resolveObservedSkuLifecycle(skuDetails);
         }
         latestDetails = skuDetails;
         snapshotOccurrences.push({
@@ -241,7 +233,7 @@ function getSkuAuditHistory(targetSku, chassisDir) {
   if (!targetSku) throw new Error('Target SKU is required for version audit');
   
   const resolvedChassisDir = resolveChassisDirectory(chassisDir);
-  const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9-]/g, '').trim();
+  const cleanSku = cleanBaseSKU(targetSku);
   const historyDir = path.join(resolvedChassisDir, 'history');
   
   const rawSku = String(targetSku || '').trim();
@@ -259,21 +251,25 @@ function getSkuAuditHistory(targetSku, chassisDir) {
     snapshotOccurrences: []
   };
 
-  if (!fs.existsSync(historyDir)) {
-    return auditResult;
-  }
-
-  auditResult.priceTimeline = _loadPriceTimeline(historyDir, resolvedChassisDir, cleanSku, rawSku, rawSkuWithHash);
+  auditResult.priceTimeline = resolvedChassisDir ? _loadPriceTimeline(historyDir, resolvedChassisDir, cleanSku, rawSku, rawSkuWithHash) : [];
+  if (!resolvedChassisDir) return auditResult;
   auditResult.attributeMutations = _loadAttributeMutations(historyDir, cleanSku);
 
   const disc = _loadDiscontinuedInfo(historyDir, cleanSku);
   auditResult.discontinuedInfo = disc.discontinuedInfo;
   auditResult.currentStatus = disc.currentStatus;
 
-  const snaps = _scanSnapshotOccurrences(historyDir, cleanSku, auditResult.currentStatus);
-  auditResult.snapshotOccurrences = snaps.snapshotOccurrences;
-  auditResult.latestDetails = snaps.latestDetails;
-  auditResult.currentStatus = snaps.currentStatus;
+  if (fs.existsSync(historyDir)) {
+    const snaps = _scanSnapshotOccurrences(historyDir, cleanSku, auditResult.currentStatus);
+    auditResult.snapshotOccurrences = snaps.snapshotOccurrences;
+    auditResult.latestDetails = snaps.latestDetails;
+    auditResult.currentStatus = snaps.currentStatus;
+  }
+  const current = _readCurrentSkuDetails(resolvedChassisDir, cleanSku);
+  if (current && auditResult.currentStatus !== 'DISCONTINUED') {
+    auditResult.latestDetails = current;
+    auditResult.currentStatus = _resolveObservedSkuLifecycle(current);
+  }
 
   return auditResult;
 }
@@ -313,7 +309,7 @@ function normalizeTargetDate(targetDate) {
 
   const monthMatch = s.match(/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*/i);
   const yearMatch = s.match(/\b(20\d{2})\b/);
-  const year = yearMatch ? yearMatch[1] : '2026';
+  const year = yearMatch ? yearMatch[1] : String(new Date().getUTCFullYear());
 
   if (monthMatch) {
     const mPrefix = monthMatch[1].toLowerCase().slice(0, 3);
@@ -334,19 +330,12 @@ function formatMonthLabel(isoDate) {
   return `${monthNames[mIdx]} ${year}`;
 }
 
-const CONFIRMED_ZERO_PARENT_CONTRACTS = new Set(['HA113A1', 'HU4B2A3']);
+const CONFIRMED_ZERO_PARENT_CONTRACTS = new Set(
+  (loadZeroPricePolicies().confirmedZeroParentContracts || []).map((s) => String(s).toUpperCase())
+);
 
 function isConfirmedFreeSku(sku, description) {
-  const s = String(sku || '').toUpperCase().trim();
-  const baseSku = s.split(' ')[0].replace(/[^a-zA-Z0-9]/g, '');
-  if (CONFIRMED_ZERO_PARENT_CONTRACTS.has(baseSku)) return true;
-  const d = String(description || '').toUpperCase();
-  // FIO enablement triggers, zero dollar configs, CE mark removal
-  if (s === 'P35876-B21' || s === 'S1A05A') return true;
-  if (s.endsWith('-F21') || s.includes('#0D1')) return true;
-  if (d.includes('ENABLEMENT') && (d.includes('FIO') || d.includes('ZERO') || d.includes('CONFIG'))) return true;
-  if (d.includes('FACTORY INTEGRATED') && d.includes('KIT')) return true;
-  return false;
+  return classifyConfirmedZeroByPolicy(sku, description, null, { strictOnly: true }).matched;
 }
 
 /**
@@ -358,88 +347,115 @@ function isConfirmedFreeSku(sku, description) {
  * @param {string} chassisDir - Path to chassis folder (defaults to DL380 Gen12 SFF)
  * @returns {object} Historical price details on that date
  */
-function _checkFileForSkuPrice(filePath, cleanSku) {
-  if (!filePath || !fs.existsSync(filePath)) return 0;
-  try {
-    if (!catalogPriceCache.has(filePath)) {
-      const cat = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-      const map = new Map();
-      const parsePrice = (s) => parseFloat(String(s.priceUsd || s['Unit Price (USD)'] || s['Unit List Price (USD)'] || s.price || 0).replace(/[^0-9.]/g, '')) || 0;
-      const entries = Array.isArray(cat.entries) ? cat.entries : [];
-      entries.forEach(e => {
-        const skus = Array.isArray(e.skus) ? e.skus : [];
-        skus.forEach(s => {
-          const k = (s.sku || s['Product #'] || s['SKU'] || '').replace(/[^a-zA-Z0-9-]/g, '').trim();
-          if (k) map.set(k, parsePrice(s));
-        });
-      });
-      if (Array.isArray(cat.skus)) {
-        cat.skus.forEach(s => {
-          const k = (s.sku || s['Product #'] || s['SKU'] || '').replace(/[^a-zA-Z0-9-]/g, '').trim();
-          if (k) map.set(k, parsePrice(s));
-        });
-      }
-      catalogPriceCache.set(filePath, map);
-    }
-    const match = catalogPriceCache.get(filePath).get(cleanSku);
-    if (typeof match === 'number') return match;
-    if (match) {
-      return parseFloat(String(match.priceUsd || match['Unit Price (USD)'] || match['Unit List Price (USD)'] || match.price || 0).replace(/[^0-9.]/g, '')) || 0;
-    }
-  } catch (_) {}
-  return 0;
-}
-
-function _resolvePeerFallbackPrice(dir, cleanSku) {
-  if (!dir) return 0;
-  try {
-    const parentDir = path.dirname(dir);
-    if (!fs.existsSync(parentDir)) return 0;
-    const peers = fs.readdirSync(parentDir, { withFileTypes: true })
-      .filter(d => d.isDirectory() && path.join(parentDir, d.name) !== dir)
-      .map(d => path.join(parentDir, d.name));
-    for (const peer of peers) {
-      let p = _checkFileForSkuPrice(path.join(peer, `${path.basename(peer)}_Catalog.json`), cleanSku);
-      if (p > 0) return p;
-      p = _checkFileForSkuPrice(path.join(peer, `${path.basename(peer)}_Services.json`), cleanSku);
-      if (p > 0) return p;
-    }
-  } catch (_) {}
-  return 0;
-}
-
-function _resolveFallbackCatalogPrice(dir, cleanSku) {
-  let fallbackPrice = _checkFileForSkuPrice(path.join(dir, `${path.basename(dir)}_Catalog.json`), cleanSku);
-  if (fallbackPrice <= 0) {
-    fallbackPrice = _checkFileForSkuPrice(path.join(dir, `${path.basename(dir)}_Services.json`), cleanSku);
+function _readCatalogPriceRows(file, fingerprint) {
+  const content = fs.readFileSync(file, 'utf8');
+  const data = JSON.parse(content);
+  const rows = [...(data.entries || []).flatMap(entry => entry.skus || []), ...(data.skus || [])];
+  const bySku = new Map();
+  for (const row of rows) {
+    if (row['Diff Status'] === 'REMOVED' || /^\[REMOVED SKU\]/i.test(row.Description || '')) continue;
+    const key = cleanBaseSKU(row.sku || row['Product #'] || row.SKU);
+    if (!key) continue;
+    if (!bySku.has(key)) bySku.set(key, []);
+    bySku.get(key).push({ raw: row.priceUsd ?? row['List Price (USD)'] ?? row['Unit Price (USD)'] ?? row['Price (USD)'] ?? row['Unit List Price (USD)'] ?? row.listPrice ?? row.price, row, source: file });
   }
-  if (fallbackPrice <= 0) {
-    fallbackPrice = _resolvePeerFallbackPrice(dir, cleanSku);
-  }
-  return fallbackPrice;
+  const capturedAt = data.metadata?.scrapeTimestamp || data.metadata?.scrapeDate || null;
+  return { fingerprint, bySku, capturedAt, sha256: calculateChecksum(content) };
 }
 
-function _resolveEffectivePriceAndAnomaly(effectiveEvent, sorted, normalizedDate) {
-  let effectivePrice = effectiveEvent.price || 0;
+function _readCatalogPriceObservation(file, sku, archiveDate = null) {
+  try {
+    const stat = fs.statSync(file, { bigint: true });
+    const fingerprint = [stat.ino, stat.mtimeNs, stat.size].join('|');
+    let capture = catalogPriceCache.get(file);
+    if (capture?.fingerprint !== fingerprint) {
+      capture = _readCatalogPriceRows(file, fingerprint);
+      catalogPriceCache.set(file, capture);
+    }
+    const candidates = capture.bySku.get(sku);
+    if (!candidates?.length) return null;
+    const priced = candidates.filter(item => item.raw != null && String(item.raw).trim() !== '');
+    if (!priced.length) return null;
+    const price = priced.length === 1 ? parseStrictPrice(priced[0].raw, { row: priced[0].row, sku })
+      : reconcileConflictingPrices(priced, { toleranceUsd: 0 });
+    const date = String(capture.capturedAt || '').match(/^\d{4}-\d{2}-\d{2}(?=T|$)/)?.[0] || archiveDate;
+    return { ...price, date, capturedAt: capture.capturedAt, source: file, sha256: capture.sha256 };
+  } catch { return null; }
+}
+
+function _latestArchivedPrice(dir, sku, targetDate, name, pattern) {
+  const archive = path.join(dir, name);
+  let filenames;
+  try { filenames = fs.readdirSync(archive); } catch { return null; }
+  for (const filename of filenames.sort().reverse()) {
+    const date = filename.match(pattern)?.[1];
+    if (!date || date > targetDate) continue;
+    const observation = _readCatalogPriceObservation(path.join(archive, filename), sku, date);
+    if (observation && observation.date <= targetDate &&
+        (observation.priceUsd != null || observation.priceState === 'CONFLICTING_EVIDENCE')) return observation;
+  }
+  return null;
+}
+
+function _ownCatalogPriceObservations(dir, sku, date) {
+  if (!dir) return [];
+  const name = path.basename(dir);
+  const current = ['Catalog', 'Services'].map(kind => _readCatalogPriceObservation(path.join(dir, name + '_' + kind + '.json'), sku));
+  return [...current,
+    _latestArchivedPrice(dir, sku, date, 'history', /^catalog_(\d{4}-\d{2}-\d{2})\.json$/),
+    _latestArchivedPrice(dir, sku, date, 'services_history', /^services_catalog_(\d{4}-\d{2}-\d{2})\.json$/)
+  ].filter(Boolean);
+}
+
+function _priceWithoutEarlierTrail(sku, date, dir, audit, implicitDate) {
+  const observations = _ownCatalogPriceObservations(dir, sku, date);
+  const usable = observations.filter(item => ((item.date && item.date <= date) || (!item.date && implicitDate)) &&
+    (item.priceUsd != null || item.priceState === 'CONFLICTING_EVIDENCE'));
+  const latest = usable.sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')))[0];
+  const contemporaneous = usable.filter(item => item.date === latest?.date);
+  const conflict = contemporaneous.some(item => item.priceState === 'CONFLICTING_EVIDENCE') ||
+    new Set(contemporaneous.map(item => item.priceUsd)).size > 1;
+  if (conflict) return { ..._buildEmptyPriceTimelineResult(sku, date, dir, audit), priceState: 'CONFLICTING_EVIDENCE',
+    status: 'CONFLICTING_EVIDENCE', priceUsd: null, nullablePriceUsd: null, isResolved: false, quoteConfidence: 'UNRESOLVED', observations };
+  if (latest) return { ..._buildEmptyPriceTimelineResult(sku, date, dir, audit),
+    effectiveDate: latest.date, priceUsd: latest.priceUsd, nullablePriceUsd: latest.priceUsd,
+    priceState: latest.priceState, status: 'CATALOG_OBSERVED_PRICE', pricingCategory: 'DATED_CATALOG_PRICE',
+    quoteConfidence: latest.date ? 'HIGH' : 'MEDIUM', isResolved: true, observation: latest };
+  const unresolved = _buildEmptyPriceTimelineResult(sku, date, dir, audit);
+  const zeroObservation = audit.priceTimeline?.findLast(event => event.date && event.date <= date && event.price === 0 && !event.quarantined);
+  if (unresolved.priceState === 'CONFIRMED_ZERO' && !implicitDate && !zeroObservation) {
+    return { ...unresolved, status: 'NO_PRICE_RECORDED', pricingCategory: 'NO_PRICE_RECORDED',
+      effectiveDate: null, priceUsd: null, nullablePriceUsd: null, isResolved: false, priceState: 'UNPRICED', quoteConfidence: 'UNRESOLVED', observations };
+  }
+  if (zeroObservation) {
+    if (unresolved.priceState === 'CONFIRMED_ZERO') return { ...unresolved, effectiveDate: zeroObservation.date, observations };
+    return { ...unresolved, status: 'UNRESOLVED_ZERO_PRICE', pricingCategory: 'UNRESOLVED_ZERO_PRICE', observations };
+  }
+  return { ...unresolved, observations };
+}
+
+function _resolveEffectivePriceAndAnomaly(effectiveEvent, eventsOnOrBefore, sku) {
+  const observed = parseStrictPrice(effectiveEvent.price, { sku });
+  let effectivePrice = observed.priceUsd ?? 0;
   let effectiveStatus = effectiveEvent.status || 'ACTIVE';
   let rejectedAnomaly = null;
 
-  if (effectiveEvent.quarantined) {
+  if (effectiveEvent.quarantined || observed.priceUsd === null) {
+    const prior = eventsOnOrBefore.slice(0, -1).findLast(event => !event.quarantined && parseStrictPrice(event.price, { sku }).priceUsd > 0);
+    const priorPrice = prior ? parseStrictPrice(prior.price, { sku }).priceUsd : 0;
+    effectivePrice = priorPrice;
+    effectiveStatus = 'HISTORICAL_PRICE_PRESERVED_FROM_ZERO';
+    if (!effectiveEvent.quarantined && observed.priceState !== 'PARSE_FAILED') {
+      return { effectivePrice, effectiveStatus, rejectedAnomaly };
+    }
     rejectedAnomaly = {
       rejectedPriceUsd: effectiveEvent.price,
-      preservedPriceUsd: effectiveEvent.effectivePrice || 0,
+      preservedPriceUsd: priorPrice,
       eventDate: effectiveEvent.date,
       validationState: effectiveEvent.validationState,
       provenance: effectiveEvent.anomalyProvenance
     };
-    effectivePrice = effectiveEvent.effectivePrice || 0;
     effectiveStatus = effectiveEvent.validationState || 'ANOMALOUS_PORTAL_PRICE_REJECTED';
-  } else if (effectivePrice === 0) {
-    const nonZeroEvents = sorted.filter(e => e.price && e.price > 0 && !e.quarantined && (e.date || '') <= normalizedDate);
-    if (nonZeroEvents.length > 0) {
-      effectivePrice = nonZeroEvents[nonZeroEvents.length - 1].price;
-      effectiveStatus = 'HISTORICAL_PRICE_PRESERVED_FROM_ZERO';
-    }
   }
 
   return { effectivePrice, effectiveStatus, rejectedAnomaly };
@@ -451,7 +467,7 @@ function _detectPriceJumpAnomaly(eventsOnOrBefore, effectiveEvent, effectivePric
   }
   const priorNonZeroEvents = eventsOnOrBefore
     .slice(0, -1)
-    .filter(e => Number(e.price) > 0 && !e.quarantined);
+    .filter(e => parseStrictPrice(e.price).priceUsd > 0 && !e.quarantined);
   const priorPrice = Number(priorNonZeroEvents[priorNonZeroEvents.length - 1]?.price || 0);
   if (priorPrice >= 20) {
     const ratio = effectivePrice / priorPrice;
@@ -498,8 +514,10 @@ function _buildEmptyPriceTimelineResult(cleanSku, normalizedDate, dir, audit) {
   return {
     sku: cleanSku,
     targetDate: normalizedDate,
-    effectiveDate: normalizedDate,
-    priceUsd: 0,
+    effectiveDate: null,
+    priceUsd: isFree ? 0 : null,
+    nullablePriceUsd: isFree ? 0 : null,
+    priceState: isFree ? 'CONFIRMED_ZERO' : 'UNPRICED',
     currency: 'USD',
     status: isFree ? 'CONFIRMED_ZERO_PRICE' : 'NO_PRICE_RECORDED',
     pricingCategory: category,
@@ -512,15 +530,18 @@ function _buildEmptyPriceTimelineResult(cleanSku, normalizedDate, dir, audit) {
 }
 
 function _normalizeHistoricalPriceArgs(targetDateOrDir, maybeChassisDir) {
+  const looksDated = typeof targetDateOrDir === 'string' &&
+    /^(?:\d{4}-(?:0[1-9]|1[0-2])(?:-\d{2})?|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*(?:\s+20\d{2})?)$/i.test(targetDateOrDir.trim());
   if (maybeChassisDir !== undefined) {
     return {
-      normalizedDate: normalizeTargetDate(targetDateOrDir),
+      normalizedDate: targetDateOrDir && !looksDated ? null : normalizeTargetDate(targetDateOrDir),
       dir: maybeChassisDir || ''
     };
   }
-  if (typeof targetDateOrDir === 'string' && (targetDateOrDir.includes('/') || targetDateOrDir.includes('\\') || !targetDateOrDir.includes('-'))) {
+  if (typeof targetDateOrDir === 'string' && !looksDated) {
     return {
       dir: targetDateOrDir,
+      implicitDate: true,
       normalizedDate: normalizeTargetDate(new Date().toISOString().split('T')[0])
     };
   }
@@ -534,61 +555,24 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
   const args = _normalizeHistoricalPriceArgs(targetDateOrDir, maybeChassisDir);
   const normalizedDate = args.normalizedDate;
   const dir = resolveChassisDirectory(args.dir);
+  const cleanSku = cleanBaseSKU(targetSku);
+  const validDate = new Date(normalizedDate + 'T00:00:00Z');
+  if (!Number.isFinite(validDate.getTime()) || validDate.toISOString().slice(0, 10) !== normalizedDate) {
+    return { ..._buildEmptyPriceTimelineResult(cleanSku, normalizedDate, dir, {}), status: 'INVALID_AS_OF_DATE',
+      priceUsd: null, nullablePriceUsd: null, priceState: 'UNPRICED', isResolved: false, quoteConfidence: 'UNRESOLVED' };
+  }
   const audit = dir ? getSkuAuditHistory(targetSku, dir) : { priceTimeline: [] };
-  const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9-]/g, '').trim();
   const priceTimeline = Array.isArray(audit.priceTimeline) ? audit.priceTimeline : [];
-
-  const hasTimelinePrice = priceTimeline.some(e => Number(e.price) > 0);
-
-  if (!hasTimelinePrice) {
-    const fallbackPrice = _resolveFallbackCatalogPrice(dir, cleanSku);
-    if (fallbackPrice > 0) {
-      return {
-        sku: cleanSku,
-        targetDate: normalizedDate,
-        effectiveDate: normalizedDate,
-        priceUsd: fallbackPrice,
-        currency: 'USD',
-        status: 'CURRENT_PRICE',
-        pricingCategory: 'CURRENT_CATALOG_PRICE',
-        quoteConfidence: 'HIGH',
-        isResolved: true,
-        sourceDirectory: dir,
-        isDiscontinued: audit.currentStatus === 'DISCONTINUED',
-        priceTrail: audit.priceTimeline
-      };
-    }
-
-    if (priceTimeline.length === 0) {
-      return _buildEmptyPriceTimelineResult(cleanSku, normalizedDate, dir, audit);
-    }
+  const sorted = priceTimeline.filter(event => /^\d{4}-\d{2}-\d{2}$/.test(event?.date || ''))
+    .sort((a, b) => a.date.localeCompare(b.date));
+  const eventsOnOrBefore = sorted.filter(event => event.date <= normalizedDate);
+  if (!eventsOnOrBefore.length || !eventsOnOrBefore.some(event => Number(event.price) > 0)) {
+    return _priceWithoutEarlierTrail(cleanSku, normalizedDate, dir, audit, args.implicitDate);
   }
-
-  const sorted = [...priceTimeline].sort((a, b) => (a.date || '').localeCompare(b.date || ''));
-  const baselinePrice = sorted[0]?.price || 0;
-  const eventsOnOrBefore = sorted.filter(e => (e.date || '') <= normalizedDate);
-
-  if (eventsOnOrBefore.length === 0) {
-    const earliest = sorted[0];
-    return {
-      sku: cleanSku,
-      targetDate: normalizedDate,
-      effectiveDate: earliest.date,
-      priceUsd: earliest.price || 0,
-      currency: 'USD',
-      status: 'PRE_BASELINE_ESTIMATE',
-      pricingCategory: (earliest.price > 0) ? 'PRE_BASELINE_ESTIMATE' : 'UNRESOLVED_ZERO_PRICE',
-      quoteConfidence: (earliest.price > 0) ? 'MEDIUM' : 'UNRESOLVED',
-      isResolved: earliest.price > 0,
-      sourceDirectory: dir,
-      changeFromBaselinePercent: 0,
-      isDiscontinued: false,
-      priceTrail: sorted
-    };
-  }
+  const baselinePrice = eventsOnOrBefore[0]?.price || 0;
 
   const effectiveEvent = eventsOnOrBefore[eventsOnOrBefore.length - 1];
-  const resolved = _resolveEffectivePriceAndAnomaly(effectiveEvent, sorted, normalizedDate);
+  const resolved = _resolveEffectivePriceAndAnomaly(effectiveEvent, eventsOnOrBefore, cleanSku);
   let effectivePrice = resolved.effectivePrice;
   let effectiveStatus = resolved.effectiveStatus;
   let rejectedAnomaly = resolved.rejectedAnomaly;
@@ -606,11 +590,19 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
   const isResolved = quoteConfidence !== 'UNRESOLVED';
   const changePercent = baselinePrice > 0 ? parseFloat((((effectivePrice - baselinePrice) / baselinePrice) * 100).toFixed(2)) : 0;
 
+  const isFreeResolved = pricingCategory === 'CONFIRMED_ZERO_PRICE_TRIGGER';
+  const nullablePriceUsd = effectivePrice > 0 ? effectivePrice : (isFreeResolved ? 0 : null);
+  const priceState = effectivePrice > 0 ? 'PRICED' : (isFreeResolved ? 'CONFIRMED_ZERO' : 'UNPRICED');
+
   return {
     sku: cleanSku,
     targetDate: normalizedDate,
-    effectiveDate: effectiveEvent.date,
-    priceUsd: effectivePrice,
+    effectiveDate: pricingCategory === 'HISTORICAL_PRICE_FALLBACK'
+      ? (eventsOnOrBefore.slice(0, -1).findLast(event => !event.quarantined && Number(event.price) === Number(effectivePrice))?.date || null)
+      : effectiveEvent.date,
+    priceUsd: nullablePriceUsd,
+    nullablePriceUsd,
+    priceState,
     currency: 'USD',
     status: effectiveStatus,
     pricingCategory,
@@ -618,7 +610,7 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
     isResolved,
     sourceDirectory: dir,
     changeFromBaselinePercent: changePercent,
-    isDiscontinued: effectiveEvent.status === 'REMOVED' || audit.currentStatus === 'DISCONTINUED',
+    isDiscontinued: effectiveEvent.status === 'REMOVED',
     priceTrail: sorted,
     ...(rejectedAnomaly ? { rejectedAnomaly } : {})
   };
@@ -632,8 +624,8 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
  * @returns {object} Consolidated BOQ breakdown on that date
  */
 function getHistoricalBoqPricing(boqInput, targetDate, chassisDir) {
-  const normalizedDate = normalizeTargetDate(targetDate);
   const dir = chassisDir || '';
+  const { normalizedDate } = _normalizeHistoricalPriceArgs(targetDate, dir);
 
   let items = [];
   if (Array.isArray(boqInput)) {
@@ -652,11 +644,11 @@ function getHistoricalBoqPricing(boqInput, targetDate, chassisDir) {
   for (const it of items) {
     const cleanSku = it.sku;
     const qty = parseInt(it.quantity, 10) || 1;
-    const hist = getHistoricalSkuPrice(cleanSku, normalizedDate, dir);
-    const unitPrice = hist.priceUsd;
-    const extendedPrice = unitPrice * qty;
+    const hist = getHistoricalSkuPrice(cleanSku, targetDate, dir);
+    const unitPrice = hist.nullablePriceUsd;
+    const extendedPrice = unitPrice === null ? null : unitPrice * qty;
 
-    totalCapExUsd += extendedPrice;
+    totalCapExUsd += extendedPrice ?? 0;
     if (hist.isDiscontinued) discontinuedCount++;
     if (!hist.isResolved) unresolvedSkus.push(cleanSku);
 
@@ -681,8 +673,9 @@ function getHistoricalBoqPricing(boqInput, targetDate, chassisDir) {
 
   return {
     targetDate: normalizedDate,
-    monthLabel: formatMonthLabel(normalizedDate),
-    totalCapExUsd: parseFloat(totalCapExUsd.toFixed(2)),
+    monthLabel: normalizedDate ? formatMonthLabel(normalizedDate) : null,
+    totalCapExUsd: isPricingComplete ? Number(totalCapExUsd.toFixed(2)) : null,
+    pricedSubtotalUsd: Number(totalCapExUsd.toFixed(2)),
     totalCapExFormatted: isPricingComplete
       ? `$${totalCapExUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
       : `$${totalCapExUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (INCOMPLETE — ${unresolvedSkus.length} SKU(s) unresolved)`,
@@ -712,35 +705,38 @@ function compareBoqPricingAcrossTimeline(boqInput, timelineDates, chassisDir) {
   const dir = chassisDir || '';
 
   const monthlySnapshots = dates.map(d => getHistoricalBoqPricing(boqInput, d, dir));
-  const baselineCapEx = monthlySnapshots[0]?.totalCapExUsd || 0;
+  const baselineCapEx = monthlySnapshots[0]?.isPricingComplete ? monthlySnapshots[0].totalCapExUsd : null;
 
   const timeline = monthlySnapshots.map((snap, idx) => {
     const prevSnap = idx > 0 ? monthlySnapshots[idx - 1] : null;
-    const deltaBaseline = snap.totalCapExUsd - baselineCapEx;
-    const deltaBaselinePct = baselineCapEx > 0 ? (deltaBaseline / baselineCapEx) * 100 : 0;
-    const deltaPrev = prevSnap ? snap.totalCapExUsd - prevSnap.totalCapExUsd : 0;
-    const deltaPrevPct = prevSnap && prevSnap.totalCapExUsd > 0 ? (deltaPrev / prevSnap.totalCapExUsd) * 100 : 0;
+    const capEx = snap.isPricingComplete ? snap.totalCapExUsd : null;
+    const deltaBaseline = capEx !== null && baselineCapEx !== null ? capEx - baselineCapEx : null;
+    const deltaBaselinePct = deltaBaseline !== null && baselineCapEx > 0 ? (deltaBaseline / baselineCapEx) * 100 : null;
+    const deltaPrev = capEx !== null && prevSnap?.isPricingComplete ? capEx - prevSnap.totalCapExUsd : null;
+    const deltaPrevPct = deltaPrev !== null && prevSnap.totalCapExUsd > 0 ? (deltaPrev / prevSnap.totalCapExUsd) * 100 : null;
 
     return {
       date: snap.targetDate,
       monthLabel: snap.monthLabel,
-      totalCapExUsd: snap.totalCapExUsd,
-      deltaFromBaselineUsd: parseFloat(deltaBaseline.toFixed(2)),
-      deltaFromBaselinePercent: parseFloat(deltaBaselinePct.toFixed(2)),
-      deltaFromPrevMonthUsd: parseFloat(deltaPrev.toFixed(2)),
-      deltaFromPrevMonthPercent: parseFloat(deltaPrevPct.toFixed(2)),
+      totalCapExUsd: capEx,
+      pricedSubtotalUsd: snap.pricedSubtotalUsd,
+      isPricingComplete: snap.isPricingComplete,
+      deltaFromBaselineUsd: deltaBaseline === null ? null : Number(deltaBaseline.toFixed(2)),
+      deltaFromBaselinePercent: deltaBaselinePct === null ? null : Number(deltaBaselinePct.toFixed(2)),
+      deltaFromPrevMonthUsd: deltaPrev === null ? null : Number(deltaPrev.toFixed(2)),
+      deltaFromPrevMonthPercent: deltaPrevPct === null ? null : Number(deltaPrevPct.toFixed(2)),
       discontinuedItemsCount: snap.discontinuedItemsCount
     };
   });
 
   // Calculate volatility metrics
-  const allCosts = timeline.map(t => t.totalCapExUsd);
-  const minCost = Math.min(...allCosts);
-  const maxCost = Math.max(...allCosts);
+  const allCosts = timeline.map(t => t.totalCapExUsd).filter(Number.isFinite);
+  const minCost = allCosts.length ? Math.min(...allCosts) : null;
+  const maxCost = allCosts.length ? Math.max(...allCosts) : null;
   const minEntry = timeline.find(t => t.totalCapExUsd === minCost);
   const maxEntry = timeline.find(t => t.totalCapExUsd === maxCost);
-  const varianceUsd = maxCost - minCost;
-  const maxFluctuationPct = minCost > 0 ? parseFloat(((varianceUsd / minCost) * 100).toFixed(2)) : 0;
+  const varianceUsd = allCosts.length ? maxCost - minCost : null;
+  const maxFluctuationPct = minCost > 0 ? Number(((varianceUsd / minCost) * 100).toFixed(2)) : null;
 
   // Build component-level price trail matrix across the timeline
   const skuMap = new Map();
@@ -773,7 +769,7 @@ function compareBoqPricingAcrossTimeline(boqInput, timelineDates, chassisDir) {
       lowestCapExUsd: minCost,
       highestCostMonth: maxEntry?.monthLabel,
       highestCapExUsd: maxCost,
-      netVarianceUsd: parseFloat(varianceUsd.toFixed(2)),
+      netVarianceUsd: varianceUsd === null ? null : Number(varianceUsd.toFixed(2)),
       maxFluctuationPercent: maxFluctuationPct
     },
     componentMatrix: Array.from(skuMap.values())
@@ -838,11 +834,28 @@ function generatePresalesLifecycleAdvisories(items = [], chassisDir = '') {
         });
       }
 
+      // 1B. Supply Constraint Risk (CS Badge)
+      const inputLifecycle = classifyLifecycleState(item.lifecycleStatus || item['Lifecycle Status'] || item.vendorSupplyStatus,
+        item.diffStatus, rawSku, item.description);
+      if (history.currentStatus === 'CONSTRAINED_SUPPLY' || inputLifecycle.isConstrainedSupply ||
+          item.vendorSupplyStatus === 'CONSTRAINED_SUPPLY' || item.isSupplyConstrained) {
+        advisories.push({
+          sku,
+          type: 'SUPPLY_CONSTRAINT_RISK',
+          severity: 'HIGH',
+          lifecycleStatus: 'Constrained Supply (CS)',
+          message: `SKU ${sku} is marked with vendor status [CS] (Constrained Supply: currently unavailable based on supply constraints). Recommend selecting an available equivalent alternative.`
+        });
+      }
+
       // 2. Price Spike / Upward Trend Warning (>= 3% increase)
       const timeline = history.priceTimeline || [];
       if (timeline.length >= 2) {
         const validTimeline = timeline
-          .map(e => ({ date: e.date || e.snapshotDate, price: typeof e.price === 'number' ? e.price : parseFloat(String(e.price || '0').replace(/[$,]/g, '')) }))
+          .map(e => {
+            const p = parseStrictPrice(e.price);
+            return { date: e.date || e.snapshotDate, price: p.priceUsd !== null ? p.priceUsd : 0 };
+          })
           .filter(e => e.price > 0)
           .sort((a, b) => new Date(a.date) - new Date(b.date));
 

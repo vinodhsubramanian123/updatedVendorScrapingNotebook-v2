@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import CatalogExplorer from '../CatalogExplorer';
+import CatalogExplorer, { filterDisplayedSkus, isServiceOrSupportSku } from '../CatalogExplorer';
 import { catalogIndexer } from '../../utils/nlpSearch';
 
 // Mock nlpSearch to avoid FlexSearch issues in jsdom
@@ -62,5 +62,21 @@ describe('CatalogExplorer', () => {
     fireEvent.change(searchInput, { target: { value: 'Xeon' } });
     
     expect(catalogIndexer.search).toHaveBeenCalledWith('Xeon');
+  });
+
+  it('filters lifecycle-alert SKUs and multi-vendor service rows accurately', () => {
+    const sampleSkus = [
+      { sku: 'A1', description: 'Active Part', parentCategory: 'Processor', subCategory: 'CPU', optionType: 'Option', lifecycleStatus: 'Active' },
+      { sku: 'A2', description: 'Obsolete Part', parentCategory: 'Memory', subCategory: 'DIMM', optionType: 'Option', lifecycleStatus: 'Obsolete (OB)' },
+      { sku: 'A3', description: 'Warning Part', parentCategory: 'Memory', subCategory: 'DIMM', optionType: 'Option', lifecycleStatus: 'EOL Warning (90-Day)' },
+      { sku: 'A4', description: 'Supply Restricted', parentCategory: 'Storage', subCategory: 'SSD', optionType: 'Option', lifecycleStatus: 'Constrained Supply (CS)' },
+      { sku: 'A5', description: 'Dell ProSupport Plus 3Yr', parentCategory: 'Support Services', subCategory: 'Support', optionType: 'Option', rowType: 'SUPPORT_SERVICE' }
+    ];
+    const obsoleteList = filterDisplayedSkus(sampleSkus, 'obsolete', 'ALL', 'ALL', 'ALL', false);
+    expect(obsoleteList.map((s) => s.sku)).toEqual(['A2', 'A3', 'A4']);
+
+    const svcList = filterDisplayedSkus(sampleSkus, 'services', 'ALL', 'ALL', 'ALL', false);
+    expect(svcList.map((s) => s.sku)).toEqual(['A5']);
+    expect(isServiceOrSupportSku(sampleSkus[4])).toBe(true);
   });
 });

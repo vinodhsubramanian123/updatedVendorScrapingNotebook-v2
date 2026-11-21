@@ -200,6 +200,24 @@ test('catalog policy rejects absent profiles, missing services and tombstone-onl
   assert.equal(validateCatalogCoverage('P', catalog, services, workbook, config).valid, false);
 });
 
+test('public operational evidence retains verification fields and removes workstation identifiers', () => {
+  const { sanitizeOperationalEvidence } = require('../../scripts/lib/system/fs_compat.js');
+  const workspaceFile = path.resolve(__dirname, '../../outputs/test.json');
+  const receipt = {
+    google: { account: 'operator@example.invalid', hasDriveScope: true },
+    error: 'Payload at ' + workspaceFile,
+    localPath: String.raw`C:\Users\example\temp\capture.json`,
+    rawSha256: 'expected-digest'
+  };
+  assert.deepEqual(sanitizeOperationalEvidence(receipt), {
+    google: { account: 'authenticated', hasDriveScope: true },
+    error: 'Payload at outputs/test.json',
+    localPath: String.raw`[local-home]\temp\capture.json`,
+    rawSha256: 'expected-digest'
+  });
+  assert.equal(receipt.google.account, 'operator@example.invalid');
+});
+
 test('promotion replaces stale current files while retaining prior recovery snapshot and history', t => {
   const dir = temporary(t);
   const stage = path.join(dir, 'stage');
@@ -207,11 +225,25 @@ test('promotion replaces stale current files while retaining prior recovery snap
   fs.mkdirSync(path.join(stage, 'history'), { recursive: true });
   fs.mkdirSync(path.join(live, 'history'), { recursive: true });
   fs.writeFileSync(path.join(live, 'obsolete.tsv'), 'old capture');
+  fs.writeFileSync(path.join(live, 'live_OCA_Catalog.xlsx'), 'old catalog');
+  fs.writeFileSync(path.join(live, 'CERTIFIED.json'), '{"old":true}');
+  fs.writeFileSync(path.join(live, 'Historical_Customer_BOM.xlsx'), 'signed customer workbook');
+  fs.writeFileSync(path.join(live, 'catalog_deltas.json'), '[{"deltaId":"legacy-unreviewed"}]');
+  fs.mkdirSync(path.join(live, 'evidence'));
+  fs.mkdirSync(path.join(stage, 'evidence'));
+  fs.writeFileSync(path.join(live, 'evidence', 'capture.json'), 'old receipt');
+  fs.writeFileSync(path.join(stage, 'evidence', 'capture.json'), 'new receipt');
   fs.writeFileSync(path.join(live, 'history', 'receipt.txt'), 'historical');
   fs.writeFileSync(path.join(stage, 'history', 'new_receipt.txt'), 'new history record');
   fs.writeFileSync(path.join(stage, 'current.tsv'), 'new capture');
   const result = promoteStagingDirectory(stage, live);
   assert.equal(fs.existsSync(path.join(live, 'obsolete.tsv')), false);
+  assert.equal(fs.existsSync(path.join(live, 'live_OCA_Catalog.xlsx')), false);
+  assert.equal(fs.existsSync(path.join(live, 'CERTIFIED.json')), false);
+  assert.equal(fs.existsSync(path.join(live, 'catalog_deltas.json')), false);
+  assert.equal(fs.readFileSync(path.join(live, 'Historical_Customer_BOM.xlsx'), 'utf8'), 'signed customer workbook');
+  assert.equal(fs.readFileSync(path.join(live, 'history', 'legacy_catalog_deltas.json'), 'utf8'), '[{"deltaId":"legacy-unreviewed"}]');
+  assert.equal(fs.readFileSync(path.join(live, 'evidence', 'capture.json'), 'utf8'), 'new receipt');
   // Older historical records survive even when staging already has partial history
   assert.equal(fs.readFileSync(path.join(live, 'history', 'receipt.txt'), 'utf8'), 'historical');
   assert.equal(fs.readFileSync(path.join(live, 'history', 'new_receipt.txt'), 'utf8'), 'new history record');

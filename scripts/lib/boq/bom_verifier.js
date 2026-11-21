@@ -20,7 +20,7 @@
 
 const fs = require('fs');
 const { isValidHpeSKU, cleanBaseSKU, isSmartChoiceOrBtoSku, classifyCommercialFulfillmentMode, buildCatalogSkuIndex, classifyLifecycleState } = require('../catalog/sku.js');
-const { candidateReviewCurrent, dependencyAcceptanceState } = require('./solution_evidence.js');
+const { candidateReviewCurrent, dependencyAcceptanceState, catalogEvidenceBoundary } = require('./solution_evidence.js');
 const { analyzeDeliveryPacing } = require('./delivery_pacing_analyzer.js');
 const { getRegisteredAspectsForDomain } = require('../aspects/aspect_registry.js');
 const { auditOpticalLinkEndpoints } = require('../aspects/networking_ocp.js');
@@ -168,7 +168,9 @@ function validateUniversalCriteria(output, context = {}) {
   const chassis = output?.chassis || output?.targetChassis || output?.detectedChassis?.model || context?.chassisName || null;
   const hasModelIdentified = Boolean(chassis && chassis !== 'UNKNOWN' && chassis !== 'Unknown' && chassis !== 'UNKNOWN_CHASSIS');
   checks.push(
-    hasModelIdentified
+    output?.priceDrifts || output?.code === 'PRICE_DRIFT_SCOPE_REQUIRED'
+      ? makeCheck('U2', 'Catalog Portfolio Scope', 'WARN', 'NOT_APPLICABLE', 'Dated catalog comparisons can cover more than one platform.')
+      : hasModelIdentified
       ? makeCheck('U2', 'Server Model Identified', 'WARN', 'PASSED', `Target product model identified: ${chassis}`, { chassis })
       : makeCheck('U2', 'Server Model Identified', 'WARN', 'UNKNOWN', 'Target server model or chassis is unmapped or unknown; general platform defaults applied.', { chassis })
   );
@@ -1252,6 +1254,7 @@ function _checkProductionLifecycleGate(output, context = {}) {
   const catalogData = context.catalogData || output?.catalogData || output?.chassisInfo?.catalogData;
   const catalogIndex = catalogData ? buildCatalogSkuIndex(catalogData) : null;
   const blockedSkus = [];
+  const supplyConstrainedSkus = [];
   for (const part of parts) {
     const clean = cleanBaseSKU(part.sku);
     const catItem = catalogIndex?.get(clean);
@@ -1259,11 +1262,16 @@ function _checkProductionLifecycleGate(output, context = {}) {
       catItem?.lifecycleStatus || part.lifecycleStatus || '',
       catItem?.diffStatus || part.diffStatus || '',
       part.sku || '',
-      catItem?.skuData?.Description || part.description || ''
+      catItem?.skuData?.Description || part.description,
+      catItem?.skuData?.vendorSupplyStatus || part.vendorSupplyStatus
     );
-    if (lc.isBlockedForProduction) {
-      blockedSkus.push(`${clean} (${lc.canonicalStatus})`);
-    }
+    if (lc.isBlockedForProduction) blockedSkus.push(`${clean} (${lc.canonicalStatus})`);
+    else if (lc.isConstrainedSupply) supplyConstrainedSkus.push(clean);
+  }
+  if (supplyConstrainedSkus.length > 0) {
+    return makeCheck('B21', 'Active Production Lifecycle Gate (Non-OB / Non-EOL)', 'BLOCK', 'ACTION_REQUIRED',
+      `Confirm vendor supply or replace the constrained production SKU(s): ${supplyConstrainedSkus.join(', ')}.`,
+      { supplyConstrainedSkus, blockedSkus });
   }
   if (blockedSkus.length > 0 && !context.allowClearanceOrObsolete) {
     return makeCheck('B21', 'Active Production Lifecycle Gate (Non-OB / Non-EOL)', 'BLOCK', 'FAILED',
@@ -1409,7 +1417,10 @@ function _checkClaimAdjudicationGate(outputArtifact) {
 }
 
 function _checkDependencyInvalidationGate(outputArtifact) {
-  const dep = outputArtifact?.dependencyInvalidation;
+  const revisionBoundary = catalogEvidenceBoundary(outputArtifact?.catalogEvidence);
+  const indexed = outputArtifact?.dependencyInvalidation;
+  const dep = indexed && dependencyAcceptanceState(indexed) === 'STALE_INVALIDATED' ? indexed
+    : revisionBoundary?.canGrantAcceptance === false ? revisionBoundary : indexed || revisionBoundary;
   const state = dependencyAcceptanceState(dep);
   if (state === 'NOT_EVALUATED') return null;
   if (state === 'STALE_INVALIDATED') {
@@ -1629,9 +1640,40 @@ function validateFreeformQaCriteria(output, context = {}) {
 }
 
 const SPECIALIZED_TRACK_VALIDATORS = Object.freeze({
-  CATALOG_INTELLIGENCE: (output) => {
-    const hasIntel = Boolean(output?.liveDetails || (output?.pricingTrail && typeof output.pricingTrail === 'object'));
-    const missingTarget = Boolean(output?.targetSku && !output?.liveDetails && (!output?.pricingTrail || Object.keys(output.pricingTrail).length === 0));
+  CATALOG_INTELLIGENCE: (output, context) => {
+    if (output?.code === 'PRICE_DRIFT_SCOPE_REQUIRED' || output?.code === 'CATALOG_QUERY_SCOPE_REQUIRED') {
+      return makeCheck('CI1', 'Catalog Intelligence Scope', 'WARN', 'ACTION_REQUIRED', output.message);
+    }
+    if (output?.catalogSearch) {
+      const { verifyCatalogSearchResponse } = require('../catalog/catalog_query_engine.js');
+      const check = verifyCatalogSearchResponse(output.catalogSearch, context?.catalogSearchRequest);
+      const sev = check.status === 'FAILED' ? 'BLOCK' : 'WARN';
+      return makeCheck('CI2', 'Catalog Search Filter & Field Integrity', sev, check.status === 'PARTIAL' ? 'ACTION_REQUIRED' : check.status,
+        check.issues.length ? check.issues.join(' ') : `Catalog search verified (${output.catalogSearch.summary?.returnedCount || 0} result(s)).`);
+    }
+    if (output?.priceDrifts) {
+      const { snapshotsRead, issues, trailConflictCount } = output.priceDrifts.coverage;
+      const incomplete = !snapshotsRead || issues.length > 0 || trailConflictCount > 0;
+      return makeCheck('CI1', 'Dated Catalog Price Evidence', 'WARN', incomplete ? 'ACTION_REQUIRED' : 'PASSED',
+        incomplete ? 'Catalog evidence contains gaps or conflicting price records.' : 'Dated catalog snapshots were compared.');
+    }
+    if (output?.historicalPricing) {
+      const price = output.historicalPricing;
+      if (price.isResolved && (!price.effectiveDate || price.effectiveDate > price.targetDate || !Number.isFinite(price.nullablePriceUsd))) {
+        return makeCheck('CI3', 'Historical Price Evidence', 'BLOCK', 'FAILED', 'Resolved price lacks a priced observation on or before the as-of date.');
+      }
+      return makeCheck('CI3', 'Historical Price Evidence', 'WARN', price.isResolved ? 'PASSED' : 'ACTION_REQUIRED', output.message);
+    }
+    if (!output?.targetSku && !output?.liveDetails?.sku && !output?.liveDetails?.['Product #'] && output?.pricingTrail && typeof output.pricingTrail === 'object') {
+      return makeCheck('CI1', 'Catalog Intelligence Scope', 'BLOCK', 'FAILED', 'Unfiltered price_history dump without targetSku or catalogSearch scope is prohibited.');
+    }
+    const priceState = output?.liveDetails?.priceState;
+    if (priceState === 'PARSE_FAILED' || priceState === 'CONFLICTING_EVIDENCE') {
+      return makeCheck('CI3', 'Catalog Price Evidence Integrity', 'BLOCK', 'FAILED', `Catalog row for ${output.targetSku} has ${priceState} pricing evidence.`);
+    }
+    const hasExactComparison = output?.crossSolutionComparison?.matches?.some(match => match.exactMatch === true);
+    const hasIntel = Boolean(output?.liveDetails || hasExactComparison || (output?.pricingTrail && typeof output.pricingTrail === 'object'));
+    const missingTarget = Boolean(output?.targetSku && !output?.liveDetails && !hasExactComparison && (!output?.pricingTrail || Object.keys(output.pricingTrail).length === 0));
     if (!hasIntel) return makeCheck('CI1', 'Catalog Intelligence Scope', 'BLOCK', 'FAILED', 'Missing pricingTrail and liveDetails in catalog intelligence response.');
     if (missingTarget) return makeCheck('CI1', 'Catalog Intelligence Scope', 'WARN', 'ACTION_REQUIRED', `Requested SKU ${output.targetSku} not found in active catalog or historical trail.`);
     return makeCheck('CI1', 'Catalog Intelligence Scope', 'BLOCK', 'PASSED', 'Catalog intelligence payload verified.');

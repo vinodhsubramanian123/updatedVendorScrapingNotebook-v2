@@ -23,9 +23,10 @@ function _isAddonLifecycleEligible(skuObj) {
     skuObj['Lifecycle Status'] || skuObj.lifecycleStatus || '',
     skuObj['Diff Status'] || skuObj.diffStatus || '',
     skuObj['Product #'] || skuObj.sku || '',
-    skuObj.Description || skuObj.description || ''
+    skuObj.Description || skuObj.description,
+    skuObj.vendorSupplyStatus
   );
-  return !lc.isBlockedForProduction;
+  return !lc.isBlockedForProduction && !lc.isConstrainedSupply;
 }
 
 /**

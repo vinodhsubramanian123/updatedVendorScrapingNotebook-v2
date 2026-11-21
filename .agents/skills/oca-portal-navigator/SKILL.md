@@ -256,3 +256,4 @@ Use **Components → target icon → Services (right-hand icon controls) → Edi
 
 ### Runtime Conditional Discovery
 Follow [Shared Runtime Conditional Discovery Contract](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md).
+- **Global Commercial CTO/Wizard Ranking & Cold Step 1 Deferred Click (`INV-266`)**: `_sortAndFilterEligibleCandidates` penalizes regional/restricted variants (`KSA`, `Saudi`, `Disconnected`, `Add-on`, `Upgrade`) so global commercial CTO and Wizard base cards (`arcusSolwizard`, `S3L12A`) rank first. `_clientSelectDropdownControls` checks `alreadyReady` before firing `change`, `buildSelectAndClickExpression` defers `button.click()` via `setTimeout(..., 50)` so page unload cannot tear down CDP `Runtime.evaluate`, `searchAndConfigureChassis` allows `120000`ms for candidate selection, and `handlePartnerPortalLaunch` allows `60000`ms for SAML Tab 2 initialization.

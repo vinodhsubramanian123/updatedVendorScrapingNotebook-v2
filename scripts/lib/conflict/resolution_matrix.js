@@ -32,6 +32,16 @@ function _buildBlockedLifecycleRec(cleanSku, it, itemLc, catLc, alternativeSku) 
   };
 }
 
+function _buildSupplyRecommendation(sku, description, alternativeSku) {
+  return {
+    sku,
+    originalDesc: description,
+    risk: 'Constrained Supply (CS)',
+    action: 'Confirm vendor supply or select an available compatible equivalent',
+    alternative: alternativeSku || 'Resolve a compatible equivalent in this product catalog'
+  };
+}
+
 function _classifyItemLifecycleRecommendation(it, skuIndex, options) {
   const rawSku = String(it.sku || '').trim();
   const cleanSku = cleanBaseSKU(it.sku);
@@ -40,11 +50,14 @@ function _classifyItemLifecycleRecommendation(it, skuIndex, options) {
   const diffStatus = catalogItem?.diffStatus || it.diffStatus || '';
   const alternativeSku = skuData['Alternative SKU'] || '';
 
-  const itemLc = classifyLifecycleState(it.lifecycleStatus || '', it.diffStatus || '', rawSku, it.description || '');
-  const catLc = classifyLifecycleState(catalogItem?.lifecycleStatus || '', diffStatus, rawSku, skuData.Description || '');
+  const itemLc = classifyLifecycleState(it.lifecycleStatus, it.diffStatus, rawSku, it.description, it.vendorSupplyStatus);
+  const catLc = classifyLifecycleState(catalogItem?.lifecycleStatus, diffStatus, rawSku, skuData.Description, skuData.vendorSupplyStatus);
 
   if (itemLc.isBlockedForProduction || catLc.isBlockedForProduction || /^DS\s+/i.test(rawSku)) {
     return _buildBlockedLifecycleRec(cleanSku, it, itemLc, catLc, alternativeSku);
+  }
+  if (itemLc.isConstrainedSupply || catLc.isConstrainedSupply) {
+    return _buildSupplyRecommendation(cleanSku, it.description, alternativeSku);
   }
   if (itemLc.is90DayWarning || catLc.is90DayWarning || itemLc.isDirectShip || catLc.isDirectShip) {
     return {

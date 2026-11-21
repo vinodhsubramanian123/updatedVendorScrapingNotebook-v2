@@ -1,6 +1,28 @@
 'use strict';
 const { cleanBaseSKU, isValidHpeSKU, classifyOptionType, isTaaGtaCatalogOption } = require('./sku.js');
-const { extractCatalogItemLeadTime, extractCatalogItemPrice } = require('../taxonomy/sku_resolver.js');
+const { classifyComponentRole } = require('./product_meta.js');
+const {
+  parseStrictPrice,
+  parseLeadTimeOrEta,
+  normalizeLifecycleCanonical,
+  buildAvailabilityContract,
+  classifyRowType
+} = require('./field_parsers.js');
+
+const LIFECYCLE_DISPLAY_LABELS = Object.freeze({
+  Obsolete: 'Obsolete (OB)',
+  '90-Day Warning': 'EOL Warning (90-Day)',
+  'Direct Ship': 'Direct Ship (DS)',
+  'Constrained Supply': 'Constrained Supply (CS)',
+  Active: 'Active',
+  Unknown: 'Unknown'
+});
+
+function _formatLifecycleDisplayLabel(lifecycleNorm, fallback = 'Active') {
+  const canonical = lifecycleNorm?.lifecycleCanonical || fallback;
+  if (canonical === 'Hidden / Conditional') return fallback;
+  return LIFECYCLE_DISPLAY_LABELS[canonical] || canonical;
+}
 
 function _buildConditionalRule(observation, sku) {
   const ambient = observation.conditionType === 'AMBIENT_GATE' && Number.isFinite(observation.thresholdDegC);
@@ -25,37 +47,87 @@ function _buildConditionalRule(observation, sku) {
   };
 }
 
-function _createSelectorDiscoveredRow(observation, sku, rule) {
-  const { price: parsedPrice } = extractCatalogItemPrice({ listPrice: observation.numericListPrice ?? observation.listPrice });
-  const hasPrice = parsedPrice > 0;
+function _extractScopeProvenance(source = {}) {
+  return {
+    baseSku: source.baseSku || source.chassisSku || null,
+    ownerProduct: source.ownerProduct || source.product || null,
+    ownerConfiguration: source.ownerConfiguration || source.configuration || null,
+    region: source.region || 'US',
+    selectorState: source.selectorState || source.selectorTriggerSku || source.ruleContext || null
+  };
+}
+
+function _buildSelectorLeadTimeAndLifecycle(observation) {
   const badge = String(observation.badge || observation.lifecycleBadge || '').trim().toUpperCase();
-  const { raw: leadTime, days: leadTimeDays, isPublished } = extractCatalogItemLeadTime(observation);
+  const leadTimeParsed = parseLeadTimeOrEta(
+    observation['Lead Time'] || observation.leadTime,
+    observation.leadTimeDays,
+    observation['Speed Tier']
+  );
+  const lifecycleNorm = normalizeLifecycleCanonical(
+    badge || observation.supplyBadge || observation.lifecycleStatus || 'Active',
+    true
+  );
+  return { badge, leadTimeParsed, lifecycleNorm };
+}
+
+function _createSelectorDiscoveredRow(observation, sku, rule) {
   const cleanDesc = String(observation.description || 'HPE Hardware Option').replace(/[\r\n\t]+/g, ' ').trim();
-  const lifecycle = badge === 'OB' ? 'Obsolete' : (badge === '90' ? '90-Day EOL Warning' : (observation.lifecycleStatus || 'Active'));
+  const priceParsed = parseStrictPrice(
+    observation.numericListPrice ?? observation.listPrice ?? observation.unitPriceUsd ?? observation['Unit Price (USD)'],
+    { sku, description: cleanDesc, row: observation }
+  );
+  const hasPrice = priceParsed.priceUsd !== null && priceParsed.priceUsd > 0;
+  const { badge, leadTimeParsed, lifecycleNorm } = _buildSelectorLeadTimeAndLifecycle(observation);
+  const scopeProvenance = _extractScopeProvenance(observation);
+  const priceStr = hasPrice ? priceParsed.priceUsd.toFixed(2) : '';
+  const parentCategory = observation.parentCategory || 'Drive Enclosures / Drives';
+  const rawSubCategory = observation.rawSubCategory || observation.subCategory || 'Hot Plug SFF Drives (Selector Conditional)';
+  const componentRole = observation['Component Role'] || observation.componentRole || classifyComponentRole(parentCategory, cleanDesc);
+  const rowType = observation.rowType || classifyRowType({
+    sku,
+    'Product #': sku,
+    Description: cleanDesc,
+    description: cleanDesc,
+    category: parentCategory,
+    subCategory: rawSubCategory,
+    'Component Role': componentRole
+  });
   return {
     'Product #': sku,
     sku,
     Description: cleanDesc,
     'Option Type': observation.optionType || classifyOptionType(sku),
+    'Component Role': componentRole,
+    subCategory: rawSubCategory,
+    rawSubCategory,
+    rowType,
     'Current Qty': '0',
-    'Unit Price (USD)': hasPrice ? parsedPrice.toFixed(2) : '',
+    'Unit Price (USD)': priceStr,
     'Extended Price (USD)': 'NA',
-    'List Price (USD)': hasPrice ? parsedPrice.toFixed(2) : '',
-    listPrice: hasPrice ? parsedPrice : null,
+    'List Price (USD)': priceStr,
+    listPrice: hasPrice ? priceParsed.priceUsd : null,
+    priceState: priceParsed.priceState,
+    priceStatus: priceParsed.priceStatus,
     'HPE Recommended': observation.preferred ? 'Yes' : (observation['HPE Recommended'] || 'No'),
     vendorRecommended: Boolean(observation.preferred),
-    'Lead Time': leadTime,
-    leadTimeDays,
-    'Lead Time Days': leadTimeDays === null ? '' : String(leadTimeDays),
-    'Lead Time Source': isPublished ? 'OCA selector probe row attribute' : 'Unknown',
+    'Lead Time': leadTimeParsed.raw,
+    leadTimeDays: leadTimeParsed.days,
+    leadTimeUnit: leadTimeParsed.unit,
+    etaDate: leadTimeParsed.etaDate,
+    speedTier: leadTimeParsed.speedTier,
+    'Lead Time Days': leadTimeParsed.days === null ? '' : String(leadTimeParsed.days),
+    'Lead Time Source': leadTimeParsed.isPublished ? 'OCA selector probe row attribute' : 'Unknown',
     'Start Date': observation.startDate || '',
     'Discontinued Date': observation.discontinuedDate || '',
     'Obsolete Date': observation.obsoleteDate || '',
     'CLIC Status': observation.inUnavail ? 'Conditional' : 'Selectable under selector gate',
-    'Lifecycle Status': lifecycle,
-    lifecycleStatus: lifecycle,
-    lifecycleBadge: badge,
+    'Lifecycle Status': _formatLifecycleDisplayLabel(lifecycleNorm, 'Active'),
+    lifecycleStatus: lifecycleNorm.lifecycleCanonical,
+    lifecycleCanonical: lifecycleNorm.lifecycleCanonical,
+    lifecycleBadge: badge || lifecycleNorm.lifecycleBadge || '',
     Availability: observation.inUnavail ? 'Unavailable under default config' : 'Conditionally selectable via portal selector',
+    visibility: observation.inUnavail ? 'SELECTOR_HIDDEN' : 'DOM_HIDDEN',
     visibilityState: 'PORTAL_CONDITIONAL',
     conditionType: rule.conditionType,
     thresholdValue: rule.thresholdValue,
@@ -63,6 +135,8 @@ function _createSelectorDiscoveredRow(observation, sku, rule) {
     conditionKey: rule.conditionKey,
     selectorTriggerSku: observation.selectorTriggerSku || null,
     observedInPortal: true,
+    scopeProvenance,
+    ownerProduct: scopeProvenance.ownerProduct,
     provenance: observation.ruleContext || rule.rule
   };
 }
@@ -79,6 +153,9 @@ function _attachSelectorDiscoveredRow(targetEntries, observation, newRow, rule) 
       parentCategory,
       subCategory,
       constraint: observation.selectorTriggerSku ? `Requires selector ${observation.selectorTriggerSku}` : 'Selector conditional',
+      minQty: 0,
+      maxQty: null,
+      maxQtySemantics: 'UNBOUNDED',
       rules: [],
       skus: []
     };
@@ -111,6 +188,9 @@ function applyConditionalDiscovery(entries, observations = [], targetEntries = e
       rule.subCategory = entry.subCategory;
       entry.rules = [...new Set([...(entry.rules || []), rule.rule])];
       for (const row of matched) {
+        if (!row['Component Role']) {
+          row['Component Role'] = classifyComponentRole(entry.parentCategory || '', row.Description || row.description || '');
+        }
         Object.assign(row, {
           visibilityState: 'PORTAL_CONDITIONAL',
           conditionType: rule.conditionType,
@@ -189,35 +269,59 @@ function _buildExistingSkuMap(allEntries) {
 
 function _enrichExistingRow(row, u) {
   row.visibilityState = 'PORTAL_CONDITIONAL';
+  row.visibility = row.visibility || 'SELECTOR_HIDDEN';
   row.isSelectable = false;
   row.status = 'PORTAL_CONDITIONAL';
   row.ineligibilityReason = u.ineligibilityReason || row.ineligibilityReason;
   row.ruleType = u.ruleType || row.ruleType;
+  row.scopeProvenance = _extractScopeProvenance({ ...u, ...row.scopeProvenance });
   if (u.supplyBadge) row.supplyBadge = u.supplyBadge;
   if (u.supplyTitle) row.supplyTitle = u.supplyTitle;
   if (u.isPrivateSku) row.isPrivateSku = true;
 }
 
 function _createConditionalRow(u, cleanSku) {
-  const isDisc = u.lifecycleStatus === 'Discontinued';
   const cleanDesc = String(u.description || 'HPE Hardware Option').replace(/[\r\n\t]+/g, ' ').trim();
   const detectedOptionType = u.optionType || classifyOptionType(cleanSku);
-  const hasPrice = Number.isFinite(u.listPrice) && u.listPrice > 0;
+  const priceParsed = parseStrictPrice(u.numericListPrice ?? u.listPrice, { sku: cleanSku, description: cleanDesc, row: u });
+  const hasPrice = priceParsed.priceUsd !== null && priceParsed.priceUsd > 0;
+  const lifecycleNorm = normalizeLifecycleCanonical(u.lifecycleStatus || 'Unknown', true);
+  const availabilityContract = buildAvailabilityContract({
+    skuRow: { sku: cleanSku, lifecycleStatus: lifecycleNorm.lifecycleCanonical, visibility: 'SELECTOR_HIDDEN', portalConditional: true }
+  });
+  const scopeProvenance = _extractScopeProvenance(u);
+  const componentRole = u['Component Role'] || u.componentRole
+    || (u.section && u.section !== 'General Options' ? u.section : classifyComponentRole('', cleanDesc));
+  const rowType = u.rowType || classifyRowType({
+    sku: cleanSku,
+    'Product #': cleanSku,
+    Description: cleanDesc,
+    description: cleanDesc,
+    category: u.section || '',
+    'Component Role': componentRole
+  });
 
   return {
     'Product #': cleanSku,
     sku: cleanSku,
     'Option Type': detectedOptionType,
-    'Component Role': u.section || 'General Options',
+    'Component Role': componentRole,
+    rowType,
     Description: cleanDesc,
     'Current Qty': '0',
-    'Unit Price (USD)': hasPrice ? u.listPrice.toFixed(2) : '',
-    listPrice: hasPrice ? u.listPrice : null,
+    'Unit Price (USD)': hasPrice ? priceParsed.priceUsd.toFixed(2) : '',
+    listPrice: hasPrice ? priceParsed.priceUsd : null,
+    priceState: priceParsed.priceState,
+    priceStatus: priceParsed.priceStatus,
     'CLIC Status': 'Conditional',
-    'Lifecycle Status': isDisc ? 'Discontinued' : (u.lifecycleStatus || 'Unknown'),
-    lifecycleStatus: isDisc ? 'Discontinued' : (u.lifecycleStatus || 'Unknown'),
+    'Lifecycle Status': _formatLifecycleDisplayLabel(lifecycleNorm, 'Unknown'),
+    lifecycleStatus: lifecycleNorm.lifecycleCanonical,
+    lifecycleCanonical: lifecycleNorm.lifecycleCanonical,
     'HPE Recommended': u['HPE Recommended'] || 'Unknown',
     Availability: 'Conditionally available in OCA based on configuration gates',
+    visibility: availabilityContract.visibility,
+    availability: availabilityContract.availability,
+    compatibility: availabilityContract.compatibility,
     'Start Date': u.startDate || '',
     'Discontinued Date': u.discontinuedDate || '',
     isPrivateSku: Boolean(u.isPrivateSku || /\bPVT\b/i.test(String(u.rawSku || u.sku))),
@@ -228,6 +332,8 @@ function _createConditionalRow(u, cleanSku) {
     ruleType: u.ruleType,
     supplyBadge: u.supplyBadge || '',
     supplyTitle: u.supplyTitle || '',
+    scopeProvenance,
+    ownerProduct: scopeProvenance.ownerProduct,
     provenance: 'HPE OCA Unavailable Table DOM Extraction'
   };
 }

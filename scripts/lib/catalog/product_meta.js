@@ -51,13 +51,37 @@ function parseProductMeta(rawText, pageTitle = '') {
   return parseModelAndGeneration(rawText, pageTitle);
 }
 
+function _detectAlletraMpProduct(fullText) {
+  const mpMatch = fullText.match(/\balletra(?:\s+storage)?(?:\s+mp)?\s+([a-z]\d{4,5}[a-z]?)(?![-a-z0-9])/i)
+    || (/\balletra\b/i.test(fullText) ? fullText.match(/\b([bx]\d{4,5}[a-z]?)(?![-a-z0-9])/i) : null);
+  return mpMatch ? { family: 'Alletra', gen: 'Storage', cleanName: `Alletra_MP_${mpMatch[1].toUpperCase()}` } : null;
+}
+
+function _normalizeExtractedModelName(rawModel) {
+  let model = rawModel.trim();
+  if (/^SN\s*\d{4}[a-z]$/i.test(model)) model = model.replace(/\s+/g, '').toUpperCase();
+  else if (/^DL\s*(\d{3})\s*(a?)$/i.test(model)) {
+    const m = model.match(/^DL\s*(\d{3})\s*(a?)$/i);
+    model = `DL${m[1]}${m[2] ? m[2].toLowerCase() : ''}`;
+  } else if (/^(?:ML|RL|SY)\s*(\d{3})$/i.test(model)) {
+    const m = model.match(/^([A-Z]{2})\s*(\d{3})$/i);
+    model = `${m[1].toUpperCase()}${m[2]}`;
+  } else {
+    model = model.replace(/\s+/g, '_');
+  }
+  if (/100Gb|Virtual_Connect|F32/i.test(model)) model = 'SY100Gb_F32';
+  if (/^Synergy_(\d{3})$/i.test(model)) model = model.replace(/^Synergy_/i, 'SY');
+  return model;
+}
+
 function parseModelAndGeneration(rawText, pageTitle) {
   const fullText = `${rawText || ''} ${pageTitle || ''}`.replace(/_/g, ' ');
   if (/\b(?:SY100Gb|100Gb)\s+F32\b/i.test(fullText)) {
     return { family: 'Synergy', gen: 'General', cleanName: 'SY100Gb_F32_Module' };
   }
+  const alletraMp = _detectAlletraMpProduct(fullText);
+  if (alletraMp) return alletraMp;
 
-  // 1. Generation Detection
   const genMatch = fullText.match(/Gen\d+(?:Plus)?/i);
   const shortGenMatch = !genMatch ? fullText.match(/\b(?:DL|ML|RL|SY)\s*\d+[a-z]?\s+G(\d+)\b/i) : null;
   let gen = genMatch ? genMatch[0] : (shortGenMatch ? `Gen${shortGenMatch[1]}` : 'General');
@@ -65,43 +89,25 @@ function parseModelAndGeneration(rawText, pageTitle) {
   if (gen === 'General' && /alletra|nimble|storeonce|msa|simplivity/i.test(fullText)) gen = 'Storage';
   if (gen === 'General' && /\bsn\s*\d{4}[a-z]\b|fibre\s+channel\s+switch/i.test(fullText)) gen = 'FC';
 
-  // 2. Family Detection
   const family = detectProductFamily(fullText);
-
-  // 3. Model & Form Factor Detection
   const modelMatch = fullText.match(/\b(SN\s*\d{4}[a-z]|DL\s*\d{3}\s*a?|ML\s*\d{3}|RL\s*\d{3}|SY\s*\d{3}|Synergy\s*\d+|GX\s*\d{4}|MicroServer|MSL\s*\d{4}|Alletra\s*\d{4}|Nimble\s*[A-Z0-9]+|StoreOnce\s*\d{4}|MSA\s*\d{4}|2060|2062|1060|2050|5010|5030|5050|6000|9000|Virtual\s*Connect|VC\s*\d+Gb|100Gb\s*F32)\b/i);
-  const primaryFfMatch   = fullText.match(/\b(SFF|LFF|EDSFF|NHP)\b/i);
-  const secondaryFfMatch = fullText.match(/\b(Module|Frame|Rack|Enclosure|Storage|CTO)\b/i);
-  const formFactorMatch  = primaryFfMatch || secondaryFfMatch;
+  const formFactorMatch = fullText.match(/\b(SFF|LFF|EDSFF|NHP)\b/i) || fullText.match(/\b(Module|Frame|Rack|Enclosure|Storage|CTO)\b/i);
 
   let cleanName = '';
   if (modelMatch) {
-    let model = modelMatch[0].trim();
-    if (/^SN\s*\d{4}[a-z]$/i.test(model)) model = model.replace(/\s+/g, '').toUpperCase();
-    if (/^DL\s*(\d{3})\s*(a?)$/i.test(model)) {
-      const m = model.match(/^DL\s*(\d{3})\s*(a?)$/i);
-      model = `DL${m[1]}${m[2] ? m[2].toLowerCase() : ''}`;
-    } else if (/^(?:ML|RL|SY)\s*(\d{3})$/i.test(model)) {
-      const m = model.match(/^([A-Z]{2})\s*(\d{3})$/i);
-      model = `${m[1].toUpperCase()}${m[2]}`;
-    } else {
-      model = model.replace(/\s+/g, '_');
-    }
-    if (/100Gb|Virtual_Connect|F32/i.test(model)) model = 'SY100Gb_F32';
-    if (/^Synergy_(\d{3})$/i.test(model)) model = model.replace(/^Synergy_/i, 'SY');
+    const model = _normalizeExtractedModelName(modelMatch[0]);
     const isRackOrBlade = /^(?:DL|ML|RL|SY)\d/i.test(model);
-    const ff  = !isRackOrBlade && family !== 'SAN' && formFactorMatch ? formFactorMatch[0].toUpperCase() : '';
+    const ff = !isRackOrBlade && !['SAN', 'StoreEver'].includes(family) && formFactorMatch ? formFactorMatch[0].toUpperCase() : '';
     cleanName = `${model}${gen && gen !== 'General' ? '_' + gen : ''}${ff ? '_' + ff : ''}`;
   } else {
     cleanName = rawText
       .replace(/Collapse All|Expand All|Expand Subsections|Undo Selection|Remove Defaults|View HPE Recommended only/gi, '')
-      .replace(/\b[A-Z0-9]{3,8}-[A-Z0-9]{3,4}\b/gi, '') // Strip SKU IDs (Rule #15)
+      .replace(/\b[A-Z0-9]{3,8}-[A-Z0-9]{3,4}\b/gi, '')
       .replace(/[^a-zA-Z0-9_-]/g, '_')
       .replace(/_+/g, '_')
       .replace(/^_|_$/g, '');
   }
 
-  // Ensure cleanName is valid & free of verbose leading prefixes or stray trailing SKU IDs
   cleanName = cleanName
     .replace(/^HPE_/i, '')
     .replace(/_[A-Z0-9]{5,8}-[A-Z0-9]{3,4}$/i, '')
@@ -116,11 +122,11 @@ function parseModelAndGeneration(rawText, pageTitle) {
 const DEFAULT_ROLE_MAPPINGS = [
   { role: 'Base Chassis', keywords: ['chassis cto', 'cto server', 'base chassis', 'configure-to-order server', 'configure-to-order compute module', 'configure-to-order chassis', 'base system', 'compute module', 'frame cto', 'cto chassis', 'cto rack'] },
   { role: 'Storage Battery', keywords: ['smart storage battery', 'battery', 'lithium-ion battery', 'bbu', 'supercapacitor', 'energy storage'] },
-  { role: 'Transceiver', keywords: ['transceiver', 'optical transceiver', 'sfp28 sr', 'sfp28 lr', 'qsfp28 sr', 'qsfp28 lr', 'sfp56', 'qsfp56', 'qsfp-dd', 'direct attach', 'dac cable', 'active optical cable', 'aoc cable'] },
+  { role: 'Transceiver', keywords: ['transceiver', 'optical transceiver', 'sfp28 sr', 'sfp28 lr', 'qsfp28 sr', 'qsfp28 lr', 'sfp56', 'qsfp56', 'qsfp-dd', 'direct attach copper', 'dac cable', 'active optical cable', 'aoc cable'] },
   { role: 'Cable Kit', keywords: ['cable', 'cable kit', 'power cable', 'power cord', 'jumper cord', 'lug kit', 'box 1/2 cable', 'enablement kit', 'fiber optic', 'om3', 'om4', 'lc to lc', 'serial cable', 'side-by-side cable', 'nvlink bridge', 'nvlink', 'riser cable', 'gpu aux cable', 'internal cable kit', 'controller cable'] },
   { role: 'Processor', keywords: ['processor', 'xeon', 'epyc'] },
   { role: 'Memory', keywords: ['memory', 'rdimm', 'ddr5', 'ddr4', 'dimm blank', 'mrdimm', 'lrdimm'] },
-  { role: 'GPU / Accelerator', keywords: ['gpu', 'accelerator', 'nvidia', 'tesla', 'quadro', 'radeon', 'rtx'] },
+  { role: 'GPU / Accelerator', keywords: ['gpu', 'accelerator', 'nvidia', 'tesla', 'quadro', 'radeon', 'rtx', 'h100', 'h200', 'b200', 'l40s', 'mi300', 'instinct', 'gaudi'] },
   { role: 'Storage Controller', keywords: ['storage controller', 'controller', 'raid', 'mr416i', 'sr932i', 'smart array', 'vroc', 'megaraid', 'smartraid', 'tri-mode controller'] },
   { role: 'Boot Device', keywords: ['boot device', 'ns204i-u', 'ns204i-p', 'boot optimized', 'boss-s', 'm.2 boot'] },
   { role: 'Drive Cage / Drive', keywords: ['drive', 'cage', 'hdd', 'ssd', 'nvme', 'media bay', 'drive blank', 'no drive', 'drive enclosure', 'edsff'] },
@@ -130,8 +136,8 @@ const DEFAULT_ROLE_MAPPINGS = [
   { role: 'Cooling / Thermal', keywords: ['cold plate', 'liquid cooling', 'direct liquid cooling', 'dlc module', 'fan kit', 'fan', 'cooling', 'heatsink', 'heat sink'] },
   { role: 'Security & Platform Trust', keywords: ['tpm', 'trusted platform module', 'intrusion detection', 'chassis intrusion', 'security bezel', 'bezel lock', 'key manager'] },
   { role: 'Power Supply', keywords: ['flex slot', '-48vdc', 'hot plug power supply', 'titanium power', 'platinum power', 'power supply', 'ps kit'] },
-  { role: 'Operating System / License', keywords: ['software', 'operating system', 'windows server', 'red hat', 'suse', 'license', 'oneview', 'e-ltu', 'vmware', 'ilo', 'certificate', 'password fio', 'ras os control', 'flexible ltu'] },
-  { role: 'Service & Support', keywords: ['support', 'service', 'tech care', 'warranty', 'pointnext', 'installation', 'startup', 'deployment'] },
+  { role: 'Operating System / License', keywords: ['software', 'operating system', 'windows server', 'red hat', 'suse', 'license', 'oneview', 'e-ltu', 'e-rtu', 'vmware', 'ilo', 'certificate', 'password fio', 'ras os control', 'flexible ltu', 'ml dev env', 'virtual workstation', 'cloudera'] },
+  { role: 'Service & Support', keywords: ['support', 'service', 'tech care', 'warranty', 'pointnext', 'installation', 'startup', 'deployment', 'prosupport', 'smartnet', 'hi-care', 'foundation care', 'education', 'learning credits'] },
   { role: 'Chassis Infrastructure', keywords: ['infrastructure', 'bezel', 'rail', 'management arm', 'cma', 'insight display', 'blank kit', 'localization', 'ambient temperature', 'tracking', 'supply chain', 'ce mark', 'energy star', 'fio trigger', 'security kit'] }
 ];
 
@@ -153,8 +159,19 @@ function isBaseChassis(desc) {
   return false;
 }
 
+function _isSoftwareOrServiceText(text) {
+  return /\b(?:e-[lr]tu|license|subscription|saas|education|learning\s*credits|virtual\s*workstation|ml\s*dev\s*env|integrat(?:ion)?\s*svc|tech\s*care|foundation\s*care|pointnext|prosupport|smartnet|hi-care)\b|\bsvc\b|\bsoftware\b|\b(?:ml|ai|gpu)\b[^.\n]*\bsw\b|\bsub\b(?=\s+(?:e-[lr]tu|\d+\s*y))/i.test(String(text || ''));
+}
+
 function _classifyPrimaryInfrastructureRole(desc) {
-  if (/\b(service|support|svc|tech care)\b/i.test(desc)) return 'Service & Support';
+  if (/\b(?:service|support|svc|tech\s*care|foundation\s*care|pointnext|prosupport|smartnet|hi-care|education|learning\s*credits)\b/i.test(desc)
+    && !/\b(?:raid\s*setting|fio\s*setting|bracket|bezel|rail|cable|heatsink|fan)\b/i.test(desc)) {
+    return 'Service & Support';
+  }
+  if (/\b(?:e-[lr]tu|saas|software|license|subscription|virtual\s*workstation|ml\s*dev\s*env)\b/i.test(desc)
+    && !/\b(?:cable|kit|bracket|riser|transceiver|heatsink|raid\s*setting|enablement\s*kit)\b/i.test(desc)) {
+    return 'Operating System / License';
+  }
   if (/virtual\s*connect|\binterconnect\b|\bvc\s*\d+\s*gb\s*f32\b/i.test(desc) && !/\b(cable|transceiver|adapter|kit)\b/i.test(desc)) return 'Fabric Interconnect';
   if (/\bswitch\b/i.test(desc) && !/fibre channel|\b(fc|kit|upgrade|license|cable|transceiver|adapter)\b/i.test(desc)) return 'Network Switch';
   if (/synergy.*\b(frame|enclosure)\b/i.test(desc) && !/\b(kit|blank|rail|cable)\b/i.test(desc)) return 'Composable Enclosure';
@@ -169,6 +186,10 @@ function _classifyAccessoryOrInterconnectRole(desc) {
   if (desc.includes('smart storage battery') || (desc.includes('battery') && (desc.includes('storage') || desc.includes('controller') || desc.includes('bbu') || desc.includes('capacitor')))) {
     return 'Storage Battery';
   }
+  if (/\bdirect\s*attach\b/i.test(desc) && /\b(?:cage|sff|lff|edsff|bay|storage|fio\s*bundle|backplane)\b/i.test(desc)) {
+    if (/\bcage\b/i.test(desc) && !/\bcable\s*kit\b/i.test(desc)) return 'Drive Cage / Drive';
+    if (/\bcable\b/i.test(desc)) return 'Cable Kit';
+  }
   if (desc.includes('transceiver') || desc.includes('optical transceiver') || desc.includes('dac cable') || desc.includes('direct attach copper') || desc.includes('active optical cable')) {
     return 'Transceiver';
   }
@@ -181,7 +202,7 @@ function _classifyAccessoryOrInterconnectRole(desc) {
 
 function _isExcludedRoleForComponent(role, desc) {
   if (role === 'Base Chassis') return true;
-  if (role === 'GPU / Accelerator' && (desc.includes('cable') || desc.includes('cord'))) return true;
+  if (role === 'GPU / Accelerator' && (desc.includes('cable') || desc.includes('cord') || _isSoftwareOrServiceText(desc))) return true;
   if (role === 'Network Adapter' && (desc.includes('enablement') || desc.includes('cable') || desc.includes('cord') || desc.includes('transceiver'))) return true;
   if (role === 'Storage Controller' && (desc.includes('cable') || desc.includes('cord') || desc.includes('battery'))) return true;
   if (role === 'PCIe Riser' && (desc.includes('cable') || desc.includes('cord'))) return true;
@@ -259,7 +280,7 @@ const SUBCATEGORY_SYNTHESIS_RULES = [
   { name: 'Tri-Mode MegaRAID Storage Controllers', match: t => t.includes('mr416') || t.includes('mr216') || t.includes('mr408') || t.includes('megaraid') },
   { name: 'Tri-Mode SmartRAID Storage Controllers', match: t => t.includes('sr932') || t.includes('sr416') || t.includes('smartraid') },
   { name: 'Smart Array SAS Controllers', match: t => t.includes('smart array') || t.includes('e208') || t.includes('p408') || t.includes('p816') },
-  { name: 'Intel VROC RAID Enablement', match: t => t.includes('vroc') },
+  { name: 'Intel VROC RAID Enablement', match: t => t.includes('vroc') && !/\b(?:e-[lr]tu|license|subscription|sub)\b/i.test(t) },
   { name: 'Smart Storage Batteries', match: t => t.includes('smart storage battery') || t.includes('battery') },
 
   // 5. PCIe Risers & Retimers
@@ -269,10 +290,10 @@ const SUBCATEGORY_SYNTHESIS_RULES = [
   { name: 'PCIe Riser Kits', match: t => t.includes('riser') },
 
   // 5b. Graphics & GPU Accelerators
-  { name: 'GPU Accelerators', match: t => t.includes('accelerator') || t.includes('nvidia') || t.includes('h200') || t.includes('l40s') || t.includes('l4') || t.includes('rtx') || t.includes('gpu') },
+  { name: 'GPU Accelerators', match: t => !_isSoftwareOrServiceText(t) && /\b(?:accelerator|gpu|nvidia|rtx|h100|h200|b100|b200|gb200|l40s?|a100|mi\d{3}[a-z]?|instinct|gaudi)\b/i.test(t) },
 
   // 6. Cables & Enablement
-  { name: 'Storage Controller Cable Kits', match: t => t.includes('box 1/2') || t.includes('box 1') || t.includes('box 2') || t.includes('cage cable') || t.includes('controller cable') },
+  { name: 'Storage Controller Cable Kits', match: t => t.includes('box 1/2') || t.includes('box 1') || t.includes('box 2') || t.includes('cage cable') || t.includes('controller cable') || (t.includes('direct attach') && !t.includes('copper') && !t.includes('sfp') && !t.includes('qsfp') && !/\bcage\b/.test(t)) },
   { name: 'Drive Blank & FIO Enablement Kits', match: t => t.includes('no drive') || t.includes('drive blank') },
 
   // 7. Drive Enclosures & Storage Media
@@ -285,7 +306,7 @@ const SUBCATEGORY_SYNTHESIS_RULES = [
   // 8. Networking & Fabrics
   { name: 'OCP3 Networking Adapters', match: t => t.includes('ocp3') || t.includes('ocp') },
   { name: 'PCIe Networking Adapters', match: t => t.includes('adapter') || t.includes('bcm57') || t.includes('intel e810') || t.includes('mellanox') || t.includes('broadcom') || t.includes('base-t') || t.includes('ethernet') },
-  { name: 'Optical Transceivers & DAC Cables', match: t => t.includes('transceiver') || t.includes('sfp28') || t.includes('qsfp28') || t.includes('sfp56') || t.includes('dac') },
+  { name: 'Optical Transceivers & DAC Cables', match: t => t.includes('transceiver') || t.includes('sfp28') || t.includes('qsfp28') || t.includes('sfp56') || /\bdac\b/.test(t) },
   { name: 'Fibre Channel Host Bus Adapters', match: t => t.includes('fibre channel') || t.includes('hba') || t.includes('qlogic') || t.includes('emulex') },
 
   // 9. Power & Infrastructure
@@ -295,7 +316,7 @@ const SUBCATEGORY_SYNTHESIS_RULES = [
   { name: 'Chassis Infrastructure & Rail Kits', match: t => t.includes('bezel') || t.includes('rail') || t.includes('cma') || t.includes('cable management') },
 
   // 10. Software & Licenses
-  { name: 'Server Management & Operating System Licenses', match: t => t.includes('ilo') || t.includes('oneview') || t.includes('ops management') || t.includes('e-ltu') || t.includes('license') || t.includes('windows server') || t.includes('red hat') || t.includes('suse') }
+  { name: 'Server Management & Operating System Licenses', match: t => /\b(?:ilo|oneview|ops management|e-ltu|e-rtu|license|subscription|windows server|red hat|suse|ml dev env|virtual workstation|cloudera)\b/i.test(t) || (/\bvroc\b/i.test(t) && /\b(?:e-[lr]tu|license|sub)\b/i.test(t)) }
 ];
 
 /**
@@ -311,8 +332,10 @@ function synthesizeSubcategoryName(parentCategory = '', itemDescriptions = [], t
   const rulesText = Array.isArray(tableRules) ? tableRules.join(' ') : String(tableRules || '');
   const text = `${descsText} ${rulesText}`.toLowerCase();
 
-  if (/network|interconnect/i.test(parentCategory) && /transceiver|qsfp|sfp\+|sfp28|direct attach|optical cable/.test(text)
-      && !/pcie|ocp3|ethernet adapter/.test(text)) return 'Optical Transceivers & DAC Cables';
+  if (/network|interconnect/i.test(parentCategory) && /transceiver|qsfp|sfp\+|sfp28|direct attach copper|optical cable/.test(text)
+      && !/pcie|ocp3|ethernet adapter|edsff|sff|lff|drive\s*cage|box\s*\d|storage|internal\s*cable|controller|bundle\s*kit/i.test(text)) {
+    return 'Optical Transceivers & DAC Cables';
+  }
 
   for (const rule of SUBCATEGORY_SYNTHESIS_RULES) {
     if (rule.match(text)) {

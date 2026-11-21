@@ -54,18 +54,14 @@ function verifyKnowledgeRuleReachability(rule, chassisVariant, sampleBom = [], c
     try {
       const graph = validateConflictGraph(sampleBom, [], chassisDir, chassisVariant, { skipSynthesis: true });
       const auditLog = graph.auditLog || [];
-      const deltaAudits = auditLog.filter(a => a.category === 'LEARNED_DELTA');
+      const deltaAudits = auditLog.filter(a => a.level === 'LEARNED_DELTA' && a.ruleId);
 
       simulationResult = {
         evaluated: true,
         conflictsCount: graph.conflicts?.length || 0,
         ranksProduced: graph.rankedSolutions?.length || 0,
         deltaAuditRecorded: deltaAudits.length > 0,
-        // Legacy audit entries lack stable rule identity. An unrelated learned
-        // rule firing cannot certify consumption of the rule being inspected.
-        targetRuleApplied: targetRuleId
-          ? deltaAudits.some(a => a.ruleId === targetRuleId || a.deltaId === targetRuleId)
-          : null
+        targetRuleApplied: deltaAudits.some(a => a.ruleId === matchedInRegistry.ruleId && a.applied === true)
       };
     } catch (simErr) {
       simulationResult = {
@@ -89,7 +85,7 @@ function verifyKnowledgeRuleReachability(rule, chassisVariant, sampleBom = [], c
 
 function _validateRuleGovernance(delta, options) {
   const status = String(delta?.status || delta?.governanceStatus || 'ACTIVE').toUpperCase();
-  if (status === 'REJECTED') {
+  if (delta?.active === false || ['REJECTED', 'REVOKED', 'RETRACTED', 'EXPIRED', 'SUPERSEDED'].includes(status)) {
     throw new Error(`LEARNED_RULE_GOVERNANCE_BLOCKED: Rule status "${status}" cannot be certified or added to active history.`);
   }
   if (options.strictGovernance && status !== 'ACTIVE' && status !== 'APPROVED') {
@@ -97,8 +93,22 @@ function _validateRuleGovernance(delta, options) {
   }
 }
 
+function _isWorkflowLesson(delta) {
+  return String(delta.evidenceType || '').toUpperCase() === 'WORKFLOW_REVIEW' ||
+    String(delta.ruleType || '').toUpperCase().startsWith('WORKFLOW_');
+}
+
+function _deltaScopeIdentity(delta) {
+  return JSON.stringify([
+    delta.scopeTaxonomy || delta.scope || 'CHASSIS_SPECIFIC',
+    delta.vendor, delta.pillar, delta.family, delta.generation, delta.productId || delta.chassis
+  ].map(value => String(value || '').trim().toUpperCase()));
+}
+
 function _matchesDeltaCriteria(e, fullDelta, fullDepSku, fullCondKey, fullCondOp, fullThreshold, fullSelector) {
   if (e.deltaId === fullDelta.deltaId) return true;
+  if (_isWorkflowLesson(e) || _isWorkflowLesson(fullDelta)) return false;
+  if (_deltaScopeIdentity(e) !== _deltaScopeIdentity(fullDelta)) return false;
   if (e.affectedSku !== fullDelta.affectedSku) return false;
   if (e.ruleType !== fullDelta.ruleType) return false;
 

@@ -106,7 +106,7 @@ const { isImageFile, performGeminiOcr } = require('../../scripts/lib/ocr/ocr_ser
 const { recordCleansingPreflightTelemetry, recordOcrTelemetry } = require('../../scripts/lib/system/telemetry.js');
 const telemetryLib = require('../../scripts/lib/system/telemetry.js');
 const { generateProfessionalBOQ, _getRankedSolutions, _parseStrictRankTier } = require('../../scripts/lib/boq/generate_boq_xlsx.js');
-const { deliveryFingerprint, dependencyAcceptanceState } = require('../../scripts/lib/boq/solution_evidence.js');
+const { deliveryFingerprint, dependencyAcceptanceState, catalogEvidenceBoundary } = require('../../scripts/lib/boq/solution_evidence.js');
 const { verifyDeliveryAuthorization } = require('../../scripts/lib/contracts/workflow_contract.js');
 const { safeParseEvalResult } = require('../../scripts/lib/system/schemas.js');
 const { spawnObservedChild } = require('../../scripts/lib/system/observed_child_process.js');
@@ -828,7 +828,8 @@ router.post(['/export-boq', '/export-boq-xlsx'], (req, res) => {
     return sendErrorResponse(res, 409, 'Export blocked: Stored run has no completed evaluation candidate', { source: 'EVALUATION_ROUTER', code: 'CANDIDATE_MISSING', runId: requestedRunId });
   }
 
-  const dependencyStates = [storedTop?.dependencyInvalidation, storedEval.dependencyInvalidation].map(dependencyAcceptanceState);
+  const dependencyStates = [storedTop?.dependencyInvalidation, storedEval.dependencyInvalidation,
+    catalogEvidenceBoundary(storedEval.catalogEvidence)].map(dependencyAcceptanceState);
   if (dependencyStates.includes('STALE_INVALIDATED')) {
     return sendErrorResponse(
       res,
@@ -1050,7 +1051,10 @@ router.post('/recompute-matrix', (req, res) => {
 });
 
 // ── Telemetry ─────────────────────────────────────────────────────────────────
-router.get('/telemetry', (req, res) => res.json(telemetryLib.loadTelemetry()));
+router.get('/telemetry', (req, res) => {
+  const { summarizeCatalogProbes } = require('../../scripts/lib/catalog/catalog_probe_queue.js');
+  res.json({ ...telemetryLib.loadTelemetry(), catalogProbeQueue: summarizeCatalogProbes() });
+});
 
 // ── Decision Traces (GAP 7) ───────────────────────────────────────────────────
 router.get('/decision-traces', (req, res) => {
@@ -1068,6 +1072,9 @@ function resolveQueryContext(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('Query context must be an object');
   const context = { ...input };
   const parentRun = lookupRunByIdSafe(context.parentRunId || context.runId);
+  const priorPricing = lookupRunByIdSafe(context.priorPriceDriftRunId)?.queryResult?.data;
+  context.previousPriceDriftScope = priorPricing?.cancellationRequested ? null : priorPricing?.result?.priceDriftScope;
+  delete context.availableCatalogs;
   const effectivePolicy = resolveEffectivePolicySafe({
     clientOffline: context.offline,
     clientOfflineMode: context.offlineMode,
@@ -1120,7 +1127,7 @@ router.post('/query/route', async (req, res) => {
     result.effectivePolicy = context.effectivePolicy;
     result.cancellationRequested = cancelled;
     const isOfflineInputBlocked = result.result?.status === 'OFFLINE_INPUT_REQUIRED';
-    code = (result.result?.status === 'ERROR' || isOfflineInputBlocked || cancelled) ? 1 : 0;
+    code = (['ERROR', 'FAILED'].includes(result.result?.status) || isOfflineInputBlocked || cancelled) ? 1 : 0;
     broadcastSSE({ type: 'ROUTED_RESULT', runId, product: routedProduct, effectivePolicy: context.effectivePolicy, data: result, cancellationRequested: cancelled });
     if (isOfflineInputBlocked) {
       return res.status(422).json({

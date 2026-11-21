@@ -82,10 +82,12 @@ const CatalogEntrySchema = z.object({
   parentCategory: z.string().default('Uncategorized'),
   subCategory: z.string().default('General'),
   constraint: z.string().default(''),
-  maxQty: z.union([z.number(), z.string()]).transform(v => {
+  maxQtySemantics: z.enum(['BOUNDED', 'UNBOUNDED', 'REQUIRED', 'OPTIONAL']).nullable().optional(),
+  maxQty: z.union([z.number(), z.string(), z.null()]).transform(v => {
+    if (v === null || v === undefined || v === '') return null;
     const num = Number(v);
-    return isNaN(num) ? -1 : num;
-  }).default(-1),
+    return Number.isNaN(num) ? null : num;
+  }).default(null),
   rules: z.array(z.string()).default([]),
   headers: z.array(z.string()).default([]),
   skus: z.array(CatalogSkuItemSchema).default([])

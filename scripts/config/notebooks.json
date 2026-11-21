@@ -11,13 +11,13 @@
       "driveSheetId": "1ODabKd0jVBFJU0ga4hfZOs5TtzNIuCXJWb4oXr88ocY",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1ODabKd0jVBFJU0ga4hfZOs5TtzNIuCXJWb4oXr88ocY/edit",
       "driveSourceId": "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
-      "lastSyncedAt": "2026-11-12T11:01:28.348Z",
-      "lastSyncedSourceId": "a87a92fc-5ef0-40e5-a810-04ce76927d8c",
-      "lastSyncedSourceName": "DL380_Gen12_OCA_Catalog_2026-11-12",
+      "lastSyncedAt": "2026-11-21T13:53:24.703Z",
+      "lastSyncedSourceId": "82aa2ae9-95a1-4d06-93e3-eda707812ea8",
+      "lastSyncedSourceName": "DL380_Gen12_OCA_Catalog_2026-11-20",
       "trustedSourceIds": [
         "6eb52606-9295-4f0b-af65-89454b2d443a",
         "6414b478-0c7b-4eeb-980c-da6d2b58f5e4",
-        "a87a92fc-5ef0-40e5-a810-04ce76927d8c",
+        "82aa2ae9-95a1-4d06-93e3-eda707812ea8",
         "1c9f7b40-d826-4974-8dcb-0e1e73bd6520"
       ],
       "officialSourceIds": [
@@ -33,35 +33,35 @@
       "isolationLevel": "CHASSIS_SPECIFIC",
       "queryEnabled": true,
       "certifiedCatalogSourceIds": [
-        "a87a92fc-5ef0-40e5-a810-04ce76927d8c"
+        "82aa2ae9-95a1-4d06-93e3-eda707812ea8"
       ],
       "verifiedLearningSourceIds": [
         "6414b478-0c7b-4eeb-980c-da6d2b58f5e4"
       ],
       "canonicalKnowledgeSourceIds": [
-        "a87a92fc-5ef0-40e5-a810-04ce76927d8c",
+        "82aa2ae9-95a1-4d06-93e3-eda707812ea8",
         "1c9f7b40-d826-4974-8dcb-0e1e73bd6520"
       ],
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:01:43.916Z",
-      "lastSyncAttemptAt": "2026-11-12T13:51:24.738Z",
-      "lastSyncError": "NotebookLM credentials are stale or expired (Command failed: nlm login --check). Please re-authenticate proactively by running in PowerShell: npm run auth:nlm:heal",
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:54:53.888Z",
+      "lastSyncAttemptAt": "2026-11-21T13:37:23.057Z",
+      "lastSyncError": null,
       "cloudSyncState": "VERIFIED",
-      "lastCatalogSha256": "f015e2767b38d044b6233b48409ffdfc6df7f351acd345a5377fa045b16d5dab",
+      "lastCatalogSha256": "ec4cea2c887a19d87c3137debdd03d77e637a37b2525fd80e4de64ee25be6915",
       "lastArtifactHashes": {
-        "Catalog.json": "f015e2767b38d044b6233b48409ffdfc6df7f351acd345a5377fa045b16d5dab",
-        "Services.json": "9655caadc8f86058c45451ff9ce6fc2297313b254ca0a1d68a5f1555a1e00ebe",
-        "Catalog_Rules.json": "25bca99a75886de47a4f9a4a301241acdb2ab6cf3e9a9d2fd513abf647b913d1",
-        "OCA_Catalog.xlsx": "a736467a42ccf4665d7086c355c1d8355015db355d067cf47586ec6211c2f2ce"
+        "Catalog.json": "ec4cea2c887a19d87c3137debdd03d77e637a37b2525fd80e4de64ee25be6915",
+        "Services.json": "9c0faf4d83cb349ca6ce52bb6a110679be3e94379fc96ec23460df3c5b0cd688",
+        "Catalog_Rules.json": "8a1f7c334d6cacc0bf881cfe23b4b884332c3615e61dadefdf5bb320677535c8",
+        "OCA_Catalog.xlsx": "aacf86e3d3f4af6683d6ede8e0a09c87fb75b6bc1d319fe525e9c2cf1950a808"
       },
       "workflowLearningRevision": "b72420b16ad98907ee5a68cd2ca47ef59250cd00a675e91f2c24ba07203a692d",
       "workflowLearningVerifiedAt": "2026-10-01T06:13:01.449Z",
       "publishDriveWorkbook": true,
-      "lastSyncDeltaCount": 70,
-      "lastPayloadChecksum": "2dfec71b6cdbaf49dd301b717f920d8cbc5aaeeabef480d4ef41c7a011be89eb",
+      "lastSyncDeltaCount": 101,
+      "lastPayloadChecksum": "cd368689a221a1c54245982dd57fb71610626ac3e46753c1b3e06619a27bdddc",
       "lastContentFingerprints": {
         "catalog": "583493eab50fffa5b285003c4fc6dba75e517539e82662b7a8df93bcf7f9057f",
         "learnings": "c09c5430e5212eedfa9c402b4f70f3869d1c81a0b21c6a50422c0435535434c3",
@@ -69,7 +69,7 @@
         "workbook": "009aca23ceb9abd5c3b9437d00251f047e716b7fd6aaa85e5a6e5b83c5b86046",
         "combined": "c01e484e85860d3d650976696bec15c1edfe4fa7e44206af1e84ee4f1cf00c64"
       },
-      "lastSyncAttemptStatus": "FAILED_PRESERVED_VERIFIED_PUBLICATION"
+      "lastSyncAttemptStatus": "VERIFIED"
     },
     "DL360_Gen12": {
       "notebookId": "dbe7a857-542f-4d3b-b2f0-e60d3883642b",
@@ -85,42 +85,44 @@
       "queryEnabled": true,
       "trustedSourceIds": [
         "d1c21f13-df8d-433c-bb28-c5201e033c1e",
-        "b66dcfc8-4f31-4d4b-b35c-0112418f5817"
+        "4d38a289-d5a2-4716-902f-5694f4197a89",
+        "1f109b65-6665-4e73-b56b-b6a908facfd5"
       ],
       "officialSourceIds": [
         "d1c21f13-df8d-433c-bb28-c5201e033c1e"
       ],
       "certifiedCatalogSourceIds": [
-        "b66dcfc8-4f31-4d4b-b35c-0112418f5817"
+        "4d38a289-d5a2-4716-902f-5694f4197a89"
       ],
       "quarantinedSourceIds": [],
       "verifiedLearningSourceIds": [],
       "canonicalKnowledgeSourceIds": [
-        "b66dcfc8-4f31-4d4b-b35c-0112418f5817"
+        "4d38a289-d5a2-4716-902f-5694f4197a89",
+        "1f109b65-6665-4e73-b56b-b6a908facfd5"
       ],
       "cloudSyncState": "VERIFIED",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "lastSyncedAt": "2026-11-16T21:07:58.187Z",
-      "lastSyncDeltaCount": 25,
+      "lastSyncedAt": "2026-11-21T13:36:58.979Z",
+      "lastSyncDeltaCount": 26,
       "lastSyncAttemptStatus": "VERIFIED",
       "lastSyncError": null,
-      "lastSyncedSourceName": "DL360_Gen12_OCA_Catalog_2026-11-16",
-      "lastCatalogSha256": "9d12993384fb66cb227994839fd24818af107091be0517ca05724d01bb29bb9c",
+      "lastSyncedSourceName": "DL360_Gen12_OCA_Catalog_2026-11-20",
+      "lastCatalogSha256": "0234136d6451790c6084b6da9e0b816aa52efe047d205c9ff231ff1c3c56ece6",
       "lastArtifactHashes": {
-        "Catalog.json": "9d12993384fb66cb227994839fd24818af107091be0517ca05724d01bb29bb9c",
-        "Services.json": "7465b867d44dc677677db24fd12b9c0710bff2d6dd2604b943556e6fff7af4cf",
-        "Catalog_Rules.json": "eb18ccfd5c254c42633f8c66857145dcb11d6cf8b05b925e598fbd3ac1516ba7",
-        "OCA_Catalog.xlsx": "d59ba89fe723027ba8e39cdf88da0531afbed899039b8f68a29d58f8f1aacde5"
+        "Catalog.json": "0234136d6451790c6084b6da9e0b816aa52efe047d205c9ff231ff1c3c56ece6",
+        "Services.json": "f15f8e1d5960aaf12a3a34202019bba3a2cb64cde23a36d9c38bcc6980918585",
+        "Catalog_Rules.json": "d35b29b4a272978a01fded0f9cc24f325a31ebfdd8d0d69d2b3dc7fbd2b4162d",
+        "OCA_Catalog.xlsx": "55d2eebe0c7760ae78fdc2201ab9a219118118b53194b30e26d23076dfa83f42"
       },
-      "lastPayloadChecksum": "85983b4b3193659489a1597b9244d4f1c83d33e61689f15aa4b2476c8e5433d9",
+      "lastPayloadChecksum": "06fa375f2422635cc4d298427a12267509965a3fc7f8efa020e49a7465647f16",
       "driveSheetId": "1G6SKC2YlGIJZuRKXZkM_HYjggVn0c3FDVPEh2UQOy6s",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1G6SKC2YlGIJZuRKXZkM_HYjggVn0c3FDVPEh2UQOy6s/edit",
-      "lastSyncedSourceId": "b66dcfc8-4f31-4d4b-b35c-0112418f5817",
+      "lastSyncedSourceId": "4d38a289-d5a2-4716-902f-5694f4197a89",
       "runningKnowledgeSourceId": "1f109b65-6665-4e73-b56b-b6a908facfd5",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:01:26.362Z",
-      "lastSyncAttemptAt": "2026-11-16T19:15:02.333Z"
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:54:37.856Z",
+      "lastSyncAttemptAt": "2026-11-20T08:55:04.574Z"
     },
     "DL360_Gen11": {
       "notebookId": "528d2896-92ac-4c85-98c3-6405b4925b0c",
@@ -133,20 +135,20 @@
       "driveSheetId": "1f1p831aZa-dfGb--58xrJB3l0TEAjU3t-mnPSOmjBuM",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1f1p831aZa-dfGb--58xrJB3l0TEAjU3t-mnPSOmjBuM/edit",
       "driveSourceId": "7a7cc41b-263c-46ca-92f3-6f227f2d3557",
-      "lastSyncedSourceName": "DL360_Gen11_OCA_Catalog_2026-11-06",
-      "lastSyncedSourceId": "750040d9-d26d-4cb6-8637-8e8415c8a147",
+      "lastSyncedSourceName": "DL360_Gen11_OCA_Catalog_2026-11-20",
+      "lastSyncedSourceId": "630d3fd4-eca2-4818-9988-4e7770a2e2f6",
       "isolationLevel": "CHASSIS_SPECIFIC",
       "queryEnabled": true,
       "trustedSourceIds": [
         "1f999bdc-f838-4e24-b142-23b70dfc98bb",
-        "750040d9-d26d-4cb6-8637-8e8415c8a147",
+        "630d3fd4-eca2-4818-9988-4e7770a2e2f6",
         "67afb299-6e94-4a8c-b7fb-2af499d5d4bf"
       ],
       "officialSourceIds": [
         "1f999bdc-f838-4e24-b142-23b70dfc98bb"
       ],
       "certifiedCatalogSourceIds": [
-        "750040d9-d26d-4cb6-8637-8e8415c8a147"
+        "630d3fd4-eca2-4818-9988-4e7770a2e2f6"
       ],
       "quarantinedSourceIds": [
         "7a7cc41b-263c-46ca-92f3-6f227f2d3557",
@@ -154,24 +156,24 @@
       ],
       "verifiedLearningSourceIds": [],
       "canonicalKnowledgeSourceIds": [
-        "750040d9-d26d-4cb6-8637-8e8415c8a147",
+        "630d3fd4-eca2-4818-9988-4e7770a2e2f6",
         "67afb299-6e94-4a8c-b7fb-2af499d5d4bf"
       ],
-      "lastSyncedAt": "2026-11-06T08:24:25.481Z",
-      "lastSyncDeltaCount": 9,
-      "cloudSyncState": "FAILED",
+      "lastSyncedAt": "2026-11-21T13:32:15.767Z",
+      "lastSyncDeltaCount": 22,
+      "cloudSyncState": "VERIFIED",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "67afb299-6e94-4a8c-b7fb-2af499d5d4bf",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "lastSyncError": "CdpTransportError: Headless browser did not expose CDP in time.",
-      "lastCatalogSha256": "eeded7676c9c05cc645fb6186598ac92a0439f55e9957e4779b98ad73aa26552",
+      "lastSyncError": null,
+      "lastCatalogSha256": "660c3990590e1c1d7d7468103aa9ef7a57f497de991f1df45520f54a9fc0a173",
       "lastArtifactHashes": {
-        "Catalog.json": "eeded7676c9c05cc645fb6186598ac92a0439f55e9957e4779b98ad73aa26552",
-        "Services.json": "dfa2a8f169b75bd501cf21650498c190e96be560d58c2bf659b6cbe51f780f3b",
-        "Catalog_Rules.json": "7d606bd309de98c3ef9ac2656cf331c7c50862a1394972cd72eab0c35f86f361",
-        "OCA_Catalog.xlsx": "83e1daede3becf20d44981179fea4d3541b46d0450c02a7b42b76f86e07fe919"
+        "Catalog.json": "660c3990590e1c1d7d7468103aa9ef7a57f497de991f1df45520f54a9fc0a173",
+        "Services.json": "39d1bc2ad49566bac56df13dcc95d67483d55e731070b856ac4327e62410d206",
+        "Catalog_Rules.json": "8b8f0b0b38e35cd02ab834878edebdd8c3250c9b941f89d54925b5ea831087fe",
+        "OCA_Catalog.xlsx": "31f412f74b194a3e4401d36e91818aa31f78c23d8e6c86125b41c23bd022993a"
       },
-      "lastPayloadChecksum": "c2ea943114b12dd989555faaa30d3549284a6aa7e35b741f850f6f1ddd6ac5b8",
+      "lastPayloadChecksum": "10d3d960746e828b2474c7f55597a806edfedf0552b46815645e15bd953dd152",
       "lastContentFingerprints": {
         "catalog": "fdd8ade192da28c8bcdedaff3cf5aa376503fe265379be202ac6dba0e64ca36c",
         "learnings": "a1cd3b9c309ebd3ab131434fbf245c95157b5f9a445d779d27fb1ae4d77f440c",
@@ -179,9 +181,10 @@
         "workbook": "62592bc2fcf104925b7bcc45cb6c6bdf782c7a18f77d6ff3952a300b33ef8933",
         "combined": "dd761a6a58b3f1780eada5cb1e4bcaa758954762a7eebc1086e3c7e2a61d4bca"
       },
-      "lastSyncAttemptAt": "2026-11-09T11:23:41.035Z",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:02:00.040Z"
+      "lastSyncAttemptAt": "2026-11-20T17:22:46.739Z",
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:55:07.264Z",
+      "lastSyncAttemptStatus": "VERIFIED"
     },
     "DL380_Gen11": {
       "notebookId": "d37fa851-90cb-45b7-a8e1-78488a0bc6e6",
@@ -191,27 +194,27 @@
       "gen": "Gen11",
       "canonicalDriveEnabled": false,
       "publishDriveWorkbook": true,
-      "cloudSyncState": "FAILED",
-      "lastSyncError": "CdpTransportError: Headless browser did not expose CDP in time.",
+      "cloudSyncState": "VERIFIED",
+      "lastSyncError": null,
       "driveSheetId": "1PAMB27QkjYXTSViEjNKcnZteZ9rvvObnSBBkZAGfF3w",
       "driveFolderId": "1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-",
       "driveSourceId": "e196a0d5-1ba4-416a-a48b-8511d646bc08",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1PAMB27QkjYXTSViEjNKcnZteZ9rvvObnSBBkZAGfF3w/edit",
-      "lastSyncedAt": "2026-11-06T08:27:16.073Z",
-      "lastSyncDeltaCount": 22,
+      "lastSyncedAt": "2026-11-21T13:34:32.165Z",
+      "lastSyncDeltaCount": 38,
       "isolationLevel": "CHASSIS_SPECIFIC",
-      "lastSyncedSourceName": "DL380_Gen11_OCA_Catalog_2026-11-06",
-      "lastSyncedSourceId": "e0368fec-f3ed-4d6c-aca7-fac3bf376f88",
+      "lastSyncedSourceName": "DL380_Gen11_OCA_Catalog_2026-11-20",
+      "lastSyncedSourceId": "d2e270df-5f5a-4f2f-948a-e1c36bdb9ccd",
       "trustedSourceIds": [
         "9f40f089-3b5a-462e-8fad-c298c3c89a5a",
-        "e0368fec-f3ed-4d6c-aca7-fac3bf376f88",
+        "d2e270df-5f5a-4f2f-948a-e1c36bdb9ccd",
         "d97e7d3c-dd44-4a02-b9f2-021003c96016"
       ],
       "officialSourceIds": [
         "9f40f089-3b5a-462e-8fad-c298c3c89a5a"
       ],
       "certifiedCatalogSourceIds": [
-        "e0368fec-f3ed-4d6c-aca7-fac3bf376f88"
+        "d2e270df-5f5a-4f2f-948a-e1c36bdb9ccd"
       ],
       "quarantinedSourceIds": [
         "8e4d0b6a-9a91-41ee-b196-294d12607ce7",
@@ -221,10 +224,10 @@
       ],
       "queryEnabled": true,
       "canonicalKnowledgeSourceIds": [
-        "e0368fec-f3ed-4d6c-aca7-fac3bf376f88",
+        "d2e270df-5f5a-4f2f-948a-e1c36bdb9ccd",
         "d97e7d3c-dd44-4a02-b9f2-021003c96016"
       ],
-      "lastPayloadChecksum": "e26412ef1667c0d3a0a5bd366b9fcc7f8a2e67637d1820b867658534bbeaea7c",
+      "lastPayloadChecksum": "2e638f46d98381a0cd25586f208c05bba8c9805edd52814dedd69a54e1c91c19",
       "lastContentFingerprints": {
         "catalog": "e83018cd9cbfe9cec285b4f3617b448e705dac3df54f17e2a37f461af5ffba56",
         "learnings": "017e4d2ad0f9b3e1dcb351be00b08327dda286608b7482a32162a43c26c12d76",
@@ -236,16 +239,17 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:02:00.808Z",
-      "lastCatalogSha256": "0ab523379fe02a6eaa810b581a5086e5428f8380fcff96cb282ab98800e45d1f",
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:55:06.876Z",
+      "lastCatalogSha256": "b45a4a13651714d05f2d0d943d0ecaf6f85f4ea1acbdcb6d045b637e970c401c",
       "lastArtifactHashes": {
-        "Catalog.json": "0ab523379fe02a6eaa810b581a5086e5428f8380fcff96cb282ab98800e45d1f",
-        "Services.json": "43571e66a83b2579527a72ebbbe773b43777ef9dbf4166702e39a5e33211976e",
-        "Catalog_Rules.json": "94ca96c8d18c40ec6ecb76bb62f9889a83c38de4f498eb587021cb283cfc9a26",
-        "OCA_Catalog.xlsx": "b0f56c0a51ad11f2aa13f2d9c35890ba0ae18fe694cd0c6b4c249e5adbc3bd6e"
+        "Catalog.json": "b45a4a13651714d05f2d0d943d0ecaf6f85f4ea1acbdcb6d045b637e970c401c",
+        "Services.json": "4244c4027eeb4ff6963cfaad8851bc96c570d671077e9c70a22d117c23120622",
+        "Catalog_Rules.json": "dfa356cf1d9b49fb6742b149328c48f36f63389ad7ed1bd69058fe13709bc6e3",
+        "OCA_Catalog.xlsx": "b5526729120ca6ee5099f5289741c516a149561df504bf523bb699ad5f5e52ea"
       },
-      "lastSyncAttemptAt": "2026-11-09T11:25:11.439Z"
+      "lastSyncAttemptAt": "2026-11-20T17:09:03.114Z",
+      "lastSyncAttemptStatus": "VERIFIED"
     },
     "Alletra_Storage_System": {
       "notebookId": "a67629ba-3434-42ab-b465-bd6d71852198",
@@ -256,47 +260,37 @@
       "queryEnabled": true,
       "canonicalDriveEnabled": false,
       "publishDriveWorkbook": true,
-      "lastSyncedAt": "2026-11-06T08:18:17.970Z",
+      "lastSyncedAt": "2026-11-21T05:31:26.302Z",
       "lastSyncDeltaCount": 12,
       "isolationLevel": "CHASSIS_SPECIFIC",
       "lastSyncedSourceName": "Alletra_Storage_System_OCA_Catalog_2026-11-06",
-      "lastSyncedSourceId": "3aa06e3c-e241-45a8-990d-b23c63c6becf",
+      "lastSyncedSourceId": "f3cfb459-e45d-4828-9cf5-89d61f74d199",
       "trustedSourceIds": [
         "df8b669b-b9f7-462b-a676-3e9a6ad66662",
         "3aa06e3c-e241-45a8-990d-b23c63c6becf",
-        "e164272a-35cd-49d5-9b3f-a2cf4a653180"
+        "e164272a-35cd-49d5-9b3f-a2cf4a653180",
+        "f3cfb459-e45d-4828-9cf5-89d61f74d199"
       ],
       "officialSourceIds": [
         "df8b669b-b9f7-462b-a676-3e9a6ad66662"
       ],
       "certifiedCatalogSourceIds": [
-        "3aa06e3c-e241-45a8-990d-b23c63c6becf"
+        "f3cfb459-e45d-4828-9cf5-89d61f74d199"
       ],
       "canonicalKnowledgeSourceIds": [
         "3aa06e3c-e241-45a8-990d-b23c63c6becf",
-        "e164272a-35cd-49d5-9b3f-a2cf4a653180"
+        "e164272a-35cd-49d5-9b3f-a2cf4a653180",
+        "f3cfb459-e45d-4828-9cf5-89d61f74d199"
       ],
       "verifiedLearningSourceIds": [],
-      "quarantinedSourceIds": [
-        "12cec311-84d0-4a42-9814-0ae1f182524d",
-        "86379856-b9f2-4aa7-a03f-19e7cc76d299",
-        "1a0b4dcd-00d8-4ee4-a674-f9b715a421f1",
-        "047546d5-14c6-40c6-b12b-38e71e61ba1c",
-        "0ce51d70-3803-4b68-8f3a-a801b2ead5b5",
-        "b6a58cdb-b18b-4d98-bb29-bcc457072473",
-        "c7142226-eb1d-44b0-b72f-a3752041d267",
-        "ed40639e-f61a-4aa5-b84f-d4ac7de09677",
-        "95ec4e5c-fbae-4a0a-9b6f-7efe22e91e4e",
-        "846282ae-7c10-4798-bfbb-8298a2a271a2"
-      ],
+      "quarantinedSourceIds": [],
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "e164272a-35cd-49d5-9b3f-a2cf4a653180",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
       "lastSyncAttemptAt": "2026-11-09T11:20:14.399Z",
-      "lastSyncError": "CdpTransportError: Headless browser did not expose CDP in time.",
-      "cloudSyncState": "FAILED",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:02:19.857Z",
+      "cloudSyncState": "VERIFIED",
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:55:20.433Z",
       "lastCatalogSha256": "5701989ca2caa67e5ce560dff025798b21f26b29dae8ae62dd7b7b82e2981146",
       "lastArtifactHashes": {
         "Catalog.json": "5701989ca2caa67e5ce560dff025798b21f26b29dae8ae62dd7b7b82e2981146",
@@ -313,7 +307,8 @@
         "combined": "a6ae73bfd9d984120dbc2b821329bfbe44e6516c927296367d7cde8b273c5271"
       },
       "driveSheetId": "1Pk44bzguMPtiVUIZ9YjbZKR6derTnKkOFuM9GfWzSpE",
-      "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1Pk44bzguMPtiVUIZ9YjbZKR6derTnKkOFuM9GfWzSpE/edit"
+      "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1Pk44bzguMPtiVUIZ9YjbZKR6derTnKkOFuM9GfWzSpE/edit",
+      "lastSyncAttemptStatus": "SUCCESS"
     },
     "MSL3040_Tape": {
       "notebookId": "644020e5-42f9-4c4b-95cc-fcf82122685c",
@@ -324,25 +319,25 @@
       "gen": "Tape",
       "canonicalDriveEnabled": false,
       "publishDriveWorkbook": true,
-      "cloudSyncState": "FAILED",
-      "lastSyncError": "NotebookLM credentials are stale or expired (Command failed: nlm login --check). Please re-authenticate proactively by running in PowerShell: npm run auth:nlm:heal",
-      "lastSyncedAt": "2026-11-06T08:36:28.403Z",
-      "lastSyncDeltaCount": 9,
+      "cloudSyncState": "VERIFIED",
+      "lastSyncError": null,
+      "lastSyncedAt": "2026-11-21T13:42:25.095Z",
+      "lastSyncDeltaCount": 22,
       "isolationLevel": "CHASSIS_SPECIFIC",
-      "lastSyncedSourceName": "MSL3040_Tape_OCA_Catalog_2026-11-06",
-      "lastSyncedSourceId": "d3e57f3d-a439-457c-8e88-7872eb02f689",
+      "lastSyncedSourceName": "MSL3040_Tape_OCA_Catalog_2026-11-20",
+      "lastSyncedSourceId": "a753a1a9-787d-445b-8dfc-2cef3cd05a54",
       "trustedSourceIds": [
-        "d3e57f3d-a439-457c-8e88-7872eb02f689",
+        "a753a1a9-787d-445b-8dfc-2cef3cd05a54",
         "d0b76b30-f540-4119-9f56-0283184fc9fe"
       ],
       "canonicalKnowledgeSourceIds": [
-        "d3e57f3d-a439-457c-8e88-7872eb02f689",
+        "a753a1a9-787d-445b-8dfc-2cef3cd05a54",
         "d0b76b30-f540-4119-9f56-0283184fc9fe"
       ],
       "certifiedCatalogSourceIds": [
-        "d3e57f3d-a439-457c-8e88-7872eb02f689"
+        "a753a1a9-787d-445b-8dfc-2cef3cd05a54"
       ],
-      "lastPayloadChecksum": "6ed94b793de4915c1d278443b3c837f30cb659880410d830ab30a05b0f7455c2",
+      "lastPayloadChecksum": "d6e3658863f777ae71c3369ebe5bb12bccdf9702e4dff74d2abc3b373e2db336",
       "lastContentFingerprints": {
         "catalog": "e8def437890bae189fe217a2f213dabac1b9bd46f154b460c01952a438d62af6",
         "learnings": "3d34112d40a0db66b451cb74d41eaee7f4e67a4dfa095ed4b25c6a5e8911ec22",
@@ -363,16 +358,17 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "d0b76b30-f540-4119-9f56-0283184fc9fe",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:02:20.048Z",
-      "lastCatalogSha256": "273b416de81c550224f3f4b71cbc552b488bda75b2b0c3e985ffc70566f335aa",
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:55:20.281Z",
+      "lastCatalogSha256": "aa108621383a3e6f6878b5957f603e3abe5b47aaf417049b3aaeb45cc15d511d",
       "lastArtifactHashes": {
-        "Catalog.json": "273b416de81c550224f3f4b71cbc552b488bda75b2b0c3e985ffc70566f335aa",
-        "Services.json": "edd411cbb872790af9f2e84a2831b0e89b7256d6d2bddb653b756a4a26cec06b",
-        "Catalog_Rules.json": "f6cc22d7f04ab0f3b96515a8c42e62b8de87f1bf4cbdd7d88601ae594f8861fe",
-        "OCA_Catalog.xlsx": "3be0b00fc5bf0c0975bc99de44193698f83f58bc1871cc09cdf5b0e503ac809e"
+        "Catalog.json": "aa108621383a3e6f6878b5957f603e3abe5b47aaf417049b3aaeb45cc15d511d",
+        "Services.json": "c15f025156de6af1c6fb12638c64c8b73cb2041aca923f2675538870a1168845",
+        "Catalog_Rules.json": "61d27c2b18d27448589a155acc55063be31d11f87be9a63660202f9bc64b4ca6",
+        "OCA_Catalog.xlsx": "3ca0f4e9784f75cecb216ffd26f71804661a3e47a6db8d008b738b3dfb35d2ef"
       },
-      "lastSyncAttemptAt": "2026-11-09T11:27:16.032Z"
+      "lastSyncAttemptAt": "2026-11-09T11:27:16.032Z",
+      "lastSyncAttemptStatus": "VERIFIED"
     },
     "GX5000_General_RACK": {
       "notebookId": "86c93203-6b76-439a-b7ab-33ad782e3178",
@@ -383,24 +379,25 @@
       "gen": "General",
       "canonicalDriveEnabled": false,
       "publishDriveWorkbook": true,
-      "cloudSyncState": "FAILED",
-      "lastSyncError": "CdpTransportError: Headless browser did not expose CDP in time.",
-      "lastSyncedAt": "2026-11-06T08:19:51.318Z",
+      "cloudSyncState": "VERIFIED",
+      "lastSyncedAt": "2026-11-21T05:32:31.787Z",
       "lastSyncDeltaCount": 9,
       "isolationLevel": "CHASSIS_SPECIFIC",
       "lastSyncedSourceName": "GX5000_General_RACK_OCA_Catalog_2026-11-06",
-      "lastSyncedSourceId": "ca38fd03-a5da-4fd0-bed2-80001dd66a45",
+      "lastSyncedSourceId": "77cb94d8-0147-4546-a884-d24c7cdaf035",
       "trustedSourceIds": [
         "ca38fd03-a5da-4fd0-bed2-80001dd66a45",
-        "87691129-c864-43d0-bd1d-9276cb18ff0b"
+        "87691129-c864-43d0-bd1d-9276cb18ff0b",
+        "77cb94d8-0147-4546-a884-d24c7cdaf035"
       ],
       "officialSourceIds": [],
       "certifiedCatalogSourceIds": [
-        "ca38fd03-a5da-4fd0-bed2-80001dd66a45"
+        "77cb94d8-0147-4546-a884-d24c7cdaf035"
       ],
       "canonicalKnowledgeSourceIds": [
         "ca38fd03-a5da-4fd0-bed2-80001dd66a45",
-        "87691129-c864-43d0-bd1d-9276cb18ff0b"
+        "87691129-c864-43d0-bd1d-9276cb18ff0b",
+        "77cb94d8-0147-4546-a884-d24c7cdaf035"
       ],
       "verifiedLearningSourceIds": [],
       "quarantinedSourceIds": [],
@@ -425,8 +422,9 @@
       "driveSheetId": "1HPB_a9Wsf5onL3Iqa-Y9NAfeK9wTpm2yYkdWMI_KmYc",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1HPB_a9Wsf5onL3Iqa-Y9NAfeK9wTpm2yYkdWMI_KmYc/edit",
       "lastSyncAttemptAt": "2026-11-09T11:21:05.502Z",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:02:40.902Z"
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:55:33.161Z",
+      "lastSyncAttemptStatus": "SUCCESS"
     },
     "Synergy_12000_Frame": {
       "notebookId": "5b9ddeda-0d03-44ee-80c8-766f494ea34c",
@@ -440,41 +438,42 @@
       "canonicalDriveEnabled": false,
       "publishDriveWorkbook": true,
       "isolationLevel": "CHASSIS_SPECIFIC",
-      "lastSyncedAt": "2026-11-12T11:04:09.569Z",
-      "lastSyncDeltaCount": 13,
+      "lastSyncedAt": "2026-11-21T13:46:58.379Z",
+      "lastSyncDeltaCount": 25,
       "cloudSyncState": "VERIFIED",
       "lastSyncError": null,
       "lastSyncedSourceName": "Synergy_12000_Frame_OCA_Catalog_2026-11-12",
       "trustedSourceIds": [
         "bd5e5672-ab9a-431a-b90a-ae3e05675a3b",
-        "94781b8e-016a-49ee-953e-66c74bc81d97",
+        "ce36c2c9-ff2b-4905-a2f0-3ee7b931893c",
         "e81109a0-bfc5-4051-b460-eba68e3542c2"
       ],
-      "lastCatalogSha256": "281e301b5775ad057903edf02f0bb48ac81a86ac46f6eb672c12240925599c91",
+      "lastCatalogSha256": "f0111709175ec53ab7ed190035e22e0d376de69de82a42ac7cf2361ccdbcbddc",
       "lastArtifactHashes": {
-        "Catalog.json": "281e301b5775ad057903edf02f0bb48ac81a86ac46f6eb672c12240925599c91",
-        "Services.json": "af78eb0114affec9778ae369704dccb7717319bf05bfdba77d2b1f99232d0722",
-        "Catalog_Rules.json": "31a41c8565d93dbaddbae0d01d50a924b2b6951d871ae10e301b2aa0e922c7c3",
-        "OCA_Catalog.xlsx": "8b6845a91276890ebb522bbb279963ac8f8fc1fd3e1879952e32514da1cd124d"
+        "Catalog.json": "f0111709175ec53ab7ed190035e22e0d376de69de82a42ac7cf2361ccdbcbddc",
+        "Services.json": "9c33f9e0a8106cd5c7575a4107143e77b990f41395417ccefe2e04a1508e50ec",
+        "Catalog_Rules.json": "d6d7f22c2092f6ffb8364b87dd7a0aef77a439f5f667f783dec134bb298141d5",
+        "OCA_Catalog.xlsx": "e0d4a94fe28c767121373a4a1ea995c000581541cc9306aadb47a01f6cc9b9f7"
       },
       "canonicalKnowledgeSourceIds": [
-        "94781b8e-016a-49ee-953e-66c74bc81d97",
+        "ce36c2c9-ff2b-4905-a2f0-3ee7b931893c",
         "e81109a0-bfc5-4051-b460-eba68e3542c2"
       ],
       "certifiedCatalogSourceIds": [
-        "94781b8e-016a-49ee-953e-66c74bc81d97"
+        "ce36c2c9-ff2b-4905-a2f0-3ee7b931893c"
       ],
-      "lastPayloadChecksum": "dcc6be94a68abbb6e4ef9f69372fc317e8f092ee39eb413f712642de8380821e",
+      "lastPayloadChecksum": "9b04e4b22b50596f1065f950644d0c508cc8d6d12b637b9bfdc1300120339758",
       "driveSheetId": "1doBW-ZROwmEUoSnW3xYMklPEdM5xGp6C3vW72XAo5xI",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1doBW-ZROwmEUoSnW3xYMklPEdM5xGp6C3vW72XAo5xI/edit",
-      "lastSyncedSourceId": "94781b8e-016a-49ee-953e-66c74bc81d97",
+      "lastSyncedSourceId": "ce36c2c9-ff2b-4905-a2f0-3ee7b931893c",
       "officialSourceIds": [
         "bd5e5672-ab9a-431a-b90a-ae3e05675a3b"
       ],
       "runningKnowledgeSourceId": "e81109a0-bfc5-4051-b460-eba68e3542c2",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:02:40.891Z"
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:55:33.106Z",
+      "lastSyncAttemptStatus": "VERIFIED"
     },
     "Synergy_4Port_Frame_Link_Module": {
       "notebookId": "4734668c-e278-4404-8343-b2a99853b58d",
@@ -496,35 +495,36 @@
       ],
       "trustedSourceIds": [
         "8f670b65-ce42-4e4e-a03b-6325589e5d08",
-        "0d6b6d7a-ef72-47dc-b4ba-fa6de7204d23",
+        "1a15f04c-f81c-4e65-8d08-e1d169ecb45b",
         "9ebcfb6d-f258-402f-9232-55f666895f49"
       ],
-      "lastSyncedAt": "2026-11-12T03:28:42.490Z",
-      "lastSyncDeltaCount": 9,
+      "lastSyncedAt": "2026-11-21T13:48:16.474Z",
+      "lastSyncDeltaCount": 25,
       "isolationLevel": "CHASSIS_SPECIFIC",
       "lastSyncedSourceName": "Synergy_4Port_Frame_Link_Module_OCA_Catalog_2026-11-12",
-      "lastCatalogSha256": "87d7d6c9b5bf3ca1d678422af1cc1683c9b337c1f153b23c17754ce432f440bd",
+      "lastCatalogSha256": "d9a3dc30824e862bff8453155ca33a93f22d3bc538c7c12690baa7cadc14ac6a",
       "lastArtifactHashes": {
-        "Catalog.json": "87d7d6c9b5bf3ca1d678422af1cc1683c9b337c1f153b23c17754ce432f440bd",
-        "Services.json": "73596a8c47ef887ffa335c98ec7d2391575a2b890503f26face24fc532baf938",
-        "Catalog_Rules.json": "b092b7caf016fe00e7a562b995d1af7a0b6db73cc7e63c954727b4553f744c50",
-        "OCA_Catalog.xlsx": "938491aa666baba629873e4822f155d870ae4790946b3696447fe98a9ee55d5b"
+        "Catalog.json": "d9a3dc30824e862bff8453155ca33a93f22d3bc538c7c12690baa7cadc14ac6a",
+        "Services.json": "12bfebe0430cc35c5237e65f32ac33243afd1b7d8399929debbf9b10627cad1f",
+        "Catalog_Rules.json": "79e7148ef3e562406e5c0f15867a4ee89d3c972473e7105ad8bb50c8af1be0e2",
+        "OCA_Catalog.xlsx": "79b186ac26aee96d49c30762f8a3ebce60708c9b5808fd11c4dc82e7807895d5"
       },
       "canonicalKnowledgeSourceIds": [
-        "0d6b6d7a-ef72-47dc-b4ba-fa6de7204d23",
+        "1a15f04c-f81c-4e65-8d08-e1d169ecb45b",
         "9ebcfb6d-f258-402f-9232-55f666895f49"
       ],
       "certifiedCatalogSourceIds": [
-        "0d6b6d7a-ef72-47dc-b4ba-fa6de7204d23"
+        "1a15f04c-f81c-4e65-8d08-e1d169ecb45b"
       ],
-      "lastPayloadChecksum": "274155d407e2a4bb8495443c4ff79dc682388b84edf93672eeb98d88f8880ad6",
+      "lastPayloadChecksum": "5bcca34b954a04502227387324e491f7254368e13c107e1da1748b21bcd6da1a",
       "driveSheetId": "1eUD72j0GX55M3yz9qx1okH6l3bYk2kZQSgcuOk-gJRs",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1eUD72j0GX55M3yz9qx1okH6l3bYk2kZQSgcuOk-gJRs/edit",
-      "lastSyncedSourceId": "0d6b6d7a-ef72-47dc-b4ba-fa6de7204d23",
+      "lastSyncedSourceId": "1a15f04c-f81c-4e65-8d08-e1d169ecb45b",
       "runningKnowledgeSourceId": "9ebcfb6d-f258-402f-9232-55f666895f49",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:03:15.020Z"
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:55:49.619Z",
+      "lastSyncAttemptStatus": "VERIFIED"
     },
     "Synergy_Brocade_64Gb_FC_Module": {
       "notebookId": "7b65f53f-ad1c-449d-b37f-9a5e7962e2af",
@@ -544,37 +544,38 @@
       ],
       "trustedSourceIds": [
         "f709b108-4afc-4a97-9a43-2d91f443e88a",
-        "d891a205-0ce9-4f30-b5de-6397c735fd6e",
+        "11c96681-4ee5-495c-bec5-1b1580ac4c61",
         "2f2f939c-0111-4623-aca6-07ce3fa9a075"
       ],
-      "lastSyncedAt": "2026-11-12T03:27:27.860Z",
-      "lastSyncDeltaCount": 9,
+      "lastSyncedAt": "2026-11-21T13:49:28.115Z",
+      "lastSyncDeltaCount": 25,
       "cloudSyncState": "VERIFIED",
       "lastSyncError": null,
       "isolationLevel": "CHASSIS_SPECIFIC",
       "lastSyncedSourceName": "Synergy_Brocade_64Gb_FC_Module_OCA_Catalog_2026-11-12",
-      "lastCatalogSha256": "00b104bfadada6c8030d6fca768477f9a76bfdfdd620b7273f407734e2ca75b6",
+      "lastCatalogSha256": "f991ef8e559039727feb7e01629093bb0004ffa8314ac8929a3f33ed29fcbf8a",
       "lastArtifactHashes": {
-        "Catalog.json": "00b104bfadada6c8030d6fca768477f9a76bfdfdd620b7273f407734e2ca75b6",
-        "Services.json": "aff0b690d44f795d2a311a3d2c6340b7b3f83e53e179ecb4cf15ac4bccfd86e5",
-        "Catalog_Rules.json": "6aa6f22c64b96e92a975bcdcd98acc5e7ef54ddee171b2c343fd8488d3be2dd2",
-        "OCA_Catalog.xlsx": "86cfbe31771efd43a81f6efefeab13d9db743c2e9a187d9b503f0e9499d9091d"
+        "Catalog.json": "f991ef8e559039727feb7e01629093bb0004ffa8314ac8929a3f33ed29fcbf8a",
+        "Services.json": "ab17a3cbe449c6df7c29946fe69d0ee4cda25946ea8b6f2a4195dd2b26a96fd0",
+        "Catalog_Rules.json": "656737e70bab7f2b9f370ad8a40c226a2009faeb813f6792a32f581a3a1d0428",
+        "OCA_Catalog.xlsx": "128ca80c9e7e71cf16efb03babdbcb4afa918b981d1b7f2b73a27c8d71b9d22a"
       },
       "canonicalKnowledgeSourceIds": [
-        "d891a205-0ce9-4f30-b5de-6397c735fd6e",
+        "11c96681-4ee5-495c-bec5-1b1580ac4c61",
         "2f2f939c-0111-4623-aca6-07ce3fa9a075"
       ],
       "certifiedCatalogSourceIds": [
-        "d891a205-0ce9-4f30-b5de-6397c735fd6e"
+        "11c96681-4ee5-495c-bec5-1b1580ac4c61"
       ],
-      "lastPayloadChecksum": "5cc5f15c1ae0cf84ab6b0fcd8de1ec0f267fb17d1480118e79f6b2fa5ca389fd",
+      "lastPayloadChecksum": "b01db7a710208197f4b1d623d69aec6401b716f55c8d2b95e8e569b7dcd37470",
       "driveSheetId": "1GCEWGLOnkAaCWT7hY1Byy_MaWcols-kYCLxGxprsoMg",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1GCEWGLOnkAaCWT7hY1Byy_MaWcols-kYCLxGxprsoMg/edit",
-      "lastSyncedSourceId": "d891a205-0ce9-4f30-b5de-6397c735fd6e",
+      "lastSyncedSourceId": "11c96681-4ee5-495c-bec5-1b1580ac4c61",
       "runningKnowledgeSourceId": "2f2f939c-0111-4623-aca6-07ce3fa9a075",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:03:14.335Z"
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:55:49.591Z",
+      "lastSyncAttemptStatus": "VERIFIED"
     },
     "SY100Gb_F32_Module": {
       "notebookId": "c6390834-ff1e-4602-9391-8415f673afa3",
@@ -588,24 +589,24 @@
       "family": "Synergy",
       "gen": "General",
       "canonicalDriveEnabled": false,
-      "lastSyncedAt": "2026-11-11T18:54:26.310Z",
-      "lastSyncDeltaCount": 13,
+      "lastSyncedAt": "2026-11-21T13:45:32.589Z",
+      "lastSyncDeltaCount": 26,
       "isolationLevel": "CHASSIS_SPECIFIC",
       "lastSyncedSourceName": "SY100Gb_F32_Module_OCA_Catalog_2026-11-11",
-      "lastSyncedSourceId": "b249e3e0-9a5b-41a7-80ac-b6ad6e2ac35c",
+      "lastSyncedSourceId": "1037765d-30f5-4656-afe5-bb3cbad29051",
       "trustedSourceIds": [
         "9bff2635-8ec1-40de-bebe-ece8ec7caec9",
-        "b249e3e0-9a5b-41a7-80ac-b6ad6e2ac35c",
+        "1037765d-30f5-4656-afe5-bb3cbad29051",
         "e442c3f2-dfc9-4b16-997f-867dc4d05448"
       ],
       "officialSourceIds": [
         "9bff2635-8ec1-40de-bebe-ece8ec7caec9"
       ],
       "certifiedCatalogSourceIds": [
-        "b249e3e0-9a5b-41a7-80ac-b6ad6e2ac35c"
+        "1037765d-30f5-4656-afe5-bb3cbad29051"
       ],
       "canonicalKnowledgeSourceIds": [
-        "b249e3e0-9a5b-41a7-80ac-b6ad6e2ac35c",
+        "1037765d-30f5-4656-afe5-bb3cbad29051",
         "e442c3f2-dfc9-4b16-997f-867dc4d05448"
       ],
       "verifiedLearningSourceIds": [],
@@ -615,29 +616,30 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "e442c3f2-dfc9-4b16-997f-867dc4d05448",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:03:31.487Z",
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:56:05.401Z",
       "publishDriveWorkbook": true,
       "lastSyncAttemptAt": "2026-11-11T18:49:39.050Z",
       "lastSyncError": null,
       "cloudSyncState": "VERIFIED",
       "driveSheetId": "1U6GAUs69k8JnI_CGZ6_MkaWQ9oN7Ik_LgrWlesjMZpA",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1U6GAUs69k8JnI_CGZ6_MkaWQ9oN7Ik_LgrWlesjMZpA/edit",
-      "lastCatalogSha256": "06dbf48ee06d6dab32eb78ac99cd5821af7457da37e6f0adad77a50f519192b3",
+      "lastCatalogSha256": "3eca92babf0bdd81b72bad9765a1f0af6aff22cf005c79c945887cf3d5136093",
       "lastArtifactHashes": {
-        "Catalog.json": "06dbf48ee06d6dab32eb78ac99cd5821af7457da37e6f0adad77a50f519192b3",
-        "Services.json": "ec8eb93abec3b396986b6644e9ce2bce83385482ec006ff444940751caffef86",
-        "Catalog_Rules.json": "38922a0fd37fe94e88e7bdb1a92e555a3c2d61c581e7f3929ce191f2be52c552",
-        "OCA_Catalog.xlsx": "7ceb6e672ee5f5a8d13b427f271ecbd6b15e13ab794a04b9409312c687d11dfb"
+        "Catalog.json": "3eca92babf0bdd81b72bad9765a1f0af6aff22cf005c79c945887cf3d5136093",
+        "Services.json": "d543fb1d72b8748f6d18d1630a25f61a28a1cc91f104ac344e6bbcd8b550dd06",
+        "Catalog_Rules.json": "a1f1410bc51c3669a9e32ed760314a64ff2104e517d1a2291605872ab1d406ad",
+        "OCA_Catalog.xlsx": "136675b71680ff46b8b84458d8eb31452ceadc2d338255156d58b69fa348e293"
       },
-      "lastPayloadChecksum": "9c39bc9c34e98898bc5f4f48bd9b779767fc70f45c6391c4fe2f1632d2da897d",
+      "lastPayloadChecksum": "be84620c2144416bf9f9ca4d3b5ac512b1dc5d9315eff14b445bcf47361ff774",
       "lastContentFingerprints": {
         "catalog": "5ec738f5a12138404dd973081f3c4d9567ee98cdb4e12aaaa664d93e8c27cde4",
         "learnings": "5408ba2f70e33f28100fa4e5ec6aa4f544222de5b3f7326d33529766ca44e76e",
         "changes": "8b1578214b90f7dff8c76e9be07db0376efaeda63617f19b2ae87474563be3a3",
         "workbook": "c9d23841d76083e9a184cedd5be42cb1b5e61b4ea98e4e27eb496cda78528ab1",
         "combined": "44c6ca6e0ee93c1ed9335917072539c5a010006b1cd9356502194ddbdf0c16ef"
-      }
+      },
+      "lastSyncAttemptStatus": "VERIFIED"
     },
     "SY480_Gen12": {
       "notebookId": "49a3c69e-115f-4332-9454-c5d4f2941327",
@@ -655,9 +657,9 @@
         "72a1fc27-f62b-441f-a95d-b7b8a0a1e862",
         "f2310433-1322-4d39-8f88-6991f123170b",
         "bed0c191-6268-41b9-9a98-371bc2c9960d",
-        "360db92c-82ce-455d-924b-48a6d468ddb5",
-        "cbea292a-5a54-4445-b086-4811ee7872bb",
         "db629ae1-e911-4ae1-b903-72b11051ae83",
+        "360db92c-82ce-455d-924b-48a6d468ddb5",
+        "c33cb173-011b-4f9e-bc8d-a0ad25e7b579",
         "197c1910-d257-46e9-ba13-784dfaaae008"
       ],
       "officialSourceIds": [
@@ -667,10 +669,10 @@
         "db629ae1-e911-4ae1-b903-72b11051ae83"
       ],
       "certifiedCatalogSourceIds": [
-        "cbea292a-5a54-4445-b086-4811ee7872bb"
+        "c33cb173-011b-4f9e-bc8d-a0ad25e7b579"
       ],
       "canonicalKnowledgeSourceIds": [
-        "cbea292a-5a54-4445-b086-4811ee7872bb",
+        "c33cb173-011b-4f9e-bc8d-a0ad25e7b579",
         "197c1910-d257-46e9-ba13-784dfaaae008"
       ],
       "verifiedLearningSourceIds": [
@@ -682,12 +684,12 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "197c1910-d257-46e9-ba13-784dfaaae008",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "lastSyncedAt": "2026-11-12T10:43:44.987Z",
-      "lastSyncDeltaCount": 20,
+      "lastSyncedAt": "2026-11-21T13:44:09.878Z",
+      "lastSyncDeltaCount": 32,
       "cloudSyncState": "VERIFIED",
       "lastSyncError": null,
       "lastSyncedSourceName": "SY480_Gen12_OCA_Catalog_2026-11-12",
-      "lastPayloadChecksum": "04d99667ca463c260f91212e551cc0863d5dc646fb591b364638a79be4dc00a1",
+      "lastPayloadChecksum": "c84281302885a7a7bca7a04f336093124549e40d867695a63dd34df1a9c92bac",
       "lastContentFingerprints": {
         "catalog": "24748d8a21c20b50fda492ebcc170df754270cc2fe6d5d8aa5318abdfe3f92bf",
         "learnings": "a31082b2906090fe84a24c68e14d8b924a3a2069f135d8e2655754424aa9b151",
@@ -698,18 +700,19 @@
       "driveSheetId": "1ukT4-pUQukZ9FUnzl5KJI-BVSk5zPye_1yvvS4nK3iY",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1ukT4-pUQukZ9FUnzl5KJI-BVSk5zPye_1yvvS4nK3iY/edit",
       "driveSourceId": "fbef4c8a-9ee6-48a4-99e3-b0e1af4f5fe6",
-      "lastSyncedSourceId": "cbea292a-5a54-4445-b086-4811ee7872bb",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:03:31.453Z",
+      "lastSyncedSourceId": "c33cb173-011b-4f9e-bc8d-a0ad25e7b579",
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:56:05.952Z",
       "publishDriveWorkbook": true,
-      "lastCatalogSha256": "05a7ff630fb12af6605b6d736e907cf7f3f2f99cf901fb7c3c43d449f4095510",
+      "lastCatalogSha256": "bf32a622e28f0e3cf64acc399d8803f0132a6dab5881102542f19af078dd0707",
       "lastArtifactHashes": {
-        "Catalog.json": "05a7ff630fb12af6605b6d736e907cf7f3f2f99cf901fb7c3c43d449f4095510",
-        "Services.json": "da057aa387ad85c4f4fb362c11629a7b2388b5194c2fb47c0dec3227de25148f",
-        "Catalog_Rules.json": "38d54f3e1b9b1a696d2d1e70e8e777d0ba797c8e8378394e2376c03b4e4e7ff6",
-        "OCA_Catalog.xlsx": "9f57baa9c0e8d63c7f48ab87f635a726d8cf77550fd1e6eb45f971fb8f127e03"
+        "Catalog.json": "bf32a622e28f0e3cf64acc399d8803f0132a6dab5881102542f19af078dd0707",
+        "Services.json": "15a72ee143706bcd50dc6d20b53c5a49e2c7b9f2bb3493c17c365094894d3a1c",
+        "Catalog_Rules.json": "118871fcab516d179cf3742a69159fa82689b4b5a80c9a6840b4d74e98b9166b",
+        "OCA_Catalog.xlsx": "83c096f7353acf6027eaf5534c51cd80c95615ae24a6178b5c0fbf5af336ac21"
       },
-      "lastSyncAttemptAt": "2026-11-12T10:40:38.695Z"
+      "lastSyncAttemptAt": "2026-11-12T10:40:38.695Z",
+      "lastSyncAttemptStatus": "VERIFIED"
     },
     "DL380a_Gen12": {
       "notebookId": "b233ec88-4682-4164-a801-3ee6ca649dc1",
@@ -721,14 +724,14 @@
       "driveSheetId": "1ileDbsJXAFo59rRG9hsTuTNrjOFTnCXSiGyTLFGXb54",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1ileDbsJXAFo59rRG9hsTuTNrjOFTnCXSiGyTLFGXb54/edit",
       "driveSourceId": "cd20f359-db6d-427a-8570-b54970b2fddd",
-      "lastSyncedAt": "2026-11-06T08:32:03.427Z",
-      "lastSyncDeltaCount": 29,
+      "lastSyncedAt": "2026-11-21T13:39:02.425Z",
+      "lastSyncDeltaCount": 52,
       "isolationLevel": "CHASSIS_SPECIFIC",
-      "lastSyncedSourceName": "DL380a_Gen12_OCA_Catalog_2026-11-06",
-      "lastSyncedSourceId": "a8bc2b86-9ae4-43ee-8382-cca813676555",
+      "lastSyncedSourceName": "DL380a_Gen12_OCA_Catalog_2026-11-20",
+      "lastSyncedSourceId": "e267b702-e744-4dee-bdbb-6bf62dc179ed",
       "trustedSourceIds": [
         "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
-        "a8bc2b86-9ae4-43ee-8382-cca813676555",
+        "e267b702-e744-4dee-bdbb-6bf62dc179ed",
         "3c75e029-2864-4833-b7b1-f992f0d20232"
       ],
       "officialSourceIds": [
@@ -737,13 +740,13 @@
       "quarantinedSourceIds": [],
       "queryEnabled": true,
       "canonicalKnowledgeSourceIds": [
-        "a8bc2b86-9ae4-43ee-8382-cca813676555",
+        "e267b702-e744-4dee-bdbb-6bf62dc179ed",
         "3c75e029-2864-4833-b7b1-f992f0d20232"
       ],
       "certifiedCatalogSourceIds": [
-        "a8bc2b86-9ae4-43ee-8382-cca813676555"
+        "e267b702-e744-4dee-bdbb-6bf62dc179ed"
       ],
-      "lastPayloadChecksum": "cd84344974b89300029fa831b15457722a334b2bff460dbadff751c7e38e70dc",
+      "lastPayloadChecksum": "0af7cb94aee7b2951700399b59671d04610945d75bd5263e00373460475ceabb",
       "lastContentFingerprints": {
         "catalog": "05e9fc9cc158eab84fbceeff36ea0915f139c9eb9703a866b8c6349701cf5782",
         "learnings": "8df5d8af6c706e6d1f1f3504a87c89454015f2e505c9c27e6256556d519ee8e1",
@@ -756,18 +759,19 @@
       "runningKnowledgeSourceId": "3c75e029-2864-4833-b7b1-f992f0d20232",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
       "cloudSyncState": "VERIFIED",
-      "lastSyncError": null,
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:03:49.101Z",
-      "lastCatalogSha256": "73092a6813447de85ce26befbf0bdfd66e91b6698f84d7316d35dd91834386e6",
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:56:23.677Z",
+      "lastCatalogSha256": "d52c4aba00cb0404ce4ced18ee1842c5684ee13d698972e3b2c9e18f09287c93",
       "lastArtifactHashes": {
-        "Catalog.json": "73092a6813447de85ce26befbf0bdfd66e91b6698f84d7316d35dd91834386e6",
-        "Services.json": "1c3dff98380718ea7139a20b37efa352376350109f64b34b49bb7cc40b16313e",
-        "Catalog_Rules.json": "6453e049a786b9b801ee4244cd7b10788a6c426f481defa8dfbe8720e4a63cfe",
-        "OCA_Catalog.xlsx": "b572fe7f8e46d0aad0b52e3a90060010eb9fe78699f217cf7374d7c9cf7b8723"
+        "Catalog.json": "d52c4aba00cb0404ce4ced18ee1842c5684ee13d698972e3b2c9e18f09287c93",
+        "Services.json": "819b080ee19eb993ce9dda272566a6d6997f912cbfcf5f0a615f98143c7a43f2",
+        "Catalog_Rules.json": "95ac08fcd47990f5eb5fc962eb51c9154e0abc11014a6a82c537fe8cccaabaa7",
+        "OCA_Catalog.xlsx": "dfaba304aab479380644519a558c7f3754eca596cf1ddac0fc3ead3c34fe6325"
       },
-      "lastSyncAttemptAt": "2026-11-06T08:09:31.029Z",
-      "publishDriveWorkbook": true
+      "lastSyncAttemptAt": "2026-11-20T11:08:12.249Z",
+      "publishDriveWorkbook": true,
+      "lastSyncAttemptStatus": "VERIFIED",
+      "lastSyncError": null
     },
     "DL145_Gen11": {
       "notebookId": "7a48061a-331a-429b-8477-7e0473491714",
@@ -777,16 +781,15 @@
       "gen": "Gen11",
       "canonicalDriveEnabled": false,
       "publishDriveWorkbook": true,
-      "cloudSyncState": "FAILED",
-      "lastSyncError": "CdpTransportError: Headless browser did not expose CDP in time.",
-      "lastSyncedAt": "2026-11-06T08:22:15.594Z",
-      "lastSyncDeltaCount": 13,
+      "cloudSyncState": "VERIFIED",
+      "lastSyncedAt": "2026-11-21T13:30:00.201Z",
+      "lastSyncDeltaCount": 22,
       "isolationLevel": "CHASSIS_SPECIFIC",
-      "lastSyncedSourceName": "DL145_Gen11_OCA_Catalog_2026-11-06",
-      "lastSyncedSourceId": "79aad128-6967-4643-8083-850ae09bb7d1",
+      "lastSyncedSourceName": "DL145_Gen11_OCA_Catalog_2026-11-20",
+      "lastSyncedSourceId": "3d63671a-957f-4177-a639-9cea482f52dd",
       "trustedSourceIds": [
         "8ef9a190-7b29-4ff1-8f42-2a5edbcf4fe9",
-        "79aad128-6967-4643-8083-850ae09bb7d1",
+        "3d63671a-957f-4177-a639-9cea482f52dd",
         "dbd6ab4a-9793-49f7-8756-9a35f5919c2e"
       ],
       "officialSourceIds": [
@@ -798,13 +801,13 @@
       ],
       "queryEnabled": true,
       "canonicalKnowledgeSourceIds": [
-        "79aad128-6967-4643-8083-850ae09bb7d1",
+        "3d63671a-957f-4177-a639-9cea482f52dd",
         "dbd6ab4a-9793-49f7-8756-9a35f5919c2e"
       ],
       "certifiedCatalogSourceIds": [
-        "79aad128-6967-4643-8083-850ae09bb7d1"
+        "3d63671a-957f-4177-a639-9cea482f52dd"
       ],
-      "lastPayloadChecksum": "f39aa593334399060bebf01cfeeb993227b92d48506e703a7d18d86368655a0a",
+      "lastPayloadChecksum": "48de5b4db8f1f962bf72ac4463ca33c62681f05dd92ffb7882b315023948b6ca",
       "lastContentFingerprints": {
         "catalog": "ca55db8228b670bda68007f5161b3740bea880d515307fd5545d5ece1c18dfc5",
         "learnings": "c649384a80a6bf3e4b80f3c381d6cae1319eb56fa75fa68b0241192d2a60283a",
@@ -819,16 +822,18 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "dbd6ab4a-9793-49f7-8756-9a35f5919c2e",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:03:50.695Z",
-      "lastCatalogSha256": "a61ac4a77c47a2e8ff88d6e58cafc743e2cd94e83fff8e800b8749b6dc96142e",
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:56:23.783Z",
+      "lastCatalogSha256": "a924b9cb7abe1598b9bd79d940bc9d813857990814869efc05baf28241a3ea55",
       "lastArtifactHashes": {
-        "Catalog.json": "a61ac4a77c47a2e8ff88d6e58cafc743e2cd94e83fff8e800b8749b6dc96142e",
-        "Services.json": "ca6621f7db997c66d839c875b2d02220b39b6aaa690bc940359ffdd3da4844c7",
-        "Catalog_Rules.json": "85710530bd275a01895e20b0b3f6b903814887cf757370d67f69512d918fdcba",
-        "OCA_Catalog.xlsx": "0484633da26c73307593344e6bc8394251e6e0aab00a8b11e2f0ed00e8b48e64"
+        "Catalog.json": "a924b9cb7abe1598b9bd79d940bc9d813857990814869efc05baf28241a3ea55",
+        "Services.json": "411f0c9a07856f98525e0c07120b7309c18b648369a6179a784c257c4524c79c",
+        "Catalog_Rules.json": "142e3eef2ee896952452d35b167381e698dacaef0ca5fa078a318ab3dd0deac1",
+        "OCA_Catalog.xlsx": "212ac99d1fe4762fcb39aa041c4f15264b18af1b3d9771ef8cf186719f49bcf0"
       },
-      "lastSyncAttemptAt": "2026-11-09T11:22:26.175Z"
+      "lastSyncAttemptAt": "2026-11-20T17:43:40.144Z",
+      "lastSyncAttemptStatus": "VERIFIED",
+      "lastSyncError": null
     },
     "DL580_Gen12": {
       "notebookId": "3f5344ce-da79-4f6d-a131-f303d1e43dc3",
@@ -838,25 +843,25 @@
       "gen": "Gen12",
       "canonicalDriveEnabled": false,
       "publishDriveWorkbook": true,
-      "cloudSyncState": "FAILED",
-      "lastSyncError": "NotebookLM credentials are stale or expired (Command failed: nlm login --check). Please re-authenticate proactively by running in PowerShell: npm run auth:nlm:heal",
+      "cloudSyncState": "VERIFIED",
+      "lastSyncError": null,
       "isolationLevel": "CHASSIS_SPECIFIC",
       "queryEnabled": true,
-      "lastSyncedAt": "2026-11-06T08:34:12.267Z",
-      "lastSyncDeltaCount": 9,
-      "lastSyncedSourceName": "DL580_Gen12_OCA_Catalog_2026-11-06",
+      "lastSyncedAt": "2026-11-21T13:40:57.115Z",
+      "lastSyncDeltaCount": 22,
+      "lastSyncedSourceName": "DL580_Gen12_OCA_Catalog_2026-11-20",
       "trustedSourceIds": [
-        "b859bf5a-71fd-439d-9c8c-c2651bd6c509",
+        "673dc828-5688-4d3a-8357-c8e151fbc7ee",
         "5113e36d-0364-4b00-bc94-02521ab224e0"
       ],
       "canonicalKnowledgeSourceIds": [
-        "b859bf5a-71fd-439d-9c8c-c2651bd6c509",
+        "673dc828-5688-4d3a-8357-c8e151fbc7ee",
         "5113e36d-0364-4b00-bc94-02521ab224e0"
       ],
       "certifiedCatalogSourceIds": [
-        "b859bf5a-71fd-439d-9c8c-c2651bd6c509"
+        "673dc828-5688-4d3a-8357-c8e151fbc7ee"
       ],
-      "lastPayloadChecksum": "f5428246a2b8f3865bd6df22b5af0a3469fb9acac162c6b283acfb8b56563690",
+      "lastPayloadChecksum": "aff9dd5f474cc267e70feccfb5dc9de32aca37aea28bb483879ad45f00684195",
       "lastContentFingerprints": {
         "catalog": "9616b94f67b899e85d6f75781c83f29faf85c22ea1bac58ae84b27461efd2556",
         "learnings": "d9b01a30c2377d2bfc87c5d0b5b5b86d768fd10b549460f6dbe3b060491c5447",
@@ -867,7 +872,7 @@
       "driveSheetId": "12xnxLL7nSLJhIO4bxvvhVBbcWuCVTUtO8HtPzeLWjmA",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/12xnxLL7nSLJhIO4bxvvhVBbcWuCVTUtO8HtPzeLWjmA/edit",
       "driveSourceId": "f43e2b61-9245-4355-a6c4-aad3ec2fcd62",
-      "lastSyncedSourceId": "b859bf5a-71fd-439d-9c8c-c2651bd6c509",
+      "lastSyncedSourceId": "673dc828-5688-4d3a-8357-c8e151fbc7ee",
       "officialSourceIds": [],
       "verifiedLearningSourceIds": [],
       "quarantinedSourceIds": [
@@ -878,16 +883,17 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "5113e36d-0364-4b00-bc94-02521ab224e0",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:04:08.488Z",
-      "lastCatalogSha256": "ba30f85618e0ce5d2124e731f71a14f83ee8b51869b678993542284229488f60",
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:56:47.099Z",
+      "lastCatalogSha256": "2dec9b852aad341a2517d3dc9c0077017390a4a61c384011e55bf6dd73ccf0c0",
       "lastArtifactHashes": {
-        "Catalog.json": "ba30f85618e0ce5d2124e731f71a14f83ee8b51869b678993542284229488f60",
-        "Services.json": "180bb36c562cdbbcaa28804ab9b21ce03c0342f848e000efd824bf71d2859260",
-        "Catalog_Rules.json": "9d0346a4cdbdd609a2237555ac4a08e71bc27df5e0618cd318e15fd9a66b9a4b",
-        "OCA_Catalog.xlsx": "840b40c2428e0bd980331044689349df4010051073853d40c79e3a0b5358ae1f"
+        "Catalog.json": "2dec9b852aad341a2517d3dc9c0077017390a4a61c384011e55bf6dd73ccf0c0",
+        "Services.json": "da1a7536a0a1bacc34efcbb66acb184613eb6e32e42a2051b5381d957a9743de",
+        "Catalog_Rules.json": "52f78860228cc758beec91313539de3705cf2be38a94a7c472586c1117ba3209",
+        "OCA_Catalog.xlsx": "aa7f27e206a913e220ae4b2977d4c493c1253cbc3bd0d5d89590889fd4e3fe7a"
       },
-      "lastSyncAttemptAt": "2026-11-09T11:26:39.605Z"
+      "lastSyncAttemptAt": "2026-11-20T12:57:50.293Z",
+      "lastSyncAttemptStatus": "VERIFIED"
     },
     "SN3600B_FC": {
       "notebookId": "d7f84352-1cdb-4842-84ca-39d2a10b91eb",
@@ -902,58 +908,38 @@
       ],
       "trustedSourceIds": [
         "41012991-4c8a-48d8-a024-bb6dc33f5037",
-        "a5cf149d-0aa6-48d9-a059-9fb0cd53b2f3",
+        "2483f3f9-89f2-4842-809e-62e3917adefe",
         "0de1f8f6-396b-4da5-95d9-f4f01a82cd15"
       ],
       "certifiedCatalogSourceIds": [
-        "a5cf149d-0aa6-48d9-a059-9fb0cd53b2f3"
+        "2483f3f9-89f2-4842-809e-62e3917adefe"
       ],
-      "quarantinedSourceIds": [
-        "0076f196-0e35-4d12-8ab8-b7e27e447560",
-        "678624a1-3e8b-47b6-aaff-84a46758d6ca",
-        "93c1fd4e-3da9-4393-9ae1-f7e48de2e6ca",
-        "cd34ab99-df65-47f4-9d26-6c18a4b2d5a7",
-        "315ae4aa-22ac-4bbf-9ddb-0c1e8ba89923",
-        "399c7534-6d40-4c4b-a9bb-7f1366a370e1",
-        "65e4cbca-b99f-4552-9e47-f1d1e5a86206",
-        "6983f6bf-e053-4895-92a1-65fbfcbc0eda",
-        "8212463c-9755-41fe-9366-0e44622cde00",
-        "9014856e-796e-4f66-bbe0-5937254826dc",
-        "9175ec98-d4a8-4af8-8ecf-860bc0cce029",
-        "c5f1fd9d-faf1-4f89-9fb5-1afe5cbfa59f",
-        "d74b5283-8454-4844-ba6c-10b321099dbf",
-        "f6ba7fd7-58a9-4565-9cb4-f37e40cc4389",
-        "2f7f6867-c3ae-4e39-a3a0-b266ddb9687e",
-        "d0b6aebe-312c-4bb4-a82a-a6ba038d1bf7",
-        "e3e4c821-2d01-460d-9f20-edd7c80441d4",
-        "f8a8d8f1-8f5e-4458-85e9-a6fc89f2ad62"
-      ],
+      "quarantinedSourceIds": [],
       "verifiedLearningSourceIds": [],
       "baseSku": "R7R97A",
       "canonicalDriveEnabled": false,
       "publishDriveWorkbook": true,
-      "lastSyncedAt": "2026-11-06T08:35:19.112Z",
-      "lastSyncDeltaCount": 9,
-      "cloudSyncState": "FAILED",
-      "lastSyncError": "NotebookLM credentials are stale or expired (Command failed: nlm login --check). Please re-authenticate proactively by running in PowerShell: npm run auth:nlm:heal",
-      "lastSyncedSourceName": "SN3600B_FC_OCA_Catalog_2026-11-06",
+      "lastSyncedAt": "2026-11-21T13:24:49.192Z",
+      "lastSyncDeltaCount": 22,
+      "cloudSyncState": "VERIFIED",
+      "lastSyncedSourceName": "SN3600B_FC_OCA_Catalog_2026-09-22",
       "canonicalKnowledgeSourceIds": [
-        "a5cf149d-0aa6-48d9-a059-9fb0cd53b2f3",
+        "2483f3f9-89f2-4842-809e-62e3917adefe",
         "0de1f8f6-396b-4da5-95d9-f4f01a82cd15"
       ],
-      "lastPayloadChecksum": "93b02398d51d82f8dfb68af79cb08cd5ba35c4c2eedf2a3d419ad904af7c8aa7",
-      "lastSyncedSourceId": "a5cf149d-0aa6-48d9-a059-9fb0cd53b2f3",
+      "lastPayloadChecksum": "43ca4184dcee4056a36304cead3d3f87fec3e121150c970d56f8c2e550f27f4d",
+      "lastSyncedSourceId": "2483f3f9-89f2-4842-809e-62e3917adefe",
       "runningKnowledgeSourceId": "0de1f8f6-396b-4da5-95d9-f4f01a82cd15",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:04:08.445Z",
-      "lastSyncAttemptAt": "2026-11-09T11:26:58.690Z",
-      "lastCatalogSha256": "964c5768e67698076d5bd41602addf0d1b5bb63dfa5dff6d9fd1de297ca5f1c6",
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:56:47.381Z",
+      "lastSyncAttemptAt": "2026-11-21T13:09:07.545Z",
+      "lastCatalogSha256": "5077f9e774d618e936eeb321a13af37aee6dbd3509deef63cebd015622c5f4c4",
       "lastArtifactHashes": {
-        "Catalog.json": "964c5768e67698076d5bd41602addf0d1b5bb63dfa5dff6d9fd1de297ca5f1c6",
-        "Services.json": "8ea9f0e15c5b163eccb86372b1fdc1a0a4818beb2fa83e1e13f94413c3dbe6d6",
-        "Catalog_Rules.json": "307c55a5ba29f09f85f70c86c9f510f55643602b5497baf963047dbe35fcde01",
-        "OCA_Catalog.xlsx": "b0fd8e0894d9afe91dd8cb893e402c2444ca371747f728000c200e07ec87be9a"
+        "Catalog.json": "5077f9e774d618e936eeb321a13af37aee6dbd3509deef63cebd015622c5f4c4",
+        "Services.json": "ad8b5b0f7d843541a0ee56c77e56a77d517e1710d66ecf656169ee975bbdf84a",
+        "Catalog_Rules.json": "724232db8a2029dc1e83453586471eada0e34770971d5f1aff055bcaeb00bf69",
+        "OCA_Catalog.xlsx": "6b43c1ec464696d60c2faba81d9629026150b9161af2e771760f9f2c6b415b8e"
       },
       "lastContentFingerprints": {
         "catalog": "754f5ee986f13eb98f3bfc5745adb2400351bbc5f29143ecc461cfa1067813ab",
@@ -963,7 +949,9 @@
         "combined": "1d56e49a78e2e3f0c116f42f9509b5d18bfe173a2bbeab40831a774efcf276ad"
       },
       "driveSheetId": "1fCBGBHVMK-9j7S1oAEhsnkZj2H_8ZSficvYMsPY9X1E",
-      "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1fCBGBHVMK-9j7S1oAEhsnkZj2H_8ZSficvYMsPY9X1E/edit"
+      "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1fCBGBHVMK-9j7S1oAEhsnkZj2H_8ZSficvYMsPY9X1E/edit",
+      "lastSyncAttemptStatus": "VERIFIED",
+      "lastSyncError": null
     },
     "DL385_Gen11": {
       "notebookId": "52364fcf-acc3-442f-b4ff-f911053d45d2",
@@ -972,43 +960,44 @@
       "family": "ProLiant",
       "gen": "Gen11",
       "canonicalDriveEnabled": false,
+      "driveSheetId": "1cHgCQVp1abcWayP-lYjPL255es_HFnK-4eO1IdSwTA4",
+      "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1cHgCQVp1abcWayP-lYjPL255es_HFnK-4eO1IdSwTA4/edit",
       "baseSku": "P53921-B21",
       "isolationLevel": "CHASSIS_SPECIFIC",
       "queryEnabled": true,
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "lastSyncedAt": "2026-11-06T08:29:02.361Z",
-      "lastSyncDeltaCount": 15,
+      "lastSyncedAt": "2026-11-21T13:27:13.235Z",
+      "lastSyncDeltaCount": 28,
       "cloudSyncState": "VERIFIED",
-      "lastSyncError": "NotebookLM credentials are stale or expired (Command failed: nlm login --check). Please re-authenticate proactively by running in PowerShell: npm run auth:nlm:heal",
-      "lastSyncedSourceName": "DL385_Gen11_OCA_Catalog_2026-11-06",
+      "lastSyncedSourceName": "DL385_Gen11_OCA_Catalog_2026-11-20",
       "trustedSourceIds": [
-        "e5de8b5a-9f79-4ef5-9904-4670855ac3ce",
+        "3a1ba233-b47a-4e70-adee-fa4ef3f0b50c",
         "7ab0fa77-e619-4956-9a39-deff777e34d0"
       ],
       "officialSourceIds": [],
       "quarantinedSourceIds": [
         "24773006-8001-419a-a06b-29bcce275ae7"
       ],
-      "lastCatalogSha256": "d72d63ad04e901fbd97aeb217596a06d227145d05f463913ea5a2066c9baf6a2",
+      "lastCatalogSha256": "da641bb32c8687b35f26106e3c4a8ca7d781f31574999a2fcf8e0883ec7167e6",
       "lastArtifactHashes": {
-        "Catalog.json": "d72d63ad04e901fbd97aeb217596a06d227145d05f463913ea5a2066c9baf6a2",
-        "Services.json": "45e8aa5b517b3e3361380d4a3d96fb4ba3ff140f88a09301a149844898fab299",
-        "Catalog_Rules.json": "2425360b7e4f6a0376dce81909f0133cb821fa49b1da9d32862e552c51db7ff8",
-        "OCA_Catalog.xlsx": "9ff2d60527ec4a04cdf176356e1907502d95bb76c15919e379e9dd07600a3e61"
+        "Catalog.json": "da641bb32c8687b35f26106e3c4a8ca7d781f31574999a2fcf8e0883ec7167e6",
+        "Services.json": "fdc30a12fdc883e37626920e193e5d9c925eb172cc93b9c3f39aa63c74c676a1",
+        "Catalog_Rules.json": "a501d631276e1a00a3130a256693789ebb4c750dd7337eaf501e345e19265a3c",
+        "OCA_Catalog.xlsx": "ba98f5f7d500953acabd35e6f9887eae8c2c55a74505d24187efe60fc00b8ca1"
       },
       "canonicalKnowledgeSourceIds": [
-        "e5de8b5a-9f79-4ef5-9904-4670855ac3ce",
+        "3a1ba233-b47a-4e70-adee-fa4ef3f0b50c",
         "7ab0fa77-e619-4956-9a39-deff777e34d0"
       ],
       "certifiedCatalogSourceIds": [
-        "e5de8b5a-9f79-4ef5-9904-4670855ac3ce"
+        "3a1ba233-b47a-4e70-adee-fa4ef3f0b50c"
       ],
-      "lastPayloadChecksum": "cfefa7b4fe1e8321079e4a3a8bb262adf442d8ce71f8f84f4848706e46afbe4a",
-      "lastSyncedSourceId": "e5de8b5a-9f79-4ef5-9904-4670855ac3ce",
+      "lastPayloadChecksum": "7983ddb0b449adc44ae3c4a8947cb60c475bc2ab0f8b29a51c33eb9875fc0989",
+      "lastSyncedSourceId": "3a1ba233-b47a-4e70-adee-fa4ef3f0b50c",
       "runningKnowledgeSourceId": "7ab0fa77-e619-4956-9a39-deff777e34d0",
-      "runningKnowledgeVerifiedRevision": "4d52e4ef1effd777af6475d7fa17628f431db703dfc655f0b9a44c86973054b7",
-      "runningKnowledgeVerifiedAt": "2026-11-16T21:04:24.913Z",
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:57:06.995Z",
       "lastContentFingerprints": {
         "catalog": "bf24c26e69c9e4dd6c6f2acd288176ed262b4b334a17739db548d4c72f636feb",
         "learnings": "22babd782fc5080b92cde20a5084610947f7b97c5848de432ade02d161563281",
@@ -1016,8 +1005,106 @@
         "workbook": "c56a143b655f8eef28b4bce4217664036a78688a8cdab2e1953b84cce70ab7ef",
         "combined": "9d5f2f2a1007786ba09eefdcb10b1b6369abe0dceb21f3af94536fee53a1fbde"
       },
-      "lastSyncAttemptAt": "2026-11-09T11:25:33.497Z",
-      "lastSyncAttemptStatus": "FAILED_PRESERVED_VERIFIED_PUBLICATION"
+      "lastSyncAttemptAt": "2026-11-21T13:09:29.737Z",
+      "lastSyncAttemptStatus": "VERIFIED",
+      "lastSyncError": null
+    },
+    "Alletra_MP_B10000": {
+      "notebookId": "b4131379-36ec-47c3-8016-882fc26a171c",
+      "vendor": "HPE",
+      "pillar": "STORAGE",
+      "family": "Alletra",
+      "gen": "Storage",
+      "queryEnabled": true,
+      "canonicalDriveEnabled": false,
+      "publishDriveWorkbook": true,
+      "isolationLevel": "CHASSIS_SPECIFIC",
+      "baseSku": "B10000",
+      "driveSheetId": "1tx81EnqrsGwHXiATi3yA2ypPuWelWOL0JYgquBi450U",
+      "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1tx81EnqrsGwHXiATi3yA2ypPuWelWOL0JYgquBi450U/edit",
+      "trustedSourceIds": [
+        "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "d23ebb17-74cc-4b83-9264-2fb4fd827420",
+        "cc8228ae-abb0-4c5c-9f3c-878ec8c1ddea"
+      ],
+      "officialSourceIds": [
+        "721f7e84-e50a-4f75-9eb0-2b739be0c396"
+      ],
+      "quarantinedSourceIds": [],
+      "lastSyncAttemptAt": "2026-11-21T13:08:07.656Z",
+      "lastSyncAttemptStatus": "VERIFIED",
+      "lastSyncError": null,
+      "cloudSyncState": "VERIFIED",
+      "lastSyncedAt": "2026-11-21T13:22:19.782Z",
+      "lastSyncDeltaCount": 22,
+      "lastSyncedSourceName": "Alletra_MP_B10000_OCA_Catalog_2026-11-21",
+      "lastCatalogSha256": "97ade3fe3b8371e67af922292da41add9851426b8627f9aa4d854ec39819633f",
+      "lastArtifactHashes": {
+        "Catalog.json": "97ade3fe3b8371e67af922292da41add9851426b8627f9aa4d854ec39819633f",
+        "Services.json": "5993fe618b3d8985ab7af395c42e4b8e4fb5443a9faf649c339fb499e90bd2e3",
+        "Catalog_Rules.json": "66df3db5029813e53fbcbd5fa7dc572d8fc9099824b62fd555300478e0be9f49",
+        "OCA_Catalog.xlsx": "b3f647c8599eb618df5b927d5443035a325ef8b52b7fc4f541b521c9a3a8051f"
+      },
+      "canonicalKnowledgeSourceIds": [
+        "d23ebb17-74cc-4b83-9264-2fb4fd827420",
+        "cc8228ae-abb0-4c5c-9f3c-878ec8c1ddea"
+      ],
+      "certifiedCatalogSourceIds": [
+        "d23ebb17-74cc-4b83-9264-2fb4fd827420"
+      ],
+      "lastPayloadChecksum": "e7d7c3c24265b0e5a26657fff83ed8c3fd7ab63b71e4833725af7494a069a311",
+      "lastSyncedSourceId": "d23ebb17-74cc-4b83-9264-2fb4fd827420",
+      "runningKnowledgeSourceId": "cc8228ae-abb0-4c5c-9f3c-878ec8c1ddea",
+      "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:57:10.553Z"
+    },
+    "Alletra_MP_X10000": {
+      "notebookId": "c5eb1d0b-1410-4cfc-bb7d-0e33cd15cf7e",
+      "vendor": "HPE",
+      "pillar": "STORAGE",
+      "family": "Alletra",
+      "gen": "Storage",
+      "queryEnabled": true,
+      "canonicalDriveEnabled": false,
+      "publishDriveWorkbook": true,
+      "isolationLevel": "CHASSIS_SPECIFIC",
+      "baseSku": "S3L12A",
+      "driveSheetId": "19YmKUDwdJXm-1_QnveMteTMWIt26q7CfcirvH0JPMNk",
+      "driveSheetUrl": "https://docs.google.com/spreadsheets/d/19YmKUDwdJXm-1_QnveMteTMWIt26q7CfcirvH0JPMNk/edit",
+      "trustedSourceIds": [
+        "bd065e25-34b9-449c-a5d7-f30b280dba42",
+        "60cda6f9-e4ac-4de9-bab9-8e14aa10b936"
+      ],
+      "officialSourceIds": [],
+      "quarantinedSourceIds": [],
+      "lastSyncAttemptAt": "2026-11-21T13:08:38.511Z",
+      "lastSyncAttemptStatus": "VERIFIED",
+      "lastSyncError": null,
+      "cloudSyncState": "VERIFIED",
+      "lastSyncedAt": "2026-11-21T13:23:30.137Z",
+      "lastSyncDeltaCount": 22,
+      "lastSyncedSourceName": "Alletra_MP_X10000_OCA_Catalog_2026-11-21",
+      "lastCatalogSha256": "3bfe851280840d6c3f26fdf12625804a3629983fcd09efbf8489c665a3eedd69",
+      "lastArtifactHashes": {
+        "Catalog.json": "3bfe851280840d6c3f26fdf12625804a3629983fcd09efbf8489c665a3eedd69",
+        "Services.json": "ccd6e6b5bc9f32e6f0d85da5f1e3f046dc840b695628f1a295ec190b8b3960d9",
+        "Catalog_Rules.json": "27cfab7cc8bde5deb11123713c78f47da67261734bc8731ca5a8af6b537890ab",
+        "OCA_Catalog.xlsx": "d29f959d13b81a46117fe1aa3a85efdad2e1c5395c1c8b0bb5d6320e9a9da19f"
+      },
+      "canonicalKnowledgeSourceIds": [
+        "bd065e25-34b9-449c-a5d7-f30b280dba42",
+        "60cda6f9-e4ac-4de9-bab9-8e14aa10b936"
+      ],
+      "certifiedCatalogSourceIds": [
+        "bd065e25-34b9-449c-a5d7-f30b280dba42"
+      ],
+      "lastPayloadChecksum": "83c543d83e77df9f4f5ff9f95e525b57ba448bec10c0bfdc5da6bdca7955e345",
+      "lastSyncedSourceId": "bd065e25-34b9-449c-a5d7-f30b280dba42",
+      "runningKnowledgeSourceId": "60cda6f9-e4ac-4de9-bab9-8e14aa10b936",
+      "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
+      "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
+      "runningKnowledgeVerifiedAt": "2026-11-21T13:57:32.120Z"
     }
   },
   "runningKnowledgeDoc": {
@@ -1025,9 +1112,9 @@
     "documentUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
     "title": "HPE AI Studio — Master Running Knowledge & Learnings Charter",
     "folderId": "1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-",
-    "lastSyncedAt": "2026-11-16T21:01:09.613Z",
-    "totalDeduplicatedRules": 165,
-    "universalRuleCount": 21,
-    "chassisRuleCount": 144
+    "lastSyncedAt": "2026-11-21T13:54:24.007Z",
+    "totalDeduplicatedRules": 184,
+    "universalRuleCount": 22,
+    "chassisRuleCount": 162
   }
 }

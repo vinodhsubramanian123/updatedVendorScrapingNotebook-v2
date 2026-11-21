@@ -87,7 +87,7 @@
         "Processor",
         "Memory",
         "Drive Cage",
-        "SAS Controller",
+        "Storage Controllers",
         "Riser Cards",
         "Power Supplies"
       ],
@@ -107,7 +107,7 @@
         "Processor",
         "Memory",
         "Drive Cage",
-        "SAS Controller",
+        "Storage Controllers",
         "Riser Cards",
         "Power Supplies"
       ],
@@ -115,13 +115,50 @@
         "Compute Ops Management"
       ]
     },
+    "Alletra_MP_B10000": {
+      "product": "HPE Alletra Storage MP B10000",
+      "pillar": "STORAGE",
+      "family": "Alletra",
+      "generation": "Storage",
+      "coverageStatus": "LIVE_SCRAPED",
+      "expectedWorkbookSheets": 14,
+      "minHardwareSKUs": 150,
+      "minServicesSKUs": 50,
+      "mandatoryCategories": [
+        "Storage Controllers",
+        "Drive Enclosures / Drives",
+        "Power Supplies",
+        "Networking"
+      ],
+      "scope": "Commercial global OCA B10000 (arcusSolwizard) + Ninja Online B10100 switchless (S0B84A) and B10200 switched (S1R06A) sizing rules"
+    },
+    "Alletra_MP_X10000": {
+      "product": "HPE Alletra Storage MP X10000",
+      "pillar": "STORAGE",
+      "family": "Alletra",
+      "generation": "Storage",
+      "coverageStatus": "LIVE_SCRAPED",
+      "expectedWorkbookSheets": 14,
+      "minHardwareSKUs": 50,
+      "mandatoryCategories": [
+        "Storage Controllers",
+        "Drive Enclosures / Drives",
+        "Power Supplies",
+        "Networking"
+      ],
+      "scope": "Commercial global OCA X10000 (S3L12A) + Ninja Online unstructured-storage-sizer TLC/QLC envelope"
+    },
     "Alletra_Storage_System": {
       "product": "Alletra Storage System",
       "pillar": "STORAGE",
       "family": "Alletra",
       "generation": "General",
+      "coverageStatus": "PENDING_LIVE_OCA_SCRAPE",
       "expectedWorkbookSheets": 10,
       "minHardwareSKUs": 50,
+      "knownLimitations": [
+        "3-SKU unscraped umbrella seed superseded for flagship block/file by dedicated Alletra_MP_B10000 / Alletra_MP_X10000 catalogs."
+      ],
       "mandatoryCategories": [
         "Storage Array Controller",
         "Drive Enclosure",
@@ -136,9 +173,10 @@
       "expectedWorkbookSheets": 8,
       "minHardwareSKUs": 20,
       "mandatoryCategories": [
-        "Switch Ports",
-        "Power Supplies",
-        "Transceivers"
+        "Variants",
+        "Transceivers",
+        "Port Upgrade Licenses",
+        "Cables & Enablement Kits"
       ]
     },
     "Synergy_12000_Frame": {
@@ -221,6 +259,72 @@
       ],
       "scope": "Observed module menu under Synergy 12000; selected owned service only; alternative service branches unexecuted",
       "evidence": "2026-10-30 owned capture of 867796-B21 under P51174-B21"
+    },
+    "DL360_Gen11": {
+      "product": "DL360 Gen11",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen11",
+      "expectedWorkbookSheets": 24,
+      "minHardwareSKUs": 350,
+      "minServicesSKUs": 100,
+      "mandatoryCategories": [
+        "Processor",
+        "Memory",
+        "Drive Cage",
+        "Power Supplies"
+      ]
+    },
+    "DL145_Gen11": {
+      "product": "DL145 Gen11",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen11",
+      "expectedWorkbookSheets": 20,
+      "minHardwareSKUs": 150,
+      "mandatoryCategories": [
+        "Processor",
+        "Memory",
+        "Power Supplies"
+      ]
+    },
+    "DL580_Gen12": {
+      "product": "DL580 Gen12",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "expectedWorkbookSheets": 24,
+      "minHardwareSKUs": 250,
+      "mandatoryCategories": [
+        "Processor",
+        "Memory",
+        "Power Supplies"
+      ]
+    },
+    "MSL3040_Tape": {
+      "product": "StoreEver MSL3040 Tape Library",
+      "pillar": "STORAGE",
+      "family": "StoreEver",
+      "generation": "Tape",
+      "expectedWorkbookSheets": 12,
+      "minHardwareSKUs": 40,
+      "mandatoryCategories": [
+        "Storage Media",
+        "Power Supplies"
+      ]
+    },
+    "GX5000_General_RACK": {
+      "product": "Cray GX5000 General Rack",
+      "pillar": "HPC",
+      "family": "Cray",
+      "generation": "General",
+      "coverageStatus": "UNSCRAPED_SEED_PARTIAL",
+      "expectedWorkbookSheets": 7,
+      "minHardwareSKUs": 2,
+      "knownLimitations": [
+        "Unscraped 2-SKU baseline seed without raw OCA capture; live OCA scrape required for full option coverage."
+      ],
+      "mandatoryCategories": ["Variants"]
     }
   }
 }

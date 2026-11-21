@@ -121,3 +121,44 @@ test('lease blocks overlapping reclaim transactions and preserves replaced owner
     assert.equal(fs.readFileSync(path.join(root, 'test.lock'), 'utf8'), 'replacement owner');
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
 });
+
+test('semantic projection strips diff-history columns and excludes duplicate-for-LLM sheets', () => {
+  // Build a synthetic workbook with large Attribute Deltas + Price History Trail on
+  // 50 SKUs across both Catalog Diffs (excluded) and All SKUs (included but stripped).
+  const bigDelta = 'LeadTime: "60" → "30" | Vendor: ' + '{foo:bar}'.repeat(40);
+  const rows = [['Product #', 'Description', 'Unit Price (USD)', 'Attribute Deltas', 'Price History Trail'],
+    ...Array.from({ length: 50 }, (_, i) => [`SKU${i}-B21`, `Option ${i}`, `$${100 + i}.00`, bigDelta, `2026-10-01: $${100 + i} → 2026-11-01: $${100 + i} [${bigDelta}]`])];
+  const tabs = [
+    { title: 'All SKUs', rows },
+    { title: 'Catalog Diffs', rows },              // must be excluded
+    { title: 'Price History Timeline', rows },      // must be excluded
+    { title: 'Supply Chain & Lead Times', rows },   // must be excluded
+    { title: 'Rules & Constraints', rows: [['Rule'], ['ambient temp <= 27C']] }
+  ];
+
+  const result = projectWorkbookToMarkdown(tabs);
+
+  // Only 2 sheets survive (All SKUs + Rules & Constraints)
+  assert.equal(result.sheetCount, 2);
+
+  // Attribute Deltas and Price History Trail columns must not appear in the markdown
+  assert.ok(!result.markdown.includes('Attribute Deltas'), 'Attribute Deltas column must be stripped');
+  assert.ok(!result.markdown.includes('Price History Trail'), 'Price History Trail column must be stripped');
+
+  // Catalog Diffs sheet must not appear
+  assert.ok(!result.markdown.includes('### Catalog Diffs'), 'Catalog Diffs sheet must be excluded');
+  assert.ok(!result.markdown.includes('### Price History Timeline'), 'Price History Timeline must be excluded');
+  assert.ok(!result.markdown.includes('Supply Chain'), 'Supply Chain sheet must be excluded');
+
+  // All SKUs content must still be present
+  assert.ok(result.markdown.includes('SKU0-B21'), 'SKU data must be preserved in All SKUs');
+  assert.ok(result.markdown.includes('$100.00'), 'Price data must be preserved');
+
+  // Word count must be under 400k
+  assert.ok(result.words < 400000, `Word count ${result.words} must be under 400k after stripping`);
+
+  // Opt-out: with stripDiffHistoryColumns: false, columns are preserved
+  const raw = projectWorkbookToMarkdown(tabs, { stripDiffHistoryColumns: false });
+  assert.ok(raw.markdown.includes('Attribute Deltas'), 'columns preserved when opt-out flag set');
+  assert.equal(raw.sheetCount, 2, 'sheets still excluded even with stripDiffHistoryColumns: false');
+});

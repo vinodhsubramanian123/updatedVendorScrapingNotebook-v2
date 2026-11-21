@@ -24,7 +24,7 @@ const {
   generateMultiRankSolutionCsv,
   _parseStrictRankTier
 } = require('../../scripts/lib/boq/generate_boq_xlsx.js');
-const { deliveryFingerprint } = require('../../scripts/lib/boq/solution_evidence.js');
+const { deliveryFingerprint, captureCatalogEvidence, catalogEvidenceBoundary } = require('../../scripts/lib/boq/solution_evidence.js');
 const { issueDeliveryAuthorization } = require('../../scripts/lib/contracts/workflow_contract.js');
 const runState = require('../../dashboard/services/runState.cjs');
 const evaluationRouter = require('../../dashboard/routes/evaluation.cjs');
@@ -87,6 +87,7 @@ function makeCandidateEval(options = {}) {
   };
 
   if (options.dependencyInvalidation !== undefined) baseEval.dependencyInvalidation = options.dependencyInvalidation;
+  if (options.catalogEvidence !== undefined) baseEval.catalogEvidence = options.catalogEvidence;
   if (options.omitAuth) return baseEval;
   const fingerprint = deliveryFingerprint(baseEval);
   let deliveryAuthorization = issueDeliveryAuthorization({
@@ -228,6 +229,46 @@ describe('P0 · Export Candidate & Authorization Enforcement', () => {
         assert.equal(reply.status, 409);
         assert.equal(reply.data.code, 'UNKNOWN_DEPENDENCY');
       }
+    } finally {
+      await new Promise(resolve => server.close(resolve));
+    }
+  });
+
+  it('blocks an already signed run when its product catalog evidence changes on disk', async () => {
+    const product = 'DL380_Gen12';
+    const dir = path.join(tmpRunsDir, product);
+    fs.mkdirSync(dir, { recursive: true });
+    const catalogPath = path.join(dir, `${product}_Catalog.json`);
+    const rulesPath = path.join(dir, `${product}_Catalog_Rules.json`);
+    const bytes = Buffer.from('{"entries":[]}');
+    fs.writeFileSync(catalogPath, bytes);
+    fs.writeFileSync(rulesPath, '{"rules":[]}');
+    const catalogEvidence = captureCatalogEvidence(dir, bytes);
+    const evaluation = makeCandidateEval({ catalogEvidence });
+    assert.equal(catalogEvidenceBoundary(catalogEvidence).status, 'VALID');
+    assert.notEqual(deliveryFingerprint(evaluation), deliveryFingerprint({ ...evaluation, catalogEvidence: undefined }));
+    const { verifyPrePresentationAcceptance } = require('../../scripts/lib/boq/bom_verifier.js');
+    const check = () => verifyPrePresentationAcceptance(evaluation).checks.find(row => row.id === 'B24');
+    assert.equal(check().status, 'PASSED');
+
+    const { server, port } = await startEphemeralRouterServer();
+    try {
+      const runId = `run_stale_catalog_${Date.now()}`;
+      seedServerRun(runId, evaluation, product);
+      fs.writeFileSync(rulesPath, '{"rules":[{"id":"changed"}]}');
+      assert.deepEqual(catalogEvidenceBoundary(catalogEvidence).reasons, ['Catalog_Rules.json']);
+      assert.equal(check().status, 'FAILED');
+      assert.throws(() => generateProfessionalBOQ(evaluation, null, product, 1), /dependency validity/i);
+      for (const route of ['/api/export-boq', '/api/export-boq-xlsx']) {
+        const reply = await postJson(port, route, { runId, rankTier: 1 });
+        assert.equal(reply.status, 409);
+        assert.equal(reply.data.code, 'STALE_INVALIDATED_DEPENDENCY');
+      }
+      fs.writeFileSync(rulesPath, '{"rules":[]}');
+      fs.writeFileSync(path.join(dir, `${product}_Services.json`), '{"entries":[]}');
+      assert.deepEqual(catalogEvidenceBoundary(catalogEvidence).reasons, ['Services.json']);
+      fs.unlinkSync(catalogPath);
+      assert.deepEqual(catalogEvidenceBoundary(catalogEvidence).reasons, ['Catalog.json', 'Services.json']);
     } finally {
       await new Promise(resolve => server.close(resolve));
     }

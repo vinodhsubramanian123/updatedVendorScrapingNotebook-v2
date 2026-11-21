@@ -772,6 +772,48 @@ function validateKnowledgeDelta(delta, options = {}) {
   };
 }
 
+function getReinforcementEvidenceIds(delta) {
+  const ids = new Set();
+  for (const citation of Array.isArray(delta.citations) ? delta.citations : []) {
+    const evidence = verifyAuthenticEvidence(citation, { reasoning: delta.humanReasoning, ruleUpdate: delta.ruleUpdate });
+    if (!evidence.valid) continue;
+    const id = evidence.type === 'OFFICIAL_QUICKSPECS' ? evidence.documentId : evidence.manifestSha256;
+    if (id) ids.add(id.toLowerCase());
+  }
+  return [...ids].sort();
+}
+
+function reinforceQuarantinedRecord(existing, record, now) {
+  const priorIds = existing.reinforcementEvidenceIds || [];
+  const priorCount = existing.evidenceObservationCount || 0;
+  const hasNewEvidence = record.reinforcementEvidenceIds.some(id => !priorIds.includes(id));
+  const evidenceObservationCount = priorCount + Number(hasNewEvidence);
+  const reinforcementEvidenceIds = [...new Set([...priorIds, ...record.reinforcementEvidenceIds])].sort();
+  const onlyConfidenceHeld = record.quarantineReasons.length > 0 &&
+    record.quarantineReasons.every(reason => reason.includes('below automatic promotion threshold'));
+  const canReinforce = onlyConfidenceHeld && evidenceObservationCount >= 3;
+  const baseScore = record.confidenceScore ?? 0.70;
+  const reinforcedScore = canReinforce
+    ? Math.min(0.88, Number((baseScore + 0.06 * Math.log2(evidenceObservationCount)).toFixed(2)))
+    : baseScore;
+  const observationCount = (Number(existing.observationCount) || 1) + 1;
+
+  return {
+    ...existing,
+    ...record,
+    quarantineId: existing.quarantineId || record.quarantineId,
+    firstSeenAt: existing.firstSeenAt || existing.quarantinedAt || now,
+    lastSeenAt: now,
+    observationCount,
+    evidenceObservationCount,
+    reinforcementEvidenceIds,
+    confidenceScore: reinforcedScore,
+    candidateForReview: observationCount >= 5 || reinforcedScore >= 0.85,
+    autoPromotable: canReinforce && reinforcedScore >= 0.85 && record.reinforcementEvidenceIds.length > 0,
+    quarantineReasons: [...new Set([...(existing.quarantineReasons || []), ...record.quarantineReasons])]
+  };
+}
+
 /**
  * Save a delta to the quarantine repository.
  * @param {object} delta
@@ -788,6 +830,7 @@ function saveQuarantinedDelta(delta, reasons = [], options = {}) {
   const list = readJsonArray(quarantineFile);
   const now = new Date().toISOString();
   const fingerprint = delta.knowledgeFingerprint || buildKnowledgeFingerprint(delta);
+  const reinforcementEvidenceIds = getReinforcementEvidenceIds(delta);
 
   const record = {
     ...delta,
@@ -796,6 +839,9 @@ function saveQuarantinedDelta(delta, reasons = [], options = {}) {
     firstSeenAt: now,
     lastSeenAt: now,
     observationCount: 1,
+    evidenceObservationCount: reinforcementEvidenceIds.length ? 1 : 0,
+    reinforcementEvidenceIds,
+    autoPromotable: false,
     quarantinedAt: now,
     quarantineReasons: reasons,
     status: 'IN_QUARANTINE',
@@ -806,27 +852,7 @@ function saveQuarantinedDelta(delta, reasons = [], options = {}) {
   const existingIdx = list.findIndex(item => (item.knowledgeFingerprint || buildKnowledgeFingerprint(item)) === fingerprint);
 
   if (existingIdx >= 0) {
-    const existing = list[existingIdx];
-    const newCount = (Number(existing.observationCount) || 1) + 1;
-    const baseScore = Number(existing.confidenceScore || delta.confidenceScore || 0.70);
-    const hasTrustedCitations = Array.isArray(record.citations) && record.citations.length > 0;
-    const onlyConfidenceHeld = reasons.length > 0 && reasons.every(r => r.includes('below automatic promotion threshold'));
-    const cap = (hasTrustedCitations && onlyConfidenceHeld && newCount >= 3) ? 0.88 : 0.84;
-    const step = (hasTrustedCitations && onlyConfidenceHeld) ? 0.06 : 0.01;
-    const reinforcedScore = Math.min(cap, Number((baseScore + step * Math.log2(newCount)).toFixed(2)));
-
-    list[existingIdx] = {
-      ...existing,
-      ...record,
-      quarantineId: existing.quarantineId || record.quarantineId,
-      firstSeenAt: existing.firstSeenAt || existing.quarantinedAt || now,
-      lastSeenAt: now,
-      observationCount: newCount,
-      confidenceScore: reinforcedScore,
-      candidateForReview: newCount >= 5 || reinforcedScore >= 0.85,
-      autoPromotable: Boolean(hasTrustedCitations && onlyConfidenceHeld && reinforcedScore >= 0.85),
-      quarantineReasons: [...new Set([...(existing.quarantineReasons || []), ...reasons])]
-    };
+    list[existingIdx] = reinforceQuarantinedRecord(list[existingIdx], record, now);
   } else {
     list.push(record);
   }

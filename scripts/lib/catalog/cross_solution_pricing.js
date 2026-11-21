@@ -12,8 +12,13 @@ const path = require('path');
 const { cleanBaseSKU } = require('./sku.js');
 const { listAllCatalogs } = require('./catalog_discovery.js');
 const { normalizeLifecycleLabel } = require('./portfolio_blindspots.js');
-
-const SKU_OR_BADGE_IN_PRICE_RE = /[A-Z0-9]{4,8}-[A-Z0-9]{2,4}|\[(?:90|OB|DS|EOL)\]/i;
+const {
+  parseStrictPrice,
+  reconcileConflictingPrices,
+  parseLeadTimeOrEta,
+  buildAvailabilityContract,
+  classifyRowType
+} = require('./field_parsers.js');
 
 function _resolveRowDescription(skuRow) {
   const rawDesc = String(skuRow.Description || skuRow.description || '').trim();
@@ -23,40 +28,33 @@ function _resolveRowDescription(skuRow) {
   return rawDesc;
 }
 
-function _isSkuPrefixCorruptedPrice(skuRow, num) {
-  const rawSku = String(skuRow['Product #'] || skuRow.sku || '').trim();
-  const prefixMatch = rawSku.match(/^(\d{5,8})-/);
-  return Boolean(prefixMatch && Number(prefixMatch[1]) === Math.trunc(num));
-}
-
 function _parseNullablePrice(skuRow) {
-  const raw = skuRow['Unit Price (USD)'] ?? skuRow['Price (USD)'] ?? skuRow.listPrice;
-  if (raw === null || raw === undefined || raw === '') return { priceUsd: null, priceStatus: 'UNPRICED' };
-  const str = String(raw).trim();
-  if (!str || /^n\/?a$/i.test(str) || /^unpublished$/i.test(str)) {
-    return { priceUsd: null, priceStatus: 'UNPRICED' };
+  const fieldPairs = [
+    ['List Price (USD)', skuRow['List Price (USD)']],
+    ['Unit Price (USD)', skuRow['Unit Price (USD)']],
+    ['Price (USD)', skuRow['Price (USD)']],
+    ['listPrice', skuRow.listPrice]
+  ].filter(([, val]) => val !== null && val !== undefined && String(val).trim() !== '');
+
+  if (fieldPairs.length === 0) {
+    return { priceUsd: null, priceStatus: 'UNPRICED', priceState: 'UNPRICED' };
   }
-  const rawDesc = String(skuRow.Description || skuRow.description || '').trim();
-  if (SKU_OR_BADGE_IN_PRICE_RE.test(str)) {
-    if (/^\d+(?:\.\d{2})$/.test(rawDesc)) {
-      return { priceUsd: parseFloat(rawDesc), priceStatus: 'PRICED', recoveredFromShiftedColumn: true };
-    }
-    return { priceUsd: null, priceStatus: 'SHIFTED_COLUMN_REJECTED' };
-  }
-  const num = parseFloat(str.replace(/[$,]/g, ''));
-  if (!Number.isFinite(num)) return { priceUsd: null, priceStatus: 'UNPRICED' };
-  if (_isSkuPrefixCorruptedPrice(skuRow, num)) {
-    if (/^\d+(?:\.\d{2})$/.test(rawDesc)) {
-      return { priceUsd: parseFloat(rawDesc), priceStatus: 'PRICED', recoveredFromShiftedColumn: true };
-    }
-    return { priceUsd: null, priceStatus: 'SHIFTED_COLUMN_REJECTED' };
-  }
+
   const desc = _resolveRowDescription(skuRow);
-  const isFio = Boolean(skuRow.isFio || /\bfio\b|factory\s*integrated|included|no\s*charge|\btracking\b/i.test(desc));
-  if (num === 0) {
-    return { priceUsd: 0, priceStatus: isFio ? 'CONFIRMED_ZERO_FIO' : 'ZERO_UNCONFIRMED' };
+  if (fieldPairs.length > 1) {
+    const candidates = fieldPairs.map(([source, raw]) => ({ source, raw, row: skuRow, description: desc }));
+    const reconciled = reconcileConflictingPrices(candidates);
+    if (reconciled.priceState === 'CONFLICTING_EVIDENCE') {
+      return { priceUsd: null, priceStatus: 'CONFLICTING_EVIDENCE', priceState: 'CONFLICTING_EVIDENCE' };
+    }
   }
-  return { priceUsd: num, priceStatus: 'PRICED' };
+
+  const parsed = parseStrictPrice(fieldPairs[0][1], { row: skuRow, description: desc });
+  return {
+    priceUsd: parsed.priceUsd,
+    priceStatus: parsed.priceStatus,
+    priceState: parsed.priceState
+  };
 }
 
 function _loadCatalogAndServices(catEntry) {
@@ -130,26 +128,37 @@ function compareSkuAcrossSolutions(skuQuery, options = {}) {
     const rows = _loadCatalogAndServices(cat);
     for (const item of rows) {
       const rawSku = String(item.skuRow['Product #'] || item.skuRow.sku || '').trim();
-      if (!_matchesTargetSku(rawSku, targetClean)) continue;
-      const { priceUsd, priceStatus } = _parseNullablePrice(item.skuRow);
+      const exactMatch = cleanBaseSKU(rawSku) === targetClean;
+      if (!exactMatch && !(options.includeRelatedVariants && _matchesTargetSku(rawSku, targetClean))) continue;
+      const { priceUsd, priceStatus, priceState } = _parseNullablePrice(item.skuRow);
+      const leadTime = parseLeadTimeOrEta(item.skuRow['Lead Time'] || item.skuRow.leadTime, item.skuRow.leadTimeDays, item.skuRow['Speed Tier']);
+      const availabilityContract = buildAvailabilityContract({ skuRow: item.skuRow });
+      const rowType = classifyRowType(item.skuRow, { isBase: /base\s*chassis/i.test(item.parentCategory) });
       const genMatch = String(cat.gen || cat.id || '').match(/\b(Gen\s*\d+)\b/i);
       matches.push({
         product: cat.id,
+        ownerProduct: item.skuRow.ownerProduct || cat.id,
         chassis: cat.chassis || cat.id,
         gen: cat.gen || (genMatch ? genMatch[1].replace(/\s+/g, '') : null),
         sku: rawSku,
         baseSku: cleanBaseSKU(rawSku),
-        exactMatch: cleanBaseSKU(rawSku) === targetClean,
+        exactMatch,
+        rowType,
         optionType: item.skuRow['Option Type'] || item.skuRow.optionType || (item.sourceKind === 'SERVICES' ? 'Service' : 'Hardware'),
         parentCategory: item.parentCategory,
         subCategory: item.subCategory,
         description: _resolveRowDescription(item.skuRow),
         listPriceUsd: priceUsd,
         priceStatus,
+        priceState,
         lifecycleStatus: normalizeLifecycleLabel(item.skuRow['Lifecycle Status'] || item.skuRow.lifecycleStatus || 'Active'),
+        visibility: availabilityContract.visibility,
+        availability: availabilityContract.availability,
+        compatibility: availabilityContract.compatibility,
         clicStatus: item.skuRow['CLIC Status'] || 'Unpublished',
-        leadTimeDays: Number.isFinite(Number(item.skuRow.leadTimeDays)) ? Number(item.skuRow.leadTimeDays) : null,
+        leadTimeDays: leadTime.days,
         leadTimeText: item.skuRow['Lead Time'] || null,
+        leadTime,
         scrapeDate: item.scrapeDate
       });
     }
@@ -223,39 +232,43 @@ function findCrossSolutionPriceVariances(options = {}) {
   };
 }
 
-function _pickMostRecentMatch(matches, predicate) {
-  const candidates = matches.filter(predicate);
+function _pickMostRecentMatch(matches, field, predicate) {
+  const candidates = matches.filter(match => /^\d{4}-\d{2}-\d{2}/.test(match.scrapeDate || '') && predicate(match));
   if (candidates.length === 0) return null;
   candidates.sort((a, b) => String(b.scrapeDate || '').localeCompare(String(a.scrapeDate || '')));
+  const latest = candidates.filter(match => match.scrapeDate === candidates[0].scrapeDate);
+  if (new Set(latest.map(match => match[field])).size > 1) return null;
   return candidates[0];
 }
 
 function _isSameGeneration(match, targetGen) {
   if (!targetGen) return true;
-  const normTarget = String(targetGen).trim().toLowerCase();
-  const mGen = String(match.gen || match.product || '').toLowerCase();
-  return mGen.includes(normTarget);
+  const normTarget = String(targetGen).trim().toLowerCase().replace(/\s+/g, '');
+  const mGen = String(match.gen || match.product || '').match(/gen[\s_-]*\d+/i)?.[0];
+  return mGen?.toLowerCase().replace(/[\s_-]+/g, '') === normTarget;
 }
 
 function backfillMissingPricesAndLeadTimes(items = [], targetGen = null, options = {}) {
   if (!Array.isArray(items)) return [];
   const catalogs = Array.isArray(options.catalogs) ? options.catalogs : listAllCatalogs();
   return items.map(item => {
-    const missingPrice = item?.unitPriceUsd === null || item?.unitPriceUsd === undefined || item?.unitPriceUsd <= 0;
+    const missingPrice = item?.unitPriceUsd == null;
     const missingLead = item?.leadTimeDays === null || item?.leadTimeDays === undefined;
     const rawSku = item?.sku || item?.['Product #'];
     if (!rawSku || (!missingPrice && !missingLead)) return item;
 
     const cmp = compareSkuAcrossSolutions(rawSku, { catalogs });
-    const scopedMatches = (cmp.matches || []).filter(m => _isSameGeneration(m, targetGen));
-    const priceMatch = missingPrice ? _pickMostRecentMatch(scopedMatches, m => m.priceStatus === 'PRICED' && m.listPriceUsd > 0) : null;
-    const leadMatch = missingLead ? _pickMostRecentMatch(scopedMatches, m => Number.isFinite(m.leadTimeDays)) : null;
+    const scopedMatches = cmp.matches.filter(m => m.exactMatch && _isSameGeneration(m, targetGen));
+    const priceMatch = missingPrice ? _pickMostRecentMatch(scopedMatches, 'listPriceUsd', m => m.priceStatus === 'PRICED' && m.listPriceUsd > 0) : null;
+    const leadMatch = missingLead ? _pickMostRecentMatch(scopedMatches, 'leadTimeDays', m => Number.isFinite(m.leadTimeDays)) : null;
     if (!priceMatch && !leadMatch) return item;
 
     return {
       ...item,
-      ...(priceMatch ? { unitPriceUsd: priceMatch.listPriceUsd, priceBackfilledFrom: priceMatch.product } : {}),
-      ...(leadMatch ? { leadTimeDays: leadMatch.leadTimeDays, leadTimeBackfilledFrom: leadMatch.product } : {}),
+      ...(priceMatch ? { unitPriceUsd: priceMatch.listPriceUsd, priceBackfilledFrom: priceMatch.product,
+        priceBackfillEvidence: { sku: priceMatch.sku, product: priceMatch.product, date: priceMatch.scrapeDate, classification: 'CATALOG_ESTIMATE' } } : {}),
+      ...(leadMatch ? { leadTimeDays: leadMatch.leadTimeDays, leadTimeBackfilledFrom: leadMatch.product,
+        leadTimeBackfillEvidence: { sku: leadMatch.sku, product: leadMatch.product, date: leadMatch.scrapeDate, classification: 'CATALOG_ESTIMATE' } } : {}),
       backfilledFromProduct: priceMatch?.product || leadMatch?.product
     };
   });

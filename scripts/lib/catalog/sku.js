@@ -14,7 +14,7 @@ const fs = require('fs');
 // 2. 6-character hardware SKUs: C0H28A, Q2R32A, BC002A, N9X06A, TC480A, R2E09A
 // 3. Software / E-LTU SKUs: E5Y35AAE, E5Y43AAE, BD505A
 // 4. Service / Support SKUs: H7J34A3, HA114A1, HU4A6E, U4391E, R4H12A, S2S05A, HU4B2A3, HU4B2A30C4V
-const HPE_SKU_REGEX = /^([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}(?:AAE)?|[HURS][A-Z0-9]{4,11}|[HU][A-Z0-9]{4,11}#[A-Z0-9]{3})$/i;
+const HPE_SKU_REGEX = /^([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}(?:AAE)?|[HURS][A-Z0-9]{4,11}|[HU][A-Z0-9]{4,11}#[A-Z0-9]{3}|[A-Z0-9]{5}[A-Z]#[A-Z0-9]{3})$/i;
 
 // Match SKU within text with optional CTO/BTO/FIO suffix
 const HPE_SKU_EXTRACT_REGEX = /\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}(?:CTO|BTO|FIO)?|[A-Z0-9]{6}(?:CTO|BTO|FIO)?|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11}(?:CTO|BTO|FIO)?)\b/i;
@@ -99,8 +99,10 @@ function cleanBaseSKU(skuStr) {
     str = str.substring(1);
   }
   // Strip trailing option codes after spaces or CTO/BTO/FIO suffix (e.g. "P73282-B21  B19" -> "P73282-B21", "P73831-B21  0D1" -> "P73831-B21", "HU4B2A3 Z1R" -> "HU4B2A3")
+  // Preserve distinct service and localization option suffixes like #Z1R or R7R97A#AC3 while stripping factory FIO tags (#0D1/#OD1/#B19/#B21).
   str = str.replace(/(?:\s+|#)(?:0D1|OD1|B19|B21|#0D1|#B19|#B21|[A-Z0-9]{3,4})\b/i, (m, offset, full) => {
-    if (m.startsWith('#') && /^[HU][A-Z0-9]{4,11}#[A-Z0-9]{3}$/i.test(full)) {
+    if (m.startsWith('#') && !/^#(?:0D1|OD1|B19|B21)$/i.test(m) &&
+        (/^[HU][A-Z0-9]{4,11}#[A-Z0-9]{3}$/i.test(full) || /^[A-Z0-9]{5}[A-Z]#[A-Z0-9]{3}$/i.test(full))) {
       return m;
     }
     const prefix = full.substring(0, offset).trim();
@@ -248,16 +250,17 @@ function isServiceSku(skuStr) {
  * @param {string} [rawDesc='']
  * @returns {{ canonicalStatus: string, isObsolete: boolean, isDiscontinued: boolean, isHardEol: boolean, is90DayWarning: boolean, isDirectShip: boolean, isBlockedForProduction: boolean, isClearanceOrRestricted: boolean, isNonActive: boolean }}
  */
-function _resolveCanonicalLifecycle(isDiscontinued, isObsolete, isHardEol, is90DayWarning, isDirectShip) {
+function _resolveCanonicalLifecycle(isDiscontinued, isObsolete, isHardEol, is90DayWarning, isDirectShip, isConstrainedSupply) {
   if (isDiscontinued) return 'DISCONTINUED';
   if (isObsolete) return 'OBSOLETE';
   if (isHardEol) return 'EOL';
+  if (isConstrainedSupply) return 'CONSTRAINED_SUPPLY';
   if (is90DayWarning) return '90_DAY_WARNING';
   if (isDirectShip) return 'DIRECT_SHIP';
   return 'ACTIVE';
 }
 
-function classifyLifecycleState(lifecycleStatus = '', diffStatus = '', rawSku = '', rawDesc = '') {
+function classifyLifecycleState(lifecycleStatus = '', diffStatus = '', rawSku = '', rawDesc = '', vendorSupplyStatus = '') {
   const status = String(lifecycleStatus || '').trim().toUpperCase();
   const diff = String(diffStatus || '').trim().toUpperCase();
   const text = `${String(rawSku || '').trim().toUpperCase()} ${String(rawDesc || '').trim().toUpperCase()}`;
@@ -269,18 +272,20 @@ function classifyLifecycleState(lifecycleStatus = '', diffStatus = '', rawSku = 
     /\bEOL\b|\(EOL\)|END[-\s]OF[-\s]LIFE/i.test(status) || /(?:^|\s)(?:\[EOL\]|EOL\s+)/i.test(text)
   );
   const isDirectShip = /\bDS\b|\(DS\)|DIRECT\s*SHIP/i.test(status) || /(?:^|\s)(?:\[DS\]|DS\s+)/i.test(text);
+  const isConstrainedSupply = vendorSupplyStatus === 'CONSTRAINED_SUPPLY' || /\bCS\b|CONSTRAINED[\s_-]*SUPPLY|SUPPLY[\s_-]*(?:RESTRICTED|CONSTRAINED)/i.test(status) || /(?:^|\s)(?:\[CS\]|CS\s+)/i.test(text);
 
   const isBlockedForProduction = isObsolete || isDiscontinued || isHardEol;
-  const isClearanceOrRestricted = is90DayWarning || isDirectShip;
+  const isClearanceOrRestricted = is90DayWarning || isDirectShip || isConstrainedSupply;
   const isNonActive = isBlockedForProduction || isClearanceOrRestricted;
 
   return {
-    canonicalStatus: _resolveCanonicalLifecycle(isDiscontinued, isObsolete, isHardEol, is90DayWarning, isDirectShip),
+    canonicalStatus: _resolveCanonicalLifecycle(isDiscontinued, isObsolete, isHardEol, is90DayWarning, isDirectShip, isConstrainedSupply),
     isObsolete,
     isDiscontinued,
     isHardEol,
     is90DayWarning,
     isDirectShip,
+    isConstrainedSupply,
     isBlockedForProduction,
     isClearanceOrRestricted,
     isNonActive
@@ -309,7 +314,7 @@ function _indexCatalogEntries(entries, index) {
           subCategory,
           lifecycleStatus,
           diffStatus,
-          lifecycleState: classifyLifecycleState(lifecycleStatus, diffStatus, raw, s.Description || s.description || '')
+          lifecycleState: classifyLifecycleState(lifecycleStatus, diffStatus, raw, s.Description || s.description, s.vendorSupplyStatus)
         });
       }
     }

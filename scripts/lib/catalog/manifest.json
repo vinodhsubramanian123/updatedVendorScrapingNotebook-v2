@@ -8,9 +8,14 @@
     "INV-9: Memoized catalog price cache with lifecycle reset"
   ],
   "modules": [
+    "field_parsers.js",
+    "catalog_query_engine.js",
+    "catalog_probe_queue.js",
+    "capture_query_replay.js",
     "catalog_rules.js",
     "catalog_discovery.js",
     "catalog_formatter.js",
+    "catalog_price_drifts.js",
     "diff_catalog.js",
     "product_meta.js",
     "sku.js",

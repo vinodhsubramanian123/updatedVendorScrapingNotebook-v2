@@ -20,6 +20,46 @@ describe('PresalesRequestPanel presales handoff & scope preservation', () => {
     window.sessionStorage.clear();
   });
 
+  it('shows consolidated SKU prices and carries the pricing run into follow-up requests', async () => {
+    const classification = { intent: 'CATALOG_INTELLIGENCE', confidence: 0.95 };
+    api.postJson
+      .mockResolvedValueOnce(classification)
+      .mockImplementationOnce(async (_url, input) => ({
+        runId: input.runId,
+        classification,
+        result: {
+          status: 'SUCCESS',
+          priceDrifts: {
+            coverage: { catalogsScanned: ['DL360_Gen12', 'DL380_Gen12'], snapshotsRead: 4, trailConflictCount: 0, issues: [] },
+            groups: [{ category: 'Memory', totalChanges: 1, changes: [{
+              sku: 'P69727-B21', description: '32 GB DIMM', previousPriceUsd: 100, currentPriceUsd: 120,
+              lastOldPriceDate: '2026-09-01', firstNewPriceDate: '2026-09-06', changeUsd: 20, changePct: 20,
+              sources: [
+                { catalog: 'DL360_Gen12', previousDate: '2026-09-01', currentDate: '2026-09-06' },
+                { catalog: 'DL380_Gen12', previousDate: '2026-09-01', currentDate: '2026-09-07' }
+              ]
+            }] }]
+          }
+        }
+      }))
+      .mockResolvedValueOnce(classification);
+
+    render(<PresalesRequestPanel localOnly={true} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Catalog Price Drifts' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Identify workflow' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Run workflow' }));
+    const sku = await screen.findByText('P69727-B21');
+    expect(sku.closest('tr')).toHaveTextContent('DL360_Gen12');
+    expect(sku.closest('tr')).toHaveTextContent('DL380_Gen12');
+    expect(sku.closest('tr')).toHaveTextContent('$100');
+    expect(sku.closest('tr')).toHaveTextContent('$120');
+    const firstRunId = api.postJson.mock.calls[1][1].runId;
+    fireEvent.change(screen.getByLabelText('Requirements or presales question'), { target: { value: 'Last 3 price drifts of above' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Identify workflow' }));
+    await screen.findByRole('button', { name: 'Run workflow' });
+    expect(api.postJson.mock.calls[2][1].context.priorPriceDriftRunId).toBe(firstRunId);
+  });
+
   it('preserves originating product, nodeCount, quantityBasis, parentRunId and global/per-node scope across header product change', async () => {
     const onEvaluateBoq = vi.fn().mockResolvedValue({});
     const candidateRef = {
@@ -129,5 +169,60 @@ describe('PresalesRequestPanel presales handoff & scope preservation', () => {
     await waitFor(() => expect(screen.getByRole('alert')).toBeInTheDocument());
     expect(screen.getByRole('alert')).toHaveTextContent(/Memory, Target Product Catalog/i);
     expect(screen.queryByRole('button', { name: /Evaluate in 5-Tier Matrix/i })).not.toBeInTheDocument();
+  });
+
+  it('renders structured catalog search results and discloses excluded unmeasured lead-time items', async () => {
+    const classification = { intent: 'CATALOG_INTELLIGENCE', confidence: 0.95 };
+    api.postJson
+      .mockResolvedValueOnce(classification)
+      .mockResolvedValueOnce({
+        runId: 'query_catalog_search',
+        classification,
+        result: {
+          intent: 'CATALOG_INTELLIGENCE',
+          status: 'SUCCESS',
+          catalogSearch: {
+            results: [
+              {
+                product: 'DL360_Gen12',
+                sku: 'P64707-B21',
+                description: 'HPE 64GB 2Rx4 PC5-5600B-R Smart Kit',
+                componentRole: 'Memory',
+                listPriceUsd: 1850,
+                priceState: 'PRICED',
+                leadTimeDays: 7,
+                leadTimeText: '1 week',
+                lifecycleCanonical: 'Active',
+                visibility: 'VISIBLE'
+              }
+            ],
+            excludedUnmeasured: [
+              { sku: 'P99999-B21', product: 'DL360_Gen12', reason: 'LEAD_TIME_UNPUBLISHED', leadTimeText: 'Unpublished' }
+            ],
+            excludedConflicts: [],
+            summary: {
+              productsSearched: ['DL360_Gen12'],
+              returnedCount: 1,
+              excludedUnmeasuredCount: 1,
+              excludedConflictCount: 0,
+              incompleteCatalogCoverage: false
+            }
+          }
+        }
+      });
+
+    render(<PresalesRequestPanel localOnly={true} />);
+    fireEvent.change(screen.getByLabelText('Requirements or presales question'), {
+      target: { value: 'List all 64 GB DDR5 DIMMs for DL360 Gen12 and sort by lead time' }
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Identify workflow' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Run workflow' }));
+
+    const view = await screen.findByTestId('catalog-search-view');
+    expect(view).toHaveTextContent('P64707-B21');
+    expect(view).toHaveTextContent('$1,850');
+    expect(view).toHaveTextContent('1 week');
+    expect(view).toHaveTextContent('Excluded unverified fields: 1');
+    expect(view).toHaveTextContent('P99999-B21');
   });
 });

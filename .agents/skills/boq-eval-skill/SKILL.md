@@ -108,3 +108,7 @@ node scripts/lib/boq/multi_cluster_splitter.js --file path/to/tender.xlsx
 | Cognitive mandates, support default, SLA, domain routing, runtime discovery | 6 |
 - [Shared Runtime Conditional Discovery Contract](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md)
 - [Master System Invariants Directory](../../../docs/INVARIANTS.md)
+
+### Revision-bound delivery
+
+Follow [the catalog evidence contract](../../../docs/CATALOG_EVIDENCE_AND_LEARNING.md) for production lifecycle and delivery. A supply-constrained part requires confirmation or an applicable replacement. Re-evaluate when the bound catalog, services, or rules revision changes before exporting.

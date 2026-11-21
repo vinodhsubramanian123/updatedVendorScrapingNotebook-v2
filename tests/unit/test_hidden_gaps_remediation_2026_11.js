@@ -185,8 +185,23 @@ test('Component 4: Deterministic capture receipt hash reconciliation when raw_da
     const xlsxPath = path.join(tmpDir, `${product}_OCA_Catalog.xlsx`);
 
     fs.writeFileSync(catalogPath, JSON.stringify({
-      metadata: { scrapeTimestamp: ts, totalUniqueSKUs: 1 },
-      entries: [{ parentCategory: 'Base_Chassis', skus: [{ sku: 'P72683-B21', 'Product #': 'P72683-B21' }] }]
+      metadata: { scrapeTimestamp: ts, totalUniqueSKUs: 3 },
+      entries: [
+        {
+          parentCategory: 'Base_Chassis',
+          skus: [
+            { sku: 'P72683-B21', 'Product #': 'P72683-B21', Description: 'HPE ProLiant DL380a Gen12 CTO Server', listPrice: 15000, 'List Price (USD)': '15000.00' },
+            { sku: 'P76706-B21', 'Product #': 'P76706-B21', Description: 'HPE ProLiant Compute DL380a Gen12 4DW CTO Server', listPrice: 21407, 'List Price (USD)': '21407.00' }
+          ]
+        },
+        {
+          parentCategory: 'Graphics & GPU',
+          subCategory: 'GPU Accelerators',
+          skus: [
+            { sku: 'R6V66A', 'Product #': 'R6V66A', 'Component Role': 'GPU', Description: 'NVIDIA L4 24GB PCIe Accelerator for HPE', listPrice: 4500, 'List Price (USD)': '4500.00', lifecycleCanonical: 'Active', rowType: 'HARDWARE_OPTION' }
+          ]
+        }
+      ]
     }));
     fs.writeFileSync(servicesPath, JSON.stringify({ entries: [] }));
     fs.writeFileSync(rulesPath, JSON.stringify({ rules: [{ ruleId: 'R1' }] }));
@@ -194,7 +209,9 @@ test('Component 4: Deterministic capture receipt hash reconciliation when raw_da
     const wb = xlsx.utils.book_new();
     const sheet = xlsx.utils.aoa_to_sheet([
       ['Product #', 'Description'],
-      ['P72683-B21', 'HPE ProLiant DL380a Gen12 CTO Server']
+      ['P72683-B21', 'HPE ProLiant DL380a Gen12 CTO Server'],
+      ['P76706-B21', 'HPE ProLiant Compute DL380a Gen12 4DW CTO Server'],
+      ['R6V66A', 'NVIDIA L4 24GB PCIe Accelerator for HPE']
     ]);
     xlsx.utils.book_append_sheet(wb, sheet, 'Base_Chassis');
     xlsx.writeFile(wb, xlsxPath);
@@ -211,7 +228,7 @@ test('Component 4: Deterministic capture receipt hash reconciliation when raw_da
         'Catalog_Rules.json': 'stale-hash',
         'OCA_Catalog.xlsx': 'stale-hash'
       },
-      counts: { hardware: 1, services: 0, rules: 1 }
+      counts: { hardware: 3, services: 0, rules: 1 }
     }, null, 2));
 
     const updatedReceipt = reconcileRebuiltCaptureReceipt(tmpDir, product);
@@ -288,4 +305,52 @@ test('Component 5: INV-230 semantic extraction integrity and pruneInvalidQuarant
   } finally {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
+});
+
+test('Component 6: NLM CDP circuit breaker, stdio capture, and function sendCommand column check', async t => {
+  const nlmTransport = require('../../scripts/lib/notebook/nlm_transport.js');
+  const { verifyExpectedCatalogColumns } = require('../../scripts/lib/scraper/catalog_tab_capture.js');
+
+  const prevOverride = process.env.NLM_SYNC_READ_TRANSPORT;
+  delete process.env.NLM_SYNC_READ_TRANSPORT;
+  nlmTransport.resetCdpTransportState();
+  t.after(() => {
+    nlmTransport.resetCdpTransportState();
+    if (prevOverride === undefined) delete process.env.NLM_SYNC_READ_TRANSPORT;
+    else process.env.NLM_SYNC_READ_TRANSPORT = prevOverride;
+  });
+
+  const cdpErr = Object.assign(new Error('Command failed'), {
+    stderr: 'CdpTransportError: Headless browser did not expose CDP in time.'
+  });
+  const callRecords = [];
+  const mockExec = (_bin, _args, opts) => {
+    callRecords.push({ transport: opts.env.NOTEBOOKLM_RPC_TRANSPORT, stdio: opts.stdio });
+    if (callRecords.length === 1) throw cdpErr;
+    return '[]';
+  };
+
+  // Call 1 trips CDP circuit breaker and fails over cleanly to httpx with piped stdio
+  assert.equal(nlmTransport.execNlmReadWithFallback(mockExec, ['source', 'list', 'nb1', '--json']), '[]');
+  assert.equal(callRecords[0].transport, 'cdp');
+  assert.deepEqual(callRecords[0].stdio, ['ignore', 'pipe', 'pipe']);
+  assert.equal(callRecords[1].transport, 'httpx');
+  assert.equal(nlmTransport.isCdpTransportUnavailable(), true);
+
+  // Call 2 bypasses dead headless CDP straight to httpx without retrying CDP
+  assert.equal(nlmTransport.execNlmReadWithFallback(mockExec, ['source', 'list', 'nb1', '--json']), '[]');
+  assert.equal(callRecords.length, 3);
+  assert.equal(callRecords[2].transport, 'httpx');
+
+  // Reset restores CDP preference
+  nlmTransport.resetCdpTransportState();
+  assert.equal(nlmTransport.isCdpTransportUnavailable(), false);
+  assert.equal(nlmTransport.nlmEnvironment(process.env.PATH, true).NOTEBOOKLM_RPC_TRANSPORT, 'cdp');
+
+  // verifyExpectedCatalogColumns accepts a direct sendCommand function as api
+  const colRes = await verifyExpectedCatalogColumns({}, async () => ({
+    result: { value: ['Product #', 'Description', 'List Price (USD)', 'Est. Lead Time', 'Start Date'] }
+  }));
+  assert.equal(colRes.verified, true);
+  assert.deepEqual(colRes.missing, []);
 });

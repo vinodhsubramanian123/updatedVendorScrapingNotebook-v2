@@ -30,8 +30,8 @@ const { extractAndPersistLearnedDeltas } = require('../lib/notebook/knowledge_ex
 const { createEvidenceLedger } = require('../lib/system/evidence_ledger.js');
 const { runWithTrace } = require('../lib/system/trace_context');
 const { observeActualInvocation, associateCanonicalTrace } = require('../lib/system/execution_trace_runtime.js');
-const { candidateDelta, solutionFingerprint } = require('../lib/boq/solution_evidence');
-const { loadActiveKnowledgeRules } = require('../lib/catalog/active_knowledge_router.js');
+const { candidateDelta, solutionFingerprint, captureCatalogEvidence } = require('../lib/boq/solution_evidence');
+const { loadActiveKnowledgeRules, recordRuleConsumption } = require('../lib/catalog/active_knowledge_router.js');
 const { recordAndCertifyLearnedRule } = require('../lib/feedback/continuous_learning_verifier.js');
 const { assertNotebookHealth, loadNotebookConfig } = require('../lib/sync/knowledge_sync.js');
 const { LifecycleEngine } = require('../lib/lifecycle/lifecycle_engine.js');
@@ -394,9 +394,12 @@ function _loadAndAuditCatalogData(chassisDir, isExplicitTestPath) {
   const chassisPrefix = path.basename(chassisDir);
   const catalogPath = path.join(chassisDir, `${chassisPrefix}_Catalog.json`);
   let catalogData = null;
+  let catalogEvidence = null;
   if (fs.existsSync(catalogPath)) {
     try {
-      catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
+      const bytes = fs.readFileSync(catalogPath);
+      catalogData = JSON.parse(bytes.toString('utf8'));
+      catalogEvidence = captureCatalogEvidence(chassisDir, bytes);
       const { attachCompanionServices } = require('../lib/catalog/sku.js');
       attachCompanionServices(catalogData, catalogPath);
     } catch (err) {
@@ -416,7 +419,7 @@ function _loadAndAuditCatalogData(chassisDir, isExplicitTestPath) {
     throw new Error(`ERR_CATALOG_FRESHNESS: ${catalogAudit.freshness.freshnessStatus}`);
   }
 
-  return { catalogData, catalogAudit, chassisPrefix };
+  return { catalogData, catalogAudit, chassisPrefix, catalogEvidence };
 }
 
 function _applyPolicyAndConfiguration(rawItems, options, chassisDir, catalogData, parsedBoq, chassisDetection) {
@@ -518,7 +521,7 @@ async function ingestAndConsolidateBoq(options) {
   const outputPath = explicitOutputPath || path.join(defaultReportsDir, `BOQ_Evaluation_${fileSuffix}.md`);
   _applySimulatedErrorAndPrintBanner(options, chassisDir, inputFile, notebookId, outputPath, items.length);
 
-  const { catalogData, catalogAudit, chassisPrefix } = _loadAndAuditCatalogData(chassisDir, isExplicitTestPath);
+  const { catalogData, catalogAudit, chassisPrefix, catalogEvidence } = _loadAndAuditCatalogData(chassisDir, isExplicitTestPath);
   const policyResult = _applyPolicyAndConfiguration(items, options, chassisDir, catalogData, parsedBoq, chassisDetection);
   items = policyResult.items;
   const { requirementResolution, configurationContext } = policyResult;
@@ -533,7 +536,7 @@ async function ingestAndConsolidateBoq(options) {
     candidateReference, inputFile, chassisDir, chassisPrefix, chassisDetection, detectedChassisName,
     notebookId, notebookDegradedMode, notebookHealth, outputPath, catalogData, requirementResolution,
     unmatchedSkus: parsedBoq.unmatchedSkus || [], unresolvedRequirements: parsedBoq.unresolvedRequirements || [],
-    ocrMetadata, catalogAudit, stage1ParsingMs
+    ocrMetadata, catalogAudit, catalogEvidence, stage1ParsingMs
   };
 }
 
@@ -1082,16 +1085,18 @@ function _reconcileQuarantinedAndPromotedDeltas(chassisDir, activeRules, evalRes
     const chassisName = path.basename(chassisDir);
     const quarantined = getQuarantinedDeltas();
     for (const item of quarantined) {
-      if (item.chassis !== chassisName && !String(item.chassis || '').toLowerCase().includes(chassisName.toLowerCase())) continue;
+      if (String(item.chassis || '').toLowerCase() !== chassisName.toLowerCase()) continue;
       const hasCitations = Array.isArray(item.citations) && item.citations.length > 0;
-      if (item.autoPromotable === true && hasCitations && Number(item.confidenceScore) >= 0.85) {
+      if (item.autoPromotable === true && item.evidenceObservationCount >= 3 && hasCitations && Number(item.confidenceScore) >= 0.85) {
         const promoted = promoteQuarantinedDelta(item.quarantineId || item.deltaId, 'AUTONOMOUS_REINFORCEMENT_GATE', {
           activationDirectory: chassisDir,
-          reasoning: `Auto-promoted reinforced rule (${item.observationCount || 1} observations, score ${item.confidenceScore}) with verified citations.`
+          reasoning: `Reinforced by ${item.evidenceObservationCount} observations with distinct cited evidence (score ${item.confidenceScore}).`
         });
         if (promoted) {
           summary.autoPromoted++;
-          evidenceLedger?.recordSkuAudit?.(promoted.requiredDependencySku || promoted.affectedSku, 'DELTA_AUTO_PROMOTED', promoted.ruleUpdate, promoted.deltaId, 'Continuous Learning Auto-Promotion', { observationCount: item.observationCount });
+          evidenceLedger?.recordSkuAudit?.(promoted.requiredDependencySku || promoted.affectedSku, 'DELTA_AUTO_PROMOTED',
+            promoted.ruleUpdate, promoted.deltaId, 'Continuous Learning Auto-Promotion',
+            { observationCount: item.observationCount, evidenceObservationCount: item.evidenceObservationCount });
         }
       }
     }
@@ -1328,12 +1333,25 @@ function _recordCandidateValidationsEvidence(evidenceLedger, evalResults, ingest
     candidateGate: evalResults.adversarialGateResult });
 }
 
+function _recordGraphLearning(evidenceLedger, graph, activeRules) {
+  const rulesById = new Map((activeRules?.allRules || []).map(rule => [rule.ruleId, rule]));
+  const appliedEffects = (graph?.auditLog || [])
+    .filter(entry => entry.level === 'LEARNED_DELTA' && entry.applied && rulesById.has(entry.ruleId))
+    .map(entry => ({
+      ruleId: entry.ruleId, sku: entry.skuTarget, action: entry.ruleType, effect: entry.status, reason: entry.details
+    }));
+  const consumption = recordRuleConsumption(activeRules, appliedEffects);
+  for (const id of consumption.appliedRuleIds) evidenceLedger.recordActiveRuleReached(rulesById.get(id));
+  return consumption;
+}
+
 function _executePhase4And5(options, evidenceLedger, graph, activeRules) {
   evidenceLedger.startPhase(4, 'Conflict Graph & Contested Resource Arbitration', {});
   const phase4Passed = graph?.isWholeSolutionValid === true;
   evidenceLedger.completePhase(4, phase4Passed ? 'PASSED' : 'ACTION_REQUIRED', {
     conflicts: graph?.conflicts?.length || 0,
-    hasContentions: Boolean(graph?.arbitrationResults?.hasContentions)
+    hasContentions: Boolean(graph?.arbitrationResults?.hasContentions),
+    ruleConsumption: _recordGraphLearning(evidenceLedger, graph, activeRules)
   });
   if (!options.JSON_MODE) {
     const PipelineLogger = require('../lib/system/pipeline_logger.js');
@@ -1542,7 +1560,8 @@ async function _handleBoqConflictGraphPhase(ctx, options, evidenceLedger) {
   const phase4Passed = ctx.graph?.isWholeSolutionValid === true;
   evidenceLedger.completePhase(4, phase4Passed ? 'PASSED' : 'ACTION_REQUIRED', {
     conflicts: ctx.graph?.conflicts?.length || 0,
-    hasContentions: Boolean(ctx.graph?.arbitrationResults?.hasContentions)
+    hasContentions: Boolean(ctx.graph?.arbitrationResults?.hasContentions),
+    ruleConsumption: _recordGraphLearning(evidenceLedger, ctx.graph, ctx.activeRules)
   });
   return {
     status: phase4Passed ? 'PASSED' : 'ACTION_REQUIRED',
@@ -1816,6 +1835,7 @@ async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTi
     () => _prepareNotebookDeliveryHealth(ctx));
 
   const { verifyPrePresentationAcceptance } = require('../lib/boq/bom_verifier.js');
+  ctx.evalResults.catalogEvidence = ctx.ingestCtx.catalogEvidence;
   const acceptance = verifyPrePresentationAcceptance(ctx.evalResults, 'BOQ_EVALUATION', {
     ...options,
     ...ctx.ingestCtx,

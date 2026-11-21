@@ -23,8 +23,11 @@ test('SKU Bounds — Valid HPE SKU Formats', () => {
 
 test('SKU Bounds — Option Suffix Parsing (#0D1, -B21, -F21)', () => {
   assert.strictEqual(isValidHpeSKU('P73282-B21#0D1'), true, 'Factory integrated option should pass');
+  assert.strictEqual(cleanBaseSKU('P73282-B21#0D1'), 'P73282-B21', 'FIO #0D1 tag should normalize to base SKU');
   assert.strictEqual(isValidHpeSKU('P73282-F21'), true, 'F21 suffix should pass');
   assert.strictEqual(isValidHpeSKU('P73282-K21'), true, 'K21 suffix should pass');
+  assert.strictEqual(cleanBaseSKU('R7R97A#AC3'), 'R7R97A#AC3', 'Localization option suffix #AC3 must stay distinct from base chassis SKU (INV-260)');
+  assert.strictEqual(isValidHpeSKU('R7R97A#AC3'), true, 'Option-coded hardware SKU R7R97A#AC3 must pass validation');
 });
 
 test('SKU Bounds — Obsolete & Direct Ship Badge Sanitization (INV-21)', () => {

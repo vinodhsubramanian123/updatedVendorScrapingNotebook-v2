@@ -1,6 +1,7 @@
 'use strict';
 
 const { cleanBaseSKU, classifyOptionType, isTaaGtaCatalogOption } = require('../catalog/sku.js');
+const { parseStrictPrice } = require('../catalog/field_parsers.js');
 
 const INSPECT_BACKPLANE_STATE_EXPR = `(() => {
   const isVis = el => Boolean(el && el.offsetWidth > 0 && el.offsetHeight > 0 && getComputedStyle(el).display !== 'none');
@@ -34,10 +35,20 @@ const INSPECT_BACKPLANE_STATE_EXPR = `(() => {
 
 const EXTRACT_VISIBLE_DRIVE_ROWS_EXPR = `(() => {
   const isVis = el => Boolean(el && el.offsetWidth > 0 && el.offsetHeight > 0 && getComputedStyle(el).display !== 'none');
+  const findHeaderRow = (tableEl) => {
+    if (!tableEl) return null;
+    const directRows = Array.from(tableEl.querySelectorAll('tr')).filter(r => r.closest('table') === tableEl);
+    const matched = directRows.find(r => {
+      const texts = Array.from(r.children).map(c => (c.innerText || '').replace(/\\s+/g, ' ').trim().toLowerCase());
+      return texts.some(t => t === 'product #' || t === 'product#' || t === 'sku' || t === 'part #')
+        && texts.some(t => t.includes('description') || t.includes('price'));
+    });
+    return matched || tableEl.querySelector('tr.table_header, thead tr, tr:first-child');
+  };
   const rows = Array.from(document.querySelectorAll('tr.item_tr[id*="HotPlugSFFChoice"], tr.item_tr[id*="HotPlugLFFChoice"], tr.item_tr[id*="EDSFFChoice"]'));
   return rows.map(tr => {
     const tbl = tr.closest('table');
-    const hdrTr = tbl ? tbl.querySelector('tr.table_header, thead tr, tr:first-child') : null;
+    const hdrTr = findHeaderRow(tbl);
     const headers = hdrTr ? Array.from(hdrTr.children).map(c => (c.innerText || '').replace(/\\s+/g, ' ').trim()) : [];
     const cells = Array.from(tr.children).map(td => (td.innerText || '').trim());
     return {
@@ -132,14 +143,16 @@ async function _setSelectorRowQty(ws, sendCommand, rowId, targetQty, sleepFn) {
 
 function _buildColMap(headers, cells) {
   const colMap = {};
-  (headers || []).forEach((h, idx) => { colMap[h] = (cells && cells[idx]) || ''; });
+  (headers || []).forEach((h, idx) => {
+    if (h) colMap[h] = (cells && cells[idx]) || '';
+  });
   return colMap;
 }
 
 function _buildRevealedDriveObject(rawRow, colMap, { cleanSku, rawCell0, badge, desc, triggerSku, triggerDesc }) {
-  const listPrice = colMap['Unit Price (USD)'] ?? colMap['Price (USD)'] ?? '';
-  const priceText = listPrice.replace(/^\$\s*/, '').replaceAll(',', '');
-  const priceNum = /^\d+(?:\.\d{1,2})?$/.test(priceText) ? Number(priceText) : null;
+  const listPrice = colMap['Unit Price (USD)'] ?? colMap['Price (USD)'] ?? colMap['List Price (USD)'] ?? '';
+  const priceParsed = parseStrictPrice(listPrice, { sku: cleanSku, description: desc });
+  const priceNum = priceParsed.priceUsd !== null ? priceParsed.priceUsd : null;
   const isLff = /HotPlugLFFChoice/i.test(rawRow.id || '');
   return {
     sku: cleanSku,
@@ -172,12 +185,14 @@ function _parseRevealedDriveRow(rawRow, seenSkus, baselineSkus, triggerSku, trig
   if (!rawRow || rawRow.inUnavail || !rawRow.visible) return null;
   const cells = rawRow.cells || [];
   const colMap = _buildColMap(rawRow.headers, cells);
-  const rawCell0 = String(cells[0] || '').replace(/[\r\n\t]+/g, ' ').trim();
+  const rawCell0 = String(colMap['Product #'] ?? colMap['Product#'] ?? colMap['Part #'] ?? colMap['SKU'] ?? cells[0] ?? '')
+    .replace(/[\r\n\t]+/g, ' ')
+    .trim();
   const badgeMatch = rawCell0.match(/^(OB|CS|90|DS|PVT)\s+(.+)$/i);
   const badge = badgeMatch ? badgeMatch[1].toUpperCase() : '';
   if (badge === 'OB') return null;
   const cleanSku = cleanBaseSKU(badgeMatch ? badgeMatch[2] : rawCell0);
-  const desc = colMap['Description'] || cells[1] || '';
+  const desc = String(colMap['Description'] || cells[1] || '').replace(/[\r\n\t]+/g, ' ').trim();
   if (!cleanSku || isTaaGtaCatalogOption(rawCell0, desc)) return null;
   if (baselineSkus.has(cleanSku) || seenSkus.has(cleanSku)) return null;
   seenSkus.add(cleanSku);

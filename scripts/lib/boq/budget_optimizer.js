@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { cleanBaseSKU, classifyLifecycleState, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { parseObservedUnitPrice } = require('./pricing_presence');
 
 /**
@@ -194,8 +194,8 @@ function _buildUpgradeRecommendations(remainingBudgetUsd, catalogData, resolvedC
       if (skuIndex) {
         const entry = skuIndex.get(cleanBaseSKU(tpl.sku));
         if (entry) {
-          const lc = classifyLifecycleState(entry.lifecycleStatus, entry.diffStatus, entry.sku, entry.description);
-          if (lc.isBlockedForProduction || lc.isDirectShip) return;
+          const lc = entry.lifecycleState;
+          if (lc.isBlockedForProduction || lc.isDirectShip || lc.isConstrainedSupply) return;
         }
       }
       const catalogPrice = getSkuListPrice(tpl.sku, catalogData, resolvedChassisDir);

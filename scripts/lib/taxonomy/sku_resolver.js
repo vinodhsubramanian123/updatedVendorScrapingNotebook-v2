@@ -30,18 +30,27 @@ function getChassisEquationParameters(catalogData = null, chassisKey = '') {
  * @param {object} skuData - Catalog SKU data object
  * @returns {{ price: number|null, hasPrice: boolean }}
  */
+const { parseStrictPrice, parseLeadTimeOrEta } = require('../catalog/field_parsers.js');
+
 function extractCatalogItemPrice(skuData) {
-  if (!skuData) return { price: null, hasPrice: false };
+  if (!skuData) return { price: null, hasPrice: false, priceState: 'UNPRICED' };
   const rawPrice = skuData.listPrice ?? skuData['Unit Price (USD)'] ?? skuData['List Price (USD)'];
-  if (rawPrice === undefined || rawPrice === null || rawPrice === '') {
-    return { price: null, hasPrice: false };
+  const parsed = parseStrictPrice(rawPrice, { row: skuData, rejectSuspectedDateInteger: true });
+  if (parsed.priceUsd === null) {
+    return {
+      price: null,
+      hasPrice: false,
+      priceState: parsed.priceState,
+      priceStatus: parsed.priceStatus,
+      reason: parsed.reason
+    };
   }
-  const cleaned = String(rawPrice).trim().replace(/^\$\s*/, '').replace(/,/g, '');
-  const num = /^(?:\d+(?:\.\d*)?|\.\d+)$/.test(cleaned) ? Number(cleaned) : NaN;
-  if (!Number.isFinite(num) || num < 0) {
-    return { price: null, hasPrice: false };
-  }
-  return { price: num, hasPrice: true };
+  return {
+    price: parsed.priceUsd,
+    hasPrice: true,
+    priceState: parsed.priceState,
+    priceStatus: parsed.priceStatus
+  };
 }
 
 /**
@@ -69,25 +78,14 @@ function extractCatalogItemCost(skuData) {
  * @returns {{ raw: string, days: number|null, speedTier: string, isPublished: boolean }}
  */
 function extractCatalogItemLeadTime(skuData) {
-  if (!skuData) return { raw: 'Unpublished', days: null, speedTier: 'Unpublished', isPublished: false };
+  if (!skuData) {
+    return { raw: 'Unpublished', days: null, minDays: null, maxDays: null, unit: null, rawType: 'UNPUBLISHED', etaDate: null, speedTier: 'Unpublished', isPublished: false };
+  }
   const raw = String(skuData['Lead Time'] || skuData.leadTime || '').trim();
   const explicitDays = (skuData.leadTimeDays !== undefined && skuData.leadTimeDays !== null && skuData.leadTimeDays !== '')
     ? Number(skuData.leadTimeDays)
     : null;
-  let days = (explicitDays !== null && Number.isFinite(explicitDays)) ? explicitDays : null;
-  if (days === null) {
-    if (!raw || raw === 'Unpublished' || raw === 'Not published by OCA' || raw === 'Standard') {
-      return { raw: raw || 'Unpublished', days: null, speedTier: 'Unpublished', isPublished: false };
-    }
-    const range = raw.match(/(\d+)\s*(?:-|to)\s*(\d+)/);
-    if (range) days = Math.round((Number(range[1]) + Number(range[2])) / 2);
-    else {
-      const single = raw.match(/(\d+)/);
-      if (single) days = Number(single[1]);
-    }
-  }
-  const speedTier = skuData['Speed Tier'] || (days !== null ? (days <= 7 ? 'Fast-Ship Certified (<=7d)' : days <= 30 ? 'Standard Delivery (8-30d)' : days <= 45 ? 'Extended Schedule (31-45d)' : 'Constrained / Long Lead Time (>45d)') : 'Unpublished');
-  return { raw: raw || (days !== null ? `${days} days` : 'Unpublished'), days, speedTier, isPublished: days !== null };
+  return parseLeadTimeOrEta(raw, explicitDays, skuData['Speed Tier'] || null);
 }
 
 /**
@@ -99,13 +97,15 @@ function extractCatalogItemLeadTime(skuData) {
  * @returns {{ eligible: boolean, score: number }}
  */
 function _checkLifecycleEligibility(skuData, allowObsolete) {
-  if (allowObsolete) return true;
   const lc = classifyLifecycleState(
     skuData['Lifecycle Status'] || skuData.lifecycleStatus || '',
     skuData['Diff Status'] || skuData.diffStatus || '',
     skuData['Product #'] || skuData.sku || '',
-    skuData.Description || skuData.description || ''
+    skuData.Description || skuData.description,
+    skuData.vendorSupplyStatus
   );
+  if (lc.isConstrainedSupply) return false;
+  if (allowObsolete) return true;
   if (lc.isBlockedForProduction || lc.isDirectShip) {
     return false;
   }

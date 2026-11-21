@@ -34,11 +34,11 @@ function _resolveRegistryPaths(chassisDir, options = {}) {
   const custom = _normalizePathList(options.registryPaths);
   const pathsToSearch = custom.length > 0
     ? [...custom]
-    : (options.isolated === true && chassisDir ? [] : [MASTER_REGISTRY_PATH, GLOBAL_DELTAS_PATH]);
+    : (options.isolated === true && chassisDir ? [] : [GLOBAL_DELTAS_PATH, MASTER_REGISTRY_PATH]);
 
   if (chassisDir && typeof chassisDir === 'string' && fs.existsSync(chassisDir) && options.includeChassisDirDeltas !== false) {
     const chassisDeltaPath = path.join(chassisDir, 'history', 'catalog_deltas.json');
-    if (!pathsToSearch.includes(chassisDeltaPath)) pathsToSearch.push(chassisDeltaPath);
+    if (!pathsToSearch.includes(chassisDeltaPath)) pathsToSearch.unshift(chassisDeltaPath);
   }
   return pathsToSearch;
 }

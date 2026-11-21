@@ -85,7 +85,7 @@ test('Phase 2: Price and Lifecycle Integrity Suite', async (t) => {
 
       // Physical GPU / adapter with $0: UNRESOLVED
       const unpricedHw = getHistoricalSkuPrice('P76706-B21', '2026-09-01', tempDir);
-      assert.strictEqual(unpricedHw.priceUsd, 0);
+      assert.strictEqual(unpricedHw.priceUsd, null);
       assert.strictEqual(unpricedHw.pricingCategory, 'UNRESOLVED_ZERO_PRICE');
       assert.strictEqual(unpricedHw.quoteConfidence, 'UNRESOLVED');
       assert.strictEqual(unpricedHw.isResolved, false);
@@ -225,7 +225,8 @@ test('Phase 2: Price and Lifecycle Integrity Suite', async (t) => {
       assert.strictEqual(boqResult.unresolvedCount, 1);
       assert.deepEqual(boqResult.unresolvedSkus, ['SKU-UNRESOLVED']);
       assert.ok(boqResult.totalCapExFormatted.includes('INCOMPLETE'), 'Formatted total must flag INCOMPLETE');
-      assert.strictEqual(boqResult.totalCapExUsd, 1000);
+      assert.strictEqual(boqResult.totalCapExUsd, null);
+      assert.strictEqual(boqResult.pricedSubtotalUsd, 1000);
       assert.strictEqual(boqResult.currency, 'USD');
     } finally {
       fs.rmSync(tempDir, { recursive: true, force: true });

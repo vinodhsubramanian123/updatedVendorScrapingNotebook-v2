@@ -7,6 +7,7 @@
  */
 
 const { classifyComponentRole } = require('./product_meta.js');
+const { cleanBaseSKU } = require('./sku.js');
 
 /**
  * Generate Main SKUs TSV content.
@@ -15,22 +16,27 @@ const { classifyComponentRole } = require('./product_meta.js');
  * @param {object} profile
  * @returns {string} TSV content string
  */
+function _resolveConstraintKeyword(entry) {
+  const sem = entry.maxQtySemantics;
+  if (sem === 'UNBOUNDED' || entry.maxQty === -1) return 'Unlimited';
+  if (sem === 'REQUIRED' || entry.maxQty === -2) return 'Required';
+  if (sem === 'OPTIONAL' || entry.maxQty === -3) return 'Optional';
+  if (typeof entry.maxQty === 'number' && entry.maxQty > 0) return `max ${entry.maxQty}`;
+  return null;
+}
+
 function _formatEntryConstraint(entry) {
   const minQty = entry.minQty || 0;
   const constraintParts = [];
   if (minQty > 0) constraintParts.push(`min ${minQty}`);
-  if (entry.maxQty === -1) constraintParts.push('Unlimited');
-  else if (entry.maxQty === -2) constraintParts.push('Required');
-  else if (entry.maxQty === -3) constraintParts.push('Optional');
-  else if (entry.maxQty > 0) constraintParts.push(`max ${entry.maxQty}`);
+  const maxKeyword = _resolveConstraintKeyword(entry);
+  if (maxKeyword) constraintParts.push(maxKeyword);
   const constraintStr = constraintParts.length > 0 ? constraintParts.join(', ') : (entry.constraint || '');
 
   const minQtyVal = minQty > 0 ? String(minQty) : '0';
-  const maxQtyVal = entry.maxQty === -1 ? 'Unlimited' :
-                    entry.maxQty === -2 ? 'Required' :
-                    entry.maxQty === -3 ? 'Optional' :
-                    entry.maxQty > 0 ? String(entry.maxQty) :
-                    (entry.constraint || '');
+  const maxQtyVal = maxKeyword
+    ? (maxKeyword.startsWith('max ') ? String(entry.maxQty) : maxKeyword)
+    : (entry.constraint || '');
 
   return { constraintStr, minQtyVal, maxQtyVal };
 }
@@ -95,6 +101,37 @@ function _resolveDiffMetrics(sku) {
   return { diffStatus, prevPrice, priceChangeUsd, priceChangePct, attrDeltas, historyTrail };
 }
 
+const CONDITIONAL_SKU_RULE_RE = /^([A-Z0-9-]{4,16})\s+conditional\s+visibility:/i;
+
+function _formatEntryTableRuleNote(entry, sku, maxLen = 4000) {
+  const rules = Array.isArray(entry.rules) ? entry.rules : [];
+  if (rules.length === 0) return '';
+  const rowSku = cleanBaseSKU(sku['Product #'] || sku.sku || '');
+  const kept = [];
+  let siblingCount = 0;
+
+  for (const r of rules) {
+    const text = String(r || '').trim();
+    if (!text) continue;
+    const match = text.match(CONDITIONAL_SKU_RULE_RE);
+    if (match) {
+      const ruleSku = cleanBaseSKU(match[1]);
+      if (rowSku && ruleSku !== rowSku) {
+        siblingCount++;
+        continue;
+      }
+    }
+    kept.push(text);
+  }
+
+  if (siblingCount > 0) {
+    kept.push(`(+${siblingCount} sibling conditional visibility rules in Rules & Constraints)`);
+  }
+  const joined = kept.join(' | ');
+  if (joined.length <= maxLen) return joined;
+  return `${joined.slice(0, maxLen - 35)} ... [TRUNCATED; see Rules & JSON]`;
+}
+
 function _formatSkuRow(entry, sku, hierarchyPath, constraintInfo, profile) {
   const rawQty   = String(sku['Current Qty'] || sku.qty || '0').replace(/\n/g, '').trim();
   const cleanQty = /^\d+$/.test(rawQty) ? rawQty : '0';
@@ -112,9 +149,11 @@ function _formatSkuRow(entry, sku, hierarchyPath, constraintInfo, profile) {
   const lifecycle = _resolveLifecycleMetrics(sku);
   const diff = _resolveDiffMetrics(sku);
 
+  const tableRuleNote = _formatEntryTableRuleNote(entry, sku);
+
   return [
     entry.parentCategory, entry.subCategory, hierarchyPath, role, constraintInfo.constraintStr, constraintInfo.minQtyVal, constraintInfo.maxQtyVal,
-    (entry.rules || []).join(' | '), sku['Product #'] || sku.sku || '', sku['Option Type'] || sku.optionType || 'Standard', sku['Description'] || sku.description || '', cleanQty,
+    tableRuleNote, sku['Product #'] || sku.sku || '', sku['Option Type'] || sku.optionType || 'Standard', sku['Description'] || sku.description || '', cleanQty,
     priceVal, costVal, sku['Price Delta (USD)'] || '', sku['Extended Price (USD)'] || '',
     sku['Price per GB (USD)'] || '', isRecommended,
     supply.availability, supply.leadTime,
@@ -199,13 +238,11 @@ function _extractSubcatConstraintRules(subcatList, addRuleRow) {
   for (const sc of subcatList) {
     const parts = [];
     if (sc.minQty > 0) parts.push(`min ${sc.minQty}`);
-    if (sc.maxQty === -1) parts.push('Unlimited');
-    else if (sc.maxQty === -2) parts.push('Required');
-    else if (sc.maxQty === -3) parts.push('Optional');
-    else if (sc.maxQty > 0) parts.push(`max ${sc.maxQty}`);
+    const maxKw = _resolveConstraintKeyword(sc);
+    if (maxKw) parts.push(maxKw);
     const constraintStr = parts.length > 0 ? parts.join(', ') : sc.constraint;
     if (constraintStr) {
-      const ruleText = sc.minQty > 0 && sc.maxQty > 0
+      const ruleText = sc.minQty > 0 && typeof sc.maxQty === 'number' && sc.maxQty > 0
         ? `Quantity: min ${sc.minQty}, max ${sc.maxQty}`
         : `Quantity: ${constraintStr}`;
       addRuleRow(sc.parentCategory, sc.name, constraintStr, 'Quantity Constraint', ruleText);
@@ -260,8 +297,8 @@ function generateSummarySheet(entries, subcatList = []) {
   const seen = new Set();
 
   const allSubcats = [
-    ...subcatList.map(sc => ({ parentCategory: sc.parentCategory, name: sc.name, constraint: sc.constraint, minQty: sc.minQty || 0, maxQty: sc.maxQty })),
-    ...entries.map(e => ({ parentCategory: e.parentCategory, name: e.subCategory, constraint: e.constraint || '', minQty: e.minQty || 0, maxQty: e.maxQty || 0 }))
+    ...subcatList.map(sc => ({ parentCategory: sc.parentCategory, name: sc.name, constraint: sc.constraint, minQty: sc.minQty || 0, maxQty: sc.maxQty, maxQtySemantics: sc.maxQtySemantics })),
+    ...entries.map(e => ({ parentCategory: e.parentCategory, name: e.subCategory, constraint: e.constraint || '', minQty: e.minQty || 0, maxQty: e.maxQty ?? null, maxQtySemantics: e.maxQtySemantics }))
   ];
 
   for (const sc of allSubcats) {
@@ -277,10 +314,8 @@ function generateSummarySheet(entries, subcatList = []) {
       }
     }
     const minQtyStr = sc.minQty > 0 ? String(sc.minQty) : '0';
-    const maxQtyStr = sc.maxQty === -1 ? 'Unlimited' :
-                      sc.maxQty === -2 ? 'Required' :
-                      sc.maxQty === -3 ? 'Optional' :
-                      sc.maxQty > 0 ? String(sc.maxQty) : (sc.constraint || 'N/A');
+    const maxKw = _resolveConstraintKeyword(sc);
+    const maxQtyStr = maxKw ? (maxKw.startsWith('max ') ? String(sc.maxQty) : maxKw) : (sc.constraint || 'N/A');
     rows.push([sc.parentCategory, sc.name, sc.constraint || '', minQtyStr, maxQtyStr, skuCount, ruleCount > 0 ? 'Yes' : 'No', ruleCount].join('\t'));
   }
   return rows.join('\n');

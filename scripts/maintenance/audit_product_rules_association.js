@@ -119,7 +119,17 @@ function auditAllProducts() {
   }));
 }
 
-if (require.main === module) {
+function auditPortfolioReplay() {
+  const { listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
+  const { runPortfolioQueryReplay } = require('../lib/catalog/capture_query_replay.js');
+  const report = runPortfolioQueryReplay(listAllCatalogs());
+  console.log(JSON.stringify(report, null, 2));
+  if (!report.passed) process.exitCode = 1;
+}
+
+if (require.main === module && process.argv.includes('--portfolio-replay')) {
+  auditPortfolioReplay();
+} else if (require.main === module) {
   const res = auditAllProducts();
   const chassisArg = process.argv.indexOf('--chassis');
   const selected = chassisArg === -1 ? res : res.filter(product => product.product === process.argv[chassisArg + 1]);

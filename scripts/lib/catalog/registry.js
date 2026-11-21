@@ -8,7 +8,7 @@
 
 const fs   = require('fs');
 const path = require('path');
-const { toForwardSlash } = require('../system/fs_compat.js');
+const { toForwardSlash, safeWriteTextAtomic, withFileLock } = require('../system/fs_compat.js');
 
 const PROJECT_ROOT  = path.resolve(__dirname, '..', '..', '..');
 const OUTPUTS_ROOT  = path.join(PROJECT_ROOT, 'outputs');
@@ -19,18 +19,6 @@ const REGISTRY_PATH = path.join(OUTPUTS_ROOT, 'SCRAPED_CATALOGS.md');
  * @param {object} info - Scrape details object
  */
 function updateScrapedRegistry(info) {
-  let content = '';
-
-  if (fs.existsSync(REGISTRY_PATH)) {
-    content = fs.readFileSync(REGISTRY_PATH, 'utf-8');
-  } else {
-    content =
-      `# Master Scraped HPE Product Catalogs Registry\n\n` +
-      `## Scraped Product Catalogs\n\n` +
-      `| Date | Solution Name | Family | Gen | Chassis (prefix) | Total SKUs | Learned Rules | Excel | JSON | PDF | Output Folder |\n` +
-      `| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- | :--- | :--- | :--- |\n`;
-  }
-
   const dateStr  = (info.timestamp || new Date().toISOString()).substring(0, 10);
 
   // Convert all paths to clean outputs-relative paths for SCRAPED_CATALOGS.md
@@ -62,33 +50,56 @@ function updateScrapedRegistry(info) {
     `[${path.basename(relXlsx)}](${relXlsx}) | [${path.basename(relJson)}](${relJson}) | ` +
     `${pdfStr} | \`${relOutputDir}\` |\n`;
 
-  // Check if an existing row matches this output folder
-  const lines = content.split('\n');
-  const existingLineIndex = lines.findIndex(line => line.includes(`\`${relOutputDir}\``));
-
-  if (existingLineIndex > -1) {
-    // Update row in place
-    lines[existingLineIndex] = newRow.trim();
-    content = lines.join('\n');
-    // Simple migration: if file didn't have Learned Rules column, fix header
-    if (!content.includes('| Learned Rules |')) {
-       content = content.replace('| Total SKUs | Excel |', '| Total SKUs | Learned Rules | Excel |');
-       content = content.replace('| Sheets / Entries | Excel Workbook |', '| Sheets / Entries | Learned Rules | Excel Workbook |');
-       content = content.replace('| :--- | :--- | :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |', '| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- | :--- | :--- | :--- |');
-       content = content.replace('|------|--------------|--------|-----|-------------|------------------|----------------|--------------|----------------|-------------|', '|------|--------------|--------|-----|-------------|------------------|---------------|----------------|--------------|----------------|-------------|');
-    }
-    fs.writeFileSync(REGISTRY_PATH, content);
-    console.log(`Updated existing row in Master Registry for: ${relOutputDir}`);
-  } else {
-    // Append new row
-    const divider = '| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- | :--- | :--- | :--- |\n';
-    if (content.includes(divider)) {
-      content = content.replace(divider, divider + newRow);
+  const writeRegistry = () => {
+    let currentContent = '';
+    if (fs.existsSync(REGISTRY_PATH)) {
+      currentContent = fs.readFileSync(REGISTRY_PATH, 'utf-8');
     } else {
-      content += newRow;
+      currentContent =
+        `# Master Scraped HPE Product Catalogs Registry\n\n` +
+        `## Scraped Product Catalogs\n\n` +
+        `| Date | Solution Name | Family | Gen | Chassis (prefix) | Total SKUs | Learned Rules | Excel | JSON | PDF | Output Folder |\n` +
+        `| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- | :--- | :--- | :--- |\n`;
     }
-    fs.writeFileSync(REGISTRY_PATH, content);
-    console.log(`Added new row to Master Registry: ${relOutputDir}`);
+
+    const lines = currentContent.split('\n');
+    const existingLineIndex = lines.findIndex(line => line.includes(`\`${relOutputDir}\``));
+
+    if (existingLineIndex > -1) {
+      lines[existingLineIndex] = newRow.trim();
+      currentContent = lines.join('\n');
+      if (!currentContent.includes('| Learned Rules |')) {
+        currentContent = currentContent.replace('| Total SKUs | Excel |', '| Total SKUs | Learned Rules | Excel |');
+        currentContent = currentContent.replace('| Sheets / Entries | Excel Workbook |', '| Sheets / Entries | Learned Rules | Excel Workbook |');
+        currentContent = currentContent.replace('| :--- | :--- | :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |', '| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- | :--- | :--- | :--- |');
+        currentContent = currentContent.replace('|------|--------------|--------|-----|-------------|------------------|----------------|--------------|----------------|-------------|', '|------|--------------|--------|-----|-------------|------------------|---------------|----------------|--------------|----------------|-------------|');
+      }
+      if (process.env.NODE_ENV === 'test') {
+        fs.writeFileSync(REGISTRY_PATH, currentContent);
+      } else {
+        safeWriteTextAtomic(REGISTRY_PATH, currentContent);
+      }
+      console.log(`Updated existing row in Master Registry for: ${relOutputDir}`);
+    } else {
+      const divider = '| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- | :--- | :--- | :--- |\n';
+      if (currentContent.includes(divider)) {
+        currentContent = currentContent.replace(divider, divider + newRow);
+      } else {
+        currentContent += newRow;
+      }
+      if (process.env.NODE_ENV === 'test') {
+        fs.writeFileSync(REGISTRY_PATH, currentContent);
+      } else {
+        safeWriteTextAtomic(REGISTRY_PATH, currentContent);
+      }
+      console.log(`Added new row to Master Registry: ${relOutputDir}`);
+    }
+  };
+
+  if (process.env.NODE_ENV === 'test') {
+    writeRegistry();
+  } else {
+    withFileLock(REGISTRY_PATH, writeRegistry);
   }
 }
 

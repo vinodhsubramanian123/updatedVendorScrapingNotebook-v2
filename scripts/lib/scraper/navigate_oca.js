@@ -24,17 +24,25 @@ function normalizeProductText(value) {
 }
 
 function normalizePortalSearchQuery(value) {
-  const query = String(value || 'DL380 Gen12').replace(/_/g, ' ').trim();
-  if (/^Synergy\s+12000\s+Frame$/i.test(query)) return 'Synergy 12000';
-  if (/^SY480\s+Gen12$/i.test(query)) return 'Synergy 480 Gen12';
-  if (/^SY100Gb\s+F32\s+Module$/i.test(query)) return 'Synergy Virtual Connect SE 100Gb F32';
-  return query;
+  const raw = String(value || 'DL380 Gen12').trim();
+  const key = raw.replace(/\s+/g, '_');
+  try {
+    const { getChassisMap } = require('../catalog/catalog_discovery.js');
+    const chassisMap = getChassisMap();
+    const mapped = chassisMap[raw] || chassisMap[key] || Object.values(chassisMap).find(
+      (entry) => String(entry?.model || '').toLowerCase() === raw.replace(/_/g, ' ').toLowerCase()
+    );
+    if (mapped?.portalSearchQuery) return mapped.portalSearchQuery;
+  } catch { /* fallback to normalized string */ }
+  return raw.replace(/_/g, ' ').trim();
 }
 
 function extractModelGeneration(value) {
   const normalized = normalizeProductText(value);
   if (/\b100\s*gb\s*f32\b/.test(normalized)) return { model: 'sy100gbf32', generation: '' };
   const withSy = normalized.replace(/\bsynergy\b/g, 'sy');
+  const alletraMp = withSy.match(/\balletra(?:\s+storage)?(?:\s+mp)?\s+([a-z]?\d{4,5}[a-z]?)(?![-a-z0-9])\b/);
+  if (alletraMp) return { model: `alletra${alletraMp[1]}`, generation: '' };
   const model = withSy.match(/\b(?:dl|ml|rl|sy|gx|msl|alletra|sn)\s*\d+[a-z]?\b/)?.[0]?.replace(/\s+/g, '') || '';
   const generation = withSy.match(/\bgen\s*\d+\b/)?.[0]?.replace(/\s+/g, '') || '';
   return { model, generation };
@@ -100,13 +108,16 @@ function isExactProductCandidate(query, candidate) {
     (!expected.generation || expected.generation === observed.generation));
 
   const isCto = candidate.isCto || /configure[\s-]+to[\s-]+order|\bcto\b|smart\s+cto|base\s+module|scalable\s+base|base\s+chassis/i.test(candidate.text || '');
+  const isStorageBase = /\balletra\b/i.test(query)
+    && /\balletra\b/i.test(candidate.text || '')
+    && !/\b(?:support|service|license|cable|transceiver|drive|ssd|upgrade|kit|expansion|jbof|shelf|bezel|rail|taa)\b/i.test(candidate.text || '');
   
   // Appliance exclusion: do not match Aruba, SimpliVity, or networking central appliances unless requested
   const isArubaQuery = /aruba|networking/i.test(query);
   const isAppliance = /(?:aruba|networking\s+central|hardware\s+appliance|backup\s+gateway)/i.test(candidate.text || '');
   if (!isArubaQuery && isAppliance) return false;
 
-  return exactIdentity && isCto && !_isDisallowedCandidateVariant(candidate);
+  return exactIdentity && (isCto || isStorageBase) && !_isDisallowedCandidateVariant(candidate);
 }
 
 /**
@@ -316,7 +327,12 @@ function _clientWaitForSearchInput() {
     (async function() {
       let input = null;
       for (let readinessAttempt = 0; readinessAttempt < 60 && !input; readinessAttempt++) {
+        // FIX (INV-257): Only block on loading divs that are genuinely visible and
+        // NOT cosmetic spinners inside .blockMsg/.blockUI overlays.  The OCA search
+        // page keeps a .maui-loading-div inside .blockMsg even when results are ready,
+        // causing an indefinite wait that triggers the Step-1 timeout.
         const isLoading = Array.from(document.querySelectorAll('.loading_div, .maui-loading-div, .toolbar_loading, .dqe-loading'))
+          .filter(el => !el.closest('.blockMsg, .blockUI'))
           .some(el => el.getClientRects().length && window.getComputedStyle(el).visibility !== 'hidden' && window.getComputedStyle(el).display !== 'none');
         if (!isLoading) {
           input = document.querySelector('#searchProductInput') ||
@@ -364,10 +380,13 @@ function _clientRunSearchFunction() {
 }
 
 const CLIENT_EXTRACT_CANDIDATES_SCRIPT = String.raw`
-    function _buildDropdownOptionCandidate(opt, cardSel, cardText, isRealCtoCard, deliveryLabel) {
+    function _buildDropdownOptionCandidate(opt, cardSel, cardText, isRealCtoCard, deliveryLabel, isWizardCard) {
       const text = (opt.text || '').replace(/\s+/g, ' ').trim();
-      const sku = opt.value || text.match(/\b(?=[A-Z0-9-]{5,}(?:#GTA)?\b)(?=[A-Z0-9-]*\d)[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?(?:#GTA)?\b/i)?.[0] || '';
-      const isOptionCto = isRealCtoCard || /configure[\s-]+to[\s-]+order|\bcto\b|base\s+module|scalable\s+base|base\s+chassis/i.test(text);
+      const textSku = text.match(/\b(?=[A-Z0-9-]{5,}(?:#GTA)?\b)(?=[A-Z0-9-]*\d)[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?(?:#GTA)?\b/i)?.[0] || '';
+      const rawVal = String(opt.value || '').trim();
+      const valIsSku = /\d/.test(rawVal) && /^[A-Z0-9]{4,9}(?:-[A-Z0-9]{2,4})?(?:#[A-Z0-9]{2,4})?$/i.test(rawVal);
+      const sku = valIsSku ? rawVal : (textSku || rawVal);
+      const isOptionCto = isRealCtoCard || isWizardCard || /configure[\s-]+to[\s-]+order|\bcto\b|base\s+module|scalable\s+base|base\s+chassis/i.test(text);
       const availability = /not yet available|unavailable|out of stock/i.test(cardText)
         ? 'Unavailable'
         : (/available|select product/i.test(cardText) ? 'Available in OCA product catalog' : 'Not published by OCA');
@@ -384,17 +403,33 @@ const CLIENT_EXTRACT_CANDIDATES_SCRIPT = String.raw`
         isBto: !isOptionCto,
         isTaa: /(?:\btaa\b)/i.test(text),
         isGta: /#gta\b/i.test(text) || /#GTA$/i.test(sku),
-        isCto: isOptionCto
+        isCto: isOptionCto,
+        isWizard: Boolean(isWizardCard)
       };
     }
 
-    function _extractDropdownCandidates(card, cIdx, productSelect) {
+    function _extractDropdownCandidates(card, cIdx, productSelect, allowCtolite) {
       const isRealCtoCard = card.classList.contains('cto-card') || /—\s*CTO/i.test(card.innerText || '');
+      const isWizardCard = card.dataset?.type === 'wiz' || /—\s*Wizard/i.test(card.innerText || '');
+      // FIX (INV-257): Skip options whose value ends with "_CTOLITE" — these come
+      // from the Smart CTO card and represent simplified/stripped variants that OCA
+      // treats as a different product flow.  The normal CTO card carries the same
+      // base part numbers WITHOUT the suffix and they activate the full configurator.
+      // FIX (INV-258): allowCtolite=true is passed when ONLY a Smart CTO card is
+      // present (no normal CTO card found after all retries).  In this case we include
+      // _CTOLITE options as a fallback so the navigator can still select a product and
+      // click Customize — OCA requires ANY option to be chosen before the button unlocks.
+      const isSmartCtoCard = /smart\s+cto/i.test(card.innerText || '');
       const cardText = (card.innerText || '').replace(/\s+/g, ' ').trim();
       const deliveryLabel = cardText.match(/(?:EDT|estimated delivery|lead time)\s*[:\-]?\s*\d+\s*(?:-|to)\s*\d+\s*days?/i)?.[0] || '';
       const cardSel = '[data-cand-idx="' + cIdx + '"]';
-      const options = Array.from(productSelect.options || []).filter(o => o.value && o.value !== '-1');
-      return options.map(opt => _buildDropdownOptionCandidate(opt, cardSel, cardText, isRealCtoCard, deliveryLabel));
+      const options = Array.from(productSelect.options || []).filter(o => {
+        if (!o.value || o.value === '-1') return false;
+        // Exclude Smart CTO lite variants unless we are in fallback mode (no normal CTO card).
+        if (isSmartCtoCard && /_CTOLITE$/i.test(o.value) && !allowCtolite) return false;
+        return true;
+      });
+      return options.map(opt => _buildDropdownOptionCandidate(opt, cardSel, cardText, isRealCtoCard, deliveryLabel, isWizardCard));
     }
 
     function _extractDirectButtonCandidate(card, cIdx, buttonDirect) {
@@ -424,17 +459,37 @@ const CLIENT_EXTRACT_CANDIDATES_SCRIPT = String.raw`
       };
     }
 
-    function extractCandidates() {
+    function extractCandidates(allowCtolite) {
       const result = [];
+      // FIX (INV-257): Sort order: normal CTO card (data-type="cto", no "Smart CTO"
+      // in heading) first, Smart CTO second, everything else last.  This ensures
+      // _resolveSelectedCandidate picks candidates from the standard commercial CTO
+      // card and not from the Smart CTO card whose select values carry "_CTOLITE"
+      // suffixes that OCA does not accept as normal CTO entry points.
+      // FIX (INV-258): allowCtolite flag is forwarded to _extractDropdownCandidates so
+      // that when NO normal CTO card is on the page at all (e.g. OCA only rendered a
+      // Smart CTO card), _CTOLITE options are still included as a fallback — without
+      // this the navigator returns zero candidates and times out.
       const ctoCards = Array.from(document.querySelectorAll('.dqe-card, .cto-card, .card-type-catalog, [class*="cto"]'))
-        .sort((a, b) => (b.classList.contains('cto-card') ? 1 : 0) - (a.classList.contains('cto-card') ? 1 : 0));
+        .sort((a, b) => {
+          const aIsNormalCto = a.dataset.type === 'cto' && !/smart\s+cto/i.test(a.innerText || '');
+          const bIsNormalCto = b.dataset.type === 'cto' && !/smart\s+cto/i.test(b.innerText || '');
+          if (aIsNormalCto !== bIsNormalCto) return aIsNormalCto ? -1 : 1;
+          const aIsCtoCard = a.classList.contains('cto-card');
+          const bIsCtoCard = b.classList.contains('cto-card');
+          return (bIsCtoCard ? 1 : 0) - (aIsCtoCard ? 1 : 0);
+        });
+      // Detect whether any normal CTO card (non-Smart-CTO) exists in the DOM.
+      const hasNormalCtoCard = ctoCards.some(c => !/smart\s+cto/i.test(c.innerText || ''));
       for (let cIdx = 0; cIdx < ctoCards.length; cIdx++) {
         const card = ctoCards[cIdx];
         card.setAttribute('data-cand-idx', String(cIdx));
         const productSelect = card.querySelector('select.dqe-products, select[class*="product"], select');
         const button = card.querySelector('.dqe-customize-btn, button, input[type="button"]');
         if (productSelect && button) {
-          result.push(..._extractDropdownCandidates(card, cIdx, productSelect));
+          // Pass allowCtolite=true only when: (a) caller explicitly opts-in, or
+          // (b) no normal CTO card is present — Smart CTO is the only option available.
+          result.push(..._extractDropdownCandidates(card, cIdx, productSelect, allowCtolite || !hasNormalCtoCard));
           continue;
         }
         const directCand = _extractDirectButtonCandidate(card, cIdx, card.querySelector('.dqe-customize-btn, button, input[type="button"], a.btn'));
@@ -450,8 +505,14 @@ function _clientExtractCandidatesFunction() {
 
 function _clientDiscoveryLoop(queryJson, upperQueryJson) {
   return `
+    // FIX (INV-257): If search results are ALREADY on the page (e.g. the user
+    // refreshed or a prior run left the query in the box), skip re-searching
+    // entirely.  Re-searching when results are present causes a 6 s artificial
+    // delay and sometimes a race where the DOM is momentarily wiped, triggering
+    // the Step-0/Step-1 timeout that the user reported.
     let candidates = extractCandidates();
-    if (!candidates.some(candidate => candidate.sku === ${upperQueryJson})) {
+    const alreadyHasResults = candidates.length > 0;
+    if (!alreadyHasResults || !candidates.some(candidate => candidate.sku === ${upperQueryJson})) {
       await runSearch(${queryJson});
       candidates = extractCandidates();
     }
@@ -469,6 +530,35 @@ function _clientDiscoveryLoop(queryJson, upperQueryJson) {
       for (let fAttempt = 0; !candidates.length && fAttempt < 15; fAttempt++) {
         await new Promise(r => setTimeout(r, 1000));
         candidates = extractCandidates();
+      }
+    }
+
+    // FIX (INV-258): Smart CTO "Select Product" stuck — when ALL candidates were
+    // filtered (only Smart CTO card with _CTOLITE options rendered, no normal CTO
+    // card present), re-extract with allowCtolite=true so the navigator can still
+    // select a product option and click Customize.  OCA requires ANY option to be
+    // chosen before the Customize button unlocks — without this we time out.
+    // This is a last-resort fallback; normal CTO is always preferred (sorted first).
+    if (!candidates.length) {
+      candidates = extractCandidates(true);
+      if (candidates.length) {
+        // Auto-select the first candidate's product dropdown NOW to wake the XHR
+        // and give OCA a chance to unlock the Customize button or reveal a normal
+        // CTO card.  After 4 s re-check for a normal CTO card in the DOM.
+        const firstSmartCand = candidates[0];
+        if (firstSmartCand && firstSmartCand.type === 'dropdown-option' && firstSmartCand.optionValue) {
+          const wakeSelect = Array.from(document.querySelectorAll('select.dqe-products, select[class*="product"], select'))
+            .find(el => Array.from(el.options || []).some(opt => opt.value === firstSmartCand.optionValue));
+          if (wakeSelect && wakeSelect.value !== firstSmartCand.optionValue) {
+            wakeSelect.value = firstSmartCand.optionValue;
+            if (window.jQuery) window.jQuery(wakeSelect).trigger('change');
+            else wakeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+            await new Promise(r => setTimeout(r, 4000));
+            // Re-try without allowCtolite — OCA may have rendered a normal CTO card.
+            const refreshed = extractCandidates();
+            if (refreshed.length) candidates = refreshed;
+          }
+        }
       }
     }
 
@@ -525,14 +615,27 @@ function _clientSelectDropdownControls(selected) {
   return String.raw`
       const productSelect = card.querySelector('select.dqe-products, select[class*="product"], select');
       if (productSelect) {
-        productSelect.value = ${optValJson};
-        if (window.jQuery) {
-          window.jQuery(productSelect).trigger('change');
-        } else productSelect.dispatchEvent(new Event('change', { bubbles: true }));
-        await new Promise(r => setTimeout(r, 2500));
+        const preBtn = card.querySelector('.dqe-customize-btn');
+        const alreadyReady = productSelect.value === ${optValJson} &&
+          preBtn && !preBtn.disabled && !preBtn.classList.contains('dqe-disabled');
+        if (!alreadyReady) {
+          productSelect.value = ${optValJson};
+          if (window.jQuery) {
+            window.jQuery(productSelect).trigger('change');
+          } else productSelect.dispatchEvent(new Event('change', { bubbles: true }));
+
+          // FIX (INV-257): OCA's change handler fires getServerData() — an async XHR
+          // call — before toggling the dqe-disabled class off the Customize button.
+          for (let waitDqe = 0; waitDqe < 30; waitDqe++) {
+            await new Promise(r => setTimeout(r, 500));
+            const liveBtn = card.querySelector('.dqe-customize-btn');
+            if (liveBtn && !liveBtn.classList.contains('dqe-disabled')) break;
+          }
+        }
       }
 
-      // Auto-select enclosure & rack if required by product (e.g. Synergy compute module or chassis)
+      // Auto-select enclosure & rack if required by product (e.g. Synergy compute module or chassis).
+      // For standalone ProLiant servers these selects stay hidden (dqe-hidden) so this is a no-op.
       const encSelect = card.querySelector('select.dqe-enclosure');
       if (encSelect && !encSelect.classList.contains('dqe-hidden') && encSelect.value === '-1') {
         encSelect.value = 'standalone';
@@ -546,15 +649,20 @@ function _clientSelectDropdownControls(selected) {
         rackSelect.dispatchEvent(new Event('change', { bubbles: true }));
         if (window.jQuery) window.jQuery(rackSelect).trigger('change');
       }
-      await new Promise(r => setTimeout(r, 1000));`;
+      await new Promise(r => setTimeout(r, 500));`;
 }
 
 function _clientReacquireDropdownOption(selected) {
   if (selected.type !== 'dropdown-option') return '';
   const optValJson = JSON.stringify(selected.optionValue);
   return String.raw`
-      // AJAX search results can replace the card after selection. Reacquire
-      // by exact SKU and verify the selected value before clicking anything.
+      // FIX (INV-257): AJAX can replace the card DOM after selection (OCA re-renders
+      // results on certain portal states). Reacquire the live select by option value,
+      // re-apply the selected value if it was reset, and wait up to 15 s for the
+      // dqe-disabled class to be removed (it is removed by the XHR callback inside
+      // OCA's change handler — not synchronously).  If after 15 s the button is still
+      // dqe-disabled, re-trigger the jQuery change event one more time (recovery path).
+      let reacquireRetriggered = false;
       for (let attempt = 0; attempt < 30; attempt++) {
         const liveSelect = Array.from(document.querySelectorAll('select.dqe-products')).find(el => Array.from(el.options).some(opt => opt.value === ${optValJson}));
         if (liveSelect) {
@@ -563,9 +671,17 @@ function _clientReacquireDropdownOption(selected) {
             liveSelect.value = ${optValJson};
             if (window.jQuery) window.jQuery(liveSelect).trigger('change');
             else liveSelect.dispatchEvent(new Event('change', { bubbles: true }));
+            reacquireRetriggered = false;
           }
           const liveButton = card.querySelector('.dqe-customize-btn');
           if (liveButton && !liveButton.disabled && !liveButton.classList.contains('dqe-disabled')) break;
+          // If button is still dqe-disabled at attempt 20 and we haven't re-triggered,
+          // fire change again — catches slow XHR that did not unlock the button yet.
+          if (attempt === 20 && !reacquireRetriggered && liveSelect.value === ${optValJson}) {
+            if (window.jQuery) window.jQuery(liveSelect).trigger('change');
+            else liveSelect.dispatchEvent(new Event('change', { bubbles: true }));
+            reacquireRetriggered = true;
+          }
         }
         await new Promise(r => setTimeout(r, 500));
       }`;
@@ -592,7 +708,8 @@ function buildSelectAndClickExpression(selected) {
 
       button.scrollIntoView({ block: 'center' });
       await new Promise(r => setTimeout(r, 400));
-      button.click();
+      // Defer click past return so WebLogic navigation cannot tear down CDP context mid-evaluate (INV-266)
+      setTimeout(() => { button.click(); }, 50);
       return { success: true, clicked: true };
     })()
   `;
@@ -620,12 +737,27 @@ async function discoverChassisCandidates(ws, query) {
   return { candidates, eligibleCandidates };
 }
 
+function _candidateSpecialtyPenalty(candidate, query) {
+  const q = String(query || '').toLowerCase();
+  const text = `${candidate?.text || ''} ${candidate?.sku || ''}`.toLowerCase();
+  const specialtyTokens = ['ksa', 'saudi', 'disconnected', 'add-on', 'addon', 'upgrade'];
+  return specialtyTokens.some((tok) => text.includes(tok) && !q.includes(tok)) ? 1 : 0;
+}
+
 function _sortAndFilterEligibleCandidates(candidates, query) {
   const eligible = candidates.filter(candidate => isExactProductCandidate(query, candidate));
   eligible.sort((a, b) => {
+    const aSpec = _candidateSpecialtyPenalty(a, query);
+    const bSpec = _candidateSpecialtyPenalty(b, query);
+    if (aSpec !== bSpec) return aSpec - bSpec;
+
     const aSmart = /smart\s+cto/i.test(a.text || '') ? 1 : 0;
     const bSmart = /smart\s+cto/i.test(b.text || '') ? 1 : 0;
     if (aSmart !== bSmart) return aSmart - bSmart; // 0 (standard CTO) before 1 (Smart CTO)
+
+    const aWiz = a.isWizard || /wizard/i.test(a.sku || '') ? 1 : 0;
+    const bWiz = b.isWizard || /wizard/i.test(b.sku || '') ? 1 : 0;
+    if (aWiz !== bWiz) return aWiz - bWiz;
 
     const aB21 = (a.sku || '').endsWith('-B21') ? 1 : 0;
     const bB21 = (b.sku || '').endsWith('-B21') ? 1 : 0;
@@ -673,7 +805,7 @@ function _resolveSelectedCandidate(eligibleCandidates, candidates, query, option
 
 async function _pollForActiveOcaReadiness() {
   const wsWaitStart = Date.now();
-  while (Date.now() - wsWaitStart < 15000) {
+  while (Date.now() - wsWaitStart < 45000) {
     await sleep(1000);
     const pages = await getPageTargets();
     const activeTarget = pages.find(t => t.url && t.url.includes('oca.ext.hpe.com'));
@@ -684,7 +816,7 @@ async function _pollForActiveOcaReadiness() {
           document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, table.eo_category_table') ||
           Array.from(document.querySelectorAll('button, a, input[type="button"], input[type="submit"]')).some(el => !el.matches('.dqe-customize-btn') && !el.closest('.cto-card') && /^(customize|configure)$/i.test((el.innerText || el.value || '').trim())) ||
           document.querySelectorAll('table').length > 20
-        )`, 3000, 500);
+        )`, 10000, 500);
         testWs.close();
         if (isReadyOrIntermediate) break;
       } catch (pollErr) {
@@ -743,7 +875,9 @@ const CONFIG_WORKSPACE_READY_PREDICATE = `(() => {
   } catch (_) {}
 
   const isLoading = documents.some(doc =>
-    Array.from(doc.querySelectorAll('.loading_div, .maui-loading-div, .toolbar_loading, [class*="loading-div"]')).some(visible)
+    Array.from(doc.querySelectorAll('.loading_div, .maui-loading-div, .toolbar_loading, [class*="loading-div"]'))
+      .filter(el => !el.closest('.blockMsg, .blockUI'))
+      .some(visible)
   );
   if (isLoading) return false;
 
@@ -790,7 +924,7 @@ async function _verifyConfigWorkspaceReady(activeOca) {
 
   const summaryWs = await connectWS(activeOca.webSocketDebuggerUrl);
   deliveryEstimate = await _queryOcaLeadTime(summaryWs);
-  const ready = await waitForDOMPredicate(summaryWs, CONFIG_WORKSPACE_READY_PREDICATE, 60000, 1000);
+  const ready = await waitForDOMPredicate(summaryWs, CONFIG_WORKSPACE_READY_PREDICATE, 120000, 1000);
 
   let capturedException = null;
   try {
@@ -844,7 +978,7 @@ async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
     expression: selectAndClickExpr,
     awaitPromise: true,
     returnByValue: true
-  });
+  }, 120000);
   if (!selectionResult.result?.value?.success) {
     ws.close();
     const error = new Error(`Exact product selection failed: ${selectionResult.result?.value?.reason || 'unknown'}`);
@@ -1319,7 +1453,7 @@ async function handlePartnerPortalLaunch(partnerTarget, query, options) {
   }
 
   console.log(`⏳ Waiting for newly created OCA tab (Tab 2) to initialize with fresh SAML tokens...`);
-  const freshOca = await _waitForFreshOcaTab(45000);
+  const freshOca = await _waitForFreshOcaTab(60000);
 
   if (!freshOca) {
     const launchError = new Error('OCA_LAUNCH_PENDING: Partner Portal did not open One Config Advanced; retain the portal tab and inspect the tool launcher before retrying.');
@@ -1744,6 +1878,7 @@ module.exports = {
   recoverAndLaunchFreshOCA,
   searchAndConfigureChassis,
   discoverChassisCandidates,
+  _sortAndFilterEligibleCandidates,
   normalizeProductText,
   normalizePortalSearchQuery,
   extractModelGeneration,
@@ -1752,5 +1887,6 @@ module.exports = {
   buildPasswordFieldVerification,
   activeConfigurationMatches,
   waitForDOMPredicate,
-  inspectAndEnableToolsMenu
+  inspectAndEnableToolsMenu,
+  buildSelectAndClickExpression
 };

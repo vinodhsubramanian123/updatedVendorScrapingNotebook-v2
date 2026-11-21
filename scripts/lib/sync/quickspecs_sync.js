@@ -120,6 +120,15 @@ const KNOWN_QUICKSPECS_DOC_MAP = {
     productName: 'HPE Synergy VC 100Gb F32 Module',
     expectedFamily: 'Synergy',
     expectedGen: 'General'
+  },
+  'Alletra_MP_B10000': {
+    docId: 'a50006985enw',
+    docIdPattern: /a50006985/i,
+    titlePattern: /Alletra.*MP.*B10000|B10000.*QuickSpecs/i,
+    blockedPattern: /ProLiant|Synergy|X10000|MSL3040/i,
+    productName: 'HPE Alletra Storage MP B10000',
+    expectedFamily: 'Alletra',
+    expectedGen: 'Storage'
   }
 };
 
@@ -199,25 +208,21 @@ function getNotebookSources(notebookId) {
   const envPath = process.env.PATH || '';
   const homeBin = path.join(os.homedir(), '.local', 'bin');
   const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
-  const { nlmEnvironment } = require('../notebook/nlm_transport.js');
-  const envs = process.env.NLM_SYNC_READ_TRANSPORT
-    ? [nlmEnvironment(extendedPath, true)]
-    : [nlmEnvironment(extendedPath, true), nlmEnvironment(extendedPath, false)];
+  const { execNlmReadWithFallback, sanitizeNlmCliError } = require('../notebook/nlm_transport.js');
 
-  for (const env of envs) {
-    try {
-      const listOutput = execFileSync('nlm', ['source', 'list', notebookId, '--json'], {
-        encoding: 'utf-8',
-        timeout: 45000,
-        env
-      });
-      const parsed = JSON.parse(listOutput);
-      return Array.isArray(parsed) ? parsed : null;
-    } catch (cliErr) {
-      logger.warn('QUICKSPECS_SYNC', `nlm CLI source list unavailable (${env.NOTEBOOKLM_RPC_TRANSPORT}): ${cliErr.message}`);
-    }
+  try {
+    const listOutput = execNlmReadWithFallback(
+      execFileSync,
+      ['source', 'list', notebookId, '--json'],
+      { encoding: 'utf-8', timeout: 45000, stdio: ['ignore', 'pipe', 'pipe'] },
+      extendedPath
+    );
+    const parsed = JSON.parse(listOutput);
+    return Array.isArray(parsed) ? parsed : null;
+  } catch (cliErr) {
+    logger.warn('QUICKSPECS_SYNC', `nlm CLI source list unavailable: ${sanitizeNlmCliError(cliErr)}`);
+    return null;
   }
-  return null;
 }
 
 function extractQuickSpecsDocId(source) {

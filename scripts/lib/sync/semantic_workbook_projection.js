@@ -1,14 +1,58 @@
 'use strict';
 const crypto = require('crypto');
 
+// Columns that carry diff-history text (Attribute Deltas, Price History Trail).
+// These are written for human Excel viewers and audit trails; they are not needed
+// for LLM inventory RAG (the LLM queries current price, lead time, availability,
+// and rules — none of which require the per-SKU delta narrative).
+// Stripping them prevents SEMANTIC_SOURCE_TOO_LARGE on large catalogs (e.g.
+// DL360_Gen12 with 1,303 modified SKUs blows past 400,000 words without this).
+const DIFF_HISTORY_COLUMNS = new Set([
+  'Attribute Deltas',
+  'Price History Trail',
+  'Price Change (%)',
+  'Price Change (USD)',
+  'Previous List Price (USD)',
+  'Diff Status',
+]);
+
+// Sheets that duplicate current-state data already present in 'All SKUs' and
+// category sub-sheets, or that exist solely for human audit / Excel navigation.
+// Excluding them from the NLM projection keeps the payload under 400k words
+// while preserving all actionable inventory and rules content.
+const EXCLUDED_FOR_LLM_SHEETS = new Set([
+  'Catalog Diffs',
+  'Price History Timeline',
+  'Supply Chain & Lead Times',
+]);
+
+// Strip diff-history columns from a tab's rows. The header row drives column
+// detection so row arrays of varying widths are handled correctly.
+function _stripDiffHistoryColumnsFromTab(tab) {
+  const rows = tab.rows || [];
+  if (rows.length === 0) return tab;
+  const hdr = rows[0];
+  const keepIdxs = hdr.map((h, i) => (DIFF_HISTORY_COLUMNS.has(String(h).trim()) ? -1 : i)).filter(i => i >= 0);
+  if (keepIdxs.length === hdr.length) return tab; // nothing to strip
+  return { title: tab.title, rows: rows.map(row => keepIdxs.map(i => row[i] ?? '')) };
+}
+
 // Preserve displayed cell contents and column positions. A fingerprint proves
 // identity only; it cannot replace the inventory/rules an LLM must retrieve.
 function projectWorkbookToMarkdown(tabs, options = {}) {
+  // Apply LLM-payload filtering when requested (default: ON for inventory safety).
+  // Pass stripDiffHistoryColumns: false only in tests that explicitly verify
+  // the raw diff-history content round-trip.
+  const stripDiff = options.stripDiffHistoryColumns !== false;
+  const activeTabs = (tabs || [])
+    .filter(tab => !EXCLUDED_FOR_LLM_SHEETS.has(String(tab.title).trim()))
+    .map(tab => (stripDiff ? _stripDiffHistoryColumnsFromTab(tab) : tab));
+
   const cell = value => String(value ?? '').replace(/\\/g, '/').replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/>/g, '&gt;').replace(/\|/g, '&#124;').replace(/\r?\n/g, '<br>');
   const seen = new Map();
   const frequencies = new Map();
-  for (const tab of tabs || []) for (const row of tab.rows || []) for (const value of row) {
+  for (const tab of activeTabs) for (const row of tab.rows || []) for (const value of row) {
     const text = String(value ?? '');
     if (text.length > 120) frequencies.set(text, (frequencies.get(text) || 0) + 1);
   }
@@ -19,7 +63,7 @@ function projectWorkbookToMarkdown(tabs, options = {}) {
     'Displayed cell values follow by sheet and original row. Formatting, charts and formulas remain in the Excel artifact. Repeated rows refer to the first identical row and schema; no content is replaced by a fingerprint.', ''];
   let projectedRows = 0;
   let referencedRows = 0;
-  for (const tab of tabs || []) {
+  for (const tab of activeTabs) {
     const rows = tab.rows || [];
     const width = Math.max(0, ...rows.map(row => row.length));
     lines.push(`### ${cell(tab.title)}`, '');
@@ -49,7 +93,7 @@ function projectWorkbookToMarkdown(tabs, options = {}) {
   if (words > (options.maxWords || 400000)) {
     throw new Error(`SEMANTIC_SOURCE_TOO_LARGE: ${words} words; partition the source before upload, never replace data with row counts`);
   }
-  return { markdown, projectedRows, referencedRows, sheetCount: (tabs || []).length, words };
+  return { markdown, projectedRows, referencedRows, sheetCount: activeTabs.length, words };
 }
 function verifySemanticProjectionReadback(payload, indexedContent) {
   const projection = String(payload).split('## Complete workbook text projection')[1];
