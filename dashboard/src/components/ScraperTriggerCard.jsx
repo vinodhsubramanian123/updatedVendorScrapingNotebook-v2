@@ -325,7 +325,7 @@ export default function ScraperTriggerCard({ logStream, isTaskRunning, runActivi
             <button
               onClick={onTriggerRebuild}
               disabled={isTaskRunning}
-              className="w-full btn-secondary justify-center text-xs disabled:opacity-50"
+              className="w-full btn-secondary justify-center text-xs "
             >
               {isTaskRunning ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5 text-blue-600" />}
               Rebuild All
@@ -341,7 +341,7 @@ export default function ScraperTriggerCard({ logStream, isTaskRunning, runActivi
             <button
               onClick={onTriggerDownloadPdf}
               disabled={isTaskRunning}
-              className="w-full btn-secondary justify-center text-xs disabled:opacity-50"
+              className="w-full btn-secondary justify-center text-xs "
             >
               <Download className="w-3.5 h-3.5 text-amber-600" />
               Fetch PDF
@@ -357,7 +357,7 @@ export default function ScraperTriggerCard({ logStream, isTaskRunning, runActivi
             <button
               onClick={onTriggerSyncKnowledge}
               disabled={isTaskRunning}
-              className="w-full btn-primary justify-center text-xs disabled:opacity-50"
+              className="w-full btn-primary justify-center text-xs "
             >
               {isTaskRunning
                 ? <><Loader className="w-3.5 h-3.5 animate-spin" /> Running...</>

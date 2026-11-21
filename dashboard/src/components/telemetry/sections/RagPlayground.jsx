@@ -42,7 +42,7 @@ export default function RagPlayground() {
         <button
           onClick={handleRagQuery}
           disabled={isQuerying || !ragQuery.trim()}
-          className="btn-primary text-xs shrink-0 disabled:opacity-50"
+          className="btn-primary text-xs shrink-0 "
         >
           {isQuerying ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
           {isQuerying ? 'Querying...' : 'Run Search'}

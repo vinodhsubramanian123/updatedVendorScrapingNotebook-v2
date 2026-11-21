@@ -462,7 +462,7 @@ h1, h2, h3, h4 {
 }
 
 .btn-primary:disabled {
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
@@ -493,7 +493,7 @@ h1, h2, h3, h4 {
 }
 
 .btn-secondary:disabled {
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
