@@ -581,6 +581,15 @@ async function verifyOrder2Exports(page, baseUrl, offlineRunId, runsDir, authSec
   return { customerWorkbookSha256: custSha, customerWorkbookFilename: exportJson.filename };
 }
 
+async function reloadAndVerifyEventStream(page) {
+  const streamPending = page.waitForResponse(
+    res => res.url().endsWith('/api/stream-logs') && res.status() === 200,
+    { timeout: 30000 }
+  );
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await streamPending;
+}
+
 async function verifyOrder3LifecycleAndRestart(browser, port, serverRef, runsDir, authSecret, telemetry) {
   const baseUrl = `http://127.0.0.1:${port}`;
   const ctxA = await createGuardedContext(browser, telemetry);
@@ -659,13 +668,17 @@ async function verifyOrder3LifecycleAndRestart(browser, port, serverRef, runsDir
         extraEnv: { INTAKE_RETENTION_MS: '1000' }
       });
 
-      await pageA.reload({ waitUntil: 'domcontentloaded' });
-      await pageB.reload({ waitUntil: 'domcontentloaded' });
+      await reloadAndVerifyEventStream(pageA);
+      await reloadAndVerifyEventStream(pageB);
     } finally {
       telemetry.allowRestartDisconnect = false;
     }
-    const recoveredInflight = await apiJson(`${baseUrl}/api/run/${inflightId}`);
-    assert.strictEqual(recoveredInflight.body.run?.status, 'INTERRUPTED', 'In-flight run across restart must become INTERRUPTED');
+    for (const recoveredPage of [pageA, pageB]) {
+      const recovered = await recoveredPage.request.get(`${baseUrl}/api/run/${inflightId}`, { timeout: 10000 });
+      assert.strictEqual(recovered.status(), 200, 'Each recovered tab must be able to fetch the run');
+      const recoveredInflight = await recovered.json();
+      assert.strictEqual(recoveredInflight.run?.status, 'INTERRUPTED', 'In-flight run across restart must become INTERRUPTED');
+    }
 
     // Expired intake confirm on restarted server must return 410 REUPLOAD_REQUIRED
     const confirmExpired = await apiJson(`${baseUrl}/api/eval-boq`, {
@@ -680,7 +693,7 @@ async function verifyOrder3LifecycleAndRestart(browser, port, serverRef, runsDir
     });
     assert.strictEqual(confirmExpired.status, 410);
     assert.strictEqual(confirmExpired.body.remediationAction, 'REUPLOAD_REQUIRED');
-    await waitForOutstandingRequests(pageARequests, pageBRequests);
+    await Promise.all([pageA.goto('about:blank'), pageB.goto('about:blank')]);
   } finally {
     await ctxA.close().catch(() => {});
     await ctxB.close().catch(() => {});

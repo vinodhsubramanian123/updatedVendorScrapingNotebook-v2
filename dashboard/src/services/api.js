@@ -8,14 +8,15 @@ export function apiErrorMessage(data, fallback = 'Request failed') {
 export async function requestJson(url, options = {}) {
   const { timeoutMs = 30000, signal, ...fetchOptions } = options;
   const controller = new AbortController();
-  const abort = () => controller.abort();
+  const abort = () => controller.abort(signal?.reason);
   if (signal?.aborted) abort();
   signal?.addEventListener('abort', abort, { once: true });
-  const timer = setTimeout(abort, timeoutMs);
+  const timer = setTimeout(() => controller.abort(new DOMException('Request timed out', 'TimeoutError')), timeoutMs);
   try {
     const response = await fetch(url, { ...fetchOptions, signal: controller.signal });
     let data;
     try { data = await response.json(); } catch {
+      if (controller.signal.aborted) throw controller.signal.reason;
       throw new Error(`HTTP ${response.status}: Server returned an invalid JSON response`);
     }
     if (!response.ok) {

@@ -70,7 +70,7 @@ export function useCatalogs(initialChassis = 'DL380_Gen12') {
         setIsCatalogLoading(false);
       })
       .catch(err => {
-        if (!current || err.name === 'AbortError' || err.message?.includes('aborted')) return;
+        if (!current || controller.signal.aborted) return;
         setCatalogError(err.message);
         setIsCatalogLoading(false);
       });
