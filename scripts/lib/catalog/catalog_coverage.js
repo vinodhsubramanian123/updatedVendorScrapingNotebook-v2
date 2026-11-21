@@ -47,6 +47,25 @@ function _countUniqueSkus(entries) {
   return new Set(entries.map(({ row }) => String(row.sku || row['Product #'] || '').trim()).filter(Boolean)).size;
 }
 
+function _checkRequiredWorkbookSheets(requiredSheets = [], workbook) {
+  if (!Array.isArray(requiredSheets) || requiredSheets.some(name => typeof name !== 'string' || !name.trim())) {
+    throw new Error('Invalid required workbook sheet policy');
+  }
+  const failures = [];
+  for (const name of requiredSheets) {
+    const sheet = workbook?.Sheets?.[name];
+    if (!workbook?.SheetNames?.includes(name) || !sheet) {
+      failures.push(`missing required workbook sheet: ${name}`);
+      continue;
+    }
+    const rows = require('xlsx-js-style').utils.sheet_to_json(sheet, { header: 1, blankrows: false });
+    if (!rows.slice(1).some(row => row.some(cell => cell != null && String(cell).trim()))) {
+      failures.push(`empty required workbook sheet: ${name}`);
+    }
+  }
+  return failures;
+}
+
 function _checkThresholdMetrics(profile, hardware, serviceRows, workbook) {
   const failures = [];
   const metrics = [
@@ -75,7 +94,8 @@ function validateCatalogCoverage(product, catalog, services, workbook, profilesP
 
     const failures = [
       ..._checkCategoryCoverage(profile, hardware, serviceRows),
-      ..._checkThresholdMetrics(profile, hardware, serviceRows, workbook)
+      ..._checkThresholdMetrics(profile, hardware, serviceRows, workbook),
+      ..._checkRequiredWorkbookSheets(profile.requiredSheets, workbook)
     ];
 
     return { valid: failures.length === 0, reason: failures.join('; '), profileProduct: product, scope: 'PROFILE_MINIMUM_CAPTURE' };

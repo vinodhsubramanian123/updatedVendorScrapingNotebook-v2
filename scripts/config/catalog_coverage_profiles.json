@@ -7,7 +7,7 @@
       "pillar": "SERVER",
       "family": "ProLiant",
       "generation": "Gen12",
-      "expectedWorkbookSheets": 26,
+      "requiredSheets": ["Category Summary", "All SKUs", "Rules & Constraints", "Processor", "Memory", "Storage Controllers", "Accessories & Infrastructure", "Support Services"],
       "minHardwareSKUs": 500,
       "minServicesSKUs": 200,
       "mandatoryCategories": [
@@ -55,7 +55,7 @@
       "pillar": "SERVER",
       "family": "ProLiant",
       "generation": "Gen12",
-      "expectedWorkbookSheets": 27,
+      "requiredSheets": ["Category Summary", "All SKUs", "Rules & Constraints", "Processor", "Memory", "Storage Controllers", "Accessories & Infrastructure", "Support Services"],
       "minHardwareSKUs": 350,
       "minServicesSKUs": 150,
       "mandatoryCategories": [
@@ -199,7 +199,7 @@
       "pillar": "SERVER",
       "family": "Synergy",
       "generation": "Gen12",
-      "expectedWorkbookSheets": 24,
+      "requiredSheets": ["Category Summary", "All SKUs", "Rules & Constraints", "Processor", "Memory", "Storage Controllers", "Accessories & Infrastructure", "Support Services"],
       "minHardwareSKUs": 250,
       "minServicesSKUs": 100,
       "mandatoryCategories": [

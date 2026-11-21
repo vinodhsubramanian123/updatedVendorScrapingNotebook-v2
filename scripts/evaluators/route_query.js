@@ -38,6 +38,7 @@ const getChassisMap = (...args) => catalogDiscovery.getChassisMap(...args);
 const listAllCatalogs = (...args) => catalogDiscovery.listAllCatalogs(...args);
 const { resolveEffectivePolicy } = require('../lib/system/policy_resolver.js');
 const logger = require('../lib/system/pipeline_logger.js');
+const ALLETRA_MP_CATALOGS = new Set(['Alletra_MP_B10000', 'Alletra_MP_X10000']);
 
 function getBaseChassisSku(chassisKey = '') {
   try {
@@ -223,6 +224,31 @@ function _loadCatalogDataSafe(catalogJsonPath) {
   }
 }
 
+function _resolvePresalesCatalog(queryText, target, catalogs, preferNamedProduct) {
+  let matchedProducts = catalogDiscovery.matchAlletraMpProducts(queryText);
+  if (!matchedProducts.length && preferNamedProduct) {
+    const { resolveCatalogQueryScope } = require('../lib/catalog/catalog_query_engine.js');
+    const scope = resolveCatalogQueryScope(queryText, catalogs);
+    if (scope.unresolvedProducts.length) {
+      return { earlyReturn: { chassisKey: 'UNKNOWN_PRODUCT', isAmbiguous: true,
+        error: 'A named sizing product has no matching catalog.' } };
+    }
+    matchedProducts = scope.products;
+  }
+  if (matchedProducts.length > 1) {
+    return { earlyReturn: { chassisKey: 'AMBIGUOUS_PRODUCT', isAmbiguous: true, candidates: matchedProducts,
+      error: 'Multiple products were named. Submit a separate sizing or evaluation request for each product.' } };
+  }
+  const product = matchedProducts[0];
+  const matchedCatalog = catalogs.find(c => product ? c.id === product :
+    target && (c.id.toLowerCase() === target || c.chassis?.toLowerCase() === target));
+  if (product && !matchedCatalog) {
+    return { earlyReturn: { chassisKey: 'UNKNOWN_PRODUCT', isAmbiguous: true, candidates: [],
+      error: 'The requested Alletra MP product catalog is unavailable.' } };
+  }
+  return { matchedCatalog, explicitProduct: Boolean(product) };
+}
+
 function getChassisCatalog(queryText = '', context = {}) {
   const text = (queryText + ' ' + (context.chassisName || context.model || '')).toLowerCase().replace(/_/g, ' ');
 
@@ -234,12 +260,12 @@ function getChassisCatalog(queryText = '', context = {}) {
   }
 
   const target = String(context.chassisName || context.model || '').toLowerCase().trim();
-  let matchedCatalog = target
-    ? catalogs.find(c => c.id.toLowerCase() === target || c.chassis?.toLowerCase() === target)
-    : null;
+  const presalesCatalog = _resolvePresalesCatalog(queryText, target, catalogs, context.preferNamedProduct);
+  if (presalesCatalog.earlyReturn) return presalesCatalog.earlyReturn;
+  let { matchedCatalog } = presalesCatalog;
 
-  const platformSignatures = _buildPlatformSignatures(catalogs);
-  const { targetGen, explicitGen, requestedGenerations } = _parseGenerationHints(text, context);
+  const generationText = presalesCatalog.explicitProduct ? String(queryText) : text;
+  const { targetGen, explicitGen, requestedGenerations } = _parseGenerationHints(generationText, context);
 
   if (matchedCatalog && explicitGen && !matchedCatalog.id.toLowerCase().includes(explicitGen.toLowerCase())) {
     return { chassisKey: 'GENERATION_MISMATCH', catalogDir: null, catalogPath: null, catalogData: null, isAmbiguous: true, error: 'Explicit product and requested generation disagree.' };
@@ -249,6 +275,7 @@ function getChassisCatalog(queryText = '', context = {}) {
   }
 
   if (!matchedCatalog) {
+    const platformSignatures = _buildPlatformSignatures(catalogs);
     const resolved = _matchPlatformCandidates(text, catalogs, platformSignatures, explicitGen);
     if (resolved.earlyReturn) return resolved.earlyReturn;
     matchedCatalog = resolved.matchedCatalog;
@@ -445,7 +472,7 @@ function _classifyFileBased(text, filePath, context) {
 
 const RECONCILE_KEYWORD_RE = /(?:reconcile|compare\s+bom|tender\s+vs\s+quote|ghost\s+sku|quote\s+comparison)/i;
 const CATALOG_KEYWORD_RE = /(?:price\s+trend|pricing\s+history|is\s+obsolete|lifecycle|direct\s+ship|gpl\s+price|list\s+price\s+of|options\s+added|\blead[ -]+time\b)/i;
-const SIZING_TEXT_KEYWORD_RE = /(?:size\s+a\s+server|sizing|build\s+a\s+bom|generate\s+a\s+bom|create\s+a\s+configuration)/i;
+const SIZING_TEXT_KEYWORD_RE = /(?:\bsize\s+\d+\s+(?:nodes?|servers?|arrays?)\b|size\s+a\s+server|sizing|build\s+a\s+bom|generate\s+a\s+bom|create\s+a\s+configuration)/i;
 const BOQ_TEXT_KEYWORD_RE = /(?:evaluate\s+(?:(?:this|the|customer)\s+)?boq|verify\s+(?:(?:this|the|customer)\s+)?bom|check\s+buildability|validate\s+(?:(?:this|the|customer)\s+)?boq)/i;
 
 function _classifyOptimizationTracks(text, context) {
@@ -646,6 +673,16 @@ function _classifyCatalogSizingOrQa(text, filePath, context) {
       rationale: isSingleSkuPricingOrLifecycle
         ? `Single SKU inquiry for ${detectedSkus[0]} directed to catalog intelligence to avoid monolithic server evaluation.`
         : 'Query targets pricing history, SKU lifecycle status, or option catalog metadata.'
+    };
+  }
+
+  if (!filePath && /\b(?:size|sizing|configure|build\s+(?:a\s+)?bom|generate\s+(?:a\s+)?bom)\b/i.test(text) &&
+      (catalogDiscovery.matchAlletraMpProducts(text).length || ALLETRA_MP_CATALOGS.has(context.chassisName || context.model))) {
+    return {
+      intent: 'RFP_SIZING_TO_BOM',
+      confidence: 0.95,
+      skillTarget: 'rfp-sizing-synthesizer',
+      rationale: 'Alletra MP storage sizing requires the HPE Ninja Online handoff.'
     };
   }
 
@@ -1575,8 +1612,42 @@ function _buildRfpCandidateReference(context, chassisInfo, candidateItems, serve
   };
 }
 
-async function _handleRfpSizing(queryText, context) {
-  const chassisInfo = getChassisCatalog(queryText, context);
+function _buildAlletraMpSizingHandoff(queryText, chassisInfo) {
+  const chassis = chassisInfo.chassisKey;
+  const isBlock = chassis === 'Alletra_MP_B10000';
+  const product = getChassisMap()[chassis];
+  const switchless = isBlock && /\b(?:b101(?:00|20|30|40)|s0b84a|switchless)\b/i.test(queryText);
+  const switched = isBlock && /\b(?:b102(?:00|30|40)|s1r06a|switched)\b/i.test(queryText);
+  const hasConflictingTopologies = switchless && switched;
+  const topology = hasConflictingTopologies ? null : switchless
+    ? { type: 'SWITCHLESS', baseSku: product.switchlessBaseSku }
+    : switched ? { type: 'SWITCHED', baseSku: product.switchedBaseSku } : null;
+  const nextStep = 'Size the array in HPE Ninja Online and export the OCA JSON. Import it into HPE OCA to complete optics, cabling, support and CLIC validation.';
+  const message = hasConflictingTopologies
+    ? 'B10100 switchless and B10200 switched require separate arrays. Specify one topology per array. ' + nextStep
+    : nextStep;
+  return {
+    intent: 'RFP_SIZING_TO_BOM',
+    chassis,
+    chassisDir: chassisInfo.catalogDir,
+    productType: 'storage',
+    chassisInfo: { model: product.model, gen: product.gen, family: product.family, formFactor: product.formFactor },
+    status: 'ACTION_REQUIRED',
+    code: 'NINJA_ONLINE_SIZING_REQUIRED',
+    message,
+    storageSizingHandoff: { product: chassis, topology, hasConflictingTopologies },
+    missingRequirements: ['HPE Ninja Online sizing and OCA JSON export'],
+    requiresHumanClarification: true,
+    portalValidationStatus: 'PORTAL_VALIDATION_PENDING',
+    items: [],
+    candidateBOM: []
+  };
+}
+
+async function _handleRfpSizing(queryText, context, chassisInfo = getChassisCatalog(queryText, context)) {
+  if (ALLETRA_MP_CATALOGS.has(chassisInfo.chassisKey)) {
+    return _buildAlletraMpSizingHandoff(queryText, chassisInfo);
+  }
   const nodeMatch = queryText.match(/\b(\d+)\s*(?:nodes?|servers?|units?|appliances?|clusters?)\b/i);
   const serverCount = nodeMatch ? parseInt(nodeMatch[1], 10) : (context.serverCount || 1);
   const rawLines = _parseRfpRawLines(queryText);
@@ -2419,7 +2490,7 @@ function _deriveClassificationConfidence(queryText, context, classification, cha
   };
 }
 
-async function _dispatchIntentHandler(classification, queryText, context) {
+async function _dispatchIntentHandler(classification, queryText, context, chassisInfo) {
   switch (classification.intent) {
     case 'CROSS_VENDOR_TRANSFORMATION':
       return await observeActualInvocation('_handleCrossVendorTransformation', __filename, () => _handleCrossVendorTransformation(queryText, context));
@@ -2440,7 +2511,7 @@ async function _dispatchIntentHandler(classification, queryText, context) {
       return observeActualInvocation('_handleCatalogIntelligence', __filename, () => _handleCatalogIntelligence(queryText, context));
 
     case 'RFP_SIZING_TO_BOM':
-      return await observeActualInvocation('_handleRfpSizing', __filename, () => _handleRfpSizing(queryText, context));
+      return await observeActualInvocation('_handleRfpSizing', __filename, () => _handleRfpSizing(queryText, context, chassisInfo || undefined));
 
     case 'BOM_RECONCILIATION':
       return observeActualInvocation('_handleBomReconciliation', __filename, () => _handleBomReconciliation(queryText, context));
@@ -2526,11 +2597,14 @@ function _resolvePlatformSelectionMemory(queryText, initialPlatform, context) {
 
 function _resolveRoutedPlatform(queryText, context, classification) {
   const isCatalogMultiQuery = classification.intent === 'CATALOG_INTELLIGENCE';
-  const initial = isCatalogMultiQuery ? {} : getChassisCatalog(queryText, context);
-  const { platformSelectionMemory, updatedContext } = _resolvePlatformSelectionMemory(queryText, initial, context);
+  const platformContext = classification.intent === 'RFP_SIZING_TO_BOM' ? { ...context, preferNamedProduct: true } : context;
+  const initial = isCatalogMultiQuery ? {} : getChassisCatalog(queryText, platformContext);
+  const { platformSelectionMemory, updatedContext } = _resolvePlatformSelectionMemory(queryText, initial, platformContext);
   let chassisInfoForConf = null;
   try {
-    if (!isCatalogMultiQuery) chassisInfoForConf = getChassisCatalog(queryText, updatedContext);
+    if (!isCatalogMultiQuery) {
+      chassisInfoForConf = updatedContext === platformContext ? initial : getChassisCatalog(queryText, updatedContext);
+    }
   } catch { chassisInfoForConf = null; }
   const unresolvedAmbiguity = ['AMBIGUOUS_QUERY', 'AMBIGUOUS_PRODUCT', 'GENERATION_MISMATCH'].includes(chassisInfoForConf?.chassisKey) ||
     classification.intent === 'AMBIGUOUS_QUERY';
@@ -2656,7 +2730,7 @@ async function _executeClassifiedOrAbortDispatch(classification, queryText, cont
   }
   const scored = _deriveClassificationConfidence(queryText, context, classification, chassisInfoForConf);
   try {
-    const responseData = await _dispatchIntentHandler(classification, queryText, context);
+    const responseData = await _dispatchIntentHandler(classification, queryText, context, chassisInfoForConf);
     if (context.signal?.aborted && responseData && typeof responseData === 'object') {
       responseData.status = 'CANCELLED';
       responseData.cancellationRequested = true;

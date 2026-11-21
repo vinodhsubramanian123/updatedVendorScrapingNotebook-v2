@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-11-21T13:40:40.086Z",
+  "recordedAt": "2026-11-21T14:50:09.804Z",
   "results": [
     {
       "deltaId": "LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001",
@@ -67,16 +67,10 @@
     },
     {
       "deltaId": "LEARN_4SOCKET_ENTERPRISE_WORKSPACE_TIMEOUT_20261120",
-      "persisted": true,
+      "persisted": false,
+      "alreadyRecorded": true,
       "certification": {
-        "reachable": true,
-        "ruleId": "LEARN_4SOCKET_ENTERPRISE_WORKSPACE_TIMEOUT_20261120",
-        "ruleType": "WORKFLOW_TIMING_ADVISORY",
-        "affectedSku": "",
-        "targetSku": "",
-        "scopeTaxonomy": "CHASSIS_SPECIFIC",
-        "simulationResult": null,
-        "verifiedAt": "2026-11-21T13:40:40.063Z"
+        "reachable": true
       }
     },
     {
@@ -133,6 +127,20 @@
       "alreadyRecorded": true,
       "certification": {
         "reachable": true
+      }
+    },
+    {
+      "deltaId": "LEARN_GEN12_CONSOLIDATED_WORKBOOK_VIEWS_20261121",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_GEN12_CONSOLIDATED_WORKBOOK_VIEWS_20261121",
+        "ruleType": "WORKFLOW_CAPTURE_COVERAGE_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-21T14:50:09.704Z"
       }
     },
     {

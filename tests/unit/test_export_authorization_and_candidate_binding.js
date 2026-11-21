@@ -137,6 +137,7 @@ function startEphemeralRouterServer() {
   app.use('/artifacts', express.static(OUTPUTS_DIR));
   app.use('/api', evaluationRouter);
   app.use('/api', catalogsRouter);
+  app.use('/api', require('../../dashboard/routes/sse.cjs'));
   return new Promise((resolve) => {
     const server = http.createServer(app);
     server.listen(0, '127.0.0.1', () => {
@@ -229,6 +230,48 @@ describe('P0 · Export Candidate & Authorization Enforcement', () => {
         assert.equal(reply.status, 409);
         assert.equal(reply.data.code, 'UNKNOWN_DEPENDENCY');
       }
+    } finally {
+      await new Promise(resolve => server.close(resolve));
+    }
+  });
+
+  it('reopens and exports a signed evaluation after real serialization', async t => {
+    const { serializeAndExportResults } = require('../../scripts/lib/boq/eval_output_serializer.js');
+    const evaluation = makeCandidateEval();
+    const originalWrite = process.stdout.write;
+    const marker = '__EVAL_RESULT_JSON__';
+    let emitted;
+    const capture = t.mock.method(process.stdout, 'write', function (chunk, ...args) {
+      const text = String(chunk);
+      if (!text.includes(marker)) return originalWrite.call(this, chunk, ...args);
+      emitted = JSON.parse(text.split(marker)[1]).data;
+      return true;
+    });
+    try {
+      await serializeAndExportResults({
+        inputFile: 'fixture.csv',
+        outputPath: path.join(tmpRunsDir, 'serialized', 'report.md'),
+        evalResults: evaluation,
+        items: evaluation.items,
+        graph: evaluation.conflictGraph,
+        JSON_MODE: true,
+        OFFLINE_MODE: true
+      });
+    } finally {
+      capture.mock.restore();
+    }
+    assert.ok(emitted?.evalResults.solutionIntelligence);
+    assert.equal(deliveryFingerprint(emitted.evalResults), evaluation.deliveryAuthorization.manifestFingerprint);
+
+    const runId = 'run_serialized_authorization';
+    seedServerRun(runId, emitted.evalResults);
+    const { server, port } = await startEphemeralRouterServer();
+    try {
+      const reopened = await fetch(`http://127.0.0.1:${port}/api/run/${runId}`);
+      assert.equal(reopened.status, 200);
+      const result = await postJson(port, '/api/export-boq', { runId, rankTier: 1 });
+      assert.equal(result.status, 200, JSON.stringify(result.data));
+      trackArtifact(path.join(OUTPUTS_DIR, 'history', 'exports', result.data.filename));
     } finally {
       await new Promise(resolve => server.close(resolve));
     }

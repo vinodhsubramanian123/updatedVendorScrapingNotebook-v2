@@ -1489,6 +1489,10 @@ function validateBoqEvaluationCriteria(output, context = {}) {
  * RFP Sizing Criteria (R1–R6)
  */
 function validateRfpSizingCriteria(output, _context = {}) {
+  if (output?.code === 'NINJA_ONLINE_SIZING_REQUIRED') {
+    return [makeCheck('R6', 'HPE Ninja Online Storage Sizing', 'BLOCK', 'ACTION_REQUIRED',
+      'Complete HPE Ninja Online sizing and import the vendor export before evaluating a storage BOM.')];
+  }
   const checks = [];
 
   // R1: All Detected Roles Resolved (BLOCK)

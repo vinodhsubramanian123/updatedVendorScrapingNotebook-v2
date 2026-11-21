@@ -1213,5 +1213,23 @@
     "ruleType": "WORKFLOW_NLM_AUTH_PERSISTENCE_ADVISORY",
     "rawMessage": "To prevent daily NotebookLM AuthenticationError expiration of rotating Google cookies (__Secure-1PSIDRTS, SIDCC, SNlM0e), nlm_interactive_auth.js (port 18801) and notebooklm-mcp-cli / gemini-notebook-mcp (run_headless_auth) MUST share the unified profile directory ~/.notebooklm-mcp-cli/chrome-profiles/<profile> (with one-time Local State + Default/Network/Cookies migration from %LOCALAPPDATA%\\NlmInteractiveChrome via syncLegacyInteractiveProfile). On Windows, spawnChromeDetached MUST launch Chrome via WMI Win32_Process.Create (without detached:true when windowsHide:true is set on the PowerShell launcher) to escape KILL_ON_JOB_CLOSE, and registerPortMapEntry MUST use netstat.exe -ano -p tcp to write {\"18801\":{\"profile\":\"default\",\"pid\":<pid>}} to ~/.notebooklm-mcp-cli/chrome-port-map.json so find_existing_nlm_chrome and run_headless_auth reuse port 18801 directly without spawning conflicting port 9223 browsers (INV-269).",
     "timestamp": "2026-11-21T13:37:31.273Z"
+  },
+  {
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "chassis": "DL380_Gen12",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/CATALOG_EVIDENCE_AND_LEARNING.md#release-evidence",
+    "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
+    "hardwareCompatibilityCertified": false,
+    "deltaId": "LEARN_GEN12_CONSOLIDATED_WORKBOOK_VIEWS_20261121",
+    "ruleType": "WORKFLOW_CAPTURE_COVERAGE_ADVISORY",
+    "rawMessage": "For refreshed DL380 Gen12 workbooks, compare active catalog and services SKU coverage and require populated core views. Duplicate or empty accessory and support tabs can disappear when their rows consolidate. Extra tabs cannot substitute for a missing or header-only required view. Verify evaluation preflight against the promoted workbook.",
+    "timestamp": "2026-11-21T14:50:09.554Z"
   }
 ]

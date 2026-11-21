@@ -92,6 +92,12 @@ module.exports = [
     rawMessage: 'attribute_vectors.js loads multi-vendor matchers from scripts/config/vendors/*/policy.json and materializes compact canonicalSpecs on all active catalog rows for catalog_query_engine.js (Alletra 10k/B10000/X10000, DDR<N>, TDP/core bounds, hardware-only GPU filtering). portfolio_blindspots.js distinguishes PORTAL_COST_COLUMN_UNENTITLED and PRIVATE_UNPRICED/REGIONAL_NA_UNPRICED from zero-price anomalies, and nlm_transport.js fails over from cdp to httpx when headless CDP profile cookies expire after port 18801 disk-token healing (INV-267, INV-268).'
   },
   {
+    deltaId: 'LEARN_GEN12_CONSOLIDATED_WORKBOOK_VIEWS_20261121',
+    source: 'docs/CATALOG_EVIDENCE_AND_LEARNING.md#release-evidence',
+    ruleType: 'WORKFLOW_CAPTURE_COVERAGE_ADVISORY',
+    rawMessage: 'For refreshed DL380 Gen12 workbooks, compare active catalog and services SKU coverage and require populated core views. Duplicate or empty accessory and support tabs can disappear when their rows consolidate. Extra tabs cannot substitute for a missing or header-only required view. Verify evaluation preflight against the promoted workbook.'
+  },
+  {
     deltaId: 'LEARN_NLM_UNIFIED_PROFILE_WMI_PORT_MAP_20261121',
     source: 'docs/INVARIANTS.md#inv-269',
     ruleType: 'WORKFLOW_NLM_AUTH_PERSISTENCE_ADVISORY',

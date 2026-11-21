@@ -203,6 +203,8 @@ function solutionFingerprint(evaluation, catalogData = null) {
 
 /** Bind presentation inputs, not a caller-supplied cached fingerprint. Keep
  * lifecycle/ledger/export paths out: those legitimately change after issuance.
+ * The customer decision projection is derived for display during serialization.
+ * Bind its source evidence and the acceptance decision instead.
  * Both candidate collections and both SKU representations are included because
  * different public writers consume them (including SAN and baseline fallbacks).
  */
@@ -234,15 +236,6 @@ function deliveryFingerprint(evaluation) {
     } : {}),
     ...(ev.dependencyInvalidation ? {
       dependencyInvalidation: _dependencyFingerprintFields(ev.dependencyInvalidation)
-    } : {}),
-    ...(ev.solutionIntelligence ? {
-      solutionIntelligence: {
-        schemaVersion: ev.solutionIntelligence.schemaVersion || '1.0',
-        disposition: ev.solutionIntelligence.outcome?.disposition || null,
-        omittedClausesCount: ev.solutionIntelligence.requirementCoverage?.omittedClausesCount ?? null,
-        violatedHardCount: ev.solutionIntelligence.requirementCoverage?.violatedHardCount ?? null,
-        unresolvedHardCount: ev.solutionIntelligence.requirementCoverage?.unresolvedHardCount ?? null
-      }
     } : {}),
     ...(evidenceDigestSha256 ? { evidenceDigestSha256 } : {}),
     ...(ev.catalogEvidence ? { catalogEvidence: ev.catalogEvidence } : {}),

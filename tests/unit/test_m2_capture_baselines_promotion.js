@@ -46,14 +46,42 @@ describe('Milestone M2: Fresh Capture, Baselines & Safe Promotion', () => {
       const profiles = JSON.parse(fs.readFileSync(profilesPath, 'utf8')).profiles;
       assert.ok(profiles.DL380_Gen12, 'DL380_Gen12 profile must exist');
       assert.ok(profiles.DL380a_Gen12, 'DL380a_Gen12 profile must exist');
-      assert.strictEqual(profiles.DL380_Gen12.expectedWorkbookSheets, 26);
-      assert.strictEqual(profiles.DL380a_Gen12.expectedWorkbookSheets, 27);
+      for (const id of ['DL380_Gen12', 'DL380a_Gen12', 'SY480_Gen12']) {
+        assert.ok(profiles[id].requiredSheets.includes('Accessories & Infrastructure'));
+        assert.ok(profiles[id].requiredSheets.includes('Support Services'));
+      }
     });
 
-    it('certifies live DL380_Gen12 against its coverage profile', () => {
+    it('certifies the refreshed workbooks with consolidated views', () => {
+      for (const id of ['DL380a_Gen12', 'SY480_Gen12']) {
+        const result = isCatalogCertified(id);
+        assert.strictEqual(result.certified, true, id + ': ' + result.reason);
+      }
       const result = isCatalogCertified('DL380_Gen12');
       assert.strictEqual(result.certified, true, `Certified should be true, but got: ${result.reason}`);
       assert.ok(result.skuCount >= 500, `SKU count must be >= 500, got ${result.skuCount}`);
+    });
+
+    it('blocks missing or header-only required views despite surplus unrelated tabs', () => {
+      const { validateCatalogCoverage } = require('../../scripts/lib/catalog/catalog_coverage.js');
+      const { utils } = require('xlsx-js-style');
+      const id = 'DL380_Gen12';
+      const dir = path.resolve(__dirname, '../../outputs/ProLiant/Gen12', id);
+      const catalog = JSON.parse(fs.readFileSync(path.join(dir, id + '_Catalog.json'), 'utf8'));
+      const services = JSON.parse(fs.readFileSync(path.join(dir, id + '_Services.json'), 'utf8'));
+      const { requiredSheets } = require('../../scripts/config/catalog_coverage_profiles.json').profiles[id];
+      const filler = Array.from({ length: 30 }, (_, i) => 'Unrelated ' + i);
+      const workbook = utils.book_new();
+      const populated = utils.aoa_to_sheet([['Product #'], ['P73282-B21']]);
+      for (const name of [...requiredSheets.filter(name => name !== 'Support Services'), ...filler]) {
+        utils.book_append_sheet(workbook, populated, name);
+      }
+      const check = () => validateCatalogCoverage(id, catalog, services, workbook);
+      assert.match(check().reason, /missing required workbook sheet: Support Services/);
+      utils.book_append_sheet(workbook, utils.aoa_to_sheet([['Product #']]), 'Support Services');
+      assert.match(check().reason, /empty required workbook sheet: Support Services/);
+      workbook.Sheets['Support Services'] = populated;
+      assert.strictEqual(check().valid, true);
     });
   });
 

@@ -46,6 +46,7 @@ jobs:
         run: |
           npm run test:smoke
           node --test tests/unit/test_offline_policy_enforcement.js tests/unit/test_export_authorization_and_candidate_binding.js tests/unit/test_run_recovery_and_sizing_context.js
+          node --test tests/unit/test_m2_capture_baselines_promotion.js
           node tests/unit/test_topology_builder.js
           node tests/integration/test_dashboard_workflow_reliability.js
 

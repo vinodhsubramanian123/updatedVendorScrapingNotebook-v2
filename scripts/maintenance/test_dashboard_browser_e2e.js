@@ -291,6 +291,18 @@ async function verifyOrder1OfflinePolicy(page, baseUrl, telemetry) {
   assert.strictEqual(telemetry.externalAttempts.length, 0, 'Order 1 must trigger zero external calls');
 }
 
+async function runSizingWorkflow(page) {
+  const responsePending = page.waitForResponse(
+    res => res.url().endsWith('/api/query/route') && res.request().method() === 'POST',
+    { timeout: 90000 }
+  );
+  await page.getByRole('button', { name: /Run workflow/i }).click();
+  const response = await responsePending;
+  const result = await response.json();
+  assert.strictEqual(response.status(), 200, result.error?.message || 'Sizing request failed');
+  assert.strictEqual(result.resolvedPlatform, 'DL380_Gen12', result.result?.message || 'Sizing lost the named platform');
+}
+
 async function verifyOrder4SizingAndMatrixHandoff(page, baseUrl) {
   await selectHeaderChassis(page, 'DL380 Gen12');
   await page.getByRole('button', { name: /Sizing \(4x DL380\)/i }).click();
@@ -299,10 +311,10 @@ async function verifyOrder4SizingAndMatrixHandoff(page, baseUrl) {
 
   // Switch header product before running workflow & before clicking Evaluate in 5-Tier Matrix
   await selectHeaderChassis(page, 'DL360 Gen11');
-  await page.getByRole('button', { name: /Run workflow/i }).click();
+  await runSizingWorkflow(page);
 
   const summary = page.getByTestId('candidate-reference-summary');
-  await summary.waitFor({ timeout: 30000 });
+  await summary.waitFor({ timeout: 10000 });
   const summaryText = await summary.textContent();
   assert(summaryText.includes('DL380_Gen12') || summaryText.includes('DL380 Gen12'), `Expected originating DL380 product, got: ${summaryText}`);
   assert(summaryText.includes('CLUSTER_MULTIPLIED'), `Expected CLUSTER_MULTIPLIED scope, got: ${summaryText}`);
@@ -332,7 +344,7 @@ async function verifyOrder4SizingAndMatrixHandoff(page, baseUrl) {
   await textarea.fill('Size 2 nodes of DL380 Gen12 with 64 cores');
   await page.getByRole('button', { name: /Identify workflow/i }).click();
   await page.getByRole('button', { name: /Run workflow/i }).waitFor({ timeout: 10000 });
-  await page.getByRole('button', { name: /Run workflow/i }).click();
+  await runSizingWorkflow(page);
   const clarifyAlert = page.getByRole('alert').filter({ hasText: /Human Clarification Required/i });
   await clarifyAlert.waitFor({ timeout: 25000 });
   assert(/Memory|Drive Cage/i.test(await clarifyAlert.textContent()), 'Incomplete sizing must name missing requirements');

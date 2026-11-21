@@ -5,7 +5,7 @@ const path = require('path');
 const { createHash } = require('crypto');
 const { isDeepStrictEqual } = require('util');
 const { enqueueCatalogProbe } = require('./catalog_probe_queue.js');
-const { listAllCatalogs } = require('./catalog_discovery.js');
+const { listAllCatalogs, matchAlletraMpProducts } = require('./catalog_discovery.js');
 const { cleanBaseSKU, isValidHpeSKU } = require('./sku.js');
 const { classifyComponentRole } = require('./product_meta.js');
 const { extractCanonicalAttributes } = require('./attribute_vectors.js');
@@ -44,7 +44,7 @@ function _normalizeToken(value) {
   return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
 }
 
-const MODEL_RE = /\b((?:dl|ml|bl|rl|sy|sn|gx|msl)\s*\d{3,5}[a-z]?|synergy\s*\d{3,5}|alletra(?:\s+storage)?(?:\s+mp)?\s*(?:[bx]\d{4,5}[a-z]?|10k|\d{4}|mp)|(?:b|x)10000|poweredge\s*[rtmc]\d{3,4}[a-z]*|fusionserver\s*\d{4}[a-z]?|thinksystem\s*s[rt]\d{3}|ucs\s*[bc]\d{3})(?:[\s_-]*(?:gen\s*|g)(\d{1,2}))?(?![a-z0-9])/gi;
+const MODEL_RE = /\b((?:dl|ml|bl|rl|sy|sn|gx|msl)\s*\d{3,5}[a-z]?|synergy\s*\d{3,5}|alletra(?:\s+storage)?(?:\s+mp)?\s*(?:[bx]\d{4,5}[a-z]?|10k|\d{4}|mp)|[bx]10\d{3}|poweredge\s*[rtmc]\d{3,4}[a-z]*|fusionserver\s*\d{4}[a-z]?|thinksystem\s*s[rt]\d{3}|ucs\s*[bc]\d{3})(?:[\s_-]*(?:gen\s*|g)(\d{1,2}))?(?![a-z0-9])/gi;
 const PORTFOLIO_RE = /\b(?:across\s+(?:all\s+)?(?:catalogs|products|solutions)|portfolio[ -]wide|entire\s+portfolio)\b/i;
 const GEN_RE = /\bgen\s*(\d{1,2})\b/gi;
 
@@ -85,7 +85,9 @@ function resolveCatalogQueryScope(query, catalogs, selectedProduct) {
   const unresolved = [];
   for (const [label, model, generation] of mentions) {
     const targetGen = generation || unqualifiedGeneration;
-    const found = catalogs.filter(cat => _matchCatalogModel(cat, model) && (!targetGen || _catalogGeneration(cat) === targetGen));
+    const [alletraProduct] = matchAlletraMpProducts(model);
+    const found = catalogs.filter(cat => (alletraProduct ? cat.id === alletraProduct : _matchCatalogModel(cat, model)) &&
+      (!targetGen || _catalogGeneration(cat) === targetGen));
     if (!found.length) unresolved.push(label.trim());
     for (const cat of found) products.add(cat.id);
   }

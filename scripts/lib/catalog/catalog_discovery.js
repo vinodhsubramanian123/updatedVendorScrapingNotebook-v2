@@ -140,6 +140,13 @@ function _buildDynamicPlatformMatchers(chassisMap) {
   return matchers.sort((a, b) => b.specificity - a.specificity);
 }
 
+function matchAlletraMpProducts(query) {
+  const text = String(query || '').replace(/_/g, ' ');
+  const chassisMap = getChassisMap();
+  return ['Alletra_MP_B10000', 'Alletra_MP_X10000'].filter(id =>
+    chassisMap[id]?.aliases?.some(alias => new RegExp(alias, 'i').test(text)));
+}
+
 function _matchPlatformDescription(desc, chassisMap, dynamicMatchers) {
   const explicitPlatform = desc.match(/\b(dl\s*\d{3}[a-z]?)\s*(?:gen|g)\s*(\d+)\b/i);
   if (explicitPlatform) {
@@ -829,6 +836,7 @@ module.exports = {
   autoDetectChassisDir,
   autoDetectChassisDetailed,
   getChassisMap,
+  matchAlletraMpProducts,
   invalidateChassisMapCache,
   detectChassisVariant,
   isCatalogCertified

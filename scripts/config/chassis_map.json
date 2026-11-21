@@ -1973,12 +1973,12 @@
       "family": "Alletra", "gen": "Storage", "formFactor": "Array", "uHeight": 4,
       "baseSku": "S0B84A", "switchlessBaseSku": "S0B84A", "switchedBaseSku": "S1R06A", "chassisSku": "R7C75A", "jbofSku": "S1J10A",
       "model": "HPE Alletra Storage MP B10000", "portalSearchQuery": "Alletra Storage MP B10000",
-      "aliases": ["alletra(?:\\s+storage)?(?:\\s+mp)?\\s+b10(?:000|100|120|130|140|200|230|240)", "\\bb10(?:000|100|120|130|140|200|230|240)\\b", "alletra(?:\\s+mp)?\\s+10k", "\\bs0b84a\\b", "\\bs1r06a\\b"]
+      "aliases": ["\\bb10(?:000|100|120|130|140|200|230|240)\\b", "\\balletra(?:\\s+storage)?(?:\\s+mp)?\\s+10k\\b", "\\bs0b84a\\b", "\\bs1r06a\\b"]
     },
     "Alletra_MP_X10000": {
       "family": "Alletra", "gen": "Storage", "formFactor": "Array", "uHeight": 4,
       "baseSku": "S3L12A", "chassisSku": "R7C75A", "model": "HPE Alletra Storage MP X10000", "portalSearchQuery": "Alletra Storage MP X10000",
-      "aliases": ["alletra(?:\\s+storage)?(?:\\s+mp)?\\s+x10(?:000|250)", "\\bx10(?:000|250)\\b", "\\bs3l12a\\b", "\\bs3l13a\\b"]
+      "aliases": ["\\bx10(?:000|250)\\b", "\\bs3l12a\\b", "\\bs3l13a\\b"]
     },
     "Alletra_Storage_System": {
       "family": "Alletra", "gen": "Storage", "formFactor": "Array", "uHeight": 4,

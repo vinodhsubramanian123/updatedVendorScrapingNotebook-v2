@@ -1054,11 +1054,9 @@ function _buildTelemetryData(ctx, safeStartTime) {
 function _buildNestedEvalMeta(evalResults) {
   const serverCount = evalResults.serverCount || evalResults.configurationContext?.multiplier || 1;
   return {
-    serverCount,
     nodeCount: evalResults.nodeCount || serverCount,
     quantityBasis: evalResults.quantityBasis || (serverCount > 1 ? 'CLUSTER_MULTIPLIED' : 'SINGLE_NODE'),
     candidateReference: evalResults.candidateReference || null,
-    notebookLmStatus: evalResults.notebookLmStatus || null,
     postFlowSync: evalResults.postFlowSync || null
   };
 }
@@ -1070,7 +1068,6 @@ function _buildNestedEvalResults(evalResults, provenanceTrace, narrative, soluti
     needsActions: evalResults.evalSummary?.needsActions || [],
     unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
     totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
-    aspectChecks: evalResults.aspectChecks || [],
     stageBreakdown: evalResults.stageBreakdown || {},
     provenanceTrace,
     evaluationNarrative: narrative,

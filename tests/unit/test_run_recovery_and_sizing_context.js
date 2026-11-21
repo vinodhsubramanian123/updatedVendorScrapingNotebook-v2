@@ -11,6 +11,30 @@ describe('P1 · Run Recovery and Sizing Context Preservation', () => {
   const { getRunById, persistRunRecord, isValidRunId, registerRagJob } = require('../../dashboard/services/runState.cjs');
   const { executeRoutedQuery } = require('../../scripts/evaluators/route_query.js');
 
+  it('routes explicit Alletra MP models and blocks generic BOM synthesis until the Ninja handoff', async () => {
+    const cases = [
+      ['Size B10200 with 96 NVMe drives', 'Alletra_MP_B10000', 'SWITCHED', 'S1R06A'],
+      ['Configure Alletra MP B10100 with 96 NVMe drives', 'Alletra_MP_B10000', 'SWITCHLESS', 'S0B84A'],
+      ['Build a BOM for HPE Alletra MP X10000 with 2 PB storage', 'Alletra_MP_X10000', null, null],
+      ['Build a BOM for Alletra MP B10000 with 60 NVMe drives', 'Alletra_MP_B10000', null, null]
+    ];
+    for (const [query, product, topology, baseSku] of cases) {
+      const response = await executeRoutedQuery(query, { chassisName: 'DL380_Gen12', offline: true, continueEvaluation: true });
+      assert.strictEqual(response.resolvedPlatform, product);
+      assert.strictEqual(response.result.code, 'NINJA_ONLINE_SIZING_REQUIRED');
+      assert.deepStrictEqual(response.result.storageSizingHandoff.topology, topology ? { type: topology, baseSku } : null);
+      assert.deepStrictEqual(response.result.candidateBOM, []);
+      assert.deepStrictEqual(response.result.missingRequirements, ['HPE Ninja Online sizing and OCA JSON export']);
+      assert.strictEqual(response.result.portalValidationStatus, 'PORTAL_VALIDATION_PENDING');
+      assert.strictEqual(response.result.deliveryBlocked, true);
+    }
+    const mixed = await executeRoutedQuery('Configure one B10000 with B10100 and B10200', { offline: true });
+    assert.strictEqual(mixed.result.storageSizingHandoff.hasConflictingTopologies, true);
+    assert.strictEqual(mixed.result.storageSizingHandoff.topology, null);
+    const ambiguous = await executeRoutedQuery('Build a BOM for B10000 and X10000', { offline: true });
+    assert.strictEqual(ambiguous.result.code, 'PLATFORM_CLARIFICATION_REQUIRED');
+  });
+
   it('1. Persists run record atomically and retrieves it by run ID', () => {
     const tmpRunsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'runstate-persist-'));
     const prevRunsDir = process.env.DASHBOARD_RUNS_DIR;
@@ -236,14 +260,20 @@ describe('P1 · Run Recovery and Sizing Context Preservation', () => {
       unknownResp.hitlRequired === true || unknownData.code === 'PLATFORM_CLARIFICATION_REQUIRED' || unknownData.requiresHumanClarification === true,
       'Unresolved platform must require human clarification'
     );
+    const unsupported = await executeRoutedQuery('Size 2 nodes of DL999 Gen12 with 64GB RAM', {
+      chassisName: 'DL380_Gen12',
+      offline: true
+    });
+    assert.strictEqual(unsupported.resolvedPlatform, null);
+    assert.deepStrictEqual(unsupported.result.candidateBOM, []);
 
     const incompleteSizingResp = await executeRoutedQuery('Size 2 nodes of DL380 Gen12 with 64 cores', {
-      chassisName: 'DL380_Gen12',
-      chassisDir: dl380Dir,
+      chassisName: 'DL360_Gen11',
       offline: true,
       offlineMode: true
     });
     const incompleteData = incompleteSizingResp.result || incompleteSizingResp;
+    assert.strictEqual(incompleteSizingResp.resolvedPlatform, 'DL380_Gen12');
     assert.strictEqual(incompleteData.requiresHumanClarification, true);
     assert.ok((incompleteData.missingRequirements || []).includes('Memory'));
     assert.ok((incompleteData.missingRequirements || []).includes('Drive Cage / Drive'));
