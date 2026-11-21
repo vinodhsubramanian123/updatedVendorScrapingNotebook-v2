@@ -159,17 +159,36 @@ async function createGuardedContext(browser, telemetry) {
 }
 
 function attachPageMonitors(page, telemetry) {
+  const pending = new Set();
+  page.on('request', request => {
+    if (!['eventsource', 'websocket'].includes(request.resourceType())) pending.add(request);
+  });
+  page.on('requestfinished', request => pending.delete(request));
+  page.on('requestfailed', request => pending.delete(request));
   page.on('pageerror', err => telemetry.pageErrors.push(err.message));
   page.on('console', msg => {
     if (msg.type() !== 'error') return;
     const text = msg.text();
     if (isExpectedNegativeResourceError(text)) return;
     if (telemetry.allowRestartDisconnect && isExpectedRestartNetworkError(text)) return;
-    telemetry.consoleErrors.push(text);
+    const url = msg.location().url || page.url();
+    telemetry.consoleErrors.push(`${text} (${url}, planned restart: ${Boolean(telemetry.allowRestartDisconnect)})`);
   });
   page.on('response', res => {
     if (res.status() >= 500) telemetry.server5xx.push(`${res.status()} ${res.url()}`);
   });
+  return pending;
+}
+
+async function waitForOutstandingRequests(...pages) {
+  const deadline = Date.now() + 90000;
+  while (pages.some(requests => requests.size > 0)) {
+    if (Date.now() >= deadline) {
+      const urls = pages.flatMap(requests => [...requests].map(request => request.url()));
+      throw new Error(`Browser requests did not finish: ${urls.join(', ')}`);
+    }
+    await new Promise(resolve => setTimeout(resolve, 50));
+  }
 }
 
 async function selectHeaderChassis(page, searchText) {
@@ -567,8 +586,8 @@ async function verifyOrder3LifecycleAndRestart(browser, port, serverRef, runsDir
   const ctxB = await createGuardedContext(browser, telemetry);
   const pageA = await ctxA.newPage();
   const pageB = await ctxB.newPage();
-  attachPageMonitors(pageA, telemetry);
-  attachPageMonitors(pageB, telemetry);
+  const pageARequests = attachPageMonitors(pageA, telemetry);
+  const pageBRequests = attachPageMonitors(pageB, telemetry);
 
   try {
     await pageA.goto(baseUrl, { waitUntil: 'domcontentloaded' });
@@ -628,6 +647,7 @@ async function verifyOrder3LifecycleAndRestart(browser, port, serverRef, runsDir
     const staleTime = new Date(Date.now() - 60000);
     fs.utimesSync(ambigUpload.filepath, staleTime, staleTime);
 
+    await waitForOutstandingRequests(pageARequests, pageBRequests);
     telemetry.allowRestartDisconnect = true;
     try {
       await stopServer(serverRef.current.proc);
@@ -659,6 +679,7 @@ async function verifyOrder3LifecycleAndRestart(browser, port, serverRef, runsDir
     });
     assert.strictEqual(confirmExpired.status, 410);
     assert.strictEqual(confirmExpired.body.remediationAction, 'REUPLOAD_REQUIRED');
+    await waitForOutstandingRequests(pageARequests, pageBRequests);
   } finally {
     await ctxA.close().catch(() => {});
     await ctxB.close().catch(() => {});
@@ -743,7 +764,7 @@ async function runBrowserReleaseGate() {
     browser = await chromium.launch({ headless: true });
     const context = await createGuardedContext(browser, telemetry);
     const page = await context.newPage();
-    attachPageMonitors(page, telemetry);
+    const pageRequests = attachPageMonitors(page, telemetry);
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
 
     console.log('▶ Order 1: Offline policy & OCR blocking...');
@@ -754,6 +775,7 @@ async function runBrowserReleaseGate() {
     const exportMeta = await verifyOrder2Exports(page, baseUrl, offlineRunId, runsDir, authSecret);
     console.log('▶ Order 5: Reconciliation, DL385 topology, a11y & mobile...');
     await verifyReconcileTopologyAndA11y(page, baseUrl);
+    await waitForOutstandingRequests(pageRequests);
     await context.close();
 
     console.log('▶ Order 3: Run recovery, stale cancel, restart & expired intake...');
