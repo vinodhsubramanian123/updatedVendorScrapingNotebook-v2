@@ -4,6 +4,7 @@ const INTENT_RULES = Object.freeze([
   ['FREEFORM_QA', 'OBJECTIVE', null],
   ['BOQ_EVALUATION', 'OBJECTIVE', /\b(?:evaluate\s+(?:this\s+)?(?:boq|bom)|validate\s+(?:this\s+)?(?:boq|bom)|verify\s+bom|check\s+buildability)\b/i],
   ['RFP_SIZING_TO_BOM', 'OBJECTIVE', /\b(?:size\s+(?:a\s+)?(?:server|configuration)|sizing|build\s+(?:a\s+)?bom|generate\s+(?:a\s+)?bom|create\s+a\s+configuration|configure|quote\s+me|need.*(?:cores|ram|tb\s+storage))\b/i],
+  ['SOLUTION_COMPARISON', 'OBJECTIVE', /\b(?:(?:compare|comparison)\b.*\b(?:vs\.?|versus|dl\s*\d{3}|ml\s*\d{3}|rl\s*\d{3}|sy\s*\d{3}|alletra|proliant|servers?|platforms?|solutions?)|(?:dl\s*\d{3}|ml\s*\d{3}|rl\s*\d{3}|sy\s*\d{3}|alletra)\b.*\b(?:vs\.?|versus)\b|side[\s-]by[\s-]side\s+(?:platform|server|solution)\s+comparison)\b/i],
   ['BOM_RECONCILIATION', 'OBJECTIVE', /\b(?:reconcile|compare\s+boms?|tender\s+vs\.?\s+quote|quote\s+comparison|ghost\s+sku)\b/i],
   ['CATALOG_INTELLIGENCE', 'OBJECTIVE', /\b(?:pric(?:e|es|ing)[ -]+(?:drifts?|chang(?:e[ds]?|ing)|movements?|increases?|decreases?|history|trends?)|lifecycle|is\s+obsolete|direct\s+ship|gpl\s+price|list\s+price\s+of|options\s+added|lead[ -]+time|sort(?:ed)?\s+by\s+(?:lead\s*time|price)|fast[\s-]*ship|(?:list|show|find|filter|which)\b.*\b(?:dimms?|gpus?|cpus?|psus?|power\s*suppl(?:y|ies)|drives?|ssds?|tech\s*care|support\s*skus?))\b/i],
   ['OCR_QUOTE_INGESTION', 'MODALITY', /\b(?:ocr|scan(?:ned)?\s+(?:quote|pdf|tender)|extract.*(?:image|pdf))\b/i],

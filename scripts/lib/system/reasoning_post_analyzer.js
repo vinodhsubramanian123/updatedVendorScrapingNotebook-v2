@@ -45,9 +45,13 @@ function _hasVerifiedTier2Evidence(responseData) {
   return nlm.citations.some(entry => _isAuthoritativeCitationEntry(entry, nlm.ephemeralSourceId));
 }
 
-/**
- * Determine the Epistemic Tier of the completed solution (INV-231)
- */
+function _hasPhysicalChecks(responseData) {
+  return responseData?.aspectChecksCompleted === true ||
+    (Array.isArray(responseData?.aspectChecks) &&
+      responseData.aspectChecks.some(check => ['PASS', 'WARN', 'FAIL'].includes(check?.status)));
+}
+
+/** Determine the epistemic tier of the completed solution (INV-231). */
 function determineEpistemicTier(responseData, _classification, context = {}) {
   // Tier 3: Requires verified cryptographic vendor portal receipt OR live accepted portal receipt
   const receipt = require('../boq/portal_receipt').verifyCurrentPortalReceipt(responseData, context);
@@ -75,13 +79,9 @@ function determineEpistemicTier(responseData, _classification, context = {}) {
   }
 
   // Tier 1: Requires verified execution of deterministic physical aspect checks
-  const hasExecutedAspectChecks = Boolean(
-    responseData?.aspectChecksCompleted === true ||
-    (Array.isArray(responseData?.aspectChecks) && responseData.aspectChecks.length > 0)
-  );
-  if (hasExecutedAspectChecks) {
+  if (_hasPhysicalChecks(responseData)) {
     const checks = Array.isArray(responseData?.aspectChecks) ? responseData.aspectChecks : [];
-    const passedCount = checks.filter(c => c.status === 'PASS').length;
+    const passedCount = checks.filter(c => c?.status === 'PASS').length;
     const countStr = checks.length > 0 ? ` (${passedCount}/${checks.length} PASS)` : '';
     return {
       tier: 'TIER_1_PHYSICAL_SANITY',
@@ -103,20 +103,32 @@ function determineEpistemicTier(responseData, _classification, context = {}) {
  * Helper to execute the feedback reflection loop in a contained routine.
  */
 function _runContinuousLearningHook(context, responseData, missingDeps, effectiveTraceId) {
-  let feedbackResult = {
+  const feedbackResult = {
     hookStatus: 'AUDITED_NO_ACTION',
     deltasProposed: 0,
-    quarantinedCount: 0
+    quarantinedCount: 0,
+    activatedCount: 0,
+    rejectedCount: 0,
+    advisoryCount: 0,
+    incidentCount: 0
   };
 
   try {
     const shouldEnable = Boolean(context.enableFeedback === true && process.env.NODE_ENV !== 'test' && !context.isolatedMode);
     const chassisDir = context.chassisDir || context.targetDir || responseData.chassisDir || responseData.catalogDir;
-    if (shouldEnable && chassisDir && fs.existsSync(chassisDir) && Array.isArray(missingDeps) && missingDeps.length > 0) {
+    if (!shouldEnable) return { ...feedbackResult, hookStatus: 'DISABLED' };
+    if (missingDeps.length && (!chassisDir || !fs.existsSync(chassisDir))) {
+      return { ...feedbackResult, hookStatus: 'SKIPPED_MISSING_DIRECTORY' };
+    }
+    if (missingDeps.length) {
       const { processPortalFeedback } = require('../feedback/feedback_loop.js');
-      let proposed = 0;
+      const counters = new Map([
+        ['QUARANTINED', 'quarantinedCount'], ['ACTIVE', 'activatedCount'], ['REJECTED', 'rejectedCount'],
+        ['WORKFLOW_ADVISORY_ONLY', 'advisoryCount'], ['IGNORED_FOR_HARDWARE_RULES', 'incidentCount']
+      ]);
       for (const dep of missingDeps) {
-        const depReason = typeof dep === 'string' ? dep : (dep.reason || dep.sku || 'Mandatory hardware dependency');
+        const depReason = typeof dep === 'string' ? dep : (dep?.reason || dep?.sku);
+        if (!depReason) throw new Error('Missing dependency has no reason or SKU');
         const feedback = processPortalFeedback(depReason, chassisDir, {
           sourceAgent: 'AUTOMATED_REASONING_POST_ANALYSIS',
           source: 'DETERMINISTIC_ASPECT_EVALUATION',
@@ -124,26 +136,20 @@ function _runContinuousLearningHook(context, responseData, missingDeps, effectiv
           traceId: effectiveTraceId,
           ruleUpdate: `Post-analysis learning: ${depReason}`
         });
-        if (feedback && feedback.status !== 'OPERATIONAL_INCIDENT_RECORDED') {
-          proposed++;
-        }
+        const counter = counters.get(feedback?.governanceStatus);
+        if (!counter) throw new Error('Feedback receipt has no recognized governance outcome');
+        feedbackResult[counter]++;
       }
-      feedbackResult = {
-        hookStatus: proposed > 0 ? 'DELTAS_PROPOSED_AND_QUARANTINED' : 'AUDITED_NO_ACTION',
-        deltasProposed: proposed,
-        quarantinedCount: proposed
-      };
+      feedbackResult.hookStatus = feedbackResult.quarantinedCount === missingDeps.length
+        ? 'DELTAS_PROPOSED_AND_QUARANTINED' : 'OUTCOMES_RECORDED';
     }
   } catch (err) {
     logger.warn('REASONING_ANALYZER', `Feedback reflection hook advisory: ${err.message}`);
-    feedbackResult = {
-      hookStatus: 'HOOK_ERROR',
-      error: err.message,
-      deltasProposed: 0,
-      quarantinedCount: 0
-    };
+    feedbackResult.hookStatus = 'HOOK_ERROR';
+    feedbackResult.error = err.message;
   }
 
+  feedbackResult.deltasProposed = feedbackResult.quarantinedCount + feedbackResult.rejectedCount + feedbackResult.activatedCount;
   return feedbackResult;
 }
 
@@ -240,19 +246,25 @@ function _deriveMemoryProof(memory) {
   }
 
   const totalCh = cpus * chWidth;
-  const satPct = Math.min(100, Math.round((dimms / totalCh) * 100));
-  const isUnbalanced = memory.isBalancedChannel === false || memory.isInvalidChannelConfiguration === true || (dimms % cpus !== 0) || ((dimms / cpus) % chWidth !== 0);
-  if (isUnbalanced) {
-    return `Memory Balance Proof: ${dimms} DIMMs across ${cpus} CPU(s) with ${chWidth} channels/socket (${(dimms / cpus).toFixed(1)} DIMMs/socket) -> Interleaving: UNBALANCED (${satPct}% saturation [${Math.min(dimms, totalCh)}/${totalCh} channels active]). Balance check: ${dimms} % ${totalCh} = ${dimms % totalCh} != 0 (asymmetric NUMA interleaving).`;
-  }
-  return `Memory Balance Proof: ${dimms} DIMMs across ${cpus} CPU(s) with ${chWidth} channels/socket (${dimms / cpus} DIMMs/socket) -> Interleaving: 100% BALANCED across all ${totalCh} channels (${dimms}/${totalCh} channels populated).`;
+  const remainder = dimms % totalCh;
+  const distribution = remainder === 0
+    ? `An even distribution would place ${dimms / totalCh} DIMM(s) per channel.`
+    : `An even distribution across all channels leaves ${remainder} DIMM(s) over.`;
+  const invalid = memory.isInvalidChannelConfiguration === true ? ' Validator flagged an invalid population.' : '';
+  const imbalance = memory.isBalancedChannel === false ? ' Validator flagged channel imbalance.' : '';
+  return `Memory Balance Check: ${dimms} DIMMs across ${cpus} CPU(s) with ${chWidth} channels/socket. ${distribution}${invalid}${imbalance}`;
 }
 
 function _derivePcieProof(pcie) {
-  const cards = pcie.requiredPcieCards || 0;
-  const activeSlots = pcie.activeSlotsAvailable || 0;
-  const mechSlots = pcie.totalPhysicalSlots ?? 'UNKNOWN';
-  if (cards <= 0 && activeSlots <= 0) return null;
+  const totals = pcie.slotLayout?.clusterTotals;
+  const cards = totals ? totals.pcieCardDemand : pcie.requiredPcieCards;
+  const activeSlots = totals ? totals.electricallyActiveSlotCapacity : pcie.activeSlotsAvailable;
+  const mechSlots = (totals ? totals.mechanicalSlotCapacity : pcie.totalPhysicalSlots) ?? 'UNKNOWN';
+  if (cards == null && activeSlots == null) return null;
+  if (![cards, activeSlots].every(value => Number.isFinite(value) && value >= 0)) {
+    return `PCIe Capacity Check: Demand = ${cards ?? 'UNKNOWN'} card(s), active slots = ${activeSlots ?? 'UNKNOWN'}. Slot headroom is UNKNOWN.`;
+  }
+  const scope = totals ? ` across ${totals.serverCount ?? 'UNKNOWN'} servers` : '';
 
   if (cards > activeSlots) {
     let causeNote = 'Cause and enablement kit require scoped chassis PCIe rule verification.';
@@ -261,10 +273,9 @@ function _derivePcieProof(pcie) {
     } else if (pcie.needsPrimaryCableKit === true) {
       causeNote = 'Validator flagged primary riser cable kit deficit (needsPrimaryCableKit: true).';
     }
-    return `PCIe Capacity Proof: Demand = ${cards} card(s) vs Active = ${activeSlots} slot(s) (Mechanical: ${mechSlots}) -> Deficit: -${cards - activeSlots} slot(s). ${causeNote}`;
+    return `PCIe Capacity Proof: Demand = ${cards} card(s) vs Active = ${activeSlots} slot(s)${scope} (Mechanical: ${mechSlots}) -> Deficit: -${cards - activeSlots} slot(s). ${causeNote}`;
   }
-  const x16Label = pcie.x16LanesAvailable ?? 'UNKNOWN';
-  return `PCIe Capacity Proof: Demand = ${cards} card(s) <= Active = ${activeSlots} slot(s) (Mechanical: ${mechSlots}, x16 lanes: ${x16Label}) -> 100% PCIe coverage (+${activeSlots - cards} slot headroom).`;
+  return `PCIe Capacity Proof: Demand = ${cards} card(s) <= Active = ${activeSlots} slot(s)${scope} (Mechanical: ${mechSlots}). Slot headroom: +${activeSlots - cards}.`;
 }
 
 function _deriveThermalProof(compute, cpus = null) {
@@ -360,7 +371,7 @@ function _buildReasoningNarrative({
     `2. Platform & Generation Scoping: Evaluated against target platform ${platform} (${generation}, ${formFactor}). Applied scoped physical rules without blind cross-domain leakage.`,
     step3Line,
     `4. Epistemic Grounding: Ranked at ${epistemic.label}. Document Grounding: ${docStatus}. Portal Verification: ${epistemic.vendorAcceptancePending ? 'PORTAL VALIDATION PENDING' : 'ACCEPTED_BY_VENDOR'}.`,
-    `5. Continuous Learning: Reflection hook status: ${feedbackResult.hookStatus} (${feedbackResult.deltasProposed} candidate delta(s) proposed to quarantine).`
+    `5. Continuous Learning: Reflection hook status: ${feedbackResult.hookStatus} (${feedbackResult.deltasProposed} candidate delta(s) proposed, ${feedbackResult.quarantinedCount} quarantined).`
   ];
 
   if (selfCorrectionTrail.length > 0) {
@@ -436,7 +447,7 @@ function _recordTerminalReflectionPhase(ledger, {
   const isAcceptanceValid = acceptance.isValid === true && (acceptance.status === 'PASSED' || acceptance.status === 'PASS') && (acceptance.blockersCount || 0) === 0;
   const isFeedbackClean = feedbackResult.hookStatus !== 'HOOK_ERROR';
   let terminalReflectionStatus = 'PASSED';
-  if (acceptance.status === 'FAILED' || responseData.status === 'FAILED') {
+  if (acceptance.status === 'FAILED' || ['FAILED', 'ERROR'].includes(responseData.status)) {
     terminalReflectionStatus = 'FAILED';
   } else if (!isAcceptanceValid || !isFeedbackClean) {
     terminalReflectionStatus = 'ACTION_REQUIRED';
@@ -534,7 +545,8 @@ function _extractViolationStats(responseData) {
 
 function _resolveCounterfactualRepairProofs(responseData, context, acceptance) {
   let proofs = responseData.counterfactualRepairProofs || [];
-  const isUnbuildable = responseData.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' || responseData.isMathClean === false || acceptance.isValid === false;
+  const isUnbuildable = responseData.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' ||
+    responseData.isMathClean === false || responseData.errors?.length > 0 || acceptance.isValid === false;
   if (proofs.length === 0 && isUnbuildable) {
     try {
       const { generateCounterfactualRepairProofs } = require('./counterfactual_repair.js');
@@ -553,6 +565,12 @@ function _resolveCounterfactualRepairProofs(responseData, context, acceptance) {
     }
   }
   return proofs;
+}
+
+function _reportedMathStatus(responseData, rawErrors) {
+  const checks = Array.isArray(responseData.aspectChecks) ? responseData.aspectChecks : [];
+  if (rawErrors.length || checks.some(check => check?.status === 'FAIL')) return false;
+  return typeof responseData.isMathClean === 'boolean' ? responseData.isMathClean : null;
 }
 
 function _buildAnalysisPayload({
@@ -587,16 +605,11 @@ function _buildAnalysisPayload({
     counterfactualRepairProofs,
     epistemicIntegrity: {
       ...epistemic,
-      isMathClean: responseData.isMathClean !== undefined
-        ? Boolean(responseData.isMathClean)
-        : (responseData.aspectChecksCompleted ? rawErrors.length === 0 : null),
+      isMathClean: _reportedMathStatus(responseData, rawErrors),
       hasDiscrepancies: (responseData.opinionDiscrepancies?.length || 0) > 0 || (rawErrors.length > 0)
     },
     transparencyAudit: {
-      physicalChecksEvaluated: Boolean(
-        (responseData.aspectChecksCompleted && Array.isArray(responseData.aspectChecks) && responseData.aspectChecks.length > 0) ||
-        responseData.stage2AspectMathMs
-      ),
+      physicalChecksEvaluated: _hasPhysicalChecks(responseData),
       conflictsDetectedCount: conflictsCount,
       missingDependenciesCount: missingDeps.length,
       diagnosticHintsAttachedCount: diagnosticHints.length,
@@ -606,8 +619,8 @@ function _buildAnalysisPayload({
     acceptanceGate: {
       status: acceptance.status,
       isValid: acceptance.isValid,
-      blockersCount: acceptance.blockersCount ?? (rawErrors.length),
-      warningsCount: acceptance.warningsCount ?? (rawWarnings.length)
+      blockersCount: acceptance.blockersCount ?? (responseData.acceptanceGate ? rawErrors.length : null),
+      warningsCount: acceptance.warningsCount ?? (responseData.acceptanceGate ? rawWarnings.length : null)
     },
     continuousLearningHook: feedbackResult
   };
@@ -646,9 +659,8 @@ function performReasoningPostAnalysis({
 
   // 3. Acceptance Gate State
   const acceptance = responseData.acceptanceGate || {
-    isValid: responseData.status === 'PASSED',
-    status: responseData.status || 'UNKNOWN',
-    blockersCount: rawErrors.length
+    isValid: null,
+    status: 'NOT_EVALUATED'
   };
 
   // 4. Automated Feedback & Continuous Learning Reflection Hook
@@ -677,7 +689,7 @@ function performReasoningPostAnalysis({
     counterfactualRepairProofs
   });
 
-  logger.info('REASONING_ANALYZER', `[REASONING] Trace ${effectiveTraceId} | Vendor: ${contextClassification.detectedVendor} | Domain: ${contextClassification.solutionDomain} | Platform: ${contextClassification.platform} (${contextClassification.generation}) | Epistemic: ${epistemic.tier} | Blocker(s): ${acceptance.blockersCount} | Status: ${acceptance.status} | SelfCorrections: ${selfCorrectionTrail.length}`);
+  logger.info('REASONING_ANALYZER', `[REASONING] Trace ${effectiveTraceId} | Vendor: ${contextClassification.detectedVendor} | Domain: ${contextClassification.solutionDomain} | Platform: ${contextClassification.platform} (${contextClassification.generation}) | Epistemic: ${epistemic.tier} | Blocker(s): ${acceptance.blockersCount ?? 'UNKNOWN'} | Status: ${acceptance.status} | SelfCorrections: ${selfCorrectionTrail.length}`);
 
   // 9. Build Comprehensive Reasoning Analysis Payload
   const analysis = _buildAnalysisPayload({

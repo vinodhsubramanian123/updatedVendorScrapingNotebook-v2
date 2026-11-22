@@ -157,7 +157,7 @@ test('declared DAG accepts converging paths without inventing cycles', () => {
 test('all current router branches are declared while registry stays unused by runtime', () => {
   const report = auditRegistry(root);
   assert.equal(report.validation.valid, true, JSON.stringify(report.validation.issues));
-  assert.equal(report.summary.routerIntents, 18);
+  assert.equal(report.summary.routerIntents, 19);
   assert.equal(report.summary.unmappedRouterIntents, 0);
   assert.equal(report.summary.runtimeRegistryConsumers, 0);
   assert.ok(report.moduleOwnership.length > 0);

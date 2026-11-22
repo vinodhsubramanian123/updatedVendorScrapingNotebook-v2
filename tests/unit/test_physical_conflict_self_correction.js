@@ -22,7 +22,8 @@ describe('Generalized Counterfactual Self-Correction Trail (Feature 5 / Requirem
     assert.ok(trail.hypothesis.includes('standard chassis cooling'));
     assert.ok(trail.detectedFailure.includes('Direct Liquid Cooling'));
     assert.ok(trail.selfCorrectionAction.includes('Branch DLC'));
-    assert.equal(trail.verifiedBuildable, true);
+    assert.equal(trail.status, 'PROPOSED');
+    assert.equal(trail.verifiedBuildable, false);
   });
 
   it('2. Memory: Mixed DDR4/DDR5 emits MEMORY_BUS_ARCHITECTURE self-correction trail', () => {
@@ -37,7 +38,8 @@ describe('Generalized Counterfactual Self-Correction Trail (Feature 5 / Requirem
     assert.equal(typeof trail.step, 'number');
     assert.ok(trail.detectedFailure.includes('DDR4 and DDR5'));
     assert.ok(trail.selfCorrectionAction.includes('Branch Memory'));
-    assert.equal(trail.verifiedBuildable, true);
+    assert.equal(trail.status, 'PROPOSED');
+    assert.equal(trail.verifiedBuildable, false);
   });
 
   it('3. PCIe: Exceeding active slots emits PCIE_EXPANSION_LANES self-correction trail', () => {
@@ -58,7 +60,8 @@ describe('Generalized Counterfactual Self-Correction Trail (Feature 5 / Requirem
     assert.equal(typeof trail.step, 'number');
     assert.ok(trail.detectedFailure.includes('electrically active slots'));
     assert.ok(trail.selfCorrectionAction.includes('Branch PCIe'));
-    assert.equal(trail.verifiedBuildable, true);
+    assert.equal(trail.status, 'PROPOSED');
+    assert.equal(trail.verifiedBuildable, false);
   });
 
   it('4. Power: Power deficit emits POWER_ENVELOPE_CAPACITY self-correction trail', () => {
@@ -79,7 +82,8 @@ describe('Generalized Counterfactual Self-Correction Trail (Feature 5 / Requirem
     assert.equal(typeof trail.step, 'number');
     assert.ok(trail.detectedFailure.includes('electrical headroom'));
     assert.ok(trail.selfCorrectionAction.includes('Branch Power'));
-    assert.equal(trail.verifiedBuildable, true);
+    assert.equal(trail.status, 'PROPOSED');
+    assert.equal(trail.verifiedBuildable, false);
   });
 
   it('5. Storage: Missing controller cable emits STORAGE_CABLING_AND_EXPANSION self-correction trail', () => {
@@ -102,7 +106,8 @@ describe('Generalized Counterfactual Self-Correction Trail (Feature 5 / Requirem
     assert.equal(typeof trail.step, 'number');
     assert.ok(trail.detectedFailure.includes('controller enablement cable kit'));
     assert.ok(trail.selfCorrectionAction.includes('Branch Storage'));
-    assert.equal(trail.verifiedBuildable, true);
+    assert.equal(trail.status, 'PROPOSED');
+    assert.equal(trail.verifiedBuildable, false);
   });
 
   it('6. Support/Licensing: Missing CTO license emits MANDATORY_CTO_MANAGEMENT_LICENSE self-correction trail', () => {
@@ -123,7 +128,8 @@ describe('Generalized Counterfactual Self-Correction Trail (Feature 5 / Requirem
     assert.equal(typeof trail.step, 'number');
     assert.ok(trail.detectedFailure.includes('Rule 81322276'));
     assert.ok(trail.selfCorrectionAction.includes('Branch Licensing'));
-    assert.equal(trail.verifiedBuildable, true);
+    assert.equal(trail.status, 'PROPOSED');
+    assert.equal(trail.verifiedBuildable, false);
   });
 
   it('7. End-to-End: Reasoning Post-Analyzer embeds multi-aspect selfCorrectionTrail into Step 6 narrative', () => {

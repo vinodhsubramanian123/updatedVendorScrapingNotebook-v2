@@ -22,11 +22,11 @@ const registry = {
   schemaVersion: 1, activation: 'UNUSED',
   dependencySemantics: 'DECLARED_CONDITIONAL_HANDOFFS_NOT_ACTIVE_DISPATCH',
   capabilities: [
-    capability({ capabilityId: 'presales-query-router', intents: ['INTAKE_CLASSIFICATION'],
+    capability({ capabilityId: 'presales-query-router', intents: ['INTAKE_CLASSIFICATION', 'SOLUTION_COMPARISON'],
       triggers: ['Incoming presales query or customer document'],
       applicability: ['Classify objective, modality, scope and requested transforms'],
       executionMode: 'HYBRID', vendorScope: ['EXPLICIT_OR_UNRESOLVED'],
-      entrypoints: [route, entry('scripts/evaluators/route_query.js', 'classifyQueryIntent'), entry('scripts/lib/boq/presales_disambiguation.js', 'recordDisambiguationDecision', 'AGENT_PROCEDURE')],
+      entrypoints: [route, entry('scripts/evaluators/route_query.js', 'classifyQueryIntent'), entry('scripts/lib/boq/solution_comparator.js', 'compareSolutionsAcrossPlatforms'), entry('scripts/lib/boq/presales_disambiguation.js', 'recordDisambiguationDecision', 'AGENT_PROCEDURE')],
       completionEvidence: ['Intent decision and unresolved scope; real dispatch trace when executed'],
       coverageLimits: ['Legacy keyword router is active; this registry is not a dispatcher. Compound/pre-dispatch gaps remain CP7.'] }),
     capability({ capabilityId: 'boq-eval-skill', intents: ['BOQ_EVALUATION'],

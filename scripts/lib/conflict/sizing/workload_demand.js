@@ -10,6 +10,12 @@ const {
   computeUsableStorageTb,
   normalizeRaidLevel
 } = require('../../boq/requirements/typed_values.js');
+const {
+  WORKLOAD_SIZING_PROFILES,
+  getWorkloadReferenceProfile,
+  deriveProfileDemandOverrides,
+  evaluateWorkloadSpecificChecks
+} = require('./workload_profiles.js');
 
 const WORKLOAD_DEMAND_SCHEMA_VERSION = '1.0';
 
@@ -1075,14 +1081,20 @@ function _resolveFinalPilotStatus(resilience, hardConstraintFailures, demandReco
 
 /**
  * Evaluate the VMware VCF virtualization sizing pilot (or guard unprofiled / incomplete demands).
+ * Non-pilot families require explicit authoritativeSizingBasis or options.allowReferenceProfiles === true.
  */
 function evaluateWorkloadSizingPilot(demandInput = {}, candidateInput = null, options = {}) {
-  const demandRecord = extractWorkloadDemand(demandInput, options);
+  const safeOpts = (options && typeof options === 'object') ? options : {};
+  const demandRecord = extractWorkloadDemand(demandInput, safeOpts);
   const isSupportedPilot = SUPPORTED_PILOT_WORKLOADS.has(demandRecord.workloadFamily);
   const { cores: effectiveBaseCores } = _resolveEffectiveCoresDemand(demandRecord);
-  const missingCriticalInputs = _findMissingCriticalInputs(demandRecord, effectiveBaseCores, options);
+  const missingCriticalInputs = _findMissingCriticalInputs(demandRecord, effectiveBaseCores, safeOpts);
 
   if (!isSupportedPilot) {
+    const profile = getWorkloadReferenceProfile(demandRecord.workloadFamily);
+    if (profile && (safeOpts.allowReferenceProfiles === true || demandRecord.authoritativeSizingBasis !== null)) {
+      return evaluateWorkloadSizingWithProfiles(demandInput, candidateInput, safeOpts);
+    }
     return _buildUnprofiledPilotResponse(demandRecord, effectiveBaseCores, missingCriticalInputs);
   }
   if (missingCriticalInputs.length > 0) {
@@ -1143,12 +1155,147 @@ function evaluateWorkloadSizingPilot(demandInput = {}, candidateInput = null, op
   };
 }
 
+function _buildEnrichedDemandForProfile(demandInput, demandRecord, profile, options) {
+  const rawObj = (demandInput && typeof demandInput === 'object' && !Array.isArray(demandInput)) ? demandInput : {};
+  const derived = deriveProfileDemandOverrides(rawObj, demandRecord, profile);
+  const mergedBasis = demandRecord.authoritativeSizingBasis || profile.referenceArchitecture;
+  const basisProvenance = demandRecord.authoritativeSizingBasis
+    ? PROVENANCE_VALUES.CITED_MEASUREMENT
+    : PROVENANCE_VALUES.CITED_MEASUREMENT;
+  const workingSetGb = _pickDefined([demandRecord.workingSetGb, derived.workingSetGb]);
+  const requiredCores = _pickDefined([demandRecord.requiredCores, derived.requiredCores]);
+
+  const enrichedDemand = createWorkloadDemandRecord({
+    ...demandRecord,
+    workingSetGb,
+    requiredCores,
+    authoritativeSizingBasis: mergedBasis,
+    provenance: {
+      ...demandRecord.provenance,
+      ...derived.derivedProvenance,
+      authoritativeSizingBasis: basisProvenance
+    }
+  }, options);
+
+  return { enrichedDemand, rawObj, derived };
+}
+
+/**
+ * Evaluate workload sizing across all 7 profiled enterprise workload families
+ * using HPE Reference Architecture profiles with explicit provenance tracking.
+ * Truly unknown / unlisted families still refuse extrapolation (UNPROFILED_WORKLOAD_FAMILY).
+ */
+function evaluateWorkloadSizingWithProfiles(demandInput = {}, candidateInput = null, options = {}) {
+  const safeOpts = (options && typeof options === 'object') ? options : {};
+  const baseDemand = extractWorkloadDemand(demandInput, safeOpts);
+  const profile = getWorkloadReferenceProfile(baseDemand.workloadFamily);
+
+  if (!profile) {
+    const { cores: baseCores } = _resolveEffectiveCoresDemand(baseDemand);
+    const missing = _findMissingCriticalInputs(baseDemand, baseCores, safeOpts);
+    return _buildUnprofiledPilotResponse(baseDemand, baseCores, missing);
+  }
+
+  const { enrichedDemand, rawObj, derived } = _buildEnrichedDemandForProfile(demandInput, baseDemand, profile, safeOpts);
+  const { cores: effectiveBaseCores } = _resolveEffectiveCoresDemand(enrichedDemand);
+  const missingCriticalInputs = _findMissingCriticalInputs(enrichedDemand, effectiveBaseCores, safeOpts);
+
+  if (missingCriticalInputs.length > 0) {
+    return {
+      schemaVersion: WORKLOAD_DEMAND_SCHEMA_VERSION,
+      workloadFamily: enrichedDemand.workloadFamily,
+      pilotCoverage: 'PROFILE_SUPPORTED',
+      profileBasis: {
+        profileFamily: profile.family,
+        displayName: profile.displayName,
+        referenceArchitecture: profile.referenceArchitecture,
+        derivedOverrides: derived.details,
+        provenance: enrichedDemand.provenance
+      },
+      sizingStatus: 'SIZING_DRAFT_SCENARIO_RANGE',
+      isQualified: false,
+      extrapolationRefused: true,
+      demandRecord: enrichedDemand,
+      missingCriticalInputs,
+      nextRequiredInput: missingCriticalInputs[0],
+      scenarioRange: _buildDraftScenarioRange(enrichedDemand, effectiveBaseCores, missingCriticalInputs),
+      hardConstraintFailures: []
+    };
+  }
+
+  const growthMultiplier = _computeEffectiveGrowthMultiplier(enrichedDemand.growthFactor);
+  const effectiveWorkingSetGb = Number((enrichedDemand.workingSetGb * growthMultiplier).toFixed(2));
+  const effectiveRequiredCores = _isFinitePositive(effectiveBaseCores) ? Math.ceil(effectiveBaseCores * growthMultiplier) : null;
+  const candidate = (candidateInput && typeof candidateInput === 'object') ? candidateInput : {};
+
+  const resilience = _evaluateResilienceCapacityMath(enrichedDemand, effectiveWorkingSetGb, effectiveRequiredCores, candidate);
+  const numa = _evaluateCandidateNumaTradeoff(candidate);
+  const storage = _evaluateStorageRaidCheck(enrichedDemand, candidate);
+  const fabric = _evaluateFabricParityCheck(enrichedDemand, candidate);
+  const explicitService = _evaluateExplicitServiceCheck(enrichedDemand, candidate);
+  const workloadSpecific = evaluateWorkloadSpecificChecks(profile, {
+    rawInput: rawObj,
+    demandRecord: enrichedDemand,
+    candidate,
+    resilience,
+    numa,
+    storage,
+    effectiveWorkingSetGb,
+    effectiveRequiredCores
+  });
+
+  const hardConstraintFailures = [
+    ..._collectPilotHardFailures(resilience, numa, storage, fabric, explicitService),
+    ...(workloadSpecific.violations || [])
+  ];
+  const statusInfo = _resolveFinalPilotStatus(resilience, hardConstraintFailures, enrichedDemand, effectiveBaseCores);
+
+  return {
+    schemaVersion: WORKLOAD_DEMAND_SCHEMA_VERSION,
+    workloadFamily: enrichedDemand.workloadFamily,
+    pilotCoverage: 'PROFILE_SUPPORTED',
+    profileBasis: {
+      profileFamily: profile.family,
+      displayName: profile.displayName,
+      referenceArchitecture: profile.referenceArchitecture,
+      derivedOverrides: derived.details,
+      provenance: enrichedDemand.provenance
+    },
+    sizingStatus: statusInfo.sizingStatus,
+    isQualified: hardConstraintFailures.length === 0,
+    extrapolationRefused: statusInfo.extrapolationRefused,
+    demandRecord: enrichedDemand,
+    missingCriticalInputs: statusInfo.missingCriticalInputs,
+    nextRequiredInput: statusInfo.nextRequiredInput,
+    scenarioRange: statusInfo.scenarioRange,
+    growthMultiplier,
+    effectiveDemand: {
+      workingSetGb: effectiveWorkingSetGb,
+      requiredCores: effectiveRequiredCores,
+      resilienceMode: enrichedDemand.resilienceMode,
+      usableStorageTb: storage.requiredUsableStorageTb
+    },
+    recommendedCluster: {
+      recommendedTotalNodes: resilience.recommendedTotalNodes,
+      requiredSurvivingNodes: resilience.requiredSurvivingNodes,
+      perNodeMemoryGb: resilience.perNodeMemoryGb,
+      perNodeCores: resilience.perNodeCores
+    },
+    checks: { resilience, numa, storage, fabricParity: fabric, explicitService, workloadSpecific },
+    advisories: workloadSpecific.advisories || [],
+    hardConstraintFailures
+  };
+}
+
 module.exports = {
   WORKLOAD_DEMAND_SCHEMA_VERSION,
   PROVENANCE_VALUES,
   RESILIENCE_MODES,
   SUPPORTED_PILOT_WORKLOADS,
+  WORKLOAD_SIZING_PROFILES,
+  getWorkloadReferenceProfile,
   createWorkloadDemandRecord,
   extractWorkloadDemand,
-  evaluateWorkloadSizingPilot
+  evaluateWorkloadSizingPilot,
+  evaluateWorkloadSizingWithProfiles
 };

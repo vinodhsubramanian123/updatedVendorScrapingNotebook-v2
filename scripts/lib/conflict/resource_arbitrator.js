@@ -695,9 +695,7 @@ function _buildBranchA(primaryOcpCtrl, fastOcpNic, adminOcpNic) {
     },
     substitutions: branchA_substitutions,
     advantages: [
-      'Lowest CapEx buildable baseline',
-      'Leaves 2 PCIe expansion slots open for future GPU/storage expansion',
-      'Fully certified in HPE CLIC presales configurator'
+      'Retains the original OCP storage controller'
     ]
   };
 }
@@ -759,9 +757,7 @@ function _buildBranchB(primaryOcpCtrl, fastOcpNic, adminOcpNic, duals, effective
     },
     substitutions: branchB_substitutions,
     advantages: [
-      'Fulfills 100% of customer requested part numbers including P10115-B21 OCP NIC',
-      'Validates customer\'s original P48832-B21 Tri-Mode Splitter cable choice',
-      `Doubles hardware write-back cache from 4GB to ${pcieDualController.cacheGb || 8}GB (${pcieDualController.busWidth || 'x16'} PCIe bus)`
+      `Retains the requested OCP adapter ${cleanBaseSKU(fastOcpNic.sku)}`
     ]
   };
 }
@@ -783,6 +779,7 @@ function _arbitrateOcpSlotContention(safeItems, ocpAspect, effectiveChassisInfo,
 
   contentions.push({
     resourceType: 'OCP_3_0_SLOTS',
+    branchId: 'branch_ocp_storage_baseline',
     maxCapacity: maxOcpSlots,
     requestedDemands: totalOcpDemands,
     contenders: [
@@ -838,20 +835,20 @@ function _buildArbitrationSelfCorrectionTrail(contentions, branches, effectiveEv
   const selfCorrectionTrail = [];
   let stepNumber = 1;
   contentions.forEach(contention => {
-    const relatedBranches = branches.filter(b => b.substitutions?.some(s => s.originalSku && contention.contenders?.some(c => c.sku === s.originalSku)));
-    const primaryBranch = relatedBranches[0] || branches.find(b => b.branchId === contention.branchId) || branches[0];
+    const primaryBranch = branches.find(b => b.branchId === contention.branchId);
     if (primaryBranch) {
       const isLegacyOcp = contention.resourceType === 'OCP_3_0_SLOTS' && !effectiveEvalResults?.useNumericStep && !effectiveEvalResults?.options?.useNumericStep;
       selfCorrectionTrail.push({
         step: isLegacyOcp ? 'CONTESTED_RESOURCE_ARBITRATION' : stepNumber++,
         contestedResourceType: contention.resourceType,
-        status: 'RESOLVED',
+        branchId: primaryBranch.branchId,
+        status: 'PROPOSED',
         hypothesis: contention.hypothesis || `Greedy allocation attempted to assign all ${contention.requestedDemands} demands to ${contention.resourceType} (capacity: ${contention.maxCapacity}).`,
         detectedFailure: contention.detectedFailure || contention.tradeoffSummary,
         backtrackedFrom: contention.backtrackedFrom || contention.contenders?.map(c => `${c.role} (${c.sku})`).join(', ') || 'Contested component set',
-        selfCorrectionAction: contention.selfCorrectionAction || primaryBranch.title,
-        resolutionDetails: contention.resolutionDetails || primaryBranch.substitutions?.map(s => `${s.action}: ${s.reasoning}`).join('; ') || 'Pivoted to alternate topology',
-        verifiedBuildable: true
+        selfCorrectionAction: `Proposed: ${contention.selfCorrectionAction || primaryBranch.title}`,
+        resolutionDetails: `Expected outcome if applied: ${contention.resolutionDetails || primaryBranch.title}. Candidate validation pending.`,
+        verifiedBuildable: false
       });
     }
   });

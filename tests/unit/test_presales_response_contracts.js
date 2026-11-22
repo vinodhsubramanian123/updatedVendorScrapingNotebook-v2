@@ -15,6 +15,7 @@ const samples = {
   FREEFORM_QA: { answer: 'Fixture answer; grounding remains unknown.' },
   BOQ_EVALUATION: { items: [{ sku: 'FIXTURE-SKU', quantity: 1 }] },
   RFP_SIZING_TO_BOM: { status: 'SIZING_DRAFT', candidateBOM: [{ sku: 'FIXTURE-SKU' }] },
+  SOLUTION_COMPARISON: { status: 'COMPARISON_COMPLETE', comparisonMatrix: [{ platform: 'DL380_Gen12' }], paretoFrontier: { frontierCandidates: [] } },
   BOM_RECONCILIATION: { isTwoBaselineComparison: true, auditReport: { discrepancies: { pricingGaps: ['Unquoted fixture'] } } },
   CATALOG_INTELLIGENCE: { pricingTrail: { observed: 'Fixture history' } },
   OCR_QUOTE_INGESTION: { extractedItems: [{ sourcePage: 1, text: 'Fixture OCR' }] },
@@ -44,7 +45,7 @@ for (const [intent, payload] of Object.entries(samples)) {
 }
 
 test('profiles are immutable; unknown intents and empty profiles cannot silently pass', () => {
-  assert.equal(Object.keys(RESPONSE_PROFILES).length, 17);
+  assert.equal(Object.keys(RESPONSE_PROFILES).length, 18);
   assert.equal(getPresalesResponseProfile('catalog-intelligence').profileId, 'CATALOG_INTELLIGENCE');
   assert.equal(getPresalesResponseProfile('constructor'), null);
   assert.throws(() => { RESPONSE_PROFILES.CATALOG_INTELLIGENCE.contentFields.push('status'); }, TypeError);

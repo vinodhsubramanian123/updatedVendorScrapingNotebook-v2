@@ -36,6 +36,30 @@ test('CP9c — WORKLOAD_DNA arbitrates OCP slot contention and evaluates pivoted
   const branchB = res.result.arbitrationBranches.find(b => b.branchId === 'branch_pcie_storage_ocp_nic');
   assert.ok(branchB, 'Branch B with PCIe storage pivot must be generated');
   assert.strictEqual(branchB.storageController.sku, 'P47777-B21');
+  assert.equal(branchB.evaluationStatus, 'SUBSTITUTIONS_PENDING');
+  assert.equal(branchB.evaluation, null);
+  assert.deepEqual(branchB.pendingActions, ['PIVOT_STORAGE_CABLE_TO_PCIE_SPLITTER']);
+  assert.ok(res.result.selfCorrectionTrail.every(step => step.status === 'PROPOSED' && !step.verifiedBuildable));
+
+  const complete = await executeRoutedQuery('Analyze workload DNA for high-IOPS database on DL380 Gen11', {
+    items: [...contestedItems, { sku: 'P48918-B21', quantity: 1, description: 'Storage controller cable' }],
+    chassisName: 'DL380 Gen11'
+  });
+  const evaluated = complete.result.arbitrationBranches.find(b => b.branchId === branchB.branchId);
+  assert.equal(evaluated.evaluationStatus, 'EVALUATED');
+  assert.ok(evaluated.evaluation);
+  assert.equal(complete.result.arbitrationBranches[0].evaluationStatus, 'SUBSTITUTIONS_PENDING');
+
+  // FIO-suffixed (#0D1) SKUs in customer BOQs still match cleaned substitution targets
+  const fioTagged = await executeRoutedQuery('Analyze workload DNA for high-IOPS database on DL380 Gen11', {
+    items: [
+      ...contestedItems.map(it => it.sku === 'P58335-B21' ? { ...it, sku: 'P58335-B21 #0D1' } : it),
+      { sku: 'P48918-B21 #0D1', quantity: 1, description: 'Storage controller cable' }
+    ],
+    chassisName: 'DL380 Gen11'
+  });
+  const fioEvaluated = fioTagged.result.arbitrationBranches.find(b => b.branchId === branchB.branchId);
+  assert.equal(fioEvaluated.evaluationStatus, 'EVALUATED');
 });
 
 test('CP9c — WORKLOAD_DNA returns ADVISORY when no hardware slots collide', async () => {

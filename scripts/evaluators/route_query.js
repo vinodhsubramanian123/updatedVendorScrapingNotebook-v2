@@ -342,7 +342,8 @@ function _classifyExplicitTrack(text, context, filePath) {
     CODE_QUALITY_GATE: 'code-quality-gate-skill',
     SELF_CORRECTION_COUNTERFACTUAL: 'self-correction-counterfactual-skill',
     PRESALES_CLEARANCE_STRATEGY: 'presales-clearance-strategy-skill',
-    TURNKEY_RACKING_CABLING: 'turnkey-racking-cabling-skill'
+    TURNKEY_RACKING_CABLING: 'turnkey-racking-cabling-skill',
+    SOLUTION_COMPARISON: 'presales-query-router'
   };
   if (context.intent && explicitTracks[context.intent]) {
     return {
@@ -744,6 +745,31 @@ function _classifyCatalogSizingOrQa(text, filePath, context) {
   };
 }
 
+function _classifySolutionComparison(text, queryText, context, filePath) {
+  if (filePath || RECONCILE_KEYWORD_RE.test(text)) return null;
+  if (/\b(?:price\s+(?:history|trend|drift|change)|pricing\s+history|list\s+(?:all\s+)?(?:skus?|dimms?|gpus?|cpus?|drives?|psus?)|sort(?:ed)?\s+by\s+(?:price|lead\s*time))\b/i.test(text)) {
+    return null;
+  }
+  const hasComparisonCue = /\b(?:compare|comparison|vs\.?|versus|side[\s-]by[\s-]side)\b/i.test(text);
+  if (!hasComparisonCue) return null;
+  const detectedSkus = (String(queryText || '').match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/g) || []).filter(isValidHpeSKU);
+  if (detectedSkus.length > 0 && !/\b(?:cores?|ram|memory|\d+\s*(?:gb|tb)|raid|nodes?)\b/i.test(text)) {
+    return null;
+  }
+  const hasPlatformTarget = /\b(?:dl\s*\d{2,5}[a-z]?|ml\s*\d{2,5}|rl\s*\d{2,5}|sy\s*\d{2,5}|alletra|[bx]10\d{3}|proliant|gen\s*\d+|servers?|platforms?|solutions?|1u|2u)\b/i.test(text);
+  if (!hasPlatformTarget) return null;
+  const isConceptualArchTopic = /\b(?:pcie\s+(?:slot\s+)?lanes?|pcie\s+bifurcation|slot\s+layout|airflow\s+diagram)\b/i.test(text);
+  const hasSizingOrWorkloadSpec = /\b(?:cores?|ram|memory|\d+(?:\.\d+)?\s*(?:gb|tb|pb)|raid|vsan|\d+\s*nodes?|n\+1|\b2n\b|throughput|iops|drives?|vmware|sap\s*hana|vdi|sql\s*server|ai\s*inference|capex|tco|pareto|side[\s-]by[\s-]side|sizing|size\s+for)\b/i.test(text);
+  if (isConceptualArchTopic && !hasSizingOrWorkloadSpec) return null;
+  if (!hasSizingOrWorkloadSpec) return null;
+  return {
+    intent: 'SOLUTION_COMPARISON',
+    confidence: 0.96,
+    skillTarget: 'presales-query-router',
+    rationale: 'Query requests a side-by-side multi-platform solution comparison across sizing, scaling, and Pareto trade-offs.'
+  };
+}
+
 function classifyQueryIntent(queryText = '', context = {}, searchRequest = undefined) {
   const text = String(queryText || '').trim().toLowerCase();
   const filePath = context.filePath || context.file || '';
@@ -756,6 +782,9 @@ function classifyQueryIntent(queryText = '', context = {}, searchRequest = undef
 
   const fileIntent = _classifyFileBased(text, filePath, context);
   if (fileIntent) return fileIntent;
+
+  const comparisonIntent = _classifySolutionComparison(text, queryText, context, filePath);
+  if (comparisonIntent) return comparisonIntent;
 
   const detectedPath = filePath || (text.match(/[\w\-./\\]+\.(?:png|jpg|jpeg|webp|tiff|bmp|pdf|xlsx|xls|csv|tsv)/i)?.[0] || '');
   const plannedSearch = searchRequest === undefined && !detectedPath ? _compileCatalogSearch(queryText, context) : searchRequest;
@@ -1626,6 +1655,28 @@ function _buildAlletraMpSizingHandoff(queryText, chassisInfo) {
   const message = hasConflictingTopologies
     ? 'B10100 switchless and B10200 switched require separate arrays. Specify one topology per array. ' + nextStep
     : nextStep;
+
+  let ninjaEnvelope = null;
+  try {
+    const { interpolateAlletraMpEnvelope } = require('../lib/conflict/sizing/scaling_interpolator.js');
+    const drivesMatch = String(queryText || '').match(/\b(\d+)\s*(?:nvme|sas|ssd)?\s*drives?\b/i);
+    const pbMatch = String(queryText || '').match(/\b(\d+(?:\.\d+)?)\s*PB\b/i);
+    const tbMatch = String(queryText || '').match(/\b(\d+(?:\.\d+)?)\s*TB\b/i);
+    const targetUsableTb = pbMatch ? Number(pbMatch[1]) * 1000 : (tbMatch ? Number(tbMatch[1]) : null);
+    const telemetryPath = chassisInfo.catalogDir
+      ? path.join(chassisInfo.catalogDir, 'raw_data', 'ninja_online_sizing_catalog.json')
+      : null;
+    ninjaEnvelope = interpolateAlletraMpEnvelope({
+      product: chassis,
+      targetDriveCount: drivesMatch ? Number(drivesMatch[1]) : null,
+      targetUsableTb,
+      preferredTopology: topology?.type || null,
+      ...(telemetryPath ? { telemetryPath } : {})
+    });
+  } catch {
+    ninjaEnvelope = null;
+  }
+
   return {
     intent: 'RFP_SIZING_TO_BOM',
     chassis,
@@ -1635,7 +1686,34 @@ function _buildAlletraMpSizingHandoff(queryText, chassisInfo) {
     status: 'ACTION_REQUIRED',
     code: 'NINJA_ONLINE_SIZING_REQUIRED',
     message,
-    storageSizingHandoff: { product: chassis, topology, hasConflictingTopologies },
+    storageSizingHandoff: {
+      product: chassis,
+      topology,
+      hasConflictingTopologies,
+      ...(ninjaEnvelope ? {
+        telemetryPresent: ninjaEnvelope.telemetryPresent,
+        telemetrySource: ninjaEnvelope.telemetrySource,
+        capturedAt: ninjaEnvelope.capturedAt,
+        ...(isBlock
+          ? {
+              crossoverAnalysis: ninjaEnvelope.switchlessToSwitchedCrossover,
+              driveAndJbofLimits: {
+                estimatedDriveCount: ninjaEnvelope.estimatedDriveCount,
+                recommendedTopology: ninjaEnvelope.recommendedTopology,
+                recommendedBaseSku: ninjaEnvelope.recommendedBaseSku,
+                internalChassisDrives: ninjaEnvelope.internalChassisDrives,
+                requiredJbofs: ninjaEnvelope.requiredJbofs,
+                availableDriveCapacitiesTb: ninjaEnvelope.availableDriveCapacitiesTb
+              },
+              topologyEnvelopes: ninjaEnvelope.nodeEnvelopes
+            }
+          : {
+              maxBounds: ninjaEnvelope.maxBounds,
+              topologyEnvelopes: ninjaEnvelope.mediaEnvelopes,
+              tlcVsQlcComparison: ninjaEnvelope.tlcVsQlcComparison
+            })
+      } : {})
+    },
     missingRequirements: ['HPE Ninja Online sizing and OCA JSON export'],
     requiresHumanClarification: true,
     portalValidationStatus: 'PORTAL_VALIDATION_PENDING',
@@ -2139,6 +2217,33 @@ function requireScopedCatalog(queryText, context) {
   return scope;
 }
 
+function evaluateWorkloadBranch(branch, items, chassisInfo) {
+  if (!chassisInfo.catalogData) return { ...branch, evaluation: null, evaluationStatus: 'CATALOG_REQUIRED' };
+  const candidate = structuredClone(items);
+  const pendingActions = [];
+  for (const sub of branch.substitutions || []) {
+    if (sub.action === 'RETAIN_OCP_NIC_IN_FREED_SLOT' && candidate.some(item => cleanBaseSKU(item.sku) === cleanBaseSKU(sub.retainedSku))) continue;
+    const matches = candidate.filter(item => cleanBaseSKU(item.sku) === cleanBaseSKU(sub.originalSku));
+    const pivot = ['PIVOT_STORAGE_CONTROLLER_TO_PCIE', 'PIVOT_STORAGE_CABLE_TO_PCIE_SPLITTER', 'PIVOT_BOOT_DEVICE_TO_PCIE'].includes(sub.action);
+    if (pivot && sub.injectedSku && matches.length === 1 && (sub.quantity == null || sub.quantity === matches[0].quantity)) {
+      Object.assign(matches[0], { sku: sub.injectedSku, description: sub.injectedDesc });
+    } else {
+      pendingActions.push(sub.action);
+    }
+  }
+  if (pendingActions.length || !branch.substitutions?.length) {
+    return { ...branch, evaluation: null, evaluationStatus: 'SUBSTITUTIONS_PENDING', pendingActions };
+  }
+  try {
+    const evaluation = evaluateBOQMultiAspect(candidate, {
+      chassis: chassisInfo.chassisKey, catalogData: chassisInfo.catalogData, targetDir: chassisInfo.catalogDir
+    });
+    return { ...branch, evaluationStatus: 'EVALUATED', evaluation };
+  } catch (err) {
+    return { ...branch, evaluationStatus: 'ERROR', evaluation: null, evaluationError: err.message };
+  }
+}
+
 async function _handleWorkloadDna(queryText, context) {
   const { extractWorkloadDna } = require('../lib/conflict/workload_dna');
   const { arbitrateContestedResources } = require('../lib/conflict/resource_arbitrator');
@@ -2161,36 +2266,8 @@ async function _handleWorkloadDna(queryText, context) {
   const chassisInfo = getChassisCatalog(queryText, context);
   const arbitration = arbitrateContestedResources(items, chassisInfo.chassisKey);
 
-  let evaluatedBranches = [];
-  if (arbitration.hasContentions && chassisInfo.catalogData) {
-    evaluatedBranches = arbitration.branches.map(branch => {
-      let pivotedItems = structuredClone(items);
-      (branch.substitutions || []).forEach(sub => {
-        if (sub.action && (sub.action.includes('PIVOT_STORAGE_CONTROLLER') || sub.action.includes('PIVOT_BOOT_DEVICE')) && sub.originalSku && sub.injectedSku) {
-          pivotedItems = pivotedItems.map(it => {
-            if (cleanBaseSKU(it.sku) === cleanBaseSKU(sub.originalSku)) {
-              return { ...it, sku: sub.injectedSku, description: sub.injectedDesc };
-            }
-            return it;
-          });
-        }
-      });
-      let branchEval = null;
-      try {
-        branchEval = evaluateBOQMultiAspect(pivotedItems, {
-          chassis: chassisInfo.chassisKey,
-          catalogData: chassisInfo.catalogData,
-          targetDir: chassisInfo.catalogDir
-        });
-      } catch (err) {
-        branchEval = { error: err.message };
-      }
-      return {
-        ...branch,
-        evaluation: branchEval
-      };
-    });
-  }
+  const evaluatedBranches = arbitration.branches.map(branch => evaluateWorkloadBranch(branch, items, chassisInfo));
+  const evaluatedCount = evaluatedBranches.filter(branch => branch.evaluationStatus === 'EVALUATED').length;
 
   return {
     intent: 'WORKLOAD_DNA',
@@ -2204,9 +2281,9 @@ async function _handleWorkloadDna(queryText, context) {
     contentionsCount: arbitration.contentionsCount,
     contentions: arbitration.contentions,
     selfCorrectionTrail: arbitration.selfCorrectionTrail || [],
-    arbitrationBranches: evaluatedBranches.length > 0 ? evaluatedBranches : arbitration.branches,
+    arbitrationBranches: evaluatedBranches,
     message: arbitration.hasContentions
-      ? `Workload DNA analyzed (${dna.primaryWorkload}). Detected ${arbitration.contentionsCount} physical resource contention(s); synthesized ${arbitration.branchesCount} arbitration branch(es) with 7-aspect evaluation.`
+      ? `Workload DNA analyzed (${dna.primaryWorkload}). Detected ${arbitration.contentionsCount} physical resource contention(s). Evaluated ${evaluatedCount} of ${arbitration.branchesCount} proposed branches.`
       : `Workload DNA analyzed (${dna.primaryWorkload}). Zero resource collisions detected across solution slots.`
   };
 }
@@ -2490,8 +2567,22 @@ function _deriveClassificationConfidence(queryText, context, classification, cha
   };
 }
 
+async function _handleSolutionComparison(queryText, context) {
+  const { compareSolutionsAcrossPlatforms } = require('../lib/boq/solution_comparator.js');
+  const specOrQuery = context.comparisonSpec || queryText;
+  return compareSolutionsAcrossPlatforms(specOrQuery, {
+    catalogs: context.availableCatalogs,
+    catalogDataById: context.catalogDataById,
+    maxPlatforms: context.maxPlatforms,
+    includePriceTrends: Boolean(context.includePriceTrends)
+  });
+}
+
 async function _dispatchIntentHandler(classification, queryText, context, chassisInfo) {
   switch (classification.intent) {
+    case 'SOLUTION_COMPARISON':
+      return await observeActualInvocation('_handleSolutionComparison', __filename, () => _handleSolutionComparison(queryText, context));
+
     case 'CROSS_VENDOR_TRANSFORMATION':
       return await observeActualInvocation('_handleCrossVendorTransformation', __filename, () => _handleCrossVendorTransformation(queryText, context));
 
@@ -2596,7 +2687,7 @@ function _resolvePlatformSelectionMemory(queryText, initialPlatform, context) {
 }
 
 function _resolveRoutedPlatform(queryText, context, classification) {
-  const isCatalogMultiQuery = classification.intent === 'CATALOG_INTELLIGENCE';
+  const isCatalogMultiQuery = classification.intent === 'CATALOG_INTELLIGENCE' || classification.intent === 'SOLUTION_COMPARISON';
   const platformContext = classification.intent === 'RFP_SIZING_TO_BOM' ? { ...context, preferNamedProduct: true } : context;
   const initial = isCatalogMultiQuery ? {} : getChassisCatalog(queryText, platformContext);
   const { platformSelectionMemory, updatedContext } = _resolvePlatformSelectionMemory(queryText, initial, platformContext);
@@ -2765,7 +2856,11 @@ function _routedEnvelopeScope(classification, context, responseData, chassisInfo
     responseData?.chassis && !['UNKNOWN', 'UNKNOWN_PRODUCT'].includes(responseData.chassis))
     ? responseData.chassis
     : null;
-  const resolvedCatalog = classification.intent === 'CATALOG_INTELLIGENCE' ? responseData?.chassis : null;
+  const resolvedCatalog = classification.intent === 'CATALOG_INTELLIGENCE'
+    ? responseData?.chassis
+    : (classification.intent === 'SOLUTION_COMPARISON' && Array.isArray(responseData?.comparedPlatforms) && responseData.comparedPlatforms.length > 0
+      ? responseData.comparedPlatforms.join(',')
+      : null);
   const confidence = resolvedCatalog === context.chassisName && resolvedCatalog ? 1 : dispatched.confidence;
   const resolvedPlatform = resolvedCatalog || (chassisInfoForConf && !chassisInfoForConf.isAmbiguous ? chassisInfoForConf.chassisKey : null) || resolvedFilePlatform;
   const isAmbiguous = resolvedFilePlatform ? false : (Boolean(chassisInfoForConf?.isAmbiguous) || unresolvedAmbiguity);

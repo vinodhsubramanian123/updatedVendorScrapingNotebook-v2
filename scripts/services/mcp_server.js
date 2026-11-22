@@ -273,6 +273,37 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             options: { type: "object", description: "Optional projection flags (e.g. { offline: true })." }
           }
         }
+      },
+      {
+        name: "compare_solutions",
+        description: "Compares 2–5 HPE platforms side-by-side against sizing requirements (cores, RAM, usable TB, RAID, HA nodes), synthesizing candidate BOMs per platform, evaluating via canonical physical checks, running scaling interpolation, and computing a null-preserving Pareto frontier.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            query: { type: "string", description: "Natural language comparison query, e.g. 'Compare DL380 Gen12 vs DL385 Gen11 for 64 cores and 512GB RAM'." },
+            platforms: { type: "array", items: { type: "string" }, description: "Optional explicit list of 2–5 candidate platforms." },
+            cores: { type: "number", description: "Optional target per-node CPU cores." },
+            ram_gb: { type: "number", description: "Optional target per-node RAM in GB." },
+            usable_tb: { type: "number", description: "Optional target per-node usable storage in TB." },
+            raid_level: { type: "string", description: "Optional RAID level (RAID0/1/5/6/10/vSAN/RAID6-ADG)." },
+            node_count: { type: "number", description: "Optional cluster node count (default 1)." },
+            max_platforms: { type: "number", description: "Optional maximum candidate platforms (2–5)." },
+            include_price_trends: { type: "boolean", description: "Optional flag to attach bounded ESTIMATE price-trend analytics." }
+          }
+        }
+      },
+      {
+        name: "interpolate_scaling",
+        description: "Runs parametric scaling and capacity interpolation: memory 1DPC/2DPC stepping, storage RAID/expander crossover, multi-node HA cluster curves (NONE/N+1/2N), Alletra MP B10000/X10000 Ninja Online envelopes, cross-generation deltas, or bounded price-trend analytics.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            mode: { type: "string", enum: ["memory", "storage", "ha_cluster", "alletra_mp", "price_trend", "cross_gen"], description: "Interpolation mode to execute." },
+            chassis_id: { type: "string", description: "Optional catalog product ID (e.g. 'DL380_Gen12', 'Alletra_MP_B10000')." },
+            params: { type: "object", description: "Mode-specific parameters (e.g. targetRamGb, targetUsableTb, raidLevel, targetDriveCount, sku)." }
+          },
+          required: ["mode"]
+        }
       }
     ],
   };
@@ -311,14 +342,14 @@ async function handleQueryNotebookLmTool(args, signal) {
 function handleRecordKnowledgeDeltaTool(args) {
   const chassisId = normalizeChassisName(args.chassis_id);
   const cat = listAllCatalogs().find(c => c.id === chassisId || c.id === args.chassis_id);
+  const outputsRoot = path.resolve(process.env.AGY_MCP_OUTPUTS_DIR || path.join(__dirname, '..', '..', 'outputs'));
   let outputDir = cat ? cat.catalogDir : null;
   if (!outputDir) {
     const rawChassisId = String(chassisId || args.chassis_id || '').trim();
     if (!rawChassisId || !rawChassisId.replace(/[^a-zA-Z0-9]/g, '')) throw new Error('Invalid chassis_id');
     const cleanChassisId = rawChassisId.replace(/[^a-zA-Z0-9_-]/g, '_');
-    outputDir = path.resolve(__dirname, '..', '..', 'outputs', cleanChassisId);
+    outputDir = path.resolve(outputsRoot, cleanChassisId);
   }
-  const outputsRoot = path.resolve(__dirname, '..', '..', 'outputs');
   if (!outputDir.startsWith(outputsRoot + path.sep) && outputDir !== outputsRoot) {
     throw new Error('Path Traversal: outputDir must reside within outputs directory');
   }
@@ -975,6 +1006,53 @@ async function handleQueryCatalogDb(args, context, signal) {
   return formatMcpJsonText(queryLocalKnowledgeBase(args.query, normalizeChassisName(args.chassis_id)));
 }
 
+function handleCompareSolutionsTool(args = {}) {
+  const { compareSolutionsAcrossPlatforms } = require('../lib/boq/solution_comparator.js');
+  const spec = {
+    ...(args.query ? { query: args.query } : {}),
+    ...(Array.isArray(args.platforms) ? { platforms: args.platforms } : {}),
+    ...(args.cores !== undefined ? { cores: args.cores } : {}),
+    ...(args.ram_gb !== undefined ? { ramGb: args.ram_gb } : {}),
+    ...(args.usable_tb !== undefined ? { usableTb: args.usable_tb } : {}),
+    ...(args.raid_level !== undefined ? { raidLevel: args.raid_level } : {}),
+    ...(args.node_count !== undefined ? { nodeCount: args.node_count } : {})
+  };
+  const payload = compareSolutionsAcrossPlatforms(spec, {
+    maxPlatforms: args.max_platforms,
+    includePriceTrends: Boolean(args.include_price_trends)
+  });
+  return formatMcpJsonText(payload);
+}
+
+function handleInterpolateScalingTool(args = {}, context = {}) {
+  const interp = require('../lib/conflict/sizing/scaling_interpolator.js');
+  const mode = String(args.mode || '').toLowerCase();
+  const params = args.params && typeof args.params === 'object' ? args.params : {};
+  const catalogData = context.catalogData || null;
+  const catalogDir = context.cat?.catalogDir || null;
+
+  let payload;
+  if (mode === 'memory') {
+    payload = interp.interpolateMemoryTopology({ ...params, catalogData: params.catalogData || catalogData });
+  } else if (mode === 'storage') {
+    payload = interp.interpolateStorageTopology({ ...params, catalogData: params.catalogData || catalogData });
+  } else if (mode === 'ha_cluster') {
+    payload = interp.computeHaClusterScalingCurve(params);
+  } else if (mode === 'alletra_mp') {
+    payload = interp.interpolateAlletraMpEnvelope({ product: args.chassis_id || params.product, ...params });
+  } else if (mode === 'price_trend') {
+    payload = interp.analyzePriceTrendAnalytics(params.priceHistory || null, {
+      ...params,
+      catalogDir: params.catalogDir || catalogDir
+    });
+  } else if (mode === 'cross_gen') {
+    payload = interp.computeCrossGenerationDeltas(params.fromSolution || {}, params.toSolution || {});
+  } else {
+    throw new Error(`Unsupported interpolate_scaling mode: ${args.mode}`);
+  }
+  return formatMcpJsonText(payload);
+}
+
 async function _dispatchMcpTool(toolName, args, items, context, signal) {
   const aspectResp = _executeAspectMcpTool(toolName, args, items, context);
   if (aspectResp) return aspectResp;
@@ -988,7 +1066,9 @@ async function _dispatchMcpTool(toolName, args, items, context, signal) {
     check_portal_and_sync_readiness: () => handleCheckPortalAndSyncReadinessTool(args),
     inspect_portfolio_blindspots: () => handleInspectPortfolioBlindspotsTool(args),
     compare_sku_across_solutions: () => handleCompareSkuAcrossSolutionsTool(args),
-    get_solution_intelligence_envelope: () => handleGetSolutionIntelligenceEnvelopeTool(args, items)
+    get_solution_intelligence_envelope: () => handleGetSolutionIntelligenceEnvelopeTool(args, items),
+    compare_solutions: () => handleCompareSolutionsTool(args),
+    interpolate_scaling: () => handleInterpolateScalingTool(args, context)
   };
   const handler = syncHandlers[toolName];
   if (handler) return handler();
@@ -1028,6 +1108,8 @@ module.exports = {
   handleInspectCatalogDeltasTool,
   handleCheckPortalAndSyncReadinessTool,
   handleGetSolutionIntelligenceEnvelopeTool,
+  handleCompareSolutionsTool,
+  handleInterpolateScalingTool,
   server,
   run
 };

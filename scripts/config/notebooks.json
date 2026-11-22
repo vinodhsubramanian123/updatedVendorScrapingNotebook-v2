@@ -257,7 +257,8 @@
       "pillar": "STORAGE",
       "family": "Alletra",
       "gen": "Storage",
-      "queryEnabled": true,
+      "queryEnabled": false,
+      "coverageStatus": "ARCHIVED_STUB",
       "canonicalDriveEnabled": false,
       "publishDriveWorkbook": true,
       "lastSyncedAt": "2026-11-21T05:31:26.302Z",
@@ -328,7 +329,8 @@
       "lastSyncedSourceId": "a753a1a9-787d-445b-8dfc-2cef3cd05a54",
       "trustedSourceIds": [
         "a753a1a9-787d-445b-8dfc-2cef3cd05a54",
-        "d0b76b30-f540-4119-9f56-0283184fc9fe"
+        "d0b76b30-f540-4119-9f56-0283184fc9fe",
+        "ef66fdbe-946b-40c5-90eb-9a64f017b3fd"
       ],
       "canonicalKnowledgeSourceIds": [
         "a753a1a9-787d-445b-8dfc-2cef3cd05a54",
@@ -348,7 +350,9 @@
       "driveSheetId": "1oXrW7nmSNra2CrYUjwYtvKi4WVvaj4a9SzrJqC6H45s",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1oXrW7nmSNra2CrYUjwYtvKi4WVvaj4a9SzrJqC6H45s/edit",
       "driveSourceId": "82ca0c93-da82-4958-bc6b-1655d6c52343",
-      "officialSourceIds": [],
+      "officialSourceIds": [
+        "ef66fdbe-946b-40c5-90eb-9a64f017b3fd"
+      ],
       "verifiedLearningSourceIds": [],
       "quarantinedSourceIds": [
         "82ca0c93-da82-4958-bc6b-1655d6c52343",
@@ -374,7 +378,7 @@
       "notebookId": "86c93203-6b76-439a-b7ab-33ad782e3178",
       "vendor": "HPE",
       "pillar": "SERVER",
-      "queryEnabled": true,
+      "queryEnabled": false,
       "family": "Cray",
       "gen": "General",
       "canonicalDriveEnabled": false,
@@ -424,7 +428,8 @@
       "lastSyncAttemptAt": "2026-11-09T11:21:05.502Z",
       "runningKnowledgeVerifiedRevision": "99e71b49b00fcb901d8788bda193096700929add68dd3d30fe1015810803c90f",
       "runningKnowledgeVerifiedAt": "2026-11-21T13:55:33.161Z",
-      "lastSyncAttemptStatus": "SUCCESS"
+      "lastSyncAttemptStatus": "SUCCESS",
+      "coverageStatus": "ARCHIVED_STUB"
     },
     "Synergy_12000_Frame": {
       "notebookId": "5b9ddeda-0d03-44ee-80c8-766f494ea34c",
@@ -852,7 +857,8 @@
       "lastSyncedSourceName": "DL580_Gen12_OCA_Catalog_2026-11-20",
       "trustedSourceIds": [
         "673dc828-5688-4d3a-8357-c8e151fbc7ee",
-        "5113e36d-0364-4b00-bc94-02521ab224e0"
+        "5113e36d-0364-4b00-bc94-02521ab224e0",
+        "2e003bfd-d2ca-43eb-b187-973600d7e1a1"
       ],
       "canonicalKnowledgeSourceIds": [
         "673dc828-5688-4d3a-8357-c8e151fbc7ee",
@@ -873,7 +879,9 @@
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/12xnxLL7nSLJhIO4bxvvhVBbcWuCVTUtO8HtPzeLWjmA/edit",
       "driveSourceId": "f43e2b61-9245-4355-a6c4-aad3ec2fcd62",
       "lastSyncedSourceId": "673dc828-5688-4d3a-8357-c8e151fbc7ee",
-      "officialSourceIds": [],
+      "officialSourceIds": [
+        "2e003bfd-d2ca-43eb-b187-973600d7e1a1"
+      ],
       "verifiedLearningSourceIds": [],
       "quarantinedSourceIds": [
         "f43e2b61-9245-4355-a6c4-aad3ec2fcd62",
@@ -973,9 +981,12 @@
       "lastSyncedSourceName": "DL385_Gen11_OCA_Catalog_2026-11-20",
       "trustedSourceIds": [
         "3a1ba233-b47a-4e70-adee-fa4ef3f0b50c",
-        "7ab0fa77-e619-4956-9a39-deff777e34d0"
+        "7ab0fa77-e619-4956-9a39-deff777e34d0",
+        "f17bd176-b643-43bc-b517-cb59934491b6"
       ],
-      "officialSourceIds": [],
+      "officialSourceIds": [
+        "f17bd176-b643-43bc-b517-cb59934491b6"
+      ],
       "quarantinedSourceIds": [
         "24773006-8001-419a-a06b-29bcce275ae7"
       ],
@@ -1074,9 +1085,12 @@
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/19YmKUDwdJXm-1_QnveMteTMWIt26q7CfcirvH0JPMNk/edit",
       "trustedSourceIds": [
         "bd065e25-34b9-449c-a5d7-f30b280dba42",
-        "60cda6f9-e4ac-4de9-bab9-8e14aa10b936"
+        "60cda6f9-e4ac-4de9-bab9-8e14aa10b936",
+        "25a65816-97ac-4a51-bdcf-6b7bd89c276d"
       ],
-      "officialSourceIds": [],
+      "officialSourceIds": [
+        "25a65816-97ac-4a51-bdcf-6b7bd89c276d"
+      ],
       "quarantinedSourceIds": [],
       "lastSyncAttemptAt": "2026-11-21T13:08:38.511Z",
       "lastSyncAttemptStatus": "VERIFIED",

@@ -88,7 +88,13 @@ function _auditLifecycleAndChassisVariants(diag, findings) {
 
   const variantsMatrix = diag?.chassisVariantsMatrix || {};
   const zeroBaseVariants = Object.entries(variantsMatrix)
-    .filter(([, meta]) => !(Number(meta?.listPrice) > 0) && !/removed/i.test(String(meta?.description || '')))
+    .filter(([, meta]) => {
+      if (Number(meta?.listPrice) > 0) return false;
+      const desc = String(meta?.description || '');
+      const lc = normalizeLifecycleLabel(meta?.lifecycleCanonical || meta?.lifecycleStatus || '');
+      const diff = String(meta?.diffStatus || '').toUpperCase();
+      return !/removed|\[ob\]/i.test(desc) && lc !== 'OBSOLETE' && lc !== 'END_OF_LIFE' && diff !== 'REMOVED' && diff !== 'DISCONTINUED';
+    })
     .map(([sku]) => sku);
   if (zeroBaseVariants.length > 0) {
     findings.push({

@@ -115,6 +115,9 @@ function detectChassisFormFactor(desc) {
 const SUBCAT_KEYWORD_PARENT_MAP = Object.freeze([
   { keywords: ['processor', 'xeon', 'epyc'], parent: 'Processor' },
   { keywords: ['memory', 'dimm', 'ddr5', 'ddr4', 'smart memory'], parent: 'Memory' },
+  { keywords: ['tape drive', 'tape drives', 'lto-', 'ultrium'], parent: 'Tape Drives' },
+  { keywords: ['storage media', 'data cartridge', 'tape cartridge', 'cleaning cartridge', 'tape media'], parent: 'Storage Media' },
+  { keywords: ['back-end switches', 'san switch', 'network switch', 'fabric switch'], parent: 'Networking' },
   { keywords: ['power supply', 'power supplies', 'flex slot', '-48vdc'], parent: 'Power Supplies' },
   { keywords: ['heatsink', 'heat sink', 'fan kit', 'fans', 'cooling', 'thermal'], parent: 'Cooling / Thermal' },
   { keywords: ['riser', 'pcie riser'], parent: 'PCIe Risers' },
@@ -124,7 +127,7 @@ const SUBCAT_KEYWORD_PARENT_MAP = Object.freeze([
   { keywords: ['cable kit', 'cables', 'power cord', 'jumper cord', 'jumper cable'], parent: 'Cables & Enablement Kits' },
   { keywords: ['software', 'license', 'operating system', 'windows server', 'windows cal', 'cal pack', 'red hat', 'suse', 'vmware', 'ilo', 'oneview', 'compute ops', 'cloud management server fio'], parent: 'Software & Licenses' },
   { keywords: ['support', 'pointnext', 'tech care', 'service'], parent: 'Support Services' },
-  { keywords: ['chassis infrastructure', 'smart chassis', 'rail', 'bezel', 'blank', 'enablement', 'options'], parent: 'Accessories & Infrastructure' },
+  { keywords: ['chassis infrastructure', 'smart chassis', 'rail', 'bezel', 'blank', 'enablement', 'bluetooth', 'connectivity kit', 'options'], parent: 'Accessories & Infrastructure' },
   { keywords: ['base chassis', 'chassis variants', 'variants'], parent: 'Chassis' },
   { keywords: ['gpu', 'graphics', 'accelerator', 'nvidia'], parent: 'Graphics & GPU' }
 ]);
@@ -133,9 +136,14 @@ const ROLE_TO_PARENT_MAP = Object.freeze({
   'Processor': 'Processor',
   'Memory': 'Memory',
   'Power Supply': 'Power Supplies',
+  'Tape Drive': 'Tape Drives',
+  'Storage Media': 'Storage Media',
   'Storage Controller': 'Storage Controllers',
   'Drive Cage / Drive': 'Drive Enclosures / Drives',
   'Network Adapter': 'Networking',
+  'Network Switch': 'Networking',
+  'SAN Switch': 'Networking',
+  'Fabric Interconnect': 'Networking',
   'Transceiver': 'Networking',
   'Fibre Channel HBA': 'Networking',
   'PCIe Riser': 'PCIe Risers',
@@ -1041,6 +1049,20 @@ function resolveTableConstraintBounds(matchedSubcat, parentCat, table, subCat, t
 function _resolveTaxonomyClassification({ matchedSubcat, textPos, parentCat, subCat, table, tableRules, profile, sampleDesc }) {
   const detectedRole = classifyComponentRole(subCat, sampleDesc, profile);
   const subCatLower = (subCat || '').toLowerCase();
+  const sampleText = String(sampleDesc || '');
+
+  // Explicit guard: LTO/Ultrium tape drives & tape cartridges never classify as Storage Controllers
+  if (/\b(?:lto[-\s]?[3-9]|ultrium)\b/i.test(sampleText) && !/\b(?:software|license|ltu|support|service|cable|cord)\b/i.test(sampleText)) {
+    const isMedia = /\b(?:cartridge|worm|cleaning|bar\s*code|media)\b/i.test(sampleText) || subCatLower.includes('storage media');
+    return {
+      parentCat: isMedia ? 'Storage Media' : 'Tape Drives',
+      subCat: isMedia ? (subCatLower.includes('media') ? subCat : 'Storage Media') : 'LTO Tape Drives',
+      detectedRole: isMedia ? 'Storage Media' : 'Tape Drive',
+      matchedParent: isMedia ? 'Storage Media' : 'Tape Drives',
+      matchedVia: 'tape_domain_guard'
+    };
+  }
+
   const matchedMapEntry = SUBCAT_KEYWORD_PARENT_MAP.find(m => m.keywords.some(k => subCatLower.includes(k)));
   const matchedParent = matchedMapEntry ? matchedMapEntry.parent : null;
 
@@ -2204,6 +2226,10 @@ function isTsvChassisVariantRow(r) {
   const sub = (r['Sub-Category'] || '').toLowerCase();
   const role = (r['Component Role'] || '').toLowerCase();
   const desc = (r['Description'] || '').toLowerCase();
+  const lifecycle = String(r['Lifecycle Status'] || '').toLowerCase();
+  if (cat === 'frame options' || lifecycle.includes('obsolete') || lifecycle.includes('end of life') || lifecycle.includes('discontinued')) {
+    return false;
+  }
   const isChassisCategory = cat === 'chassis' && ['variants', 'base chassis', 'chassis'].includes(sub);
   const isCtoServer = CTO_SERVER_KEYWORDS.some(kw => desc.includes(kw));
   const isNonChassisAccessory = NON_CHASSIS_ACCESSORY_KEYWORDS.some(kw => desc.includes(kw));
@@ -2323,13 +2349,25 @@ function _buildCatalogVariantRecord(s, pn, e, priceParsed) {
   };
 }
 
+function _isObsoleteOrRemovedVariantRow(s) {
+  const diffStatus = String(s?.['Diff Status'] || s?.diffStatus || '').toUpperCase();
+  if (diffStatus === 'REMOVED' || diffStatus === 'DISCONTINUED') return true;
+  const lcCanonical = String(s?.lifecycleCanonical || '').toUpperCase();
+  if (lcCanonical === 'OBSOLETE' || lcCanonical === 'END_OF_LIFE') return true;
+  const lcRaw = String(s?.['Lifecycle Status'] || s?.lifecycleStatus || '').toLowerCase();
+  const badge = String(s?.lifecycleBadge || '').toUpperCase();
+  return badge === 'OB' || badge === 'EOL' || lcRaw.includes('obsolete') || lcRaw.includes('end of life');
+}
+
 function _reconcileVariantMatrixFromCatalog(chassisVariantMatrix, enrichedCatalog) {
   if (!enrichedCatalog || !Array.isArray(enrichedCatalog.entries)) return;
   for (const e of enrichedCatalog.entries) {
-    const isChassis = (e.parentCategory || '').toLowerCase() === 'chassis' || (e.subCategory || '').toLowerCase() === 'variants';
+    const parentLower = (e.parentCategory || '').toLowerCase();
+    if (parentLower === 'frame options') continue;
+    const isChassis = parentLower === 'chassis' || (e.subCategory || '').toLowerCase() === 'variants';
     for (const s of e.skus || []) {
       const pn = cleanBaseSKU(s.sku || s['Product #']);
-      if (!pn || !isValidHpeSKU(pn)) continue;
+      if (!pn || !isValidHpeSKU(pn) || _isObsoleteOrRemovedVariantRow(s)) continue;
       if (!isChassis && s['Component Role'] !== 'Base Chassis' && s.rowType !== 'BASE_SYSTEM') continue;
       const p = parseStrictPrice(s.listPrice ?? s['List Price (USD)'] ?? s['Unit Price (USD)'], { row: s, sku: pn });
       const existing = chassisVariantMatrix[pn];

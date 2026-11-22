@@ -194,37 +194,52 @@ test('Game Changer Jeopardy & Negative Testing Suite', async (t) => {
   await t.test('Scenario 4: MCP Service Security (Path Traversal Boundary Enforcement)', async (t2) => {
     
     await t2.test('Jeopardy: record_knowledge_delta strictly sanitizes directory traversal characters', async () => {
-      const maliciousRequests = [
-        {
-          name: 'record_knowledge_delta',
-          arguments: {
-            chassis_id: '../../../../etc/passwd',
-            affected_sku: 'P12345-B21',
-            required_sku: 'P67890-B21',
-            rule_update: 'Security test traversal'
-          }
-        },
-        {
-          name: 'record_knowledge_delta',
-          arguments: {
-            chassis_id: '..\\..\\windows\\system32',
-            affected_sku: 'P12345-B21',
-            required_sku: 'P67890-B21',
-            rule_update: 'Security test backslash traversal'
-          }
-        }
-      ];
+      const tempOutputsRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'mcp_traversal_outputs_'));
+      const workspaceOutputsRoot = path.resolve(__dirname, '..', '..', 'outputs');
+      const prevEnv = process.env.AGY_MCP_OUTPUTS_DIR;
+      process.env.AGY_MCP_OUTPUTS_DIR = tempOutputsRoot;
 
-      for (const req of maliciousRequests) {
-        const response = await executeToolRequest(req, {});
-        // Response must either succeed safely inside outputs (sanitized) or fail cleanly without escaping
-        if (!response.isError) {
-          const parsed = JSON.parse(response.content[0].text);
-          assert.ok(parsed, 'Response parsed');
-        } else {
-          // If it erred, it must be because of traversal protection or invalid parameters
-          assert.ok(response.content[0].text.includes('Path Traversal') || response.content[0].text.includes('Error executing tool'));
+      try {
+        const maliciousRequests = [
+          {
+            name: 'record_knowledge_delta',
+            arguments: {
+              chassis_id: '../../../../etc/passwd',
+              affected_sku: 'P12345-B21',
+              required_sku: 'P67890-B21',
+              rule_update: 'Security test traversal'
+            }
+          },
+          {
+            name: 'record_knowledge_delta',
+            arguments: {
+              chassis_id: '..\\..\\windows\\system32',
+              affected_sku: 'P12345-B21',
+              required_sku: 'P67890-B21',
+              rule_update: 'Security test backslash traversal'
+            }
+          }
+        ];
+
+        for (const req of maliciousRequests) {
+          const response = await executeToolRequest(req, {});
+          // Response must either succeed safely inside temp outputs (sanitized) or fail cleanly without escaping
+          if (!response.isError) {
+            const parsed = JSON.parse(response.content[0].text);
+            assert.ok(parsed, 'Response parsed');
+          } else {
+            // If it erred, it must be because of traversal protection or invalid parameters
+            assert.ok(response.content[0].text.includes('Path Traversal') || response.content[0].text.includes('Error executing tool'));
+          }
         }
+
+        // Verify workspace outputs/ was never polluted by traversal test runs
+        assert.strictEqual(fs.existsSync(path.join(workspaceOutputsRoot, '____________etc_passwd')), false);
+        assert.strictEqual(fs.existsSync(path.join(workspaceOutputsRoot, '______windows_system32')), false);
+      } finally {
+        if (prevEnv === undefined) delete process.env.AGY_MCP_OUTPUTS_DIR;
+        else process.env.AGY_MCP_OUTPUTS_DIR = prevEnv;
+        fs.rmSync(tempOutputsRoot, { recursive: true, force: true });
       }
     });
 

@@ -259,7 +259,18 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
   const workbook = require('xlsx-js-style').readFile(path.join(stagingDir, `${product}_OCA_Catalog.xlsx`));
   const coveragePolicy = options.skipCoverageValidation
     ? { valid: true, skipped: true, reason: 'Coverage validation skipped via options' }
-    : require('./catalog_coverage.js').validateCatalogCoverage(product, next.catalog, next.services, workbook, options.profilesPath);
+    : require('./catalog_coverage.js').validateCatalogCoverage(
+      product,
+      next.catalog,
+      next.services,
+      workbook,
+      options.profilesPath,
+      {
+        enforceStagingFloors: options.enforceStagingFloors !== false,
+        allowArchivedStub: options.allowArchivedStub === true,
+        referenceDate: options.referenceDate
+      }
+    );
   if (!coveragePolicy.valid) throw new Error(`Capture coverage incomplete: ${coveragePolicy.reason}`);
 
   _validateWorkbookSheetsAndSkus(workbook, next);

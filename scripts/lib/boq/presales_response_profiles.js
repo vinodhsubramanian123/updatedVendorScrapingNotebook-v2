@@ -5,6 +5,7 @@ const definitions = [
   ['FREEFORM_QA', 'QA_ANSWER', 'INFORMATIONAL', ['answer'], 'Supply scoped sources or clarify the unanswered question.'],
   ['BOQ_EVALUATION', 'BOQ_CANDIDATE', 'DRAFT', ['items', 'parsedItems', 'rankedSolutions', 'conflictGraph'], 'Resolve candidate violations and obtain exact validation evidence.'],
   ['RFP_SIZING_TO_BOM', 'SIZING_DRAFT', 'DRAFT', ['candidateBOM', 'resolutions', 'constructionPlan'], 'Resolve sizing gaps and evaluate the resulting scoped candidate.'],
+  ['SOLUTION_COMPARISON', 'SOLUTION_COMPARISON_MATRIX', 'ADVISORY', ['comparisonMatrix', 'paretoFrontier'], 'Review platform trade-offs, resolve pricing or catalog coverage gaps, and run per-platform BOQ and CLIC validation before quoting.'],
   ['BOM_RECONCILIATION', 'RECONCILIATION_REPORT', 'REPORT', ['auditReport'], 'Provide missing baselines/prices or resolve itemized discrepancies.'],
   ['CATALOG_INTELLIGENCE', 'CATALOG_INTELLIGENCE', 'INFORMATIONAL', ['pricingTrail', 'liveDetails', 'priceDrifts', 'catalogSearch', 'timelineComparison', 'historicalPricing'], 'Supply exact catalog/history scope for missing observations.'],
   ['OCR_QUOTE_INGESTION', 'INGESTION_DRAFT', 'DRAFT', ['extractedItems', 'ocrResult'], 'Perform OCR, preserve page evidence and resume the requested objective.'],

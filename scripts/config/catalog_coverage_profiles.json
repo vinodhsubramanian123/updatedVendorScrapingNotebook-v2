@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "profiles": {
     "DL380_Gen12": {
       "product": "DL380 Gen12",
@@ -10,6 +10,9 @@
       "requiredSheets": ["Category Summary", "All SKUs", "Rules & Constraints", "Processor", "Memory", "Storage Controllers", "Accessories & Infrastructure", "Support Services"],
       "minHardwareSKUs": 500,
       "minServicesSKUs": 200,
+      "minActualDrives": 5,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": [
         "Processor",
         "Memory",
@@ -37,6 +40,9 @@
       "expectedWorkbookSheets": 26,
       "minHardwareSKUs": 450,
       "minServicesSKUs": 300,
+      "minActualDrives": 5,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": [
         "Processor",
         "Memory",
@@ -58,6 +64,10 @@
       "requiredSheets": ["Category Summary", "All SKUs", "Rules & Constraints", "Processor", "Memory", "Storage Controllers", "Accessories & Infrastructure", "Support Services"],
       "minHardwareSKUs": 350,
       "minServicesSKUs": 150,
+      "minActualDrives": 5,
+      "minActualGpuCards": 1,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": [
         "Processor",
         "Memory",
@@ -83,6 +93,9 @@
       "expectedWorkbookSheets": 24,
       "minHardwareSKUs": 400,
       "minServicesSKUs": 150,
+      "minActualDrives": 5,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": [
         "Processor",
         "Memory",
@@ -103,6 +116,9 @@
       "expectedWorkbookSheets": 24,
       "minHardwareSKUs": 300,
       "minServicesSKUs": 100,
+      "minActualDrives": 5,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": [
         "Processor",
         "Memory",
@@ -124,6 +140,9 @@
       "expectedWorkbookSheets": 14,
       "minHardwareSKUs": 150,
       "minServicesSKUs": 50,
+      "minActualDrives": 4,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": [
         "Storage Controllers",
         "Drive Enclosures / Drives",
@@ -140,6 +159,9 @@
       "coverageStatus": "LIVE_SCRAPED",
       "expectedWorkbookSheets": 14,
       "minHardwareSKUs": 50,
+      "minActualDrives": 4,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": [
         "Storage Controllers",
         "Drive Enclosures / Drives",
@@ -153,7 +175,8 @@
       "pillar": "STORAGE",
       "family": "Alletra",
       "generation": "General",
-      "coverageStatus": "PENDING_LIVE_OCA_SCRAPE",
+      "archivedStub": true,
+      "coverageStatus": "ARCHIVED_STUB",
       "expectedWorkbookSheets": 10,
       "minHardwareSKUs": 50,
       "knownLimitations": [
@@ -172,6 +195,8 @@
       "generation": "General",
       "expectedWorkbookSheets": 8,
       "minHardwareSKUs": 20,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": [
         "Variants",
         "Transceivers",
@@ -186,6 +211,8 @@
       "generation": "General",
       "baseSku": "P51174-B21",
       "minHardwareSKUs": 25,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": ["Power Cord", "Power Supply"],
       "requiredHardware": [
         { "sku": "AF573A", "category": "Power Cord", "leadTimeRequired": true },
@@ -202,6 +229,9 @@
       "requiredSheets": ["Category Summary", "All SKUs", "Rules & Constraints", "Processor", "Memory", "Storage Controllers", "Accessories & Infrastructure", "Support Services"],
       "minHardwareSKUs": 250,
       "minServicesSKUs": 100,
+      "minActualDrives": 2,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": [
         "Processor",
         "Memory",
@@ -221,6 +251,8 @@
       "generation": "General",
       "minHardwareSKUs": 10,
       "expectedWorkbookSheets": 12,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": ["Variants", "SFP Transceivers", "DAC Cables", "OM4 Fibre Cables"],
       "requiredHardware": [{ "sku": "876852-B21", "category": "Variants" }],
       "scope": "Frame Link Module menu and observed selected services under P51174-B21"
@@ -232,6 +264,8 @@
       "generation": "General",
       "minHardwareSKUs": 15,
       "expectedWorkbookSheets": 11,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": ["Variants", "OM3 LC-LC", "Premier Flex OM4"],
       "requiredHardware": [
         { "sku": "P77653-B21", "category": "Variants" },
@@ -248,6 +282,8 @@
       "expectedWorkbookSheets": 16,
       "minHardwareSKUs": 120,
       "minServicesSKUs": 2,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": [
         "Variants",
         "Optical Transceivers",
@@ -268,6 +304,9 @@
       "expectedWorkbookSheets": 24,
       "minHardwareSKUs": 350,
       "minServicesSKUs": 100,
+      "minActualDrives": 5,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": [
         "Processor",
         "Memory",
@@ -282,6 +321,9 @@
       "generation": "Gen11",
       "expectedWorkbookSheets": 20,
       "minHardwareSKUs": 150,
+      "minActualDrives": 5,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": [
         "Processor",
         "Memory",
@@ -295,6 +337,9 @@
       "generation": "Gen12",
       "expectedWorkbookSheets": 24,
       "minHardwareSKUs": 250,
+      "minActualDrives": 5,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": [
         "Processor",
         "Memory",
@@ -308,6 +353,8 @@
       "generation": "Tape",
       "expectedWorkbookSheets": 12,
       "minHardwareSKUs": 40,
+      "maxZeroPriceBaseVariants": 0,
+      "maxAgeDays": 30,
       "mandatoryCategories": [
         "Storage Media",
         "Power Supplies"
@@ -318,7 +365,8 @@
       "pillar": "HPC",
       "family": "Cray",
       "generation": "General",
-      "coverageStatus": "UNSCRAPED_SEED_PARTIAL",
+      "archivedStub": true,
+      "coverageStatus": "ARCHIVED_STUB",
       "expectedWorkbookSheets": 7,
       "minHardwareSKUs": 2,
       "knownLimitations": [

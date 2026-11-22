@@ -17,6 +17,11 @@ const {
   buildAvailabilityContract,
   classifyRowType
 } = require('./field_parsers.js');
+const {
+  ALLETRA_MP_MANDATORY_DISCLOSURE,
+  loadNinjaOnlineTelemetry,
+  interpolateAlletraMpEnvelope
+} = require('../conflict/sizing/scaling_interpolator.js');
 
 const SEARCH_VERB_RE = /\b(?:list|show|find|filter|search|which|get|give\s+me|what\s+are|sort(?:ed)?\s+by|cheapest|fastest|lowest\s+price|shortest\s+lead\s+time|compare)\b/i;
 const STRUCTURED_CONSTRAINT_RE = /\b(?:\d+(?:\.\d+)?\s*(?:gb|tb|w|watts?|days?|yrs?|years?|cores?|gbe|mt\/s)|ddr\d+|rdimm|lrdimm|mrdimm|nvme|sas|sata|sff|lff|edsff|tech\s*care|foundation\s*care|fast[\s-]*ship|obsolete|90[\s-]*day|direct\s*ship|constrained[\s_-]*supply|\[cs\]|conditional|hidden|tdp|titanium|platinum|-48\s*vdc|read\s*intensive|mixed\s*use|write\s*intensive|ocp\s*3|direct\s*liquid|heatsink|heat\s*sink|fan\s*kit|storage\s*controller|raid|jbof|enclosure|under\s*\$|below\s*\$|above\s*\$|over\s*\$|sort(?:ed)?\s+by\s+(?:price|lead\s*time|capacity|cores?|wattage|tdp)|dimms?|gpus?|cpus?|psus?|power\s*suppl(?:y|ies)|drives?|ssds?|hdds?|nics?|transceivers?|cables?|support\s*skus?|rail\s*kits?)\b/i;
@@ -743,6 +748,41 @@ function _emptySearchPayload(rawQuery = '') {
   };
 }
 
+function _loadAlletraMpNinjaEnrichment(targetCatalogs) {
+  const enrichment = {};
+  for (const cat of targetCatalogs || []) {
+    if (!cat || (cat.id !== 'Alletra_MP_B10000' && cat.id !== 'Alletra_MP_X10000')) continue;
+    const telemetryPath = cat.catalogDir
+      ? path.join(cat.catalogDir, 'raw_data', 'ninja_online_sizing_catalog.json')
+      : null;
+    const telemetry = loadNinjaOnlineTelemetry(cat.id, telemetryPath ? { telemetryPath } : {});
+    if (!telemetry.present) continue;
+    const envelope = interpolateAlletraMpEnvelope({ product: cat.id, telemetryPath });
+    enrichment[cat.id] = {
+      product: cat.id,
+      telemetrySource: telemetry.source,
+      evidenceTier: telemetry.evidenceTier,
+      capturedAt: telemetry.capturedAt,
+      sha256: telemetry.sha256,
+      uniquePartNumbers: telemetry.data?.summary?.uniquePartNumbers ?? null,
+      ...(cat.id === 'Alletra_MP_B10000'
+        ? {
+            topologyLimits: envelope.switchlessToSwitchedCrossover,
+            nodeEnvelopes: envelope.nodeEnvelopes,
+            availableDriveCapacitiesTb: envelope.availableDriveCapacitiesTb
+          }
+        : {
+            maxBounds: envelope.maxBounds,
+            mediaEnvelopes: envelope.mediaEnvelopes,
+            tlcVsQlcComparison: envelope.tlcVsQlcComparison
+          }),
+      portalValidationStatus: 'PORTAL_VALIDATION_PENDING',
+      mandatoryWorkflowDisclosure: ALLETRA_MP_MANDATORY_DISCLOSURE
+    };
+  }
+  return Object.keys(enrichment).length > 0 ? enrichment : null;
+}
+
 /**
  * Execute a deterministic structured catalog search with strict conflict & unmeasured exclusions.
  * @param {object|string|null} queryOrParsed
@@ -775,6 +815,7 @@ function executeCatalogSearch(queryOrParsed, options = {}) {
   const incompleteCatalogCoverage = targetCatalogs.length === 0 || sources.some(source => _hasSourceGap(source, parsedQuery))
     || buckets.excludedUnmeasured.length > 0 || buckets.excludedUnpriced.length > 0 || buckets.excludedConflicts.length > 0;
 
+  const ninjaSizingTelemetry = _loadAlletraMpNinjaEnrichment(targetCatalogs);
   const { rawQuery, ...filters } = parsedQuery;
   const payload = {
     query: rawQuery,
@@ -784,6 +825,7 @@ function executeCatalogSearch(queryOrParsed, options = {}) {
     excludedUnmeasured: buckets.excludedUnmeasured,
     excludedUnpriced: buckets.excludedUnpriced,
     excludedConflicts: buckets.excludedConflicts,
+    ...(ninjaSizingTelemetry ? { ninjaSizingTelemetry } : {}),
     summary: {
       productsSearched: targetCatalogs.map((c) => c.id),
       totalRowsScanned,
@@ -878,5 +920,6 @@ module.exports = {
   parseCatalogSearchQuery,
   executeCatalogSearch,
   verifyCatalogSearchResponse,
-  recordQueryMissIfNeeded
+  recordQueryMissIfNeeded,
+  loadAlletraMpNinjaEnrichment: _loadAlletraMpNinjaEnrichment
 };

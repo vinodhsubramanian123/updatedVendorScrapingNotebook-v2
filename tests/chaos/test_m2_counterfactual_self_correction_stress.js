@@ -317,7 +317,8 @@ describe('Milestone 2 Counterfactual Repair & Physical Self-Correction Adversari
         assert.ok(item.backtrackedFrom, `Item ${i + 1} must state backtrackedFrom baseline`);
         assert.ok(item.selfCorrectionAction, `Item ${i + 1} must have selfCorrectionAction`);
         assert.ok(item.resolutionDetails, `Item ${i + 1} must have resolutionDetails`);
-        assert.equal(item.verifiedBuildable, true);
+        assert.equal(item.status, 'PROPOSED');
+        assert.equal(item.verifiedBuildable, false);
       }
     });
 

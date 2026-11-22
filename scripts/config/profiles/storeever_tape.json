@@ -8,6 +8,7 @@
   },
   "component_mapping": {
     "Base Chassis": ["msl3040", "tape library", "base module", "expansion module"],
-    "Storage Controller": ["lto-9", "lto-8", "lto-7", "tape drive", "sas tape", "fc tape drive"]
+    "Tape Drive": ["lto-9", "lto-8", "lto-7", "lto-6", "ultrium", "tape drive", "sas tape", "fc tape drive"],
+    "Storage Media": ["storage media", "data cartridge", "cleaning cartridge", "worm"]
   }
 }

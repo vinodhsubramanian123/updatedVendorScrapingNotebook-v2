@@ -29,7 +29,9 @@ const { normalizeConfiguration, applyConfigurationContext } = require('./configu
 const { evaluateBundleComposition } = require('./bundle_composition');
 const { buildRuntimeDiscoveryPlan } = require('./runtime_discovery_plan');
 const { evaluateSanSwitch } = require('./san_switch_evaluator');
-const { evaluateDomainAspects } = require('../aspects/aspect_registry.js');
+const { isAlletraMpItems, evaluateAlletraMp } = require('./alletra_mp_evaluator.js');
+const { isCompleteSynergyComposite, evaluateSynergyComposite } = require('./synergy_composite_evaluator.js');
+const { evaluateDomainAspects, evalArchiveColdStorage } = require('../aspects/aspect_registry.js');
 const { evaluateGenericDomainRules } = require('../catalog/generic_domain_templates.js');
 const { autoDetectChassisDir } = require('../catalog/catalog_discovery.js');
 
@@ -1574,11 +1576,107 @@ function buildArchitecturalRationale(ctx) {
   return architecturalRationale;
 }
 
+function _buildArchiveTapeEvalResult(items, archiveRes, catalogData, topology, detectedChassis, options) {
+  const lifecycle = (options.skipLifecycle || options.skipGraphValidation)
+    ? { hasObsoleteRisk: false, hasEolWarning: false, obsoleteSkus: [], eolSkus: [], nearExpirySkus: [] }
+    : evalSupportServices(items, catalogData, options.lifecycle || {});
+  const errors = [...(archiveRes.errors || [])];
+  const warnings = [...(archiveRes.warnings || [])];
+  if (lifecycle.hasObsoleteRisk) {
+    warnings.push('Lifecycle Risk: Obsolete (OB) tape/archive component(s) detected in BOM.');
+  }
+  const hasSupport = (items || []).some(it => /\b(?:tech\s*care|pointnext|support|foundation\s*care)\b/i.test(String(it.description || '')) || /^H[A-Z0-9]{5,7}(?:#|$)/.test(cleanBaseSKU(it.sku)));
+  if (!hasSupport) {
+    warnings.push('Support Advisory: Missing HPE Tech Care hardware support SKU for StoreEver tape library (default: 3-year Tech Care Basic).');
+  }
+  const aspectChecks = [
+    {
+      id: 'ARCHIVE_COLD_STORAGE',
+      name: 'Tape Library & Archive Drive Validation',
+      status: archiveRes.status,
+      detail: errors[0] || archiveRes.advisory || warnings[0] || 'Archive tape library checked.'
+    },
+    {
+      id: 'SUPPORT_SERVICES',
+      name: 'Support & Lifecycle Services Aspect',
+      status: lifecycle.hasObsoleteRisk ? 'FAIL' : (hasSupport ? 'PASS' : 'WARN'),
+      detail: hasSupport ? 'Hardware support service line present.' : 'Hardware Tech Care support service pending.'
+    }
+  ];
+  const isMathClean = errors.length === 0 && archiveRes.status !== 'FAIL';
+  return {
+    items,
+    productType: 'ARCHIVE_TAPE',
+    solutionTopology: { ...topology, domain: 'archive_tape' },
+    isMathClean,
+    isGraphClean: false,
+    portalValidationStatus: 'PENDING',
+    criticalViolationsCount: errors.length,
+    errors,
+    warnings,
+    missingDependencies: [],
+    mathDeductions: [...errors],
+    aspectChecks,
+    evalSummary: {
+      archive: archiveRes,
+      lifecycleRisks: lifecycle,
+      errors,
+      warnings,
+      missingDependencies: [],
+      aspectChecks
+    },
+    confidence: {
+      score: isMathClean ? 0.74 : Math.max(0.1, Number((0.74 - errors.length * 0.15).toFixed(2))),
+      isHitlTriggered: true,
+      confidenceReasons: [...errors.map(e => `[CRITICAL_MATH] ${e}`), ...warnings.map(w => `[WARNING] ${w}`)]
+    },
+    conflictGraph: {
+      chassisInfo: { ...detectedChassis, productId: detectedChassis?.productId || 'MSL3040_Tape', family: 'StoreEver' },
+      rulesSource: 'ARCHIVE_TAPE_DOMAIN_RULES',
+      isFallbackSource: false,
+      totalRulesEvaluated: aspectChecks.length,
+      isWholeSolutionValid: false,
+      conflicts: errors.map(message => ({ level: 'ARCHIVE_TAPE', type: 'ARCHIVE_TAPE_VIOLATION', message })),
+      resolvedFixes: [],
+      unresolvedConflicts: errors.map(message => ({ type: 'ARCHIVE_TAPE_VIOLATION', message })),
+      rankedSolutions: []
+    }
+  };
+}
+
+function _dispatchSpecializedDomainEvaluator(topologyItems, catalogData, targetDir, topology, detectedChassis, options) {
+  if (isAlletraMpItems(topologyItems, detectedChassis, targetDir)) {
+    return {
+      ...evaluateAlletraMp(topologyItems, catalogData, targetDir, detectedChassis, options),
+      solutionTopology: { ...topology, domain: 'alletra_mp' }
+    };
+  }
+  if (isCompleteSynergyComposite(topologyItems, topology, detectedChassis)) {
+    return {
+      ...evaluateSynergyComposite(topologyItems, catalogData, targetDir, detectedChassis, options),
+      solutionTopology: { ...topology, domain: 'synergy_composite' }
+    };
+  }
+  const isPureArchiveTopology = topology.domain === 'archive'
+    || (topology.domain === 'composite' && Array.isArray(topology.roles) && topology.roles.length === 1 && topology.roles[0] === 'archive');
+  if (isPureArchiveTopology) {
+    const archiveRes = evalArchiveColdStorage(topologyItems, catalogData, {}, 1, {
+      chassisInfo: detectedChassis, targetDir, options
+    });
+    if (archiveRes && archiveRes.status !== 'NOT_EVALUATED') {
+      return _buildArchiveTapeEvalResult(topologyItems, archiveRes, catalogData, topology, detectedChassis, options);
+    }
+  }
+  return null;
+}
+
 function _handleTopologyAndScaling(items, catalogData, targetDir, options) {
   const topologyItems = Array.isArray(items) ? items : [];
   const detectedChassis = detectChassisVariant(topologyItems);
   const topology = resolveSolutionTopology(topologyItems, detectedChassis, catalogData);
   if (topologyItems.length && (topology.domain !== 'server' && !(topology.domain === 'networking' && detectedChassis.family === 'SAN'))) {
+    const specialized = _dispatchSpecializedDomainEvaluator(topologyItems, catalogData, targetDir, topology, detectedChassis, options);
+    if (specialized) return { isHandled: true, result: specialized };
     return { isHandled: true, result: evaluateUnprofiledTopology(items, topology, detectedChassis) };
   }
   if (Array.isArray(items) && items.length && !options.baseConfigurationOnly) {

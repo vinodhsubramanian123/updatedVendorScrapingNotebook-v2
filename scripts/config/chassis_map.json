@@ -441,6 +441,85 @@
         }
       }
     },
+    "Alletra_MP_B10000": {
+      "catalogProductId": "Alletra_MP_B10000",
+      "family": "Alletra",
+      "gen": "Storage",
+      "modelFamily": "Alletra Storage MP B10000",
+      "skus": {
+        "S0B84A": {
+          "model": "Alletra Storage MP B10100 Switchless",
+          "formFactor": "Switchless 2U Base",
+          "topology": "switchless",
+          "family": "Alletra",
+          "gen": "Storage",
+          "description": "HPE Alletra Storage MP B10100 Switchless Base Configuration",
+          "listPrice": null,
+          "optionType": "CTO"
+        },
+        "S1R06A": {
+          "model": "Alletra Storage MP B10200 Switched",
+          "formFactor": "Switched 2U Base",
+          "topology": "switched",
+          "family": "Alletra",
+          "gen": "Storage",
+          "description": "HPE Alletra Storage MP B10200 Switched Base Configuration",
+          "listPrice": null,
+          "optionType": "CTO"
+        }
+      }
+    },
+    "Alletra_MP_X10000": {
+      "catalogProductId": "Alletra_MP_X10000",
+      "family": "Alletra",
+      "gen": "Storage",
+      "modelFamily": "Alletra Storage MP X10000",
+      "skus": {
+        "S3L12A": {
+          "model": "Alletra Storage MP X10000",
+          "formFactor": "Storage Chassis",
+          "family": "Alletra",
+          "gen": "Storage",
+          "description": "HPE Alletra Storage MP X10000 Base Configuration",
+          "listPrice": null,
+          "optionType": "CTO"
+        }
+      }
+    },
+    "Synergy_4Port_Frame_Link_Module": {
+      "catalogProductId": "Synergy_4Port_Frame_Link_Module",
+      "family": "Synergy",
+      "gen": "General",
+      "modelFamily": "Synergy 4-port Frame Link Module",
+      "skus": {
+        "876852-B21": {
+          "model": "Synergy 4-port Frame Link Module",
+          "formFactor": "Frame Link Module",
+          "family": "Synergy",
+          "gen": "General",
+          "description": "HPE Synergy 4-port Frame Link Module",
+          "listPrice": 2210,
+          "optionType": "CTO"
+        }
+      }
+    },
+    "Synergy_Brocade_64Gb_FC_Module": {
+      "catalogProductId": "Synergy_Brocade_64Gb_FC_Module",
+      "family": "Synergy",
+      "gen": "General",
+      "modelFamily": "Brocade 64Gb Fibre Channel Module for Synergy",
+      "skus": {
+        "P77653-B21": {
+          "model": "Brocade 64Gb FC Module for Synergy",
+          "formFactor": "Interconnect Module",
+          "family": "Synergy",
+          "gen": "General",
+          "description": "Brocade 64Gb Fibre Channel Module for HPE Synergy",
+          "listPrice": 63999,
+          "optionType": "CTO"
+        }
+      }
+    },
     "SAN_FC": {
       "catalogProductId": "SN3600B_FC",
       "family": "SAN",
@@ -729,6 +808,53 @@
       "gen": "Tape",
       "description": "HPE StoreEver MSL3040 Scalable Base Module Configure-to-order",
       "listPrice": 4500,
+      "optionType": "CTO"
+    },
+    "S0B84A": {
+      "model": "Alletra Storage MP B10100 Switchless",
+      "formFactor": "Switchless 2U Base",
+      "topology": "switchless",
+      "family": "Alletra",
+      "gen": "Storage",
+      "description": "HPE Alletra Storage MP B10100 Switchless Base Configuration",
+      "listPrice": null,
+      "optionType": "CTO"
+    },
+    "S1R06A": {
+      "model": "Alletra Storage MP B10200 Switched",
+      "formFactor": "Switched 2U Base",
+      "topology": "switched",
+      "family": "Alletra",
+      "gen": "Storage",
+      "description": "HPE Alletra Storage MP B10200 Switched Base Configuration",
+      "listPrice": null,
+      "optionType": "CTO"
+    },
+    "S3L12A": {
+      "model": "Alletra Storage MP X10000",
+      "formFactor": "Storage Chassis",
+      "family": "Alletra",
+      "gen": "Storage",
+      "description": "HPE Alletra Storage MP X10000 Base Configuration",
+      "listPrice": null,
+      "optionType": "CTO"
+    },
+    "876852-B21": {
+      "model": "Synergy 4-port Frame Link Module",
+      "formFactor": "Frame Link Module",
+      "family": "Synergy",
+      "gen": "General",
+      "description": "HPE Synergy 4-port Frame Link Module",
+      "listPrice": 2210,
+      "optionType": "CTO"
+    },
+    "P77653-B21": {
+      "model": "Brocade 64Gb FC Module for Synergy",
+      "formFactor": "Interconnect Module",
+      "family": "Synergy",
+      "gen": "General",
+      "description": "Brocade 64Gb Fibre Channel Module for HPE Synergy",
+      "listPrice": 63999,
       "optionType": "CTO"
     },
     "R7R97A": {

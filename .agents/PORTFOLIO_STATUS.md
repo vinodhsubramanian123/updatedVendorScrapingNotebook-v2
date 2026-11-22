@@ -1,27 +1,36 @@
-# Portfolio State of Health (Auto-Generated: 2026-09-12)
+# Portfolio State of Health (Auto-Generated: 2026-11-22)
 
 This document is dynamically generated from on-disk catalog metadata by `scripts/maintenance/generate_portfolio_status.js`.
 
-### 📊 Certified Products & Portfolio Status
+### 📊 Discovered Catalogs & Portfolio Status
 
 | Product Chassis | Relative Directory | SKUs on Disk | Excel Workbook | QuickSpecs PDF | Diff History | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `HPE Alletra Storage System` | `outputs/Alletra/Storage/Alletra_Storage_System` | **3** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ Baseline Pass |
-| `GX5000 General RACK` | `outputs/Cray/General/GX5000_General_RACK` | **2** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ Baseline Pass |
-| `DL145 Gen11` | `outputs/ProLiant/Gen11/DL145_Gen11` | **357** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ 100% Certified (Full Scrape) |
-| `DL380 Gen11` | `outputs/ProLiant/Gen11/DL380_Gen11` | **584** | ✅ Present | ✅ 2.08 MB | ✅ Active | ✅ 100% Certified (Full Scrape) |
-| `DL380 Gen12` | `outputs/ProLiant/Gen12/DL380_Gen12` | **472** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ 100% Certified (Full Scrape) |
-| `DL380a Gen12` | `outputs/ProLiant/Gen12/DL380a_Gen12` | **359** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ 100% Certified (Full Scrape) |
-| `DL580 Gen12` | `outputs/ProLiant/Gen12/DL580_Gen12` | **242** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ 100% Certified (Full Scrape) |
-| `MSL3040 Tape` | `outputs/StoreEver/Tape/MSL3040_Tape` | **104** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | ✅ 100% Certified (Full Scrape) |
-| `SY480 Gen12` | `outputs/Synergy/Gen12/SY480_Gen12` | **154** | ✅ Present | ✅ 2.58 MB | ✅ Active | ✅ 100% Certified (Full Scrape) |
-| `SY100Gb F32 Module` | `outputs/Synergy/General/SY100Gb_F32_Module` | **3** | ✅ Present | ✅ 0.52 MB | ✅ Active | ✅ Baseline Pass |
+| `Alletra MP B10000` | `outputs\Alletra\Storage\Alletra_MP_B10000` | **202** | ✅ Present | ✅ 0.58 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `Alletra MP X10000` | `outputs\Alletra\Storage\Alletra_MP_X10000` | **82** | ✅ Present | ✅ 0.5 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `HPE Alletra Storage System` | `outputs\Alletra\Storage\Alletra_Storage_System` | **3** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `GX5000 General RACK` | `outputs\Cray\General\GX5000_General_RACK` | **2** | ✅ Present | ⚠️ Advisory (No PDF) | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `DL145 Gen11` | `outputs\ProLiant\Gen11\DL145_Gen11` | **487** | ✅ Present | ✅ 1.59 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `DL360 Gen11` | `outputs\ProLiant\Gen11\DL360_Gen11` | **757** | ✅ Present | ✅ 1.87 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `DL380 Gen11` | `outputs\ProLiant\Gen11\DL380_Gen11` | **980** | ✅ Present | ✅ 2.08 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `DL385 Gen11` | `outputs\ProLiant\Gen11\DL385_Gen11` | **754** | ✅ Present | ✅ 2.87 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `DL360 Gen12` | `outputs\ProLiant\Gen12\DL360_Gen12` | **770** | ✅ Present | ✅ 2.5 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `DL380 Gen12` | `outputs\ProLiant\Gen12\DL380_Gen12` | **781** | ✅ Present | ✅ 2.22 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `DL380a Gen12` | `outputs\ProLiant\Gen12\DL380a_Gen12` | **531** | ✅ Present | ✅ 1.12 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `DL580 Gen12` | `outputs\ProLiant\Gen12\DL580_Gen12` | **584** | ✅ Present | ✅ 1.22 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `SN3600B FC` | `outputs\SAN\FC\SN3600B_FC` | **79** | ✅ Present | ✅ 0.52 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `MSL3040 Tape` | `outputs\StoreEver\Tape\MSL3040_Tape` | **124** | ✅ Present | ✅ 0.52 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `SY480 Gen12` | `outputs\Synergy\Gen12\SY480_Gen12` | **313** | ✅ Present | ✅ 2.58 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `SY100Gb F32 Module` | `outputs\Synergy\General\SY100Gb_F32_Module` | **141** | ✅ Present | ✅ 0.52 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `Synergy 12000 Frame` | `outputs\Synergy\General\Synergy_12000_Frame` | **257** | ✅ Present | ✅ 0.89 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `Synergy 4Port Frame Link Module` | `outputs\Synergy\General\Synergy_4Port_Frame_Link_Module` | **62** | ✅ Present | ✅ 0.51 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
+| `Synergy Brocade 64Gb FC Module` | `outputs\Synergy\General\Synergy_Brocade_64Gb_FC_Module` | **24** | ✅ Present | ✅ 0.29 MB | ✅ Active | Catalog discovered; coverage and solution validation require separate evidence |
 
-**Total Verified Portfolio Intelligence**: **2280 unique SKUs** across **10 product lines**.
+**Catalog SKU Count (summed per product)**: **6933** across **19 product lines**. Shared SKUs may occur in multiple products.
 
 ### 🧠 Learned KnowledgeDeltas
 
-- Total Closed-Loop Knowledge Deltas on Disk: **79**
+- Total Closed-Loop Knowledge Deltas on Disk: **176**
 
 ### 🚀 Quick Commands
 

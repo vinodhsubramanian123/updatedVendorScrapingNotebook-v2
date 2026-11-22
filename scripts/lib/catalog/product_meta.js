@@ -172,8 +172,12 @@ function _classifyPrimaryInfrastructureRole(desc) {
     && !/\b(?:cable|kit|bracket|riser|transceiver|heatsink|raid\s*setting|enablement\s*kit)\b/i.test(desc)) {
     return 'Operating System / License';
   }
+  if (/\b(?:lto[-\s]?[3-9]|ultrium)\b/i.test(desc) && !/\b(?:software|license|ltu|support|service|cable|cord)\b/i.test(desc)) {
+    if (/\b(?:cartridge|worm|cleaning|bar\s*code|media|pack)\b/i.test(desc)) return 'Storage Media';
+    if (/\b(?:drive|upgrade\s*kit)\b/i.test(desc)) return 'Tape Drive';
+  }
   if (/virtual\s*connect|\binterconnect\b|\bvc\s*\d+\s*gb\s*f32\b/i.test(desc) && !/\b(cable|transceiver|adapter|kit)\b/i.test(desc)) return 'Fabric Interconnect';
-  if (/\bswitch\b/i.test(desc) && !/fibre channel|\b(fc|kit|upgrade|license|cable|transceiver|adapter)\b/i.test(desc)) return 'Network Switch';
+  if (/\bswitch\b/i.test(desc) && !/fibre channel|\b(fc|kit|upgrade|license|cable|transceiver|adapter|rail|tray)\b/i.test(desc)) return 'Network Switch';
   if (/synergy.*\b(frame|enclosure)\b/i.test(desc) && !/\b(kit|blank|rail|cable)\b/i.test(desc)) return 'Composable Enclosure';
   if (/\b(?:fibre channel|fc)\s+switch\b/i.test(desc) && !/\b(support|service|upgrade|license|kit)\b/i.test(desc)) return 'SAN Switch';
   if (/\bupgrade\s+license\s+with\s+transceiver\s+kit\b/i.test(desc)) return 'Port Upgrade Bundle';
@@ -297,6 +301,8 @@ const SUBCATEGORY_SYNTHESIS_RULES = [
   { name: 'Drive Blank & FIO Enablement Kits', match: t => t.includes('no drive') || t.includes('drive blank') },
 
   // 7. Drive Enclosures & Storage Media
+  { name: 'LTO Tape Drives', match: t => /\b(?:lto[-\s]?[3-9]|ultrium)\b/i.test(t) && /\bdrive\b/i.test(t) && !/\bcartridge\b/i.test(t) },
+  { name: 'LTO Tape Media & Cartridges', match: t => /\b(?:lto[-\s]?[3-9]|ultrium)\b/i.test(t) && /\b(?:cartridge|worm|cleaning|bar\s*code|media)\b/i.test(t) },
   { name: 'SFF Drive Cages & Enablement', match: t => t.includes('sff') && (t.includes('cage') || t.includes('bay') || t.includes('enclosure') || t.includes('drive')) },
   { name: 'LFF Drive Cages & Enablement', match: t => t.includes('lff') && (t.includes('cage') || t.includes('bay') || t.includes('enclosure') || t.includes('drive')) },
   { name: 'EDSFF Drive Cages & Enablement', match: t => t.includes('edsff') && (t.includes('cage') || t.includes('bay') || t.includes('enclosure') || t.includes('drive')) },

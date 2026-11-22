@@ -398,43 +398,77 @@ function evaluateCondition(cond, state) {
   }
 }
 
+function _parseCapabilityOptionPrice(opt) {
+  const candidates = [
+    opt.priceUsd,
+    opt.price,
+    opt.listPrice,
+    opt['List Price (USD)'],
+    opt['Unit Price (USD)']
+  ];
+  for (const val of candidates) {
+    if (val === null || val === undefined || val === '') continue;
+    if (typeof val === 'number') {
+      if (Number.isFinite(val) && val >= 0) return val;
+      continue;
+    }
+    const cleaned = String(val).replace(/[$,\s]/g, '');
+    if (!cleaned || /^(?:na|n\/a)$/i.test(cleaned)) continue;
+    const parsed = Number(cleaned);
+    if (Number.isFinite(parsed) && parsed >= 0) return parsed;
+  }
+  return null;
+}
+
+function _isRemovedCatalogOption(opt) {
+  const status = String(opt?.['Diff Status'] || opt?.diffStatus || '').trim().toUpperCase();
+  return status === 'REMOVED' || status === 'DISCONTINUED';
+}
+
+function _formatResolvedCapabilityOption(opt, entry) {
+  return {
+    sku: opt.sku || opt['Product #'] || opt.partNumber,
+    description: opt.description || opt.Description || opt.name,
+    price: _parseCapabilityOptionPrice(opt),
+    category: entry.parentCategory || 'Component Fix',
+    subCategory: entry.subCategory || 'Physical Capability'
+  };
+}
+
 /**
  * Resolve an abstract capability to a specific SKU inside an active product catalog
  * @param {string} capability Capability ID
  * @param {object} catalog Catalog object { entries: [...], skus: [...] }
- * @returns {object|null} Resolved SKU { sku, description, price, category }
+ * @returns {object|null} Resolved SKU { sku, description, price, category, subCategory }
  */
 function resolveCapabilityToSku(capability, catalog = {}) {
   const matcher = CAPABILITY_SEMANTIC_MAP[capability];
   if (!matcher || !catalog) return null;
 
   const allEntries = Array.isArray(catalog.entries) ? catalog.entries : [];
+  let fallbackMatch = null;
+
   for (const entry of allEntries) {
     const subCat = String(entry.subCategory || '').toLowerCase();
     const parentCat = String(entry.parentCategory || '').toLowerCase();
     const fullCat = `${parentCat} ${subCat}`;
-
-    // Check category pattern match
     const catMatches = matcher.categoryPatterns.some(p => p.test(fullCat));
 
-    if (Array.isArray(entry.options)) {
-      for (const opt of entry.options) {
-        const desc = String(opt.description || opt.name || '').toLowerCase();
-        const descMatches = matcher.descPatterns.some(p => p.test(desc));
+    const items = (Array.isArray(entry.skus) && entry.skus.length > 0)
+      ? entry.skus
+      : (Array.isArray(entry.options) ? entry.options : []);
 
-        if (descMatches || (catMatches && matcher.descPatterns.some(p => p.test(desc)))) {
-          return {
-            sku: opt.sku || opt.partNumber,
-            description: opt.description || opt.name,
-            price: opt.priceUsd || opt.price || 0,
-            category: entry.parentCategory || 'Component Fix',
-            subCategory: entry.subCategory || 'Physical Capability'
-          };
-        }
-      }
+    for (const opt of items) {
+      if (!opt || _isRemovedCatalogOption(opt)) continue;
+      const desc = String(opt.description || opt.Description || opt.name || '').toLowerCase();
+      if (!matcher.descPatterns.some(p => p.test(desc))) continue;
+      const resolved = _formatResolvedCapabilityOption(opt, entry);
+      if (!resolved.sku) continue;
+      if (catMatches) return resolved;
+      if (!fallbackMatch) fallbackMatch = resolved;
     }
   }
-  return null;
+  return fallbackMatch;
 }
 
 /**

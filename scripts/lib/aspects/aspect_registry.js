@@ -107,6 +107,60 @@ function adapterSanSwitchAspect(aspectId) {
   };
 }
 
+function adapterAlletraMpAspect(aspectId) {
+  return function(items, catalogData, _mandatorySkus, _serverCount, ctx) {
+    if (!Array.isArray(items) || items.length === 0) {
+      return { status: 'NOT_EVALUATED', advisory: 'No Alletra MP components in BOQ.' };
+    }
+    try {
+      const { evaluateAlletraMp } = require('../boq/alletra_mp_evaluator.js');
+      const evalCtx = ctx || {};
+      if (!evalCtx._alletraMpResult) {
+        evalCtx._alletraMpResult = evaluateAlletraMp(items, catalogData, evalCtx.chassisDir || evalCtx.targetDir || '', evalCtx.chassisInfo || {}, evalCtx.options || {});
+      }
+      const check = (evalCtx._alletraMpResult.aspectChecks || []).find(c => c.id === aspectId);
+      if (check) {
+        return {
+          status: check.status,
+          errors: Array.isArray(check.errors) ? check.errors : [],
+          warnings: Array.isArray(check.warnings) ? check.warnings : [],
+          advisory: check.detail
+        };
+      }
+      return { status: 'NOT_EVALUATED', advisory: `Alletra MP aspect ${aspectId} was not resolved.` };
+    } catch (err) {
+      return { status: 'NOT_EVALUATED', advisory: `Alletra MP evaluation advisory: ${err.message}` };
+    }
+  };
+}
+
+function adapterSynergyCompositeAspect(aspectId) {
+  return function(items, catalogData, _mandatorySkus, _serverCount, ctx) {
+    if (!Array.isArray(items) || items.length === 0) {
+      return { status: 'NOT_EVALUATED', advisory: 'No Synergy 12000 composite components in BOQ.' };
+    }
+    try {
+      const { evaluateSynergyComposite } = require('../boq/synergy_composite_evaluator.js');
+      const evalCtx = ctx || {};
+      if (!evalCtx._synergyCompositeResult) {
+        evalCtx._synergyCompositeResult = evaluateSynergyComposite(items, catalogData, evalCtx.chassisDir || evalCtx.targetDir || '', evalCtx.chassisInfo || {}, evalCtx.options || {});
+      }
+      const check = (evalCtx._synergyCompositeResult.aspectChecks || []).find(c => c.id === aspectId);
+      if (check) {
+        return {
+          status: check.status,
+          errors: Array.isArray(check.errors) ? check.errors : [],
+          warnings: Array.isArray(check.warnings) ? check.warnings : [],
+          advisory: check.detail
+        };
+      }
+      return { status: 'NOT_EVALUATED', advisory: `Synergy composite aspect ${aspectId} was not resolved.` };
+    } catch (err) {
+      return { status: 'NOT_EVALUATED', advisory: `Synergy composite evaluation advisory: ${err.message}` };
+    }
+  };
+}
+
 function parseSwitchPortSpec(desc, qty) {
   let access = 48;
   let uplinks = 4;
@@ -369,11 +423,13 @@ const DOMAIN_CAPABILITY_MATRIX = Object.freeze({
   server: { status: 'PRODUCTION_SUPPORTED' },
   ai_cluster: { status: 'PARTIALLY_SUPPORTED' },
   storage: { status: 'PARTIALLY_SUPPORTED' },
+  alletra_mp: { status: 'PRODUCTION_SUPPORTED' },
   networking: { status: 'PARTIALLY_SUPPORTED' },
   san_switch: { status: 'PRODUCTION_SUPPORTED' },
   synergy_compute: { status: 'PARTIALLY_SUPPORTED' },
+  synergy_composite: { status: 'PRODUCTION_SUPPORTED' },
   archive: { status: 'NOT_EVALUATED' },
-  archive_tape: { status: 'NOT_EVALUATED' }
+  archive_tape: { status: 'PRODUCTION_SUPPORTED' }
 });
 
 const DOMAIN_REGISTRY = {
@@ -468,6 +524,22 @@ const DOMAIN_REGISTRY = {
     { id: 'FRAME_FABRIC_MEZZANINE', name: 'Synergy Mezzanine & Interconnect Fabric Aspect', checker: adapterNetworkingOcp },
     { id: 'FRAME_SHARED_POWER', name: 'Synergy Frame Shared Power & Cooling Aspect', checker: adapterPowerEnvironment },
     { id: 'SUPPORT_SERVICES', name: 'Synergy Support & Deployment Services Aspect', checker: adapterSupportServices }
+  ],
+  synergy_composite: [
+    { id: 'SYNERGY_COMPUTE_BAY_CONTAINMENT', name: 'Synergy 12000 Compute Bay Containment', checker: adapterSynergyCompositeAspect('SYNERGY_COMPUTE_BAY_CONTAINMENT') },
+    { id: 'SYNERGY_ICM_BAY_PAIRING', name: 'Synergy Interconnect Module Bay Pairing', checker: adapterSynergyCompositeAspect('SYNERGY_ICM_BAY_PAIRING') },
+    { id: 'SYNERGY_MEZZ_FABRIC_ALIGNMENT', name: 'Synergy Mezzanine-to-Fabric Speed & Protocol Alignment', checker: adapterSynergyCompositeAspect('SYNERGY_MEZZ_FABRIC_ALIGNMENT') },
+    { id: 'SYNERGY_FLM_HA_RING', name: 'Synergy Frame Link Module HA Ring', checker: adapterSynergyCompositeAspect('SYNERGY_FLM_HA_RING') },
+    { id: 'SYNERGY_SHARED_FRAME_POWER', name: 'Synergy 12000 Shared Frame N+N Power Envelope', checker: adapterSynergyCompositeAspect('SYNERGY_SHARED_FRAME_POWER') },
+    { id: 'SYNERGY_PER_ICON_SUPPORT', name: 'Synergy Per-Icon Independent Support Ownership', checker: adapterSynergyCompositeAspect('SYNERGY_PER_ICON_SUPPORT') }
+  ],
+  alletra_mp: [
+    { id: 'ALLETRA_MP_TOPOLOGY_SEPARATION', name: 'Alletra MP Switchless/Switched Topology & JBOF Separation', checker: adapterAlletraMpAspect('ALLETRA_MP_TOPOLOGY_SEPARATION') },
+    { id: 'ALLETRA_MP_CONTROLLER_REDUNDANCY', name: 'Alletra MP Controller Node Redundancy', checker: adapterAlletraMpAspect('ALLETRA_MP_CONTROLLER_REDUNDANCY') },
+    { id: 'ALLETRA_MP_DRIVE_MEDIA_ENVELOPE', name: 'Alletra MP Drive Bay Capacity & TLC/QLC Media Envelope', checker: adapterAlletraMpAspect('ALLETRA_MP_DRIVE_MEDIA_ENVELOPE') },
+    { id: 'ALLETRA_MP_HOST_FABRIC_SYMMETRY', name: 'Alletra MP Symmetric Host HBAs & Optical Cabling', checker: adapterAlletraMpAspect('ALLETRA_MP_HOST_FABRIC_SYMMETRY') },
+    { id: 'ALLETRA_MP_POWER_REDUNDANCY', name: 'Alletra MP Enclosure Power Redundancy', checker: adapterAlletraMpAspect('ALLETRA_MP_POWER_REDUNDANCY') },
+    { id: 'ALLETRA_MP_SUPPORT_AND_PORTAL_GATE', name: 'Alletra MP Per-Icon Support & Ninja Online / OCA CLIC Gate', checker: adapterAlletraMpAspect('ALLETRA_MP_SUPPORT_AND_PORTAL_GATE') }
   ]
 };
 
@@ -758,6 +830,7 @@ function evaluateDomainAspects(domain = 'server', items = [], catalogData = null
 module.exports = {
   DOMAIN_REGISTRY,
   DOMAIN_CAPABILITY_MATRIX,
+  evalArchiveColdStorage,
   getRegisteredAspectsForDomain,
   registerCustomAspect,
   normalizeAspectResult,

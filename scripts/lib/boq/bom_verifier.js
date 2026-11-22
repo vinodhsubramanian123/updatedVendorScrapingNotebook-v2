@@ -72,7 +72,8 @@ function _checkU1NonEmpty(output) {
   const objectFields = [
     'pricingTrail', 'auditReport', 'liveDetails', 'carrierFleetSummary',
     'deliverableSummary', 'competitorSpec', 'dna', 'budgetOptimization',
-    'leastDeltaCandidate', 'clusterAnalysis', 'feedbackProcessed', 'drift', 'syncResult'
+    'leastDeltaCandidate', 'clusterAnalysis', 'feedbackProcessed', 'drift', 'syncResult',
+    'comparisonMatrix', 'paretoFrontier'
   ];
   return objectFields.some(field => output[field] !== undefined);
 }
@@ -170,6 +171,8 @@ function validateUniversalCriteria(output, context = {}) {
   checks.push(
     output?.priceDrifts || output?.code === 'PRICE_DRIFT_SCOPE_REQUIRED'
       ? makeCheck('U2', 'Catalog Portfolio Scope', 'WARN', 'NOT_APPLICABLE', 'Dated catalog comparisons can cover more than one platform.')
+      : (output?.intent === 'SOLUTION_COMPARISON' || Array.isArray(output?.comparisonMatrix))
+      ? makeCheck('U2', 'Multi-Platform Comparison Scope', 'WARN', 'PASSED', `Multi-platform solution comparison evaluated ${(output?.comparedPlatforms || output?.comparisonMatrix || []).length} platform(s).`, { comparedPlatforms: output?.comparedPlatforms || [] })
       : hasModelIdentified
       ? makeCheck('U2', 'Server Model Identified', 'WARN', 'PASSED', `Target product model identified: ${chassis}`, { chassis })
       : makeCheck('U2', 'Server Model Identified', 'WARN', 'UNKNOWN', 'Target server model or chassis is unmapped or unknown; general platform defaults applied.', { chassis })
@@ -1746,6 +1749,25 @@ const SPECIALIZED_TRACK_VALIDATORS = Object.freeze({
     const hasDualTrack = Boolean(output && (output.productionBaseline || output.clearanceOption || Array.isArray(output.advisories)));
     return makeCheck('PC1', 'Dual-Track Clearance vs Production Baseline', 'BLOCK', hasDualTrack ? 'PASSED' : 'ACTION_REQUIRED',
       hasDualTrack ? 'Dual-track clearance and active production baseline strategy verified.' : 'Clearance strategy output requires production baseline and/or clearance advisories.');
+  },
+  SOLUTION_COMPARISON: (output) => {
+    const matrix = output?.comparisonMatrix;
+    if (!Array.isArray(matrix) || matrix.length === 0) {
+      return makeCheck('SC1', 'Multi-Platform Solution Comparison Matrix', 'BLOCK', 'ACTION_REQUIRED',
+        'Solution comparison requires at least one resolved platform row in comparisonMatrix.');
+    }
+    const coercedZero = matrix.some(row => row && row.pricingComplete === false && row.capexListUsd === 0);
+    if (coercedZero) {
+      return makeCheck('SC1', 'Multi-Platform Solution Comparison Matrix', 'BLOCK', 'FAILED',
+        'Comparison matrix coerced an incomplete/unpriced platform CapEx to $0 instead of null.');
+    }
+    const pendingDisclosed = String(output?.portalValidationStatus || '').toUpperCase().includes('PENDING');
+    if (!pendingDisclosed) {
+      return makeCheck('SC1', 'Multi-Platform Solution Comparison Matrix', 'BLOCK', 'FAILED',
+        'Solution comparison output must preserve PORTAL_VALIDATION_PENDING status until live CLIC receipt.');
+    }
+    return makeCheck('SC1', 'Multi-Platform Solution Comparison Matrix', 'BLOCK', 'PASSED',
+      `Multi-platform comparison matrix verified across ${matrix.length} platform(s) with strict pricing and Tier-3 portal disclosure.`);
   }
 });
 

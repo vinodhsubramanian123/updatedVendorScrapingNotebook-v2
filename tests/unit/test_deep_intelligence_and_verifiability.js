@@ -96,7 +96,8 @@ describe('Deep Intelligence, Web Verifiability & Self-Correction Matrix', () => 
       assert.equal(trail.step, 'CONTESTED_RESOURCE_ARBITRATION');
       assert.ok(trail.detectedFailure.includes('OCP 3.0 capacity exceeded'));
       assert.ok(trail.selfCorrectionAction.includes('Branch A'));
-      assert.equal(trail.verifiedBuildable, true);
+      assert.equal(trail.status, 'PROPOSED');
+      assert.equal(trail.verifiedBuildable, false);
     });
 
     it('Positive Control: Reasoning Post-Analyzer attaches selfCorrectionTrail to narrative', () => {
