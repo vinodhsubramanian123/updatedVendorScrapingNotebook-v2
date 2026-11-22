@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-20",
     "scrapeTimestamp": "2026-11-20T17:07:19.289Z",
-    "builtAt": "2026-11-21T11:57:30.439Z",
+    "builtAt": "2026-11-22T02:54:35.805Z",
     "totalSubcategories": 19,
     "totalUniqueSKUs": 565,
     "totalTables": 32
@@ -8092,7 +8092,10 @@
           "subCategory": "Server Management & Operating System Licenses",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 3,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "45622.00",
@@ -8149,7 +8152,10 @@
           "subCategory": "Server Management & Operating System Licenses",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 5,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "57674.00",
@@ -8986,7 +8992,10 @@
           "subCategory": "Server Management & Operating System Licenses",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 3,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "21422.00",
@@ -9043,7 +9052,10 @@
           "subCategory": "Server Management & Operating System Licenses",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 5,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "27285.00",
@@ -10174,7 +10186,10 @@
           "subCategory": "VMWare VSphere Kits",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 3,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "20925.00",
@@ -10232,7 +10247,10 @@
           "subCategory": "VMWare VSphere Kits",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 1,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "5735.00",
@@ -10290,7 +10308,10 @@
           "subCategory": "VMWare VSphere Kits",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 3,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "7654.00",
@@ -10348,7 +10369,10 @@
           "subCategory": "VMWare VSphere Kits",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 5,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "9509.00",
@@ -10406,7 +10430,10 @@
           "subCategory": "VMWare VSphere Kits",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 3,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "17533.00",

@@ -68,8 +68,8 @@
         {
           "id": "SY4FLM_ACTIVE_PRICED",
           "issues": [],
-          "returnedCount": 34,
-          "evidenceStatus": "PARTIAL",
+          "returnedCount": 35,
+          "evidenceStatus": "PASSED",
           "passed": true,
           "status": "PASSED"
         }
@@ -78,10 +78,10 @@
       "replaySuiteVersion": "1.1.0",
       "replaySuiteSha256": "b8b507b9fde1f7013524a6700cad414341341f9316cde9ecbbce5a8e860256c5",
       "replayInputHashes": {
-        "Catalog.json": "d9a3dc30824e862bff8453155ca33a93f22d3bc538c7c12690baa7cadc14ac6a",
-        "Services.json": "12bfebe0430cc35c5237e65f32ac33243afd1b7d8399929debbf9b10627cad1f",
-        "Catalog_Rules.json": "79e7148ef3e562406e5c0f15867a4ee89d3c972473e7105ad8bb50c8af1be0e2",
-        "OCA_Catalog.xlsx": "79b186ac26aee96d49c30762f8a3ebce60708c9b5808fd11c4dc82e7807895d5",
+        "Catalog.json": "3ee468ac648526fee3ca4100b62ab4e34317231360bf076b7304dff388cfa2fe",
+        "Services.json": "2b20db2601f7e7d492168d4e7727ecbc23aad4e90b37a6d3181bb9d82fb0c2c7",
+        "Catalog_Rules.json": "585c299c79b4d44aa001b239cffc7450d9d2984d8a8781f931c1aacdabd95c77",
+        "OCA_Catalog.xlsx": "811be8836672f1a43c921ad0ab143329f8bf3faacb73de02caaae51433c2504d",
         "conditional_skus.json": "e231a9ffa867a75eb4f2ca645f62412a0d3f4bbf19050e701842c3ed7692e1e0"
       }
     }
@@ -96,10 +96,10 @@
   },
   "previousCounts": null,
   "hashes": {
-    "Catalog.json": "d9a3dc30824e862bff8453155ca33a93f22d3bc538c7c12690baa7cadc14ac6a",
-    "Services.json": "12bfebe0430cc35c5237e65f32ac33243afd1b7d8399929debbf9b10627cad1f",
-    "Catalog_Rules.json": "79e7148ef3e562406e5c0f15867a4ee89d3c972473e7105ad8bb50c8af1be0e2",
-    "OCA_Catalog.xlsx": "79b186ac26aee96d49c30762f8a3ebce60708c9b5808fd11c4dc82e7807895d5"
+    "Catalog.json": "3ee468ac648526fee3ca4100b62ab4e34317231360bf076b7304dff388cfa2fe",
+    "Services.json": "2b20db2601f7e7d492168d4e7727ecbc23aad4e90b37a6d3181bb9d82fb0c2c7",
+    "Catalog_Rules.json": "585c299c79b4d44aa001b239cffc7450d9d2984d8a8781f931c1aacdabd95c77",
+    "OCA_Catalog.xlsx": "811be8836672f1a43c921ad0ab143329f8bf3faacb73de02caaae51433c2504d"
   },
   "rawSha256": "8381a18e895d3e16b7432e20359ffbbd07abfb6c4ed852de2c3dd9de2e72a76c",
   "sheets": [
@@ -256,5 +256,5 @@
     "error": "CLI sync unavailable (Transactional Sync Failed Candidate Verification for Synergy_4Port_Frame_Link_Module_OCA_Catalog_2026-11-12 (Canary verification failed for Synergy_4Port_Frame_Link_Module_OCA_Catalog_2026-11-12). Candidate 8ab90f9e-2678-474a-af0d-e79d0a2dd141 was purged. Old source remains active.). Payload ready at outputs/Synergy/General/Synergy_4Port_Frame_Link_Module/notebook_sync_payload_Synergy_4Port_Frame_Link_Module.md. Upload as \"Synergy_4Port_Frame_Link_Module_OCA_Catalog_2026-11-12\" via gemini-notebook-mcp source_add or nlm CLI."
   },
   "promotedAt": "2026-11-12T03:20:44.411Z",
-  "rebuiltAt": "2026-11-21T12:57:24.356Z"
+  "rebuiltAt": "2026-11-22T02:58:40.973Z"
 }

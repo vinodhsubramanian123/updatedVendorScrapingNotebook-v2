@@ -34318,5 +34318,505 @@
     "field": "Vendor Attributes",
     "oldValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}",
     "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "AC068A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Main Category",
+    "oldValue": "Support Services",
+    "newValue": "Software & Licenses"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "AC068A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Sub-Category",
+    "oldValue": "HPE Virtualization",
+    "newValue": "High Availability Computing - Cluster Software"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "AC068A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for HPE Virtualization: no max",
+    "newValue": "Selection constraint for High Availability Computing - Cluster Software: no max"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "AC068A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Max Qty",
+    "oldValue": "-1",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "AC068A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "AC068A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"AC068A\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AC068A\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB480A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Main Category",
+    "oldValue": "Support Services",
+    "newValue": "Software & Licenses"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB480A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Sub-Category",
+    "oldValue": "HPE Virtualization",
+    "newValue": "High Availability Computing - Cluster Software"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB480A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for HPE Virtualization: no max",
+    "newValue": "Selection constraint for High Availability Computing - Cluster Software: no max"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB480A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Max Qty",
+    "oldValue": "-1",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB480A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB480A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB480A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB480A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB481A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Main Category",
+    "oldValue": "Support Services",
+    "newValue": "Software & Licenses"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB481A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Sub-Category",
+    "oldValue": "HPE Virtualization",
+    "newValue": "High Availability Computing - Cluster Software"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB481A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for HPE Virtualization: no max",
+    "newValue": "Selection constraint for High Availability Computing - Cluster Software: no max"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB481A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Max Qty",
+    "oldValue": "-1",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB481A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB481A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB481A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB481A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB482A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Main Category",
+    "oldValue": "Support Services",
+    "newValue": "Software & Licenses"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB482A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Sub-Category",
+    "oldValue": "HPE Virtualization",
+    "newValue": "High Availability Computing - Cluster Software"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB482A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for HPE Virtualization: no max",
+    "newValue": "Selection constraint for High Availability Computing - Cluster Software: no max"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB482A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Max Qty",
+    "oldValue": "-1",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB482A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB482A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB482A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB482A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB483A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Main Category",
+    "oldValue": "Support Services",
+    "newValue": "Software & Licenses"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB483A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Sub-Category",
+    "oldValue": "HPE Virtualization",
+    "newValue": "High Availability Computing - Cluster Software"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB483A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for HPE Virtualization: no max",
+    "newValue": "Selection constraint for High Availability Computing - Cluster Software: no max"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB483A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Max Qty",
+    "oldValue": "-1",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB483A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB483A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB483A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB483A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB484A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Main Category",
+    "oldValue": "Support Services",
+    "newValue": "Software & Licenses"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB484A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Sub-Category",
+    "oldValue": "HPE Virtualization",
+    "newValue": "High Availability Computing - Cluster Software"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB484A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for HPE Virtualization: no max",
+    "newValue": "Selection constraint for High Availability Computing - Cluster Software: no max"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB484A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Max Qty",
+    "oldValue": "-1",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB484A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB484A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB484A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB484A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Main Category",
+    "oldValue": "Support Services",
+    "newValue": "Software & Licenses"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Sub-Category",
+    "oldValue": "HPE Virtualization",
+    "newValue": "High Availability Computing - Cluster Software"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Description",
+    "oldValue": "HPE AMS HPC FIO Rack Config Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Constraint",
+    "oldValue": "no max",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for HPE Virtualization: no max",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Option Type",
+    "oldValue": "Standard",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "CLIC Status",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Recommended",
+    "oldValue": "false",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"S1J77A\"}",
+    "newValue": ""
   }
 ]

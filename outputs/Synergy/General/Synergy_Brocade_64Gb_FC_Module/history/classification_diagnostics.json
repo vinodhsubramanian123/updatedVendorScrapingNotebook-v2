@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "chassis": "Synergy_Brocade_64Gb_FC_Module",
-  "generatedAt": "2026-11-21T11:59:04.728Z",
-  "executionDurationMs": 1991,
+  "generatedAt": "2026-11-22T02:58:41.445Z",
+  "executionDurationMs": 3304,
   "summary": {
     "totalRawTables": 8,
     "validProductTables": 7,

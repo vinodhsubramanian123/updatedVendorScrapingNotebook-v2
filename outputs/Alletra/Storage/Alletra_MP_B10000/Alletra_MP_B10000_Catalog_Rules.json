@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-21",
     "scrapeTimestamp": "2026-11-21T12:46:05.706Z",
-    "builtAt": "2026-11-21T12:46:07.214Z",
+    "builtAt": "2026-11-22T02:53:05.741Z",
     "totalSubcategories": 14,
     "totalUniqueSKUs": 202,
     "totalTables": 43,
@@ -185,12 +185,18 @@
         }
       }
     },
-    "snapshotFingerprint": "f9c301e145daa98038ab2687571f27f5b237fc73e1c31065a05d144fd388ec68",
+    "incrementalStats": {
+      "totalScrapedSkus": 202,
+      "unchangedSkusCount": 202,
+      "modifiedSkusCount": 0,
+      "addedSkusCount": 0,
+      "removedSkusCount": 0,
+      "estimatedTokensSaved": 0,
+      "estimatedProcessingTimeSavedMs": 0
+    },
+    "snapshotFingerprint": "5da2de11e66c7231ffcafc3907d198b085f090463147cd792ef60d480c1f50e6",
     "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-11-21T12:46:07.636Z",
-    "rulesCount": 153,
-    "ninjaSizingIntegratedAt": "2026-11-21T12:46:41.787Z",
-    "ninjaSizingSha256": "244b4a0fe5c40646d91e91c4f330224b72830856f9790379b86f893747785f1b"
+    "rulesGeneratedAt": "2026-11-22T02:53:07.541Z"
   },
   "chassisVariants": [
     {
@@ -2429,232 +2435,6 @@
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "This SKU can be selected only when HPE GreenLake = Yes"
-    },
-    {
-      "ruleId": "NINJA_B10K_SWITCHLESS_B10100_TOPOLOGY",
-      "parentCategory": "Chassis",
-      "subCategory": "Switchless Topology (B10100)",
-      "type": "NINJA_TOPOLOGY_SWITCHLESS",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "Switchless B10100 topology (direct-attached, no backend NVMe-oF switches): uberSKUs S0B84A (HPE Alletra STG MP B10100 Base Config), S0U38A (HPE Alletra STG MP B10100 Up Config), S3V89A (HPE GL Prv Cld w/AL STG MP Base Config), S3V90A (HPE GL Prv Cld w/AL STG MP Upg Config); controller chassis R7C75A hosts up to 24 internal NVMe SSDs; expansion uses S1J10A JBOF shelves (2x S1R28A). Nodes: B10120 [S0S38A, 8c, JBOF 0-1, maxDrives=24, maxTotal=24]; B10130 [S0R21A, 16c, JBOF 0-3, maxDrives=24, maxTotal=72]; B10140 [S4V66A, 32c, JBOF 0-3, maxDrives=24, maxTotal=72].",
-      "ruleText": "Switchless B10100 topology (direct-attached, no backend NVMe-oF switches): uberSKUs S0B84A (HPE Alletra STG MP B10100 Base Config), S0U38A (HPE Alletra STG MP B10100 Up Config), S3V89A (HPE GL Prv Cld w/AL STG MP Base Config), S3V90A (HPE GL Prv Cld w/AL STG MP Upg Config); controller chassis R7C75A hosts up to 24 internal NVMe SSDs; expansion uses S1J10A JBOF shelves (2x S1R28A). Nodes: B10120 [S0S38A, 8c, JBOF 0-1, maxDrives=24, maxTotal=24]; B10130 [S0R21A, 16c, JBOF 0-3, maxDrives=24, maxTotal=72]; B10140 [S4V66A, 32c, JBOF 0-3, maxDrives=24, maxTotal=72]."
-    },
-    {
-      "ruleId": "NINJA_B10K_SWITCHED_B10200_TOPOLOGY",
-      "parentCategory": "Chassis",
-      "subCategory": "Switched Topology (B10200)",
-      "type": "NINJA_TOPOLOGY_SWITCHED",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "Switched / Clustered B10200 topology (requires backend NVMe-oF switches): uberSKUs S1R06A (HPE Alletra STG MP B10200 Base Config), S1R07A (HPE Alletra STG MP B10200 Up Config), S3V91A (HPE GL Prv Cld w/AL MP Base Clstr Config), S3V92A (HPE GL Prv Cld w/AL MP Upg Clstr Config); controller chassis R7C75A hosts 0 internal drives (all drives reside in mandatory external JBOFs, 1-8 JBOFs, up to 384 drives). Nodes: B10230 [R7D02A, 16c, JBOF 1-8, maxInternalDrives=0, maxTotal=384]; B10240 [R7D03A, 32c, JBOF 1-8, maxInternalDrives=0, maxTotal=384].",
-      "ruleText": "Switched / Clustered B10200 topology (requires backend NVMe-oF switches): uberSKUs S1R06A (HPE Alletra STG MP B10200 Base Config), S1R07A (HPE Alletra STG MP B10200 Up Config), S3V91A (HPE GL Prv Cld w/AL MP Base Clstr Config), S3V92A (HPE GL Prv Cld w/AL MP Upg Clstr Config); controller chassis R7C75A hosts 0 internal drives (all drives reside in mandatory external JBOFs, 1-8 JBOFs, up to 384 drives). Nodes: B10230 [R7D02A, 16c, JBOF 1-8, maxInternalDrives=0, maxTotal=384]; B10240 [R7D03A, 32c, JBOF 1-8, maxInternalDrives=0, maxTotal=384]."
-    },
-    {
-      "ruleId": "NINJA_B10K_TOPOLOGY_MUTUAL_EXCLUSION",
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Topology Mutual Exclusion",
-      "type": "INTRA_CATEGORY_EXCLUSION",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "Switchless B10100 controller nodes (S0S38A, S0R21A, S4V66A) and Switched B10200 controller nodes (R7D02A, R7D03A) are mutually exclusive and MUST NOT be mixed in one array. Select Switchless B10100 vs. Switched B10200 based on customer drive scale (>72 drives or multi-node cluster mandates Switched B10200).",
-      "ruleText": "Switchless B10100 controller nodes (S0S38A, S0R21A, S4V66A) and Switched B10200 controller nodes (R7D02A, R7D03A) are mutually exclusive and MUST NOT be mixed in one array. Select Switchless B10100 vs. Switched B10200 based on customer drive scale (>72 drives or multi-node cluster mandates Switched B10200)."
-    },
-    {
-      "ruleId": "NINJA_B10K_BASE_CONFIGS",
-      "parentCategory": "Chassis",
-      "subCategory": "Base Configs",
-      "type": "NINJA_SIZING_BASELINE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "Ninja Online B10000 global base configuration SKUs: S0B84A (HPE Alletra STG MP B10100 Base Config); S1R06A (HPE Alletra STG MP B10200 Base Config); S3V89A (HPE GL Prv Cld w/AL STG MP Base Config); S3V91A (HPE GL Prv Cld w/AL MP Base Clstr Config).",
-      "ruleText": "Ninja Online B10000 global base configuration SKUs: S0B84A (HPE Alletra STG MP B10100 Base Config); S1R06A (HPE Alletra STG MP B10200 Base Config); S3V89A (HPE GL Prv Cld w/AL STG MP Base Config); S3V91A (HPE GL Prv Cld w/AL MP Base Clstr Config)."
-    },
-    {
-      "ruleId": "NINJA_B10K_NODE_S0S38A",
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Controller Nodes",
-      "affectedSku": "S0S38A",
-      "type": "NINJA_NODE_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 Node S0S38A (Model B10120, Controller): 8 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=24, JBOF range=0-1, power max=0W.",
-      "ruleText": "B10000 Node S0S38A (Model B10120, Controller): 8 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=24, JBOF range=0-1, power max=0W."
-    },
-    {
-      "ruleId": "NINJA_B10K_NODE_S0S40A",
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Controller Nodes",
-      "affectedSku": "S0S40A",
-      "type": "NINJA_NODE_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 Node S0S40A (Model B10120, Controller): 8 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=24, JBOF range=0-1, power max=0W.",
-      "ruleText": "B10000 Node S0S40A (Model B10120, Controller): 8 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=24, JBOF range=0-1, power max=0W."
-    },
-    {
-      "ruleId": "NINJA_B10K_NODE_S0R21A",
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Controller Nodes",
-      "affectedSku": "S0R21A",
-      "type": "NINJA_NODE_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 Node S0R21A (Model B10130, Controller): 16 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W.",
-      "ruleText": "B10000 Node S0R21A (Model B10130, Controller): 16 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W."
-    },
-    {
-      "ruleId": "NINJA_B10K_NODE_S0S41A",
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Controller Nodes",
-      "affectedSku": "S0S41A",
-      "type": "NINJA_NODE_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 Node S0S41A (Model B10130, Controller): 16 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W.",
-      "ruleText": "B10000 Node S0S41A (Model B10130, Controller): 16 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W."
-    },
-    {
-      "ruleId": "NINJA_B10K_NODE_S4V66A",
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Controller Nodes",
-      "affectedSku": "S4V66A",
-      "type": "NINJA_NODE_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 Node S4V66A (Model B10140, Controller): 32 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W.",
-      "ruleText": "B10000 Node S4V66A (Model B10140, Controller): 32 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W."
-    },
-    {
-      "ruleId": "NINJA_B10K_NODE_S4V67A",
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Controller Nodes",
-      "affectedSku": "S4V67A",
-      "type": "NINJA_NODE_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 Node S4V67A (Model B10140, Controller): 32 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W.",
-      "ruleText": "B10000 Node S4V67A (Model B10140, Controller): 32 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=72, JBOF range=0-3, power max=0W."
-    },
-    {
-      "ruleId": "NINJA_B10K_NODE_S1R28A",
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Controller Nodes",
-      "affectedSku": "S1R28A",
-      "type": "NINJA_NODE_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 Node S1R28A (Model 10010, JBOF): 0 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=0, JBOF range=0-0, power max=0W.",
-      "ruleText": "B10000 Node S1R28A (Model 10010, JBOF): 0 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=0, JBOF range=0-0, power max=0W."
-    },
-    {
-      "ruleId": "NINJA_B10K_NODE_S1R29A",
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Controller Nodes",
-      "affectedSku": "S1R29A",
-      "type": "NINJA_NODE_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 Node S1R29A (Model 10010, JBOF): 0 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=0, JBOF range=0-0, power max=0W.",
-      "ruleText": "B10000 Node S1R29A (Model 10010, JBOF): 0 cores, 0 GB cache, maxDrives=24, maxTotalSystemDrives=0, JBOF range=0-0, power max=0W."
-    },
-    {
-      "ruleId": "NINJA_B10K_NODE_R7D02A",
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Controller Nodes",
-      "affectedSku": "R7D02A",
-      "type": "NINJA_NODE_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 Node R7D02A (Model B10230, Controller): 16 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W.",
-      "ruleText": "B10000 Node R7D02A (Model B10230, Controller): 16 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W."
-    },
-    {
-      "ruleId": "NINJA_B10K_NODE_S0S42A",
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Controller Nodes",
-      "affectedSku": "S0S42A",
-      "type": "NINJA_NODE_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 Node S0S42A (Model B10230, Controller): 16 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W.",
-      "ruleText": "B10000 Node S0S42A (Model B10230, Controller): 16 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W."
-    },
-    {
-      "ruleId": "NINJA_B10K_NODE_R7D03A",
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Controller Nodes",
-      "affectedSku": "R7D03A",
-      "type": "NINJA_NODE_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 Node R7D03A (Model B10240, Controller): 32 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W.",
-      "ruleText": "B10000 Node R7D03A (Model B10240, Controller): 32 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W."
-    },
-    {
-      "ruleId": "NINJA_B10K_NODE_S0R20A",
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Controller Nodes",
-      "affectedSku": "S0R20A",
-      "type": "NINJA_NODE_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 Node S0R20A (Model B10240, Controller): 32 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W.",
-      "ruleText": "B10000 Node S0R20A (Model B10240, Controller): 32 cores, 0 GB cache, maxDrives=0, maxTotalSystemDrives=384, JBOF range=1-8, power max=0W."
-    },
-    {
-      "ruleId": "NINJA_B10K_PSU_R7C76A",
-      "parentCategory": "Power Supplies",
-      "subCategory": "Power Supplies",
-      "affectedSku": "R7C76A",
-      "type": "NINJA_POWER_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 PSU R7C76A: 1600W AC (230 VAC), ErP Lot9=false.",
-      "ruleText": "B10000 PSU R7C76A: 1600W AC (230 VAC), ErP Lot9=false."
-    },
-    {
-      "ruleId": "NINJA_B10K_PSU_R9Z97A",
-      "parentCategory": "Power Supplies",
-      "subCategory": "Power Supplies",
-      "affectedSku": "R9Z97A",
-      "type": "NINJA_POWER_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 PSU R9Z97A: 2200W AC (230 VAC), ErP Lot9=true.",
-      "ruleText": "B10000 PSU R9Z97A: 2200W AC (230 VAC), ErP Lot9=true."
-    },
-    {
-      "ruleId": "NINJA_B10K_PSU_R7C77A",
-      "parentCategory": "Power Supplies",
-      "subCategory": "Power Supplies",
-      "affectedSku": "R7C77A",
-      "type": "NINJA_POWER_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 PSU R7C77A: 1800W AC (115 VAC), ErP Lot9=false.",
-      "ruleText": "B10000 PSU R7C77A: 1800W AC (115 VAC), ErP Lot9=false."
-    },
-    {
-      "ruleId": "NINJA_B10K_PSU_R7C78A",
-      "parentCategory": "Power Supplies",
-      "subCategory": "Power Supplies",
-      "affectedSku": "R7C78A",
-      "type": "NINJA_POWER_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "B10000 PSU R7C78A: 1600W DC (48 VAC), ErP Lot9=false.",
-      "ruleText": "B10000 PSU R7C78A: 1600W DC (48 VAC), ErP Lot9=false."
-    },
-    {
-      "ruleId": "NINJA_B10K_OCA_HANDOFF_WORKFLOW",
-      "parentCategory": "Chassis",
-      "subCategory": "Sizing & Import Workflow",
-      "type": "NINJA_OCA_HANDOFF_WORKFLOW",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "Alletra Storage MP B10000 workflow: size controller nodes, switch topology (B10100/B10200), JBOFs, NVMe drives, capacity DRR, performance, and power in HPE Ninja Online, export OCA JSON, import into HPE OCA, then adapt transceivers (SFPs/QSFPs), cabling, support services, and run CLIC validation in OCA.",
-      "ruleText": "Alletra Storage MP B10000 workflow: size controller nodes, switch topology (B10100/B10200), JBOFs, NVMe drives, capacity DRR, performance, and power in HPE Ninja Online, export OCA JSON, import into HPE OCA, then adapt transceivers (SFPs/QSFPs), cabling, support services, and run CLIC validation in OCA."
     }
   ]
 }

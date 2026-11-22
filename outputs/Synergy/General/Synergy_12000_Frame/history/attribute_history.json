@@ -9608,5 +9608,1745 @@
     "field": "Sub-Category",
     "oldValue": "GPU Accelerators",
     "newValue": "Support & Deployment Services"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "867793-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "867793-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "867793-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "867793-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "867793-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":12259}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":12259,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "867796-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "867796-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "867796-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "867796-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "867796-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":23527}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":23527,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P68134-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P68134-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P68134-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P68134-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P68134-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":63999}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":63999,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P77653-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P77653-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P77653-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P77653-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P77653-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":63999}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":63999,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "755985-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "755985-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "755985-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "755985-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "755985-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "755985-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "755985-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":2099}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Direct Ship\",\"listPrice\":2099,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779215-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779215-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779215-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779215-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779215-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779215-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779215-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":3480}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":3480,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779218-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779218-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779218-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779218-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779218-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779218-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779218-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":3740}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":3740,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779224-B23",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779224-B23",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779224-B23",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779224-B23",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779224-B23",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779224-B23",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779224-B23",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":24356}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":24356,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779227-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779227-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779227-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779227-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779227-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779227-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "779227-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "799330-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "799330-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "799330-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "799330-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "799330-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "799330-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "799330-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":7722}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":7722,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "876259-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "876259-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "876259-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "876259-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "876259-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28481}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":28481,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q83A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q83A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q83A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q83A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q83A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q83A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q83A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":13156}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":13156,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q83B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q83B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q83B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q83B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q83B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q83B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q83B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":11780}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":11780,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q84A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q84A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q84A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q84A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q84A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q84A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q84A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":18058}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":18058,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q84B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q84B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q84B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q84B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q84B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q84B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q84B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":16169}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":16169,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q86A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q86A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q86A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q86A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q86A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q86A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q86A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q86B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q86B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q86B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q86B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q86B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q86B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "K2Q86B",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":25870}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":25870,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P08477-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P08477-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P08477-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P08477-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P08477-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P08477-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P08477-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":20959}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20959,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E55A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E55A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E55A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E55A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E55A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E55A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E55A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":18355}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":18355,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E56A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E56A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E56A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E56A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E56A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E56A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E56A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":25029}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":25029,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E57A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Interconnects",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E57A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Interconnects",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E57A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Interconnects: max 6 | 755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | 799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL | Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for Optical Transceivers & DAC Cables: max 6"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E57A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q2E57A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":38712}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":38712,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "489184-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "System Options",
+    "field": "Main Category",
+    "oldValue": "Accessories & Infrastructure",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "489184-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "System Options",
+    "field": "Constraint",
+    "oldValue": "optional",
+    "newValue": "max 8"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "489184-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "System Options",
+    "field": "Max Qty",
+    "oldValue": "-3",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "489184-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Network Switch"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "489184-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "794502-B23",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "System Options",
+    "field": "Main Category",
+    "oldValue": "Accessories & Infrastructure",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "794502-B23",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "System Options",
+    "field": "Constraint",
+    "oldValue": "optional",
+    "newValue": "max 8"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "794502-B23",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "System Options",
+    "field": "Max Qty",
+    "oldValue": "-3",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "794502-B23",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "System Options",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Fabric Interconnect"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "794502-B23",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Networking",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":25999}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":25999,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "BC023A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Main Category",
+    "oldValue": "Drive Enclosures / Drives",
+    "newValue": "Tape Drives"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "BC023A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Sub-Category",
+    "oldValue": "Tape Storage",
+    "newValue": "LTO Tape Drives"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "BC023A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Tape Storage: max 99 | Q6Q65A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL | Q6Q66A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for LTO Tape Drives: max 99"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "BC023A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Tape Drive"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "BC023A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":16300}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":16300,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q65A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Main Category",
+    "oldValue": "Drive Enclosures / Drives",
+    "newValue": "Tape Drives"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q65A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Sub-Category",
+    "oldValue": "Tape Storage",
+    "newValue": "LTO Tape Drives"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q65A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Tape Storage: max 99 | Q6Q65A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL | Q6Q66A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for LTO Tape Drives: max 99"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q65A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Tape Drive"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q65A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q65A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q65A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q66A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Main Category",
+    "oldValue": "Drive Enclosures / Drives",
+    "newValue": "Tape Drives"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q66A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Sub-Category",
+    "oldValue": "Tape Storage",
+    "newValue": "LTO Tape Drives"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q66A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Tape Storage: max 99 | Q6Q65A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL | Q6Q66A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for LTO Tape Drives: max 99"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q66A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Tape Drive"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q66A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Portal Visibility",
+    "oldValue": "PORTAL_CONDITIONAL",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q66A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Condition Type",
+    "oldValue": "PORTAL_CONDITIONAL_VIEW",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q66A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q67A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Main Category",
+    "oldValue": "Drive Enclosures / Drives",
+    "newValue": "Tape Drives"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q67A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Sub-Category",
+    "oldValue": "Tape Storage",
+    "newValue": "LTO Tape Drives"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q67A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Tape Storage: max 99 | Q6Q65A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL | Q6Q66A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for LTO Tape Drives: max 99"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q67A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Tape Drive"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q67A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":21600}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":21600,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q68A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Main Category",
+    "oldValue": "Drive Enclosures / Drives",
+    "newValue": "Tape Drives"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q68A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Sub-Category",
+    "oldValue": "Tape Storage",
+    "newValue": "LTO Tape Drives"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q68A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Tape Storage: max 99 | Q6Q65A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL | Q6Q66A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
+    "newValue": "Selection constraint for LTO Tape Drives: max 99"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q68A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Tape Drive"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q6Q68A",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Tape Drives",
+    "subCategory": "LTO Tape Drives",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":16800}",
+    "newValue": "{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":16800,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
   }
 ]

@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-09-22",
     "scrapeTimestamp": "2026-09-22T02:35:27.250Z",
-    "builtAt": "2026-11-21T12:56:33.112Z",
+    "builtAt": "2026-11-22T02:57:48.141Z",
     "totalSubcategories": 11,
     "totalUniqueSKUs": 79,
     "totalTables": 11,
@@ -131,15 +131,15 @@
     },
     "incrementalStats": {
       "totalScrapedSkus": 79,
-      "unchangedSkusCount": 57,
-      "modifiedSkusCount": 1,
-      "addedSkusCount": 21,
-      "removedSkusCount": 4,
+      "unchangedSkusCount": 79,
+      "modifiedSkusCount": 0,
+      "addedSkusCount": 0,
+      "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotChecksum": "feb508c3009efc023ef085519a25ad66bcf78a05d9b2344dc94bc0e3b8533c22",
-    "snapshotTimestamp": "2026-11-21T12:56:33.339Z"
+    "snapshotChecksum": "2dde008622990a9067102de041112c5ec2c1fbae8add2209389b8e7e5c084ab7",
+    "snapshotTimestamp": "2026-11-22T02:57:48.754Z"
   },
   "subcategories": [],
   "entries": [
@@ -201,7 +201,12 @@
             "speedGbps": 32,
             "fabricProtocol": "FC",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850,
+            "totalPorts": 24,
+            "licensedPorts": 8
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -287,7 +292,10 @@
             "speedGbps": 32,
             "fabricProtocol": "FC",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -345,7 +353,15 @@
           "subCategory": "Active Port Transceivers",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Other / Accessory"
+            "category": "Networking / FC / Optics",
+            "portCount": 8,
+            "speedGbps": 16,
+            "fabricProtocol": "FC",
+            "formFactor": "SFP",
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -431,7 +447,10 @@
             "speedGbps": 16,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -493,7 +512,10 @@
             "speedGbps": 16,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -555,7 +577,10 @@
             "speedGbps": 16,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -617,7 +642,11 @@
             "speedGbps": 16,
             "fabricProtocol": "FC",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LW",
+            "reachDistance": "25km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Diff Status": "ADDED",
@@ -679,7 +708,11 @@
             "speedGbps": 16,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LW",
+            "reachDistance": "10km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -741,7 +774,11 @@
             "speedGbps": 16,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LW",
+            "reachDistance": "10km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -803,7 +840,11 @@
             "speedGbps": 16,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "ELW",
+            "reachDistance": "25km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1550
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -888,7 +929,10 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LW",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -950,7 +994,10 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -1012,7 +1059,10 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -1074,7 +1124,10 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -1136,7 +1189,11 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LW",
+            "reachDistance": "10km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -1198,7 +1255,10 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -1260,7 +1320,11 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "ELW",
+            "reachDistance": "25km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1550
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -4356,7 +4420,11 @@
             "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LR",
+            "reachDistance": "10km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "ZERO_UNCONFIRMED",
           "Diff Status": "ADDED",
@@ -4417,7 +4485,10 @@
             "speedGbps": 400,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "5m",
+            "fiberMode": "MMF"
           },
           "Price State": "ZERO_UNCONFIRMED",
           "Diff Status": "ADDED",
@@ -4477,7 +4548,9 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "2.4m",
+            "reachDistance": "2.4m"
           },
           "Price State": "ZERO_UNCONFIRMED",
           "Diff Status": "ADDED",
@@ -4537,7 +4610,9 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "2.4m",
+            "reachDistance": "2.4m"
           },
           "Price State": "ZERO_UNCONFIRMED",
           "Diff Status": "ADDED",
@@ -4595,9 +4670,12 @@
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
             "category": "Networking / FC / Optics",
+            "speedGbps": 16,
             "fabricProtocol": "FC",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 24,
+            "licensedPorts": 8
           },
           "Price State": "ZERO_UNCONFIRMED",
           "Diff Status": "ADDED",
@@ -4658,7 +4736,9 @@
             "speedGbps": 32,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 24,
+            "licensedPorts": 24
           },
           "Price State": "ZERO_UNCONFIRMED",
           "Diff Status": "ADDED",

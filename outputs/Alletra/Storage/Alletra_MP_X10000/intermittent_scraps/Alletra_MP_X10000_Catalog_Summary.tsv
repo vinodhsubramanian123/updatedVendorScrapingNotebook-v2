@@ -12,8 +12,8 @@ Power Supplies	Data Intelligence GPUs	no max	0	Unlimited	0	No	0
 Power Supplies	Data Intelligence SaaS	max 5	0	5	0	No	0
 Power Supplies	Data protection accelerator node	no max	0	Unlimited	0	No	0
 Power Supplies	Drive Enclosure	max 16	0	16	0	No	0
-Power Supplies	BlueTooth Connectivity Kit	max 1	0	1	1	Yes	1
-Power Supplies	Back-End Switches	max 2	0	2	3	Yes	3
+Power Supplies	BlueTooth Connectivity Kit	max 1	0	1	0	No	0
+Power Supplies	Back-End Switches	max 2	0	2	0	No	0
 Power Supplies	Back-End Switch Rail Kits	max 8	0	8	0	No	0
 Cables	Management Cables	no max	0	Unlimited	0	No	0
 Cables	DAC Cables	no max	0	Unlimited	0	No	0
@@ -27,6 +27,8 @@ Cables & Enablement Kits	Power Cord	max 8	0	8	20	Yes	1
 Accessories & Infrastructure	System Options	optional	0	Optional	2	Yes	3
 Drive Enclosures / Drives	Drive Enclosure	max 16	0	16	13	Yes	16
 Networking	Optical Transceivers & DAC Cables	max 8	0	8	10	Yes	12
+Accessories & Infrastructure	BlueTooth Connectivity Kit	max 1	0	1	1	Yes	1
+Networking	Back-End Switches	max 2	0	2	3	Yes	3
 Cables & Enablement Kits	Back-End Switch Rail Kits	max 8	0	8	1	Yes	1
 Cables & Enablement Kits	Management Cables	no max	0	Unlimited	4	Yes	1
 Cables & Enablement Kits	DAC Cables	no max	0	Unlimited	16	Yes	1

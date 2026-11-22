@@ -61,10 +61,10 @@ Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	R9H68A condi
 Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	S4P40A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
 Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	S3L74A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
 Drive Enclosures / Drives	Drive Enclosure	max 16	Configuration Rule	S3L73A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL
-Power Supplies	BlueTooth Connectivity Kit	max 1	Configuration Rule	Selection constraint for BlueTooth Connectivity Kit: max 1
-Power Supplies	Back-End Switches	max 2	Configuration Rule	Selection constraint for Back-End Switches: max 2
-Power Supplies	Back-End Switches	max 2	Configuration Rule	If “acPowerFlag” is selected then S1S69A not supported
-Power Supplies	Back-End Switches	max 2	Configuration Rule	S1S69A conditional visibility: portal selector activation required (If “acPowerFlag” is selected then S1S69A not supported); PORTAL_CONDITIONAL
+Accessories & Infrastructure	BlueTooth Connectivity Kit	max 1	Configuration Rule	Selection constraint for BlueTooth Connectivity Kit: max 1
+Networking	Back-End Switches	max 2	Configuration Rule	Selection constraint for Back-End Switches: max 2
+Networking	Back-End Switches	max 2	Configuration Rule	If “acPowerFlag” is selected then S1S69A not supported
+Networking	Back-End Switches	max 2	Configuration Rule	S1S69A conditional visibility: portal selector activation required (If “acPowerFlag” is selected then S1S69A not supported); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Back-End Switch Rail Kits	max 8	Configuration Rule	Selection constraint for Back-End Switch Rail Kits: max 8
 Cables & Enablement Kits	Management Cables	no max	Configuration Rule	Selection constraint for Management Cables: no max
 Cables & Enablement Kits	DAC Cables	no max	Configuration Rule	Selection constraint for DAC Cables: no max

@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "chassis": "Synergy_12000_Frame",
-  "generatedAt": "2026-11-21T11:58:54.322Z",
-  "executionDurationMs": 4069,
+  "generatedAt": "2026-11-22T02:58:24.715Z",
+  "executionDurationMs": 5457,
   "summary": {
     "totalRawTables": 59,
     "validProductTables": 50,
@@ -15,7 +15,7 @@
     "totalExtractedSKUs": 258,
     "totalUniqueSKUs": 257,
     "totalRulesExtracted": 147,
-    "chassisVariantsCount": 40
+    "chassisVariantsCount": 1
   },
   "skippedTables": [
     {
@@ -323,9 +323,9 @@
     },
     {
       "tableIndex": 25,
-      "subCategory": "Interconnects",
-      "parentCategory": "Interconnects",
-      "matchedVia": "portal_text_position",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "parentCategory": "Networking",
+      "matchedVia": "role_classifier",
       "detectedRole": "Fabric Interconnect",
       "constraint": "max 6",
       "minQty": 0,
@@ -337,13 +337,13 @@
     {
       "tableIndex": 28,
       "subCategory": "System Options",
-      "parentCategory": "Accessories & Infrastructure",
-      "matchedVia": "direct_taxonomy_keyword",
+      "parentCategory": "Networking",
+      "matchedVia": "role_classifier",
       "detectedRole": "Network Switch",
-      "constraint": "optional",
+      "constraint": "max 8",
       "minQty": 0,
-      "maxQty": null,
-      "maxQtySemantics": "OPTIONAL",
+      "maxQty": 8,
+      "maxQtySemantics": "BOUNDED",
       "skuCount": 1,
       "rulesCount": 1
     },
@@ -363,13 +363,13 @@
     {
       "tableIndex": 30,
       "subCategory": "System Options",
-      "parentCategory": "Accessories & Infrastructure",
-      "matchedVia": "direct_taxonomy_keyword",
+      "parentCategory": "Networking",
+      "matchedVia": "role_classifier",
       "detectedRole": "Fabric Interconnect",
-      "constraint": "optional",
+      "constraint": "max 8",
       "minQty": 0,
-      "maxQty": null,
-      "maxQtySemantics": "OPTIONAL",
+      "maxQty": 8,
+      "maxQtySemantics": "BOUNDED",
       "skuCount": 1,
       "rulesCount": 1
     },
@@ -401,10 +401,10 @@
     },
     {
       "tableIndex": 33,
-      "subCategory": "Tape Storage",
-      "parentCategory": "Drive Enclosures / Drives",
-      "matchedVia": "role_classifier",
-      "detectedRole": "Drive Cage / Drive",
+      "subCategory": "LTO Tape Drives",
+      "parentCategory": "Tape Drives",
+      "matchedVia": "tape_domain_guard",
+      "detectedRole": "Tape Drive",
       "constraint": "max 99",
       "minQty": 0,
       "maxQty": 99,
@@ -630,7 +630,7 @@
       "minQty": 0,
       "maxQty": null,
       "maxQtySemantics": "UNBOUNDED",
-      "skuCount": 7,
+      "skuCount": 10,
       "rulesCount": 0
     },
     {
@@ -806,12 +806,12 @@
   "categoryDistribution": {
     "Chassis": 1,
     "Frame Options": 39,
-    "Accessories & Infrastructure": 33,
-    "Drive Enclosures / Drives": 7,
+    "Accessories & Infrastructure": 31,
+    "Drive Enclosures / Drives": 2,
     "Management Hardware": 6,
-    "Interconnects": 21,
-    "Networking": 19,
+    "Networking": 42,
     "Cables & Enablement Kits": 81,
+    "Tape Drives": 5,
     "Software & Licenses": 37,
     "Cooling / Thermal": 1,
     "Power Supplies": 13
@@ -822,240 +822,6 @@
       "formFactor": "Unknown",
       "listPrice": null,
       "diffStatus": "UNCHANGED"
-    },
-    "R1R47A": {
-      "description": "HPE Synergy 480 Gen10 for SAP HANA Compute Block",
-      "formFactor": "Unknown",
-      "listPrice": 3327,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "871940-B21": {
-      "description": "HPE Synergy 480 Gen10 Configure-to-order Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 3324,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "871941-B21": {
-      "description": "HPE Synergy 480 Gen10 Configure-to-order without Drive Bays Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 3136,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "871942-B21": {
-      "description": "HPE Synergy 480 Gen10 Configure-to-order Premium Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 3327,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "Q9Q88A": {
-      "description": "HPE Synergy 480 Gen10 for SAP HANA Tailored Datacenter Integration Compute Block",
-      "formFactor": "Unknown",
-      "listPrice": 3019,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "P22139-B21": {
-      "description": "HPE Synergy 480 Gen10 Plus Base Chassis Configure-to-order Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 3843,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "P39531-B21": {
-      "description": "HPE Synergy 480 Gen11 Configure-to-order Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 3463,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "P83805-B21": {
-      "description": "HPE Synergy 480 Gen11 Solution Compute Node",
-      "formFactor": "Unknown",
-      "listPrice": 3463,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "P68217-B21": {
-      "description": "HPE Synergy 480 Gen12 Configure-to-order Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 4459,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "P83806-B21": {
-      "description": "HPE Synergy 480 Gen12 Solution Compute Node",
-      "formFactor": "Unknown",
-      "listPrice": 4059,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "732350-B21": {
-      "description": "HPE Synergy 480 Gen9 Configure-to-order Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "732351-B21": {
-      "description": "HPE Synergy 480 Gen9 Configure-to-order w/o Drive Bays Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "732352-B21": {
-      "description": "HPE Synergy 480 Gen9 Configure-to-order Expanded Storage Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "834485-B21": {
-      "description": "HPE Synergy 620 Gen9 2S-EX Configure-to-order Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "871929-B21": {
-      "description": "HPE Synergy 660 Gen10 Configure-to-order Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 11003,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "871930-B21": {
-      "description": "HPE Synergy 660 Gen10 Configure-to-order without Drive Bays Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 10579,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "871931-B21": {
-      "description": "HPE Synergy 660 Gen10 Configure-to-order Premium Backplane Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 11371,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "Q9Q89A": {
-      "description": "HPE Synergy 660 Gen10 for SAP HANA Tailored Datacenter Integration Compute Block",
-      "formFactor": "Unknown",
-      "listPrice": 10548,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "R1R49A": {
-      "description": "HPE Synergy 660 Gen10 for SAP HANA Compute Block",
-      "formFactor": "Unknown",
-      "listPrice": 9655,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "732360-B21": {
-      "description": "HPE Synergy 660 Gen9 Configure-to-order SAS Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "834482-B21": {
-      "description": "HPE Synergy 680 Gen9 4S-EX Configure-to-order Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 13245,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "871943-B21": {
-      "description": "HPE Synergy 480 Gen10 6130 2P 64GB-R P204i-c SAS Performance Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 11615,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "871945-B21": {
-      "description": "HPE Synergy 480 Gen10 5118 1P 32GB-R E208i-c Base Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 6605,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "871946-B21": {
-      "description": "HPE Synergy 480 Gen10 3104 1P 16GB-R S100i SATA Entry Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 4605,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "826950-B21": {
-      "description": "HPE Synergy 480 Gen9 E5-2680 v4 2P 128GB-L P240nr Performance Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "826951-B21": {
-      "description": "HPE Synergy 480 Gen9 E5-2660 v4 2P 64GB-R P240nr Performance Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "826952-B21": {
-      "description": "HPE Synergy 480 Gen9 E5-2650 v4 1P 64GB-R P240nr Base Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "826953-B21": {
-      "description": "HPE Synergy 480 Gen9 E5-2630 v4 1P 32GB-R P240nr Base Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "826954-B21": {
-      "description": "HPE Synergy 480 Gen9 E5-2609 v4 1P 16GB-R H240nr Entry Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "834483-B21": {
-      "description": "HPE Synergy 620 Gen9 2S-EX Performance Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "834484-B21": {
-      "description": "HPE Synergy 620 Gen9 2S-EX Base Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "871932-B21": {
-      "description": "HPE Synergy 660 Gen10 8160 4P 256GB-R P408i-c SAS Performance Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "871933-B21": {
-      "description": "HPE Synergy 660 Gen10 6140 2P 128GB-R E208i-c Base Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "871934-B21": {
-      "description": "HPE Synergy 660 Gen10 5118 2P 64GB-R S100i SATA Entry Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "826956-B21": {
-      "description": "HPE SY 660 Gen9 E5-4650v4 4P Cmpt Mdl",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "826957-B21": {
-      "description": "HPE SY 660 Gen9 E5-4620v4 4P Cmpt Mdl",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "826958-B21": {
-      "description": "HPE SY 660 Gen9 E5-4610v4 2P Cmpt Mdl",
-      "formFactor": "Unknown",
-      "listPrice": null,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "834480-B21": {
-      "description": "HPE Synergy 680 Gen9 4S-EX Performance Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 68475,
-      "diffStatus": "ATTRIBUTE_CHANGED"
-    },
-    "834481-B21": {
-      "description": "HPE Synergy 680 Gen9 4S-EX Base Compute Module",
-      "formFactor": "Unknown",
-      "listPrice": 48360,
-      "diffStatus": "ATTRIBUTE_CHANGED"
     }
   },
   "dataAnomalies": {

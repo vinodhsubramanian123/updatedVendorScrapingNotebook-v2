@@ -1,19 +1,19 @@
 {
   "version": "1.0.0",
   "chassis": "DL385_Gen11",
-  "generatedAt": "2026-11-21T11:57:39.325Z",
-  "executionDurationMs": 5080,
+  "generatedAt": "2026-11-22T02:55:06.501Z",
+  "executionDurationMs": 17865,
   "summary": {
     "totalRawTables": 128,
     "validProductTables": 122,
     "skippedTablesCount": 31,
     "rejectedRowsCount": 8,
     "parseFailedPriceCount": 0,
-    "unmeasuredLeadTimeCount": 497,
+    "unmeasuredLeadTimeCount": 501,
     "selfHealedTablesCount": 0,
     "selfHealedSkusCount": 0,
-    "totalExtractedSKUs": 750,
-    "totalUniqueSKUs": 750,
+    "totalExtractedSKUs": 754,
+    "totalUniqueSKUs": 754,
     "totalRulesExtracted": 237,
     "chassisVariantsCount": 5
   },
@@ -1647,16 +1647,16 @@
     },
     {
       "tableIndex": 139,
-      "subCategory": "System Options",
-      "parentCategory": "Support Services",
-      "matchedVia": "role_classifier",
+      "subCategory": "High Availability Computing - Cluster Software",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Service & Support",
-      "constraint": "N/A",
+      "constraint": "no max",
       "minQty": 0,
       "maxQty": null,
       "maxQtySemantics": "UNBOUNDED",
-      "skuCount": 7,
-      "rulesCount": 0
+      "skuCount": 10,
+      "rulesCount": 1
     },
     {
       "tableIndex": 140,
@@ -1837,7 +1837,7 @@
     "Memory": 29,
     "Cables & Enablement Kits": 34,
     "Drive Enclosures / Drives": 21,
-    "Software & Licenses": 446,
+    "Software & Licenses": 450,
     "Storage Controllers": 33,
     "Graphics & GPU": 4,
     "PCIe Risers": 7,
@@ -1890,10 +1890,10 @@
     "skusWithPricePerGb": 34,
     "clicStatusDistribution": {
       "Valid": 5,
-      "Unpublished": 745
+      "Unpublished": 749
     },
     "lifecycleStatusDistribution": {
-      "Active": 459,
+      "Active": 463,
       "EOL Warning (90-Day)": 47,
       "Obsolete (OB)": 236,
       "Constrained Supply (CS)": 6,

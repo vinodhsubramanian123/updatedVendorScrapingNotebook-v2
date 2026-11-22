@@ -72,10 +72,10 @@
       "replaySuiteVersion": "1.1.0",
       "replaySuiteSha256": "b8b507b9fde1f7013524a6700cad414341341f9316cde9ecbbce5a8e860256c5",
       "replayInputHashes": {
-        "Catalog.json": "2dec9b852aad341a2517d3dc9c0077017390a4a61c384011e55bf6dd73ccf0c0",
-        "Services.json": "da1a7536a0a1bacc34efcbb66acb184613eb6e32e42a2051b5381d957a9743de",
-        "Catalog_Rules.json": "52f78860228cc758beec91313539de3705cf2be38a94a7c472586c1117ba3209",
-        "OCA_Catalog.xlsx": "aa7f27e206a913e220ae4b2977d4c493c1253cbc3bd0d5d89590889fd4e3fe7a",
+        "Catalog.json": "5066c075fd3049a07a1aed68fa36d56368ceeb672f18a99ebad7c7c25d721b01",
+        "Services.json": "05d1392fa3300dce3ccd93833090d8d5a81c5de263a6536cfcb0918edd0f1223",
+        "Catalog_Rules.json": "ceca2373445451a19d5d7ff70cd0e77be6ac3aca9b8fd0d6ea6b7951089e8f21",
+        "OCA_Catalog.xlsx": "10401e9327728ee41e708dbc7016787a1895fab90b1a3993e52b351d6c2a669a",
         "conditional_skus.json": "f70e393f86b33d976f82857982186485656dcb70c17f5706202f9dddebcb18cc"
       }
     },
@@ -95,11 +95,11 @@
     }
   },
   "counts": {
-    "hardware": 580,
-    "services": 406,
+    "hardware": 584,
+    "services": 405,
     "rules": 140,
     "categories": 12,
-    "retainedHardware": 580,
+    "retainedHardware": 584,
     "hardwareTombstones": 0
   },
   "previousCounts": {
@@ -109,10 +109,10 @@
     "categories": 11
   },
   "hashes": {
-    "Catalog.json": "2dec9b852aad341a2517d3dc9c0077017390a4a61c384011e55bf6dd73ccf0c0",
-    "Services.json": "da1a7536a0a1bacc34efcbb66acb184613eb6e32e42a2051b5381d957a9743de",
-    "Catalog_Rules.json": "52f78860228cc758beec91313539de3705cf2be38a94a7c472586c1117ba3209",
-    "OCA_Catalog.xlsx": "aa7f27e206a913e220ae4b2977d4c493c1253cbc3bd0d5d89590889fd4e3fe7a"
+    "Catalog.json": "5066c075fd3049a07a1aed68fa36d56368ceeb672f18a99ebad7c7c25d721b01",
+    "Services.json": "05d1392fa3300dce3ccd93833090d8d5a81c5de263a6536cfcb0918edd0f1223",
+    "Catalog_Rules.json": "ceca2373445451a19d5d7ff70cd0e77be6ac3aca9b8fd0d6ea6b7951089e8f21",
+    "OCA_Catalog.xlsx": "10401e9327728ee41e708dbc7016787a1895fab90b1a3993e52b351d6c2a669a"
   },
   "rawSha256": "e4fd882c32a8a745d94c3704b5fa37b15ac30b2ce57d042c4c6d5a5342b15033",
   "sheets": [
@@ -13509,5 +13509,5 @@
     "error": "CLI sync unavailable (Command failed: nlm source list 3f5344ce-da79-4f6d-a131-f303d1e43dc3 --json). Payload ready at outputs/ProLiant/Gen12/DL580_Gen12/notebook_sync_payload_DL580_Gen12.md. Upload as \"DL580_Gen12_OCA_Catalog_2026-11-20\" via gemini-notebook-mcp source_add or nlm CLI."
   },
   "promotedAt": "2026-11-20T12:51:51.345Z",
-  "rebuiltAt": "2026-11-21T12:57:21.355Z"
+  "rebuiltAt": "2026-11-22T02:57:46.294Z"
 }

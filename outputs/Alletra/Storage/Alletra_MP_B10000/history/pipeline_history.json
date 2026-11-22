@@ -1,6 +1,100 @@
 [
   {
     "summary": {
+      "runId": "run_Alletra_MP_B10000_1795315982314",
+      "sessionName": "Alletra_MP_B10000",
+      "startTime": "2026-11-22T02:53:02.271Z",
+      "endTime": "2026-11-22T02:53:11.353Z",
+      "durationMs": 9082,
+      "durationSec": "9.08",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 202,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 202,
+      "validationStats": {
+        "totalEntries": 43,
+        "totalSKUs": 202,
+        "validSKUs": 202,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 2,
+        "priceErrors": 0,
+        "ruleCount": 114,
+        "categoryCount": 9
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-22T02:53:02.314Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Alletra\\Storage\\Alletra_MP_B10000\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Alletra\\Storage\\Alletra_MP_B10000\\Alletra_MP_B10000_Catalog.json",
+          "chassisLabel": "Alletra MP B10000"
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:53:07.293Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 14,
+          "totalUniqueSKUs": 202,
+          "incrementalStats": {
+            "totalScrapedSkus": 202,
+            "unchangedSkusCount": 202,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:53:07.319Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 43,
+            "totalSKUs": 202,
+            "validSKUs": 202,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 2,
+            "priceErrors": 0,
+            "ruleCount": 114,
+            "categoryCount": 9
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:53:11.352Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Alletra\\Storage\\Alletra_MP_B10000\\Alletra_MP_B10000_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 202,
+      "classified": 202,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_Alletra_MP_B10000_1795265165865",
       "sessionName": "Alletra_MP_B10000",
       "startTime": "2026-11-21T12:46:05.861Z",

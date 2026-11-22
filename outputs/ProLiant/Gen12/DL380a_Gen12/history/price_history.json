@@ -16397,6 +16397,11 @@
       "price": 32212,
       "status": "ADDED",
       "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 32212,
+      "status": "ADDED"
     }
   ],
   "S6W30C": [
@@ -16413,6 +16418,11 @@
       "price": 10589,
       "status": "ADDED",
       "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 10589,
+      "status": "ADDED"
     }
   ],
   "S2D86C": [
@@ -16426,6 +16436,12 @@
       "date": "2026-09-30",
       "price": 112579,
       "status": "REMOVED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 112579,
+      "status": "REINSTATED",
       "validationState": "VALIDATED"
     }
   ],
@@ -16443,6 +16459,11 @@
       "price": 112579,
       "status": "ADDED",
       "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 112579,
+      "status": "ADDED"
     }
   ],
   "S6A73C": [
@@ -16451,6 +16472,11 @@
       "price": 57002,
       "status": "ADDED",
       "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 57002,
+      "status": "ADDED"
     }
   ],
   "S6W21C": [
@@ -16459,6 +16485,11 @@
       "price": 37899,
       "status": "ADDED",
       "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-20",
+      "price": 37899,
+      "status": "ADDED"
     }
   ],
   "P85241-B21": [
@@ -17355,6 +17386,41 @@
     {
       "date": "2026-11-20",
       "price": 229,
+      "status": "ADDED"
+    }
+  ],
+  "A9907A#008": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "A9907A#101": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "A9907A#102": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "S1J77A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "S8A40C": [
+    {
+      "date": "2026-11-20",
+      "price": 92899,
       "status": "ADDED"
     }
   ]

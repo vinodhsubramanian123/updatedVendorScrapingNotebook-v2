@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-12",
     "scrapeTimestamp": "2026-11-12T03:22:14.338Z",
-    "builtAt": "2026-11-21T11:59:06.101Z",
+    "builtAt": "2026-11-22T02:58:42.994Z",
     "totalSubcategories": 6,
     "totalUniqueSKUs": 24,
     "totalTables": 6,
@@ -88,15 +88,15 @@
     },
     "incrementalStats": {
       "totalScrapedSkus": 24,
-      "unchangedSkusCount": 1,
-      "modifiedSkusCount": 23,
+      "unchangedSkusCount": 24,
+      "modifiedSkusCount": 0,
       "addedSkusCount": 0,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotChecksum": "839fd5cdbbc0fb891f9a20414bc398c5295dd91ac0d52f9762016bd5c2f71183",
-    "snapshotTimestamp": "2026-11-21T11:59:06.235Z"
+    "snapshotChecksum": "f974d1c7e8ff62b1f3476f26d51b29d881a5154dac9e05da45296362b0b1d422",
+    "snapshotTimestamp": "2026-11-22T02:58:43.289Z"
   },
   "subcategories": [],
   "entries": [
@@ -1409,8 +1409,10 @@
             "portCount": 8,
             "speedGbps": 32,
             "fabricProtocol": "FC",
-            "formFactor": "PCIe",
-            "opticsIncluded": false
+            "formFactor": "Switch",
+            "opticsIncluded": false,
+            "totalPorts": 8,
+            "licensedPorts": 8
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1471,7 +1473,7 @@
             "category": "Networking / FC / Optics",
             "speedGbps": 32,
             "fabricProtocol": "FC",
-            "formFactor": "PCIe",
+            "formFactor": "Switch",
             "opticsIncluded": false
           },
           "Price State": "PRICED",

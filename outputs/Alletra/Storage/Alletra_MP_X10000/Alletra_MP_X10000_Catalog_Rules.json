@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-21",
     "scrapeTimestamp": "2026-11-21T12:18:55.119Z",
-    "builtAt": "2026-11-21T12:18:56.653Z",
+    "builtAt": "2026-11-22T02:53:18.968Z",
     "totalSubcategories": 15,
     "totalUniqueSKUs": 82,
     "totalTables": 22,
@@ -42,8 +42,8 @@
           "avgPrice": 0
         },
         "Accessories & Infrastructure": {
-          "totalSKUs": 4,
-          "totalPrice": 19628,
+          "totalSKUs": 5,
+          "totalPrice": 19825,
           "minPrice": 1,
           "maxPrice": 13749,
           "subcategories": {
@@ -57,13 +57,18 @@
               "totalPrice": 5878,
               "avgPrice": 2939
             },
+            "BlueTooth Connectivity Kit": {
+              "totalSKUs": 1,
+              "totalPrice": 197,
+              "avgPrice": 197
+            },
             "Commvault Tracking SKU": {
               "totalSKUs": 1,
               "totalPrice": 1,
               "avgPrice": 1
             }
           },
-          "avgPrice": 4907
+          "avgPrice": 3965
         },
         "Storage Controllers": {
           "totalSKUs": 2,
@@ -80,10 +85,10 @@
           "avgPrice": 463983.5
         },
         "Power Supplies": {
-          "totalSKUs": 9,
-          "totalPrice": 239434,
+          "totalSKUs": 5,
+          "totalPrice": 18454,
           "minPrice": 135,
-          "maxPrice": 128140,
+          "maxPrice": 11842,
           "subcategories": {
             "Power Supplies": {
               "totalSKUs": 1,
@@ -94,19 +99,9 @@
               "totalSKUs": 4,
               "totalPrice": 16127,
               "avgPrice": 4031.75
-            },
-            "BlueTooth Connectivity Kit": {
-              "totalSKUs": 1,
-              "totalPrice": 197,
-              "avgPrice": 197
-            },
-            "Back-End Switches": {
-              "totalSKUs": 3,
-              "totalPrice": 220783,
-              "avgPrice": 73594.33333333333
             }
           },
-          "avgPrice": 26603.777777777777
+          "avgPrice": 3690.8
         },
         "Cables & Enablement Kits": {
           "totalSKUs": 41,
@@ -152,27 +147,38 @@
           "avgPrice": 182890.76923076922
         },
         "Networking": {
-          "totalSKUs": 10,
-          "totalPrice": 40766,
+          "totalSKUs": 13,
+          "totalPrice": 261549,
           "minPrice": 2425,
-          "maxPrice": 6829,
+          "maxPrice": 128140,
           "subcategories": {
             "Optical Transceivers & DAC Cables": {
               "totalSKUs": 10,
               "totalPrice": 40766,
               "avgPrice": 4076.6
+            },
+            "Back-End Switches": {
+              "totalSKUs": 3,
+              "totalPrice": 220783,
+              "avgPrice": 73594.33333333333
             }
           },
-          "avgPrice": 4076.6
+          "avgPrice": 20119.153846153848
         }
       }
     },
-    "snapshotFingerprint": "149f343f42193198ffa088a8f7ca9f01ac2b48737425813fd55a4130b5235ea3",
+    "incrementalStats": {
+      "totalScrapedSkus": 82,
+      "unchangedSkusCount": 82,
+      "modifiedSkusCount": 0,
+      "addedSkusCount": 0,
+      "removedSkusCount": 0,
+      "estimatedTokensSaved": 0,
+      "estimatedProcessingTimeSavedMs": 0
+    },
+    "snapshotFingerprint": "79bdcb54d326a4862184f75773cae9b894f84bfedb6214986cb851e1e3f12eda",
     "chassisVariantCount": 3,
-    "rulesGeneratedAt": "2026-11-21T12:18:56.778Z",
-    "rulesCount": 73,
-    "ninjaSizingIntegratedAt": "2026-11-21T12:46:05.081Z",
-    "ninjaSizingSha256": "9313f00dd7d5d06ead16303e6b6b913b99fe8aabf66f70ced44f7ff853e82dfb"
+    "rulesGeneratedAt": "2026-11-22T02:53:20.040Z"
   },
   "chassisVariants": [
     {
@@ -283,22 +289,6 @@
       "constraint": "max 4",
       "minQty": 0,
       "maxQty": 4,
-      "maxQtySemantics": "BOUNDED"
-    },
-    {
-      "parentCategory": "Power Supplies",
-      "name": "BlueTooth Connectivity Kit",
-      "constraint": "max 1",
-      "minQty": 0,
-      "maxQty": 1,
-      "maxQtySemantics": "BOUNDED"
-    },
-    {
-      "parentCategory": "Power Supplies",
-      "name": "Back-End Switches",
-      "constraint": "max 2",
-      "minQty": 0,
-      "maxQty": 2,
       "maxQtySemantics": "BOUNDED"
     }
   ],
@@ -913,7 +903,7 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S1S69A conditional visibility: portal selector activation required (If “acPowerFlag” is selected then S1S69A not supported); PORTAL_CONDITIONAL",
-      "parentCategory": "Power Supplies",
+      "parentCategory": "Networking",
       "subCategory": "Back-End Switches",
       "constraint": "",
       "maxQty": ""
@@ -1266,21 +1256,21 @@
       "rule": "Max quantity of product class limited by space available."
     },
     {
-      "parentCategory": "Power Supplies",
+      "parentCategory": "Accessories & Infrastructure",
       "subCategory": "BlueTooth Connectivity Kit",
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "Selection constraint for BlueTooth Connectivity Kit: max 1"
     },
     {
-      "parentCategory": "Power Supplies",
+      "parentCategory": "Networking",
       "subCategory": "Back-End Switches",
       "constraint": "max 2",
       "maxQty": 2,
       "rule": "Selection constraint for Back-End Switches: max 2"
     },
     {
-      "parentCategory": "Power Supplies",
+      "parentCategory": "Networking",
       "subCategory": "Back-End Switches",
       "constraint": "max 2",
       "maxQty": 2,
@@ -1320,36 +1310,6 @@
       "constraint": "max 2",
       "maxQty": 2,
       "rule": "Selection constraint for Configuration Indicators: max 2"
-    },
-    {
-      "ruleId": "NINJA_X10K_CLUSTER_ENVELOPE",
-      "parentCategory": "Drive Enclosures / Drives",
-      "subCategory": "Cluster Topology",
-      "type": "NINJA_CLUSTER_ENVELOPE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "Ninja Online X10000 cluster envelope: up to 8 controller nodes and 12 NVMe JBOF enclosures; drives include TLC and QLC SED SKUs (15 models).",
-      "ruleText": "Ninja Online X10000 cluster envelope: up to 8 controller nodes and 12 NVMe JBOF enclosures; drives include TLC and QLC SED SKUs (15 models)."
-    },
-    {
-      "ruleId": "NINJA_X10K_SKU_REFERENCE",
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "Ninja Online BOM Matrix",
-      "type": "NINJA_SIZING_BASELINE",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "Ninja Online X10000 validated BOM SKU references (45 total): R9H67A: HPE Alletra Storage MP 3.84TB NVMe SFF Self-encrypting SSD; R9H68A: HPE Alletra Storage MP 7.68TB NVMe SFF Self-encrypting SSD; R9H69A: HPE Alletra Storage MP 15.36TB NVMe SFF Self-encrypting SSD; S1Z68A: HPE Alletra Storage MP 30.72TB NVMe SFF Self-encrypting SSD; S7P26A: HPE Alletra Storage MP 3.84TB NVMe SFF Self-encrypting V2 SSD; S7P27A: HPE Alletra Storage MP 7.68TB NVMe SFF Self-encrypting V2 SSD; S7P28A: HPE Alletra Storage MP 15.36TB NVMe SFF Self-encrypting V2 SSD; S7P29A: HPE Alletra Storage MP 30.72TB NVMe SFF Self-encrypting V2 SSD; R9H71B: HPE Alletra Storage MP 3.84TB NVMe SFF FIPS 140-3 Encrypted SSD; R9H72B: HPE Alletra Storage MP 7.68TB NVMe SFF FIPS 140-3 Encrypted SSD; R9H73B: HPE Alletra Storage MP 15.36TB NVMe SFF FIPS 140-3 Encrypted SSD; S4P49A: HPE Alletra Storage MP 30.72TB NVMe SFF FIPS 140-3 Encrypted SSD; S0Q02B: HPE Alletra Storage MP 3.84TB NVMe SFF FIPS 140-3 Encrypted TAA-compliant SSD; S0Q03B: HPE Alletra Storage MP 7.68TB NVMe SFF FIPS 140-3 Encrypted TAA-compliant SSD; S0Q04B: HPE Alletra Storage MP 15.36TB NVMe SFF FIPS 140-3 Encrypted TAA-compliant SSD; S3L73A: HPE Alletra Storage MP 15.36TB NVMe SFF QLC SSD; S3L74A: HPE Alletra Storage MP 30.72TB NVMe SFF QLC SSD; S4P40A: HPE Alletra Storage MP 61.44TB NVMe SFF QLC SSD; R7C76A: HPE Alletra Storage MP C14 1600W AC Power Supply; R9Z97A: HPE Alletra Storage MP C14 2200W AC Power Supply.",
-      "ruleText": "Ninja Online X10000 validated BOM SKU references (45 total): R9H67A: HPE Alletra Storage MP 3.84TB NVMe SFF Self-encrypting SSD; R9H68A: HPE Alletra Storage MP 7.68TB NVMe SFF Self-encrypting SSD; R9H69A: HPE Alletra Storage MP 15.36TB NVMe SFF Self-encrypting SSD; S1Z68A: HPE Alletra Storage MP 30.72TB NVMe SFF Self-encrypting SSD; S7P26A: HPE Alletra Storage MP 3.84TB NVMe SFF Self-encrypting V2 SSD; S7P27A: HPE Alletra Storage MP 7.68TB NVMe SFF Self-encrypting V2 SSD; S7P28A: HPE Alletra Storage MP 15.36TB NVMe SFF Self-encrypting V2 SSD; S7P29A: HPE Alletra Storage MP 30.72TB NVMe SFF Self-encrypting V2 SSD; R9H71B: HPE Alletra Storage MP 3.84TB NVMe SFF FIPS 140-3 Encrypted SSD; R9H72B: HPE Alletra Storage MP 7.68TB NVMe SFF FIPS 140-3 Encrypted SSD; R9H73B: HPE Alletra Storage MP 15.36TB NVMe SFF FIPS 140-3 Encrypted SSD; S4P49A: HPE Alletra Storage MP 30.72TB NVMe SFF FIPS 140-3 Encrypted SSD; S0Q02B: HPE Alletra Storage MP 3.84TB NVMe SFF FIPS 140-3 Encrypted TAA-compliant SSD; S0Q03B: HPE Alletra Storage MP 7.68TB NVMe SFF FIPS 140-3 Encrypted TAA-compliant SSD; S0Q04B: HPE Alletra Storage MP 15.36TB NVMe SFF FIPS 140-3 Encrypted TAA-compliant SSD; S3L73A: HPE Alletra Storage MP 15.36TB NVMe SFF QLC SSD; S3L74A: HPE Alletra Storage MP 30.72TB NVMe SFF QLC SSD; S4P40A: HPE Alletra Storage MP 61.44TB NVMe SFF QLC SSD; R7C76A: HPE Alletra Storage MP C14 1600W AC Power Supply; R9Z97A: HPE Alletra Storage MP C14 2200W AC Power Supply."
-    },
-    {
-      "ruleId": "NINJA_X10K_OCA_HANDOFF_WORKFLOW",
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "Sizing & Import Workflow",
-      "type": "NINJA_OCA_HANDOFF_WORKFLOW",
-      "source": "HPE_NINJA_ONLINE_SIZER",
-      "evidenceTier": "VENDOR_SIZER_TELEMETRY",
-      "rule": "Alletra Storage MP X10000 workflow: size object/unstructured capacity, TLC/QLC drive tiers, controller nodes, and JBOFs in HPE Ninja Online, export OCA JSON, import into HPE OCA, then adapt transceivers (SFPs/QSFPs), cabling, support services, and run CLIC validation in OCA.",
-      "ruleText": "Alletra Storage MP X10000 workflow: size object/unstructured capacity, TLC/QLC drive tiers, controller nodes, and JBOFs in HPE Ninja Online, export OCA JSON, import into HPE OCA, then adapt transceivers (SFPs/QSFPs), cabling, support services, and run CLIC validation in OCA."
     }
   ]
 }

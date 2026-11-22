@@ -8,12 +8,12 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-20",
     "scrapeTimestamp": "2026-11-20T12:48:02.040Z",
-    "builtAt": "2026-11-21T11:58:26.258Z",
+    "builtAt": "2026-11-22T02:57:31.639Z",
     "totalSubcategories": 20,
-    "totalUniqueSKUs": 426,
+    "totalUniqueSKUs": 425,
     "totalTables": 35,
     "diffSummary": {
-      "added": 134,
+      "added": 133,
       "removed": 20,
       "categoryMigrated": 87,
       "priceChanged": 0,
@@ -18998,19 +18998,21 @@
       ]
     },
     {
-      "parentCategory": "Support Services",
-      "subCategory": "System Options",
-      "constraint": "",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "High Availability Computing - Cluster Software",
+      "constraint": "no max",
       "minQty": 0,
       "maxQty": null,
       "maxQtySemantics": "UNBOUNDED",
-      "rules": [],
+      "rules": [
+        "Selection constraint for High Availability Computing - Cluster Software: no max"
+      ],
       "headers": [
         "Description",
         "Product Number",
         "Quantity"
       ],
-      "skuCount": 7,
+      "skuCount": 6,
       "skus": [
         {
           "Description": "HPE FE Cluster Hig Den-Base HW Intg SVC",
@@ -19053,8 +19055,9 @@
             "rowType": "SUPPORT_SERVICE"
           },
           "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
           "ownerProduct": "DL580_Gen12",
-          "subCategory": "System Options",
+          "subCategory": "High Availability Computing - Cluster Software",
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Software / Support / Services",
@@ -19110,8 +19113,9 @@
             "rowType": "SUPPORT_SERVICE"
           },
           "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
           "ownerProduct": "DL580_Gen12",
-          "subCategory": "System Options",
+          "subCategory": "High Availability Computing - Cluster Software",
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Software / Support / Services",
@@ -19168,8 +19172,9 @@
             "rowType": "SUPPORT_SERVICE"
           },
           "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
           "ownerProduct": "DL580_Gen12",
-          "subCategory": "System Options",
+          "subCategory": "High Availability Computing - Cluster Software",
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Software / Support / Services",
@@ -19226,8 +19231,9 @@
             "rowType": "SUPPORT_SERVICE"
           },
           "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
           "ownerProduct": "DL580_Gen12",
-          "subCategory": "System Options",
+          "subCategory": "High Availability Computing - Cluster Software",
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Software / Support / Services",
@@ -19284,8 +19290,9 @@
             "rowType": "SUPPORT_SERVICE"
           },
           "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
           "ownerProduct": "DL580_Gen12",
-          "subCategory": "System Options",
+          "subCategory": "High Availability Computing - Cluster Software",
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Software / Support / Services",
@@ -19342,70 +19349,14 @@
             "rowType": "SUPPORT_SERVICE"
           },
           "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
           "ownerProduct": "DL580_Gen12",
-          "subCategory": "System Options",
+          "subCategory": "High Availability Computing - Cluster Software",
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Software / Support / Services",
             "layer": "SOFTWARE_OTHER",
             "termYears": 1,
-            "retention": "NONE"
-          },
-          "Price State": "UNPRICED",
-          "Diff Status": "ADDED",
-          "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
-          "Attribute Deltas": "New SKU introduced",
-          "Price History Trail": "2026-11-20: (no price)"
-        },
-        {
-          "Description": "HPE AMS HPC FIO Rack Config Service",
-          "Product Number": "S1J77A",
-          "Current Qty": "0",
-          "Product #": "S1J77A",
-          "sku": "S1J77A",
-          "Option Type": "Standard",
-          "CLIC Status": "Unpublished",
-          "clicStatus": "Unpublished",
-          "Lifecycle Status": "Active",
-          "lifecycleStatus": "Active",
-          "lifecycleBadge": "",
-          "Availability": "Not published by OCA",
-          "Lead Time": "Unpublished",
-          "leadTime": "Unpublished",
-          "leadTimeDays": null,
-          "Lead Time Days": "",
-          "leadTimeUnit": null,
-          "etaDate": null,
-          "Lead Time Source": "Unpublished",
-          "Speed Tier": "Unpublished",
-          "HPE Recommended": "No",
-          "vendorRecommended": false,
-          "lifecycleCanonical": "Active",
-          "Unit Price (USD)": "",
-          "List Price (USD)": "",
-          "listPrice": null,
-          "priceState": "UNPRICED",
-          "priceStatus": "UNPRICED",
-          "Cost (USD)": "",
-          "costPrice": null,
-          "rowType": "INTERNAL_CONFIGURATION",
-          "vendorAttributes": {
-            "Product Number": "S1J77A",
-            "leadTime": "Unpublished",
-            "lifecycleCanonical": "Active",
-            "priceState": "UNPRICED",
-            "priceStatus": "UNPRICED",
-            "rowType": "INTERNAL_CONFIGURATION"
-          },
-          "Component Role": "Service & Support",
-          "ownerProduct": "DL580_Gen12",
-          "subCategory": "System Options",
-          "canonicalSpecs": {
-            "vendor": "HPE",
-            "category": "Software / Support / Services",
-            "layer": "SOFTWARE_OTHER",
             "retention": "NONE"
           },
           "Price State": "UNPRICED",

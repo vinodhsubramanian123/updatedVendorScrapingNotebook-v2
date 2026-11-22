@@ -3718,14 +3718,15 @@
     "daysActive": 17,
     "lastKnownPrice": "112579.00",
     "fullPriceTrail": "2026-09-13: $112579.00 → 2026-09-30: $112579.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "VENDOR_OBSOLETE",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "02/02/2026",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Vendor marked obsolete/EOL in portal"
+    "reason": "Vendor marked obsolete/EOL in portal",
+    "reinstatedDate": "2026-11-20"
   },
   "P85241-B21": {
     "productNumber": "P85241-B21",
@@ -4416,6 +4417,86 @@
     "description": "Intel Virtual RAID on CPU RAID 1 E-RTU for HPE",
     "mainCategory": "Software & Licenses",
     "subCategory": "Server Management & Operating System Licenses",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "A9907A#008": {
+    "productNumber": "A9907A#008",
+    "description": "Customer Solution Specialist On-site Support and Knowledge Transfer Services",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "A9907A#101": {
+    "productNumber": "A9907A#101",
+    "description": "Customer Solution Specialist Services -Tech. Computing and Emerging Technology",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "A9907A#102": {
+    "productNumber": "A9907A#102",
+    "description": "Customer Solution Specialist Services - IT infrastructure",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S1J77A": {
+    "productNumber": "S1J77A",
+    "description": "HPE AMS HPC FIO Rack Config Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S0K89C": {
+    "productNumber": "S0K89C",
+    "description": "NVIDIA L4 24GB PCIe Accelerator for HPE",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S2L70C": {
+    "productNumber": "S2L70C",
+    "description": "NVIDIA L40S 48GB PCIe Accelerator",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S3U30C": {
+    "productNumber": "S3U30C",
+    "description": "NVIDIA H200 NVL 141GB PCIe Accelerator for HPE",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S6A73C": {
+    "productNumber": "S6A73C",
+    "description": "NVIDIA RTX PRO 6000 Blackwell Server Edition 96GB PCIe Accelerator for HPE",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S6W21C": {
+    "productNumber": "S6W21C",
+    "description": "NVIDIA RTX PRO 6000D 84GB PCIe Accelerator for HPE",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S8A40C": {
+    "productNumber": "S8A40C",
+    "description": "AMD Instinct MI350P 144GB PCIe Accelerator for HPE",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
     "firstSeenDate": "2026-11-20",
     "status": "ACTIVE"
   }

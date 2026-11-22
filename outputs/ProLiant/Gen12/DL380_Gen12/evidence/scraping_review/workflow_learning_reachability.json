@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-11-21T14:50:09.804Z",
+  "recordedAt": "2026-11-22T06:36:23.452Z",
   "results": [
     {
       "deltaId": "LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001",
@@ -131,16 +131,10 @@
     },
     {
       "deltaId": "LEARN_GEN12_CONSOLIDATED_WORKBOOK_VIEWS_20261121",
-      "persisted": true,
+      "persisted": false,
+      "alreadyRecorded": true,
       "certification": {
-        "reachable": true,
-        "ruleId": "LEARN_GEN12_CONSOLIDATED_WORKBOOK_VIEWS_20261121",
-        "ruleType": "WORKFLOW_CAPTURE_COVERAGE_ADVISORY",
-        "affectedSku": "",
-        "targetSku": "",
-        "scopeTaxonomy": "CHASSIS_SPECIFIC",
-        "simulationResult": null,
-        "verifiedAt": "2026-11-21T14:50:09.704Z"
+        "reachable": true
       }
     },
     {
@@ -149,6 +143,48 @@
       "alreadyRecorded": true,
       "certification": {
         "reachable": true
+      }
+    },
+    {
+      "deltaId": "LEARN_DL380A_GPU_MODE_AND_DRIVE_CAGE_SELECTOR_GATES_20261122",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380A_GPU_MODE_AND_DRIVE_CAGE_SELECTOR_GATES_20261122",
+        "ruleType": "WORKFLOW_CAPTURE_COVERAGE_ADVISORY",
+        "affectedSku": "P75008-B21",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-22T06:36:22.982Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_CANONICAL_SPECS_AND_TEMPLATE_SKUS_PARITY_20261122",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_CANONICAL_SPECS_AND_TEMPLATE_SKUS_PARITY_20261122",
+        "ruleType": "WORKFLOW_DOM_EXTRACTION_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-22T06:36:23.211Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_PROPOSED_BRANCH_AND_REASONING_OBSERVATION_HONESTY_20261122",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_PROPOSED_BRANCH_AND_REASONING_OBSERVATION_HONESTY_20261122",
+        "ruleType": "WORKFLOW_EPISTEMIC_GUARDRAIL_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-22T06:36:23.383Z"
       }
     }
   ],

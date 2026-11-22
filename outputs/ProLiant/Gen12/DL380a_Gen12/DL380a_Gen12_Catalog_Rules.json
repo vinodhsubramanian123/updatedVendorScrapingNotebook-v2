@@ -8,12 +8,12 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-20",
     "scrapeTimestamp": "2026-11-20T11:03:40.238Z",
-    "builtAt": "2026-11-21T11:58:19.269Z",
-    "totalSubcategories": 44,
-    "totalUniqueSKUs": 520,
-    "totalTables": 63,
+    "builtAt": "2026-11-22T02:56:28.800Z",
+    "totalSubcategories": 45,
+    "totalUniqueSKUs": 531,
+    "totalTables": 65,
     "diffSummary": {
-      "added": 69,
+      "added": 80,
       "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
@@ -21,7 +21,7 @@
       "priceAndAttributeChanged": 18,
       "unchanged": 1,
       "reinstated": 0,
-      "discontinuedTotal": 15
+      "discontinuedTotal": 14
     },
     "historySnapshot": "catalog_2026-11-20.json",
     "priceAnalytics": {
@@ -99,10 +99,10 @@
           "avgPrice": 46995.52631578947
         },
         "Graphics & GPU": {
-          "totalSKUs": 8,
-          "totalPrice": 4072,
+          "totalSKUs": 15,
+          "totalPrice": 459831,
           "minPrice": 1,
-          "maxPrice": 2170,
+          "maxPrice": 112579,
           "subcategories": {
             "GPU Mode": {
               "totalSKUs": 3,
@@ -113,9 +113,14 @@
               "totalSKUs": 5,
               "totalPrice": 4069,
               "avgPrice": 813.8
+            },
+            "GPU Accelerators (GPU Mode + Captive Riser Selector)": {
+              "totalSKUs": 7,
+              "totalPrice": 455759,
+              "avgPrice": 65108.42857142857
             }
           },
-          "avgPrice": 509
+          "avgPrice": 30655.4
         },
         "Storage Controllers": {
           "totalSKUs": 20,
@@ -381,17 +386,17 @@
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 520,
-      "unchangedSkusCount": 407,
-      "modifiedSkusCount": 51,
-      "addedSkusCount": 62,
+      "totalScrapedSkus": 531,
+      "unchangedSkusCount": 531,
+      "modifiedSkusCount": 0,
+      "addedSkusCount": 0,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotFingerprint": "86fa14857409ce4d7b592d8dde62d55a9e82167788d067ecd98328ac94db7052",
+    "snapshotFingerprint": "75482f0b19142e6bf4aaccb62bb2941bd0f2ca605f65dc66bdfef2fee938a02c",
     "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-11-21T11:58:20.081Z"
+    "rulesGeneratedAt": "2026-11-22T02:56:32.532Z"
   },
   "chassisVariants": [
     {
@@ -1366,6 +1371,132 @@
       "rule": "S4R76AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S0K89C"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "gpuModeSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P75008-B21+P74685-B21",
+      "portalVerificationRequired": true,
+      "rule": "S0K89C conditional visibility: portal selector activation required (Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S2D86C"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "gpuModeSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P75008-B21+P74685-B21",
+      "portalVerificationRequired": true,
+      "rule": "S2D86C conditional visibility: portal selector activation required (Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S2L70C"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "gpuModeSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P75008-B21+P74685-B21",
+      "portalVerificationRequired": true,
+      "rule": "S2L70C conditional visibility: portal selector activation required (Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S3U30C"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "gpuModeSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P75008-B21+P74685-B21",
+      "portalVerificationRequired": true,
+      "rule": "S3U30C conditional visibility: portal selector activation required (Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S6A73C"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "gpuModeSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P75008-B21+P74685-B21",
+      "portalVerificationRequired": true,
+      "rule": "S6A73C conditional visibility: portal selector activation required (Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S6W21C"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "gpuModeSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P75008-B21+P74685-B21",
+      "portalVerificationRequired": true,
+      "rule": "S6W21C conditional visibility: portal selector activation required (Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S8A40C"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "gpuModeSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P75008-B21+P74685-B21",
+      "portalVerificationRequired": true,
+      "rule": "S8A40C conditional visibility: portal selector activation required (Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
       "constraint": "",
       "maxQty": ""
     },

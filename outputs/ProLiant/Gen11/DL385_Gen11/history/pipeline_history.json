@@ -1,6 +1,100 @@
 [
   {
     "summary": {
+      "runId": "run_DL385_Gen11_1795316106496",
+      "sessionName": "DL385_Gen11",
+      "startTime": "2026-11-22T02:55:06.490Z",
+      "endTime": "2026-11-22T02:55:24.284Z",
+      "durationMs": 17794,
+      "durationSec": "17.79",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 754,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 754,
+      "validationStats": {
+        "totalEntries": 103,
+        "totalSKUs": 754,
+        "validSKUs": 754,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 5,
+        "zeroPriceSKUs": 30,
+        "priceErrors": 0,
+        "ruleCount": 182,
+        "categoryCount": 15
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-22T02:55:06.497Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\ProLiant\\Gen11\\DL385_Gen11\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\ProLiant\\Gen11\\DL385_Gen11\\DL385_Gen11_Catalog.json",
+          "chassisLabel": "DL385 Gen11"
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:55:14.399Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 71,
+          "totalUniqueSKUs": 754,
+          "incrementalStats": {
+            "totalScrapedSkus": 754,
+            "unchangedSkusCount": 750,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 4,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:55:14.449Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 103,
+            "totalSKUs": 754,
+            "validSKUs": 754,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 5,
+            "zeroPriceSKUs": 30,
+            "priceErrors": 0,
+            "ruleCount": 182,
+            "categoryCount": 15
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:55:24.283Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\ProLiant\\Gen11\\DL385_Gen11\\DL385_Gen11_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 754,
+      "classified": 754,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_DL385_Gen11_1795262259324",
       "sessionName": "DL385_Gen11",
       "startTime": "2026-11-21T11:57:39.323Z",

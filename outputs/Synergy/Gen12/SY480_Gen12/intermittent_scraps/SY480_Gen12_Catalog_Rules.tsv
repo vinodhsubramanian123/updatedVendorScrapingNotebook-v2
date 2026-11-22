@@ -78,8 +78,8 @@ Software & Licenses	VMWare Core Editions	no max	Configuration Rule	S4R76AAE cond
 Software & Licenses	VMWare Core Editions	no max	Configuration Rule	S4F94AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
 Software & Licenses	VMWare Core Editions	no max	Configuration Rule	S4G00AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
 Support Services	PCIe Networking Adapters	max 1	Configuration Rule	Selection constraint for PCIe Networking Adapters: max 1
-Support Services	HPE Virtualization	no max	Configuration Rule	Selection constraint for HPE Virtualization: no max
 Support Services	Reseller Option Kit	no max	Configuration Rule	Selection constraint for Reseller Option Kit: no max
+Support Services	HPE Virtualization	no max	Configuration Rule	Selection constraint for HPE Virtualization: no max
 Support Services	Support & Deployment Services	max 8	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 8
 Processors	Configuration Rules	The total qty of heat sink selected should match with the qty of processor selected.	Learned Feedback Rule	[MUTUAL_EXCLUSION] The total qty of heat sink selected should match with the qty of processor selected.
 Memory	Configuration Rules	BTO Memories are not allowed in CTO Base Model.	Learned Feedback Rule	[BTO_DISALLOWED] BTO Memories are not allowed in CTO Base Model.

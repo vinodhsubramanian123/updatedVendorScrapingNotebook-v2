@@ -8,12 +8,12 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-20",
     "scrapeTimestamp": "2026-11-20T08:53:18.946Z",
-    "builtAt": "2026-11-21T11:57:50.166Z",
+    "builtAt": "2026-11-22T02:55:47.820Z",
     "totalSubcategories": 57,
-    "totalUniqueSKUs": 766,
-    "totalTables": 93,
+    "totalUniqueSKUs": 770,
+    "totalTables": 95,
     "diffSummary": {
-      "added": 140,
+      "added": 148,
       "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
@@ -451,15 +451,15 @@
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 766,
-      "unchangedSkusCount": 475,
-      "modifiedSkusCount": 232,
-      "addedSkusCount": 59,
+      "totalScrapedSkus": 770,
+      "unchangedSkusCount": 763,
+      "modifiedSkusCount": 3,
+      "addedSkusCount": 4,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotFingerprint": "8a67f502971779e2d476125edb584806bc69a0b0bf0bead7fe9a4e46a236b898"
+    "snapshotFingerprint": "d88b679a8555855c4490f8db5b0d5770e8affd2f62f70aabafa8cc129df6c591"
   },
   "subcategories": [
     {
@@ -5026,8 +5026,7 @@
           "subCategory": "Optical Transceivers & DAC Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -5087,8 +5086,7 @@
           "subCategory": "Optical Transceivers & DAC Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -5173,10 +5171,7 @@
           "subCategory": "Drive Cage",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayFormFactor": "EDSFF"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "180.00",
@@ -5384,8 +5379,7 @@
           "subCategory": "OCP3 Networking Adapters",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "84.00",
@@ -5444,8 +5438,7 @@
           "subCategory": "OCP3 Networking Adapters",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "77.00",
@@ -5504,8 +5497,7 @@
           "subCategory": "OCP3 Networking Adapters",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "84.00",
@@ -5564,8 +5556,7 @@
           "subCategory": "OCP3 Networking Adapters",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "164.00",
@@ -5623,9 +5614,7 @@
           "subCategory": "OCP3 Networking Adapters",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -5683,9 +5672,7 @@
           "subCategory": "OCP3 Networking Adapters",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -6798,8 +6785,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -6859,8 +6845,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -6920,8 +6905,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -6981,8 +6965,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -7042,8 +7025,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -7103,8 +7085,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -7366,8 +7347,7 @@
           "subCategory": "Smart Storage Batteries",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "38.00",
@@ -7855,10 +7835,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "79.00",
@@ -7917,10 +7894,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "86.00",
@@ -7979,10 +7953,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "91.00",
@@ -8041,10 +8012,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "64.00",
@@ -8103,10 +8071,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "86.00",
@@ -8165,10 +8130,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "81.00",
@@ -8227,10 +8189,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 4
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "152.00",
@@ -8289,10 +8248,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 4
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "156.00",
@@ -8351,10 +8307,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 4
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "178.00",
@@ -8413,10 +8366,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 4
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "164.00",
@@ -8475,10 +8425,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 4
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "235.00",
@@ -8537,10 +8484,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 4
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "342.00",
@@ -8725,10 +8669,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "77.00",
@@ -8787,10 +8728,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 4
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "167.00",
@@ -8849,10 +8787,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "98.00",
@@ -8910,10 +8845,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 4
+            "category": "Other / Accessory"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -8971,10 +8903,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 4
+            "category": "Other / Accessory"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -9411,10 +9340,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "76.00",
@@ -9473,10 +9399,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "83.00",
@@ -9535,10 +9458,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "99.00",
@@ -9597,10 +9517,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 4
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "146.00",
@@ -9659,10 +9576,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 4
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "160.00",
@@ -9747,10 +9661,7 @@
           "subCategory": "Drive Cage Accessories",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 10
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "41.00",
@@ -10432,8 +10343,7 @@
           "subCategory": "Trusted Supply Chain",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1839.00",
@@ -10600,8 +10510,7 @@
           "subCategory": "vSAN Tracking SKUs",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -10960,9 +10869,7 @@
           "subCategory": "Riser Cards (required)",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "450.00",
@@ -11021,9 +10928,7 @@
           "subCategory": "Riser Cards (required)",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "200.00",
@@ -11125,9 +11030,7 @@
           "subCategory": "Riser Cards",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "184.00",
@@ -11212,8 +11115,12 @@
           "subCategory": "Ethernet PCIe",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "GPU / Accelerator",
-            "vramGb": 25
+            "category": "Networking / FC / Optics",
+            "portCount": 2,
+            "speedGbps": 25,
+            "fabricProtocol": "ETHERNET",
+            "formFactor": "SFP",
+            "opticsIncluded": false
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1650.00",
@@ -11341,7 +11248,8 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1105.00",
@@ -11597,7 +11505,8 @@
             "speedGbps": 1,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "485.00",
@@ -12339,8 +12248,11 @@
           "subCategory": "Optical Transceivers & DAC Cables",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "GPU / Accelerator",
-            "vramGb": 200
+            "category": "Networking / FC / Optics",
+            "speedGbps": 200,
+            "fabricProtocol": "ETHERNET",
+            "formFactor": "QSFP",
+            "opticsIncluded": false
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "15334.00",
@@ -12418,6 +12330,7 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
             "opticsIncluded": false
@@ -13428,7 +13341,8 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OCP3",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1105.00",
@@ -13620,7 +13534,8 @@
             "speedGbps": 1,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OCP3",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "485.00",
@@ -13811,7 +13726,8 @@
             "speedGbps": 1,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OCP3",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1580.00",
@@ -14473,7 +14389,9 @@
             "speedGbps": 32,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 1,
+            "licensedPorts": 1
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4675.00",
@@ -14537,7 +14455,9 @@
             "speedGbps": 32,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 2,
+            "licensedPorts": 2
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "7410.00",
@@ -14608,7 +14528,9 @@
             "speedGbps": 64,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 1,
+            "licensedPorts": 1
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "9688.00",
@@ -14679,7 +14601,9 @@
             "speedGbps": 64,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 2,
+            "licensedPorts": 2
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "12800.00",
@@ -14768,7 +14692,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LR",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1751.00",
@@ -14831,7 +14758,10 @@
             "speedGbps": 400,
             "fabricProtocol": "INFINIBAND_NDR",
             "formFactor": "OSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "50m",
+            "reachDistance": "50m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1866.00",
@@ -14894,7 +14824,9 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "500m",
+            "reachDistance": "500m"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "3495.00",
@@ -14957,7 +14889,10 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "5m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1899.00",
@@ -15081,7 +15016,8 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "426.00",
@@ -15144,7 +15080,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "842.00",
@@ -15207,7 +15146,11 @@
             "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR",
+            "reachDistance": "100m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2110.00",
@@ -15270,7 +15213,11 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR4",
+            "reachDistance": "100m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4252.00",
@@ -15455,9 +15402,14 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LR",
+            "reachDistance": "10km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "5199.00",
@@ -15517,9 +15469,14 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 400,
             "fabricProtocol": "INFINIBAND_NDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "50m",
+            "reachDistance": "50m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "3875.00",
@@ -15583,7 +15540,10 @@
             "speedGbps": 400,
             "fabricProtocol": "INFINIBAND_NDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "500m",
+            "reachDistance": "500m",
+            "fiberMode": "SMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4259.00",
@@ -15647,7 +15607,10 @@
             "speedGbps": 800,
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "OSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "500m",
+            "reachDistance": "500m",
+            "fiberMode": "SMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4939.00",
@@ -15711,7 +15674,10 @@
             "speedGbps": 400,
             "fabricProtocol": "INFINIBAND_NDR",
             "formFactor": "OSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "50m",
+            "reachDistance": "50m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "3682.00",
@@ -15775,7 +15741,10 @@
             "speedGbps": 400,
             "fabricProtocol": "INFINIBAND_NDR",
             "formFactor": "OSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "100m",
+            "reachDistance": "100m",
+            "fiberMode": "SMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "7359.00",
@@ -15839,7 +15808,10 @@
             "speedGbps": 400,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "50m",
+            "reachDistance": "50m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2400.00",
@@ -15903,7 +15875,10 @@
             "speedGbps": 400,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "50m",
+            "reachDistance": "50m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2428.00",
@@ -15966,7 +15941,11 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR4",
+            "reachDistance": "100m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2425.00",
@@ -16049,9 +16028,7 @@
           "subCategory": "Networking Accessories",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "17.00",
@@ -18844,8 +18821,7 @@
           "subCategory": "Chassis Infrastructure & Rail Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "38.00",
@@ -18904,9 +18880,7 @@
           "subCategory": "Chassis Infrastructure & Rail Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "100.00",
@@ -19053,7 +19027,9 @@
             "gpuModel": "NVIDIA L4",
             "vramGb": 24,
             "tier": "Inference / AI",
-            "formFactor": "PCIe"
+            "tdpWatts": 72,
+            "formFactor": "Single-Wide PCIe",
+            "auxPower": "None (PCIe Slot Powered)"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "10589.00",
@@ -19138,8 +19114,7 @@
           "subCategory": "Management Hardware",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "36.00",
@@ -19514,9 +19489,7 @@
           "subCategory": "Accessories & Infrastructure Options",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "89.00",
@@ -19575,8 +19548,7 @@
           "subCategory": "Accessories & Infrastructure Options",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4.00",
@@ -39216,6 +39188,506 @@
       ]
     },
     {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "High Availability Computing - Cluster Software",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "rules": [
+        "Selection constraint for High Availability Computing - Cluster Software: no max"
+      ],
+      "headers": [
+        "Description",
+        "Product Number",
+        "Quantity"
+      ],
+      "skuCount": 4,
+      "skus": [
+        {
+          "Description": "Customer Solution Specialist On-site Support and Knowledge Transfer Services",
+          "Product Number": "A9907A#008",
+          "Current Qty": "0",
+          "Product #": "A9907A#008",
+          "sku": "A9907A#008",
+          "Option Type": "Standard",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "leadTime": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "Lead Time Source": "Unpublished",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "lifecycleCanonical": "Active",
+          "Unit Price (USD)": "",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "priceState": "UNPRICED",
+          "priceStatus": "UNPRICED",
+          "Cost (USD)": "",
+          "costPrice": null,
+          "rowType": "HARDWARE_OPTION",
+          "vendorAttributes": {
+            "Product Number": "A9907A#008",
+            "leadTime": "Unpublished",
+            "lifecycleCanonical": "Active",
+            "priceState": "UNPRICED",
+            "priceStatus": "UNPRICED",
+            "rowType": "HARDWARE_OPTION"
+          },
+          "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
+          "ownerProduct": "DL360_Gen12",
+          "subCategory": "High Availability Computing - Cluster Software",
+          "canonicalSpecs": {
+            "vendor": "UNKNOWN",
+            "category": "Software / Support / Services",
+            "layer": "DEPLOYMENT",
+            "slaTier": "ONSITE",
+            "retention": "NONE"
+          },
+          "Price State": "UNPRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-11-20: (no price)"
+        },
+        {
+          "Description": "Customer Solution Specialist Services -Tech. Computing and Emerging Technology",
+          "Product Number": "A9907A#101",
+          "Current Qty": "0",
+          "Product #": "A9907A#101",
+          "sku": "A9907A#101",
+          "Option Type": "Standard",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "leadTime": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "Lead Time Source": "Unpublished",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "lifecycleCanonical": "Active",
+          "Unit Price (USD)": "",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "priceState": "UNPRICED",
+          "priceStatus": "UNPRICED",
+          "Cost (USD)": "",
+          "costPrice": null,
+          "rowType": "HARDWARE_OPTION",
+          "vendorAttributes": {
+            "Product Number": "A9907A#101",
+            "leadTime": "Unpublished",
+            "lifecycleCanonical": "Active",
+            "priceState": "UNPRICED",
+            "priceStatus": "UNPRICED",
+            "rowType": "HARDWARE_OPTION"
+          },
+          "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
+          "ownerProduct": "DL360_Gen12",
+          "subCategory": "High Availability Computing - Cluster Software",
+          "canonicalSpecs": {
+            "vendor": "UNKNOWN",
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "retention": "NONE"
+          },
+          "Price State": "UNPRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-11-20: (no price)"
+        },
+        {
+          "Description": "Customer Solution Specialist Services - IT infrastructure",
+          "Product Number": "A9907A#102",
+          "Current Qty": "0",
+          "Product #": "A9907A#102",
+          "sku": "A9907A#102",
+          "Option Type": "Standard",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "leadTime": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "Lead Time Source": "Unpublished",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "lifecycleCanonical": "Active",
+          "Unit Price (USD)": "",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "priceState": "UNPRICED",
+          "priceStatus": "UNPRICED",
+          "Cost (USD)": "",
+          "costPrice": null,
+          "rowType": "HARDWARE_OPTION",
+          "vendorAttributes": {
+            "Product Number": "A9907A#102",
+            "leadTime": "Unpublished",
+            "lifecycleCanonical": "Active",
+            "priceState": "UNPRICED",
+            "priceStatus": "UNPRICED",
+            "rowType": "HARDWARE_OPTION"
+          },
+          "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
+          "ownerProduct": "DL360_Gen12",
+          "subCategory": "High Availability Computing - Cluster Software",
+          "canonicalSpecs": {
+            "vendor": "UNKNOWN",
+            "category": "Other / Accessory"
+          },
+          "Price State": "UNPRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-11-20: (no price)"
+        },
+        {
+          "Description": "HPE AMS HPC FIO Rack Config Service",
+          "Product Number": "S1J77A",
+          "Current Qty": "0",
+          "Product #": "S1J77A",
+          "sku": "S1J77A",
+          "Option Type": "Standard",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "leadTime": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "Lead Time Source": "Unpublished",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "lifecycleCanonical": "Active",
+          "Unit Price (USD)": "",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "priceState": "UNPRICED",
+          "priceStatus": "UNPRICED",
+          "Cost (USD)": "",
+          "costPrice": null,
+          "rowType": "INTERNAL_CONFIGURATION",
+          "vendorAttributes": {
+            "Product Number": "S1J77A",
+            "leadTime": "Unpublished",
+            "lifecycleCanonical": "Active",
+            "priceState": "UNPRICED",
+            "priceStatus": "UNPRICED",
+            "rowType": "INTERNAL_CONFIGURATION"
+          },
+          "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
+          "ownerProduct": "DL360_Gen12",
+          "subCategory": "High Availability Computing - Cluster Software",
+          "canonicalSpecs": {
+            "vendor": "HPE",
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "retention": "NONE"
+          },
+          "Price State": "UNPRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-11-20: (no price)"
+        }
+      ]
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "High Availability Computing - Cluster Software",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "rules": [
+        "Selection constraint for High Availability Computing - Cluster Software: no max"
+      ],
+      "headers": [
+        "Description",
+        "Product Number",
+        "Quantity"
+      ],
+      "skuCount": 4,
+      "skus": [
+        {
+          "Description": "Customer Solution Specialist On-site Support and Knowledge Transfer Services",
+          "Product Number": "A9907A#008",
+          "Current Qty": "0",
+          "Product #": "A9907A#008",
+          "sku": "A9907A#008",
+          "Option Type": "Standard",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "leadTime": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "Lead Time Source": "Unpublished",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "lifecycleCanonical": "Active",
+          "Unit Price (USD)": "",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "priceState": "UNPRICED",
+          "priceStatus": "UNPRICED",
+          "Cost (USD)": "",
+          "costPrice": null,
+          "rowType": "HARDWARE_OPTION",
+          "vendorAttributes": {
+            "Product Number": "A9907A#008",
+            "leadTime": "Unpublished",
+            "lifecycleCanonical": "Active",
+            "priceState": "UNPRICED",
+            "priceStatus": "UNPRICED",
+            "rowType": "HARDWARE_OPTION"
+          },
+          "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
+          "ownerProduct": "DL360_Gen12",
+          "subCategory": "High Availability Computing - Cluster Software",
+          "canonicalSpecs": {
+            "vendor": "UNKNOWN",
+            "category": "Software / Support / Services",
+            "layer": "DEPLOYMENT",
+            "slaTier": "ONSITE",
+            "retention": "NONE"
+          },
+          "Price State": "UNPRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-11-20: (no price)"
+        },
+        {
+          "Description": "Customer Solution Specialist Services -Tech. Computing and Emerging Technology",
+          "Product Number": "A9907A#101",
+          "Current Qty": "0",
+          "Product #": "A9907A#101",
+          "sku": "A9907A#101",
+          "Option Type": "Standard",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "leadTime": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "Lead Time Source": "Unpublished",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "lifecycleCanonical": "Active",
+          "Unit Price (USD)": "",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "priceState": "UNPRICED",
+          "priceStatus": "UNPRICED",
+          "Cost (USD)": "",
+          "costPrice": null,
+          "rowType": "HARDWARE_OPTION",
+          "vendorAttributes": {
+            "Product Number": "A9907A#101",
+            "leadTime": "Unpublished",
+            "lifecycleCanonical": "Active",
+            "priceState": "UNPRICED",
+            "priceStatus": "UNPRICED",
+            "rowType": "HARDWARE_OPTION"
+          },
+          "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
+          "ownerProduct": "DL360_Gen12",
+          "subCategory": "High Availability Computing - Cluster Software",
+          "canonicalSpecs": {
+            "vendor": "UNKNOWN",
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "retention": "NONE"
+          },
+          "Price State": "UNPRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-11-20: (no price)"
+        },
+        {
+          "Description": "Customer Solution Specialist Services - IT infrastructure",
+          "Product Number": "A9907A#102",
+          "Current Qty": "0",
+          "Product #": "A9907A#102",
+          "sku": "A9907A#102",
+          "Option Type": "Standard",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "leadTime": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "Lead Time Source": "Unpublished",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "lifecycleCanonical": "Active",
+          "Unit Price (USD)": "",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "priceState": "UNPRICED",
+          "priceStatus": "UNPRICED",
+          "Cost (USD)": "",
+          "costPrice": null,
+          "rowType": "HARDWARE_OPTION",
+          "vendorAttributes": {
+            "Product Number": "A9907A#102",
+            "leadTime": "Unpublished",
+            "lifecycleCanonical": "Active",
+            "priceState": "UNPRICED",
+            "priceStatus": "UNPRICED",
+            "rowType": "HARDWARE_OPTION"
+          },
+          "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
+          "ownerProduct": "DL360_Gen12",
+          "subCategory": "High Availability Computing - Cluster Software",
+          "canonicalSpecs": {
+            "vendor": "UNKNOWN",
+            "category": "Other / Accessory"
+          },
+          "Price State": "UNPRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-11-20: (no price)"
+        },
+        {
+          "Description": "HPE AMS HPC FIO Rack Config Service",
+          "Product Number": "S1J77A",
+          "Current Qty": "0",
+          "Product #": "S1J77A",
+          "sku": "S1J77A",
+          "Option Type": "Standard",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "leadTime": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "Lead Time Source": "Unpublished",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "lifecycleCanonical": "Active",
+          "Unit Price (USD)": "",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "priceState": "UNPRICED",
+          "priceStatus": "UNPRICED",
+          "Cost (USD)": "",
+          "costPrice": null,
+          "rowType": "INTERNAL_CONFIGURATION",
+          "vendorAttributes": {
+            "Product Number": "S1J77A",
+            "leadTime": "Unpublished",
+            "lifecycleCanonical": "Active",
+            "priceState": "UNPRICED",
+            "priceStatus": "UNPRICED",
+            "rowType": "INTERNAL_CONFIGURATION"
+          },
+          "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
+          "ownerProduct": "DL360_Gen12",
+          "subCategory": "High Availability Computing - Cluster Software",
+          "canonicalSpecs": {
+            "vendor": "HPE",
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "retention": "NONE"
+          },
+          "Price State": "UNPRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-11-20: (no price)"
+        }
+      ]
+    },
+    {
       "parentCategory": "Accessories & Infrastructure",
       "subCategory": "AmbientTemperature",
       "constraint": "required",
@@ -39289,8 +39761,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -39350,8 +39821,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -39411,8 +39881,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -39472,8 +39941,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -39533,8 +40001,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -39594,8 +40061,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -54980,10 +55446,7 @@
           "subCategory": "Drive Cage Accessories",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 10
+            "category": "Other / Accessory"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -55069,8 +55532,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -55130,8 +55592,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -55191,8 +55652,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -55252,8 +55712,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -55313,8 +55772,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -55374,8 +55832,7 @@
           "subCategory": "AmbientTemperature",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -55454,10 +55911,7 @@
           "subCategory": "Drive Cage Accessories",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 10
+            "category": "Other / Accessory"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -55536,10 +55990,7 @@
           "subCategory": "Drive Cage Accessories",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 10
+            "category": "Other / Accessory"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",

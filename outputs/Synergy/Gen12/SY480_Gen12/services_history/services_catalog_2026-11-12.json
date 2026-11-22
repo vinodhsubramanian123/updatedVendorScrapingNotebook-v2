@@ -8,9 +8,9 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-12",
     "scrapeTimestamp": "2026-11-12T03:27:37.665Z",
-    "builtAt": "2026-11-21T11:58:43.370Z",
+    "builtAt": "2026-11-22T02:58:01.852Z",
     "totalSubcategories": 14,
-    "totalUniqueSKUs": 292,
+    "totalUniqueSKUs": 291,
     "totalTables": 27
   },
   "subcategories": [],
@@ -11280,21 +11280,21 @@
       ]
     },
     {
-      "parentCategory": "Support Services",
-      "subCategory": "HPE Virtualization",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "no max",
       "minQty": 0,
       "maxQty": null,
       "maxQtySemantics": "UNBOUNDED",
       "rules": [
-        "Selection constraint for HPE Virtualization: no max"
+        "Selection constraint for High Availability Computing - Cluster Software: no max"
       ],
       "headers": [
         "Description",
         "Product Number",
         "Quantity"
       ],
-      "skuCount": 7,
+      "skuCount": 6,
       "skus": [
         {
           "Description": "HPE FE Cluster Hig Den-Base HW Intg SVC",
@@ -11337,9 +11337,9 @@
             "rowType": "SUPPORT_SERVICE"
           },
           "Component Role": "Service & Support",
-          "rawSubCategory": "HPE Virtualization",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
           "ownerProduct": "SY480_Gen12",
-          "subCategory": "HPE Virtualization",
+          "subCategory": "High Availability Computing - Cluster Software",
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Software / Support / Services",
@@ -11348,11 +11348,11 @@
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
-          "Attribute Deltas": "Max Qty: \"-1\" → \"(None)\" | Component Role: \"(None)\" → \"Service & Support\" | Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"AC068A\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AC068A\",\"rowType\":\"SUPPORT_SERVICE\"}\"",
+          "Attribute Deltas": "Main Category: \"Support Services\" → \"Software & Licenses\" | Sub-Category: \"HPE Virtualization\" → \"High Availability Computing - Cluster Software\" | Rule/Note: \"Selection constraint for HPE Virtualization: no max\" → \"Selection constraint for High Availability Computing - Cluster Software: no max\" | Max Qty: \"-1\" → \"(None)\" | Component Role: \"(None)\" → \"Service & Support\" | Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"AC068A\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AC068A\",\"rowType\":\"SUPPORT_SERVICE\"}\"",
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-09-11: $4601.00 → 2026-10-29: (no price) [Δ Attr] → 2026-11-12: (no price) [Δ Attr: Max Qty: \"-1\" -> \"(None)\"; Component Role: \"(None)\" -> \"Service & Support\"; Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"AC068A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AC068A\",\"rowType\":\"SUPPORT_SERVICE\"}\"]"
+          "Price History Trail": "2026-09-11: $4601.00 → 2026-10-29: (no price) [Δ Attr] → 2026-11-12: (no price) [Δ Attr: Main Category: \"Support Services\" -> \"Software & Licenses\"; Sub-Category: \"HPE Virtualization\" -> \"High Availability Computing - Cluster Software\"; Rule/Note: \"Selection constraint for HPE Virtualization: no max\" -> \"Selection constraint for High Availability Computing - Cluster Software: no max\"; Max Qty: \"-1\" -> \"(None)\"; Component Role: \"(None)\" -> \"Service & Support\"; Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"AC068A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AC068A\",\"rowType\":\"SUPPORT_SERVICE\"}\"]"
         },
         {
           "Description": "HPE ClusterPlatform 4-8 Factory SW SVC",
@@ -11395,9 +11395,9 @@
             "rowType": "SUPPORT_SERVICE"
           },
           "Component Role": "Service & Support",
-          "rawSubCategory": "HPE Virtualization",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
           "ownerProduct": "SY480_Gen12",
-          "subCategory": "HPE Virtualization",
+          "subCategory": "High Availability Computing - Cluster Software",
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Software / Support / Services",
@@ -11407,11 +11407,11 @@
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
-          "Attribute Deltas": "Max Qty: \"-1\" → \"(None)\" | Component Role: \"(None)\" → \"Service & Support\" | Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB480A1\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB480A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"",
+          "Attribute Deltas": "Main Category: \"Support Services\" → \"Software & Licenses\" | Sub-Category: \"HPE Virtualization\" → \"High Availability Computing - Cluster Software\" | Rule/Note: \"Selection constraint for HPE Virtualization: no max\" → \"Selection constraint for High Availability Computing - Cluster Software: no max\" | Max Qty: \"-1\" → \"(None)\" | Component Role: \"(None)\" → \"Service & Support\" | Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB480A1\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB480A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"",
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-09-11: $1616.00 → 2026-10-29: (no price) [Δ Attr] → 2026-11-12: (no price) [Δ Attr: Max Qty: \"-1\" -> \"(None)\"; Component Role: \"(None)\" -> \"Service & Support\"; Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB480A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB480A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"]"
+          "Price History Trail": "2026-09-11: $1616.00 → 2026-10-29: (no price) [Δ Attr] → 2026-11-12: (no price) [Δ Attr: Main Category: \"Support Services\" -> \"Software & Licenses\"; Sub-Category: \"HPE Virtualization\" -> \"High Availability Computing - Cluster Software\"; Rule/Note: \"Selection constraint for HPE Virtualization: no max\" -> \"Selection constraint for High Availability Computing - Cluster Software: no max\"; Max Qty: \"-1\" -> \"(None)\"; Component Role: \"(None)\" -> \"Service & Support\"; Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB480A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB480A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"]"
         },
         {
           "Description": "HPE ClusterPlatform 9-17 Factory SW SVC",
@@ -11454,9 +11454,9 @@
             "rowType": "SUPPORT_SERVICE"
           },
           "Component Role": "Service & Support",
-          "rawSubCategory": "HPE Virtualization",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
           "ownerProduct": "SY480_Gen12",
-          "subCategory": "HPE Virtualization",
+          "subCategory": "High Availability Computing - Cluster Software",
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Software / Support / Services",
@@ -11466,11 +11466,11 @@
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
-          "Attribute Deltas": "Max Qty: \"-1\" → \"(None)\" | Component Role: \"(None)\" → \"Service & Support\" | Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB481A1\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB481A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"",
+          "Attribute Deltas": "Main Category: \"Support Services\" → \"Software & Licenses\" | Sub-Category: \"HPE Virtualization\" → \"High Availability Computing - Cluster Software\" | Rule/Note: \"Selection constraint for HPE Virtualization: no max\" → \"Selection constraint for High Availability Computing - Cluster Software: no max\" | Max Qty: \"-1\" → \"(None)\" | Component Role: \"(None)\" → \"Service & Support\" | Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB481A1\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB481A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"",
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-09-11: $4074.00 → 2026-10-29: (no price) [Δ Attr] → 2026-11-12: (no price) [Δ Attr: Max Qty: \"-1\" -> \"(None)\"; Component Role: \"(None)\" -> \"Service & Support\"; Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB481A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB481A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"]"
+          "Price History Trail": "2026-09-11: $4074.00 → 2026-10-29: (no price) [Δ Attr] → 2026-11-12: (no price) [Δ Attr: Main Category: \"Support Services\" -> \"Software & Licenses\"; Sub-Category: \"HPE Virtualization\" -> \"High Availability Computing - Cluster Software\"; Rule/Note: \"Selection constraint for HPE Virtualization: no max\" -> \"Selection constraint for High Availability Computing - Cluster Software: no max\"; Max Qty: \"-1\" -> \"(None)\"; Component Role: \"(None)\" -> \"Service & Support\"; Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB481A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB481A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"]"
         },
         {
           "Description": "HPE ClusterPlatform 18-33 Factory SW SVC",
@@ -11513,9 +11513,9 @@
             "rowType": "SUPPORT_SERVICE"
           },
           "Component Role": "Service & Support",
-          "rawSubCategory": "HPE Virtualization",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
           "ownerProduct": "SY480_Gen12",
-          "subCategory": "HPE Virtualization",
+          "subCategory": "High Availability Computing - Cluster Software",
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Software / Support / Services",
@@ -11525,11 +11525,11 @@
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
-          "Attribute Deltas": "Max Qty: \"-1\" → \"(None)\" | Component Role: \"(None)\" → \"Service & Support\" | Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB482A1\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB482A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"",
+          "Attribute Deltas": "Main Category: \"Support Services\" → \"Software & Licenses\" | Sub-Category: \"HPE Virtualization\" → \"High Availability Computing - Cluster Software\" | Rule/Note: \"Selection constraint for HPE Virtualization: no max\" → \"Selection constraint for High Availability Computing - Cluster Software: no max\" | Max Qty: \"-1\" → \"(None)\" | Component Role: \"(None)\" → \"Service & Support\" | Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB482A1\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB482A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"",
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-09-11: $9769.00 → 2026-10-29: (no price) [Δ Attr] → 2026-11-12: (no price) [Δ Attr: Max Qty: \"-1\" -> \"(None)\"; Component Role: \"(None)\" -> \"Service & Support\"; Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB482A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB482A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"]"
+          "Price History Trail": "2026-09-11: $9769.00 → 2026-10-29: (no price) [Δ Attr] → 2026-11-12: (no price) [Δ Attr: Main Category: \"Support Services\" -> \"Software & Licenses\"; Sub-Category: \"HPE Virtualization\" -> \"High Availability Computing - Cluster Software\"; Rule/Note: \"Selection constraint for HPE Virtualization: no max\" -> \"Selection constraint for High Availability Computing - Cluster Software: no max\"; Max Qty: \"-1\" -> \"(None)\"; Component Role: \"(None)\" -> \"Service & Support\"; Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB482A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB482A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"]"
         },
         {
           "Description": "HPE ClusterPlatform 34-65 Factory SW SVC",
@@ -11572,9 +11572,9 @@
             "rowType": "SUPPORT_SERVICE"
           },
           "Component Role": "Service & Support",
-          "rawSubCategory": "HPE Virtualization",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
           "ownerProduct": "SY480_Gen12",
-          "subCategory": "HPE Virtualization",
+          "subCategory": "High Availability Computing - Cluster Software",
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Software / Support / Services",
@@ -11584,11 +11584,11 @@
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
-          "Attribute Deltas": "Max Qty: \"-1\" → \"(None)\" | Component Role: \"(None)\" → \"Service & Support\" | Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB483A1\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB483A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"",
+          "Attribute Deltas": "Main Category: \"Support Services\" → \"Software & Licenses\" | Sub-Category: \"HPE Virtualization\" → \"High Availability Computing - Cluster Software\" | Rule/Note: \"Selection constraint for HPE Virtualization: no max\" → \"Selection constraint for High Availability Computing - Cluster Software: no max\" | Max Qty: \"-1\" → \"(None)\" | Component Role: \"(None)\" → \"Service & Support\" | Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB483A1\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB483A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"",
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-09-11: $18463.00 → 2026-10-29: (no price) [Δ Attr] → 2026-11-12: (no price) [Δ Attr: Max Qty: \"-1\" -> \"(None)\"; Component Role: \"(None)\" -> \"Service & Support\"; Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB483A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB483A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"]"
+          "Price History Trail": "2026-09-11: $18463.00 → 2026-10-29: (no price) [Δ Attr] → 2026-11-12: (no price) [Δ Attr: Main Category: \"Support Services\" -> \"Software & Licenses\"; Sub-Category: \"HPE Virtualization\" -> \"High Availability Computing - Cluster Software\"; Rule/Note: \"Selection constraint for HPE Virtualization: no max\" -> \"Selection constraint for High Availability Computing - Cluster Software: no max\"; Max Qty: \"-1\" -> \"(None)\"; Component Role: \"(None)\" -> \"Service & Support\"; Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB483A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB483A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"]"
         },
         {
           "Description": "HPE ClustrPlatform 66-129 Factory SW SVC",
@@ -11631,9 +11631,9 @@
             "rowType": "SUPPORT_SERVICE"
           },
           "Component Role": "Service & Support",
-          "rawSubCategory": "HPE Virtualization",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
           "ownerProduct": "SY480_Gen12",
-          "subCategory": "HPE Virtualization",
+          "subCategory": "High Availability Computing - Cluster Software",
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Software / Support / Services",
@@ -11643,69 +11643,11 @@
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
-          "Attribute Deltas": "Max Qty: \"-1\" → \"(None)\" | Component Role: \"(None)\" → \"Service & Support\" | Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB484A1\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB484A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"",
+          "Attribute Deltas": "Main Category: \"Support Services\" → \"Software & Licenses\" | Sub-Category: \"HPE Virtualization\" → \"High Availability Computing - Cluster Software\" | Rule/Note: \"Selection constraint for HPE Virtualization: no max\" → \"Selection constraint for High Availability Computing - Cluster Software: no max\" | Max Qty: \"-1\" → \"(None)\" | Component Role: \"(None)\" → \"Service & Support\" | Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB484A1\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB484A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"",
           "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-09-11: $31831.00 → 2026-10-29: (no price) [Δ Attr] → 2026-11-12: (no price) [Δ Attr: Max Qty: \"-1\" -> \"(None)\"; Component Role: \"(None)\" -> \"Service & Support\"; Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB484A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB484A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"]"
-        },
-        {
-          "Description": "HPE AMS HPC FIO Rack Config Service",
-          "Product Number": "S1J77A",
-          "Current Qty": "0",
-          "Product #": "S1J77A",
-          "sku": "S1J77A",
-          "Option Type": "Standard",
-          "CLIC Status": "Unpublished",
-          "clicStatus": "Unpublished",
-          "Lifecycle Status": "Active",
-          "lifecycleStatus": "Active",
-          "lifecycleBadge": "",
-          "Availability": "Not published by OCA",
-          "Lead Time": "Unpublished",
-          "leadTime": "Unpublished",
-          "leadTimeDays": null,
-          "Lead Time Days": "",
-          "leadTimeUnit": null,
-          "etaDate": null,
-          "Lead Time Source": "Unpublished",
-          "Speed Tier": "Unpublished",
-          "HPE Recommended": "No",
-          "vendorRecommended": false,
-          "lifecycleCanonical": "Active",
-          "Unit Price (USD)": "",
-          "List Price (USD)": "",
-          "listPrice": null,
-          "priceState": "UNPRICED",
-          "priceStatus": "UNPRICED",
-          "Cost (USD)": "",
-          "costPrice": null,
-          "rowType": "INTERNAL_CONFIGURATION",
-          "vendorAttributes": {
-            "Product Number": "S1J77A",
-            "leadTime": "Unpublished",
-            "lifecycleCanonical": "Active",
-            "priceState": "UNPRICED",
-            "priceStatus": "UNPRICED",
-            "rowType": "INTERNAL_CONFIGURATION"
-          },
-          "Component Role": "Service & Support",
-          "rawSubCategory": "HPE Virtualization",
-          "ownerProduct": "SY480_Gen12",
-          "subCategory": "HPE Virtualization",
-          "canonicalSpecs": {
-            "vendor": "HPE",
-            "category": "Software / Support / Services",
-            "layer": "SOFTWARE_OTHER",
-            "retention": "NONE"
-          },
-          "Price State": "UNPRICED",
-          "Previous List Price (USD)": "N/A",
-          "Attribute Deltas": "Max Qty: \"-1\" → \"(None)\" | Component Role: \"(None)\" → \"Service & Support\" | Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"S1J77A\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"S1J77A\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\"",
-          "Diff Status": "ATTRIBUTE_CHANGED",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-09-11: (no price) → 2026-10-29: (no price) [Δ Attr] → 2026-11-12: (no price) [Δ Attr: Max Qty: \"-1\" -> \"(None)\"; Component Role: \"(None)\" -> \"Service & Support\"; Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"S1J77A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"S1J77A\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\"]"
+          "Price History Trail": "2026-09-11: $31831.00 → 2026-10-29: (no price) [Δ Attr] → 2026-11-12: (no price) [Δ Attr: Main Category: \"Support Services\" -> \"Software & Licenses\"; Sub-Category: \"HPE Virtualization\" -> \"High Availability Computing - Cluster Software\"; Rule/Note: \"Selection constraint for HPE Virtualization: no max\" -> \"Selection constraint for High Availability Computing - Cluster Software: no max\"; Max Qty: \"-1\" -> \"(None)\"; Component Role: \"(None)\" -> \"Service & Support\"; Vendor Attributes: \"{\"listPrice\":0,\"Product Number\":\"HB484A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB484A1\",\"rowType\":\"SUPPORT_SERVICE\"}\"]"
         }
       ]
     },

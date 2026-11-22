@@ -1,19 +1,19 @@
 {
   "version": "1.0.0",
   "chassis": "DL380_Gen12",
-  "generatedAt": "2026-11-21T11:58:00.605Z",
-  "executionDurationMs": 10473,
+  "generatedAt": "2026-11-22T02:56:49.070Z",
+  "executionDurationMs": 20983,
   "summary": {
     "totalRawTables": 220,
     "validProductTables": 206,
     "skippedTablesCount": 68,
     "rejectedRowsCount": 20,
     "parseFailedPriceCount": 0,
-    "unmeasuredLeadTimeCount": 972,
+    "unmeasuredLeadTimeCount": 980,
     "selfHealedTablesCount": 0,
     "selfHealedSkusCount": 0,
-    "totalExtractedSKUs": 1410,
-    "totalUniqueSKUs": 777,
+    "totalExtractedSKUs": 1418,
+    "totalUniqueSKUs": 781,
     "totalRulesExtracted": 452,
     "chassisVariantsCount": 6
   },
@@ -1897,16 +1897,16 @@
     },
     {
       "tableIndex": 142,
-      "subCategory": "System Options",
-      "parentCategory": "Support Services",
-      "matchedVia": "role_classifier",
+      "subCategory": "High Availability Computing - Cluster Software",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Service & Support",
-      "constraint": "N/A",
+      "constraint": "no max",
       "minQty": 0,
       "maxQty": null,
       "maxQtySemantics": "UNBOUNDED",
-      "skuCount": 7,
-      "rulesCount": 0
+      "skuCount": 10,
+      "rulesCount": 1
     },
     {
       "tableIndex": 143,
@@ -2092,16 +2092,16 @@
     },
     {
       "tableIndex": 162,
-      "subCategory": "System Options",
-      "parentCategory": "Support Services",
-      "matchedVia": "role_classifier",
+      "subCategory": "High Availability Computing - Cluster Software",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Service & Support",
-      "constraint": "N/A",
+      "constraint": "no max",
       "minQty": 0,
       "maxQty": null,
       "maxQtySemantics": "UNBOUNDED",
-      "skuCount": 7,
-      "rulesCount": 0
+      "skuCount": 10,
+      "rulesCount": 1
     },
     {
       "tableIndex": 163,
@@ -3206,7 +3206,7 @@
     "PCIe Risers": 10,
     "Storage Controllers": 54,
     "Cables & Enablement Kits": 96,
-    "Software & Licenses": 899,
+    "Software & Licenses": 907,
     "Networking": 72,
     "Graphics & GPU": 25,
     "Power Supplies": 10
@@ -3262,11 +3262,11 @@
     "skusWithPricePerGb": 16,
     "clicStatusDistribution": {
       "Valid": 5,
-      "Unpublished": 1307,
+      "Unpublished": 1315,
       "Selectable under selector gate": 98
     },
     "lifecycleStatusDistribution": {
-      "Active": 1024,
+      "Active": 1032,
       "Constrained Supply (CS)": 8,
       "Obsolete (OB)": 262,
       "EOL Warning (90-Day)": 116

@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "chassis": "DL360_Gen11",
-  "generatedAt": "2026-11-21T11:57:21.264Z",
-  "executionDurationMs": 4919,
+  "generatedAt": "2026-11-22T02:53:58.180Z",
+  "executionDurationMs": 17286,
   "summary": {
     "totalRawTables": 110,
     "validProductTables": 109,

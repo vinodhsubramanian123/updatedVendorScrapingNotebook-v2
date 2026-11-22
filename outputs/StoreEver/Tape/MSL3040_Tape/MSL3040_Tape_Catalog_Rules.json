@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-20",
     "scrapeTimestamp": "2026-11-20T08:21:40.880Z",
-    "builtAt": "2026-11-21T11:58:39.110Z",
+    "builtAt": "2026-11-22T02:57:52.789Z",
     "totalSubcategories": 10,
     "totalUniqueSKUs": 124,
     "totalTables": 12,
@@ -41,24 +41,19 @@
           },
           "avgPrice": 4500
         },
-        "Storage Controllers": {
-          "totalSKUs": 61,
-          "totalPrice": 184906.38999999993,
-          "minPrice": 41.63,
+        "Tape Drives": {
+          "totalSKUs": 8,
+          "totalPrice": 124172,
+          "minPrice": 5100,
           "maxPrice": 33000,
           "subcategories": {
-            "Fibre Channel Host Bus Adapters": {
+            "LTO Tape Drives": {
               "totalSKUs": 8,
               "totalPrice": 124172,
               "avgPrice": 15521.5
-            },
-            "Storage Media": {
-              "totalSKUs": 53,
-              "totalPrice": 60734.39,
-              "avgPrice": 1145.9318867924528
             }
           },
-          "avgPrice": 3031.252295081966
+          "avgPrice": 15521.5
         },
         "MSL Options": {
           "totalSKUs": 1,
@@ -121,6 +116,20 @@
           },
           "avgPrice": 813.8461538461538
         },
+        "Storage Media": {
+          "totalSKUs": 53,
+          "totalPrice": 60734.39,
+          "minPrice": 41.63,
+          "maxPrice": 3976.02,
+          "subcategories": {
+            "Storage Media": {
+              "totalSKUs": 53,
+              "totalPrice": 60734.39,
+              "avgPrice": 1145.9318867924528
+            }
+          },
+          "avgPrice": 1145.9318867924528
+        },
         "Software & Licenses": {
           "totalSKUs": 6,
           "totalPrice": 22500,
@@ -153,16 +162,16 @@
     },
     "incrementalStats": {
       "totalScrapedSkus": 124,
-      "unchangedSkusCount": 118,
-      "modifiedSkusCount": 6,
+      "unchangedSkusCount": 52,
+      "modifiedSkusCount": 72,
       "addedSkusCount": 0,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotFingerprint": "8868879615aa93d5a0dd1301105d0fb95f2d15c082660aaffa99b635a4c2745b",
+    "snapshotFingerprint": "8d3fd04c2ae6d723d614b1035773cdf5e3917eb5fa831503ccf81eca048eb8b7",
     "chassisVariantCount": 3,
-    "rulesGeneratedAt": "2026-11-21T11:58:39.492Z"
+    "rulesGeneratedAt": "2026-11-22T02:57:53.661Z"
   },
   "chassisVariants": [
     {
@@ -294,6 +303,14 @@
       "minQty": 0,
       "maxQty": 999,
       "maxQtySemantics": "BOUNDED"
+    },
+    {
+      "parentCategory": "Storage Media",
+      "name": "Storage Media",
+      "constraint": "max 999",
+      "minQty": 0,
+      "maxQty": 999,
+      "maxQtySemantics": "BOUNDED"
     }
   ],
   "rules": [
@@ -396,11 +413,11 @@
       "rule": "Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis"
     },
     {
-      "parentCategory": "Storage Controllers",
-      "subCategory": "Fibre Channel Host Bus Adapters",
+      "parentCategory": "Tape Drives",
+      "subCategory": "LTO Tape Drives",
       "constraint": "max 3",
       "maxQty": 3,
-      "rule": "Selection constraint for Fibre Channel Host Bus Adapters: max 3"
+      "rule": "Selection constraint for LTO Tape Drives: max 3"
     },
     {
       "parentCategory": "MSL Options",
@@ -445,7 +462,7 @@
       "rule": "Selection constraint for Power Cord: no max"
     },
     {
-      "parentCategory": "Storage Controllers",
+      "parentCategory": "Storage Media",
       "subCategory": "Storage Media",
       "constraint": "max 999",
       "maxQty": 999,
@@ -460,7 +477,7 @@
     },
     {
       "parentCategory": "Support Services",
-      "subCategory": "Storage Media",
+      "subCategory": "Support & Deployment Services",
       "constraint": "max 999",
       "maxQty": 999,
       "rule": "Selection constraint for Storage Media: max 999"
@@ -475,6 +492,13 @@
     {
       "parentCategory": "Processor",
       "subCategory": "Intel Xeon Scalable Processors",
+      "constraint": "Discontinued",
+      "maxQty": "",
+      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
+    },
+    {
+      "parentCategory": "Storage Media",
+      "subCategory": "Storage Media",
       "constraint": "Discontinued",
       "maxQty": "",
       "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"

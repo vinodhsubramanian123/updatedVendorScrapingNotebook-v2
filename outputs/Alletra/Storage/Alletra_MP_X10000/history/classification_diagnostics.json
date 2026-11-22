@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "chassis": "Alletra_MP_X10000",
-  "generatedAt": "2026-11-21T12:18:55.331Z",
-  "executionDurationMs": 1515,
+  "generatedAt": "2026-11-22T02:53:16.500Z",
+  "executionDurationMs": 6820,
   "summary": {
     "totalRawTables": 39,
     "validProductTables": 22,
@@ -289,8 +289,8 @@
     {
       "tableIndex": 43,
       "subCategory": "BlueTooth Connectivity Kit",
-      "parentCategory": "Power Supplies",
-      "matchedVia": "portal_text_position",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "max 1",
       "minQty": 0,
@@ -302,8 +302,8 @@
     {
       "tableIndex": 44,
       "subCategory": "Back-End Switches",
-      "parentCategory": "Power Supplies",
-      "matchedVia": "portal_text_position",
+      "parentCategory": "Networking",
+      "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Network Switch",
       "constraint": "max 2",
       "minQty": 0,
@@ -315,8 +315,8 @@
     {
       "tableIndex": 45,
       "subCategory": "Back-End Switches",
-      "parentCategory": "Power Supplies",
-      "matchedVia": "portal_text_position",
+      "parentCategory": "Networking",
+      "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Network Switch",
       "constraint": "max 2",
       "minQty": 0,
@@ -393,12 +393,12 @@
   ],
   "categoryDistribution": {
     "Chassis": 3,
-    "Accessories & Infrastructure": 4,
+    "Accessories & Infrastructure": 5,
     "Storage Controllers": 2,
-    "Power Supplies": 9,
+    "Power Supplies": 5,
     "Cables & Enablement Kits": 41,
     "Drive Enclosures / Drives": 13,
-    "Networking": 10
+    "Networking": 13
   },
   "chassisVariantsMatrix": {
     "S3L12A": {

@@ -78,9 +78,9 @@
       "replaySuiteVersion": "1.1.0",
       "replaySuiteSha256": "b8b507b9fde1f7013524a6700cad414341341f9316cde9ecbbce5a8e860256c5",
       "replayInputHashes": {
-        "Catalog.json": "3eca92babf0bdd81b72bad9765a1f0af6aff22cf005c79c945887cf3d5136093",
-        "Services.json": "d543fb1d72b8748f6d18d1630a25f61a28a1cc91f104ac344e6bbcd8b550dd06",
-        "Catalog_Rules.json": "a1f1410bc51c3669a9e32ed760314a64ff2104e517d1a2291605872ab1d406ad",
+        "Catalog.json": "4f0cc19519f12d08d258d82da210cbb10de81e4e40b34edc625f8ac738dd2cc3",
+        "Services.json": "3a45f1977684c46cb61e8a2e51165d4875b71d82f5f512f7f6fe4b09f54d45a5",
+        "Catalog_Rules.json": "ba66e02474c15ef0f4fd3bbded3fa4c8c955659ef9fa6f99c7aa95fdcb0bf65a",
         "OCA_Catalog.xlsx": "136675b71680ff46b8b84458d8eb31452ceadc2d338255156d58b69fa348e293",
         "conditional_skus.json": "288fe6f9b3472261af2b5ba8849835ce16c2e9c1551919fbabdd6e861c183b5b"
       }
@@ -101,9 +101,9 @@
     "categories": 5
   },
   "hashes": {
-    "Catalog.json": "3eca92babf0bdd81b72bad9765a1f0af6aff22cf005c79c945887cf3d5136093",
-    "Services.json": "d543fb1d72b8748f6d18d1630a25f61a28a1cc91f104ac344e6bbcd8b550dd06",
-    "Catalog_Rules.json": "a1f1410bc51c3669a9e32ed760314a64ff2104e517d1a2291605872ab1d406ad",
+    "Catalog.json": "4f0cc19519f12d08d258d82da210cbb10de81e4e40b34edc625f8ac738dd2cc3",
+    "Services.json": "3a45f1977684c46cb61e8a2e51165d4875b71d82f5f512f7f6fe4b09f54d45a5",
+    "Catalog_Rules.json": "ba66e02474c15ef0f4fd3bbded3fa4c8c955659ef9fa6f99c7aa95fdcb0bf65a",
     "OCA_Catalog.xlsx": "136675b71680ff46b8b84458d8eb31452ceadc2d338255156d58b69fa348e293"
   },
   "rawSha256": "c85a62afcc2ee5c8adacb7b29f139fc7801eb1f0d507e7bdb17c7dee2b08cd43",
@@ -220,5 +220,5 @@
     "error": "CLI sync unavailable (Product isolation rejected SY100Gb_F32_Module payload: reference to registered product Synergy_12000_Frame). Payload ready at outputs/Synergy/General/SY100Gb_F32_Module/notebook_sync_payload_SY100Gb_F32_Module.md. Upload as \"SY100Gb_F32_Module_OCA_Catalog_2026-11-11\" via gemini-notebook-mcp source_add or nlm CLI."
   },
   "promotedAt": "2026-11-11T18:53:34.646Z",
-  "rebuiltAt": "2026-11-21T12:57:23.494Z"
+  "rebuiltAt": "2026-11-22T02:58:19.658Z"
 }

@@ -18065,6 +18065,10 @@
       "price": 0,
       "status": "ATTRIBUTE_CHANGED",
       "attributeDeltas": [
+        "Main Category: \"Support Services\" -> \"Software & Licenses\"",
+        "Sub-Category: \"System Options\" -> \"High Availability Computing - Cluster Software\"",
+        "Constraint: \"(None)\" -> \"no max\"",
+        "Rule/Note: \"(None)\" -> \"Selection constraint for High Availability Computing - Cluster Software: no max\"",
         "Component Role: \"(None)\" -> \"Service & Support\"",
         "Vendor Attributes: \"{\"Product Number\":\"AC068A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AC068A\",\"rowType\":\"SUPPORT_SERVICE\"}\""
       ]
@@ -18091,6 +18095,10 @@
       "price": 0,
       "status": "ATTRIBUTE_CHANGED",
       "attributeDeltas": [
+        "Main Category: \"Support Services\" -> \"Software & Licenses\"",
+        "Sub-Category: \"System Options\" -> \"High Availability Computing - Cluster Software\"",
+        "Constraint: \"(None)\" -> \"no max\"",
+        "Rule/Note: \"(None)\" -> \"Selection constraint for High Availability Computing - Cluster Software: no max\"",
         "Component Role: \"(None)\" -> \"Service & Support\"",
         "Vendor Attributes: \"{\"Product Number\":\"HB480A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB480A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
       ]
@@ -18117,6 +18125,10 @@
       "price": 0,
       "status": "ATTRIBUTE_CHANGED",
       "attributeDeltas": [
+        "Main Category: \"Support Services\" -> \"Software & Licenses\"",
+        "Sub-Category: \"System Options\" -> \"High Availability Computing - Cluster Software\"",
+        "Constraint: \"(None)\" -> \"no max\"",
+        "Rule/Note: \"(None)\" -> \"Selection constraint for High Availability Computing - Cluster Software: no max\"",
         "Component Role: \"(None)\" -> \"Service & Support\"",
         "Vendor Attributes: \"{\"Product Number\":\"HB481A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB481A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
       ]
@@ -18143,6 +18155,10 @@
       "price": 0,
       "status": "ATTRIBUTE_CHANGED",
       "attributeDeltas": [
+        "Main Category: \"Support Services\" -> \"Software & Licenses\"",
+        "Sub-Category: \"System Options\" -> \"High Availability Computing - Cluster Software\"",
+        "Constraint: \"(None)\" -> \"no max\"",
+        "Rule/Note: \"(None)\" -> \"Selection constraint for High Availability Computing - Cluster Software: no max\"",
         "Component Role: \"(None)\" -> \"Service & Support\"",
         "Vendor Attributes: \"{\"Product Number\":\"HB482A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB482A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
       ]
@@ -18169,6 +18185,10 @@
       "price": 0,
       "status": "ATTRIBUTE_CHANGED",
       "attributeDeltas": [
+        "Main Category: \"Support Services\" -> \"Software & Licenses\"",
+        "Sub-Category: \"System Options\" -> \"High Availability Computing - Cluster Software\"",
+        "Constraint: \"(None)\" -> \"no max\"",
+        "Rule/Note: \"(None)\" -> \"Selection constraint for High Availability Computing - Cluster Software: no max\"",
         "Component Role: \"(None)\" -> \"Service & Support\"",
         "Vendor Attributes: \"{\"Product Number\":\"HB483A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB483A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
       ]
@@ -18195,6 +18215,10 @@
       "price": 0,
       "status": "ATTRIBUTE_CHANGED",
       "attributeDeltas": [
+        "Main Category: \"Support Services\" -> \"Software & Licenses\"",
+        "Sub-Category: \"System Options\" -> \"High Availability Computing - Cluster Software\"",
+        "Constraint: \"(None)\" -> \"no max\"",
+        "Rule/Note: \"(None)\" -> \"Selection constraint for High Availability Computing - Cluster Software: no max\"",
         "Component Role: \"(None)\" -> \"Service & Support\"",
         "Vendor Attributes: \"{\"Product Number\":\"HB484A1\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB484A1\",\"rowType\":\"SUPPORT_SERVICE\"}\""
       ]

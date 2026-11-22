@@ -765,5 +765,37 @@
     "subCategory": "Server Management & Operating System Licenses",
     "firstSeenDate": "2026-11-20",
     "status": "ACTIVE"
+  },
+  "A9907A#008": {
+    "productNumber": "A9907A#008",
+    "description": "Customer Solution Specialist On-site Support and Knowledge Transfer Services",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "A9907A#101": {
+    "productNumber": "A9907A#101",
+    "description": "Customer Solution Specialist Services -Tech. Computing and Emerging Technology",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "A9907A#102": {
+    "productNumber": "A9907A#102",
+    "description": "Customer Solution Specialist Services - IT infrastructure",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
+  },
+  "S1J77A": {
+    "productNumber": "S1J77A",
+    "description": "HPE AMS HPC FIO Rack Config Service",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "firstSeenDate": "2026-11-20",
+    "status": "ACTIVE"
   }
 }

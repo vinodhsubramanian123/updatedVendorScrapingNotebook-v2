@@ -66,9 +66,9 @@
       "replaySuiteVersion": "1.1.0",
       "replaySuiteSha256": "b8b507b9fde1f7013524a6700cad414341341f9316cde9ecbbce5a8e860256c5",
       "replayInputHashes": {
-        "Catalog.json": "b45a4a13651714d05f2d0d943d0ecaf6f85f4ea1acbdcb6d045b637e970c401c",
-        "Services.json": "4244c4027eeb4ff6963cfaad8851bc96c570d671077e9c70a22d117c23120622",
-        "Catalog_Rules.json": "dfa356cf1d9b49fb6742b149328c48f36f63389ad7ed1bd69058fe13709bc6e3",
+        "Catalog.json": "6d60d670cfa74fafced455f9c55eb13977e3e19d3078194e3cec943e2877ce80",
+        "Services.json": "bf3d349f0aa1fec76759170f7cb628a6bee2721c06b942e3a29baa481cd9312e",
+        "Catalog_Rules.json": "c03254668e4378f5d36db687b1d65fa80d4a460d39fc7f32269fafa712cdc4d7",
         "OCA_Catalog.xlsx": "b5526729120ca6ee5099f5289741c516a149561df504bf523bb699ad5f5e52ea",
         "conditional_skus.json": "8461af94c74be713e8cef7de88adbeac874e9cc325aea1fd78b277971efeda93"
       }
@@ -103,9 +103,9 @@
     "categories": 15
   },
   "hashes": {
-    "Catalog.json": "b45a4a13651714d05f2d0d943d0ecaf6f85f4ea1acbdcb6d045b637e970c401c",
-    "Services.json": "4244c4027eeb4ff6963cfaad8851bc96c570d671077e9c70a22d117c23120622",
-    "Catalog_Rules.json": "dfa356cf1d9b49fb6742b149328c48f36f63389ad7ed1bd69058fe13709bc6e3",
+    "Catalog.json": "6d60d670cfa74fafced455f9c55eb13977e3e19d3078194e3cec943e2877ce80",
+    "Services.json": "bf3d349f0aa1fec76759170f7cb628a6bee2721c06b942e3a29baa481cd9312e",
+    "Catalog_Rules.json": "c03254668e4378f5d36db687b1d65fa80d4a460d39fc7f32269fafa712cdc4d7",
     "OCA_Catalog.xlsx": "b5526729120ca6ee5099f5289741c516a149561df504bf523bb699ad5f5e52ea"
   },
   "rawSha256": "d1dbd0db1b1eef3a5996929c49c72c2924de3081a3e2dd0c6c854f9296406c0a",
@@ -21506,5 +21506,5 @@
     "error": "CLI sync unavailable (Command failed: nlm source list d37fa851-90cb-45b7-a8e1-78488a0bc6e6 --json). Payload ready at outputs/ProLiant/Gen11/DL380_Gen11/notebook_sync_payload_DL380_Gen11.md. Upload as \"DL380_Gen11_OCA_Catalog_2026-11-20\" via gemini-notebook-mcp source_add or nlm CLI."
   },
   "promotedAt": "2026-11-20T17:11:54.954Z",
-  "rebuiltAt": "2026-11-21T12:57:10.530Z"
+  "rebuiltAt": "2026-11-22T02:54:49.666Z"
 }

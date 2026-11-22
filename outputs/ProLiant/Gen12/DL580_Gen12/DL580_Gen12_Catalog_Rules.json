@@ -8,12 +8,12 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-20",
     "scrapeTimestamp": "2026-11-20T12:48:02.040Z",
-    "builtAt": "2026-11-21T11:58:26.206Z",
+    "builtAt": "2026-11-22T02:57:31.531Z",
     "totalSubcategories": 50,
-    "totalUniqueSKUs": 580,
-    "totalTables": 67,
+    "totalUniqueSKUs": 584,
+    "totalTables": 68,
     "diffSummary": {
-      "added": 98,
+      "added": 102,
       "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
@@ -398,17 +398,17 @@
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 580,
-      "unchangedSkusCount": 515,
-      "modifiedSkusCount": 4,
-      "addedSkusCount": 61,
+      "totalScrapedSkus": 584,
+      "unchangedSkusCount": 580,
+      "modifiedSkusCount": 0,
+      "addedSkusCount": 4,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotFingerprint": "2dadc31775d69d1efcc1a5844e9016d7cd00b66dd7454528f16303a9f8d0da7f",
+    "snapshotFingerprint": "864abd301f1e8fbd0919fb39e734738c54bae721566fce6d77be9475ebfe1cfe",
     "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-11-21T11:58:27.506Z"
+    "rulesGeneratedAt": "2026-11-22T02:57:34.234Z"
   },
   "chassisVariants": [
     {

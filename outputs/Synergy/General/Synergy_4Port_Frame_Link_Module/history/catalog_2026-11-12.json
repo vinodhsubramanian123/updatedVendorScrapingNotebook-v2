@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-12",
     "scrapeTimestamp": "2026-11-12T03:18:03.540Z",
-    "builtAt": "2026-11-21T11:59:02.401Z",
+    "builtAt": "2026-11-22T02:58:37.469Z",
     "totalSubcategories": 7,
     "totalUniqueSKUs": 62,
     "totalTables": 9,
@@ -28,18 +28,18 @@
       "scrapeDate": "2026-11-12",
       "categoryBreakdown": {
         "Chassis": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 2210,
+          "minPrice": 2210,
+          "maxPrice": 2210,
           "subcategories": {
             "Variants": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 2210,
+              "avgPrice": 2210
             }
           },
-          "avgPrice": 0
+          "avgPrice": 2210
         },
         "Networking": {
           "totalSKUs": 39,
@@ -93,15 +93,15 @@
     },
     "incrementalStats": {
       "totalScrapedSkus": 62,
-      "unchangedSkusCount": 1,
-      "modifiedSkusCount": 61,
+      "unchangedSkusCount": 61,
+      "modifiedSkusCount": 1,
       "addedSkusCount": 0,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotChecksum": "8dfe8144f94045c6c615cc2dcc912351ee55982d8ae6a9f8ad123d0520d21c65",
-    "snapshotTimestamp": "2026-11-21T11:59:02.598Z"
+    "snapshotChecksum": "02ab8d4b3c9bf26082a787d28fe0cc1c26d03d6dfec70c28a9a9ec4fd2b80d1c",
+    "snapshotTimestamp": "2026-11-22T02:58:37.954Z"
   },
   "subcategories": [],
   "entries": [
@@ -132,12 +132,12 @@
           "Component Role": "Base Chassis",
           "Description": "HPE Synergy 4-port Frame Link Module [876852-B21]",
           "Current Qty": "1",
-          "Unit Price (USD)": "",
-          "List Price (USD)": "",
+          "Unit Price (USD)": "2210.00",
+          "List Price (USD)": "2210.00",
           "Cost (USD)": "",
           "costPrice": null,
-          "listPrice": null,
-          "priceProvenance": "UNPRICED",
+          "listPrice": 2210,
+          "priceProvenance": "CHASSIS_MAP_FALLBACK",
           "CLIC Status": "Not evaluated",
           "clicStatus": "Not evaluated",
           "Lifecycle Status": "Active",
@@ -158,15 +158,15 @@
           "rowType": "BASE_SYSTEM",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Other / Accessory"
+            "category": "Synergy Enclosure"
           },
-          "Price State": "UNPRICED",
+          "Price State": "PRICED",
           "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
           "Attribute Deltas": "None",
-          "Price History Trail": "2026-11-12: (no price)"
+          "Price History Trail": "2026-11-12: $2210.00"
         }
       ]
     },
@@ -247,7 +247,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LR",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -372,7 +375,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -432,9 +438,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -494,9 +504,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LR",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -556,9 +570,14 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "ER",
+            "reachDistance": "40km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1550
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -694,7 +713,10 @@
             "speedGbps": 16,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -774,7 +796,10 @@
             "speedGbps": 16,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -854,7 +879,9 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "3m",
+            "reachDistance": "3m"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -934,7 +961,9 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "5m",
+            "reachDistance": "5m"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1014,7 +1043,9 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "7m",
+            "reachDistance": "7m"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1094,7 +1125,9 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "10m",
+            "reachDistance": "10m"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1174,7 +1207,9 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "12m",
+            "reachDistance": "12m"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1254,7 +1289,9 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "15m",
+            "reachDistance": "15m"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1334,7 +1371,9 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "20m",
+            "reachDistance": "20m"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1414,7 +1453,9 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "30m",
+            "reachDistance": "30m"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1494,7 +1535,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "0.5m",
+            "reachDistance": "0.5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1574,7 +1618,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "1m",
+            "reachDistance": "1m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1654,7 +1701,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "1.5m",
+            "reachDistance": "1.5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1734,7 +1784,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "2m",
+            "reachDistance": "2m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1814,7 +1867,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "3m",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1895,7 +1951,10 @@
             "speedGbps": 8,
             "fabricProtocol": "FC",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1976,7 +2035,11 @@
             "speedGbps": 8,
             "fabricProtocol": "FC",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LW",
+            "reachDistance": "10km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2057,7 +2120,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2138,7 +2204,11 @@
             "speedGbps": 8,
             "fabricProtocol": "FC",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "ELW",
+            "reachDistance": "25km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1550
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2219,7 +2289,11 @@
             "speedGbps": 16,
             "fabricProtocol": "FC",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LW",
+            "reachDistance": "25km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2297,6 +2371,7 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
             "opticsIncluded": false
@@ -2380,7 +2455,10 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LW",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2461,7 +2539,10 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2542,7 +2623,10 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2623,7 +2707,11 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LW",
+            "reachDistance": "2km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2704,7 +2792,11 @@
             "speedGbps": 16,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LW",
+            "reachDistance": "10km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2785,7 +2877,11 @@
             "speedGbps": 16,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LW",
+            "reachDistance": "10km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2865,7 +2961,10 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2945,7 +3044,11 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LW",
+            "reachDistance": "10km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -3026,7 +3129,11 @@
             "speedGbps": 16,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "ELW",
+            "reachDistance": "25km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1550
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -3115,7 +3222,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -3178,7 +3288,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -3238,9 +3351,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "7m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -3300,9 +3417,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -3362,9 +3483,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -3469,9 +3594,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "0.65m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -3548,9 +3677,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "1.2m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -4719,7 +4852,8 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",

@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "chassis": "Synergy_4Port_Frame_Link_Module",
-  "generatedAt": "2026-11-21T11:59:01.086Z",
-  "executionDurationMs": 2385,
+  "generatedAt": "2026-11-22T02:58:35.790Z",
+  "executionDurationMs": 3432,
   "summary": {
     "totalRawTables": 9,
     "validProductTables": 8,
@@ -141,7 +141,7 @@
     "876852-B21": {
       "description": "HPE Synergy 4-port Frame Link Module [876852-B21]",
       "formFactor": "Unknown",
-      "listPrice": null,
+      "listPrice": 2210,
       "diffStatus": "BASELINE"
     }
   },

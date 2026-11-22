@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "chassis": "SY100Gb_F32_Module",
-  "generatedAt": "2026-11-21T11:58:47.911Z",
-  "executionDurationMs": 3409,
+  "generatedAt": "2026-11-22T02:58:13.411Z",
+  "executionDurationMs": 6323,
   "summary": {
     "totalRawTables": 9,
     "validProductTables": 8,

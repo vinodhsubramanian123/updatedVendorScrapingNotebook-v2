@@ -1,6 +1,100 @@
 [
   {
     "summary": {
+      "runId": "run_SY480_Gen12_1795316279977",
+      "sessionName": "SY480_Gen12",
+      "startTime": "2026-11-22T02:57:59.968Z",
+      "endTime": "2026-11-22T02:58:06.117Z",
+      "durationMs": 6149,
+      "durationSec": "6.15",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 313,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 313,
+      "validationStats": {
+        "totalEntries": 39,
+        "totalSKUs": 313,
+        "validSKUs": 313,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 36,
+        "priceErrors": 0,
+        "ruleCount": 46,
+        "categoryCount": 11
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-22T02:57:59.978Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\Gen12\\SY480_Gen12\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\Gen12\\SY480_Gen12\\SY480_Gen12_Catalog.json",
+          "chassisLabel": "SY480 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:58:03.194Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 30,
+          "totalUniqueSKUs": 313,
+          "incrementalStats": {
+            "totalScrapedSkus": 313,
+            "unchangedSkusCount": 309,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 4,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:58:03.214Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 39,
+            "totalSKUs": 313,
+            "validSKUs": 313,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 36,
+            "priceErrors": 0,
+            "ruleCount": 46,
+            "categoryCount": 11
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:58:06.116Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\Gen12\\SY480_Gen12\\SY480_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 313,
+      "classified": 313,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_SY480_Gen12_1795262322099",
       "sessionName": "SY480_Gen12",
       "startTime": "2026-11-21T11:58:42.096Z",

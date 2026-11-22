@@ -4906,7 +4906,8 @@
     {
       "date": "2026-11-12",
       "price": 4200,
-      "status": "UNCHANGED"
+      "status": "UNCHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R7J57A": [
@@ -7749,6 +7750,34 @@
     }
   ],
   "H36XCA1#006": [
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "A9907A#008": [
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "A9907A#101": [
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "A9907A#102": [
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "S1J77A": [
     {
       "date": "2026-11-12",
       "price": 0,

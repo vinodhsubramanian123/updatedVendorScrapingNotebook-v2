@@ -66,10 +66,10 @@
       "replaySuiteVersion": "1.1.0",
       "replaySuiteSha256": "b8b507b9fde1f7013524a6700cad414341341f9316cde9ecbbce5a8e860256c5",
       "replayInputHashes": {
-        "Catalog.json": "aa108621383a3e6f6878b5957f603e3abe5b47aaf417049b3aaeb45cc15d511d",
-        "Services.json": "c15f025156de6af1c6fb12638c64c8b73cb2041aca923f2675538870a1168845",
-        "Catalog_Rules.json": "61d27c2b18d27448589a155acc55063be31d11f87be9a63660202f9bc64b4ca6",
-        "OCA_Catalog.xlsx": "3ca0f4e9784f75cecb216ffd26f71804661a3e47a6db8d008b738b3dfb35d2ef",
+        "Catalog.json": "e0f6eb2fc48f673b1f1b5a9bd970b99a6e0bac38d5e470c9e8a1921e76b5ad77",
+        "Services.json": "1915ef84fd72f1f75daa9df14d50fa24a6cb16a40d666cb99f8c7e798f7e97b9",
+        "Catalog_Rules.json": "fc133d8ee6831ebf96a312a5c412919e51c1f84861648f0e1def12271b9a44d6",
+        "OCA_Catalog.xlsx": "482a3185bcd7d5b983bd58795df8deb7986c391dc3303ae6c422ffd5e71a003e",
         "conditional_skus.json": "d6315b3507f6671f0d30a7a8608eb7c5dee142270e321c8224830073755cffc6"
       }
     },
@@ -91,8 +91,8 @@
   "counts": {
     "hardware": 123,
     "services": 126,
-    "rules": 19,
-    "categories": 8,
+    "rules": 20,
+    "categories": 9,
     "retainedHardware": 124,
     "hardwareTombstones": 1
   },
@@ -103,10 +103,10 @@
     "categories": 8
   },
   "hashes": {
-    "Catalog.json": "aa108621383a3e6f6878b5957f603e3abe5b47aaf417049b3aaeb45cc15d511d",
-    "Services.json": "c15f025156de6af1c6fb12638c64c8b73cb2041aca923f2675538870a1168845",
-    "Catalog_Rules.json": "61d27c2b18d27448589a155acc55063be31d11f87be9a63660202f9bc64b4ca6",
-    "OCA_Catalog.xlsx": "3ca0f4e9784f75cecb216ffd26f71804661a3e47a6db8d008b738b3dfb35d2ef"
+    "Catalog.json": "e0f6eb2fc48f673b1f1b5a9bd970b99a6e0bac38d5e470c9e8a1921e76b5ad77",
+    "Services.json": "1915ef84fd72f1f75daa9df14d50fa24a6cb16a40d666cb99f8c7e798f7e97b9",
+    "Catalog_Rules.json": "fc133d8ee6831ebf96a312a5c412919e51c1f84861648f0e1def12271b9a44d6",
+    "OCA_Catalog.xlsx": "482a3185bcd7d5b983bd58795df8deb7986c391dc3303ae6c422ffd5e71a003e"
   },
   "rawSha256": "74a7aecb60e9f15eeed39447b421356a17bc8d8d453360e751d808c7b074fb56",
   "sheets": [
@@ -2329,5 +2329,5 @@
     "error": "Uploaded and canary-verified \"MSL3040_Tape_OCA_Catalog_2026-11-20\" in NotebookLM (644020e5-42f9-4c4b-95cc-fcf82122685c). Existing sources were preserved unless explicit retirement was confirmed."
   },
   "promotedAt": "2026-11-20T08:28:30.145Z",
-  "rebuiltAt": "2026-11-21T12:57:21.834Z"
+  "rebuiltAt": "2026-11-22T02:57:59.244Z"
 }

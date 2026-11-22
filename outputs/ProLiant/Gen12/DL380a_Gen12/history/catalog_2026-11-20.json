@@ -8,12 +8,12 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-20",
     "scrapeTimestamp": "2026-11-20T11:03:40.238Z",
-    "builtAt": "2026-11-21T11:58:19.269Z",
-    "totalSubcategories": 44,
-    "totalUniqueSKUs": 520,
-    "totalTables": 63,
+    "builtAt": "2026-11-22T02:56:28.800Z",
+    "totalSubcategories": 45,
+    "totalUniqueSKUs": 531,
+    "totalTables": 65,
     "diffSummary": {
-      "added": 69,
+      "added": 80,
       "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
@@ -21,7 +21,7 @@
       "priceAndAttributeChanged": 18,
       "unchanged": 1,
       "reinstated": 0,
-      "discontinuedTotal": 15
+      "discontinuedTotal": 14
     },
     "historySnapshot": "catalog_2026-11-20.json",
     "priceAnalytics": {
@@ -99,10 +99,10 @@
           "avgPrice": 46995.52631578947
         },
         "Graphics & GPU": {
-          "totalSKUs": 8,
-          "totalPrice": 4072,
+          "totalSKUs": 15,
+          "totalPrice": 459831,
           "minPrice": 1,
-          "maxPrice": 2170,
+          "maxPrice": 112579,
           "subcategories": {
             "GPU Mode": {
               "totalSKUs": 3,
@@ -113,9 +113,14 @@
               "totalSKUs": 5,
               "totalPrice": 4069,
               "avgPrice": 813.8
+            },
+            "GPU Accelerators (GPU Mode + Captive Riser Selector)": {
+              "totalSKUs": 7,
+              "totalPrice": 455759,
+              "avgPrice": 65108.42857142857
             }
           },
-          "avgPrice": 509
+          "avgPrice": 30655.4
         },
         "Storage Controllers": {
           "totalSKUs": 20,
@@ -381,16 +386,16 @@
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 520,
-      "unchangedSkusCount": 407,
-      "modifiedSkusCount": 51,
-      "addedSkusCount": 62,
+      "totalScrapedSkus": 531,
+      "unchangedSkusCount": 531,
+      "modifiedSkusCount": 0,
+      "addedSkusCount": 0,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotChecksum": "b3e846fbd97e900a6bd2cb297e7c329502e08f1f95560c6dda4455ceab424a19",
-    "snapshotTimestamp": "2026-11-21T11:58:19.862Z"
+    "snapshotChecksum": "fb2329f501de3aac545212e08228f1c250aa755879f14c3a05d1fd00b2809625",
+    "snapshotTimestamp": "2026-11-22T02:56:31.422Z"
   },
   "subcategories": [
     {
@@ -4305,8 +4310,7 @@
           "subCategory": "GPU Mode",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "GPU / Accelerator",
-            "formFactor": "Double-Wide PCIe"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -4364,8 +4368,7 @@
           "subCategory": "GPU Mode",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "GPU / Accelerator",
-            "formFactor": "Double-Wide PCIe"
+            "category": "Other / Accessory"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -4424,8 +4427,7 @@
           "subCategory": "GPU Mode",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "GPU / Accelerator",
-            "formFactor": "Single-Wide PCIe"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -4484,8 +4486,7 @@
           "subCategory": "GPU Mode",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "GPU / Accelerator",
-            "formFactor": "Double-Wide PCIe"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -4978,9 +4979,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "170.00",
@@ -5039,9 +5038,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "312.00",
@@ -5100,10 +5097,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2,
-            "bayCount": 16
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "769.00",
@@ -5225,10 +5219,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2,
-            "bayCount": 4
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "272.00",
@@ -5287,9 +5278,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "537.00",
@@ -5348,10 +5337,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2,
-            "bayCount": 4
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1009.00",
@@ -5513,9 +5499,7 @@
           "subCategory": "Heatsink Kit",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "518.00",
@@ -5618,9 +5602,7 @@
           "subCategory": "Heatsink Kit",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "384.00",
@@ -9804,9 +9786,7 @@
           "subCategory": "Riser Cards",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1067.00",
@@ -9865,9 +9845,7 @@
           "subCategory": "Riser Cards",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "988.00",
@@ -9926,9 +9904,7 @@
           "subCategory": "Riser Cards",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "8890.00",
@@ -9987,9 +9963,7 @@
           "subCategory": "Riser Cards",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "312.00",
@@ -10048,9 +10022,7 @@
           "subCategory": "Riser Cards",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1477.00",
@@ -10108,9 +10080,7 @@
           "subCategory": "Riser Cards",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -10194,9 +10164,7 @@
           "subCategory": "Accessories",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "909.00",
@@ -11332,7 +11300,8 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1105.00",
@@ -11588,7 +11557,8 @@
             "speedGbps": 1,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "485.00",
@@ -12126,7 +12096,8 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OCP3",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1105.00",
@@ -12318,7 +12289,8 @@
             "speedGbps": 1,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OCP3",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "485.00",
@@ -12446,7 +12418,8 @@
             "speedGbps": 1,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OCP3",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1580.00",
@@ -12982,7 +12955,9 @@
             "speedGbps": 32,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 1,
+            "licensedPorts": 1
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4675.00",
@@ -13046,7 +13021,9 @@
             "speedGbps": 32,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 2,
+            "licensedPorts": 2
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "7410.00",
@@ -13110,7 +13087,9 @@
             "speedGbps": 64,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 1,
+            "licensedPorts": 1
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "9688.00",
@@ -13174,7 +13153,9 @@
             "speedGbps": 64,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 2,
+            "licensedPorts": 2
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "12800.00",
@@ -13259,9 +13240,7 @@
           "subCategory": "OCP3 Networking Adapters",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "75.00",
@@ -13364,9 +13343,7 @@
           "subCategory": "Heatsink Kit",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "87.00",
@@ -13455,7 +13432,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LR",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1751.00",
@@ -13518,7 +13498,10 @@
             "speedGbps": 400,
             "fabricProtocol": "INFINIBAND_NDR",
             "formFactor": "OSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "50m",
+            "reachDistance": "50m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1866.00",
@@ -13581,7 +13564,9 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "500m",
+            "reachDistance": "500m"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "3495.00",
@@ -13644,7 +13629,10 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "5m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1899.00",
@@ -13768,7 +13756,8 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "426.00",
@@ -13831,7 +13820,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "842.00",
@@ -13894,7 +13886,11 @@
             "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR",
+            "reachDistance": "100m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2110.00",
@@ -13957,7 +13953,11 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR4",
+            "reachDistance": "100m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4252.00",
@@ -14146,7 +14146,10 @@
             "speedGbps": 400,
             "fabricProtocol": "INFINIBAND_NDR",
             "formFactor": "OSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "100m",
+            "reachDistance": "100m",
+            "fiberMode": "SMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "7359.00",
@@ -14210,7 +14213,10 @@
             "speedGbps": 400,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "50m",
+            "reachDistance": "50m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2400.00",
@@ -14274,7 +14280,10 @@
             "speedGbps": 400,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "50m",
+            "reachDistance": "50m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2428.00",
@@ -14337,7 +14346,11 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR4",
+            "reachDistance": "100m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2425.00",
@@ -14421,7 +14434,7 @@
           "subCategory": "Graphics Accessories",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "GPU / Accelerator"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "114.00",
@@ -14480,7 +14493,7 @@
           "subCategory": "Graphics Accessories",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "GPU / Accelerator"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "195.00",
@@ -14538,7 +14551,7 @@
           "subCategory": "Graphics Accessories",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "GPU / Accelerator"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "490.00",
@@ -14597,9 +14610,7 @@
           "subCategory": "Graphics Accessories",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "GPU / Accelerator",
-            "gpuModel": "H200",
-            "tier": "Training / HPC"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1100.00",
@@ -14658,9 +14669,7 @@
           "subCategory": "Graphics Accessories",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "GPU / Accelerator",
-            "gpuModel": "H200",
-            "tier": "Training / HPC"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2170.00",
@@ -16215,8 +16224,7 @@
           "subCategory": "Management Hardware",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "139.00",
@@ -16405,9 +16413,7 @@
           "subCategory": "Chassis Infrastructure & Rail Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "146.00",
@@ -16551,9 +16557,7 @@
           "subCategory": "Chassis Infrastructure & Rail Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 4,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "950.00",
@@ -17009,8 +17013,7 @@
           "subCategory": "Accessories & Infrastructure Options",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4.00",
@@ -34650,6 +34653,753 @@
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
           "Price History Trail": "2026-09-13: (no price) → 2026-09-30: $3759.00 [Δ Attr] → 2026-10-17: $3759.00 [Δ Attr] → 2026-11-20: $3759.00 [Δ Attr: Max Qty: \"-1\" -> \"(None)\"; Component Role: \"(None)\" -> \"Service & Support\"; Discontinued Date: \"11/03/2027\" -> \"12/03/2027\"; Vendor Attributes: \"{\"listPrice\":3759}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":3759,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\"]"
+        }
+      ]
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "High Availability Computing - Cluster Software",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "rules": [
+        "Selection constraint for High Availability Computing - Cluster Software: no max"
+      ],
+      "headers": [
+        "Description",
+        "Product Number",
+        "Quantity"
+      ],
+      "skuCount": 4,
+      "skus": [
+        {
+          "Description": "Customer Solution Specialist On-site Support and Knowledge Transfer Services",
+          "Product Number": "A9907A#008",
+          "Current Qty": "0",
+          "Product #": "A9907A#008",
+          "sku": "A9907A#008",
+          "Option Type": "Standard",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "leadTime": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "Lead Time Source": "Unpublished",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "lifecycleCanonical": "Active",
+          "Unit Price (USD)": "",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "priceState": "UNPRICED",
+          "priceStatus": "UNPRICED",
+          "Cost (USD)": "",
+          "costPrice": null,
+          "rowType": "HARDWARE_OPTION",
+          "vendorAttributes": {
+            "Product Number": "A9907A#008",
+            "leadTime": "Unpublished",
+            "lifecycleCanonical": "Active",
+            "priceState": "UNPRICED",
+            "priceStatus": "UNPRICED",
+            "rowType": "HARDWARE_OPTION"
+          },
+          "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
+          "ownerProduct": "DL380a_Gen12",
+          "subCategory": "High Availability Computing - Cluster Software",
+          "canonicalSpecs": {
+            "vendor": "UNKNOWN",
+            "category": "Software / Support / Services",
+            "layer": "DEPLOYMENT",
+            "slaTier": "ONSITE",
+            "retention": "NONE"
+          },
+          "Price State": "UNPRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-11-20: (no price)"
+        },
+        {
+          "Description": "Customer Solution Specialist Services -Tech. Computing and Emerging Technology",
+          "Product Number": "A9907A#101",
+          "Current Qty": "0",
+          "Product #": "A9907A#101",
+          "sku": "A9907A#101",
+          "Option Type": "Standard",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "leadTime": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "Lead Time Source": "Unpublished",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "lifecycleCanonical": "Active",
+          "Unit Price (USD)": "",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "priceState": "UNPRICED",
+          "priceStatus": "UNPRICED",
+          "Cost (USD)": "",
+          "costPrice": null,
+          "rowType": "HARDWARE_OPTION",
+          "vendorAttributes": {
+            "Product Number": "A9907A#101",
+            "leadTime": "Unpublished",
+            "lifecycleCanonical": "Active",
+            "priceState": "UNPRICED",
+            "priceStatus": "UNPRICED",
+            "rowType": "HARDWARE_OPTION"
+          },
+          "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
+          "ownerProduct": "DL380a_Gen12",
+          "subCategory": "High Availability Computing - Cluster Software",
+          "canonicalSpecs": {
+            "vendor": "UNKNOWN",
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "retention": "NONE"
+          },
+          "Price State": "UNPRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-11-20: (no price)"
+        },
+        {
+          "Description": "Customer Solution Specialist Services - IT infrastructure",
+          "Product Number": "A9907A#102",
+          "Current Qty": "0",
+          "Product #": "A9907A#102",
+          "sku": "A9907A#102",
+          "Option Type": "Standard",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "leadTime": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "Lead Time Source": "Unpublished",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "lifecycleCanonical": "Active",
+          "Unit Price (USD)": "",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "priceState": "UNPRICED",
+          "priceStatus": "UNPRICED",
+          "Cost (USD)": "",
+          "costPrice": null,
+          "rowType": "HARDWARE_OPTION",
+          "vendorAttributes": {
+            "Product Number": "A9907A#102",
+            "leadTime": "Unpublished",
+            "lifecycleCanonical": "Active",
+            "priceState": "UNPRICED",
+            "priceStatus": "UNPRICED",
+            "rowType": "HARDWARE_OPTION"
+          },
+          "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
+          "ownerProduct": "DL380a_Gen12",
+          "subCategory": "High Availability Computing - Cluster Software",
+          "canonicalSpecs": {
+            "vendor": "UNKNOWN",
+            "category": "Other / Accessory"
+          },
+          "Price State": "UNPRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-11-20: (no price)"
+        },
+        {
+          "Description": "HPE AMS HPC FIO Rack Config Service",
+          "Product Number": "S1J77A",
+          "Current Qty": "0",
+          "Product #": "S1J77A",
+          "sku": "S1J77A",
+          "Option Type": "Standard",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "leadTime": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "Lead Time Source": "Unpublished",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "lifecycleCanonical": "Active",
+          "Unit Price (USD)": "",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "priceState": "UNPRICED",
+          "priceStatus": "UNPRICED",
+          "Cost (USD)": "",
+          "costPrice": null,
+          "rowType": "INTERNAL_CONFIGURATION",
+          "vendorAttributes": {
+            "Product Number": "S1J77A",
+            "leadTime": "Unpublished",
+            "lifecycleCanonical": "Active",
+            "priceState": "UNPRICED",
+            "priceStatus": "UNPRICED",
+            "rowType": "INTERNAL_CONFIGURATION"
+          },
+          "Component Role": "Service & Support",
+          "rawSubCategory": "High Availability Computing - Cluster Software",
+          "ownerProduct": "DL380a_Gen12",
+          "subCategory": "High Availability Computing - Cluster Software",
+          "canonicalSpecs": {
+            "vendor": "HPE",
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "retention": "NONE"
+          },
+          "Price State": "UNPRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-11-20: (no price)"
+        }
+      ]
+    },
+    {
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+      "constraint": "Requires selector P75008-B21+P74685-B21",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "rules": [
+        "S0K89C conditional visibility: portal selector activation required (Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0); PORTAL_CONDITIONAL",
+        "S2D86C conditional visibility: portal selector activation required (Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0); PORTAL_CONDITIONAL",
+        "S2L70C conditional visibility: portal selector activation required (Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0); PORTAL_CONDITIONAL",
+        "S3U30C conditional visibility: portal selector activation required (Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0); PORTAL_CONDITIONAL",
+        "S6A73C conditional visibility: portal selector activation required (Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0); PORTAL_CONDITIONAL",
+        "S6W21C conditional visibility: portal selector activation required (Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0); PORTAL_CONDITIONAL",
+        "S8A40C conditional visibility: portal selector activation required (Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0); PORTAL_CONDITIONAL"
+      ],
+      "skuCount": 7,
+      "skus": [
+        {
+          "Product #": "S0K89C",
+          "sku": "S0K89C",
+          "Description": "NVIDIA L4 24GB PCIe Accelerator for HPE",
+          "Option Type": "Standard",
+          "Component Role": "GPU / Accelerator",
+          "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+          "rawSubCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+          "rowType": "HARDWARE_OPTION",
+          "Current Qty": "0",
+          "Unit Price (USD)": "10589.00",
+          "Extended Price (USD)": "NA",
+          "List Price (USD)": "10589.00",
+          "listPrice": 10589,
+          "priceState": "PRICED",
+          "priceStatus": "PRICED",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "Lead Time": "4",
+          "leadTimeDays": 4,
+          "leadTimeUnit": "DAYS",
+          "etaDate": null,
+          "speedTier": "Fast-Ship Certified (<=7d)",
+          "Lead Time Days": "4",
+          "Lead Time Source": "OCA selector probe row attribute",
+          "Start Date": "04/03/2023",
+          "Discontinued Date": "04/30/2028",
+          "Obsolete Date": "05/31/2028",
+          "CLIC Status": "Selectable under selector gate",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleCanonical": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Conditionally selectable via portal selector",
+          "visibility": "DOM_HIDDEN",
+          "visibilityState": "PORTAL_CONDITIONAL",
+          "conditionType": "SELECTOR_STATE_CONDITIONAL",
+          "thresholdValue": null,
+          "conditionOperator": "requires_selection",
+          "conditionKey": "gpuModeSelector",
+          "selectorTriggerSku": "P75008-B21+P74685-B21",
+          "observedInPortal": true,
+          "scopeProvenance": {
+            "baseSku": "P76706-B21",
+            "ownerProduct": "DL380a_Gen12",
+            "ownerConfiguration": null,
+            "region": "US",
+            "selectorState": "P75008-B21+P74685-B21"
+          },
+          "ownerProduct": "DL380a_Gen12",
+          "provenance": "Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0",
+          "canonicalSpecs": {
+            "vendor": "HPE",
+            "category": "GPU / Accelerator",
+            "gpuModel": "NVIDIA L4",
+            "vramGb": 24,
+            "tier": "Inference / AI",
+            "tdpWatts": 72,
+            "formFactor": "Single-Wide PCIe",
+            "auxPower": "None (PCIe Slot Powered)"
+          },
+          "Price State": "PRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$10589.00",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-09-13: $10589.00 → 2026-11-20: $10589.00"
+        },
+        {
+          "Product #": "S2D86C",
+          "sku": "S2D86C",
+          "Description": "NVIDIA H100 NVL 94GB PCIe Accelerator for HPE",
+          "Option Type": "Standard",
+          "Component Role": "GPU / Accelerator",
+          "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+          "rawSubCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+          "rowType": "HARDWARE_OPTION",
+          "Current Qty": "0",
+          "Unit Price (USD)": "112579.00",
+          "Extended Price (USD)": "NA",
+          "List Price (USD)": "112579.00",
+          "listPrice": 112579,
+          "priceState": "PRICED",
+          "priceStatus": "PRICED",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "Lead Time": "Unpublished",
+          "leadTimeDays": null,
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "speedTier": "Unpublished",
+          "Lead Time Days": "",
+          "Lead Time Source": "Unknown",
+          "Start Date": "03/04/2024",
+          "Discontinued Date": "02/02/2026",
+          "Obsolete Date": "02/03/2026",
+          "CLIC Status": "Selectable under selector gate",
+          "Lifecycle Status": "Obsolete (OB)",
+          "lifecycleStatus": "Obsolete",
+          "lifecycleCanonical": "Obsolete",
+          "lifecycleBadge": "OB",
+          "Availability": "Conditionally selectable via portal selector",
+          "visibility": "DOM_HIDDEN",
+          "visibilityState": "PORTAL_CONDITIONAL",
+          "conditionType": "SELECTOR_STATE_CONDITIONAL",
+          "thresholdValue": null,
+          "conditionOperator": "requires_selection",
+          "conditionKey": "gpuModeSelector",
+          "selectorTriggerSku": "P75008-B21+P74685-B21",
+          "observedInPortal": true,
+          "scopeProvenance": {
+            "baseSku": "P76706-B21",
+            "ownerProduct": "DL380a_Gen12",
+            "ownerConfiguration": null,
+            "region": "US",
+            "selectorState": "P75008-B21+P74685-B21"
+          },
+          "ownerProduct": "DL380a_Gen12",
+          "provenance": "Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0",
+          "canonicalSpecs": {
+            "vendor": "HPE",
+            "category": "GPU / Accelerator",
+            "gpuModel": "NVIDIA H100 NVL",
+            "vramGb": 94,
+            "tier": "Training / HPC",
+            "tdpWatts": 400,
+            "formFactor": "Double-Wide PCIe",
+            "auxPower": "16-pin (12VHPWR)"
+          },
+          "Price State": "PRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$112579.00",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-09-13: $112579.00 → 2026-09-30: $112579.00 (✕ REMOVED) → 2026-11-20: $112579.00 (↩ REINSTATED)"
+        },
+        {
+          "Product #": "S2L70C",
+          "sku": "S2L70C",
+          "Description": "NVIDIA L40S 48GB PCIe Accelerator",
+          "Option Type": "Standard",
+          "Component Role": "GPU / Accelerator",
+          "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+          "rawSubCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+          "rowType": "HARDWARE_OPTION",
+          "Current Qty": "0",
+          "Unit Price (USD)": "32212.00",
+          "Extended Price (USD)": "NA",
+          "List Price (USD)": "32212.00",
+          "listPrice": 32212,
+          "priceState": "PRICED",
+          "priceStatus": "PRICED",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "Lead Time": "4",
+          "leadTimeDays": 4,
+          "leadTimeUnit": "DAYS",
+          "etaDate": null,
+          "speedTier": "Fast-Ship Certified (<=7d)",
+          "Lead Time Days": "4",
+          "Lead Time Source": "OCA selector probe row attribute",
+          "Start Date": "11/06/2023",
+          "Discontinued Date": "04/30/2027",
+          "Obsolete Date": "05/31/2027",
+          "CLIC Status": "Selectable under selector gate",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleCanonical": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Conditionally selectable via portal selector",
+          "visibility": "DOM_HIDDEN",
+          "visibilityState": "PORTAL_CONDITIONAL",
+          "conditionType": "SELECTOR_STATE_CONDITIONAL",
+          "thresholdValue": null,
+          "conditionOperator": "requires_selection",
+          "conditionKey": "gpuModeSelector",
+          "selectorTriggerSku": "P75008-B21+P74685-B21",
+          "observedInPortal": true,
+          "scopeProvenance": {
+            "baseSku": "P76706-B21",
+            "ownerProduct": "DL380a_Gen12",
+            "ownerConfiguration": null,
+            "region": "US",
+            "selectorState": "P75008-B21+P74685-B21"
+          },
+          "ownerProduct": "DL380a_Gen12",
+          "provenance": "Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0",
+          "canonicalSpecs": {
+            "vendor": "UNKNOWN",
+            "category": "GPU / Accelerator",
+            "gpuModel": "NVIDIA L40S",
+            "vramGb": 48,
+            "tier": "Inference / AI",
+            "tdpWatts": 350,
+            "formFactor": "Double-Wide PCIe",
+            "auxPower": "16-pin (12VHPWR)"
+          },
+          "Price State": "PRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$32212.00",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-09-13: $32212.00 → 2026-11-20: $32212.00"
+        },
+        {
+          "Product #": "S3U30C",
+          "sku": "S3U30C",
+          "Description": "NVIDIA H200 NVL 141GB PCIe Accelerator for HPE",
+          "Option Type": "Standard",
+          "Component Role": "GPU / Accelerator",
+          "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+          "rawSubCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+          "rowType": "HARDWARE_OPTION",
+          "Current Qty": "0",
+          "Unit Price (USD)": "112579.00",
+          "Extended Price (USD)": "NA",
+          "List Price (USD)": "112579.00",
+          "listPrice": 112579,
+          "priceState": "PRICED",
+          "priceStatus": "PRICED",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "Lead Time": "140",
+          "leadTimeDays": 140,
+          "leadTimeUnit": "DAYS",
+          "etaDate": null,
+          "speedTier": "Constrained / Long Lead Time (>45d)",
+          "Lead Time Days": "140",
+          "Lead Time Source": "OCA selector probe row attribute",
+          "Start Date": "02/03/2025",
+          "Discontinued Date": "06/30/2028",
+          "Obsolete Date": "07/31/2028",
+          "CLIC Status": "Selectable under selector gate",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleCanonical": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Conditionally selectable via portal selector",
+          "visibility": "DOM_HIDDEN",
+          "visibilityState": "PORTAL_CONDITIONAL",
+          "conditionType": "SELECTOR_STATE_CONDITIONAL",
+          "thresholdValue": null,
+          "conditionOperator": "requires_selection",
+          "conditionKey": "gpuModeSelector",
+          "selectorTriggerSku": "P75008-B21+P74685-B21",
+          "observedInPortal": true,
+          "scopeProvenance": {
+            "baseSku": "P76706-B21",
+            "ownerProduct": "DL380a_Gen12",
+            "ownerConfiguration": null,
+            "region": "US",
+            "selectorState": "P75008-B21+P74685-B21"
+          },
+          "ownerProduct": "DL380a_Gen12",
+          "provenance": "Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0",
+          "canonicalSpecs": {
+            "vendor": "HPE",
+            "category": "GPU / Accelerator",
+            "gpuModel": "NVIDIA H200 NVL",
+            "vramGb": 141,
+            "tier": "Training / HPC",
+            "tdpWatts": 600,
+            "formFactor": "Double-Wide PCIe",
+            "auxPower": "16-pin (12V-2x6)"
+          },
+          "Price State": "PRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$112579.00",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-09-13: $112579.00 → 2026-11-20: $112579.00"
+        },
+        {
+          "Product #": "S6A73C",
+          "sku": "S6A73C",
+          "Description": "NVIDIA RTX PRO 6000 Blackwell Server Edition 96GB PCIe Accelerator for HPE",
+          "Option Type": "Standard",
+          "Component Role": "GPU / Accelerator",
+          "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+          "rawSubCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+          "rowType": "HARDWARE_OPTION",
+          "Current Qty": "0",
+          "Unit Price (USD)": "57002.00",
+          "Extended Price (USD)": "NA",
+          "List Price (USD)": "57002.00",
+          "listPrice": 57002,
+          "priceState": "PRICED",
+          "priceStatus": "PRICED",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "Lead Time": "14",
+          "leadTimeDays": 14,
+          "leadTimeUnit": "DAYS",
+          "etaDate": null,
+          "speedTier": "Standard Delivery (8-30d)",
+          "Lead Time Days": "14",
+          "Lead Time Source": "OCA selector probe row attribute",
+          "Start Date": "07/07/2025",
+          "Discontinued Date": "12/31/2028",
+          "Obsolete Date": "01/31/2029",
+          "CLIC Status": "Selectable under selector gate",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleCanonical": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Conditionally selectable via portal selector",
+          "visibility": "DOM_HIDDEN",
+          "visibilityState": "PORTAL_CONDITIONAL",
+          "conditionType": "SELECTOR_STATE_CONDITIONAL",
+          "thresholdValue": null,
+          "conditionOperator": "requires_selection",
+          "conditionKey": "gpuModeSelector",
+          "selectorTriggerSku": "P75008-B21+P74685-B21",
+          "observedInPortal": true,
+          "scopeProvenance": {
+            "baseSku": "P76706-B21",
+            "ownerProduct": "DL380a_Gen12",
+            "ownerConfiguration": null,
+            "region": "US",
+            "selectorState": "P75008-B21+P74685-B21"
+          },
+          "ownerProduct": "DL380a_Gen12",
+          "provenance": "Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0",
+          "canonicalSpecs": {
+            "vendor": "HPE",
+            "category": "GPU / Accelerator",
+            "gpuModel": "NVIDIA RTX PRO 6000 Blackwell",
+            "vramGb": 96,
+            "tier": "Workstation / Viz",
+            "tdpWatts": 600,
+            "formFactor": "Double-Wide PCIe",
+            "auxPower": "16-pin (12V-2x6)"
+          },
+          "Price State": "PRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$57002.00",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-09-13: $57002.00 → 2026-11-20: $57002.00"
+        },
+        {
+          "Product #": "S6W21C",
+          "sku": "S6W21C",
+          "Description": "NVIDIA RTX PRO 6000D 84GB PCIe Accelerator for HPE",
+          "Option Type": "Standard",
+          "Component Role": "GPU / Accelerator",
+          "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+          "rawSubCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+          "rowType": "HARDWARE_OPTION",
+          "Current Qty": "0",
+          "Unit Price (USD)": "37899.00",
+          "Extended Price (USD)": "NA",
+          "List Price (USD)": "37899.00",
+          "listPrice": 37899,
+          "priceState": "PRICED",
+          "priceStatus": "PRICED",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "Lead Time": "112",
+          "leadTimeDays": 112,
+          "leadTimeUnit": "DAYS",
+          "etaDate": null,
+          "speedTier": "Constrained / Long Lead Time (>45d)",
+          "Lead Time Days": "112",
+          "Lead Time Source": "OCA selector probe row attribute",
+          "Start Date": "03/02/2026",
+          "Discontinued Date": "12/31/2028",
+          "Obsolete Date": "01/31/2029",
+          "CLIC Status": "Selectable under selector gate",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleCanonical": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Conditionally selectable via portal selector",
+          "visibility": "DOM_HIDDEN",
+          "visibilityState": "PORTAL_CONDITIONAL",
+          "conditionType": "SELECTOR_STATE_CONDITIONAL",
+          "thresholdValue": null,
+          "conditionOperator": "requires_selection",
+          "conditionKey": "gpuModeSelector",
+          "selectorTriggerSku": "P75008-B21+P74685-B21",
+          "observedInPortal": true,
+          "scopeProvenance": {
+            "baseSku": "P76706-B21",
+            "ownerProduct": "DL380a_Gen12",
+            "ownerConfiguration": null,
+            "region": "US",
+            "selectorState": "P75008-B21+P74685-B21"
+          },
+          "ownerProduct": "DL380a_Gen12",
+          "provenance": "Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0",
+          "canonicalSpecs": {
+            "vendor": "HPE",
+            "category": "GPU / Accelerator",
+            "vramGb": 84,
+            "tier": "Workstation / Viz",
+            "formFactor": "PCIe"
+          },
+          "Price State": "PRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$37899.00",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-09-13: $37899.00 → 2026-11-20: $37899.00"
+        },
+        {
+          "Product #": "S8A40C",
+          "sku": "S8A40C",
+          "Description": "AMD Instinct MI350P 144GB PCIe Accelerator for HPE",
+          "Option Type": "Standard",
+          "Component Role": "GPU / Accelerator",
+          "subCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+          "rawSubCategory": "GPU Accelerators (GPU Mode + Captive Riser Selector)",
+          "rowType": "HARDWARE_OPTION",
+          "Current Qty": "0",
+          "Unit Price (USD)": "92899.00",
+          "Extended Price (USD)": "NA",
+          "List Price (USD)": "92899.00",
+          "listPrice": 92899,
+          "priceState": "PRICED",
+          "priceStatus": "PRICED",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "Lead Time": "Unpublished",
+          "leadTimeDays": null,
+          "leadTimeUnit": null,
+          "etaDate": null,
+          "speedTier": "Unpublished",
+          "Lead Time Days": "",
+          "Lead Time Source": "Unknown",
+          "Start Date": "08/03/2026",
+          "Discontinued Date": "07/31/2028",
+          "Obsolete Date": "08/31/2028",
+          "CLIC Status": "Selectable under selector gate",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleCanonical": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Conditionally selectable via portal selector",
+          "visibility": "DOM_HIDDEN",
+          "visibilityState": "PORTAL_CONDITIONAL",
+          "conditionType": "SELECTOR_STATE_CONDITIONAL",
+          "thresholdValue": null,
+          "conditionOperator": "requires_selection",
+          "conditionKey": "gpuModeSelector",
+          "selectorTriggerSku": "P75008-B21+P74685-B21",
+          "observedInPortal": true,
+          "scopeProvenance": {
+            "baseSku": "P76706-B21",
+            "ownerProduct": "DL380a_Gen12",
+            "ownerConfiguration": null,
+            "region": "US",
+            "selectorState": "P75008-B21+P74685-B21"
+          },
+          "ownerProduct": "DL380a_Gen12",
+          "provenance": "Revealed when P75008-B21 (8DW/16SW FIO Config) = 1 and P74685-B21 (2DW Captive Riser FIO Kit) = 1; both restored to 0",
+          "canonicalSpecs": {
+            "vendor": "HPE",
+            "category": "GPU / Accelerator",
+            "gpuModel": "Instinct MI350P",
+            "vramGb": 144,
+            "formFactor": "PCIe"
+          },
+          "Price State": "PRICED",
+          "Diff Status": "ADDED",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "+$92899.00",
+          "Price Change (%)": "+100.00%",
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-11-20: $92899.00"
         }
       ]
     }

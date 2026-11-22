@@ -58,9 +58,9 @@ Management Hardware	Appliance	max 2	Configuration Rule	P73869-B21 conditional vi
 Management Hardware	Redundant Frame Link	max 2	Configuration Rule	Selection constraint for Redundant Frame Link: max 2
 Management Hardware	Frame Link Module USB	max 99	Configuration Rule	Selection constraint for Frame Link Module USB: max 99
 Management Hardware	Frame Link Module USB	max 99	Configuration Rule	804942-B21 conditional visibility: portal selector activation required (Either Frame link Module or 4p Frame Link Module can be selected. Mixing is not allowed.); PORTAL_CONDITIONAL
-Interconnects	Interconnects	max 6	Configuration Rule	Selection constraint for Interconnects: max 6
-Accessories & Infrastructure	System Options	optional	Configuration Rule	Product is obsolete
-Accessories & Infrastructure	System Options	optional	Configuration Rule	489184-B21 conditional visibility: portal selector activation required (Product is obsolete); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 6	Configuration Rule	Selection constraint for Optical Transceivers & DAC Cables: max 6
+Networking	System Options	max 8	Configuration Rule	Product is obsolete
+Networking	System Options	max 8	Configuration Rule	489184-B21 conditional visibility: portal selector activation required (Product is obsolete); PORTAL_CONDITIONAL
 Networking	PCIe Networking Adapters	max 8	Configuration Rule	Product not supported
 Networking	PCIe Networking Adapters	max 8	Configuration Rule	648312-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
 Networking	PCIe Networking Adapters	max 8	Configuration Rule	658247-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
@@ -76,11 +76,11 @@ Networking	PCIe Networking Adapters	max 8	Configuration Rule	843191-B21 conditio
 Networking	PCIe Networking Adapters	max 8	Configuration Rule	843192-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
 Networking	PCIe Networking Adapters	max 8	Configuration Rule	843193-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
 Networking	PCIe Networking Adapters	max 8	Configuration Rule	846041-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
-Accessories & Infrastructure	System Options	optional	Configuration Rule	Cannot mix together in the same Synergy 12000 Frame
-Accessories & Infrastructure	System Options	optional	Configuration Rule	794502-B23 conditional visibility: portal selector activation required (Cannot mix together in the same Synergy 12000 Frame); PORTAL_CONDITIONAL
+Networking	System Options	max 8	Configuration Rule	Cannot mix together in the same Synergy 12000 Frame
+Networking	System Options	max 8	Configuration Rule	794502-B23 conditional visibility: portal selector activation required (Cannot mix together in the same Synergy 12000 Frame); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	Selection constraint for Direct Attach Cables: max 18
 Networking	CAT Ethernet Cables	max 12	Configuration Rule	Selection constraint for CAT Ethernet Cables: max 12
-Drive Enclosures / Drives	Tape Storage	max 99	Configuration Rule	Selection constraint for Tape Storage: max 99
+Tape Drives	LTO Tape Drives	max 99	Configuration Rule	Selection constraint for LTO Tape Drives: max 99
 Accessories & Infrastructure	Frame Options	max 2	Configuration Rule	Selection constraint for Frame Options: max 2
 Accessories & Infrastructure	-48VDC Power Supplies & Cable Kits	max 2	Configuration Rule	Selection constraint for -48VDC Power Supplies & Cable Kits: max 2
 Software & Licenses	Red Hat Enterprise Linux Server	no max	Configuration Rule	Selection constraint for Red Hat Enterprise Linux Server: no max

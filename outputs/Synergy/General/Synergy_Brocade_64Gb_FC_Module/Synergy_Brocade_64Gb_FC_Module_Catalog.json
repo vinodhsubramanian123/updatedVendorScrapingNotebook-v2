@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-12",
     "scrapeTimestamp": "2026-11-12T03:22:14.338Z",
-    "builtAt": "2026-11-21T11:59:06.101Z",
+    "builtAt": "2026-11-22T02:58:42.994Z",
     "totalSubcategories": 6,
     "totalUniqueSKUs": 24,
     "totalTables": 6,
@@ -88,14 +88,14 @@
     },
     "incrementalStats": {
       "totalScrapedSkus": 24,
-      "unchangedSkusCount": 1,
-      "modifiedSkusCount": 23,
+      "unchangedSkusCount": 24,
+      "modifiedSkusCount": 0,
       "addedSkusCount": 0,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotFingerprint": "263a4067b39dbb242762a192d8d06ed6e3f9789bef9ccbf1394e877e7deebf43"
+    "snapshotFingerprint": "85cbc882cd33dc3219cd8c11687b533b31a926818ed47e179198b77f4455093b"
   },
   "subcategories": [],
   "entries": [
@@ -1408,8 +1408,10 @@
             "portCount": 8,
             "speedGbps": 32,
             "fabricProtocol": "FC",
-            "formFactor": "PCIe",
-            "opticsIncluded": false
+            "formFactor": "Switch",
+            "opticsIncluded": false,
+            "totalPorts": 8,
+            "licensedPorts": 8
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -1470,7 +1472,7 @@
             "category": "Networking / FC / Optics",
             "speedGbps": 32,
             "fabricProtocol": "FC",
-            "formFactor": "PCIe",
+            "formFactor": "Switch",
             "opticsIncluded": false
           },
           "Price State": "PRICED",

@@ -13479,7 +13479,8 @@
     {
       "date": "2026-11-20",
       "price": 1,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
     }
   ],
   "389692-B21": [
@@ -42772,6 +42773,34 @@
     {
       "date": "2026-11-20",
       "price": 62607,
+      "status": "ADDED"
+    }
+  ],
+  "A9907A#008": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "A9907A#101": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "A9907A#102": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "S1J77A": [
+    {
+      "date": "2026-11-20",
+      "price": 0,
       "status": "ADDED"
     }
   ]

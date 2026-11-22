@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-21",
     "scrapeTimestamp": "2026-11-21T12:18:55.119Z",
-    "builtAt": "2026-11-21T12:18:56.653Z",
+    "builtAt": "2026-11-22T02:53:18.968Z",
     "totalSubcategories": 15,
     "totalUniqueSKUs": 82,
     "totalTables": 22,
@@ -42,8 +42,8 @@
           "avgPrice": 0
         },
         "Accessories & Infrastructure": {
-          "totalSKUs": 4,
-          "totalPrice": 19628,
+          "totalSKUs": 5,
+          "totalPrice": 19825,
           "minPrice": 1,
           "maxPrice": 13749,
           "subcategories": {
@@ -57,13 +57,18 @@
               "totalPrice": 5878,
               "avgPrice": 2939
             },
+            "BlueTooth Connectivity Kit": {
+              "totalSKUs": 1,
+              "totalPrice": 197,
+              "avgPrice": 197
+            },
             "Commvault Tracking SKU": {
               "totalSKUs": 1,
               "totalPrice": 1,
               "avgPrice": 1
             }
           },
-          "avgPrice": 4907
+          "avgPrice": 3965
         },
         "Storage Controllers": {
           "totalSKUs": 2,
@@ -80,10 +85,10 @@
           "avgPrice": 463983.5
         },
         "Power Supplies": {
-          "totalSKUs": 9,
-          "totalPrice": 239434,
+          "totalSKUs": 5,
+          "totalPrice": 18454,
           "minPrice": 135,
-          "maxPrice": 128140,
+          "maxPrice": 11842,
           "subcategories": {
             "Power Supplies": {
               "totalSKUs": 1,
@@ -94,19 +99,9 @@
               "totalSKUs": 4,
               "totalPrice": 16127,
               "avgPrice": 4031.75
-            },
-            "BlueTooth Connectivity Kit": {
-              "totalSKUs": 1,
-              "totalPrice": 197,
-              "avgPrice": 197
-            },
-            "Back-End Switches": {
-              "totalSKUs": 3,
-              "totalPrice": 220783,
-              "avgPrice": 73594.33333333333
             }
           },
-          "avgPrice": 26603.777777777777
+          "avgPrice": 3690.8
         },
         "Cables & Enablement Kits": {
           "totalSKUs": 41,
@@ -152,22 +147,36 @@
           "avgPrice": 182890.76923076922
         },
         "Networking": {
-          "totalSKUs": 10,
-          "totalPrice": 40766,
+          "totalSKUs": 13,
+          "totalPrice": 261549,
           "minPrice": 2425,
-          "maxPrice": 6829,
+          "maxPrice": 128140,
           "subcategories": {
             "Optical Transceivers & DAC Cables": {
               "totalSKUs": 10,
               "totalPrice": 40766,
               "avgPrice": 4076.6
+            },
+            "Back-End Switches": {
+              "totalSKUs": 3,
+              "totalPrice": 220783,
+              "avgPrice": 73594.33333333333
             }
           },
-          "avgPrice": 4076.6
+          "avgPrice": 20119.153846153848
         }
       }
     },
-    "snapshotFingerprint": "149f343f42193198ffa088a8f7ca9f01ac2b48737425813fd55a4130b5235ea3"
+    "incrementalStats": {
+      "totalScrapedSkus": 82,
+      "unchangedSkusCount": 82,
+      "modifiedSkusCount": 0,
+      "addedSkusCount": 0,
+      "removedSkusCount": 0,
+      "estimatedTokensSaved": 0,
+      "estimatedProcessingTimeSavedMs": 0
+    },
+    "snapshotFingerprint": "79bdcb54d326a4862184f75773cae9b894f84bfedb6214986cb851e1e3f12eda"
   },
   "subcategories": [
     {
@@ -176,22 +185,6 @@
       "constraint": "max 4",
       "minQty": 0,
       "maxQty": 4,
-      "maxQtySemantics": "BOUNDED"
-    },
-    {
-      "parentCategory": "Power Supplies",
-      "name": "BlueTooth Connectivity Kit",
-      "constraint": "max 1",
-      "minQty": 0,
-      "maxQty": 1,
-      "maxQtySemantics": "BOUNDED"
-    },
-    {
-      "parentCategory": "Power Supplies",
-      "name": "Back-End Switches",
-      "constraint": "max 2",
-      "minQty": 0,
-      "maxQty": 2,
       "maxQtySemantics": "BOUNDED"
     }
   ],
@@ -249,8 +242,10 @@
           "rowType": "BASE_SYSTEM",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Storage Array",
+            "arrayTopology": "Switched",
+            "mediaTier": "NVMe All-Flash",
+            "uHeight": 2
           },
           "Price State": "ZERO_UNCONFIRMED",
           "Diff Status": "BASELINE",
@@ -293,8 +288,10 @@
           "rowType": "BASE_SYSTEM",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Storage Array",
+            "arrayTopology": "Switched",
+            "mediaTier": "NVMe All-Flash",
+            "uHeight": 2
           },
           "Price State": "ZERO_UNCONFIRMED",
           "Diff Status": "BASELINE",
@@ -337,8 +334,10 @@
           "rowType": "BASE_SYSTEM",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Storage Array",
+            "arrayTopology": "Switched",
+            "mediaTier": "NVMe All-Flash",
+            "uHeight": 2
           },
           "Price State": "ZERO_UNCONFIRMED",
           "Diff Status": "BASELINE",
@@ -423,9 +422,11 @@
           "subCategory": "Node Chassis",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 2,
-            "socketCount": 2
+            "category": "Storage Array",
+            "arrayTopology": "Modular Disaggregated",
+            "mediaTier": "NVMe All-Flash",
+            "maxDrives": 24,
+            "uHeight": 2
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -510,11 +511,10 @@
           "subCategory": "Node",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Storage Controller",
-            "protocol": "SAS/SATA",
-            "portCount": 8,
-            "formFactor": "PCIe",
-            "needsBattery": true
+            "category": "Storage Array",
+            "arrayTopology": "Switched",
+            "mediaTier": "NVMe All-Flash",
+            "uHeight": 2
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -617,11 +617,10 @@
           "subCategory": "Node",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Storage Controller",
-            "protocol": "SAS/SATA",
-            "portCount": 8,
-            "formFactor": "PCIe",
-            "needsBattery": true
+            "category": "Storage Array",
+            "arrayTopology": "Switched",
+            "mediaTier": "NVMe All-Flash",
+            "uHeight": 2
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2534,9 +2533,11 @@
           "subCategory": "Drive Enclosure",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Drive",
-            "interfaceProtocol": "NVMe",
-            "isSed": false
+            "category": "Storage Array",
+            "arrayTopology": "Modular Disaggregated",
+            "mediaTier": "NVMe All-Flash",
+            "maxDrives": 24,
+            "uHeight": 2
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2643,7 +2644,10 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR4",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2722,7 +2726,11 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR4",
+            "reachDistance": "100m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2831,9 +2839,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "2m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2908,9 +2920,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "7m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -2985,9 +3001,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "15m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -3062,9 +3082,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "30m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -3140,9 +3164,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 200,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "3m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -3218,9 +3246,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 200,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "7m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -3296,9 +3328,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 200,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "15m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -3374,9 +3410,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 200,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "30m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -4439,7 +4479,7 @@
       ]
     },
     {
-      "parentCategory": "Power Supplies",
+      "parentCategory": "Accessories & Infrastructure",
       "subCategory": "BlueTooth Connectivity Kit",
       "constraint": "max 1",
       "minQty": 0,
@@ -4510,8 +4550,7 @@
           "subCategory": "BlueTooth Connectivity Kit",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -4524,7 +4563,7 @@
       ]
     },
     {
-      "parentCategory": "Power Supplies",
+      "parentCategory": "Networking",
       "subCategory": "Back-End Switches",
       "constraint": "max 2",
       "minQty": 0,
@@ -4596,8 +4635,14 @@
           "subCategory": "Back-End Switches",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Networking / FC / Optics",
+            "portCount": 32,
+            "speedGbps": 100,
+            "fabricProtocol": "ETHERNET",
+            "formFactor": "Switch",
+            "opticsIncluded": false,
+            "totalPorts": 32,
+            "licensedPorts": 32
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -4656,8 +4701,14 @@
           "subCategory": "Back-End Switches",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Networking / FC / Optics",
+            "portCount": 32,
+            "speedGbps": 400,
+            "fabricProtocol": "ETHERNET",
+            "formFactor": "Switch",
+            "opticsIncluded": false,
+            "totalPorts": 32,
+            "licensedPorts": 32
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -4670,7 +4721,7 @@
       ]
     },
     {
-      "parentCategory": "Power Supplies",
+      "parentCategory": "Networking",
       "subCategory": "Back-End Switches",
       "constraint": "max 2",
       "minQty": 0,
@@ -4760,8 +4811,14 @@
           "subCategory": "Back-End Switches",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Networking / FC / Optics",
+            "portCount": 32,
+            "speedGbps": 100,
+            "fabricProtocol": "ETHERNET",
+            "formFactor": "Switch",
+            "opticsIncluded": false,
+            "totalPorts": 32,
+            "licensedPorts": 32
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -5197,7 +5254,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -5260,7 +5320,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -5323,7 +5386,10 @@
             "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -5386,7 +5452,10 @@
             "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "7m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -5449,7 +5518,10 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -5509,9 +5581,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -5571,9 +5647,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "7m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -5633,9 +5713,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -5695,9 +5779,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -5757,9 +5845,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -5819,9 +5911,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -6000,7 +6096,10 @@
             "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "3m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -6063,7 +6162,10 @@
             "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "5m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",
@@ -6204,8 +6306,7 @@
           "subCategory": "Commvault Tracking SKU",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Diff Status": "BASELINE",

@@ -8,12 +8,12 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-12",
     "scrapeTimestamp": "2026-11-12T03:27:37.665Z",
-    "builtAt": "2026-11-21T11:58:43.343Z",
+    "builtAt": "2026-11-22T02:58:01.767Z",
     "totalSubcategories": 30,
-    "totalUniqueSKUs": 309,
-    "totalTables": 38,
+    "totalUniqueSKUs": 313,
+    "totalTables": 39,
     "diffSummary": {
-      "added": 8,
+      "added": 12,
       "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
@@ -279,17 +279,17 @@
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 309,
-      "unchangedSkusCount": 1,
-      "modifiedSkusCount": 307,
-      "addedSkusCount": 1,
+      "totalScrapedSkus": 313,
+      "unchangedSkusCount": 309,
+      "modifiedSkusCount": 0,
+      "addedSkusCount": 4,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotFingerprint": "8af01cb062812a13751af62490edde10d0dd3c345fdc5acd46d66a07650d7f74",
+    "snapshotFingerprint": "29db0a1fa2f65d09ecc87baa4438bd143247d7025b82a8eb2a9b031370123093",
     "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-11-21T11:58:44.248Z"
+    "rulesGeneratedAt": "2026-11-22T02:58:03.544Z"
   },
   "chassisVariants": [
     {
@@ -1090,17 +1090,17 @@
     },
     {
       "parentCategory": "Support Services",
-      "subCategory": "HPE Virtualization",
-      "constraint": "no max",
-      "maxQty": "",
-      "rule": "Selection constraint for HPE Virtualization: no max"
-    },
-    {
-      "parentCategory": "Support Services",
       "subCategory": "Reseller Option Kit",
       "constraint": "no max",
       "maxQty": "",
       "rule": "Selection constraint for Reseller Option Kit: no max"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "HPE Virtualization",
+      "constraint": "no max",
+      "maxQty": "",
+      "rule": "Selection constraint for HPE Virtualization: no max"
     },
     {
       "parentCategory": "Support Services",

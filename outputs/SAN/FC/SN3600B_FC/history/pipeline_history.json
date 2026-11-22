@@ -1,6 +1,100 @@
 [
   {
     "summary": {
+      "runId": "run_SN3600B_FC_1795316266806",
+      "sessionName": "SN3600B_FC",
+      "startTime": "2026-11-22T02:57:46.804Z",
+      "endTime": "2026-11-22T02:57:49.213Z",
+      "durationMs": 2409,
+      "durationSec": "2.41",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 79,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 79,
+      "validationStats": {
+        "totalEntries": 11,
+        "totalSKUs": 79,
+        "validSKUs": 79,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 22,
+        "priceErrors": 0,
+        "ruleCount": 11,
+        "categoryCount": 5
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-22T02:57:46.807Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\SAN\\FC\\SN3600B_FC\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\SAN\\FC\\SN3600B_FC\\SN3600B_FC_Catalog.json",
+          "chassisLabel": "SN3600B FC"
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:57:48.811Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 11,
+          "totalUniqueSKUs": 79,
+          "incrementalStats": {
+            "totalScrapedSkus": 79,
+            "unchangedSkusCount": 79,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:57:48.821Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 11,
+            "totalSKUs": 79,
+            "validSKUs": 79,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 22,
+            "priceErrors": 0,
+            "ruleCount": 11,
+            "categoryCount": 5
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:57:49.213Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\SAN\\FC\\SN3600B_FC\\SN3600B_FC_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 79,
+      "classified": 79,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_SN3600B_FC_1795265792008",
       "sessionName": "SN3600B_FC",
       "startTime": "2026-11-21T12:56:32.007Z",

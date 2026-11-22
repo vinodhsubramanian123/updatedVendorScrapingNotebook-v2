@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "chassis": "Alletra_MP_B10000",
-  "generatedAt": "2026-11-21T12:46:05.865Z",
-  "executionDurationMs": 1861,
+  "generatedAt": "2026-11-22T02:53:02.316Z",
+  "executionDurationMs": 9106,
   "summary": {
     "totalRawTables": 71,
     "validProductTables": 50,

@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-20",
     "scrapeTimestamp": "2026-11-20T17:42:34.793Z",
-    "builtAt": "2026-11-21T11:57:17.312Z",
+    "builtAt": "2026-11-22T02:53:34.164Z",
     "totalSubcategories": 44,
     "totalUniqueSKUs": 487,
     "totalTables": 58,
@@ -395,14 +395,14 @@
     },
     "incrementalStats": {
       "totalScrapedSkus": 487,
-      "unchangedSkusCount": 424,
-      "modifiedSkusCount": 2,
-      "addedSkusCount": 61,
+      "unchangedSkusCount": 487,
+      "modifiedSkusCount": 0,
+      "addedSkusCount": 0,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotFingerprint": "ad0c7f98b7a12d335452b3b58d99eca6db0727b7c49fb9465320495c6070d816"
+    "snapshotFingerprint": "cb54979a2b5b652616ad54b88f7258c8b942f8383f974a5391f794ff1ebcf0a0"
   },
   "subcategories": [
     {
@@ -729,9 +729,7 @@
           "subCategory": "Chassis Infrastructure & Rail Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 2,
-            "socketCount": 1
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "86.00",
@@ -790,9 +788,7 @@
           "subCategory": "Chassis Infrastructure & Rail Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 2,
-            "socketCount": 1
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "110.00",
@@ -980,9 +976,7 @@
           "subCategory": "Acoustics",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 2,
-            "socketCount": 1
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -5238,10 +5232,7 @@
           "subCategory": "Drive Cage",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 2,
-            "socketCount": 1,
-            "bayCount": 6
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "225.00",
@@ -14571,9 +14562,7 @@
           "subCategory": "Factory Configuration Settings",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 2,
-            "socketCount": 1
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -14759,8 +14748,7 @@
           "subCategory": "vSAN Tracking SKUs",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -14930,9 +14918,7 @@
           "subCategory": "Riser Cards",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 2,
-            "socketCount": 1
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "255.00",
@@ -14991,9 +14977,7 @@
           "subCategory": "Riser Cards",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 2,
-            "socketCount": 1
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "320.00",
@@ -15083,7 +15067,8 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1105.00",
@@ -15339,7 +15324,8 @@
             "speedGbps": 1,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "485.00",
@@ -15621,7 +15607,8 @@
             "speedGbps": 1,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OCP3",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "485.00",
@@ -15735,7 +15722,8 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OCP3",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1105.00",
@@ -15978,7 +15966,8 @@
             "speedGbps": 1,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OCP3",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "830.00",
@@ -16310,7 +16299,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LR",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1751.00",
@@ -16434,7 +16426,8 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "426.00",
@@ -16497,7 +16490,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "842.00",
@@ -16560,7 +16556,11 @@
             "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR",
+            "reachDistance": "100m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2110.00",
@@ -16620,9 +16620,14 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LR",
+            "reachDistance": "10km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "5199.00",
@@ -17735,7 +17740,9 @@
             "gpuModel": "NVIDIA RTX PRO 4500 Blackwell",
             "vramGb": 32,
             "tier": "Workstation / Viz",
-            "formFactor": "PCIe"
+            "tdpWatts": 200,
+            "formFactor": "Double-Wide PCIe",
+            "auxPower": "16-pin (12V-2x6)"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -17798,7 +17805,9 @@
             "gpuModel": "NVIDIA L4",
             "vramGb": 24,
             "tier": "Inference / AI",
-            "formFactor": "PCIe"
+            "tdpWatts": 72,
+            "formFactor": "Single-Wide PCIe",
+            "auxPower": "None (PCIe Slot Powered)"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -17861,7 +17870,9 @@
             "gpuModel": "NVIDIA L40S",
             "vramGb": 48,
             "tier": "Inference / AI",
-            "formFactor": "PCIe"
+            "tdpWatts": 350,
+            "formFactor": "Double-Wide PCIe",
+            "auxPower": "16-pin (12VHPWR)"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -17946,8 +17957,7 @@
           "subCategory": "Graphics Accessories",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "GPU / Accelerator",
-            "formFactor": "Double-Wide PCIe"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "24.00",
@@ -18006,8 +18016,9 @@
           "subCategory": "Graphics Accessories",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "GPU / Accelerator",
-            "formFactor": "Double-Wide PCIe"
+            "category": "Cooling / Thermal",
+            "thermalType": "Air Baffle",
+            "packaging": "Kit"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "44.00",
@@ -19880,9 +19891,7 @@
           "subCategory": "Security Hardware",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 2,
-            "socketCount": 1
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "112.00",
@@ -19941,9 +19950,7 @@
           "subCategory": "Security Hardware",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 2,
-            "socketCount": 1
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "81.00",
@@ -20028,9 +20035,7 @@
           "subCategory": "Management Hardware",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 2,
-            "socketCount": 1
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "20.00",
@@ -20089,9 +20094,7 @@
           "subCategory": "Management Hardware",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 2,
-            "socketCount": 1
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "200.00",

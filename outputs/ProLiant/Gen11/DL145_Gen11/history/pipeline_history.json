@@ -1,6 +1,100 @@
 [
   {
     "summary": {
+      "runId": "run_DL145_Gen11_1795316010276",
+      "sessionName": "DL145_Gen11",
+      "startTime": "2026-11-22T02:53:30.243Z",
+      "endTime": "2026-11-22T02:53:45.147Z",
+      "durationMs": 14904,
+      "durationSec": "14.90",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 542,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 487,
+      "validationStats": {
+        "totalEntries": 58,
+        "totalSKUs": 542,
+        "validSKUs": 542,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 28,
+        "priceErrors": 0,
+        "ruleCount": 93,
+        "categoryCount": 16
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-22T02:53:30.277Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\ProLiant\\Gen11\\DL145_Gen11\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\ProLiant\\Gen11\\DL145_Gen11\\DL145_Gen11_Catalog.json",
+          "chassisLabel": "DL145 Gen11"
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:53:37.291Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 44,
+          "totalUniqueSKUs": 487,
+          "incrementalStats": {
+            "totalScrapedSkus": 487,
+            "unchangedSkusCount": 487,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:53:37.328Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 58,
+            "totalSKUs": 542,
+            "validSKUs": 542,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 28,
+            "priceErrors": 0,
+            "ruleCount": 93,
+            "categoryCount": 16
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-22T02:53:45.147Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "[local-home]\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\ProLiant\\Gen11\\DL145_Gen11\\DL145_Gen11_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 542,
+      "classified": 542,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_DL145_Gen11_1795262236247",
       "sessionName": "DL145_Gen11",
       "startTime": "2026-11-21T11:57:16.246Z",

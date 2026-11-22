@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-11",
     "scrapeTimestamp": "2026-11-11T18:49:10.220Z",
-    "builtAt": "2026-11-21T11:58:49.030Z",
+    "builtAt": "2026-11-22T02:58:15.310Z",
     "totalSubcategories": 6,
     "totalUniqueSKUs": 141,
     "totalTables": 8,
@@ -106,14 +106,14 @@
     },
     "incrementalStats": {
       "totalScrapedSkus": 141,
-      "unchangedSkusCount": 0,
-      "modifiedSkusCount": 141,
+      "unchangedSkusCount": 141,
+      "modifiedSkusCount": 0,
       "addedSkusCount": 0,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotFingerprint": "92fb42e9541107f59b00ce143d0727a9d61c677bf0cc5c3755249ad8ac6811ec"
+    "snapshotFingerprint": "6979a69f9e8e5cfb5f6bab59a21ed21320b56ae2a6b02640a9855bc265a59587"
   },
   "subcategories": [],
   "entries": [
@@ -170,7 +170,11 @@
           "rowType": "BASE_SYSTEM",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Other / Accessory"
+            "category": "Networking / FC / Optics",
+            "speedGbps": 100,
+            "fabricProtocol": "ETHERNET",
+            "formFactor": "PCIe",
+            "opticsIncluded": false
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "3200.00",
@@ -385,7 +389,11 @@
             "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR4",
+            "reachDistance": "100m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2524.00",
@@ -510,7 +518,11 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR4",
+            "reachDistance": "100m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4252.00",
@@ -695,9 +707,14 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LR4",
+            "reachDistance": "10km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "10499.00",
@@ -757,9 +774,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "1m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "451.00",
@@ -819,9 +840,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "629.00",
@@ -881,9 +906,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "779.00",
@@ -942,9 +971,12 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "100m",
+            "reachDistance": "100m"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "3460.00",
@@ -1003,9 +1035,12 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "500m",
+            "reachDistance": "500m"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4619.00",
@@ -1064,9 +1099,12 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "2km",
+            "reachDistance": "2km"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "13859.00",
@@ -1125,9 +1163,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "699.00",
@@ -1186,9 +1228,14 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LR4",
+            "reachDistance": "10km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "34649.00",
@@ -1250,7 +1297,10 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "100m",
+            "reachDistance": "100m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2585.00",
@@ -1309,9 +1359,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "1m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "515.00",
@@ -1370,9 +1424,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "979.00",
@@ -1494,7 +1552,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LR",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1751.00",
@@ -1619,7 +1680,10 @@
             "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "7m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2451.00",
@@ -1682,7 +1746,10 @@
             "speedGbps": 16,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "700.00",
@@ -1745,7 +1812,10 @@
             "speedGbps": 16,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "405.00",
@@ -1808,7 +1878,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "842.00",
@@ -1871,7 +1944,11 @@
             "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR",
+            "reachDistance": "100m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2110.00",
@@ -1931,9 +2008,14 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "ER",
+            "reachDistance": "40km",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1550
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "10394.00",
@@ -1996,7 +2078,10 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1399.00",
@@ -2058,7 +2143,10 @@
             "speedGbps": 32,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SW",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2199.00",
@@ -2147,7 +2235,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "327.00",
@@ -2207,9 +2298,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "15m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1711.00",
@@ -2269,9 +2364,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "729.00",
@@ -2333,7 +2432,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "15m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2408.00",
@@ -2396,7 +2498,10 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "685.00",
@@ -2459,7 +2564,10 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "788.00",
@@ -2522,7 +2630,10 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "7m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2861.00",
@@ -2585,7 +2696,10 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "15m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2972.00",
@@ -2648,7 +2762,10 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "916.00",
@@ -2711,7 +2828,10 @@
             "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "7m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "3437.00",
@@ -2774,7 +2894,10 @@
             "speedGbps": 300,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "2.1m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "678.00",
@@ -2837,7 +2960,10 @@
             "speedGbps": 300,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "5m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4247.00",
@@ -2900,7 +3026,10 @@
             "speedGbps": 300,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "15m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4495.00",
@@ -3258,7 +3387,10 @@
             "speedGbps": 300,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "3m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4321.00",
@@ -3321,7 +3453,10 @@
             "speedGbps": 300,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "5m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4247.00",
@@ -3384,7 +3519,10 @@
             "speedGbps": 300,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "15m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4495.00",
@@ -3679,9 +3817,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "516.00",
@@ -3740,9 +3882,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "789.00",
@@ -3805,7 +3951,10 @@
             "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "15m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4302.00",
@@ -3868,7 +4017,10 @@
             "speedGbps": 300,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "3m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4321.00",
@@ -4915,7 +5067,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "285.00",
@@ -5450,7 +5605,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "0.5m",
+            "fiberMode": "Copper"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -5530,7 +5688,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "1m",
+            "fiberMode": "Copper"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -5609,7 +5770,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "1m",
+            "reachDistance": "1m",
+            "fiberMode": "Copper"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -5688,7 +5852,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "2m",
+            "reachDistance": "2m",
+            "fiberMode": "Copper"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -5767,7 +5934,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "3m",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -5846,7 +6016,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "5m",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -5925,7 +6098,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "7m",
+            "reachDistance": "7m",
+            "fiberMode": "Copper"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -6084,7 +6260,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "0.5m",
+            "reachDistance": "0.5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "99.00",
@@ -6164,7 +6343,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "1m",
+            "reachDistance": "1m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "164.00",
@@ -6244,7 +6426,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "1.5m",
+            "reachDistance": "1.5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "175.00",
@@ -6324,7 +6509,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "2m",
+            "reachDistance": "2m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "197.00",
@@ -6404,7 +6592,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "3m",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "230.00",
@@ -6482,7 +6673,7 @@
             "vendor": "UNKNOWN",
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
-            "formFactor": "PCIe",
+            "formFactor": "Switch",
             "opticsIncluded": false
           },
           "Price State": "UNPRICED",
@@ -6561,7 +6752,7 @@
             "vendor": "UNKNOWN",
             "category": "Networking / FC / Optics",
             "fabricProtocol": "INFINIBAND_HDR",
-            "formFactor": "PCIe",
+            "formFactor": "Switch",
             "opticsIncluded": false
           },
           "Price State": "UNPRICED",
@@ -6639,9 +6830,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "1m",
+            "fiberMode": "Copper"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -6718,9 +6913,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "7m",
+            "fiberMode": "MMF"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -6797,9 +6996,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "10m",
+            "fiberMode": "MMF"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -6876,9 +7079,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -6957,7 +7164,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "7m",
+            "fiberMode": "MMF"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -7036,7 +7246,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "10m",
+            "fiberMode": "MMF"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -7113,9 +7326,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "35m",
+            "fiberMode": "Copper"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -7194,7 +7411,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "1.1m",
+            "fiberMode": "Copper"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -7273,7 +7493,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "1.6m",
+            "fiberMode": "Copper"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -7353,7 +7576,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "3m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "902.00",
@@ -7433,7 +7659,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "5m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "944.00",
@@ -7512,7 +7741,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "10m",
+            "fiberMode": "MMF"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -7592,7 +7824,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "15m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1161.00",
@@ -7672,7 +7907,10 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "2.1m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "209.00",
@@ -8392,7 +8630,10 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "10m",
+            "fiberMode": "MMF"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -8699,9 +8940,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "UNPRICED",
           "Previous List Price (USD)": "N/A",
@@ -8778,9 +9023,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "7m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "430.00",
@@ -8857,9 +9106,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "0.65m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "199.00",
@@ -8936,9 +9189,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "1.2m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "220.00",
@@ -9015,9 +9272,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "314.00",
@@ -9094,9 +9355,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "346.00",
@@ -9173,9 +9438,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "1m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "493.00",
@@ -9252,9 +9521,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "625.00",
@@ -9331,9 +9604,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "776.00",
@@ -9410,9 +9687,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "1m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "692.00",
@@ -9489,9 +9770,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "3m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "850.00",
@@ -9568,9 +9853,13 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 40,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "DAC",
+            "reachDistance": "5m",
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "986.00",

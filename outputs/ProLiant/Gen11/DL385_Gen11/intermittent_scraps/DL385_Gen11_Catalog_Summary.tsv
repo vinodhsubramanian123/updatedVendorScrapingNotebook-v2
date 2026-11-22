@@ -136,13 +136,13 @@ Software & Licenses	Integrated Lights Out Software	no max	0	Unlimited	40	Yes	2
 Software & Licenses	Linux Value Added Software	no max	0	Unlimited	32	Yes	2
 Software & Licenses	HPC Software Products	no max	0	Unlimited	167	Yes	2
 Support Services	Support Services Options	no max	0	Unlimited	1	Yes	1
-Software & Licenses	High Availability Computing - Cluster Software	no max	0	Unlimited	54	Yes	2
+Software & Licenses	High Availability Computing - Cluster Software	no max	0	Unlimited	64	Yes	4
 Software & Licenses	Partner Software - Operating System 8pks	max 30969	0	30969	31	Yes	2
 Support Services	Manufacturing Services	max 1	0	1	1	Yes	1
 Software & Licenses	VMware NSX	no max	0	Unlimited	20	Yes	1
 Software & Licenses	SUSE containers	no max	0	Unlimited	38	Yes	1
 Support Services	HPE Virtualization	no max	0	Unlimited	44	Yes	6
-Support Services	System Options		0	Unlimited	43	No	0
 Support Services	Energy Star	max 1	0	1	20	Yes	2
+Support Services	System Options		0	Unlimited	36	No	0
 Support Services	Management Hardware	max 2	0	2	10	Yes	1
 Support Services	Support & Deployment Services	max 8	0	8	10	Yes	1

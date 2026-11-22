@@ -6,19 +6,17 @@ Cables	FibreChannel Cables	max 999	0	999	0	No	0
 Cables	SAS Cables	max 999	0	999	0	No	0
 Expansion Modules	Expansion Modules	max 15	0	15	0	No	0
 Power Cords	Power Cord	no max	0	Unlimited	0	No	0
-Storage Media	Storage Media	max 999	0	999	0	No	0
+Storage Media	Storage Media	max 999	0	999	74	Yes	2
 Software	Software	no max	0	Unlimited	0	No	0
 Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	1	1	2	Yes	1
-Storage Controllers	Fibre Channel Host Bus Adapters	max 3	0	3	8	Yes	1
+Tape Drives	LTO Tape Drives	max 3	0	3	8	Yes	1
 Power Supplies	Power Supply	max 1	0	1	1	Yes	1
 Cables & Enablement Kits	FibreChannel Cables	max 999	0	999	10	Yes	1
 Drive Enclosures / Drives	SAS Cables	max 999	0	999	13	Yes	7
 Cables & Enablement Kits	Power Cord	no max	0	Unlimited	18	Yes	1
-Storage Controllers	Storage Media	max 999	0	999	64	Yes	1
 Software & Licenses	Software	no max	0	Unlimited	13	Yes	2
 Accessories & Infrastructure	Accessories & Infrastructure Options		0	Unlimited	1	No	0
 Support Services	System Options		0	Unlimited	103	No	0
-Support Services	Storage Media	max 999	0	999	20	Yes	1
-Support Services	Support & Deployment Services	max 8	0	8	10	Yes	1
+Support Services	Support & Deployment Services	max 999	0	999	20	Yes	2
 Processor	Intel Xeon Scalable Processors	Discontinued	0	Discontinued	6	Yes	1
 Chassis	Encryption Kit	Discontinued	0	Discontinued	7	Yes	1

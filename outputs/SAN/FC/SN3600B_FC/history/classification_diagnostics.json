@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "chassis": "SN3600B_FC",
-  "generatedAt": "2026-11-21T12:56:32.009Z",
-  "executionDurationMs": 1515,
+  "generatedAt": "2026-11-22T02:57:46.807Z",
+  "executionDurationMs": 2439,
   "summary": {
     "totalRawTables": 34,
     "validProductTables": 26,

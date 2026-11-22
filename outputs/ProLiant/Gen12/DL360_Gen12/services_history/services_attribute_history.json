@@ -23318,5 +23318,485 @@
     "field": "Vendor Attributes",
     "oldValue": "{\"listPrice\":4493}",
     "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AC068A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Main Category",
+    "oldValue": "Support Services",
+    "newValue": "Software & Licenses"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AC068A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Sub-Category",
+    "oldValue": "System Options",
+    "newValue": "High Availability Computing - Cluster Software"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AC068A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "no max"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AC068A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "Selection constraint for High Availability Computing - Cluster Software: no max"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AC068A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "AC068A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Product Number\":\"AC068A\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AC068A\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB480A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Main Category",
+    "oldValue": "Support Services",
+    "newValue": "Software & Licenses"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB480A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Sub-Category",
+    "oldValue": "System Options",
+    "newValue": "High Availability Computing - Cluster Software"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB480A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "no max"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB480A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "Selection constraint for High Availability Computing - Cluster Software: no max"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB480A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB480A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Product Number\":\"HB480A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB480A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB481A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Main Category",
+    "oldValue": "Support Services",
+    "newValue": "Software & Licenses"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB481A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Sub-Category",
+    "oldValue": "System Options",
+    "newValue": "High Availability Computing - Cluster Software"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB481A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "no max"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB481A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "Selection constraint for High Availability Computing - Cluster Software: no max"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB481A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB481A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Product Number\":\"HB481A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB481A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB482A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Main Category",
+    "oldValue": "Support Services",
+    "newValue": "Software & Licenses"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB482A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Sub-Category",
+    "oldValue": "System Options",
+    "newValue": "High Availability Computing - Cluster Software"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB482A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "no max"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB482A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "Selection constraint for High Availability Computing - Cluster Software: no max"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB482A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB482A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Product Number\":\"HB482A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB482A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB483A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Main Category",
+    "oldValue": "Support Services",
+    "newValue": "Software & Licenses"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB483A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Sub-Category",
+    "oldValue": "System Options",
+    "newValue": "High Availability Computing - Cluster Software"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB483A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "no max"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB483A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "Selection constraint for High Availability Computing - Cluster Software: no max"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB483A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB483A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Product Number\":\"HB483A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB483A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB484A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Main Category",
+    "oldValue": "Support Services",
+    "newValue": "Software & Licenses"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB484A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Sub-Category",
+    "oldValue": "System Options",
+    "newValue": "High Availability Computing - Cluster Software"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB484A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Constraint",
+    "oldValue": "",
+    "newValue": "no max"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB484A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Rule/Note",
+    "oldValue": "",
+    "newValue": "Selection constraint for High Availability Computing - Cluster Software: no max"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB484A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Service & Support"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "HB484A1",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Product Number\":\"HB484A1\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"HB484A1\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "S1J77A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Main Category",
+    "oldValue": "Support Services",
+    "newValue": "Software & Licenses"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "S1J77A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Sub-Category",
+    "oldValue": "System Options",
+    "newValue": "High Availability Computing - Cluster Software"
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "S1J77A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Description",
+    "oldValue": "HPE AMS HPC FIO Rack Config Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "S1J77A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Option Type",
+    "oldValue": "Standard",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "S1J77A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "S1J77A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "CLIC Status",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "S1J77A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "S1J77A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "S1J77A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "S1J77A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "S1J77A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Recommended",
+    "oldValue": "false",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-20",
+    "productNumber": "S1J77A",
+    "chassis": "DL360 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Product Number\":\"S1J77A\"}",
+    "newValue": ""
   }
 ]

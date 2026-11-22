@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-20",
     "scrapeTimestamp": "2026-11-20T17:21:03.645Z",
-    "builtAt": "2026-11-21T11:57:22.314Z",
+    "builtAt": "2026-11-22T02:54:02.476Z",
     "totalSubcategories": 67,
     "totalUniqueSKUs": 757,
     "totalTables": 102,
@@ -526,14 +526,14 @@
     },
     "incrementalStats": {
       "totalScrapedSkus": 757,
-      "unchangedSkusCount": 674,
-      "modifiedSkusCount": 21,
-      "addedSkusCount": 62,
-      "removedSkusCount": 3,
+      "unchangedSkusCount": 757,
+      "modifiedSkusCount": 0,
+      "addedSkusCount": 0,
+      "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotFingerprint": "9eb010ea7b0456d03208b9dfc3884a35f832c551540ff58573128e8217c9fb44"
+    "snapshotFingerprint": "c38656b6690913798eedbc9428f650ccb7d6c3a3bfcf798c7bda7a203065b4ab"
   },
   "subcategories": [
     {
@@ -8991,8 +8991,7 @@
           "subCategory": "Smart Storage Batteries",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "38.00",
@@ -9077,10 +9076,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 8
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -9139,10 +9135,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -9201,9 +9194,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -9262,10 +9253,7 @@
           "subCategory": "Internal Storage Controller Cables",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -9369,10 +9357,7 @@
           "subCategory": "Energy Star",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayFormFactor": "LFF"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -9448,10 +9433,7 @@
           "subCategory": "Energy Star",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 4
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -9555,10 +9537,7 @@
           "subCategory": "Storage Controller Cable Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayFormFactor": "EDSFF"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -9634,10 +9613,7 @@
           "subCategory": "Storage Controller Cable Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayFormFactor": "EDSFF"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -10352,10 +10328,7 @@
           "subCategory": "Drive Cage",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -10414,10 +10387,7 @@
           "subCategory": "Drive Cage",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 8
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -10520,10 +10490,7 @@
           "subCategory": "Energy Star",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayFormFactor": "LFF"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -11443,8 +11410,7 @@
           "subCategory": "Trusted Supply Chain",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1839.00",
@@ -11528,8 +11494,7 @@
           "subCategory": "vSAN Tracking SKUs",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -11588,8 +11553,7 @@
           "subCategory": "vSAN Tracking SKUs",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1.00",
@@ -11922,9 +11886,7 @@
           "subCategory": "Riser Cards",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -11983,9 +11945,7 @@
           "subCategory": "Riser Cards",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -12087,9 +12047,7 @@
           "subCategory": "Primary PCIe Risers",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -13565,8 +13523,12 @@
           "subCategory": "Ethernet PCIe",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "GPU / Accelerator",
-            "vramGb": 25
+            "category": "Networking / FC / Optics",
+            "portCount": 2,
+            "speedGbps": 25,
+            "fabricProtocol": "ETHERNET",
+            "formFactor": "SFP",
+            "opticsIncluded": false
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1650.00",
@@ -13694,7 +13656,8 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1105.00",
@@ -13950,7 +13913,8 @@
             "speedGbps": 1,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "485.00",
@@ -14332,7 +14296,8 @@
             "speedGbps": 1,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "790.00",
@@ -14797,7 +14762,8 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "3992.00",
@@ -14880,7 +14846,8 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -14958,6 +14925,7 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
             "opticsIncluded": false
@@ -15050,7 +15018,8 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OCP3",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1105.00",
@@ -15242,7 +15211,8 @@
             "speedGbps": 1,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OCP3",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "485.00",
@@ -15306,7 +15276,8 @@
             "speedGbps": 1,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OCP3",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "830.00",
@@ -15864,7 +15835,8 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OCP3",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -15947,7 +15919,8 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OCP3",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -16120,7 +16093,9 @@
             "speedGbps": 64,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 2,
+            "licensedPorts": 2
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "10800.00",
@@ -16184,7 +16159,9 @@
             "speedGbps": 32,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 2,
+            "licensedPorts": 2
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4991.00",
@@ -16248,7 +16225,9 @@
             "speedGbps": 32,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 1,
+            "licensedPorts": 1
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "3188.00",
@@ -16312,7 +16291,9 @@
             "speedGbps": 64,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 1,
+            "licensedPorts": 1
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "5999.00",
@@ -16376,7 +16357,9 @@
             "speedGbps": 32,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 1,
+            "licensedPorts": 1
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4675.00",
@@ -16440,7 +16423,9 @@
             "speedGbps": 32,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 2,
+            "licensedPorts": 2
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "7410.00",
@@ -16511,7 +16496,9 @@
             "speedGbps": 64,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 1,
+            "licensedPorts": 1
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "9688.00",
@@ -16582,7 +16569,9 @@
             "speedGbps": 64,
             "fabricProtocol": "FC",
             "formFactor": "PCIe",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "totalPorts": 2,
+            "licensedPorts": 2
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "12800.00",
@@ -16671,7 +16660,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "LR",
+            "fiberMode": "SMF",
+            "wavelengthNm": 1310
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1751.00",
@@ -16734,7 +16726,10 @@
             "speedGbps": 400,
             "fabricProtocol": "INFINIBAND_NDR",
             "formFactor": "OSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "50m",
+            "reachDistance": "50m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1866.00",
@@ -16797,7 +16792,9 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "500m",
+            "reachDistance": "500m"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "3495.00",
@@ -16860,7 +16857,10 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "AOC",
+            "reachDistance": "5m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "1899.00",
@@ -16984,7 +16984,8 @@
             "category": "Networking / FC / Optics",
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "fiberMode": "Copper"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "426.00",
@@ -17047,7 +17048,10 @@
             "speedGbps": 10,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "842.00",
@@ -17110,7 +17114,11 @@
             "speedGbps": 25,
             "fabricProtocol": "ETHERNET",
             "formFactor": "SFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR",
+            "reachDistance": "100m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2110.00",
@@ -17173,7 +17181,11 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR4",
+            "reachDistance": "100m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4252.00",
@@ -17358,9 +17370,14 @@
           "canonicalSpecs": {
             "vendor": "HPE",
             "category": "Networking / FC / Optics",
+            "speedGbps": 400,
             "fabricProtocol": "INFINIBAND_NDR",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "50m",
+            "reachDistance": "50m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "3875.00",
@@ -17424,7 +17441,10 @@
             "speedGbps": 400,
             "fabricProtocol": "INFINIBAND_NDR",
             "formFactor": "OSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "100m",
+            "reachDistance": "100m",
+            "fiberMode": "SMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "7359.00",
@@ -17488,7 +17508,10 @@
             "speedGbps": 400,
             "fabricProtocol": "ETHERNET",
             "formFactor": "OSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "50m",
+            "reachDistance": "50m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2400.00",
@@ -17552,7 +17575,10 @@
             "speedGbps": 400,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "50m",
+            "reachDistance": "50m",
+            "fiberMode": "MMF"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2428.00",
@@ -17615,7 +17641,11 @@
             "speedGbps": 100,
             "fabricProtocol": "ETHERNET",
             "formFactor": "QSFP",
-            "opticsIncluded": false
+            "opticsIncluded": false,
+            "reach": "SR4",
+            "reachDistance": "100m",
+            "fiberMode": "MMF",
+            "wavelengthNm": 850
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "2425.00",
@@ -17700,8 +17730,7 @@
           "subCategory": "Storage Controller Cable Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "107.00",
@@ -17760,8 +17789,7 @@
           "subCategory": "Storage Controller Cable Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "226.00",
@@ -17820,8 +17848,7 @@
           "subCategory": "Storage Controller Cable Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "115.00",
@@ -17880,10 +17907,7 @@
           "subCategory": "Storage Controller Cable Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 8
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -17942,10 +17966,7 @@
           "subCategory": "Storage Controller Cable Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -18004,9 +18025,7 @@
           "subCategory": "Storage Controller Cable Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -18065,9 +18084,7 @@
           "subCategory": "Storage Controller Cable Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "120.00",
@@ -18126,10 +18143,7 @@
           "subCategory": "Storage Controller Cable Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -21003,8 +21017,7 @@
           "subCategory": "Chassis Infrastructure & Rail Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "38.00",
@@ -21063,9 +21076,7 @@
           "subCategory": "Chassis Infrastructure & Rail Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -21124,9 +21135,7 @@
           "subCategory": "Chassis Infrastructure & Rail Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -21211,8 +21220,7 @@
           "subCategory": "Management Hardware",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -21271,10 +21279,7 @@
           "subCategory": "Management Hardware",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayFormFactor": "SFF"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -21377,10 +21382,7 @@
           "subCategory": "Energy Star",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2,
-            "bayFormFactor": "LFF"
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -21465,9 +21467,7 @@
           "subCategory": "Chassis Infrastructure & Rail Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "uHeight": 1,
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -21526,8 +21526,7 @@
           "subCategory": "Chassis Infrastructure & Rail Kits",
           "canonicalSpecs": {
             "vendor": "HPE",
-            "category": "Chassis",
-            "socketCount": 2
+            "category": "Other / Accessory"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "164.00",
@@ -21777,7 +21776,9 @@
             "gpuModel": "NVIDIA A2",
             "vramGb": 16,
             "tier": "Inference / AI",
-            "formFactor": "PCIe"
+            "tdpWatts": 60,
+            "formFactor": "Single-Wide PCIe",
+            "auxPower": "None (PCIe Slot Powered)"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
@@ -21840,7 +21841,9 @@
             "gpuModel": "NVIDIA L4",
             "vramGb": 24,
             "tier": "Inference / AI",
-            "formFactor": "PCIe"
+            "tdpWatts": 72,
+            "formFactor": "Single-Wide PCIe",
+            "auxPower": "None (PCIe Slot Powered)"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "10589.00",
@@ -22437,7 +22440,10 @@
           "subCategory": "Processor Options",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 3,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "10004.00",
@@ -22495,7 +22501,10 @@
           "subCategory": "Processor Options",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 5,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "12429.00",
@@ -23984,7 +23993,10 @@
           "subCategory": "Processor Options",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 3,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "7488.00",
@@ -24041,7 +24053,10 @@
           "subCategory": "Processor Options",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 5,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "9303.00",
@@ -24098,7 +24113,10 @@
           "subCategory": "Processor Options",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 3,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "11012.00",
@@ -24155,7 +24173,10 @@
           "subCategory": "Processor Options",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 1,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "3497.00",
@@ -24212,7 +24233,10 @@
           "subCategory": "Processor Options",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 3,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "4667.00",
@@ -24269,7 +24293,10 @@
           "subCategory": "Processor Options",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 5,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "5799.00",
@@ -25880,7 +25907,10 @@
           "subCategory": "VMWare VSphere Kits",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 1,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "5735.00",
@@ -25938,7 +25968,10 @@
           "subCategory": "VMWare VSphere Kits",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 3,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "7654.00",
@@ -25996,7 +26029,10 @@
           "subCategory": "VMWare VSphere Kits",
           "canonicalSpecs": {
             "vendor": "UNKNOWN",
-            "category": "Processor"
+            "category": "Software / Support / Services",
+            "layer": "SOFTWARE_OTHER",
+            "termYears": 5,
+            "retention": "NONE"
           },
           "Price State": "PRICED",
           "Previous List Price (USD)": "9509.00",
