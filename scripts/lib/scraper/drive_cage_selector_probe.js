@@ -4,62 +4,76 @@ const { cleanBaseSKU, classifyOptionType, isTaaGtaCatalogOption } = require('../
 const { parseStrictPrice } = require('../catalog/field_parsers.js');
 
 const INSPECT_BACKPLANE_STATE_EXPR = `(() => {
-  const isVis = el => Boolean(el && el.offsetWidth > 0 && el.offsetHeight > 0 && getComputedStyle(el).display !== 'none');
-  const hotPlugRows = Array.from(document.querySelectorAll('tr.item_tr[id*="HotPlugSFFChoice"], tr.item_tr[id*="HotPlugLFFChoice"]'))
-    .filter(tr => !tr.closest('table.UavailableTable') && isVis(tr));
-  const candRows = Array.from(document.querySelectorAll('tr.item_tr[id*="smartChassisDriveCage"], tr.item_tr[id*="storage_Backplane"]'))
-    .filter(tr => !tr.closest('table.UavailableTable') && isVis(tr))
-    .map(tr => {
-      const tds = Array.from(tr.children);
-      const raw0 = (tds[0]?.innerText || '').replace(/[\\r\\n\\t]+/g, ' ').trim();
-      const badgeMatch = raw0.match(/^(OB|CS|90|DS|PVT)\\s+(.+)$/i);
-      const badge = badgeMatch ? badgeMatch[1].toUpperCase() : '';
-      const sku = (badgeMatch ? badgeMatch[2] : raw0).trim();
-      const qtyDiv = tr.querySelector('.item_qty_div, span[id^="selectedQty_"]');
-      const qtyText = (qtyDiv?.innerText || '').trim();
-      return {
-        id: tr.id || '',
-        badge,
-        sku,
-        description: (tds[1]?.innerText || '').replace(/[\\r\\n\\t]+/g, ' ').trim(),
-        qtyText
-      };
-    })
-    .filter(c => c.id && c.sku && !/^(?:OB|CS|DS|PVT)$/i.test(c.badge) && c.qtyText === '0');
+  const isVis = el => Boolean(el && el.offsetWidth > 0 && el.offsetHeight > 0);
+  const isActualDriveDesc = d => /\\b\\d+(?:\\.\\d+)?\\s*(?:TB|GB)\\b/i.test(d)
+    && /\\b(?:SSD|HDD|NVMe|SAS|SATA|EDSFF|E3\\.S)\\b/i.test(d)
+    && !/\\b(?:Drive\\s+Cage|Backplane|Cable\\s+Kit|Controller|Enablement|Blank|Riser|Optical|DVD|NS204i|Boot\\s+Optimized|DIMM|Memory|Processor|Xeon|EPYC|Adapter|Transceiver|Switch)\\b/i.test(d);
+  const isDriveCageDesc = d => /\\b(?:Drive\\s+Cage|Backplane\\s+Kit|U\\.3.*Backplane|Tri-Mode.*Backplane|NVMe.*Backplane|SFF.*Drive\\s+Cage|LFF.*Drive\\s+Cage|EDSFF.*Drive\\s+Cage|Mid\\s+Tray\\s+Backplane|Rear.*Drive\\s+Cage)\\b/i.test(d)
+    && !/\\b(?:Cable\\s+Kit|Power\\s+Cable|Blank|Optical|DVD|Thermal|Fan|Heatsink|Riser|Adapter|Controller)\\b/i.test(d);
+  const allRows = Array.from(document.querySelectorAll('tr.item_tr'));
+  let visibleHotPlugCount = 0;
+  const candRows = [];
+  for (const tr of allRows) {
+    if (tr.closest('table.UavailableTable')) continue;
+    const id = tr.id || '';
+    const desc = (tr.children[1]?.textContent || tr.querySelector('.item_desc')?.textContent || '').replace(/\\s+/g, ' ').trim();
+    const looksHotPlug = /HotPlugSFFChoice|HotPlugLFFChoice|EDSFFChoice/i.test(id) || isActualDriveDesc(desc);
+    if (looksHotPlug && isVis(tr)) {
+      visibleHotPlugCount++;
+      continue;
+    }
+    const looksCage = /smartChassisDriveCage|storage_Backplane|driveCage|Backplane/i.test(id) || isDriveCageDesc(desc);
+    if (!looksCage || !isVis(tr)) continue;
+    const raw0 = (tr.children[0]?.textContent || '').replace(/\\s+/g, ' ').trim();
+    const badgeMatch = raw0.match(/^(OB|CS|90|DS|PVT)\\s+(.+)$/i);
+    const badge = badgeMatch ? badgeMatch[1].toUpperCase() : '';
+    const sku = (badgeMatch ? badgeMatch[2] : raw0).trim();
+    const qtyDiv = tr.querySelector('.item_qty_div, span[id^="selectedQty_"]');
+    const qtyText = (qtyDiv?.textContent || '').trim();
+    if (id && sku && !/^(?:OB|CS|DS|PVT)$/i.test(badge) && qtyText === '0') {
+      candRows.push({ id, badge, sku, description: desc, qtyText });
+    }
+  }
   return {
-    hasVisibleHotPlug: hotPlugRows.length > 0,
-    visibleHotPlugCount: hotPlugRows.length,
+    hasVisibleHotPlug: visibleHotPlugCount >= 5,
+    visibleHotPlugCount,
     candidates: candRows
   };
 })()`;
 
 const EXTRACT_VISIBLE_DRIVE_ROWS_EXPR = `(() => {
-  const isVis = el => Boolean(el && el.offsetWidth > 0 && el.offsetHeight > 0 && getComputedStyle(el).display !== 'none');
-  const findHeaderRow = (tableEl) => {
-    if (!tableEl) return null;
+  const isVis = el => Boolean(el && el.offsetWidth > 0 && el.offsetHeight > 0);
+  const isActualDriveDesc = d => /\\b\\d+(?:\\.\\d+)?\\s*(?:TB|GB)\\b/i.test(d)
+    && /\\b(?:SSD|HDD|NVMe|SAS|SATA|EDSFF|E3\\.S)\\b/i.test(d)
+    && !/\\b(?:Drive\\s+Cage|Backplane|Cable\\s+Kit|Controller|Enablement|Blank|Riser|Optical|DVD|NS204i|Boot\\s+Optimized|DIMM|Memory|Processor|Xeon|EPYC|Adapter|Transceiver|Switch)\\b/i.test(d);
+  const headerCache = new WeakMap();
+  const getHeaders = (tableEl) => {
+    if (!tableEl) return [];
+    if (headerCache.has(tableEl)) return headerCache.get(tableEl);
     const directRows = Array.from(tableEl.querySelectorAll('tr')).filter(r => r.closest('table') === tableEl);
     const matched = directRows.find(r => {
-      const texts = Array.from(r.children).map(c => (c.innerText || '').replace(/\\s+/g, ' ').trim().toLowerCase());
+      const texts = Array.from(r.children).map(c => (c.textContent || '').replace(/\\s+/g, ' ').trim().toLowerCase());
       return texts.some(t => t === 'product #' || t === 'product#' || t === 'sku' || t === 'part #')
         && texts.some(t => t.includes('description') || t.includes('price'));
-    });
-    return matched || tableEl.querySelector('tr.table_header, thead tr, tr:first-child');
+    }) || tableEl.querySelector('tr.table_header, thead tr, tr:first-child');
+    const hdrs = matched ? Array.from(matched.children).map(c => (c.textContent || '').replace(/\\s+/g, ' ').trim()) : [];
+    headerCache.set(tableEl, hdrs);
+    return hdrs;
   };
-  const rows = Array.from(document.querySelectorAll('tr.item_tr[id*="HotPlugSFFChoice"], tr.item_tr[id*="HotPlugLFFChoice"], tr.item_tr[id*="EDSFFChoice"]'));
-  return rows.map(tr => {
-    const tbl = tr.closest('table');
-    const hdrTr = findHeaderRow(tbl);
-    const headers = hdrTr ? Array.from(hdrTr.children).map(c => (c.innerText || '').replace(/\\s+/g, ' ').trim()) : [];
-    const cells = Array.from(tr.children).map(td => (td.innerText || '').trim());
-    return {
-      id: tr.id || '',
-      className: tr.className || '',
-      inUnavail: Boolean(tr.closest('table.UavailableTable')),
-      visible: isVis(tr),
-      headers,
-      cells
-    };
-  });
+  const out = [];
+  for (const tr of document.querySelectorAll('tr.item_tr')) {
+    if (tr.closest('table.UavailableTable')) continue;
+    const id = tr.id || '';
+    const desc = (tr.children[1]?.textContent || tr.querySelector('.item_desc')?.textContent || '').replace(/\\s+/g, ' ').trim();
+    if (!(/HotPlugSFFChoice|HotPlugLFFChoice|EDSFFChoice|SolidStateDrive|HardDrive|NVMeDrive|SSDReadIntensive|SSDMixedUse|SSDWriteIntensive/i.test(id) || isActualDriveDesc(desc))) {
+      continue;
+    }
+    if (!isVis(tr)) continue;
+    const headers = getHeaders(tr.closest('table'));
+    const cells = Array.from(tr.children).map(td => (td.textContent || '').replace(/\\s+/g, ' ').trim());
+    out.push({ id, className: tr.className || '', inUnavail: false, visible: true, headers, cells });
+  }
+  return out;
 })()`;
 
 function _buildSetQtyClickExpr(rowId) {
@@ -81,18 +95,20 @@ function _buildPopupOptionClickExpr(rowId, targetQty) {
   return `(() => {
     const row = document.getElementById(${JSON.stringify(rowId)});
     const qtyEl = row?.querySelector('.item_qty_div') || row?.querySelector('span[id^="selectedQty_"]');
-    if (!row?.matches('tr.editing') || !qtyEl?.getClientRects().length) return false;
+    const qtyText = (qtyEl?.textContent || '').trim();
+    if (qtyText === ${JSON.stringify(String(targetQty))}) return { status: 'ALREADY_TARGET' };
+    if (!row?.matches('tr.editing') || !qtyEl?.getClientRects().length) return { status: 'NOT_EDITING', qtyText };
     const origin = qtyEl.getBoundingClientRect();
     const options = [...document.querySelectorAll(${JSON.stringify(`ul.popup-menu-body a[name="${targetQty}"]`)})].filter(option => {
       const rect = option.getBoundingClientRect();
       return option.getClientRects().length && Math.abs(rect.x - origin.x) < 250 && Math.abs(rect.y - origin.y) < 250;
     });
-    if (options.length !== 1) return false;
+    if (options.length !== 1) return { status: 'NO_POPUP_OPTION', qtyText };
     const option = options[0];
     setTimeout(() => {
       if (option.isConnected && row.matches('tr.editing')) option.click();
     }, 0);
-    return true;
+    return { status: 'CLICKED_POPUP' };
   })()`;
 }
 
@@ -102,14 +118,14 @@ function _buildReadRowQtyExpr(rowId) {
     const qtyEl = row?.querySelector('.item_qty_div') || row?.querySelector('span[id^="selectedQty_"]');
     return {
       present: Boolean(qtyEl?.getClientRects().length && !row.closest('table.UavailableTable')),
-      qtyText: (qtyEl?.innerText || '').trim(),
-      hotPlugCount: document.querySelectorAll('tr.item_tr[id*="HotPlugSFFChoice"], tr.item_tr[id*="HotPlugLFFChoice"], tr.item_tr[id*="EDSFFChoice"]').length
+      qtyText: (qtyEl?.textContent || '').trim(),
+      hotPlugCount: document.querySelectorAll('tr.item_tr[id*="HotPlugSFFChoice"], tr.item_tr[id*="HotPlugLFFChoice"], tr.item_tr[id*="EDSFFChoice"], tr.item_tr[id*="SSDReadIntensive"], tr.item_tr[id*="SSDMixedUse"]').length
     };
   })()`;
 }
 
-async function _evaluate(ws, sendCommand, expression, userGesture = false) {
-  const result = await sendCommand(ws, 'Runtime.evaluate', { expression, returnByValue: true, userGesture });
+async function _evaluate(ws, sendCommand, expression, userGesture = false, timeoutMs = 90000) {
+  const result = await sendCommand(ws, 'Runtime.evaluate', { expression, returnByValue: true, userGesture }, timeoutMs);
   if (result?.exceptionDetails) {
     throw new Error(result.exceptionDetails.exception?.description || result.exceptionDetails.text);
   }
@@ -126,17 +142,21 @@ async function _setSelectorRowQty(ws, sendCommand, rowId, targetQty, sleepFn) {
   if (_isQuantity(before, targetQty) || !before?.present) return before;
   if (!await _evaluate(ws, sendCommand, _buildSetQtyClickExpr(rowId), true)) return read();
   const choose = _buildPopupOptionClickExpr(rowId, targetQty);
-  let picked = false;
-  for (let attempt = 0; attempt < 20 && !picked; attempt++) {
-    picked = await _evaluate(ws, sendCommand, choose, true);
-    if (!picked) await sleepFn(250);
+  let directToggleCount = 0;
+  for (let attempt = 0; attempt < 20; attempt++) {
+    await sleepFn(500);
+    const res = await _evaluate(ws, sendCommand, choose, true);
+    if (res === true || res?.status === 'CLICKED_POPUP' || res?.status === 'ALREADY_TARGET') break;
+    if (res?.status === 'NOT_EDITING') {
+      directToggleCount++;
+      if (directToggleCount >= 2) break; // Binary 0<->1 toggle row: click already fired AJAX without popup menu
+    }
   }
-  if (!picked) return read();
   let state;
   for (let attempt = 0; attempt < 30; attempt++) {
     state = await read();
     if (_isQuantity(state, targetQty)) break;
-    await sleepFn(500);
+    await sleepFn(1000);
   }
   return state;
 }
@@ -149,11 +169,19 @@ function _buildColMap(headers, cells) {
   return colMap;
 }
 
+function _classifyRevealedDriveSubCategory(rowId = '') {
+  if (/HotPlugLFFChoice/i.test(rowId)) return 'Hot Plug LFF Drives (Backplane Selector)';
+  if (/EDSFFChoice/i.test(rowId)) return 'EDSFF Drives (Backplane Selector)';
+  if (/SSDReadIntensive/i.test(rowId)) return 'SSD - Read Intensive (Drive Cage Selector)';
+  if (/SSDMixedUse/i.test(rowId)) return 'SSD - Mixed Use (Drive Cage Selector)';
+  if (/SSDWriteIntensive/i.test(rowId)) return 'SSD - Write Intensive (Drive Cage Selector)';
+  return 'Hot Plug SFF Drives (2SFF Stacking Backplane)';
+}
+
 function _buildRevealedDriveObject(rawRow, colMap, { cleanSku, rawCell0, badge, desc, triggerSku, triggerDesc }) {
   const listPrice = colMap['Unit Price (USD)'] ?? colMap['Price (USD)'] ?? colMap['List Price (USD)'] ?? '';
   const priceParsed = parseStrictPrice(listPrice, { sku: cleanSku, description: desc });
   const priceNum = priceParsed.priceUsd !== null ? priceParsed.priceUsd : null;
-  const isLff = /HotPlugLFFChoice/i.test(rawRow.id || '');
   return {
     sku: cleanSku,
     rawSku: rawCell0,
@@ -168,7 +196,7 @@ function _buildRevealedDriveObject(rawRow, colMap, { cleanSku, rawCell0, badge, 
     obsoleteDate: colMap['Obsolete'] ?? colMap['Obsolete Date'] ?? '',
     optionType: classifyOptionType(cleanSku),
     parentCategory: 'Drive Enclosures / Drives',
-    subCategory: isLff ? 'Hot Plug LFF Drives (Backplane Selector)' : 'Hot Plug SFF Drives (2SFF Stacking Backplane)',
+    subCategory: _classifyRevealedDriveSubCategory(rawRow.id || ''),
     conditionType: 'SELECTOR_STATE_CONDITIONAL',
     conditionKey: 'backplaneSelector',
     operator: 'requires_selection',
@@ -207,10 +235,35 @@ function _rankBackplaneCandidates(candidates) {
   });
 }
 
+async function _ensureMenuAndRowVisible(ws, sendCommand, rowId, sleepFn) {
+  const state = await _evaluate(ws, sendCommand, _buildReadRowQtyExpr(rowId));
+  if (state?.present) return state;
+  await _evaluate(ws, sendCommand, `(() => {
+    const active = document.querySelector('li.ui-tabs-active a')?.getAttribute('href') || '';
+    if (active && active !== '#extended_overview_menu') {
+      document.querySelector('a[href="#extended_overview_menu"]')?.click();
+    }
+    const ea = document.getElementById('expand_all');
+    if (ea && ea.getClientRects().length) ea.click();
+    return true;
+  })()`);
+  for (let i = 0; i < 8; i++) {
+    await sleepFn(600);
+    const next = await _evaluate(ws, sendCommand, _buildReadRowQtyExpr(rowId));
+    if (next?.present) return next;
+  }
+  return _evaluate(ws, sendCommand, _buildReadRowQtyExpr(rowId));
+}
+
 async function _restoreBackplane(ws, sendCommand, cand, triggerSku, sleepFn) {
   try {
-    const state = await _setSelectorRowQty(ws, sendCommand, cand.id, 0, sleepFn);
-    if (_isQuantity(state, 0)) return state;
+    let state = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      await _ensureMenuAndRowVisible(ws, sendCommand, cand.id, sleepFn);
+      state = await _setSelectorRowQty(ws, sendCommand, cand.id, 0, sleepFn);
+      if (_isQuantity(state, 0)) return state;
+      await sleepFn(800);
+    }
     const detail = state?.present && state.qtyText ? `remained at qty=${state.qtyText}` : 'quantity readback unavailable';
     throw new Error(detail);
   } catch (err) {
@@ -218,7 +271,23 @@ async function _restoreBackplane(ws, sendCommand, cand, triggerSku, sleepFn) {
   }
 }
 
-async function _probeSingleBackplaneCandidate(ws, sendCommand, cand, { expandSections, baselineSkus, sleepFn }) {
+async function _expandDriveSectionsOnly(ws, sendCommand, sleepFn) {
+  await _evaluate(ws, sendCommand, `(() => {
+    const driveShowmore = Array.from(document.querySelectorAll('input[type="checkbox"][id*="showmore"], input[id*="showmore"]'))
+      .filter(el => !el.checked && /storage|drive|ssd|hdd|hotplug|edsff|nvme/i.test(el.id || ''));
+    for (const el of driveShowmore) {
+      el.click();
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    if (typeof jQuery !== 'undefined' && driveShowmore.length) {
+      try { jQuery(driveShowmore).prop('checked', true).trigger('change'); } catch (_) {}
+    }
+    return driveShowmore.length;
+  })()`);
+  await sleepFn(2000);
+}
+
+async function _probeSingleBackplaneCandidate(ws, sendCommand, cand, { baselineSkus, sleepFn }) {
   const triggerSku = cleanBaseSKU(cand.sku);
   const initial = await _evaluate(ws, sendCommand, _buildReadRowQtyExpr(cand.id));
   if (!_isQuantity(initial, 0)) return null;
@@ -228,7 +297,8 @@ async function _probeSingleBackplaneCandidate(ws, sendCommand, cand, { expandSec
   try {
     const selRes = await _setSelectorRowQty(ws, sendCommand, cand.id, 1, sleepFn);
     if (!_isQuantity(selRes, 1)) return null;
-    if (typeof expandSections === 'function') await expandSections(ws);
+    await sleepFn(2500);
+    await _expandDriveSectionsOnly(ws, sendCommand, sleepFn);
     const rows = await _evaluate(ws, sendCommand, EXTRACT_VISIBLE_DRIVE_ROWS_EXPR);
     const selectedState = await _evaluate(ws, sendCommand, _buildReadRowQtyExpr(cand.id));
     if (!_isQuantity(selectedState, 1) || !Array.isArray(rows)) return null;

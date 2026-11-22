@@ -90,6 +90,7 @@ function _auditLifecycleAndChassisVariants(diag, findings) {
   const zeroBaseVariants = Object.entries(variantsMatrix)
     .filter(([, meta]) => {
       if (Number(meta?.listPrice) > 0) return false;
+      if (meta?.priceProvenance === 'OCA_CANDIDATE_VERIFIED_ZERO') return false;
       const desc = String(meta?.description || '');
       const lc = normalizeLifecycleLabel(meta?.lifecycleCanonical || meta?.lifecycleStatus || '');
       const diff = String(meta?.diffStatus || '').toUpperCase();

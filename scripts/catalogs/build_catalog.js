@@ -1829,7 +1829,7 @@ function isCanonicalCtoChassisCandidate(candidate, chassisLabel) {
   }
   const hasCtoOrFamilyBase = /configure[\s-]+to[\s-]+order|\bcto\b/i.test(text) || _isCanonicalNonProLiantBaseText(observedMeta.family, text);
   if (expected !== observed || !hasCtoOrFamilyBase) return false;
-  return !/\b(?:OEM|solutions?|Commvault|Cohesity|Veeam|vSAN|template)\b/i.test(text);
+  return !/\b(?:OEM|solutions?|Commvault|Cohesity|Veeam|vSAN|template|KSA|Saudi|Disconnected|Add[\s-]*on)\b/i.test(text);
 }
 
 async function loadHistoricalChassisEvidence(targetDir, chassisLabel) {

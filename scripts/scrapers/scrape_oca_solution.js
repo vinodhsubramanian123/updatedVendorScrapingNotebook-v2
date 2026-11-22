@@ -1009,6 +1009,18 @@ async function extractPageDomPayload(ws, meta, profile) {
 
   const { unavailableRules = [], unavailableSkus = [] } = await sweepUnavailableDomRules(ws, sendCommand);
 
+  let bomBasePrices = [];
+  try {
+    const { extractBomBasePricesFromActiveTab } = require('../lib/scraper/bom_base_price.js');
+    bomBasePrices = await extractBomBasePricesFromActiveTab(ws, sendCommand);
+    if (bomBasePrices.length > 0) {
+      const top = bomBasePrices.find(r => r.isTopLevel && r.priceVerified);
+      if (top) console.log(`  💰 Verified live BOM price for ${top.sku}: $${top.unitPriceUsd} (${top.lifecycleStatus})`);
+    }
+  } catch (bomErr) {
+    console.warn(`  ⚠️  BOM base price extraction skipped: ${bomErr.message}`);
+  }
+
   const step5Result = verifyScrapingStep(5, { textLength: totalLen, rowsCount: tables.length });
   if (!step5Result.valid) {
     throw new AtomicStepAnomalyError(5, step5Result.stage, step5Result.failure.assertionId, step5Result.failure.message, step5Result.failure);
@@ -1025,6 +1037,7 @@ async function extractPageDomPayload(ws, meta, profile) {
     sections,
     conditionalSkus,
     backplaneSelectors,
+    bomBasePrices,
     unavailableRules,
     unavailableSkus,
     textExtractionMode,
@@ -1270,6 +1283,10 @@ async function setupStagingAndPersistRawData({
   const outputDir = stagingDir;
 
   const chassisDiscovery = resolveOrSynthesizeChassisDiscovery(initDiscovery, liveOutputDir, meta, profile, domPayload, pageHeading, vendor, portalUrl);
+  if (chassisDiscovery && Array.isArray(domPayload.bomBasePrices) && domPayload.bomBasePrices.length > 0) {
+    const { applyBomPricesToChassisDiscovery } = require('../lib/scraper/bom_base_price.js');
+    applyBomPricesToChassisDiscovery(chassisDiscovery, domPayload.bomBasePrices);
+  }
 
   console.log(`\n🛡️ Staging Isolation Active: Scraping & building inside temporary staging directory:`);
   console.log(`   ${stagingDir}`);

@@ -107,20 +107,25 @@ module.exports = [
     deltaId: 'LEARN_DL380A_GPU_MODE_AND_DRIVE_CAGE_SELECTOR_GATES_20261122',
     source: 'docs/INVARIANTS.md#inv-270',
     ruleType: 'WORKFLOW_CAPTURE_COVERAGE_ADVISORY',
-    affectedSku: 'P75008-B21',
-    rawMessage: 'Live OCA audit (2026-11-22) proved that all 122 skipped raw tables across 19 catalogs were benign UI chrome/summary tables (0 lost hardware SKUs), while missing GPUs on DL380a Gen12 and missing drives on DL360 Gen11, DL385 Gen11, and DL580 Gen12 were caused by OCA selector-gating. Selecting GPU Mode FIO P75008-B21 + GPU Riser on DL380a Gen12 unlocked graphicsOptionsSection_graphicsChoice (H200 NVL S3U30C, H100 NVL S2D86C, L40S S2L70C, RTX PRO 6000 Blackwell S6A73C, MI350P S8A40C). Similarly, server drive tables require selecting a Drive Cage option before scraping. Per-pillar floors in catalog_coverage_profiles.json now surface missing drives/GPUs as CATALOG_COVERAGE_GAP (INV-270).'
+    rawMessage: 'Live OCA audit (2026-11-22) proved that skipped non-empty raw tables were benign UI chrome/summary tables (0 lost hardware SKUs), while missing GPUs on accelerator servers and missing SSD/HDD drives on rack servers were caused by OCA selector-gating. Selecting GPU Mode FIO + GPU Riser unlocks hidden GPU accelerator tables, and selecting a Drive Cage/Backplane option unlocks hidden SSD/HDD drive tables. Per-pillar floors in catalog_coverage_profiles.json enforce drive/GPU presence and surface missing categories as CATALOG_COVERAGE_GAP (INV-270).'
   },
   {
     deltaId: 'LEARN_CANONICAL_SPECS_AND_TEMPLATE_SKUS_PARITY_20261122',
     source: 'docs/INVARIANTS.md#inv-270',
     ruleType: 'WORKFLOW_DOM_EXTRACTION_ADVISORY',
-    rawMessage: 'Real *_Catalog.json files store rows under entry.skus (not entry.options); generic_domain_templates.js:resolveCapabilityToSku must read entry.skus || entry.options || []. attribute_vectors.js must never default socketCount:2 on non-servers/accessories, must enrich GPU TDP/VRAM via gpu_specs_lookup.js, extract optical transceiver reach/fiberMode, classify MSL3040 LTO drives as Tape Drives (not Storage Controllers), route Alletra X10000 Back-End Switches to Networking, and exclude [OB] Gen9/Gen10 Synergy Frame Options from Synergy_12000_Frame base-variant matrices (INV-270).'
+    rawMessage: 'Real *_Catalog.json files store rows under entry.skus (not entry.options); generic_domain_templates.js:resolveCapabilityToSku must read entry.skus || entry.options || []. attribute_vectors.js must never default socketCount:2 on non-servers/accessories, must enrich GPU TDP/VRAM via gpu_specs_lookup.js, extract optical transceiver reach/fiberMode, classify LTO tape drives as Tape Drives (not Storage Controllers), route storage Back-End Switches to Networking, and exclude [OB] Frame Options from enclosure base-variant matrices (INV-270).'
   },
   {
     deltaId: 'LEARN_PROPOSED_BRANCH_AND_REASONING_OBSERVATION_HONESTY_20261122',
     source: 'docs/INVARIANTS.md#inv-273',
     ruleType: 'WORKFLOW_EPISTEMIC_GUARDRAIL_ADVISORY',
     rawMessage: 'Unverified arbitration branches in resource_arbitrator.js must remain status PROPOSED and verifiedBuildable false until evaluateWorkloadBranch verifies every substitution via cleanBaseSKU and runs scoped physical evaluation. reasoning_post_analyzer.js must never infer acceptanceGate PASS from routing status PASSED, never upgrade Tier 0 to Tier 1 on NOT_APPLICABLE aspect arrays, and must compare cluster-scoped PCIe demand against cluster-scoped active slots while keeping memory distribution math distinct from validator flags (INV-273).'
+  },
+  {
+    deltaId: 'LEARN_BOM_BASE_PRICE_AND_DIRECT_TOGGLE_DRIVE_CAGE_PROBE_20261122',
+    source: 'docs/INVARIANTS.md#inv-274',
+    ruleType: 'WORKFLOW_DOM_EXTRACTION_ADVISORY',
+    rawMessage: 'HPE OCA Product Search dropdowns omit CTO base list prices; bom_base_price.js must extract exact official Unit List Price, lead time, and 90/OB/CS/DS badges from #extended_overview_bom (table[id^="bom_grid"]) into chassisDiscovery.candidates, and build_catalog.js must exclude regional KSA/Saudi/Disconnected/Add-on wrappers from global CTO base variants. For drive-cage selector probing in drive_cage_selector_probe.js, use zero-reflow textContent (never innerText over 1,500+ rows), detect binary 0<->1 direct-toggle drive cages (NOT_EDITING without ul.popup-menu-body), expand only storage/drive showmore checkboxes, and allow 90000ms CDP timeout for WebLogic AJAX DOM recalculation (~46s observed live) before restoring qty=0 (INV-274).'
   }
 ];
 

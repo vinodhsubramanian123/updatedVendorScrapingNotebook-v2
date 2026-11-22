@@ -101,7 +101,8 @@
           "family": "ProLiant",
           "gen": "Gen12",
           "description": "HPE ProLiant Compute DL360 Gen12 4LFF NC Configure-to-order Server",
-          "optionType": "CTO"
+          "optionType": "CTO",
+          "listPrice": 5342
         },
         "P72175-B21": {
           "model": "DL360 Gen12 8SFF",
@@ -109,7 +110,8 @@
           "family": "ProLiant",
           "gen": "Gen12",
           "description": "HPE ProLiant Compute DL360 Gen12 8SFF NC Configure-to-order Server",
-          "optionType": "CTO"
+          "optionType": "CTO",
+          "listPrice": 5089
         },
         "P72176-B21": {
           "model": "DL360 Gen12 10SFF/20EDSFF",
@@ -352,10 +354,26 @@
     "Synergy_12000_Frame": {
       "catalogProductId": "Synergy_12000_Frame",
       "ownedCatalogs": [
-        { "productId": "SY480_Gen12", "baseSku": "P68217-B21", "name": "Synergy 480 Gen12" },
-        { "productId": "SY100Gb_F32_Module", "baseSku": "867796-B21", "name": "Synergy VC SE 100Gb F32 Module" },
-        { "productId": "Synergy_4Port_Frame_Link_Module", "baseSku": "876852-B21", "name": "Synergy 4-port Frame Link Module" },
-        { "productId": "Synergy_Brocade_64Gb_FC_Module", "baseSku": "P77653-B21", "name": "Brocade 64Gb Fibre Channel Module for Synergy" }
+        {
+          "productId": "SY480_Gen12",
+          "baseSku": "P68217-B21",
+          "name": "Synergy 480 Gen12"
+        },
+        {
+          "productId": "SY100Gb_F32_Module",
+          "baseSku": "867796-B21",
+          "name": "Synergy VC SE 100Gb F32 Module"
+        },
+        {
+          "productId": "Synergy_4Port_Frame_Link_Module",
+          "baseSku": "876852-B21",
+          "name": "Synergy 4-port Frame Link Module"
+        },
+        {
+          "productId": "Synergy_Brocade_64Gb_FC_Module",
+          "baseSku": "P77653-B21",
+          "name": "Brocade 64Gb Fibre Channel Module for Synergy"
+        }
       ],
       "family": "Synergy",
       "gen": "General",
@@ -367,7 +385,7 @@
           "family": "Synergy",
           "gen": "General",
           "description": "HPE Synergy 12000 Configure-to-order Frame Chassis",
-          "listPrice": null,
+          "listPrice": 6130,
           "optionType": "CTO"
         },
         "797740-B21": {
@@ -481,7 +499,7 @@
           "family": "Alletra",
           "gen": "Storage",
           "description": "HPE Alletra Storage MP X10000 Base Configuration",
-          "listPrice": null,
+          "listPrice": 1,
           "optionType": "CTO"
         }
       }
@@ -533,6 +551,33 @@
           "gen": "FC",
           "description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
           "listPrice": 19746,
+          "optionType": "CTO"
+        },
+        "R4G55B": {
+          "model": "SN3600B 32Gb 24/8 8-port 16Gb SW SFP+ FC Switch",
+          "formFactor": "Switch",
+          "family": "SAN",
+          "gen": "FC",
+          "description": "HPE SN3600B 32Gb 24/8 8-port 16Gb Short Wave SFP+ Fibre Channel Switch",
+          "listPrice": 13899,
+          "optionType": "CTO"
+        },
+        "R8P28A": {
+          "model": "SN3600B 32Gb 24/24 Power Pack+ 24-port 32Gb SW SFP28 FC Switch",
+          "formFactor": "Switch",
+          "family": "SAN",
+          "gen": "FC",
+          "description": "HPE SN3600B 32Gb 24/24 Power Pack+ 24-port 32Gb Short Wave SFP28 Fibre Channel Switch",
+          "listPrice": 54440,
+          "optionType": "CTO"
+        },
+        "R8P29A": {
+          "model": "SN3600B 32Gb 24/24 Power Pack+ 24-port 16Gb SW SFP+ FC Switch",
+          "formFactor": "Switch",
+          "family": "SAN",
+          "gen": "FC",
+          "description": "HPE SN3600B 32Gb 24/24 Power Pack+ 24-port 16Gb Short Wave SFP+ Fibre Channel Switch",
+          "listPrice": 43250,
           "optionType": "CTO"
         }
       }
@@ -753,7 +798,7 @@
       "family": "Synergy",
       "gen": "General",
       "description": "HPE Synergy 12000 Configure-to-order Frame Chassis",
-      "listPrice": null,
+      "listPrice": 6130,
       "optionType": "CTO"
     },
     "P68217-B21": {
@@ -836,7 +881,7 @@
       "family": "Alletra",
       "gen": "Storage",
       "description": "HPE Alletra Storage MP X10000 Base Configuration",
-      "listPrice": null,
+      "listPrice": 1,
       "optionType": "CTO"
     },
     "876852-B21": {
@@ -864,6 +909,87 @@
       "gen": "FC",
       "description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
       "listPrice": 19746,
+      "optionType": "CTO"
+    },
+    "P72174-B21": {
+      "model": "DL360 Gen12 4LFF",
+      "formFactor": "4LFF",
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "description": "HPE ProLiant Compute DL360 Gen12 4LFF NC Configure-to-order Server",
+      "optionType": "CTO",
+      "listPrice": 5342
+    },
+    "P72175-B21": {
+      "model": "DL360 Gen12 8SFF",
+      "formFactor": "8SFF",
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "description": "HPE ProLiant Compute DL360 Gen12 8SFF NC Configure-to-order Server",
+      "optionType": "CTO",
+      "listPrice": 5089
+    },
+    "P72176-B21": {
+      "model": "DL360 Gen12 10SFF/20EDSFF",
+      "formFactor": "10SFF/20EDSFF",
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "description": "HPE ProLiant Compute DL360 Gen12 10SFF/20EDSFF Hybrid NC Configure-to-order Server",
+      "optionType": "CTO",
+      "listPrice": 5022
+    },
+    "P52499-B21": {
+      "model": "DL360 Gen11 8SFF",
+      "formFactor": "8SFF",
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "description": "HPE ProLiant DL360 Gen11 8SFF NC CTO Server",
+      "listPrice": 5045,
+      "optionType": "CTO"
+    },
+    "P52498-B21": {
+      "model": "DL360 Gen11 4LFF",
+      "formFactor": "4LFF",
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "description": "HPE ProLiant DL360 Gen11 4LFF NC CTO Server",
+      "listPrice": 5045,
+      "optionType": "CTO"
+    },
+    "P52500-B21": {
+      "model": "DL360 Gen11 20EDSFF",
+      "formFactor": "20EDSFF",
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "description": "HPE ProLiant DL360 Gen11 20EDSFF CTO Server",
+      "listPrice": 5045,
+      "optionType": "CTO"
+    },
+    "R4G55B": {
+      "model": "SN3600B 32Gb 24/8 8-port 16Gb SW SFP+ FC Switch",
+      "formFactor": "Switch",
+      "family": "SAN",
+      "gen": "FC",
+      "description": "HPE SN3600B 32Gb 24/8 8-port 16Gb Short Wave SFP+ Fibre Channel Switch",
+      "listPrice": 13899,
+      "optionType": "CTO"
+    },
+    "R8P28A": {
+      "model": "SN3600B 32Gb 24/24 Power Pack+ 24-port 32Gb SW SFP28 FC Switch",
+      "formFactor": "Switch",
+      "family": "SAN",
+      "gen": "FC",
+      "description": "HPE SN3600B 32Gb 24/24 Power Pack+ 24-port 32Gb Short Wave SFP28 Fibre Channel Switch",
+      "listPrice": 54440,
+      "optionType": "CTO"
+    },
+    "R8P29A": {
+      "model": "SN3600B 32Gb 24/24 Power Pack+ 24-port 16Gb SW SFP+ FC Switch",
+      "formFactor": "Switch",
+      "family": "SAN",
+      "gen": "FC",
+      "description": "HPE SN3600B 32Gb 24/24 Power Pack+ 24-port 16Gb Short Wave SFP+ Fibre Channel Switch",
+      "listPrice": 43250,
       "optionType": "CTO"
     }
   },
@@ -1639,7 +1765,9 @@
       },
       "highPerfHeatsink": {
         "sku": "P48818-B21",
-        "alternateSkus": ["P74792-B21"],
+        "alternateSkus": [
+          "P74792-B21"
+        ],
         "canonicalGen12Sku": "P74792-B21",
         "name": "HPE ProLiant DL380 Gen12 High Performance Heatsink",
         "packagingModality": "PER_SOCKET_KIT",
@@ -1923,7 +2051,10 @@
         "sku": "P58465-B21",
         "name": "HPE ProLiant DL3X5 Gen11 2U Performance Fan Kit",
         "packagingModality": "MODULAR_PER_ROTOR",
-        "qtyPerCpu": { "1": 4, "2": 6 }
+        "qtyPerCpu": {
+          "1": 4,
+          "2": 6
+        }
       },
       "highPerfHeatsink": {
         "sku": "P58459-B21",
@@ -2014,108 +2145,296 @@
   ],
   "portfolio_products": {
     "DL380_Gen12": {
-      "family": "ProLiant", "gen": "Gen12", "formFactor": "8SFF", "uHeight": 2,
-      "baseSku": "P73282-B21", "model": "DL380 Gen12", "portalSearchQuery": "DL380 Gen12",
-      "aliases": ["\\bdl\\s*380\\b.*(?:gen\\s*12|gen12|\\bg\\s*12\\b|\\bg12\\b)", "dl380.*gen12"],
-      "excludeAliases": ["\\bdl\\s*380a\\b", "dl380a"]
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "formFactor": "8SFF",
+      "uHeight": 2,
+      "baseSku": "P73282-B21",
+      "model": "DL380 Gen12",
+      "portalSearchQuery": "DL380 Gen12",
+      "aliases": [
+        "\\bdl\\s*380\\b.*(?:gen\\s*12|gen12|\\bg\\s*12\\b|\\bg12\\b)",
+        "dl380.*gen12"
+      ],
+      "excludeAliases": [
+        "\\bdl\\s*380a\\b",
+        "dl380a"
+      ]
     },
     "DL380_Gen11": {
-      "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "uHeight": 2,
-      "baseSku": "P52534-B21", "model": "DL380 Gen11 8SFF", "portalSearchQuery": "DL380 Gen11",
-      "aliases": ["\\bdl\\s*380\\b.*(?:gen\\s*11|gen11|\\bg\\s*11\\b|\\bg11\\b)", "dl380.*gen11"],
-      "excludeAliases": ["\\bdl\\s*380a\\b", "dl380a"]
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "formFactor": "8SFF",
+      "uHeight": 2,
+      "baseSku": "P52534-B21",
+      "model": "DL380 Gen11 8SFF",
+      "portalSearchQuery": "DL380 Gen11",
+      "aliases": [
+        "\\bdl\\s*380\\b.*(?:gen\\s*11|gen11|\\bg\\s*11\\b|\\bg11\\b)",
+        "dl380.*gen11"
+      ],
+      "excludeAliases": [
+        "\\bdl\\s*380a\\b",
+        "dl380a"
+      ]
     },
     "DL380a_Gen12": {
-      "family": "ProLiant", "gen": "Gen12", "formFactor": "8DW/16SW", "uHeight": 4,
-      "baseSku": "P76706-B21", "model": "DL380a Gen12", "portalSearchQuery": "DL380a Gen12",
-      "aliases": ["\\bdl\\s*(?:384|380\\s*a)\\b", "dl380a", "dl384"]
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "formFactor": "8DW/16SW",
+      "uHeight": 4,
+      "baseSku": "P76706-B21",
+      "model": "DL380a Gen12",
+      "portalSearchQuery": "DL380a Gen12",
+      "aliases": [
+        "\\bdl\\s*(?:384|380\\s*a)\\b",
+        "dl380a",
+        "dl384"
+      ]
     },
     "DL360_Gen12": {
-      "family": "ProLiant", "gen": "Gen12", "formFactor": "10SFF/20EDSFF", "uHeight": 1,
-      "baseSku": "P72176-B21", "model": "DL360 Gen12", "portalSearchQuery": "DL360 Gen12",
-      "aliases": ["(?:\\bdl\\s*360\\b|dl360|360).*(?:gen\\s*12|gen12|\\bg\\s*12\\b|\\bg12\\b)"]
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "formFactor": "10SFF/20EDSFF",
+      "uHeight": 1,
+      "baseSku": "P72176-B21",
+      "model": "DL360 Gen12",
+      "portalSearchQuery": "DL360 Gen12",
+      "aliases": [
+        "(?:\\bdl\\s*360\\b|dl360|360).*(?:gen\\s*12|gen12|\\bg\\s*12\\b|\\bg12\\b)"
+      ]
     },
     "DL360_Gen11": {
-      "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "uHeight": 1,
-      "baseSku": "P52499-B21", "model": "DL360 Gen11 8SFF", "portalSearchQuery": "DL360 Gen11",
-      "aliases": ["(?:\\bdl\\s*360\\b|dl360|360).*(?:gen\\s*11|gen11|\\bg\\s*11\\b|\\bg11\\b)", "\\bdl\\s*360\\b", "dl360"],
-      "excludeAliases": ["\\b(?:gen\\s*1[2-9]|gen1[2-9]|g\\s*1[2-9]|g1[2-9])\\b"]
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "formFactor": "8SFF",
+      "uHeight": 1,
+      "baseSku": "P52499-B21",
+      "model": "DL360 Gen11 8SFF",
+      "portalSearchQuery": "DL360 Gen11",
+      "aliases": [
+        "(?:\\bdl\\s*360\\b|dl360|360).*(?:gen\\s*11|gen11|\\bg\\s*11\\b|\\bg11\\b)",
+        "\\bdl\\s*360\\b",
+        "dl360"
+      ],
+      "excludeAliases": [
+        "\\b(?:gen\\s*1[2-9]|gen1[2-9]|g\\s*1[2-9]|g1[2-9])\\b"
+      ]
     },
     "DL145_Gen11": {
-      "family": "ProLiant", "gen": "Gen11", "formFactor": "4EDSFF", "uHeight": 2,
-      "baseSku": "P71964-B21", "model": "DL145 Gen11", "portalSearchQuery": "DL145 Gen11",
-      "aliases": ["\\bdl\\s*145\\b", "dl145"]
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "formFactor": "4EDSFF",
+      "uHeight": 2,
+      "baseSku": "P71964-B21",
+      "model": "DL145 Gen11",
+      "portalSearchQuery": "DL145 Gen11",
+      "aliases": [
+        "\\bdl\\s*145\\b",
+        "dl145"
+      ]
     },
     "DL385_Gen11": {
-      "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "uHeight": 2,
-      "baseSku": "P53921-B21", "model": "DL385 Gen11", "portalSearchQuery": "DL385 Gen11",
-      "aliases": ["\\bdl\\s*385\\b", "dl385"]
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "formFactor": "8SFF",
+      "uHeight": 2,
+      "baseSku": "P53921-B21",
+      "model": "DL385 Gen11",
+      "portalSearchQuery": "DL385 Gen11",
+      "aliases": [
+        "\\bdl\\s*385\\b",
+        "dl385"
+      ]
     },
     "DL580_Gen12": {
-      "family": "ProLiant", "gen": "Gen12", "formFactor": "SFF", "uHeight": 4,
-      "baseSku": "P75399-B21", "model": "DL580 Gen12", "portalSearchQuery": "DL580 Gen12",
-      "aliases": ["\\bdl\\s*580\\b", "dl580"]
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "formFactor": "SFF",
+      "uHeight": 4,
+      "baseSku": "P75399-B21",
+      "model": "DL580 Gen12",
+      "portalSearchQuery": "DL580 Gen12",
+      "aliases": [
+        "\\bdl\\s*580\\b",
+        "dl580"
+      ]
     },
     "MSL3040_Tape": {
-      "family": "StoreEver", "gen": "Tape", "formFactor": "Rack", "uHeight": 3,
-      "baseSku": "Q6Q62C", "legacyBaseSkus": ["Q2R41A"], "model": "MSL3040 Tape", "portalSearchQuery": "MSL3040",
-      "aliases": ["\\bmsl\\s*3040\\b", "\\bmsl\\b", "\\btape\\s*library\\b", "\\btape\\b"]
+      "family": "StoreEver",
+      "gen": "Tape",
+      "formFactor": "Rack",
+      "uHeight": 3,
+      "baseSku": "Q6Q62C",
+      "legacyBaseSkus": [
+        "Q2R41A"
+      ],
+      "model": "MSL3040 Tape",
+      "portalSearchQuery": "MSL3040",
+      "aliases": [
+        "\\bmsl\\s*3040\\b",
+        "\\bmsl\\b",
+        "\\btape\\s*library\\b",
+        "\\btape\\b"
+      ]
     },
     "GX5000_General_RACK": {
-      "family": "Cray", "gen": "General", "formFactor": "Rack", "uHeight": 42,
-      "baseSku": "P57100-B21", "model": "GX5000 General RACK", "portalSearchQuery": "GX5000",
-      "aliases": ["\\bcray\\b", "\\bgx\\s*5000\\b", "\\bgx5000\\b"]
+      "family": "Cray",
+      "gen": "General",
+      "formFactor": "Rack",
+      "uHeight": 42,
+      "baseSku": "P57100-B21",
+      "model": "GX5000 General RACK",
+      "portalSearchQuery": "GX5000",
+      "aliases": [
+        "\\bcray\\b",
+        "\\bgx\\s*5000\\b",
+        "\\bgx5000\\b"
+      ]
     },
     "Synergy_12000_Frame": {
-      "family": "Synergy", "gen": "General", "formFactor": "Frame", "uHeight": 10,
-      "baseSku": "P51174-B21", "model": "Synergy 12000 Frame", "portalSearchQuery": "Synergy 12000",
-      "aliases": ["\\bsynergy\\s*12000\\b", "synergy.*frame", "\\bp51174-b21\\b"],
-      "excludeAliases": ["\\b(service|support)\\b"]
+      "family": "Synergy",
+      "gen": "General",
+      "formFactor": "Frame",
+      "uHeight": 10,
+      "baseSku": "P51174-B21",
+      "model": "Synergy 12000 Frame",
+      "portalSearchQuery": "Synergy 12000",
+      "aliases": [
+        "\\bsynergy\\s*12000\\b",
+        "synergy.*frame",
+        "\\bp51174-b21\\b"
+      ],
+      "excludeAliases": [
+        "\\b(service|support)\\b"
+      ]
     },
     "SY480_Gen12": {
-      "family": "Synergy", "gen": "Gen12", "formFactor": "Compute Module", "uHeight": 0,
-      "baseSku": "P68217-B21", "model": "SY480 Gen12", "portalSearchQuery": "Synergy 480 Gen12",
-      "aliases": ["\\bsy\\s*480\\b", "sy480", "synergy\\s*480", "synergy.*(?:blade|compute)"]
+      "family": "Synergy",
+      "gen": "Gen12",
+      "formFactor": "Compute Module",
+      "uHeight": 0,
+      "baseSku": "P68217-B21",
+      "model": "SY480 Gen12",
+      "portalSearchQuery": "Synergy 480 Gen12",
+      "aliases": [
+        "\\bsy\\s*480\\b",
+        "sy480",
+        "synergy\\s*480",
+        "synergy.*(?:blade|compute)"
+      ]
     },
     "SY100Gb_F32_Module": {
-      "family": "Synergy", "gen": "General", "formFactor": "Interconnect Module", "uHeight": 0,
-      "baseSku": "867796-B21", "model": "SY100Gb F32 Module", "portalSearchQuery": "Synergy Virtual Connect SE 100Gb F32",
-      "aliases": ["(?:synergy\\s+)?(?:vc\\s*)?100\\s*gb\\s*f32", "synergy.*virtual\\s*connect"],
-      "excludeAliases": ["\\b(service|support|cable|transceiver)\\b"]
+      "family": "Synergy",
+      "gen": "General",
+      "formFactor": "Interconnect Module",
+      "uHeight": 0,
+      "baseSku": "867796-B21",
+      "model": "SY100Gb F32 Module",
+      "portalSearchQuery": "Synergy Virtual Connect SE 100Gb F32",
+      "aliases": [
+        "(?:synergy\\s+)?(?:vc\\s*)?100\\s*gb\\s*f32",
+        "synergy.*virtual\\s*connect"
+      ],
+      "excludeAliases": [
+        "\\b(service|support|cable|transceiver)\\b"
+      ]
     },
     "Synergy_4Port_Frame_Link_Module": {
-      "family": "Synergy", "gen": "General", "formFactor": "Management Module", "uHeight": 0,
-      "baseSku": "876852-B21", "model": "Synergy 4-port Frame Link Module", "portalSearchQuery": "Synergy 4-port Frame Link Module",
-      "aliases": ["\\bframe\\s*link\\s*module\\b", "synergy.*4[\\s-]*port\\s*(?:flm|frame\\s*link)", "\\b876852-b21\\b"],
-      "excludeAliases": ["\\b(service|support)\\b"]
+      "family": "Synergy",
+      "gen": "General",
+      "formFactor": "Management Module",
+      "uHeight": 0,
+      "baseSku": "876852-B21",
+      "model": "Synergy 4-port Frame Link Module",
+      "portalSearchQuery": "Synergy 4-port Frame Link Module",
+      "aliases": [
+        "\\bframe\\s*link\\s*module\\b",
+        "synergy.*4[\\s-]*port\\s*(?:flm|frame\\s*link)",
+        "\\b876852-b21\\b"
+      ],
+      "excludeAliases": [
+        "\\b(service|support)\\b"
+      ]
     },
     "Synergy_Brocade_64Gb_FC_Module": {
-      "family": "Synergy", "gen": "General", "formFactor": "FC Switch Module", "uHeight": 0,
-      "baseSku": "P77653-B21", "model": "Brocade 64Gb FC Module for Synergy", "portalSearchQuery": "Brocade 64Gb FC Module for Synergy",
-      "aliases": ["\\bbrocade\\s*64\\s*gb.*synergy", "synergy.*brocade\\s*64\\s*gb", "\\bp77653-b21\\b"],
-      "excludeAliases": ["\\b(service|support|transceiver|license|upgrade)\\b"]
+      "family": "Synergy",
+      "gen": "General",
+      "formFactor": "FC Switch Module",
+      "uHeight": 0,
+      "baseSku": "P77653-B21",
+      "model": "Brocade 64Gb FC Module for Synergy",
+      "portalSearchQuery": "Brocade 64Gb FC Module for Synergy",
+      "aliases": [
+        "\\bbrocade\\s*64\\s*gb.*synergy",
+        "synergy.*brocade\\s*64\\s*gb",
+        "\\bp77653-b21\\b"
+      ],
+      "excludeAliases": [
+        "\\b(service|support|transceiver|license|upgrade)\\b"
+      ]
     },
     "Alletra_MP_B10000": {
-      "family": "Alletra", "gen": "Storage", "formFactor": "Array", "uHeight": 4,
-      "baseSku": "S0B84A", "switchlessBaseSku": "S0B84A", "switchedBaseSku": "S1R06A", "chassisSku": "R7C75A", "jbofSku": "S1J10A",
-      "model": "HPE Alletra Storage MP B10000", "portalSearchQuery": "Alletra Storage MP B10000",
-      "aliases": ["\\bb10(?:000|100|120|130|140|200|230|240)\\b", "\\balletra(?:\\s+storage)?(?:\\s+mp)?\\s+10k\\b", "\\bs0b84a\\b", "\\bs1r06a\\b"]
+      "family": "Alletra",
+      "gen": "Storage",
+      "formFactor": "Array",
+      "uHeight": 4,
+      "baseSku": "S0B84A",
+      "switchlessBaseSku": "S0B84A",
+      "switchedBaseSku": "S1R06A",
+      "chassisSku": "R7C75A",
+      "jbofSku": "S1J10A",
+      "model": "HPE Alletra Storage MP B10000",
+      "portalSearchQuery": "Alletra Storage MP B10000",
+      "aliases": [
+        "\\bb10(?:000|100|120|130|140|200|230|240)\\b",
+        "\\balletra(?:\\s+storage)?(?:\\s+mp)?\\s+10k\\b",
+        "\\bs0b84a\\b",
+        "\\bs1r06a\\b"
+      ]
     },
     "Alletra_MP_X10000": {
-      "family": "Alletra", "gen": "Storage", "formFactor": "Array", "uHeight": 4,
-      "baseSku": "S3L12A", "chassisSku": "R7C75A", "model": "HPE Alletra Storage MP X10000", "portalSearchQuery": "Alletra Storage MP X10000",
-      "aliases": ["\\bx10(?:000|250)\\b", "\\bs3l12a\\b", "\\bs3l13a\\b"]
+      "family": "Alletra",
+      "gen": "Storage",
+      "formFactor": "Array",
+      "uHeight": 4,
+      "baseSku": "S3L12A",
+      "chassisSku": "R7C75A",
+      "model": "HPE Alletra Storage MP X10000",
+      "portalSearchQuery": "Alletra Storage MP X10000",
+      "aliases": [
+        "\\bx10(?:000|250)\\b",
+        "\\bs3l12a\\b",
+        "\\bs3l13a\\b"
+      ]
     },
     "Alletra_Storage_System": {
-      "family": "Alletra", "gen": "Storage", "formFactor": "Array", "uHeight": 4,
-      "baseSku": "R0Q35A", "model": "Alletra Storage System", "portalSearchQuery": "Alletra",
-      "aliases": ["\\balletra\\b"]
+      "family": "Alletra",
+      "gen": "Storage",
+      "formFactor": "Array",
+      "uHeight": 4,
+      "baseSku": "R0Q35A",
+      "model": "Alletra Storage System",
+      "portalSearchQuery": "Alletra",
+      "aliases": [
+        "\\balletra\\b"
+      ]
     },
     "SN3600B_FC": {
-      "family": "SAN", "gen": "FC", "formFactor": "Switch", "uHeight": 1,
-      "baseSku": "R7R97A", "model": "SN3600B FC Switch", "portalSearchQuery": "SN3600B",
-      "aliases": ["\\bsn\\s*3600b\\b", "\\bsn3600b\\b"],
-      "excludeAliases": ["\\b(service|support|cable|transceiver|license|upgrade)\\b"]
+      "family": "SAN",
+      "gen": "FC",
+      "formFactor": "Switch",
+      "uHeight": 1,
+      "baseSku": "R7R97A",
+      "model": "SN3600B FC Switch",
+      "portalSearchQuery": "SN3600B",
+      "aliases": [
+        "\\bsn\\s*3600b\\b",
+        "\\bsn3600b\\b"
+      ],
+      "excludeAliases": [
+        "\\b(service|support|cable|transceiver|license|upgrade)\\b"
+      ]
     }
   },
   "SN3600B_FC": {
@@ -2127,36 +2446,136 @@
     "productId": "SN3600B_FC"
   },
   "storage_role_catalog": {
-    "backplaneOcpSignalSkus": ["P72600-B21", "P72603-B21"],
-    "backplanePcieSignalSkus": ["P72604-B21", "P72602-B21", "P76456-B21", "P76453-B21", "P48832-B21"],
-    "sidebandEnablementSkus": ["P48918-B21", "P76700-B21"],
-    "stackingBackplaneSkus": ["P72223-B21"],
-    "smartStorageBatterySkus": ["P01366-B21", "P01367-B21"],
-    "bootControllerSkus": ["P78279-B21"],
-    "vrocLicenseSkus": ["R7J57A", "S3Q19A"],
+    "backplaneOcpSignalSkus": [
+      "P72600-B21",
+      "P72603-B21"
+    ],
+    "backplanePcieSignalSkus": [
+      "P72604-B21",
+      "P72602-B21",
+      "P76456-B21",
+      "P76453-B21",
+      "P48832-B21"
+    ],
+    "sidebandEnablementSkus": [
+      "P48918-B21",
+      "P76700-B21"
+    ],
+    "stackingBackplaneSkus": [
+      "P72223-B21"
+    ],
+    "smartStorageBatterySkus": [
+      "P01366-B21",
+      "P01367-B21"
+    ],
+    "bootControllerSkus": [
+      "P78279-B21"
+    ],
+    "vrocLicenseSkus": [
+      "R7J57A",
+      "S3Q19A"
+    ],
     "raidFioSettingSkus": {
-      "raid1": ["339778-B21"],
-      "customerDefined": ["389692-B21"],
-      "raid5": ["339779-B21"],
-      "raid5Sp": ["339780-B21"]
+      "raid1": [
+        "339778-B21"
+      ],
+      "customerDefined": [
+        "389692-B21"
+      ],
+      "raid5": [
+        "339779-B21"
+      ],
+      "raid5Sp": [
+        "339780-B21"
+      ]
     }
   },
   "kit_routing": {
     "matchers": [
-      { "familyPattern": "proliant", "genPattern": "gen12", "modelPattern": "dl380a", "kitKey": "ProLiant_DL380a_Gen12" },
-      { "familyPattern": "proliant", "genPattern": "gen12", "modelPattern": "dl360", "kitKey": "ProLiant_DL360_Gen12" },
-      { "familyPattern": "proliant", "genPattern": "gen11", "modelPattern": "dl145", "kitKey": "ProLiant_DL145_Gen11" },
-      { "familyPattern": "proliant", "genPattern": "gen11", "modelPattern": "dl360", "kitKey": "ProLiant_DL360_Gen11" },
-      { "familyPattern": "proliant", "genPattern": "gen11", "modelPattern": "dl385", "kitKey": "ProLiant_DL385_Gen11" },
-      { "familyPattern": "proliant", "genPattern": "gen12", "modelPattern": "dl580", "kitKey": "ProLiant_DL580_Gen12" },
-      { "familyPattern": "synergy", "genPattern": "gen12", "modelPattern": "*", "kitKey": "Synergy_Gen12" },
-      { "familyPattern": "synergy", "genPattern": "*", "modelPattern": "*", "kitKey": "Synergy_General" },
-      { "familyPattern": "alletra", "genPattern": "*", "modelPattern": "*", "kitKey": "Alletra_Storage" },
-      { "familyPattern": "storeever", "genPattern": "*", "modelPattern": "*", "kitKey": "StoreEver_Tape" },
-      { "familyPattern": "cray", "genPattern": "*", "modelPattern": "*", "kitKey": "Cray_General" },
-      { "familyPattern": "proliant", "genPattern": "gen12", "modelPattern": "*", "kitKey": "ProLiant_Gen12" },
-      { "familyPattern": "proliant", "genPattern": "gen11", "modelPattern": "*", "kitKey": "ProLiant_Gen11" },
-      { "familyPattern": "*", "genPattern": "*", "modelPattern": "*", "kitKey": "DEFAULT" }
+      {
+        "familyPattern": "proliant",
+        "genPattern": "gen12",
+        "modelPattern": "dl380a",
+        "kitKey": "ProLiant_DL380a_Gen12"
+      },
+      {
+        "familyPattern": "proliant",
+        "genPattern": "gen12",
+        "modelPattern": "dl360",
+        "kitKey": "ProLiant_DL360_Gen12"
+      },
+      {
+        "familyPattern": "proliant",
+        "genPattern": "gen11",
+        "modelPattern": "dl145",
+        "kitKey": "ProLiant_DL145_Gen11"
+      },
+      {
+        "familyPattern": "proliant",
+        "genPattern": "gen11",
+        "modelPattern": "dl360",
+        "kitKey": "ProLiant_DL360_Gen11"
+      },
+      {
+        "familyPattern": "proliant",
+        "genPattern": "gen11",
+        "modelPattern": "dl385",
+        "kitKey": "ProLiant_DL385_Gen11"
+      },
+      {
+        "familyPattern": "proliant",
+        "genPattern": "gen12",
+        "modelPattern": "dl580",
+        "kitKey": "ProLiant_DL580_Gen12"
+      },
+      {
+        "familyPattern": "synergy",
+        "genPattern": "gen12",
+        "modelPattern": "*",
+        "kitKey": "Synergy_Gen12"
+      },
+      {
+        "familyPattern": "synergy",
+        "genPattern": "*",
+        "modelPattern": "*",
+        "kitKey": "Synergy_General"
+      },
+      {
+        "familyPattern": "alletra",
+        "genPattern": "*",
+        "modelPattern": "*",
+        "kitKey": "Alletra_Storage"
+      },
+      {
+        "familyPattern": "storeever",
+        "genPattern": "*",
+        "modelPattern": "*",
+        "kitKey": "StoreEver_Tape"
+      },
+      {
+        "familyPattern": "cray",
+        "genPattern": "*",
+        "modelPattern": "*",
+        "kitKey": "Cray_General"
+      },
+      {
+        "familyPattern": "proliant",
+        "genPattern": "gen12",
+        "modelPattern": "*",
+        "kitKey": "ProLiant_Gen12"
+      },
+      {
+        "familyPattern": "proliant",
+        "genPattern": "gen11",
+        "modelPattern": "*",
+        "kitKey": "ProLiant_Gen11"
+      },
+      {
+        "familyPattern": "*",
+        "genPattern": "*",
+        "modelPattern": "*",
+        "kitKey": "DEFAULT"
+      }
     ]
   }
 }
