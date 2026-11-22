@@ -40,12 +40,12 @@ function MacroStatusBadge({ status }) {
 }
 
 function MacroViewSwitcher({ viewMode, setViewMode }) {
-  const getBtnClass = (mode) => `px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+  const getBtnClass = (mode) => `px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 ${
     viewMode === mode ? 'bg-white text-blue-700 shadow-2xs font-extrabold' : 'text-slate-500 hover:text-slate-800'
   }`;
 
   return (
-    <div aria-label="Workflow views" role="group" className="grid grid-cols-2 sm:flex sm:flex-wrap gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
+    <div aria-label="Workflow views" role="group" className="grid grid-cols-2 sm:inline-flex sm:flex-nowrap gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold shrink-0">
       <button aria-pressed={viewMode === 'simulator'} onClick={() => setViewMode('simulator')} className={getBtnClass('simulator')}>
         <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Workflow Simulation
       </button>
@@ -69,7 +69,7 @@ function StageSubstepBox({ isActive, IconComponent, title, subtitle }) {
     }`}>
       <IconComponent className={`w-4 h-4 mb-1.5 ${isActive ? 'text-blue-600' : 'text-slate-400'}`} />
       <h4 className="text-[11px] font-bold text-slate-800">{title}</h4>
-      <p className="text-[10px] text-slate-500 truncate">{subtitle}</p>
+      <p className="text-[10px] text-slate-500 line-clamp-2 leading-snug" title={subtitle}>{subtitle}</p>
     </div>
   );
 }
@@ -84,8 +84,9 @@ function buildStageOneSubsteps(evalResults, hasEval, isEvaluating, activeProgres
   const isRunning = id => deriveEvidenceStatus(id, { isTaskRunning: isEvaluating, activeProgress }) === 'RUNNING';
   const parsedCount = evalResults?.items?.length;
   const tiersCount = evalResults?.conflictGraph?.rankedSolutions?.length ?? 0;
+  const violationWord = violationsCount === 1 ? 'violation' : 'violations';
   const mathSubtitle = hasEval
-    ? (evalResults?.isMathClean === true ? 'Local checks reported clean' : `${violationsCount} reported violations; review check outcomes`)
+    ? (evalResults?.isMathClean === true ? 'Local checks reported clean' : `${violationsCount} reported ${violationWord}; review outcomes`)
     : 'Thermal / Power / RAM';
 
   return [

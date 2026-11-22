@@ -41,7 +41,7 @@ function SimulatorPlaybackControls({
   const isAtStart = currentStepIdx === 0;
   const isAtEnd = currentStepIdx === ALL_STAGES.length - 1;
   const isHighConf = confidenceScore >= 85;
-  let playBtnLabel = '▶ Run Autonomous Workflow';
+  let playBtnLabel = 'Run Autonomous Workflow';
   if (isPlaying) playBtnLabel = 'Pause Simulation';
   else if (isAtEnd) playBtnLabel = 'Replay Workflow';
 

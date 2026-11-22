@@ -183,6 +183,30 @@ function CatalogMainView({
   );
 }
 
+function useCatalogModalEscape(selectedSkuTrend, selectedSkuAudit, onCloseTrend, onCloseAudit) {
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key !== 'Escape') return;
+      if (selectedSkuTrend) onCloseTrend();
+      if (selectedSkuAudit) onCloseAudit();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedSkuTrend, selectedSkuAudit, onCloseTrend, onCloseAudit]);
+}
+
+function useCatalogGlobalSearchEffect(globalSearchTerm, catalogData, setQuery, setViewMode, setSearchResults, tableContainerRef) {
+  useEffect(() => {
+    if (!globalSearchTerm?.trim()) return;
+    setQuery(globalSearchTerm);
+    setViewMode('table');
+    if (catalogData) setSearchResults(catalogIndexer.search(globalSearchTerm));
+    requestAnimationFrame(() => {
+      tableContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }, [globalSearchTerm, catalogData, setQuery, setViewMode, setSearchResults, tableContainerRef]);
+}
+
 export default function CatalogExplorer({
   catalogData,
   chassisName,
@@ -212,6 +236,7 @@ export default function CatalogExplorer({
   const [loadingAudit, setLoadingAudit] = useState(false);
   const historyRequest = useRef(0);
   const auditRequest = useRef(0);
+  const tableContainerRef = useRef(null);
   useEffect(() => {
     historyRequest.current++;
     auditRequest.current++;
@@ -225,21 +250,12 @@ export default function CatalogExplorer({
     setSearchResults(null);
   }, [selectedChassis]);
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key !== 'Escape') return;
-      if (selectedSkuTrend) {
-        setSelectedSkuTrend(null);
-        setRealPriceTrail([]);
-      }
-      if (selectedSkuAudit) {
-        setSelectedSkuAudit(null);
-        setSkuAuditData(null);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedSkuTrend, selectedSkuAudit]);
+  useCatalogModalEscape(
+    selectedSkuTrend,
+    selectedSkuAudit,
+    () => { setSelectedSkuTrend(null); setRealPriceTrail([]); },
+    () => { setSelectedSkuAudit(null); setSkuAuditData(null); }
+  );
 
   useEffect(() => {
     if (!catalogData) return;
@@ -250,14 +266,7 @@ export default function CatalogExplorer({
     }
   }, [catalogData, initialSearchQuery, globalSearchTerm]);
 
-  useEffect(() => {
-    if (globalSearchTerm && globalSearchTerm.trim()) {
-      setQuery(globalSearchTerm);
-      if (catalogData) {
-        setSearchResults(catalogIndexer.search(globalSearchTerm));
-      }
-    }
-  }, [globalSearchTerm, catalogData]);
+  useCatalogGlobalSearchEffect(globalSearchTerm, catalogData, setQuery, setViewMode, setSearchResults, tableContainerRef);
 
   const handleQueryChange = (e) => {
     const val = e.target.value;
@@ -339,23 +348,27 @@ export default function CatalogExplorer({
         availableSubCategories={availableSubCategories}
       />
 
-      <CatalogChecksumBanner
-        showOnlyChanges={showOnlyChanges}
-        incrStats={incrStats}
-        allSkusCount={allSkus.length}
-        changedCount={changedCount}
-      />
+      {viewMode === 'table' && (
+        <CatalogChecksumBanner
+          showOnlyChanges={showOnlyChanges}
+          incrStats={incrStats}
+          allSkusCount={allSkus.length}
+          changedCount={changedCount}
+        />
+      )}
 
-      <CatalogMainView
-        viewMode={viewMode}
-        catalogData={catalogData}
-        chassisDir={chassisDir}
-        chassisName={chassisName}
-        displayedSkus={displayedSkus}
-        formatPrice={formatCatalogPrice}
-        onOpenSkuAudit={handleOpenSkuAudit}
-        onOpenTrend={handleOpenTrend}
-      />
+      <div ref={tableContainerRef} className="scroll-mt-28">
+        <CatalogMainView
+          viewMode={viewMode}
+          catalogData={catalogData}
+          chassisDir={chassisDir}
+          chassisName={chassisName}
+          displayedSkus={displayedSkus}
+          formatPrice={formatCatalogPrice}
+          onOpenSkuAudit={handleOpenSkuAudit}
+          onOpenTrend={handleOpenTrend}
+        />
+      </div>
 
       <PriceTrendModal
         selectedSkuTrend={selectedSkuTrend}

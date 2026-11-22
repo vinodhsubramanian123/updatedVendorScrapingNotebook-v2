@@ -19,8 +19,8 @@ function getNlmBadgePresentation(status, metrics, isRefreshing) {
   };
   const labels = {
     CHECKING: 'Checking MCP...',
-    HEALTHY: 'NotebookLM Connection Ready',
-    STANDBY: 'NotebookLM (Local RAG)'
+    HEALTHY: 'NotebookLM Ready',
+    STANDBY: 'NotebookLM Local'
   };
   let tooltipText = typeof status.raw === 'string' ? status.raw : 'Error connecting to Gemini NotebookLM';
   if (status.state === 'HEALTHY') {
@@ -53,15 +53,16 @@ export default function NotebookLmHealthBadge({ onOpenRag }) {
   const [metrics, setMetrics] = useState({ avgNlmResponseTimeMs: null, nlmAgreementIndex: null });
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const checkHealth = async () => {
+  const checkHealth = async (signal, force = false) => {
     setIsRefreshing(true);
     try {
-      const res = await fetch('/api/test-notebooklm');
+      const res = await fetch(force ? '/api/test-notebooklm?force=1' : '/api/test-notebooklm', { signal });
       const data = await res.json();
+      if (signal?.aborted) return;
       setStatus(parseNlmHealthResponse(data));
 
-      const consultRes = await fetch('/api/notebooklm-consultations');
-      if (consultRes.ok) {
+      const consultRes = await fetch('/api/notebooklm-consultations', { signal });
+      if (consultRes.ok && !signal?.aborted) {
         const cData = await consultRes.json();
         setMetrics({
           avgNlmResponseTimeMs: cData.avgNlmResponseTimeMs ?? null,
@@ -69,20 +70,26 @@ export default function NotebookLmHealthBadge({ onOpenRag }) {
         });
       }
     } catch (err) {
+      if (err?.name === 'AbortError' || signal?.aborted) return;
       setStatus({ state: 'OFFLINE', mode: 'OFFLINE', raw: err.message });
+    } finally {
+      if (!signal?.aborted) setIsRefreshing(false);
     }
-    setIsRefreshing(false);
   };
 
   const handleClick = () => {
-    checkHealth();
+    checkHealth(undefined, true);
     if (onOpenRag) onOpenRag();
   };
 
   useEffect(() => {
-    checkHealth();
-    const interval = setInterval(checkHealth, 30000);
-    return () => clearInterval(interval);
+    const controller = new AbortController();
+    checkHealth(controller.signal, false);
+    const interval = setInterval(() => checkHealth(controller.signal, false), 45000);
+    return () => {
+      controller.abort();
+      clearInterval(interval);
+    };
   }, []);
 
   const { styleClass, label, tooltipText, icon } = getNlmBadgePresentation(status, metrics, isRefreshing);
@@ -92,13 +99,13 @@ export default function NotebookLmHealthBadge({ onOpenRag }) {
       data-testid="notebooklm-btn"
       onClick={handleClick}
       title={tooltipText}
-      className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border transition-all hover:shadow-sm ${styleClass}`}
+      className={`flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border transition-colors hover:shadow-sm whitespace-nowrap shrink-0 min-w-[152px] cursor-pointer ${styleClass}`}
     >
       {icon}
       <span className="flex items-center gap-1">{label}</span>
 
       {status.state === 'HEALTHY' && metrics.avgNlmResponseTimeMs > 0 && (
-        <span className="text-[10px] font-mono font-bold text-blue-600 bg-blue-100/80 px-1.5 py-0.2 rounded border border-blue-200/50">
+        <span className="text-[10px] font-mono font-bold text-blue-600 bg-blue-100/80 px-1.5 rounded border border-blue-200/50">
           ~{metrics.avgNlmResponseTimeMs}ms
         </span>
       )}

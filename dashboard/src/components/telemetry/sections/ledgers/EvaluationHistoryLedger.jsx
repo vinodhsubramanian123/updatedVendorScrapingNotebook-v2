@@ -1,5 +1,6 @@
 import React from 'react';
 import { AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { formatDuration, formatBoqFileName } from '../../../../utils/formatters';
 
 export default function EvaluationHistoryLedger({ history = [] }) {
   return (
@@ -10,7 +11,7 @@ export default function EvaluationHistoryLedger({ history = [] }) {
           <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
             <tr>
               <th className="px-4 py-2.5">Timestamp</th>
-              <th className="px-4 py-2.5">BOQ File</th>
+              <th className="px-4 py-2.5">BOQ Input</th>
               <th className="px-4 py-2.5">Chassis Model</th>
               <th className="px-4 py-2.5">Confidence</th>
               <th className="px-4 py-2.5">Violations / Warnings</th>
@@ -27,20 +28,22 @@ export default function EvaluationHistoryLedger({ history = [] }) {
             ) : (
               history.map((entry, idx) => (
                 <tr key={idx} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-4 py-2 text-slate-500 font-mono text-[11px]">
+                  <td className="px-4 py-2 text-slate-500 font-mono text-[11px] whitespace-nowrap">
                     {new Date(entry.timestamp).toLocaleString()}
                   </td>
-                  <td className="px-4 py-2 font-semibold text-slate-800">{entry.boqFile || 'Raw Text Paste'}</td>
-                  <td className="px-4 py-2 text-slate-600">{entry.chassisModel}</td>
-                  <td className="px-4 py-2">
+                  <td className="px-4 py-2 font-semibold text-slate-800 max-w-[240px] truncate" title={entry.boqFile || 'Inline BOQ Input'}>
+                    {formatBoqFileName(entry.boqFile)}
+                  </td>
+                  <td className="px-4 py-2 text-slate-600 whitespace-nowrap">{entry.chassisModel}</td>
+                  <td className="px-4 py-2 whitespace-nowrap">
                     <span className={`badge ${entry.confidenceScore >= 0.75 ? 'badge-emerald' : 'badge-amber'}`}>
                       {Math.round(entry.confidenceScore * 100)}%
                     </span>
                   </td>
-                  <td className="px-4 py-2">
+                  <td className="px-4 py-2 whitespace-nowrap">
                     {entry.criticalViolationsCount > 0 ? (
                       <span className="text-rose-600 font-bold flex items-center gap-1">
-                        <AlertTriangle className="w-3 h-3" /> {entry.criticalViolationsCount} Violations
+                        <AlertTriangle className="w-3 h-3" /> {entry.criticalViolationsCount} {entry.criticalViolationsCount === 1 ? 'Violation' : 'Violations'}
                       </span>
                     ) : (
                       <span className="text-emerald-600 font-bold flex items-center gap-1">
@@ -48,8 +51,8 @@ export default function EvaluationHistoryLedger({ history = [] }) {
                       </span>
                     )}
                   </td>
-                  <td className="px-4 py-2 text-slate-500 font-mono text-[11px]">
-                    {entry.durationMs ? `${entry.durationMs}ms` : '<100ms'}
+                  <td className="px-4 py-2 text-slate-500 font-mono text-[11px] whitespace-nowrap">
+                    {formatDuration(entry.durationMs)}
                   </td>
                 </tr>
               ))

@@ -1,17 +1,23 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { History, ShieldCheck, Tag, X } from 'lucide-react';
 
 export default function SkuAuditModal({ selectedSkuAudit, onClose, loadingAudit, skuAuditData }) {
   if (!selectedSkuAudit) return null;
 
-  return (
-    <div 
-      className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+  const modal = (
+    <div
+      className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="bg-white rounded-2xl p-6 max-w-2xl w-full shadow-2xl border border-slate-200 max-h-[85vh] overflow-y-auto">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="SKU Data Layer Versioning & Mutation Audit"
+        className="bg-white rounded-2xl p-6 max-w-2xl w-full shadow-2xl border border-slate-200 max-h-[85vh] overflow-y-auto"
+      >
         <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
           <div>
             <div className="flex items-center gap-2">
@@ -109,4 +115,6 @@ export default function SkuAuditModal({ selectedSkuAudit, onClose, loadingAudit,
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined' ? createPortal(modal, document.body) : modal;
 }

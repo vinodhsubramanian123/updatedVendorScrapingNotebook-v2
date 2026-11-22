@@ -26,7 +26,7 @@ export default function KpiMetricsGrid({
     : (history.length > 0 ? Math.max(1, history.length) : '—');
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 mb-6">
       <div
         className="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-3 cursor-pointer hover:border-blue-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 w-full shadow-sm animate-fade-in-up stagger-1"
         onClick={onOpenEvaluations}

@@ -103,13 +103,24 @@ function SubcategoryBoundsSection({ activeSubcategories }) {
               <p className="text-xs font-extrabold text-slate-900 truncate mt-1" title={sc.subCategory}>
                 {sc.subCategory}
               </p>
-              <div className="mt-2.5 flex items-center justify-between">
-                <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${isUnlimited ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-800'}`}>
-                  {sc.constraint || (sem === 'REQUIRED' ? 'Required' : 'No Limit')}
-                </span>
-                <span className="text-[11px] font-black text-slate-700">
-                  {hasFiniteMax ? `Max ${sc.maxQty}` : (sem === 'REQUIRED' ? 'Required' : '—')}
-                </span>
+              <div className="mt-2.5 flex items-center justify-between gap-2">
+                {(() => {
+                  const rawConstraint = sc.constraint || (sem === 'REQUIRED' ? 'Required' : 'No Limit');
+                  const maxLabel = hasFiniteMax ? `Max ${sc.maxQty}` : (sem === 'REQUIRED' ? 'Required' : '—');
+                  const isDuplicate = rawConstraint.trim().toLowerCase() === maxLabel.trim().toLowerCase();
+                  return (
+                    <>
+                      <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full truncate ${isUnlimited ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-800'}`}>
+                        {rawConstraint}
+                      </span>
+                      {!isDuplicate && (
+                        <span className="text-[11px] font-black text-slate-700 whitespace-nowrap shrink-0">
+                          {maxLabel}
+                        </span>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             </div>
           );
@@ -228,7 +239,7 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-[11px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
             <Database className="w-3.5 h-3.5 text-slate-500" />
-            Source: <span className="text-slate-900 font-extrabold truncate max-w-[150px]">{sourceFile.split('/').pop()}</span>
+            Source: <span className="text-slate-900 font-extrabold truncate max-w-[200px]" title={sourceFile.split(/[/\\]/).pop()}>{sourceFile.split(/[/\\]/).pop()}</span>
           </span>
           {isFallback && (
             <span className="text-[10px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded">
@@ -290,7 +301,7 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
 
       <SubcategoryBoundsSection activeSubcategories={activeSubcategories} />
 
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white/95 backdrop-blur-md p-4 rounded-xl border border-slate-200 sticky top-[238px] z-20 shadow-xs">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white/95 p-4 rounded-xl border border-slate-200 shadow-xs">
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5 stroke-[2.25px]" />
           <input
@@ -389,7 +400,7 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
           <p className="font-extrabold text-slate-700">How the HPE ProLiant AI Studio Rule Engine Evaluates Vendor BOM Quotes</p>
           <p className="mt-1">
             The rules displayed on this dashboard are dynamically compiled during active catalog scraping of the HPE Partner Portal.
-            When you upload a customer quote under the **BOQ Evaluator** or submit a reconciled quote under **Partner Reconciliation**,
+            When you upload a customer quote under the <strong>BOQ Evaluator</strong> or submit a reconciled quote under <strong>Partner Reconciliation</strong>,
             the deterministic rules engine computes multi-dimensional aspect algebra (calculating heat thermal TDP limits, riser routing slot configurations, and power electrical draw)
             prior to submitting candidate variations.
             If portal validation raises any regional substitutions or unhandled dependencies, the system creates a taxonomy-scoped delta loop, preserving the learned rules in the dashboard for continuous improvement.

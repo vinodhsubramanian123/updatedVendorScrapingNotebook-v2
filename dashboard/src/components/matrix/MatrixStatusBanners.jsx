@@ -1,6 +1,7 @@
 import React from 'react';
 import ValueEngineeringPanel from './ValueEngineeringPanel';
 import { deriveEvidenceStates } from '../../services/exportEligibility.js';
+import { humanizeEnum } from '../../utils/formatters.js';
 
 function DeliveryAuthBanner({ authState, customerDisposition }) {
   if (authState.state === 'BLOCKED') {
@@ -40,14 +41,14 @@ function EvidenceStatesBar({ evidence, authState }) {
   return (
     <div className="p-3 rounded-xl border border-slate-200 bg-white/80 text-xs text-slate-700 flex flex-wrap items-center justify-between gap-2">
       <div className="flex flex-wrap items-center gap-2">
-        <span className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 font-mono text-[11px]">
-          Vendor acceptance: <strong>{evidence.vendorAcceptance}</strong>
+        <span className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-[11px]">
+          Vendor acceptance: <strong>{humanizeEnum(evidence.vendorAcceptance)}</strong>
         </span>
-        <span className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 font-mono text-[11px]">
-          Candidate Document Review: <strong>{evidence.candidateDocumentReview}</strong>
+        <span className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-[11px]">
+          Candidate Document Review: <strong>{humanizeEnum(evidence.candidateDocumentReview)}</strong>
         </span>
-        <span className={`px-2 py-0.5 rounded border font-mono text-[11px] ${authBadgeClass}`}>
-          Delivery Authorization: <strong>{authState.state}</strong>
+        <span className={`px-2 py-0.5 rounded border text-[11px] ${authBadgeClass}`}>
+          Delivery Authorization: <strong>{humanizeEnum(authState.state)}</strong>
         </span>
       </div>
       <span className="text-[11px] text-slate-500">Changing the manifest requires new acceptance and delivery evidence.</span>

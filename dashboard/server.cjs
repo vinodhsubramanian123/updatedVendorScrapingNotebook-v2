@@ -107,8 +107,14 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// ── Centralized JSON Error Handler (SMELL-S3) ─────────────────────────────────
+// ── Centralized JSON 404 & Error Handlers (SMELL-S3) ──────────────────────────
 const { sendErrorResponse } = require('./services/errorHandler.cjs');
+app.use('/api', (req, res) => {
+  sendErrorResponse(res, 404, `API route not found: ${req.method} ${req.originalUrl}`, { source: 'SERVER_BRIDGE_NOT_FOUND' });
+});
+app.use('/artifacts', (req, res) => {
+  res.status(404).json({ error: 'Artifact not found', path: req.originalUrl });
+});
 app.use('/api', (err, req, res, next) => {
   console.error('Unhandled Server Error on API route:', err);
   if (res.headersSent) return next(err);
@@ -131,12 +137,20 @@ async function initAndStartServer() {
     });
   } else {
     try {
+      // Align process.cwd() with realpath of PROJECT_ROOT so Vite's esbuild
+      // optimizeDeps (esbuildOutputFromId) never mismatches symlink/junction paths on Windows.
+      try {
+        const realCwd = fs.realpathSync(process.cwd());
+        const realRoot = fs.realpathSync(PROJECT_ROOT);
+        if (realCwd === realRoot && process.cwd() !== realRoot) {
+          process.chdir(realRoot);
+        }
+      } catch (_) {}
       console.log(`⚡ Initializing Vite dev middleware from: ${__dirname}`);
       const { createServer: createViteServer } = require('vite');
       const vite = await createViteServer({
         configFile: path.resolve(__dirname, 'vite.config.js'),
-        server: { middlewareMode: true },
-        optimizeDeps: { noDiscovery: true },
+        server: { middlewareMode: true, proxy: {} },
         appType: 'spa',
         root: __dirname
       });

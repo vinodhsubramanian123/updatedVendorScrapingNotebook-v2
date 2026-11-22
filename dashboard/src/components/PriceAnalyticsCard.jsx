@@ -273,22 +273,30 @@ export default function PriceAnalyticsCard({ selectedChassis, chassisDir }) {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="px-2 py-1 bg-slate-100 text-slate-700 font-semibold rounded">
-                  {snap.totalSKUs} Total SKUs
+                  {snap.totalSKUs} Unique SKUs
                 </span>
-                {snap.diffSummary && (
+                {idx === 0 && snap.diffSummary && (snap.diffSummary.added > snap.totalSKUs || snap.diffSummary.removed === 0) ? (
+                  <span className="px-2 py-1 bg-blue-50 text-blue-700 font-semibold rounded" title={`Baseline capture indexed ${snap.diffSummary.added} option rows`}>
+                    Initial Baseline
+                  </span>
+                ) : snap.diffSummary ? (
                   <div className="flex items-center gap-1">
                     <span className="px-2 py-1 bg-emerald-50 text-emerald-700 font-semibold rounded">
-                      +{snap.diffSummary.added} Added
+                      +{Math.min(snap.diffSummary.added || 0, snap.totalSKUs || snap.diffSummary.added || 0)} Added
                     </span>
                     <span className="px-2 py-1 bg-rose-50 text-rose-700 font-semibold rounded">
-                      -{snap.diffSummary.removed} Removed
+                      -{snap.diffSummary.removed || 0} Removed
                     </span>
                     <span className="px-2 py-1 bg-amber-50 text-amber-700 font-semibold rounded">
-                      {snap.diffSummary.priceChanged} Price Delta
+                      {snap.diffSummary.priceChanged || 0} Price Delta
                     </span>
                   </div>
+                ) : (
+                  <span className="px-2 py-1 bg-slate-50 text-slate-500 border border-slate-200 font-medium rounded">
+                    Snapshot Recorded
+                  </span>
                 )}
               </div>
             </div>

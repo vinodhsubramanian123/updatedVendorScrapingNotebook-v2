@@ -36,11 +36,16 @@ const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 
 // ── Catalog Registry Cache (GAP-L5) ──────────────────────────────────────────
 let _catalogCache = null;
+let _chassisSyncSummaryCache = null;
+let _historyRunsCache = { key: null, data: null };
+let _cdpStatusCache = { ts: 0, data: null, pending: null };
 const _normalizedCatalogCache = new Map();
 
 /** Call this after a scrape/rebuild SSE TASK_COMPLETED event. */
 function invalidateCatalogCache() {
   _catalogCache = null;
+  _chassisSyncSummaryCache = null;
+  _historyRunsCache = { key: null, data: null };
   _normalizedCatalogCache.clear();
 }
 
@@ -176,6 +181,12 @@ function loadAndNormalizeCatalog(fullPath) {
   return content;
 }
 
+const SKIP_CATALOG_DIRS = new Set(['history', 'raw_data', 'intermittent_scraps', 'temp', 'runs', 'staging']);
+
+function isIgnoredCatalogDir(name) {
+  return !name || name.startsWith('.') || SKIP_CATALOG_DIRS.has(name) || name.endsWith('.previous') || name.endsWith('.staging');
+}
+
 /**
  * Recursively discover chassis catalog files under OUTPUTS_DIR.
  * Returns built catalog list; result is cached until invalidated.
@@ -192,7 +203,7 @@ function getCachedCatalogs() {
     for (const item of items) {
       const fullPath = path.join(dir, item.name);
       if (item.isDirectory()) {
-        if (!['history', 'raw_data', 'intermittent_scraps', 'temp', 'runs'].includes(item.name)) {
+        if (!isIgnoredCatalogDir(item.name)) {
           findCatalogs(fullPath);
         }
       } else if (item.isFile() && item.name.endsWith('_Catalog.json')) {
@@ -242,8 +253,8 @@ function findChassisFolderRecursively(baseDir, folderName) {
   if (!fs.existsSync(baseDir)) return null;
   for (const item of fs.readdirSync(baseDir, { withFileTypes: true })) {
     if (!item.isDirectory()) continue;
+    if (isIgnoredCatalogDir(item.name)) continue;
     if (item.name === folderName) return path.join(baseDir, item.name);
-    if (['history', 'raw_data', 'intermittent_scraps', 'temp', 'runs'].includes(item.name)) continue;
     const found = findChassisFolderRecursively(path.join(baseDir, item.name), folderName);
     if (found) return found;
   }
@@ -284,6 +295,10 @@ router.get('/catalog-rules', (req, res) => {
 });
 
 router.get('/chassis-sync-summary', (req, res) => {
+  const forceRefresh = req.query.refresh === '1' || req.query.refresh === 'true';
+  if (!forceRefresh && _chassisSyncSummaryCache) {
+    return res.json(_chassisSyncSummaryCache);
+  }
   const { listAllCatalogs } = require('../../scripts/lib/catalog/catalog_discovery.js');
   const { loadCatalogRules } = require('../../scripts/lib/catalog/catalog_rules.js');
   const { getCatalogPortfolioCoverage } = require('../../scripts/lib/catalog/catalog_portfolio.js');
@@ -370,7 +385,7 @@ router.get('/chassis-sync-summary', (req, res) => {
     }
 
     const totalVariants = variantsSummary.length;
-    res.json({
+    const payload = {
       summary: {
         totalFamilies: familiesSet.size, totalChassisVariants: totalVariants,
         families: [...familiesSet].sort(),
@@ -382,7 +397,9 @@ router.get('/chassis-sync-summary', (req, res) => {
         cloudSyncStatus: 'NOT_VERIFIED'
       },
       variants: variantsSummary
-    });
+    };
+    _chassisSyncSummaryCache = payload;
+    res.json(payload);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
@@ -412,11 +429,20 @@ router.get('/price-analytics', (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+function resolveSafeChassisDir(chassisDir) {
+  let targetPath = assertSafePath(chassisDir);
+  if (!fs.existsSync(targetPath)) {
+    const found = findChassisFolderRecursively(OUTPUTS_DIR, path.basename(String(chassisDir)));
+    if (found) targetPath = assertSafePath(found);
+  }
+  return targetPath;
+}
+
 router.get('/sku-history', (req, res) => {
   const { sku, chassisDir } = req.query;
   if (!sku || !chassisDir) return res.status(400).json({ error: 'Missing sku or chassisDir parameter' });
   try {
-    const safeChassisDir = assertSafePath(chassisDir);
+    const safeChassisDir = resolveSafeChassisDir(chassisDir);
     const priceHistoryFile = path.join(safeChassisDir, 'history', 'price_history.json');
     if (!fs.existsSync(priceHistoryFile)) return res.json({ sku, history: [] });
     const priceHistory = JSON.parse(fs.readFileSync(priceHistoryFile, 'utf-8'));
@@ -428,7 +454,7 @@ router.get('/sku-version-audit', (req, res) => {
   const { sku, chassisDir } = req.query;
   if (!sku || !chassisDir) return res.status(400).json({ error: 'Missing sku or chassisDir parameter' });
   try {
-    const safeChassisDir = assertSafePath(chassisDir);
+    const safeChassisDir = resolveSafeChassisDir(chassisDir);
     const { getSkuAuditHistory } = require('../../scripts/lib/catalog/sku_versioning.js');
     res.json(getSkuAuditHistory(sku, safeChassisDir));
   } catch (err) { res.status(err.message.startsWith('HTTP 403') ? 403 : 500).json({ error: err.message }); }
@@ -451,31 +477,44 @@ function _buildCdpPortConflictPayload(httpStatus, outputsDir) {
   };
 }
 
-router.get('/cdp-status', async (req, res) => {
-  if (require('../../scripts/lib/system/policy_resolver.js').isTruthyFlag(process.env.OFFLINE_MODE)) {
-    return res.json({ status: 'STANDBY', mode: 'OFFLINE_CACHE', portConflict: false, message: 'Offline catalog mode' });
-  }
+async function _probeCdpStatusUncached() {
   try {
     const response = await fetch('http://127.0.0.1:9222/json', { signal: AbortSignal.timeout(1500) });
     if (!response.ok) {
-      return res.json(_buildCdpPortConflictPayload(response.status, OUTPUTS_DIR));
+      return _buildCdpPortConflictPayload(response.status, OUTPUTS_DIR);
     }
     const targets = await response.json();
     const pages = targets.filter(t => t.type === 'page');
     const ocaPage = pages.find(t => t.url.includes('oca.ext.hpe.com'));
     if (ocaPage) {
       const isSolutionRoot = ocaPage.url.includes('extended_overview_components') || ocaPage.url.includes('alletra_5000_wizard');
-      return res.json({ status: 'READY', title: ocaPage.title, url: ocaPage.url, isSolutionRoot });
+      return { status: 'READY', title: ocaPage.title, url: ocaPage.url, isSolutionRoot };
     }
     const loginPage = pages.find(t => t.url.includes('login.hpe.com') || t.url.includes('partner.hpe.com'));
-    if (loginPage) return res.json({ status: 'AUTHENTICATING', title: loginPage.title });
-    res.json({ status: 'NAVIGATING', message: 'OCA not found in open tabs' });
+    if (loginPage) return { status: 'AUTHENTICATING', title: loginPage.title };
+    return { status: 'NAVIGATING', message: 'OCA not found in open tabs' };
   } catch (err) {
     const hasOutputs = fs.existsSync(OUTPUTS_DIR) && fs.readdirSync(OUTPUTS_DIR).length > 0;
-    res.json(hasOutputs
+    return hasOutputs
       ? { status: 'STANDBY', message: 'DOM Cache Ready (Offline Catalog Mode)', mode: 'OFFLINE_CACHE', portConflict: false, httpStatus: null, error: err.message }
-      : { status: 'DISCONNECTED', portConflict: false, httpStatus: null, error: err.message });
+      : { status: 'DISCONNECTED', portConflict: false, httpStatus: null, error: err.message };
   }
+}
+
+router.get('/cdp-status', async (req, res) => {
+  if (require('../../scripts/lib/system/policy_resolver.js').isTruthyFlag(process.env.OFFLINE_MODE)) {
+    return res.json({ status: 'STANDBY', mode: 'OFFLINE_CACHE', portConflict: false, message: 'Offline catalog mode' });
+  }
+  if (_cdpStatusCache.data && (Date.now() - _cdpStatusCache.ts) < 3000) {
+    return res.json(_cdpStatusCache.data);
+  }
+  if (!_cdpStatusCache.pending) {
+    _cdpStatusCache.pending = _probeCdpStatusUncached().then(data => {
+      _cdpStatusCache = { ts: Date.now(), data, pending: null };
+      return data;
+    });
+  }
+  return res.json(await _cdpStatusCache.pending);
 });
 
 router.get('/session-observability', (req, res) => {
@@ -490,22 +529,10 @@ router.get('/price-history', (req, res) => {
   const { chassisDir, sku } = req.query;
   if (!sku || !chassisDir) return res.status(400).json({ error: 'Exact chassisDir and SKU parameters are required' });
   let historyFile = null;
-  if (chassisDir) {
-    try {
-      const safeDir = assertSafePath(chassisDir);
-      historyFile = path.join(safeDir, 'history', 'price_history.json');
-    } catch (e) { return res.status(403).json({ error: e.message }); }
-  } else {
-    function searchHistory(dir) {
-      if (!fs.existsSync(dir)) return;
-      for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
-        const fullPath = path.join(dir, item.name);
-        if (item.isDirectory()) searchHistory(fullPath);
-        else if (item.name === 'price_history.json') { historyFile = fullPath; return; }
-      }
-    }
-    searchHistory(OUTPUTS_DIR);
-  }
+  try {
+    const safeDir = resolveSafeChassisDir(chassisDir);
+    historyFile = path.join(safeDir, 'history', 'price_history.json');
+  } catch (e) { return res.status(403).json({ error: e.message }); }
   if (!historyFile || !fs.existsSync(historyFile)) return res.json({ sku, history: [] });
   try {
     const data = JSON.parse(fs.readFileSync(historyFile, 'utf-8'));
@@ -573,10 +600,27 @@ function _deriveHistoryRunSummary(data) {
   };
 }
 
+function _computeHistoryRunsCacheKey(runsDir, persistedRuns) {
+  let dirSig = 'missing';
+  if (fs.existsSync(runsDir)) {
+    try {
+      const stat = fs.statSync(runsDir);
+      dirSig = `${stat.mtimeMs}`;
+    } catch (_) {}
+  }
+  const memSig = persistedRuns.map(r => `${r.runId}:${r.status}:${r.logs?.length || 0}`).join('|');
+  return `${dirSig}::${memSig}`;
+}
+
 router.get('/history/runs', (req, res) => {
   const { listPersistedRuns, isValidRunId } = require('../services/runState.cjs');
   const runsDir = path.join(OUTPUTS_DIR, 'history', 'runs');
   try {
+    const persistedRuns = listPersistedRuns();
+    const cacheKey = _computeHistoryRunsCacheKey(runsDir, persistedRuns);
+    if (_historyRunsCache.key === cacheKey && Array.isArray(_historyRunsCache.data)) {
+      return res.json(_historyRunsCache.data);
+    }
     const mergedById = new Map();
     if (fs.existsSync(runsDir)) {
       for (const f of fs.readdirSync(runsDir).filter(name => name.endsWith('.json'))) {
@@ -586,7 +630,7 @@ router.get('/history/runs', (req, res) => {
         } catch (_) {}
       }
     }
-    for (const runRec of listPersistedRuns()) {
+    for (const runRec of persistedRuns) {
       const existing = mergedById.get(runRec.runId) || {};
       const mergedLogs = (Array.isArray(existing.logs) && existing.logs.length > (runRec.logs?.length || 0))
         ? existing.logs
@@ -596,6 +640,7 @@ router.get('/history/runs', (req, res) => {
     const runs = Array.from(mergedById.values())
       .map(_deriveHistoryRunSummary)
       .sort((a, b) => new Date(b.startTime || 0) - new Date(a.startTime || 0));
+    _historyRunsCache = { key: cacheKey, data: runs };
     res.json(runs);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });

@@ -393,6 +393,13 @@ function computeTopologyStatsAndDiagnostics(nodes, edges, gaps, fixes, ambiguiti
   const validCount = nodes.filter(n => n.status === 'VALID' && n.type === 'SKU_ITEM').length;
   const gapCount = gaps.length;
   const fixCount = fixes.length;
+  const skuCount = validCount + fixCount + ambiguities.length;
+  const denom = skuCount + gapCount;
+  const completenessScore = denom === 0
+    ? 0
+    : (gapCount === 0 && ambiguities.length === 0
+      ? 100
+      : Math.max(0, Math.round(((validCount + fixCount) / denom) * 100)));
   const renderLatencyMs = Date.now() - startTime;
 
   return {
@@ -405,6 +412,7 @@ function computeTopologyStatsAndDiagnostics(nodes, edges, gaps, fixes, ambiguiti
     ambiguities,
     stats: {
       totalNodes: nodes.length,
+      skuCount,
       validCount,
       gapCount,
       fixCount,
@@ -417,7 +425,7 @@ function computeTopologyStatsAndDiagnostics(nodes, edges, gaps, fixes, ambiguiti
       productFamily,
       subProductsCount: subProducts.length,
       totalSkusMapped: validCount + fixCount,
-      completenessScore: gapCount === 0 ? 100 : Math.max(10, Math.round((validCount / (validCount + gapCount)) * 100)),
+      completenessScore,
       validationTimestamp: new Date().toISOString()
     }
   };

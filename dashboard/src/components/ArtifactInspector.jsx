@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { FileCode, ShieldCheck, RefreshCw, FileText, CheckCircle2, AlertCircle, Eye, X, BookOpen, AlertTriangle, Download } from 'lucide-react';
 import ExportHistoryCard from './ExportHistoryCard';
 
@@ -263,7 +264,7 @@ export default function ArtifactInspector({ currentCatalog, onTriggerDownloadPdf
 
       {folderPath && (
         <div className="glass-card p-4 space-y-3">
-          <h4 className="font-bold text-xs text-slate-900 uppercase tracking-wider">Intermittent Scraping TSV Files:</h4>
+          <h4 className="font-bold text-xs text-slate-900 uppercase tracking-wider">Intermediate Scraping TSV Files:</h4>
           <div className="flex gap-3">
             {tsvSkusPath && (
               <button onClick={() => handleViewArtifact(tsvSkusPath)} className="btn-secondary text-xs">
@@ -279,28 +280,36 @@ export default function ArtifactInspector({ currentCatalog, onTriggerDownloadPdf
         </div>
       )}
 
-      {showRegistry && (
-        <div
-          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setShowRegistry(false);
-          }}
-        >
-          <div className="bg-white rounded-2xl p-6 max-w-3xl w-full max-h-[80vh] flex flex-col shadow-2xl border border-slate-200">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
-              <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-blue-600" /> Master Portfolio Registry (SCRAPED_CATALOGS.md)
-              </h3>
-              <button aria-label="Close" onClick={() => setShowRegistry(false)} className="text-slate-400 hover:text-slate-600">
-                <X className="w-4 h-4" />
-              </button>
+      {showRegistry && (() => {
+        const modal = (
+          <div
+            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setShowRegistry(false);
+            }}
+          >
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Master Portfolio Registry"
+              className="bg-white rounded-2xl p-6 max-w-3xl w-full max-h-[80vh] flex flex-col shadow-2xl border border-slate-200"
+            >
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
+                <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-blue-600" /> Master Portfolio Registry (SCRAPED_CATALOGS.md)
+                </h3>
+                <button aria-label="Close" onClick={() => setShowRegistry(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <pre className="terminal-view text-[11px] flex-1 overflow-y-auto p-4">
+                {registryContent}
+              </pre>
             </div>
-            <pre className="terminal-view text-[11px] flex-1 overflow-y-auto p-4">
-              {registryContent}
-            </pre>
           </div>
-        </div>
-      )}
+        );
+        return typeof document !== 'undefined' ? createPortal(modal, document.body) : modal;
+      })()}
 
       {viewFile && (
         <div className="glass-card p-4 space-y-2">

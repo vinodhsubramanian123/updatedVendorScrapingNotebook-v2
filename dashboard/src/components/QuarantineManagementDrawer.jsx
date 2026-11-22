@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { ShieldAlert, X, Check, Trash2, RefreshCw, AlertTriangle, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 function QuarantinedDeltaCard({ delta, idx, actionInProgress, onReject, onPromote }) {
@@ -146,18 +147,23 @@ export default function QuarantineManagementDrawer({ isOpen, onClose }) {
 
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex">
+  const drawer = (
+    <div className="fixed inset-0 z-[100] flex">
       <div className="flex-1 bg-slate-900/40 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="w-full max-w-xl bg-white shadow-2xl border-l border-slate-200 flex flex-col h-full overflow-hidden">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="quarantine-drawer-title"
+        className="w-full max-w-xl bg-white shadow-2xl border-l border-slate-200 flex flex-col h-full overflow-hidden"
+      >
         <div className="p-6 border-b border-slate-100 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-amber-500 text-white shadow-md shadow-amber-500/20">
               <ShieldAlert className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-extrabold text-slate-900 text-base">
+              <h3 id="quarantine-drawer-title" className="font-extrabold text-slate-900 text-base">
                 Knowledge Quarantine Management
               </h3>
               <p className="text-xs text-slate-500">
@@ -236,4 +242,6 @@ export default function QuarantineManagementDrawer({ isOpen, onClose }) {
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined' ? createPortal(drawer, document.body) : drawer;
 }

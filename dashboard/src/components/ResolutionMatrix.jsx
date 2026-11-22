@@ -9,15 +9,16 @@ import { formatPrice, extendedPrice } from '../services/pricing.js';
 import { getCandidateExportEligibility } from '../services/exportEligibility.js';
 
 const STANDARD_CATEGORIES = [
-  { id: 'chassis', label: 'Chassis Base & Form Factor', match: ['chassis', 'base', 'enclosure', 'cto'] },
-  { id: 'cpu', label: 'Compute Processors & Thermal TDP', match: ['processor', 'cpu', 'intel', 'xeon'] },
-  { id: 'cooling', label: 'Thermal Fans & Heatsinks', match: ['fan', 'cooling', 'heatsink', 'thermal'] },
-  { id: 'memory', label: 'Memory (DDR5 1DPC / 2DPC)', match: ['memory', 'ram', 'dimm', 'ddr5'] },
-  { id: 'storage_ctrl', label: 'Storage Controllers & Battery', match: ['storage controller', 'controller', 'raid', 'cache', 'battery'] },
-  { id: 'storage_drives', label: 'Drive Media & Backplanes', match: ['drive', 'ssd', 'hdd', 'nvme', 'cage'] },
-  { id: 'power', label: 'Power Infrastructure & Redundancy', match: ['power', 'psu', 'titanium', 'platinum', 'dc', 'lug'] },
-  { id: 'networking', label: 'Networking & PCIe Risers', match: ['network', 'nic', 'ocp', 'adapter', 'riser', 'pcie'] },
-  { id: 'support', label: 'Pointnext Tech Care Warranty', match: ['service', 'support', 'warranty', 'care'] }
+  { id: 'chassis', label: 'Chassis Base & Form Factor' },
+  { id: 'cpu', label: 'Compute Processors & Thermal TDP' },
+  { id: 'cooling', label: 'Thermal Fans & Heatsinks' },
+  { id: 'memory', label: 'Memory (DDR5 1DPC / 2DPC)' },
+  { id: 'storage_ctrl', label: 'Storage Controllers & Battery' },
+  { id: 'storage_drives', label: 'Drive Media & Backplanes' },
+  { id: 'power', label: 'Power Infrastructure & Redundancy' },
+  { id: 'networking', label: 'Networking & PCIe Risers' },
+  { id: 'support', label: 'Pointnext Tech Care Warranty' },
+  { id: 'other', label: 'Other Hardware & Kits' }
 ];
 
 function extractRankedSolutionsFromEval(evalResults) {
@@ -67,6 +68,9 @@ function mapSolutionToTier(sol, evalResults) {
     score: scoreVal,
     intentMatch: sol.tradeoffMetrics?.intentAlignment ?? (scoreVal === null ? 'Not assessed' : `${Math.round(scoreVal * 100)}%`),
     capex: formatSolutionCapex(sol),
+    estimatedCostUsd: Number.isFinite(sol.estimatedCostUsd) ? sol.estimatedCostUsd : null,
+    pricingComplete: sol.pricingComplete !== false,
+    missingPriceCount: sol.priceUnavailableSkus?.length || 0,
     budgetBreakdown: sol.budgetBreakdown || null,
     badgeClass,
     rationale: sol.reasoning,
@@ -167,7 +171,8 @@ export default function ResolutionMatrix({
   onOpenPortalFeedback,
   selectedChassis,
   onTriggerDemoBoq,
-  onOpenTopology
+  onOpenTopology,
+  onOpenUploader
 }) {
   const [exportingRank, setExportingRank] = useState(null);
   const [exportedFiles, setExportedFiles] = useState({});
@@ -267,6 +272,7 @@ export default function ResolutionMatrix({
         onTriggerDemoBoq={onTriggerDemoBoq}
         exportError={exportError}
         onOpenTopology={onOpenTopology}
+        onOpenUploader={onOpenUploader}
       />
 
       <MatrixStatusBanners evalResults={evalResults} />

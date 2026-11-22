@@ -83,10 +83,8 @@ async function main() {
   try {
     await runAsyncTest('Route Test - REST error envelopes (Missing Route)', async () => {
       const res = await request('http://127.0.0.1:3457/api/unknown-route', { method: 'GET' });
-      // The server.cjs middleware will likely fall through to the static handler, returning index.html
-      // Or if handled by API error handler, should be valid.
-      // Actually, standard express will 404 or return HTML.
-      // Let's test a known route with missing parameters instead.
+      assert.strictEqual(res.status, 404, 'Unknown API route must return 404 instead of self-proxying through Vite');
+      assert.ok(res.data?.error, '404 API response should contain error field');
       const catRes = await request('http://127.0.0.1:3457/api/catalog-data', { method: 'GET' });
       assert.strictEqual(catRes.status, 400);
       assert.ok(catRes.data.error, 'Response should contain error field');

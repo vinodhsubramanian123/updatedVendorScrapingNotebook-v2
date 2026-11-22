@@ -7,20 +7,25 @@ export default function CdpHealthBadge() {
   const [sessionInfo, setSessionInfo] = useState(null);
   const [loadingObs, setLoadingObs] = useState(false);
 
-  const fetchStatus = async () => {
+  const fetchStatus = async (signal) => {
     try {
-      const res = await fetch('/api/cdp-status');
+      const res = await fetch('/api/cdp-status', { signal });
       const data = await res.json();
-      setStatus(data);
-    } catch (e) { console.warn('Caught suppressed error in CdpHealthBadge.jsx:', e);
-setStatus({ status: 'DISCONNECTED' });
+      if (!signal?.aborted) setStatus(data);
+    } catch (e) {
+      if (e?.name === 'AbortError' || signal?.aborted) return;
+      setStatus({ status: 'DISCONNECTED' });
     }
   };
 
   useEffect(() => {
-    fetchStatus();
-    const interval = setInterval(fetchStatus, 5000);
-    return () => clearInterval(interval);
+    const controller = new AbortController();
+    fetchStatus(controller.signal);
+    const interval = setInterval(() => fetchStatus(controller.signal), 15000);
+    return () => {
+      controller.abort();
+      clearInterval(interval);
+    };
   }, []);
 
   const handleOpenObservability = async () => {
@@ -40,7 +45,8 @@ setSessionInfo({ error: 'Failed to connect to CDP observability endpoint' });
     <div className="relative">
       <button
         onClick={handleOpenObservability}
-        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border transition-all ${
+        title={status.message || 'Inspect Chrome DevTools Protocol (CDP) session telemetry'}
+        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
           status.status === 'READY'
             ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
             : status.status === 'STANDBY'
@@ -50,16 +56,16 @@ setSessionInfo({ error: 'Failed to connect to CDP observability endpoint' });
             : 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100'
         }`}
       >
-        <Radio className={`w-3 h-3 ${status.status === 'READY' ? 'animate-pulse text-emerald-600' : 'text-slate-500'}`} />
+        <Radio className={`w-3 h-3 shrink-0 ${status.status === 'READY' ? 'animate-pulse text-emerald-600' : 'text-slate-500'}`} />
         <span>
           {status.status === 'READY'
-            ? 'CDP 9222 Active'
+            ? 'CDP Active'
             : status.status === 'STANDBY'
-            ? 'CDP Standby (Offline Cache)'
+            ? 'CDP Standby'
             : status.status === 'AUTHENTICATING'
-            ? 'CDP Ready (Authenticating)'
+            ? 'CDP Auth'
             : status.status === 'NAVIGATING'
-            ? 'DOM Ready (No OCA Tab)'
+            ? 'DOM Ready'
             : 'CDP Offline'}
         </span>
       </button>

@@ -35,13 +35,21 @@
   --font-mono: 'Geist Mono', monospace;
 }
 
-body {
-  background-color: var(--bg-porcelain);
-  color: var(--text-primary);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-  line-height: 1.5;
+@layer base {
+  body {
+    background-color: var(--bg-porcelain);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    font-weight: 600;
+  }
 }
 
 /* ==========================================================================
@@ -424,12 +432,6 @@ body {
 }
 
 /* Typography Helpers */
-h1, h2, h3, h4 {
-  font-family: var(--font-heading);
-  color: var(--text-primary);
-  font-weight: 600;
-}
-
 .mono {
   font-family: var(--font-mono);
 }

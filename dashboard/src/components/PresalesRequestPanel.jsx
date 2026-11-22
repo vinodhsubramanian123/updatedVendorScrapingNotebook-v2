@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { postJson, requestJson, uploadBoqFile } from '../services/api.js';
 import { formatPrice } from '../services/pricing.js';
 import { getCandidateExportEligibility } from '../services/exportEligibility.js';
+import { humanizeEnum } from '../utils/formatters.js';
 
 const INTENT_FRIENDLY_NAMES = {
   RFP_SIZING_TO_BOM: 'Natural Language Sizing to Buildable BOM',
@@ -52,8 +53,8 @@ function OutcomeHeader({ envelope, result, exportEligibility, onExportExcel, onE
       <div>
         <div className="flex items-center gap-2">
           <span className="badge badge-emerald text-xs font-bold">{friendlyIntent}</span>
-          <span className={`badge ${isClean ? 'badge-emerald' : isActionRequired ? 'badge-amber' : 'badge-slate'} text-xs font-mono`}>
-            {result.status || 'OUTCOME_RETURNED'}
+          <span className={`badge ${isClean ? 'badge-emerald' : isActionRequired ? 'badge-amber' : 'badge-slate'} text-xs`} title={result.status || 'OUTCOME_RETURNED'}>
+            {humanizeEnum(result.status || 'OUTCOME_RETURNED')}
           </span>
         </div>
         <p className="text-xs text-slate-500 mt-1">Query: <span className="font-medium text-slate-700">{envelope.query}</span></p>
@@ -682,17 +683,25 @@ function PresalesInputControls({ query, setQuery, primary, setPrimary, secondary
           </button>
         ))}
       </div>
-      <div className="flex flex-wrap gap-4 text-xs">
-        <label>
-          Customer tender / input file (optional)
-          <input type="file" className="block mt-1" onChange={event => setPrimary(event.target.files?.[0] || null)} />
+      <div className="flex flex-wrap items-end gap-4 text-xs">
+        <label className="block text-slate-700 font-medium">
+          <span className="block mb-1">Customer tender / input file (optional)</span>
+          <input
+            type="file"
+            className="block w-full max-w-[260px] text-xs text-slate-600 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border file:border-slate-200 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 file:cursor-pointer cursor-pointer"
+            onChange={event => setPrimary(event.target.files?.[0] || null)}
+          />
         </label>
-        <label>
-          Vendor quote / second baseline (optional)
-          <input type="file" className="block mt-1" onChange={event => setSecondary(event.target.files?.[0] || null)} />
+        <label className="block text-slate-700 font-medium">
+          <span className="block mb-1">Vendor quote / second baseline (optional)</span>
+          <input
+            type="file"
+            className="block w-full max-w-[260px] text-xs text-slate-600 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border file:border-slate-200 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 file:cursor-pointer cursor-pointer"
+            onChange={event => setSecondary(event.target.files?.[0] || null)}
+          />
         </label>
-        <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-700">
-          <input type="checkbox" checked={localOnly} onChange={event => setLocalOnly(event.target.checked)} />
+        <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-700 pb-1.5">
+          <input type="checkbox" checked={localOnly} onChange={event => setLocalOnly(event.target.checked)} className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" />
           Use local catalog only
         </label>
       </div>

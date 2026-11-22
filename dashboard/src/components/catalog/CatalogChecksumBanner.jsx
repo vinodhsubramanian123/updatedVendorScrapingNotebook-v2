@@ -2,15 +2,17 @@ import React from 'react';
 import { Zap } from 'lucide-react';
 
 export default function CatalogChecksumBanner({ showOnlyChanges, incrStats = {}, allSkusCount = 0, changedCount = 0 }) {
-  if (!showOnlyChanges && !(incrStats.unchangedSkusCount > 0)) return null;
+  const unchanged = Math.max(0, allSkusCount - changedCount);
+  if (!showOnlyChanges && unchanged === 0) return null;
 
-  const unchanged = incrStats.unchangedSkusCount || (allSkusCount - changedCount);
-  const tokenSavings = incrStats.estimatedTokensSaved || (unchanged * 150);
+  const tokenSavings = incrStats.estimatedTokensSaved && unchanged === incrStats.unchangedSkusCount
+    ? incrStats.estimatedTokensSaved
+    : (unchanged * 150);
 
   return (
-    <div className="glass-card p-4 border-l-4 border-l-amber-500 bg-gradient-to-r from-amber-50/50 via-white to-blue-50/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <div className="glass-card p-3.5 border-l-4 border-l-amber-500 bg-gradient-to-r from-amber-50/50 via-white to-blue-50/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
       <div className="space-y-1">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Zap className="w-4 h-4 text-amber-600" />
           <span className="text-xs font-extrabold uppercase tracking-wider text-amber-900">
             Incremental Hash-Based Checksum Comparison
@@ -20,7 +22,7 @@ export default function CatalogChecksumBanner({ showOnlyChanges, incrStats = {},
           </span>
         </div>
         <p className="text-xs text-slate-600">
-          Deterministic SHA-256 hashes verified <span className="font-bold text-slate-900">{unchanged}</span> unchanged SKUs. Skipped re-classification to preserve pipeline speed and minimize API token usage.
+          Deterministic SHA-256 hashes verified <span className="font-bold text-slate-900">{unchanged}</span> unchanged and <span className="font-bold text-amber-700">{changedCount}</span> changed mappings out of <span className="font-semibold text-slate-800">{allSkusCount}</span> total.
         </p>
       </div>
 
@@ -30,8 +32,8 @@ export default function CatalogChecksumBanner({ showOnlyChanges, incrStats = {},
           <div className="text-sm font-black text-emerald-600">~{tokenSavings.toLocaleString()} Tokens</div>
         </div>
         <div className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg shadow-2xs text-center">
-          <div className="text-[10px] text-slate-500 font-bold uppercase">Changed SKUs</div>
-          <div className="text-sm font-black text-amber-600">{changedCount} SKUs</div>
+          <div className="text-[10px] text-slate-500 font-bold uppercase">Changed Mappings</div>
+          <div className="text-sm font-black text-amber-600">{changedCount}</div>
         </div>
       </div>
     </div>

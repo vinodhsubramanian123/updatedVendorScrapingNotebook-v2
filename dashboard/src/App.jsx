@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Header from './components/Header';
 import CatalogExplorer from './components/CatalogExplorer';
 import ScraperTriggerCard from './components/ScraperTriggerCard';
@@ -36,10 +37,10 @@ function ToolModal({ isOpen, onClose, title, children }) {
   const dialogRef = useModalFocus(isOpen, onClose);
 
   if (!isOpen) return null;
-  return (
+  const content = (
     <div
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
-      className="fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-modal-backdrop"
+      className="fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-modal-backdrop"
     >
       <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1} className="bg-slate-50 w-full max-w-6xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-slate-200/90 animate-modal-content">
         <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200">
@@ -59,6 +60,7 @@ function ToolModal({ isOpen, onClose, title, children }) {
       </div>
     </div>
   );
+  return typeof document !== 'undefined' ? createPortal(content, document.body) : content;
 }
 
 function isBoqFileInput(boqInput) {
@@ -321,33 +323,13 @@ function AppMainTabContent({
   if (activeTab === 'matrix') {
     return (
       <div key="matrix" className="animate-tab-enter space-y-6">
-        <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <div>
-            <span className="badge badge-emerald mb-1">5-Tier Resolution Engine</span>
-            <h2 className="text-lg font-bold text-slate-900">5-Tier Strategic Resolution Matrix</h2>
-            <p className="text-xs text-slate-500">Compare ranked candidate BOMs across CapEx budget, workload DNA intent, and strict hardware buildability.</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setActiveModal('boqTopology')}
-              className="btn btn-secondary text-xs flex items-center gap-1.5"
-            >
-              Visual BOQ Topology
-            </button>
-            <button
-              onClick={() => setActiveModal('boqUploader')}
-              className="btn btn-primary text-xs flex items-center gap-1.5"
-            >
-              Load / Evaluate BOQ
-            </button>
-          </div>
-        </div>
         <ResolutionMatrix
           evalResults={evalResults}
           onOpenPortalFeedback={setSelectedCardForFeedback}
           selectedChassis={selectedChassis}
           onTriggerDemoBoq={handleTriggerDemoBoq}
           onOpenTopology={() => setActiveModal('boqTopology')}
+          onOpenUploader={() => setActiveModal('boqUploader')}
         />
       </div>
     );
@@ -1118,6 +1100,8 @@ export default function App() {
   });
 
   const activeBannerError = computeActiveBannerError(actionError, catalogError);
+  const isEvalWorkspaceTab = activeTab === 'orchestrator' || activeTab === 'matrix';
+  const showRunActivityBanner = isEvalWorkspaceTab || isTaskRunning || streamConnected === false;
 
   return (
     <div className="min-h-screen pb-16">
@@ -1145,17 +1129,19 @@ export default function App() {
         isCatalogLoading={isCatalogLoading}
       />
 
-      <main className="max-w-7xl mx-auto px-3 sm:px-6 mt-4 sm:mt-6 space-y-6">
-        <RunActivity
-          run={runActivity}
-          progress={activeProgress}
-          evaluation={evalResults}
-          reconnecting={streamConnected === false}
-          onNavigate={setActiveTab}
-          onCancelTask={handleTriggerKillTask}
-        />
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 mt-4 sm:mt-6 space-y-5">
+        {showRunActivityBanner && (
+          <RunActivity
+            run={runActivity}
+            progress={activeProgress}
+            evaluation={evalResults}
+            reconnecting={streamConnected === false}
+            onNavigate={setActiveTab}
+            onCancelTask={handleTriggerKillTask}
+          />
+        )}
 
-        {evalResults?.clarificationRequired && (
+        {isEvalWorkspaceTab && evalResults?.clarificationRequired && (
           <PlatformDisambiguationCard
             evalResults={evalResults}
             onSelectCandidate={handleSelectClarification}
@@ -1163,7 +1149,9 @@ export default function App() {
           />
         )}
 
-        <DualBrainBadgesBar evalResults={evalResults} />
+        {isEvalWorkspaceTab && (
+          <DualBrainBadgesBar evalResults={evalResults} />
+        )}
 
         <ErrorBoundary fallbackTitle="View Rendering Error">
           <AppMainTabContent

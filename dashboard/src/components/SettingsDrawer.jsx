@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Settings, X, Save, Check, Loader, BookOpen, RefreshCw, Plus, Trash2 } from 'lucide-react';
 import { requestJson, postJson } from '../services/api.js';
 import { useModalFocus } from '../hooks/useModalFocus.js';
@@ -79,8 +80,8 @@ export default function SettingsDrawer({ isOpen, onClose }) {
 
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex">
+  const drawer = (
+    <div className="fixed inset-0 z-[100] flex">
       {/* Backdrop */}
       <div className="flex-1 bg-black/30 backdrop-blur-sm" onClick={onClose} />
 
@@ -91,7 +92,7 @@ export default function SettingsDrawer({ isOpen, onClose }) {
         aria-modal="true"
         aria-labelledby="settings-title"
         tabIndex="-1"
-        className="w-full max-w-md bg-white shadow-2xl border-l border-slate-200 flex flex-col focus:outline-none"
+        className="w-full max-w-xl bg-white shadow-2xl border-l border-slate-200 flex flex-col focus:outline-none"
       >
         {error && <div role="alert" className="p-3 text-sm text-rose-800 bg-rose-50">{error}</div>}
         {/* Header */}
@@ -142,26 +143,29 @@ export default function SettingsDrawer({ isOpen, onClose }) {
                   Map each scraped chassis folder name to its corresponding Gemini Notebook ID for RAG queries.
                 </p>
 
-                <div className="space-y-2">
+                <div className="space-y-2.5">
                   {Object.entries(config.notebooks || {}).map(([chassis, nbId]) => (
-                    <div key={chassis} className="flex gap-2 items-center">
-                      <div className="shrink-0 w-36 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-[11px] font-semibold text-slate-700 truncate" title={chassis}>
-                        {chassis}
+                    <div key={chassis} className="p-2.5 bg-slate-50/70 rounded-xl border border-slate-200/80 space-y-1.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-[11px] font-bold text-slate-800 break-all" title={chassis}>
+                          {chassis}
+                        </span>
+                        <button
+                          onClick={() => handleRemoveMapping(chassis)}
+                          className="shrink-0 text-slate-400 hover:text-red-500 transition-colors cursor-pointer"
+                          title="Remove mapping"
+                          aria-label={`Remove ${chassis} mapping`}
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
                       </div>
                       <input
                         type="text"
                         value={getNotebookIdString(nbId)}
                         onChange={e => handleUpdateMapping(chassis, e.target.value)}
                         placeholder="Notebook ID"
-                        className="flex-1 border border-slate-200 rounded-lg px-2 py-1.5 text-[11px] font-mono text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-400"
+                        className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] font-mono text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-400"
                       />
-                      <button
-                        onClick={() => handleRemoveMapping(chassis)}
-                        className="shrink-0 text-slate-300 hover:text-red-500 transition-colors"
-                        title="Remove mapping"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
                     </div>
                   ))}
                 </div>
@@ -218,4 +222,6 @@ export default function SettingsDrawer({ isOpen, onClose }) {
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined' ? createPortal(drawer, document.body) : drawer;
 }

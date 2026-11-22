@@ -25,13 +25,13 @@ export default function BoqTopologyModal({
   return (
     <div className="space-y-4 text-slate-800">
       {/* Top Controls Bar: Rank Selector & Metrics */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
         {/* Rank Switcher */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+        <div className="flex flex-wrap items-center gap-1.5">
           <span className="text-xs font-bold text-slate-500 mr-1 uppercase tracking-wider">Topology View:</span>
           <button
             onClick={() => { setSelectedRank('BASELINE'); setSelectedNode(null); }}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
+            className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
               selectedRank === 'BASELINE'
                 ? 'bg-slate-900 text-white shadow-sm'
                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
@@ -44,7 +44,7 @@ export default function BoqTopologyModal({
             <button
               key={rank}
               onClick={() => { setSelectedRank(rank); setSelectedNode(null); }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 flex items-center gap-1 ${
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap flex items-center gap-1 cursor-pointer ${
                 String(selectedRank) === String(rank)
                   ? 'bg-emerald-600 text-white shadow-sm'
                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
@@ -57,10 +57,10 @@ export default function BoqTopologyModal({
         </div>
 
         {/* Stats Summary Badges */}
-        <div className="flex items-center gap-2 text-xs">
-          <div className="flex items-center gap-1.5 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200">
-            <span className="text-slate-500 font-medium">Nodes:</span>
-            <span className="font-bold text-slate-900">{graphData.stats.totalNodes}</span>
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <div className="flex items-center gap-1.5 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200" title={`${graphData.stats.totalNodes} total graph nodes (including chassis root and subsystem hubs)`}>
+            <span className="text-slate-500 font-medium">SKUs:</span>
+            <span className="font-bold text-slate-900">{graphData.stats.skuCount ?? graphData.stats.validCount}</span>
           </div>
 
           <div className="flex items-center gap-1.5 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 text-emerald-800 font-semibold">
@@ -220,7 +220,7 @@ export default function BoqTopologyModal({
             <strong className={`font-bold ${
               graphData.diagnostics?.completenessScore === 100 ? 'text-emerald-400' : 'text-amber-400'
             }`}>
-              {graphData.diagnostics?.completenessScore || 100}%
+              {graphData.diagnostics?.completenessScore ?? 0}%
             </strong>
           </span>
           <span className="flex items-center gap-1 text-slate-500">

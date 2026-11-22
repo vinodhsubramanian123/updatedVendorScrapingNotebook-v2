@@ -320,19 +320,50 @@ router.post('/notebook-query-cancel/:jobId', (req, res) => {
 });
 
 // ── NotebookLM Health Test ────────────────────────────────────────────────────
-router.get('/test-notebooklm', (req, res) => {
-  if (isServerOffline()) return res.json({ status: 'STANDBY', mode: 'LOCAL_RAG', offline: true });
+let _nlmHealthCache = { ts: 0, data: null, pending: null };
+const NLM_HEALTH_TTL_MS = 30000;
+
+function _parseNlmHealthStdout(err, stdout) {
+  if (err && err.killed) return { status: 'DEGRADED', error: 'NotebookLM health check timed out.' };
+  try {
+    const lines = String(stdout || '').split('\n');
+    const jsonStartChar = String.fromCharCode(123);
+    const start = lines.findIndex(l => l.trim().startsWith(jsonStartChar));
+    if (start !== -1) return JSON.parse(lines.slice(start).join('\n'));
+  } catch (_) {}
+  return { status: err ? 'DEGRADED' : 'HEALTHY', raw: stdout };
+}
+
+function _runNlmHealthProbe() {
+  if (_nlmHealthCache.pending) return _nlmHealthCache.pending;
   const testScript = path.join(PROJECT_ROOT, 'tests', 'unit', 'test_notebooklm_mcp.js');
-  if (!fs.existsSync(testScript)) return sendErrorResponse(res, 404, 'test_notebooklm_mcp.js not found', { source: 'NOTEBOOK_ROUTER' });
-  execFile(process.execPath, [testScript], { cwd: PROJECT_ROOT, timeout: 15000, windowsHide: true }, (err, stdout) => {
-    if (err?.killed) return res.json({ status: 'DEGRADED', error: 'NotebookLM health check timed out.' });
-    try {
-      const lines = stdout.split('\n');
-      const start = lines.findIndex(l => l.trim().startsWith('{'));
-      if (start !== -1) return res.json(JSON.parse(lines.slice(start).join('\n')));
-      res.json({ status: err ? 'DEGRADED' : 'HEALTHY', raw: stdout });
-    } catch (_) { res.json({ status: err ? 'DEGRADED' : 'HEALTHY', raw: stdout }); }
+  if (!fs.existsSync(testScript)) {
+    return Promise.resolve({ status: 'DEGRADED', error: 'test_notebooklm_mcp.js not found', _notFound: true });
+  }
+  const promise = new Promise((resolve) => {
+    execFile(process.execPath, [testScript], { cwd: PROJECT_ROOT, timeout: 15000, windowsHide: true }, (err, stdout) => {
+      resolve(_parseNlmHealthStdout(err, stdout));
+    });
+  }).then((result) => {
+    _nlmHealthCache = { ts: Date.now(), data: result, pending: null };
+    return result;
+  }).catch((err) => {
+    _nlmHealthCache.pending = null;
+    return { status: 'DEGRADED', error: err.message };
   });
+  _nlmHealthCache.pending = promise;
+  return promise;
+}
+
+router.get('/test-notebooklm', async (req, res) => {
+  if (isServerOffline()) return res.json({ status: 'STANDBY', mode: 'LOCAL_RAG', offline: true });
+  const forceRefresh = req.query.force === '1' || req.query.force === 'true';
+  if (!forceRefresh && _nlmHealthCache.data && (Date.now() - _nlmHealthCache.ts) < NLM_HEALTH_TTL_MS) {
+    return res.json(_nlmHealthCache.data);
+  }
+  const result = await _runNlmHealthProbe();
+  if (result._notFound) return sendErrorResponse(res, 404, 'test_notebooklm_mcp.js not found', { source: 'NOTEBOOK_ROUTER' });
+  return res.json(result);
 });
 
 // ── NotebookLM Consultation Log ───────────────────────────────────────────────

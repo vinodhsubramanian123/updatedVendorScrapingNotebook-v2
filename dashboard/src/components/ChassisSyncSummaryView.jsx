@@ -80,24 +80,28 @@ export default function ChassisSyncSummaryView({
   const [selectedFamily, setSelectedFamily] = useState('ALL');
   const [selectedStatus, setSelectedStatus] = useState('ALL');
 
-  const fetchSummary = async () => {
+  const fetchSummary = async (signal, forceRefresh = false) => {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/chassis-sync-summary');
+      const url = forceRefresh ? '/api/chassis-sync-summary?refresh=1' : '/api/chassis-sync-summary';
+      const res = await fetch(url, { signal });
       if (!res.ok) throw new Error(`HTTP ${res.status}: Failed to load sync summary`);
       const result = await res.json();
-      setData(result);
+      if (!signal?.aborted) setData(result);
     } catch (err) {
+      if (err?.name === 'AbortError' || signal?.aborted) return;
       console.error('Error fetching chassis sync summary:', err);
       setError(err.message);
     } finally {
-      setIsLoading(false);
+      if (!signal?.aborted) setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchSummary();
+    const controller = new AbortController();
+    fetchSummary(controller.signal, false);
+    return () => controller.abort();
   }, [isTaskRunning]);
 
   const activeProductModel = useMemo(() => {
@@ -126,7 +130,7 @@ export default function ChassisSyncSummaryView({
         <h3 className="text-sm font-bold text-rose-800">Failed to Load Sync Summary</h3>
         <p className="text-xs text-rose-600 mt-1">{error}</p>
         <button
-          onClick={fetchSummary}
+          onClick={() => fetchSummary(undefined, true)}
           className="mt-4 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer"
         >
           Retry

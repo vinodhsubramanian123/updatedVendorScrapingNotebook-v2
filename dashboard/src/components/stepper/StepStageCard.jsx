@@ -34,9 +34,9 @@ export default function StepStageCard({
       }`}
     >
       <div>
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <div className={`p-1.5 rounded-lg ${
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            <div className={`p-1.5 rounded-lg shrink-0 ${
               isComplete ? 'bg-emerald-100 text-emerald-700' :
               isRunning ? 'bg-blue-100 text-blue-700' :
               isWarning ? 'bg-amber-100 text-amber-700' :
@@ -44,12 +44,12 @@ export default function StepStageCard({
             }`}>
               {IconComponent ? <IconComponent className="w-4 h-4" /> : null}
             </div>
-            <span className="font-bold text-xs text-slate-800 truncate max-w-[120px]">
+            <span className="font-bold text-xs text-slate-800 leading-tight line-clamp-2" title={stage.title}>
               {stage.title}
             </span>
           </div>
 
-          <div>
+          <div className="shrink-0 mt-0.5">
             {isComplete ? (
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
             ) : isRunning ? (

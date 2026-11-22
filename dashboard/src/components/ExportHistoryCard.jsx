@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Download, FileDown, Settings, Server, FileText } from 'lucide-react';
 import { formatPrice } from '../services/pricing.js';
+import { humanizeEnum } from '../utils/formatters.js';
+
+function formatExportRankLabel(rank, solutionName) {
+  const cleaned = String(solutionName || '')
+    .replace(new RegExp(`^\\s*rank\\s*${rank}\\s*[:\\-–—]?\\s*`, 'i'), '')
+    .trim();
+  return cleaned ? `Rank ${rank}: ${cleaned}` : `Rank ${rank}`;
+}
 
 export default function ExportHistoryCard() {
   const [exportsList, setExportsList] = useState([]);
@@ -115,8 +123,8 @@ export default function ExportHistoryCard() {
                       <Server className="w-3.5 h-3.5 text-slate-400" />
                       {exp.product || exp.chassisId}
                     </span>
-                    <span className="badge badge-indigo inline-flex items-center gap-1 max-w-[160px] truncate" title={exp.solutionName}>
-                      Rank {exp.rank}: {exp.solutionName}
+                    <span className="badge badge-indigo inline-flex items-center gap-1 max-w-[200px] truncate" title={formatExportRankLabel(exp.rank, exp.solutionName)}>
+                      {formatExportRankLabel(exp.rank, exp.solutionName)}
                     </span>
                   </td>
                   <td className="px-4 py-2 font-mono text-[10px] text-slate-600 space-y-0.5">
@@ -128,9 +136,9 @@ export default function ExportHistoryCard() {
                     ) : <div className="text-slate-400">File: —</div>}
                   </td>
                   <td className="px-4 py-2 text-[10px] space-y-0.5">
-                    <div>Auth: <strong>{exp.evidenceState?.deliveryAuthorization || 'AUTHORIZED'}</strong></div>
-                    <div>Review: <strong>{exp.evidenceState?.candidateDocumentReview || 'UNVERIFIED'}</strong></div>
-                    <div>Vendor: <strong>{exp.evidenceState?.vendorAcceptance || 'PORTAL_VALIDATION_PENDING'}</strong></div>
+                    <div>Auth: <strong>{humanizeEnum(exp.evidenceState?.deliveryAuthorization || 'AUTHORIZED')}</strong></div>
+                    <div>Review: <strong>{humanizeEnum(exp.evidenceState?.candidateDocumentReview || 'UNVERIFIED')}</strong></div>
+                    <div>Vendor: <strong>{humanizeEnum(exp.evidenceState?.vendorAcceptance || 'PORTAL_VALIDATION_PENDING')}</strong></div>
                   </td>
                   <td className="px-4 py-2 font-mono text-emerald-700 font-bold">
                     {formatPrice(exp.estimatedCostUsd)}{exp.pricingComplete === false ? ' (partial)' : ''}

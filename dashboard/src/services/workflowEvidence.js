@@ -1,4 +1,5 @@
 import { isVerifiedCandidateDocumentReview } from './exportEligibility.js';
+import { humanizeEnum } from '../utils/formatters.js';
 
 /** Present execution evidence without converting an absent result into a passing stage. */
 const STEP_IDS = { LOAD: 1, CLEANING: 1, VALIDATION: 2, RANKING: 5, POST_VERIFICATION: 3 };
@@ -65,14 +66,18 @@ function validationMetrics(result) {
 export function deriveEvidenceMetrics(id, state) {
   const result = state.evalResults;
   if (id === 'VALIDATION') return validationMetrics(result);
-  if (id === 'RANKING') return { 'Candidate tiers': result?.rankedSolutions?.length ?? 0, 'Confidence': result?.confidence?.score ?? 'Not assessed' };
+  if (id === 'RANKING') {
+    const rawConf = result?.confidence?.score;
+    const formattedConf = Number.isFinite(rawConf) ? `${Math.round(rawConf * (rawConf <= 1 ? 100 : 1))}%` : 'Not assessed';
+    return { 'Candidate tiers': result?.rankedSolutions?.length ?? 0, 'Confidence': formattedConf };
+  }
   if (id === 'POST_VERIFICATION') {
     const docStatus = isVerifiedCandidateDocumentReview(result?.ephemeralSourceValidation)
       ? 'Verified'
       : (result?.ephemeralSourceValidation ? 'Incomplete' : 'Pending');
-    return { 'Candidate review': docStatus, 'Guardrail': result?.agenticReviewStatus ?? 'NOT_RUN' };
+    return { 'Candidate review': docStatus, 'Guardrail': humanizeEnum(result?.agenticReviewStatus ?? 'NOT_RUN') };
   }
-  if (id === 'SOLUTION_PRESENTATION') return { 'Disposition': result?.customerDisposition ?? 'Not evaluated', 'Vendor acceptance': result?.portalValidationStatus ?? 'PENDING' };
+  if (id === 'SOLUTION_PRESENTATION') return { 'Disposition': humanizeEnum(result?.customerDisposition ?? 'Not evaluated'), 'Vendor acceptance': humanizeEnum(result?.portalValidationStatus ?? 'PENDING') };
   if (id === 'NOTEBOOK_SYNC') return { 'Sync status': result?.postFlowSync?.syncStatus ?? 'Not verified', 'Product': result?.chassis ?? state.selectedChassis ?? 'Unknown' };
   if (id === 'RECONCILIATION') return { 'Quote match': state.auditReport?.is100PercentMatch === true ? 'Rows matched' : 'Pending or differences require review' };
   if (id === 'TELEMETRY') return { 'Trace': result?.traceId ?? 'Unavailable' };

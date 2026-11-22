@@ -140,21 +140,21 @@ export default function Header({
   };
 
   return (
-    <header className="relative md:sticky top-0 z-40 bg-white/95 border-b border-slate-200 px-3 sm:px-4 py-2 shadow-sm space-y-2">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+    <header className="relative md:sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3 sm:px-5 py-2 shadow-xs space-y-1.5">
+      <div className="flex flex-wrap md:flex-nowrap items-center justify-between gap-2.5">
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 sm:p-2 rounded-xl bg-emerald-500 text-white shadow-md shadow-emerald-500/20 shrink-0">
-              <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />
+            <div className="p-1.5 rounded-xl bg-emerald-500 text-white shadow-sm shadow-emerald-500/20 shrink-0">
+              <Cpu className="w-4 h-4" />
             </div>
             <div>
-              <h1 className="font-extrabold text-xs sm:text-sm text-slate-900 tracking-tight flex items-center gap-1.5 leading-none">
+              <h1 className="font-extrabold text-xs sm:text-sm text-slate-900 tracking-tight whitespace-nowrap leading-none">
                 HPE ProLiant AI Studio
               </h1>
             </div>
           </div>
 
-          <div className="h-6 w-px bg-slate-200 hidden md:block" />
+          <div className="h-5 w-px bg-slate-200 hidden md:block" />
 
           <ChassisSelector
             catalogs={catalogs}
@@ -169,7 +169,7 @@ export default function Header({
           />
         </div>
 
-        <div className="flex-1 min-w-0 basis-full md:basis-48 md:max-w-md order-3 md:order-2">
+        <div className="flex-1 min-w-[160px] basis-full md:basis-0 md:max-w-md order-3 md:order-2">
           <SmartSearchInput
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
@@ -193,9 +193,9 @@ export default function Header({
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-1.5 order-2 md:order-3">
+        <div className="flex items-center gap-1.5 order-2 md:order-3 shrink-0">
           <CdpHealthBadge />
-          <NotebookLmHealthBadge />
+          <NotebookLmHealthBadge onOpenRag={onOpenRag} />
         </div>
       </div>
 

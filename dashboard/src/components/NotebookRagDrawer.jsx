@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { BookOpen, X, Sparkles, AlertTriangle, Search, RefreshCw, Thermometer, Zap, Database, Cpu, Layers, ShieldCheck, Terminal, Code, Clock } from 'lucide-react';
 
 const HARDCODED_SCENARIOS = [
@@ -308,6 +309,15 @@ export default function NotebookRagDrawer({ isOpen, onClose, ragData, isQuerying
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleInlineSearch = (e) => {
@@ -321,15 +331,20 @@ export default function NotebookRagDrawer({ isOpen, onClose, ragData, isQuerying
     if (onQuerySubmit) onQuerySubmit(scenarioQuery);
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex">
+  const drawer = (
+    <div className="fixed inset-0 z-[100] flex">
       <div className="flex-1 bg-slate-900/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="w-full max-w-lg bg-white shadow-2xl border-l border-slate-200 p-6 overflow-y-auto transition-all">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="rag-drawer-title"
+        className="w-full max-w-lg bg-white shadow-2xl border-l border-slate-200 p-6 overflow-y-auto transition-all"
+      >
         <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
           <div className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-blue-600" />
             <div>
-              <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
+              <h3 id="rag-drawer-title" className="font-bold text-slate-900 text-base flex items-center gap-2">
                 Gemini NotebookLM RAG Engine
                 <span className="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-mono font-bold">
                   Traceable RAG
@@ -455,4 +470,6 @@ export default function NotebookRagDrawer({ isOpen, onClose, ragData, isQuerying
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined' ? createPortal(drawer, document.body) : drawer;
 }

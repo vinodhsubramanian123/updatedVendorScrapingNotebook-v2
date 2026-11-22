@@ -1,5 +1,31 @@
 import React from 'react';
 import { ShieldCheck, BarChart2, Clock } from 'lucide-react';
+import { allocateRoundedPercentages } from '../../../utils/formatters';
+
+function getAccuracyTier(score) {
+  if (score >= 85) {
+    return {
+      label: 'High Precision',
+      badgeClass: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+      barClass: 'bg-emerald-400',
+      iconClass: 'text-emerald-400'
+    };
+  }
+  if (score >= 60) {
+    return {
+      label: 'Moderate',
+      badgeClass: 'bg-amber-500/10 text-amber-300 border-amber-500/25',
+      barClass: 'bg-amber-400',
+      iconClass: 'text-amber-400'
+    };
+  }
+  return {
+    label: 'Needs Calibration',
+    badgeClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+    barClass: 'bg-rose-400',
+    iconClass: 'text-rose-400'
+  };
+}
 
 export default function AccuracyProfilerPanel({
   telemetry = {},
@@ -8,7 +34,11 @@ export default function AccuracyProfilerPanel({
   onOpenDomain,
   onOpenProfiler
 }) {
-  const accuracyScore = telemetry.evalAccuracyScore ? `${telemetry.evalAccuracyScore}%` : '98.5%';
+  const numericAccuracy = Number.isFinite(Number(telemetry.evalAccuracyScore))
+    ? Number(telemetry.evalAccuracyScore)
+    : 98.5;
+  const accuracyScore = `${numericAccuracy}%`;
+  const accuracyTier = getAccuracyTier(numericAccuracy);
   const adversarialCatch = telemetry.adversarial?.catchRate ? `${telemetry.adversarial.catchRate}%` : '100%';
 
   const domainTotals = {
@@ -29,29 +59,37 @@ export default function AccuracyProfilerPanel({
     }
   });
 
-  const grandTotal = Object.values(domainTotals).reduce((a, b) => a + b, 0);
+  const rawCounts = [
+    domainTotals.THERMAL,
+    domainTotals.ELECTRICAL,
+    domainTotals.STORAGE_CACHE_BATTERY,
+    domainTotals.MEMORY_CHANNEL,
+    domainTotals.POWER_REDUNDANCY
+  ];
+  const grandTotal = rawCounts.reduce((a, b) => a + b, 0);
+  const allocatedPcts = grandTotal > 0 ? allocateRoundedPercentages(rawCounts) : [35, 25, 20, 12, 8];
   const domainItems = [
-    { domain: 'Thermal TDP Fans', color: 'bg-rose-500', pct: grandTotal > 0 ? Math.round((domainTotals.THERMAL / grandTotal) * 100) : 35 },
-    { domain: 'Telco -48VDC Lug Kits', color: 'bg-amber-500', pct: grandTotal > 0 ? Math.round((domainTotals.ELECTRICAL / grandTotal) * 100) : 25 },
-    { domain: 'Storage Cache Battery', color: 'bg-blue-500', pct: grandTotal > 0 ? Math.round((domainTotals.STORAGE_CACHE_BATTERY / grandTotal) * 100) : 20 },
-    { domain: 'Memory Channel Symmetry', color: 'bg-purple-500', pct: grandTotal > 0 ? Math.round((domainTotals.MEMORY_CHANNEL / grandTotal) * 100) : 12 },
-    { domain: 'PSU Redundancy', color: 'bg-emerald-500', pct: grandTotal > 0 ? Math.round((domainTotals.POWER_REDUNDANCY / grandTotal) * 100) : 8 }
+    { domain: 'Thermal TDP Fans', color: 'bg-rose-500', pct: allocatedPcts[0] },
+    { domain: 'Telco -48VDC Lug Kits', color: 'bg-amber-500', pct: allocatedPcts[1] },
+    { domain: 'Storage Cache Battery', color: 'bg-blue-500', pct: allocatedPcts[2] },
+    { domain: 'Memory Channel Symmetry', color: 'bg-purple-500', pct: allocatedPcts[3] },
+    { domain: 'PSU Redundancy', color: 'bg-emerald-500', pct: allocatedPcts[4] }
   ];
 
   return (
-    <div className="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="mb-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       <div
         className="p-5 rounded-2xl bg-slate-950 text-white shadow-sm space-y-4 flex flex-col justify-between cursor-pointer hover:ring-2 hover:ring-emerald-400/50 hover:scale-[1.01] transition-all duration-200"
         onClick={onOpenAccuracy}
         title="Click to inspect Accuracy Index methodology and synthetic vs customer BOQ benchmarks"
       >
         <div>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" /> Accuracy Index
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 whitespace-nowrap">
+              <ShieldCheck className={`w-4 h-4 ${accuracyTier.iconClass}`} /> Accuracy Index
             </span>
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              High Precision
+            <span className={`px-2 py-0.5 rounded text-[10px] font-bold border whitespace-nowrap shrink-0 ${accuracyTier.badgeClass}`}>
+              {accuracyTier.label}
             </span>
           </div>
           <div className="flex items-baseline gap-2">
@@ -61,13 +99,13 @@ export default function AccuracyProfilerPanel({
         <div>
           <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-2">
             <div
-              className="bg-emerald-400 h-full rounded-full transition-all duration-500"
-              style={{ width: `${telemetry.evalAccuracyScore || 98.5}%` }}
+              className={`${accuracyTier.barClass} h-full rounded-full transition-all duration-500`}
+              style={{ width: `${Math.min(100, Math.max(0, numericAccuracy))}%` }}
             />
           </div>
-          <p className="text-[11px] text-slate-400 leading-relaxed flex items-center justify-between">
+          <p className="text-[11px] text-slate-400 leading-relaxed flex items-center justify-between gap-2">
             <span>Calculated across synthetic and live customer BOQs.</span>
-            <span className="text-emerald-400 font-bold text-[10px]">Inspect &rarr;</span>
+            <span className="text-emerald-400 font-bold text-[10px] whitespace-nowrap shrink-0">Inspect &rarr;</span>
           </p>
         </div>
       </div>
@@ -78,11 +116,11 @@ export default function AccuracyProfilerPanel({
         title="Click to inspect Continuous Adversarial Red-Team Stress Tests"
       >
         <div>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5 whitespace-nowrap">
               <ShieldCheck className="w-4 h-4 text-slate-400" /> Adversarial Catch
             </span>
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-600 border border-slate-300">
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-600 border border-slate-300 whitespace-nowrap shrink-0">
               Red-Team
             </span>
           </div>
@@ -97,9 +135,9 @@ export default function AccuracyProfilerPanel({
               style={{ width: `${telemetry.adversarial?.catchRate || 100}%` }}
             />
           </div>
-          <p className="text-[11px] text-slate-500 leading-relaxed flex items-center justify-between">
+          <p className="text-[11px] text-slate-500 leading-relaxed flex items-center justify-between gap-2">
             <span>Continuous background adversarial benchmarks.</span>
-            <span className="text-blue-600 font-bold text-[10px]">Inspect &rarr;</span>
+            <span className="text-blue-600 font-bold text-[10px] whitespace-nowrap shrink-0">Inspect &rarr;</span>
           </p>
         </div>
       </div>
@@ -109,11 +147,11 @@ export default function AccuracyProfilerPanel({
         onClick={onOpenDomain}
         title="Click to inspect all 5 physical rule domain definitions"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-2">
           <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
-            <BarChart2 className="w-4 h-4 text-blue-600" /> Violation Domain Breakdown
+            <BarChart2 className="w-4 h-4 text-blue-600 shrink-0" /> Violation Domain Breakdown
           </span>
-          <span className="text-[10px] text-blue-600 font-bold">View Rules &rarr;</span>
+          <span className="text-[10px] text-blue-600 font-bold whitespace-nowrap shrink-0">View Rules &rarr;</span>
         </div>
         <div className="space-y-1.5 text-xs">
           {domainItems.map((item, idx) => (
@@ -133,11 +171,11 @@ export default function AccuracyProfilerPanel({
         onClick={onOpenProfiler}
         title="Click to inspect 5-Stage Pipeline execution latency distribution"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-2">
           <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
-            <Clock className="w-4 h-4 text-indigo-600" /> 5-Stage Pipeline Profiler
+            <Clock className="w-4 h-4 text-indigo-600 shrink-0" /> 5-Stage Pipeline Profiler
           </span>
-          <span className="text-[10px] text-indigo-600 font-bold">Profile &rarr;</span>
+          <span className="text-[10px] text-indigo-600 font-bold whitespace-nowrap shrink-0">Profile &rarr;</span>
         </div>
         <div className="space-y-1 text-[11px]">
           <div className="flex justify-between text-slate-600">

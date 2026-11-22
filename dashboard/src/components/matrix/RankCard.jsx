@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Award, Check, MessageSquare, Download, Loader, Sparkles, ShieldCheck, Copy, CheckCircle, Zap, Brain, GitFork, ChevronDown, ChevronUp, XCircle } from 'lucide-react';
+import { Award, Check, Info, MessageSquare, Download, Loader, Sparkles, ShieldCheck, Copy, CheckCircle, Zap, Brain, GitFork, ChevronDown, ChevronUp, XCircle } from 'lucide-react';
 import { getCategoryStyle } from '../../utils/categoryStyles';
 import { formatPrice, extendedPrice } from '../../services/pricing.js';
+import { humanizeEnum } from '../../utils/formatters.js';
+import MarkdownText from '../MarkdownText.jsx';
 
 function RankSkuPartsSection({ tier, isExpanded, onToggleExpand, onCopyBom, isCopied }) {
   if (!tier.skuPartsList?.length) return null;
@@ -247,6 +249,74 @@ function RankAvailability({ tier }) {
   );
 }
 
+function BudgetBreakdownSection({ tier }) {
+  if (!tier.budgetBreakdown) return null;
+  const baseCost = Number(tier.budgetBreakdown.baseBomCost);
+  const fixCost = Number(tier.budgetBreakdown.fixCost) || 0;
+  const addonCost = Number(tier.budgetBreakdown.strategyAddonCost) || 0;
+  const rawSum = (Number.isFinite(baseCost) ? baseCost : 0) + fixCost + addonCost;
+  const hasCapexDivergence = tier.estimatedCostUsd !== null && Number.isFinite(baseCost) && Math.abs(tier.estimatedCostUsd - rawSum) > 1;
+  const netDelta = hasCapexDivergence ? (tier.estimatedCostUsd - baseCost) : null;
+
+  return (
+    <div className="pt-2 border-t border-slate-200/60 space-y-1.5">
+      <div className="grid grid-cols-3 gap-1 text-[10px] text-slate-500 text-center">
+        <div>
+          <span className="block font-semibold text-slate-700">{formatPrice(tier.budgetBreakdown.baseBomCost)}</span>
+          {hasCapexDivergence ? 'Orig. Base' : 'Base BOM'}
+        </div>
+        <div>
+          <span className="block font-semibold text-rose-600">{formatPrice(tier.budgetBreakdown.fixCost)}</span>
+          Aspect Fixes
+        </div>
+        <div>
+          {hasCapexDivergence ? (
+            <>
+              <span className={`block font-semibold ${netDelta < 0 ? 'text-emerald-600' : 'text-blue-600'}`}>
+                {netDelta >= 0 ? '+' : '-'}{formatPrice(Math.abs(netDelta))}
+              </span>
+              Net Substitution
+            </>
+          ) : (
+            <>
+              <span className="block font-semibold text-blue-600">{formatPrice(tier.budgetBreakdown.strategyAddonCost)}</span>
+              Add-ons
+            </>
+          )}
+        </div>
+      </div>
+      {tier.pricingComplete === false && (
+        <p className="text-[10px] text-amber-700 text-center">
+          Partial total excludes {tier.missingPriceCount} unpriced SKU{tier.missingPriceCount === 1 ? '' : 's'}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function AutomatedFixesList({ swaps = [] }) {
+  return (
+    <div className="mt-4">
+      <h4 className="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2">Automated Configuration & Rule Fixes:</h4>
+      <ul className="space-y-1.5 text-xs text-slate-600">
+        {swaps.map((swap, idx) => {
+          const isUnavailable = /price unavailable|not reported|unavailable/i.test(String(swap));
+          return (
+            <li key={idx} className="flex items-start gap-2 bg-white p-2 rounded-lg border border-slate-100">
+              {isUnavailable ? (
+                <Info className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+              ) : (
+                <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+              )}
+              <span className="leading-tight">{swap}</span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
 export default function RankCard({
   tier,
   isExpanded,
@@ -289,46 +359,21 @@ export default function RankCard({
         </div>
 
         <h3 className="font-bold text-slate-900 text-base leading-snug">{tier.title}</h3>
-        <p className="text-xs text-slate-500 mt-1">{tier.subtitle}</p>
+        <p className="text-xs text-slate-500 mt-1">{humanizeEnum(tier.subtitle)}</p>
 
         <div className="mt-4 p-3 bg-slate-50 rounded-xl space-y-2 border border-slate-100">
-          <div className="flex items-center justify-between text-xs">
+          <div className="flex items-center justify-between text-xs gap-2">
             <span className="text-slate-500 font-medium">Workload Intent Alignment:</span>
             <span className="font-bold text-slate-800">{tier.intentMatch}</span>
           </div>
-          <div className="flex items-center justify-between text-xs">
+          <div className="flex items-center justify-between text-xs gap-2">
             <span className="text-slate-500 font-medium">Estimated CapEx Budget:</span>
-            <span className="font-bold font-mono text-emerald-700 text-sm">{tier.capex}</span>
+            <span className="font-bold font-mono text-emerald-700 text-sm text-right">{tier.capex}</span>
           </div>
-          {tier.budgetBreakdown && (
-            <div className="pt-2 border-t border-slate-200/60 grid grid-cols-3 gap-1 text-[10px] text-slate-500 text-center">
-              <div>
-                <span className="block font-semibold text-slate-700">{formatPrice(tier.budgetBreakdown.baseBomCost)}</span>
-                Base BOM
-              </div>
-              <div>
-                <span className="block font-semibold text-rose-600">{formatPrice(tier.budgetBreakdown.fixCost)}</span>
-                Aspect Fixes
-              </div>
-              <div>
-                <span className="block font-semibold text-blue-600">{formatPrice(tier.budgetBreakdown.strategyAddonCost)}</span>
-                Add-ons
-              </div>
-            </div>
-          )}
+          <BudgetBreakdownSection tier={tier} />
         </div>
 
-        <div className="mt-4">
-          <h4 className="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2">Automated Configuration & Rule Fixes:</h4>
-          <ul className="space-y-1.5 text-xs text-slate-600">
-            {tier.swaps.map((swap, idx) => (
-              <li key={idx} className="flex items-start gap-2 bg-white p-2 rounded-lg border border-slate-100">
-                <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                <span className="leading-tight">{swap}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <AutomatedFixesList swaps={tier.swaps} />
 
         <RankAvailability tier={tier} />
 
@@ -375,9 +420,10 @@ export default function RankCard({
               <Sparkles className="w-3.5 h-3.5 text-amber-600" />
               NotebookLM RAG Grounding Verification:
             </div>
-            <p className="text-amber-800 text-[11px] leading-relaxed line-clamp-3 hover:line-clamp-none transition-all">
-              {tier.ragSecondOpinion}
-            </p>
+            <MarkdownText
+              text={tier.ragSecondOpinion}
+              className="text-amber-900 text-[11px] leading-relaxed max-h-40 overflow-y-auto pr-1"
+            />
           </div>
         )}
 
@@ -436,9 +482,15 @@ export default function RankCard({
         </div>
 
         {!exportEligibility.eligible && exportEligibility.reason && (
-          <p data-testid={`rank-${tier.rank}-export-blocked`} className="text-[11px] text-amber-800 bg-amber-50/90 border border-amber-200 rounded-lg px-2.5 py-1.5 leading-snug">
-            Export blocked: {exportEligibility.reason}
-          </p>
+          <details
+            data-testid={`rank-${tier.rank}-export-blocked`}
+            className="text-[11px] text-amber-800 bg-amber-50/90 border border-amber-200 rounded-lg px-2.5 py-1.5 leading-snug"
+          >
+            <summary className="cursor-pointer font-semibold select-none truncate" title={exportEligibility.reason}>
+              Export blocked — view blockers
+            </summary>
+            <p className="mt-1 text-amber-900/90">{exportEligibility.reason}</p>
+          </details>
         )}
 
         <button
