@@ -1156,7 +1156,30 @@ router.post('/query/classify', (req, res) => {
       return sendErrorResponse(res, 400, 'Missing query parameter', { source: 'EVALUATION_ROUTER' });
     }
     const classification = classifyQueryIntent(typeof query === 'string' ? query : '', context || {});
-    res.json(classification);
+    const { listAllCatalogs } = require('../../scripts/lib/catalog/catalog_discovery.js');
+    const { resolveCatalogQueryScope } = require('../../scripts/lib/catalog/catalog_query_engine.js');
+    const catalogs = listAllCatalogs();
+    const named = resolveCatalogQueryScope(query, catalogs);
+    const pinned = context?.chassisName;
+    const resolved = resolveCatalogQueryScope(query, catalogs, pinned);
+    const conflicts = pinned && (
+      named.unresolvedProducts.length > 0 ||
+      resolved.products.some(id => id !== pinned) ||
+      (resolved.products.length === 0 && /\b(?:across\s+(?:all\s+)?(?:catalogs|products|solutions)|portfolio[ -]wide|entire\s+portfolio)\b/i.test(query))
+    );
+    const products = resolved.products.map(id => {
+      const catalog = catalogs.find(item => item.id === id);
+      return { id, label: catalog?.chassis || id, chassisDir: catalog?.chassisDir };
+    });
+    res.json({
+      ...classification,
+      scope: {
+        products,
+        generations: resolved.generations,
+        unresolvedProducts: resolved.unresolvedProducts,
+        conflict: conflicts ? 'The request and pinned product have different scopes. Switch to Auto or edit the request.' : null
+      }
+    });
   } catch (err) {
     sendErrorResponse(res, 500, err, { source: 'EVALUATION_ROUTER' });
   }

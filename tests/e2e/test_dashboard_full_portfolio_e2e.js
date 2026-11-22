@@ -65,10 +65,13 @@ function isAllowedLocalUrl(rawUrl) {
   }
 }
 
-async function selectHeaderProduct(page, productName) {
-  await page.locator('button', { hasText: /Chassis Context/i }).first().click();
-  await page.locator('input[aria-label="Search products"]').fill(productName);
-  await page.locator('div.max-h-56 button', { hasText: new RegExp(productName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') }).first().click();
+async function selectCatalogProduct(page, productName) {
+  const currentTab = await page.locator('[data-tab][aria-current="page"]').getAttribute('data-tab');
+  if (currentTab !== 'catalog') await page.locator('[data-tab="catalog"]').click();
+  await page.locator('main summary:visible').filter({ hasText: /Choose a product|^Catalog ·/i }).click();
+  await page.getByRole('searchbox', { name: 'Filter catalogs' }).fill(productName);
+  await page.locator('main details[open]:visible').filter({ has: page.getByRole('searchbox', { name: 'Filter catalogs' }) }).locator('ul button').first().click();
+  if (currentTab !== 'catalog') await page.locator(`[data-tab="${currentTab}"]`).click();
 }
 
 async function waitForCatalogSkuChange(page, previousSku, timeoutMs = 10000) {
@@ -138,7 +141,7 @@ async function runPortfolioE2E() {
 
     const observedTableText = [];
     for (const prod of expectedProducts) {
-      await selectHeaderProduct(page, prod.label);
+      await selectCatalogProduct(page, prod.label);
       await waitForCatalogSkuChange(page, observedTableText[observedTableText.length - 1] || '');
       const catalogText = await page.locator('main, table').first().textContent();
       assert(catalogText.includes(prod.expectedSkuToken), `Catalog Explorer for ${prod.label} must show SKU ${prod.expectedSkuToken}`);
@@ -148,8 +151,8 @@ async function runPortfolioE2E() {
 
     // Run a real non-DL380 offline evaluation (DL385 Gen11 certified) and verify visual topology fidelity
     await page.locator('[data-tab="orchestrator"]').click();
-    await selectHeaderProduct(page, 'DL385 Gen11');
-    await page.getByRole('button', { name: /Load \/ Evaluate BOQ|Load BOQ & Evaluate/i }).first().click();
+    await selectCatalogProduct(page, 'DL385 Gen11');
+    await page.getByRole('button', { name: /Load \/ Evaluate BOQ|Direct BOQ evaluation/i }).first().click();
     const uploaderModal = page.getByRole('dialog');
     await uploaderModal.waitFor({ timeout: 5000 });
     await page.getByPlaceholder(/Paste quote lines/i).fill('1x P53921-B21 HPE ProLiant DL385 Gen11 8SFF Configure-to-order Server\n1x P58540-B21 AMD EPYC 9224 2.5GHz 24-core 200W Processor for HPE');
@@ -172,7 +175,7 @@ async function runPortfolioE2E() {
     await page.keyboard.press('Escape');
     await uploaderModal.waitFor({ state: 'detached', timeout: 5000 });
     await page.locator('[data-tab="matrix"]').click();
-    await page.getByRole('button', { name: /Visual BOQ Topology/i }).click();
+    await page.getByRole('button', { name: /Visual (?:BOQ )?Topology/i }).click();
     const topoModal = page.getByRole('dialog', { name: /Topology/i });
     await topoModal.waitFor({ timeout: 5000 });
     const modalText = await topoModal.textContent();

@@ -192,13 +192,13 @@ async function waitForOutstandingRequests(...pages) {
   }
 }
 
-async function selectHeaderChassis(page, searchText) {
-  const trigger = page.locator('button', { hasText: /Chassis Context/i }).first();
-  await trigger.click();
-  const input = page.locator('input[aria-label="Search products"]');
-  await input.fill(searchText);
-  const optionBtn = page.locator('div.max-h-56 button', { hasText: new RegExp(searchText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') }).first();
-  await optionBtn.click();
+async function selectCatalogProduct(page, productName) {
+  const currentTab = await page.locator('[data-tab][aria-current="page"]').getAttribute('data-tab');
+  if (currentTab !== 'catalog') await page.locator('[data-tab="catalog"]').click();
+  await page.locator('main summary:visible').filter({ hasText: /Choose a product|^Catalog ·/i }).click();
+  await page.getByRole('searchbox', { name: 'Filter catalogs' }).fill(productName);
+  await page.locator('main details[open]:visible').filter({ has: page.getByRole('searchbox', { name: 'Filter catalogs' }) }).locator('ul button').first().click();
+  if (currentTab !== 'catalog') await page.locator(`[data-tab="${currentTab}"]`).click();
 }
 
 function apiJson(rawUrl, options = {}) {
@@ -262,7 +262,7 @@ async function openBoqUploaderModal(page) {
   if (await existingInput.count() > 0 && await page.getByRole('dialog').isVisible().catch(() => false)) {
     return page.getByRole('dialog');
   }
-  await page.getByRole('button', { name: /Load \/ Evaluate BOQ|Load BOQ & Evaluate/i }).first().click();
+  await page.getByRole('button', { name: /Load \/ Evaluate BOQ|Direct BOQ evaluation/i }).first().click();
   const dialog = page.getByRole('dialog');
   await dialog.waitFor({ timeout: 5000 });
   return dialog;
@@ -324,13 +324,13 @@ async function runSizingWorkflow(page) {
 }
 
 async function verifyOrder4SizingAndMatrixHandoff(page, baseUrl) {
-  await selectHeaderChassis(page, 'DL380 Gen12');
+  await selectCatalogProduct(page, 'DL380 Gen12');
   await page.getByRole('button', { name: /Sizing \(4x DL380\)/i }).click();
   await page.getByRole('button', { name: /Identify workflow/i }).click();
   await page.getByRole('button', { name: /Run workflow/i }).waitFor({ timeout: 10000 });
 
   // Switch header product before running workflow & before clicking Evaluate in 5-Tier Matrix
-  await selectHeaderChassis(page, 'DL360 Gen11');
+  await selectCatalogProduct(page, 'DL360 Gen11');
   await runSizingWorkflow(page);
 
   const summary = page.getByTestId('candidate-reference-summary');
@@ -354,7 +354,7 @@ async function verifyOrder4SizingAndMatrixHandoff(page, baseUrl) {
 
   const deliveryBanner = page.getByTestId('delivery-auth-banner');
   await deliveryBanner.waitFor({ timeout: 10000 });
-  assert(/EXPORT_BLOCKED|DELIVERY_BLOCKED/i.test(await deliveryBanner.textContent()), 'Offline eval run must remain blocked from customer XLSX export');
+  assert(/Delivery blocked/i.test(await deliveryBanner.textContent()), 'Offline eval run must remain blocked from customer XLSX export');
   const exportBtn = page.getByRole('button', { name: /Export XLSX/i }).first();
   assert.strictEqual(await exportBtn.isDisabled(), true, 'Export XLSX button must be disabled when Delivery Authorization is blocked');
 
@@ -702,7 +702,7 @@ async function verifyOrder3LifecycleAndRestart(browser, port, serverRef, runsDir
 
 async function verifyReconcileTopologyAndA11y(page, baseUrl) {
   await page.locator('[data-tab="orchestrator"]').click();
-  await selectHeaderChassis(page, 'DL385 Gen11');
+  await selectCatalogProduct(page, 'DL385 Gen11');
   await openBoqUploaderModal(page);
   const textarea = page.getByPlaceholder(/Paste quote lines/i);
   await textarea.fill('1x P53921-B21 HPE ProLiant DL385 Gen11 8SFF Configure-to-order Server\n1x P58540-B21 AMD EPYC 9224 2.5GHz 24-core 200W Processor for HPE');
@@ -738,7 +738,7 @@ async function verifyReconcileTopologyAndA11y(page, baseUrl) {
 
   // Open non-DL380 evaluated topology + test keyboard Tab trapping & Escape close
   await page.locator('[data-tab="matrix"]').click();
-  await page.getByRole('button', { name: /Visual BOQ Topology/i }).click();
+  await page.getByRole('button', { name: /Visual (?:BOQ )?Topology/i }).click();
   const topoDialog = page.getByRole('dialog', { name: /Topology/i });
   await topoDialog.waitFor({ timeout: 5000 });
   const topoText = await topoDialog.textContent();
@@ -756,7 +756,7 @@ async function verifyReconcileTopologyAndA11y(page, baseUrl) {
   // Mobile 390x844 layout overflow check
   await page.setViewportSize({ width: 390, height: 844 });
   for (const tabId of ['orchestrator', 'matrix', 'pipeline']) {
-    await page.locator(`[data-tab="${tabId}"]`).click();
+    await page.getByRole('combobox', { name: 'More dashboard views' }).selectOption(tabId);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     assert(overflow <= 2, `Mobile 390px horizontal overflow on tab ${tabId}: ${overflow}px`);
   }

@@ -85,7 +85,7 @@ export default function ChassisSyncSummaryView({
     setError(null);
     try {
       const url = forceRefresh ? '/api/chassis-sync-summary?refresh=1' : '/api/chassis-sync-summary';
-      const res = await fetch(url, { signal });
+      const res = await fetch(url, { signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(10000)]) : AbortSignal.timeout(10000) });
       if (!res.ok) throw new Error(`HTTP ${res.status}: Failed to load sync summary`);
       const result = await res.json();
       if (!signal?.aborted) setData(result);
@@ -116,8 +116,8 @@ export default function ChassisSyncSummaryView({
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-slate-400">
-        <RefreshCw className="w-8 h-8 animate-spin text-emerald-500 mb-3" />
+      <div className="flex flex-col items-center justify-center rounded-xl border border-slate-200 bg-white py-5 text-slate-400">
+        <RefreshCw className="size-4 motion-safe:animate-spin text-emerald-600 mb-2" />
         <p className="text-sm font-semibold text-slate-600">Loading Portfolio Sync Intelligence...</p>
       </div>
     );

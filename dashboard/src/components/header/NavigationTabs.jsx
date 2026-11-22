@@ -21,7 +21,16 @@ export default function NavigationTabs({
 }) {
   return (
     <div className="flex items-center justify-between border-t border-slate-100 pt-2">
-      <nav aria-label="Dashboard views" className="flex min-w-0 items-center gap-1 overflow-x-auto py-1">
+      <nav aria-label="Dashboard views" className="flex min-w-0 items-center py-1">
+        <select
+          aria-label="More dashboard views"
+          className="max-w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm font-semibold text-slate-800 lg:hidden"
+          value={TABS.some(tab => tab.id === activeTab) ? activeTab : 'pipeline'}
+          onChange={event => setActiveTab(event.target.value)}
+        >
+          {TABS.map(tab => <option key={tab.id} value={tab.id}>{tab.label}</option>)}
+        </select>
+        <div className="hidden items-center gap-1 lg:flex">
         {TABS.map(tab => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -31,7 +40,7 @@ export default function NavigationTabs({
               data-tab={tab.id}
               aria-current={isActive ? 'page' : undefined}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold motion-safe:transition-colors motion-safe:duration-150 shrink-0 cursor-pointer ${
                 isActive
                   ? 'bg-emerald-50 text-emerald-900 border border-emerald-200 shadow-sm'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
@@ -42,6 +51,7 @@ export default function NavigationTabs({
             </button>
           );
         })}
+        </div>
       </nav>
 
       <div className="flex items-center gap-2 shrink-0">

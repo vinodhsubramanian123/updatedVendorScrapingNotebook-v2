@@ -67,6 +67,17 @@ describe('ResolutionMatrix', () => {
   it('fails closed with no synthesized candidates if evalResults is null', () => {
     render(<ResolutionMatrix evalResults={null} selectedChassis="DL380_Gen12_SFF" />);
     expect(screen.getByText(/Multi-Tier Strategic Resolution Matrix/i)).toBeInTheDocument();
+    expect(screen.getByText(/Load or evaluate a BOQ to compare candidates/i)).toBeInTheDocument();
+    expect(screen.queryByText(/No candidate passed the buildability/i)).not.toBeInTheDocument();
+  });
+
+  it('distinguishes a restoring evaluation from a completed run with no candidates', () => {
+    const { rerender } = render(<ResolutionMatrix evalResults={null} restoringEvaluation />);
+    expect(screen.getByText(/Restoring previous evaluation/i)).toBeInTheDocument();
+    expect(screen.queryByText(/No candidate passed the buildability/i)).not.toBeInTheDocument();
+
+    rerender(<ResolutionMatrix evalResults={{ runId: 'completed-run', chassis: 'DL360_Gen12' }} />);
+    expect(screen.getByText(/completed-run/i)).toBeInTheDocument();
     expect(screen.getByText(/No candidate passed the buildability/i)).toBeInTheDocument();
   });
 
@@ -110,7 +121,7 @@ describe('ResolutionMatrix', () => {
     const { rerender } = render(<ResolutionMatrix evalResults={blockedEval} selectedChassis="DL380_Gen12_SFF" />);
     const exportBtnsBlocked = screen.getAllByRole('button', { name: /Export XLSX/i });
     expect(exportBtnsBlocked[0]).toBeDisabled();
-    expect(screen.getByTestId('delivery-auth-banner')).toHaveTextContent(/EXPORT_BLOCKED/i);
+    expect(screen.getByTestId('delivery-auth-banner')).toHaveTextContent(/Delivery blocked/i);
     expect(screen.getByTestId('rank-1-export-blocked')).toHaveTextContent(/Grounding unverified/i);
     expect(screen.getByText(/Vendor acceptance:/i)).toBeInTheDocument();
     expect(screen.getByText(/Delivery Authorization:/i)).toBeInTheDocument();

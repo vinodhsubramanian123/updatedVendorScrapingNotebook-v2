@@ -469,16 +469,19 @@ async function runClassification({ query, product, primary, secondary, localOnly
 }
 
 async function runExecution({ plan, revision, primary, query, localOnly, onEvaluateBoq, setBusy, setError, setResult, setActiveRunId, activeRunIdRef }) {
-  if (!plan || plan.version !== revision.current) return;
+  if (!plan || plan.version !== revision.current || plan.classification.scope?.conflict) return;
   const version = revision.current;
   setBusy(true); setError(null);
   try {
     if (plan.classification.intent === 'BOQ_EVALUATION') {
       const payload = primary ? { filepath: plan.input.context.filePath } : { rawText: query };
+      const products = plan.classification.scope?.products;
+      const resolvedProduct = products?.length === 1 ? products[0] : null;
       await onEvaluateBoq({
         ...payload,
         chassisDir: plan.input?.context?.chassisDir || plan.originProduct?.chassisDir,
-        chassisName: plan.input?.context?.chassisName || plan.originProduct?.id,
+        chassisName: plan.input?.context?.chassisName || plan.originProduct?.id || resolvedProduct?.id,
+        ...(!plan.originProduct && !resolvedProduct ? { autoScope: true } : {}),
         offline: plan.input?.context?.offline ?? localOnly
       });
     } else {
@@ -631,7 +634,7 @@ function usePresalesSnapshot(setResult, setError, activeRunId, setActiveRunId, a
   }, [activeRunId, setResult, setError, setActiveRunId, activeRunIdRef]);
 }
 
-function usePresalesRunner(query, product, primary, secondary, localOnly, onEvaluateBoq) {
+function usePresalesRunner(query, product, primary, secondary, localOnly, onEvaluateBoq, pinnedProductId) {
   const initialRunId = readSessionValue(SESSION_PRESALES_RUN_KEY);
   const [plan, setPlan] = useState(null);
   const [result, setResult] = useState(null);
@@ -645,7 +648,7 @@ function usePresalesRunner(query, product, primary, secondary, localOnly, onEval
     revision.current++;
     setPlan(null);
     setError(null);
-  }, [query, primary, secondary, localOnly]);
+  }, [query, primary, secondary, localOnly, pinnedProductId]);
 
   usePresalesSnapshot(setResult, setError, activeRunId, setActiveRunId, activeRunIdRef);
 
@@ -714,12 +717,24 @@ function PresalesInputControls({ query, setQuery, primary, setPrimary, secondary
   );
 }
 
-function PresalesActionToolbar({ busy, isTaskRunning, queryEmpty, classify, plan, execute }) {
+function describePlanScope(plan) {
+  const scope = plan.classification.scope;
+  if (scope?.unresolvedProducts.length) return `Unresolved · ${scope.unresolvedProducts.join(', ')}`;
+  if (scope?.products.length) return scope.products.map(product => product.label).join(' + ');
+  if (scope?.generations.length) return scope.generations.join(' + ');
+  if (plan.originProduct) return plan.originProduct.id.replaceAll('_', ' ');
+  if (['CATALOG_INTELLIGENCE', 'SOLUTION_COMPARISON'].includes(plan.classification.intent)) return 'Portfolio-wide';
+  if (plan.input.context.filePath || plan.input.context.secondaryFilePath) return 'Auto · Identify from attachments during intake';
+  if (plan.classification.intent === 'BOQ_EVALUATION') return 'Auto · Identify from BOQ';
+  return 'Auto · No product selected';
+}
+
+function PresalesActionToolbar({ busy, isTaskRunning, queryEmpty, classify, plan, execute, primary, secondary }) {
   const friendlyIntent = plan ? (INTENT_FRIENDLY_NAMES[plan.classification.intent] || plan.classification.intent) : '';
   return (
     <div className="flex flex-wrap items-center gap-3 pt-1">
       <button
-        className="btn-secondary text-xs"
+        className="btn-primary text-xs"
         disabled={busy || isTaskRunning || queryEmpty}
         onClick={classify}
       >
@@ -728,10 +743,19 @@ function PresalesActionToolbar({ busy, isTaskRunning, queryEmpty, classify, plan
       {plan && (
         <div className="flex flex-wrap items-center gap-2">
           <span className="badge badge-emerald text-xs">{friendlyIntent}</span>
-          <span className="text-xs text-slate-600">({plan.classification.rationale})</span>
+          <span className="text-xs text-slate-600">{plan.classification.rationale}</span>
+          <p className="basis-full text-sm text-slate-700">
+            <strong>Scope</strong> {describePlanScope(plan)} · {plan.input.context.offline ? 'Local catalog only' : 'Cloud services allowed'}
+          </p>
+          {(primary || secondary) && (
+            <p className="basis-full break-words text-sm text-slate-700">
+              <strong>Files</strong> {[primary?.name, secondary?.name].filter(Boolean).join(' · ')}
+            </p>
+          )}
+          {plan.classification.scope?.conflict && <p role="alert" className="basis-full text-sm text-rose-800">{plan.classification.scope.conflict}</p>}
           <button
             className="btn-primary text-xs"
-            disabled={busy || isTaskRunning || plan.classification.intent === 'AMBIGUOUS_QUERY'}
+            disabled={busy || isTaskRunning || Boolean(plan.classification.scope?.conflict) || plan.classification.intent === 'AMBIGUOUS_QUERY'}
             onClick={execute}
           >
             {busy ? 'Running…' : 'Run workflow'}
@@ -743,22 +767,38 @@ function PresalesActionToolbar({ busy, isTaskRunning, queryEmpty, classify, plan
 }
 
 /** Route supported presales requests through the existing canonical engine. */
-export default function PresalesRequestPanel({ product, isTaskRunning, onEvaluateBoq }) {
+export default function PresalesRequestPanel({ product: initialProduct, catalogs = [], isTaskRunning, onEvaluateBoq }) {
+  const [pinnedProductId, setPinnedProductId] = useState(null);
+  const product = catalogs.find(catalog => catalog.id === pinnedProductId)
+    || (pinnedProductId === null ? initialProduct : null);
   const [query, setQuery] = useState('');
   const [primary, setPrimary] = useState(null);
   const [secondary, setSecondary] = useState(null);
   const [localOnly, setLocalOnly] = useState(true);
 
   const { plan, result, busy, error, classify, execute, exportExcel, evaluateCandidateBom } = usePresalesRunner(
-    query, product, primary, secondary, localOnly, onEvaluateBoq
+    query, product, primary, secondary, localOnly, onEvaluateBoq, pinnedProductId
   );
 
   return (
     <section className="glass-card p-5 mb-5 space-y-3">
       <h2 className="font-bold text-base">Presales request</h2>
       <p className="text-xs text-slate-600">
-        Describe what you need or attach a quote. Review the proposed workflow before running it for {product?.chassis || 'the selected product'}.
+        Describe what you need or attach a quote, then review the proposed workflow.
       </p>
+      <label className="block text-sm font-medium text-slate-700">
+        Product scope
+        <select
+          className="mt-1 block w-full max-w-sm rounded-lg border border-slate-300 bg-white p-2 text-sm"
+          value={pinnedProductId ?? initialProduct?.id ?? ''}
+          onChange={event => setPinnedProductId(event.target.value)}
+        >
+          <option value="">Auto · Use request context</option>
+          {(catalogs.length ? catalogs : [initialProduct].filter(Boolean)).map(catalog => (
+            <option key={catalog.id} value={catalog.id}>{catalog.chassis || catalog.label || catalog.id}</option>
+          ))}
+        </select>
+      </label>
       <PresalesInputControls
         query={query} setQuery={setQuery}
         primary={primary} setPrimary={setPrimary}
@@ -767,7 +807,7 @@ export default function PresalesRequestPanel({ product, isTaskRunning, onEvaluat
       />
       <PresalesActionToolbar
         busy={busy} isTaskRunning={isTaskRunning} queryEmpty={!query.trim() && !primary && !secondary}
-        classify={classify} plan={plan} execute={execute}
+        classify={classify} plan={plan} execute={execute} primary={primary} secondary={secondary}
       />
       {error && <p role="alert" className="text-sm text-rose-800 bg-rose-50 p-2 rounded-lg border border-rose-200">{error}</p>}
       <RoutedOutcome envelope={result} onExportExcel={exportExcel} onEvaluateCandidateBom={evaluateCandidateBom} />

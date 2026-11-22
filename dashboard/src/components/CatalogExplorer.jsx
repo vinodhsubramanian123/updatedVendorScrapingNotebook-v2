@@ -281,7 +281,46 @@ export default function CatalogExplorer({
   };
 
   if (!catalogData) {
-    return <CatalogEmptyPlaceholder isCatalogLoading={isCatalogLoading} />;
+    return (
+      <div className="space-y-4">
+        <CatalogProductSwitcher catalogs={catalogs} selectedChassis={selectedChassis} onSelectChassis={onSelectChassis} />
+        {(selectedChassis || !catalogs?.length) ? (
+          <CatalogEmptyPlaceholder isCatalogLoading={isCatalogLoading} />
+        ) : (
+          <section className="glass-card p-5 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h2 className="text-sm font-bold text-slate-900">Explore Certified Hardware Catalogs</h2>
+                <p className="text-xs text-slate-600 mt-0.5">
+                  Pick a product below to browse SKUs, pricing analytics, rules, and version diffs.
+                </p>
+              </div>
+              <span className="badge badge-slate text-xs tabular-nums">{catalogs.length} products available</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+              {catalogs.map(catalog => (
+                <button
+                  key={catalog.id}
+                  type="button"
+                  onClick={() => onSelectChassis?.(catalog.id)}
+                  className="flex items-center justify-between gap-3 rounded-xl border border-slate-200/90 bg-white/80 px-3.5 py-3 text-left hover:border-emerald-300 hover:bg-emerald-50/40 hover:shadow-xs cursor-pointer motion-safe:transition-colors"
+                >
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold text-slate-900 truncate">{catalog.chassis || catalog.id}</div>
+                    {catalog.family && (
+                      <div className="text-[11px] text-slate-500 truncate mt-0.5">{catalog.family}</div>
+                    )}
+                  </div>
+                  <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full tabular-nums shrink-0">
+                    {catalog.totalSKUs} SKUs
+                  </span>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+    );
   }
 
   const allSkus = extractAllCatalogSkus(catalogData);

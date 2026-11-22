@@ -14,10 +14,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { requestJson } from '../services/api.js';
 
-export function useCatalogs(initialChassis = 'DL380_Gen12') {
+export function useCatalogs(initialChassis = null) {
   const [catalogs, setCatalogs] = useState([]);
   const [selectedChassis, setSelectedChassis] = useState(initialChassis);
-  const [catalogData, setCatalogData] = useState(null);
+  const [loadedCatalog, setLoadedCatalog] = useState(null);
   const [isCatalogLoading, setIsCatalogLoading] = useState(false);
   const [catalogError, setCatalogError] = useState(null);
   const registryRequest = useRef(0);
@@ -32,14 +32,7 @@ export function useCatalogs(initialChassis = 'DL380_Gen12') {
       const list = data.catalogs || [];
       setCatalogError(null);
       setCatalogs(list);
-      // Auto-select first or matching catalog if current selection is invalid
-      if (list.length > 0) {
-        setSelectedChassis(prev => {
-          if (prev && list.some(c => c.id === prev)) return prev;
-          const defaultMatch = list.find(c => c.id === 'DL380_Gen12') || list[0];
-          return defaultMatch.id;
-        });
-      } else setSelectedChassis(null);
+      setSelectedChassis(prev => list.some(catalog => catalog.id === prev) ? prev : null);
     } catch (err) {
       if (requestId === registryRequest.current) setCatalogError(err.message);
     }
@@ -53,7 +46,7 @@ export function useCatalogs(initialChassis = 'DL380_Gen12') {
   // Load catalog data whenever the selected chassis changes.
   // Also clears stale data immediately to avoid cross-chassis data leaks.
   useEffect(() => {
-    setCatalogData(null);
+    setLoadedCatalog(null);
     setIsCatalogLoading(false);
     if (!selectedChassis) return;
     const cat = catalogs.find(c => c.id === selectedChassis);
@@ -66,7 +59,7 @@ export function useCatalogs(initialChassis = 'DL380_Gen12') {
     requestJson(`/api/catalog-data?path=${encodeURIComponent(cat.jsonPath)}`, { signal: controller.signal })
       .then(data => {
         if (!current) return;
-        setCatalogData(data);
+        setLoadedCatalog({ id: selectedChassis, data });
         setIsCatalogLoading(false);
       })
       .catch(err => {
@@ -79,7 +72,7 @@ export function useCatalogs(initialChassis = 'DL380_Gen12') {
 
   return {
     catalogs,
-    catalogData,
+    catalogData: loadedCatalog?.id === selectedChassis ? loadedCatalog?.data : null,
     isCatalogLoading,
     catalogError,
     selectedChassis,

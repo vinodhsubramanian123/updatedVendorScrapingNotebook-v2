@@ -3,19 +3,19 @@ import ValueEngineeringPanel from './ValueEngineeringPanel';
 import { deriveEvidenceStates } from '../../services/exportEligibility.js';
 import { humanizeEnum } from '../../utils/formatters.js';
 
-function DeliveryAuthBanner({ authState, customerDisposition }) {
+function DeliveryAuthBanner({ authState }) {
   if (authState.state === 'BLOCKED') {
+    const issueCount = authState.reason?.match(/\b(\d+) blocker\(s\)/i)?.[1];
     return (
-      <div data-testid="delivery-auth-banner" className="p-3.5 rounded-xl border-2 border-rose-500 bg-rose-50/90 text-rose-950 text-xs flex flex-wrap items-center justify-between gap-2 shadow-xs">
-        <div className="flex items-center gap-2.5">
-          <span className="px-2 py-0.5 rounded text-[10px] bg-rose-700 text-white font-bold font-mono uppercase shrink-0">
-            {customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' ? 'DELIVERY_BLOCKED_UNBUILDABLE' : 'EXPORT_BLOCKED'}
-          </span>
-          <span className="font-medium">Delivery Authorization blocked: {authState.reason}</span>
-        </div>
-      </div>
+      <details data-testid="delivery-auth-banner" className="rounded-xl border border-rose-300 bg-rose-50 p-3.5 text-sm text-rose-950">
+        <summary className="cursor-pointer font-semibold">
+          Delivery blocked{issueCount && ` · ${issueCount} ${issueCount === '1' ? 'issue' : 'issues'}`}
+        </summary>
+        <p className="disclosure-content mt-2 break-words">{authState.reason}</p>
+      </details>
     );
   }
+
   if (authState.state === 'AUTHORIZED') {
     const manifestSuffix = authState.manifestFingerprint ? ` · manifest ${authState.manifestFingerprint.slice(0, 12)}` : '';
     return (
@@ -162,7 +162,7 @@ export default function MatrixStatusBanners({ evalResults }) {
 
   return (
     <>
-      {evalResults && <DeliveryAuthBanner authState={authState} customerDisposition={evalResults.customerDisposition} />}
+      {evalResults && <DeliveryAuthBanner authState={authState} />}
 
       {evalResults?.isProvisional ? (
         <div className="p-3 rounded-xl border border-amber-300 bg-amber-50/90 text-amber-950 text-xs flex items-center justify-between shadow-xs">

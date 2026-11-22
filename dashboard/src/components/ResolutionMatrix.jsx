@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { RefreshCw, Layers } from 'lucide-react';
 import VendorBomVerificationModal from './VendorBomVerificationModal';
 import RankCard from './matrix/RankCard';
 import MatrixComparisonTable from './matrix/MatrixComparisonTable';
@@ -50,7 +51,7 @@ function formatSolutionCapex(sol) {
   if (sol.pricingComplete === false) {
     const missingCount = sol.priceUnavailableSkus?.length || 0;
     const suffix = missingCount === 1 ? '' : 's';
-    return `Partial: ${formattedTotal} (Missing: ${missingCount} SKU${suffix})`;
+    return `Partial total ${formattedTotal} · ${missingCount} unpriced SKU${suffix}`;
   }
   return formattedTotal;
 }
@@ -166,7 +167,55 @@ async function performCandidateExport(tier, state) {
   }
 }
 
+function MatrixRunMetaHeader({ evalResults, resolvedChassisId }) {
+  if (!evalResults) return null;
+  return (
+    <div className="flex flex-wrap gap-x-5 gap-y-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
+      {evalResults.runId && <span className="break-all"><strong>Evaluation</strong> {evalResults.runId}</span>}
+      <span><strong>Product scope</strong> {resolvedChassisId?.replaceAll('_', ' ') || 'Unavailable'}</span>
+      {evalResults.evaluationStartedAt && (
+        <span><strong>Started</strong> {new Date(evalResults.evaluationStartedAt).toLocaleString()}</span>
+      )}
+    </div>
+  );
+}
+
+function MatrixEmptyOrNoMatch({ evalResults, tiersCount, restoringEvaluation, evaluationRunning, onOpenUploader }) {
+  if (!evalResults) {
+    const emptyMessage = restoringEvaluation
+      ? 'Restoring previous evaluation…'
+      : evaluationRunning ? 'Evaluation in progress…' : 'Load or evaluate a BOQ to compare candidates.';
+    return (
+      <div role="status" className="glass-card flex flex-wrap items-center justify-between gap-4 p-5 text-sm text-slate-700">
+        <div className="flex items-center gap-3">
+          {restoringEvaluation || evaluationRunning ? (
+            <RefreshCw className="w-4 h-4 text-emerald-600 motion-safe:animate-spin shrink-0" />
+          ) : (
+            <Layers className="w-4 h-4 text-slate-400 shrink-0" />
+          )}
+          <span>{emptyMessage}</span>
+        </div>
+        {!restoringEvaluation && !evaluationRunning && onOpenUploader && (
+          <button type="button" onClick={onOpenUploader} className="btn-primary text-xs">
+            Load / Evaluate BOQ
+          </button>
+        )}
+      </div>
+    );
+  }
+  const showNoMatch = !evalResults.clarificationRequired && !evalResults.isProvisional &&
+    !['ERROR', 'CANCELLED', 'ACTION_REQUIRED'].includes(evalResults.status) && tiersCount === 0;
+  if (!showNoMatch) return null;
+  return (
+    <div className="rounded-xl border border-amber-300 bg-amber-50 p-5 text-sm text-amber-950">
+      No candidate passed the buildability, uniqueness, Pareto, and customer-closeness gates. Review the reported conflicts before exporting a BOM.
+    </div>
+  );
+}
+
 export default function ResolutionMatrix({
+  restoringEvaluation = false,
+  evaluationRunning = false,
   evalResults,
   onOpenPortalFeedback,
   selectedChassis,
@@ -275,13 +324,17 @@ export default function ResolutionMatrix({
         onOpenUploader={onOpenUploader}
       />
 
+      <MatrixRunMetaHeader evalResults={evalResults} resolvedChassisId={resolvedChassisId} />
+
       <MatrixStatusBanners evalResults={evalResults} />
 
-      {tiers.length === 0 && (
-        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-5 text-sm text-amber-100">
-          No candidate passed the buildability, uniqueness, Pareto, and customer-closeness gates. Review the reported conflicts before exporting a BOM.
-        </div>
-      )}
+      <MatrixEmptyOrNoMatch
+        evalResults={evalResults}
+        tiersCount={tiers.length}
+        restoringEvaluation={restoringEvaluation}
+        evaluationRunning={evaluationRunning}
+        onOpenUploader={onOpenUploader}
+      />
 
       {tiers.length > 0 && (matrixViewMode === 'vertical-matrix' ? (
         <MatrixComparisonTable

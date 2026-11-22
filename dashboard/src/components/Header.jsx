@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Cpu } from 'lucide-react';
 import CdpHealthBadge from './CdpHealthBadge';
 import NotebookLmHealthBadge from './NotebookLmHealthBadge';
-import ChassisSelector from './header/ChassisSelector';
 import SmartSearchInput from './header/SmartSearchInput';
 import NavigationTabs from './header/NavigationTabs';
 import { formatPrice } from '../services/pricing.js';
@@ -75,10 +74,7 @@ function computeLocalSearchResults(searchQuery, catalogData) {
 }
 
 export default function Header({
-  catalogs,
   catalogData,
-  selectedChassis,
-  onSelectChassis,
   activeTab,
   setActiveTab,
   onSmartSearch,
@@ -92,22 +88,23 @@ export default function Header({
 }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isChassisOpen, setIsChassisOpen] = useState(false);
-  const [chassisFilter, setChassisFilter] = useState('');
-  const chassisDropdownRef = useRef(null);
   const searchContainerRef = useRef(null);
+  const searchInputRef = useRef(null);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         setIsSearchOpen(false);
-        setIsChassisOpen(false);
+        return;
+      }
+      if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const tag = document.activeElement?.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || document.activeElement?.isContentEditable) return;
+        e.preventDefault();
+        searchInputRef.current?.focus();
       }
     };
     const handleClickOutside = (event) => {
-      if (chassisDropdownRef.current && !chassisDropdownRef.current.contains(event.target)) {
-        setIsChassisOpen(false);
-      }
       if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
         setIsSearchOpen(false);
       }
@@ -154,19 +151,6 @@ export default function Header({
             </div>
           </div>
 
-          <div className="h-5 w-px bg-slate-200 hidden md:block" />
-
-          <ChassisSelector
-            catalogs={catalogs}
-            selectedChassis={selectedChassis}
-            onSelectChassis={onSelectChassis}
-            isChassisOpen={isChassisOpen}
-            setIsChassisOpen={setIsChassisOpen}
-            chassisFilter={chassisFilter}
-            setChassisFilter={setChassisFilter}
-            chassisDropdownRef={chassisDropdownRef}
-            isCatalogLoading={isCatalogLoading}
-          />
         </div>
 
         <div className="flex-1 min-w-[160px] basis-full md:basis-0 md:max-w-md order-3 md:order-2">
@@ -175,6 +159,7 @@ export default function Header({
             setSearchQuery={setSearchQuery}
             isSearchOpen={isSearchOpen}
             setIsSearchOpen={setIsSearchOpen}
+            hasCatalog={Boolean(catalogData)}
             localSearchResults={localSearchResults}
             onSubmitSearch={handleSearchSubmit}
             onSelectSku={sku => {
@@ -190,6 +175,7 @@ export default function Header({
               }
             }}
             searchContainerRef={searchContainerRef}
+            searchInputRef={searchInputRef}
           />
         </div>
 

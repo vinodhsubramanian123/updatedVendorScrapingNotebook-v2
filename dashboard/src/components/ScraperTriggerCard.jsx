@@ -43,7 +43,7 @@ function CdpHandshakeBanner({ cdpState }) {
   );
 }
 
-function LiveScrapeControlCard({ canScrape, cdpState, scrapeMode, setScrapeMode, isTaskRunning, onTriggerScrape, onTriggerNavigate }) {
+function LiveScrapeControlCard({ targetRequired, canScrape, cdpState, scrapeMode, setScrapeMode, isTaskRunning, onTriggerScrape, onTriggerNavigate }) {
   const handleLaunchBrowser = async () => {
     try {
       await fetch('/api/launch-browser', { method: 'POST' });
@@ -118,18 +118,18 @@ function LiveScrapeControlCard({ canScrape, cdpState, scrapeMode, setScrapeMode,
 
       <button
         onClick={handleStartScrapeClick}
-        disabled={isTaskRunning}
+        disabled={isTaskRunning || targetRequired}
         className={`w-full justify-center text-xs mb-2 ${canScrape ? 'btn-primary' : 'bg-slate-200 text-slate-600 hover:bg-slate-300 font-semibold py-2 px-4 rounded-lg cursor-pointer'}`}
         title={canScrape ? "Start Scraping" : "Click for connection instructions"}
       >
         {isTaskRunning ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Play className="w-3.5 h-3.5" />}
-        {canScrape ? 'Start Scrape' : 'Live Scrape Disabled (CDP Port Unattached)'}
+        {targetRequired ? 'Choose a target product' : canScrape ? 'Start Scrape' : 'Live Scrape Disabled (CDP Port Unattached)'}
       </button>
 
       {!canScrape && cdpState.status !== 'DISCONNECTED' && (
         <button
           onClick={onTriggerNavigate}
-          disabled={isTaskRunning}
+          disabled={isTaskRunning || targetRequired}
           className="w-full justify-center text-xs btn-secondary"
         >
           <Navigation className="w-3.5 h-3.5 text-blue-600" /> Auto-Navigate to OCA
@@ -235,7 +235,7 @@ function ScraperSseTerminalCard({ logStream, searchQuery, setSearchQuery, logFil
   );
 }
 
-export default function ScraperTriggerCard({ logStream, isTaskRunning, runActivity, onTriggerScrape, onTriggerRebuild, onTriggerDownloadPdf, onTriggerSyncKnowledge, onTriggerKillTask, onTriggerNavigate, onReopenRun }) {
+export default function ScraperTriggerCard({ targetRequired = false, logStream, isTaskRunning, runActivity, onTriggerScrape, onTriggerRebuild, onTriggerDownloadPdf, onTriggerSyncKnowledge, onTriggerKillTask, onTriggerNavigate, onReopenRun }) {
   const [scrapeMode, setScrapeMode] = useState('solution');
   const [cdpState, setCdpState] = useState({ status: 'CHECKING', message: 'Probing browser...' });
   const [logFilter, setLogFilter] = useState('ALL');
@@ -307,7 +307,8 @@ export default function ScraperTriggerCard({ logStream, isTaskRunning, runActivi
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <LiveScrapeControlCard
-            canScrape={canScrape}
+            targetRequired={targetRequired}
+            canScrape={canScrape && !targetRequired}
             cdpState={cdpState}
             scrapeMode={scrapeMode}
             setScrapeMode={setScrapeMode}
@@ -340,7 +341,7 @@ export default function ScraperTriggerCard({ logStream, isTaskRunning, runActivi
 
             <button
               onClick={onTriggerDownloadPdf}
-              disabled={isTaskRunning}
+              disabled={isTaskRunning || targetRequired}
               className="w-full btn-secondary justify-center text-xs disabled:opacity-50"
             >
               <Download className="w-3.5 h-3.5 text-amber-600" />

@@ -33,6 +33,7 @@ function RankSkuPartsSection({ tier, isExpanded, onToggleExpand, onCopyBom, isCo
             )}
           </button>
           <button
+            aria-expanded={isExpanded}
             onClick={() => onToggleExpand(tier.rank)}
             className="text-[11px] font-semibold text-blue-600 hover:text-blue-800"
           >
@@ -42,7 +43,7 @@ function RankSkuPartsSection({ tier, isExpanded, onToggleExpand, onCopyBom, isCo
       </div>
 
       {isExpanded && (
-        <div className="max-h-60 overflow-y-auto border border-slate-200 rounded-lg text-[11px]">
+        <div className="disclosure-content max-h-60 overflow-y-auto border border-slate-200 rounded-lg text-[11px]">
           <table className="w-full text-left">
             <thead className="bg-slate-100 text-slate-700 font-semibold sticky top-0">
               <tr>

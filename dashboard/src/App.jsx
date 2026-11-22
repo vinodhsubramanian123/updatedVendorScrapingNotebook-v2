@@ -1,3 +1,4 @@
+import CatalogProductSwitcher from './components/catalog/CatalogProductSwitcher.jsx';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Header from './components/Header';
@@ -233,8 +234,8 @@ async function executeBoqEvaluationRequest(boqInput, maybeRawText, currentCat, s
     if (payload.offline === undefined) payload.offline = localOnly;
     if (runId && !payload.runId) payload.runId = runId;
     const explicitProduct = payload.chassisDir || payload.candidateReference?.chassisDir || payload.candidateReference?.product || payload.chassisName;
-    const chassisDir = explicitProduct || currentCat?.chassisDir || currentCat?.id;
-    const chassisName = payload.chassisName || payload.candidateReference?.product || (explicitProduct ? undefined : currentCat?.id);
+    const chassisDir = explicitProduct || (!payload.autoScope && (currentCat?.chassisDir || currentCat?.id)) || undefined;
+    const chassisName = payload.chassisName || payload.candidateReference?.product || (explicitProduct || payload.autoScope ? undefined : currentCat?.id);
     const data = await postJson('/api/eval-boq', { ...payload, chassisDir, ...(chassisName ? { chassisName } : {}) });
     return { ...data, originalPayload: payload };
   } catch (err) {
@@ -248,7 +249,7 @@ function DualBrainBadgesBar({ evalResults }) {
   if (!evalResults?.dualBrainBadges?.length || evalResults?.clarificationRequired) return null;
   return (
     <div className="flex flex-wrap items-center gap-2 bg-white/70 backdrop-blur-sm border border-slate-200/80 rounded-xl px-4 py-2.5 shadow-xs animate-tab-enter">
-      <span className="text-xs font-semibold text-slate-500 mr-1">Verification Status:</span>
+      <span className="text-xs font-semibold text-slate-500 mr-1">Evaluation baseline checks</span>
       {evalResults.dualBrainBadges.map(badge => (
         <span
           key={badge.id}
@@ -263,6 +264,7 @@ function DualBrainBadgesBar({ evalResults }) {
 }
 
 function AppMainTabContent({
+  restoringEvaluation,
   activeTab,
   setActiveTab,
   evalResults,
@@ -270,6 +272,8 @@ function AppMainTabContent({
   isTaskRunning,
   activeProgress,
   runActivity,
+  opsProduct,
+  setOpsProduct,
   selectedChassis,
   setSelectedChassis,
   logStream,
@@ -298,7 +302,6 @@ function AppMainTabContent({
   if (activeTab === 'orchestrator') {
     return (
       <div key="orchestrator" className="animate-tab-enter">
-        <PresalesRequestPanel product={currentCatObj} isTaskRunning={isTaskRunning} onEvaluateBoq={handleEvaluateBoq} />
         <MacroOrchestratorFlow
           evalResults={evalResults}
           auditReport={auditReport}
@@ -324,6 +327,8 @@ function AppMainTabContent({
     return (
       <div key="matrix" className="animate-tab-enter space-y-6">
         <ResolutionMatrix
+          restoringEvaluation={restoringEvaluation}
+          evaluationRunning={runActivity?.task === 'EVAL_BOQ' && runActivity.status === 'RUNNING'}
           evalResults={evalResults}
           onOpenPortalFeedback={setSelectedCardForFeedback}
           selectedChassis={selectedChassis}
@@ -346,10 +351,30 @@ function AppMainTabContent({
           isTaskRunning={isTaskRunning}
           onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
         />
+        <div className="glass-card p-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <label htmlFor="pipeline-target-product" className="block text-sm font-semibold text-slate-900">
+              Pipeline target product
+            </label>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Select a product for live OCA scraping, portal navigation, or QuickSpecs downloads.
+            </p>
+          </div>
+          <select
+            id="pipeline-target-product"
+            className="w-full sm:w-auto sm:min-w-[240px] max-w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+            value={opsProduct}
+            onChange={event => setOpsProduct(event.target.value)}
+          >
+            <option value="">Choose a product</option>
+            {catalogs.map(catalog => <option key={catalog.id} value={catalog.id}>{catalog.chassis || catalog.id}</option>)}
+          </select>
+        </div>
         <ScraperTriggerCard
           logStream={logStream}
           isTaskRunning={isTaskRunning}
           runActivity={runActivity}
+          targetRequired={!opsProduct}
           onTriggerScrape={handleTriggerScrape}
           onTriggerRebuild={handleTriggerRebuild}
           onTriggerDownloadPdf={handleTriggerDownloadPdf}
@@ -386,10 +411,11 @@ function AppMainTabContent({
 
   if (activeTab === 'artifacts') {
     return (
-      <div key="artifacts" className="animate-tab-enter">
+      <div key="artifacts" className="animate-tab-enter space-y-4">
+        <CatalogProductSwitcher catalogs={catalogs} selectedChassis={selectedChassis} onSelectChassis={setSelectedChassis} />
         <ArtifactInspector
           currentCatalog={currentCatObj}
-          onTriggerDownloadPdf={handleTriggerDownloadPdf}
+          onTriggerDownloadPdf={() => handleTriggerDownloadPdf(selectedChassis)}
           onNavigateTab={setActiveTab}
           isTaskRunning={isTaskRunning}
         />
@@ -409,13 +435,13 @@ function AppMainTabContent({
 }
 
 function AppToolModals({
+  catalogs,
   activeModal,
   setActiveModal,
   evalResults,
   intakeTopologyData,
   setIntakeTopologyData,
   logStream,
-  currentCatObj,
   activeProgress,
   selectedChassis,
   setSelectedCardForFeedback,
@@ -428,16 +454,33 @@ function AppToolModals({
   boqLocalOnly,
   setBoqLocalOnly
 }) {
+  const [boqProductId, setBoqProductId] = useState('');
+  const boqProduct = catalogs.find(catalog => catalog.id === boqProductId);
   const handleTriggerDemoBoq = () => handleEvaluateBoq(null, STANDARD_SAMPLE_TEXT);
 
   return (
     <>
       <ToolModal isOpen={activeModal === 'boqUploader'} onClose={() => setActiveModal(null)} title="Stage 1: BOQ Quote Ingestion & 6-Aspect Math Engine">
+        <label className="mb-4 block text-sm font-semibold text-slate-700">
+          Product scope
+          <select className="mt-1 block max-w-full rounded-lg border border-slate-300 bg-white p-2" value={boqProductId} onChange={event => setBoqProductId(event.target.value)}>
+            <option value="">Auto · Identify from BOQ</option>
+            {catalogs.map(catalog => <option key={catalog.id} value={catalog.id}>{catalog.chassis || catalog.id}</option>)}
+          </select>
+        </label>
         <BoqUploader
-          onEvaluateBoq={handleEvaluateBoq}
+          chassisDir={boqProduct ? boqProduct.chassisDir || boqProduct.id : undefined}
+          onEvaluateBoq={async (input, rawText) => {
+            const payload = await buildBoqRequestPayload(input, rawText);
+            return handleEvaluateBoq({
+              ...payload,
+              ...(boqProduct
+                ? { chassisName: boqProduct.id, chassisDir: boqProduct.chassisDir || boqProduct.id }
+                : { autoScope: true })
+            });
+          }}
           evalResults={evalResults}
           logStream={logStream}
-          chassisDir={currentCatObj?.chassisDir}
           activeProgress={activeProgress}
           localOnly={boqLocalOnly}
           onLocalOnlyChange={setBoqLocalOnly}
@@ -581,6 +624,7 @@ function restoreBoqRunRecord(run, state, explicit = false) {
     runId: run.runId,
     inputDescriptor: run.inputDescriptor || run.result.inputDescriptor,
     effectivePolicy: run.effectivePolicy || run.result.effectivePolicy,
+    evaluationStartedAt: run.startTime ?? run.result.evaluationStartedAt,
     explicitReopen: explicit,
     recovered: !explicit
   };
@@ -698,11 +742,11 @@ function usePipelineTriggers({ selectedChassis, setActionError, setActiveTab, ac
   };
 
   return {
-    handleTriggerScrape: (mode) => postScraperEndpoint('/api/scrape', { mode, chassis: selectedChassis }),
+    handleTriggerScrape: (mode) => selectedChassis && postScraperEndpoint('/api/scrape', { mode, chassis: selectedChassis }),
     handleTriggerRebuild: () => postScraperEndpoint('/api/rebuild'),
     handleTriggerSyncKnowledge: () => postScraperEndpoint('/api/sync-knowledge'),
-    handleTriggerDownloadPdf: () => postScraperEndpoint('/api/download-pdf', { chassisId: selectedChassis }),
-    handleTriggerNavigate: () => postScraperEndpoint('/api/navigate-oca', { chassis: selectedChassis }),
+    handleTriggerDownloadPdf: (product) => (typeof product === 'string' ? product : selectedChassis) && postScraperEndpoint('/api/download-pdf', { chassisId: typeof product === 'string' ? product : selectedChassis }),
+    handleTriggerNavigate: () => selectedChassis && postScraperEndpoint('/api/navigate-oca', { chassis: selectedChassis }),
     handleTriggerKillTask: async (explicitRunId) => {
       const targetRunId = (typeof explicitRunId === 'string' && explicitRunId)
         ? explicitRunId
@@ -786,9 +830,6 @@ async function executeRunReopen(run, state) {
       state.evaluationRunRef.current = full.runId;
       writeSessionJson(SESSION_BOQ_RUN_KEY, full.runId);
       restoreBoqRunRecord(full, state, true);
-      if (full.product && state.catalogs.some(c => c.id === full.product)) {
-        state.setSelectedChassis(full.product);
-      }
       state.setActiveTab('matrix');
       return;
     }
@@ -820,6 +861,7 @@ function useProgressStream({
   refreshCatalogs,
   setRunActivity,
   setStreamConnected,
+  setRestoringEvaluation,
   evaluationEpoch,
   evalRef,
   setEvalResults,
@@ -847,12 +889,18 @@ function useProgressStream({
   };
 
   useEffect(() => {
-    void recoverOwnedBoqRun(null, recoveryStateRef.current);
+    let mounted = true;
+    void recoverOwnedBoqRun(null, recoveryStateRef.current).finally(() => {
+      if (mounted) setRestoringEvaluation(false);
+    });
     const onSnapshot = (event) => {
       void recoverOwnedBoqRun(event?.detail || null, recoveryStateRef.current);
     };
     window.addEventListener('dashboard-sse-snapshot', onSnapshot);
-    return () => window.removeEventListener('dashboard-sse-snapshot', onSnapshot);
+    return () => {
+      mounted = false;
+      window.removeEventListener('dashboard-sse-snapshot', onSnapshot);
+    };
   }, []);
 
   useSSEStream({
@@ -914,6 +962,24 @@ function useProgressStream({
   });
 }
 
+function formatErrorWithRemediation(res) {
+  if (!res?.error) return null;
+  if (res.remediationAction && !String(res.error).includes(res.remediationAction)) {
+    return `${res.error} — ${res.remediationAction}`;
+  }
+  return res.error;
+}
+
+function computeRunActivityDisplay({ activeTab, runActivity, streamConnected, isTaskRunning }) {
+  const isEvalWorkspaceTab = activeTab === 'orchestrator' || activeTab === 'matrix';
+  const evaluationActivity = runActivity?.task === 'EVAL_BOQ' || runActivity?.task === 'PRESALES_QUERY';
+  const activeRunVisible = runActivity?.status === 'RUNNING';
+  const showRunActivityBanner = streamConnected === false || activeRunVisible ||
+    (activeTab === 'pipeline' ? Boolean(runActivity) : evaluationActivity && (isEvalWorkspaceTab || isTaskRunning));
+  const bannerRun = activeTab === 'pipeline' || evaluationActivity || activeRunVisible ? runActivity : null;
+  return { isEvalWorkspaceTab, showRunActivityBanner, bannerRun };
+}
+
 export default function App() {
   const {
     catalogs,
@@ -923,8 +989,10 @@ export default function App() {
     selectedChassis,
     setSelectedChassis,
     refreshCatalogs
-  } = useCatalogs('DL380_Gen12');
+  } = useCatalogs(readSessionValue('dashboard.catalogProduct'));
 
+  const [opsProduct, setOpsProduct] = useState('');
+  useEffect(() => { writeSessionJson('dashboard.catalogProduct', selectedChassis); }, [selectedChassis]);
   const selectedChassisRef = useRef(selectedChassis);
   useEffect(() => { selectedChassisRef.current = selectedChassis; }, [selectedChassis]);
 
@@ -940,6 +1008,7 @@ export default function App() {
   const [streamConnected, setStreamConnected] = useState(null);
 
   const [evalResults, setEvalResults] = useState(null);
+  const [restoringEvaluation, setRestoringEvaluation] = useState(() => Boolean(readSessionValue(SESSION_BOQ_RUN_KEY)));
   const evalRef = useRef(null);
   const evaluationRunRef = useRef(readSessionValue(SESSION_BOQ_RUN_KEY));
   const activeRunRef = useRef(null);
@@ -995,6 +1064,7 @@ export default function App() {
     refreshCatalogs,
     setRunActivity,
     setStreamConnected,
+    setRestoringEvaluation,
     evaluationEpoch,
     evalRef,
     setEvalResults,
@@ -1012,7 +1082,7 @@ export default function App() {
     handleTriggerDownloadPdf,
     handleTriggerNavigate,
     handleTriggerKillTask
-  } = usePipelineTriggers({ selectedChassis, setActionError, setActiveTab, activeRunRef, runActivityRef });
+  } = usePipelineTriggers({ selectedChassis: opsProduct, setActionError, setActiveTab, activeRunRef, runActivityRef });
 
   const handleSearchLocal = (query) => { setGlobalSearchTerm(query); setActiveTab('catalog'); };
 
@@ -1053,11 +1123,9 @@ export default function App() {
     evalRef.current = null;
     setActionError(null);
     const response = await executeBoqEvaluationRequest(boqInput, maybeRawText, currentCatObj, setLogStream, setEvalResults, requestedOffline, clientRunId);
-    if (response?.error) {
-      const msg = response.remediationAction && !String(response.error).includes(response.remediationAction)
-        ? `${response.error} — ${response.remediationAction}`
-        : response.error;
-      setActionError(msg);
+    const responseError = formatErrorWithRemediation(response);
+    if (responseError) {
+      setActionError(responseError);
       return response;
     }
     const effectiveOffline = response?.effectivePolicy?.offline ?? requestedOffline;
@@ -1069,15 +1137,10 @@ export default function App() {
   };
 
   const handleSelectClarification = async (candidate) => {
-    setSelectedChassis(candidate);
     try {
       const res = await replayClarifiedIntake(candidate, recoverIntake(inputRef.current, evalRef.current), catalogs, handleEvaluateBoq, setActionError);
-      if (res?.error) {
-        const msg = res.remediationAction && !String(res.error).includes(res.remediationAction)
-          ? `${res.error} — ${res.remediationAction}`
-          : res.error;
-        setActionError(msg);
-      }
+      const errMsg = formatErrorWithRemediation(res);
+      if (errMsg) setActionError(errMsg);
     } catch (err) {
       if (!isAbortCancellation(err)) setActionError(err.message);
     }
@@ -1094,14 +1157,13 @@ export default function App() {
     completeMatrixRag,
     startMatrixRagPoll,
     setActionError,
-    setSelectedChassis,
-    catalogs,
     setActiveTab
   });
 
   const activeBannerError = computeActiveBannerError(actionError, catalogError);
-  const isEvalWorkspaceTab = activeTab === 'orchestrator' || activeTab === 'matrix';
-  const showRunActivityBanner = isEvalWorkspaceTab || isTaskRunning || streamConnected === false;
+  const { isEvalWorkspaceTab, showRunActivityBanner, bannerRun } = computeRunActivityDisplay({
+    activeTab, runActivity, streamConnected, isTaskRunning
+  });
 
   return (
     <div className="min-h-screen pb-16">
@@ -1110,10 +1172,7 @@ export default function App() {
         <button className="ml-3 underline" onClick={() => { setActionError(null); refreshCatalogs(); }}>Retry catalog / dismiss</button>
       </div>}
       <Header
-        catalogs={catalogs}
         catalogData={catalogData}
-        selectedChassis={selectedChassis}
-        onSelectChassis={setSelectedChassis}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onSmartSearch={handleSmartSearch}
@@ -1132,7 +1191,7 @@ export default function App() {
       <main className="max-w-7xl mx-auto px-3 sm:px-6 mt-4 sm:mt-6 space-y-5">
         {showRunActivityBanner && (
           <RunActivity
-            run={runActivity}
+            run={bannerRun}
             progress={activeProgress}
             evaluation={evalResults}
             reconnecting={streamConnected === false}
@@ -1154,7 +1213,11 @@ export default function App() {
         )}
 
         <ErrorBoundary fallbackTitle="View Rendering Error">
+          <div hidden={activeTab !== 'orchestrator'}>
+            <PresalesRequestPanel catalogs={catalogs} isTaskRunning={isTaskRunning} onEvaluateBoq={handleEvaluateBoq} />
+          </div>
           <AppMainTabContent
+            restoringEvaluation={restoringEvaluation}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             evalResults={evalResults}
@@ -1162,6 +1225,8 @@ export default function App() {
             isTaskRunning={isTaskRunning}
             activeProgress={activeProgress}
             runActivity={runActivity}
+            opsProduct={opsProduct}
+            setOpsProduct={setOpsProduct}
             selectedChassis={selectedChassis}
             setSelectedChassis={setSelectedChassis}
             logStream={logStream}
@@ -1189,13 +1254,13 @@ export default function App() {
       </main>
 
       <AppToolModals
+        catalogs={catalogs}
         activeModal={activeModal}
         setActiveModal={setActiveModal}
         evalResults={evalResults}
         intakeTopologyData={intakeTopologyData}
         setIntakeTopologyData={setIntakeTopologyData}
         logStream={logStream}
-        currentCatObj={currentCatObj}
         activeProgress={activeProgress}
         selectedChassis={selectedChassis}
         setSelectedCardForFeedback={setSelectedCardForFeedback}

@@ -14,7 +14,9 @@ function getNotebookIdString(val) {
 export default function SettingsDrawer({ isOpen, onClose }) {
   const drawerRef = useModalFocus(isOpen, onClose);
   const [config, setConfig] = useState({ defaultNotebookId: '', notebooks: {} });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [loadAttempt, setLoadAttempt] = useState(0);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState(null);
@@ -26,11 +28,11 @@ export default function SettingsDrawer({ isOpen, onClose }) {
     setLoading(true);
     const controller = new AbortController();
     setError(null);
-    requestJson('/api/config/notebooks', { signal: controller.signal })
-      .then(data => { setConfig(data); setLoading(false); })
-      .catch(err => { if (!controller.signal.aborted) { setError(err.message); setLoading(false); } });
+    requestJson('/api/config/notebooks', { signal: controller.signal, timeoutMs: 10000 })
+      .then(data => { if (!controller.signal.aborted) { setConfig(data); setLoadFailed(false); setLoading(false); } })
+      .catch(err => { if (!controller.signal.aborted) { setError(err.message); setLoadFailed(true); setLoading(false); } });
     return () => controller.abort();
-  }, [isOpen]);
+  }, [isOpen, loadAttempt]);
 
   const handleSave = async () => {
     setSaving(true);
@@ -92,9 +94,14 @@ export default function SettingsDrawer({ isOpen, onClose }) {
         aria-modal="true"
         aria-labelledby="settings-title"
         tabIndex="-1"
-        className="w-full max-w-xl bg-white shadow-2xl border-l border-slate-200 flex flex-col focus:outline-none"
+        className="drawer-content w-full max-w-xl bg-white shadow-2xl border-l border-slate-200 flex flex-col focus:outline-none"
       >
-        {error && <div role="alert" className="p-3 text-sm text-rose-800 bg-rose-50">{error}</div>}
+        {error && (
+          <div role="alert" className="p-3 text-sm text-rose-800 bg-rose-50">
+            {error}
+            {loadFailed && <button className="ml-3 underline" onClick={() => setLoadAttempt(value => value + 1)}>Retry</button>}
+          </div>
+        )}
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4 shrink-0">
           <div className="flex items-center gap-2">
@@ -205,7 +212,7 @@ export default function SettingsDrawer({ isOpen, onClose }) {
         <div className="border-t border-slate-100 px-6 py-4 shrink-0">
           <button
             onClick={handleSave}
-            disabled={saving || loading}
+            disabled={saving || loading || loadFailed}
             className="w-full btn-primary justify-center disabled:opacity-40"
           >
             {saved

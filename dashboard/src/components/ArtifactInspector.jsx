@@ -41,6 +41,22 @@ function AuditCertificateResultCard({ auditResult }) {
 }
 
 function ArtifactFilesGrid({ currentCatalog, onViewArtifact, onTriggerDownloadPdf, onNavigateTab, isTaskRunning }) {
+  if (!currentCatalog) {
+    return (
+      <div className="glass-card p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 border-dashed border-slate-300/90 bg-slate-50/70">
+        <div className="p-2.5 rounded-xl bg-purple-50 text-purple-600 border border-purple-100 shrink-0">
+          <FileCode className="w-5 h-5" />
+        </div>
+        <div>
+          <h4 className="font-semibold text-sm text-slate-900">Select a product to inspect artifacts</h4>
+          <p className="text-xs text-slate-600 mt-0.5">
+            Choose a catalog above to inspect its Master Catalog JSON, multi-sheet Excel workbook, official QuickSpecs PDF, intermediate TSVs, and 7-check audit certificate.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {currentCatalog?.jsonPath && (

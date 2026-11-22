@@ -116,16 +116,17 @@ export default function MatrixComparisonTable({ tiers = [], standardCategories =
   );
 
   return (
-    <div className="glass-card p-6 overflow-x-auto border border-slate-200 shadow-sm rounded-xl">
+    <div className="glass-card p-3 sm:p-6 min-w-0 border border-slate-200 shadow-sm rounded-xl">
       <div className="mb-4">
         <h3 className="font-bold text-slate-900 text-sm">Strategic Solution Matrix — Side-by-Side Spec Comparison</h3>
         <p className="text-xs text-slate-500">Compare hardware specifications, capacity, and availability across candidate BOMs.</p>
       </div>
 
-      <table className="w-full text-left text-xs border-collapse min-w-[700px]">
+      <div tabIndex={0} role="region" aria-label="Scrollable BOM comparison" className="overflow-x-auto">
+      <table className="w-full text-left text-xs border-separate border-spacing-0 min-w-[700px]">
         <thead>
           <tr className="border-b-2 border-slate-200">
-            <th className="py-2.5 px-3 bg-slate-100 font-bold text-slate-700 w-48 rounded-l-lg">Configuration Dimension</th>
+            <th className="py-2.5 px-3 bg-slate-100 font-bold text-slate-700 w-28 sm:w-48 rounded-l-lg sticky left-0 z-10">Configuration Dimension</th>
             {tiers.map((t, idx) => (
               <th
                 key={idx}
@@ -134,15 +135,15 @@ export default function MatrixComparisonTable({ tiers = [], standardCategories =
                 }`}
               >
                 <span className="block text-[11px] uppercase tracking-wider text-slate-500">Rank {t.rank}</span>
-                <span className="text-xs truncate max-w-[140px] block mx-auto font-bold">{t.title.split(':')[1] || t.title}</span>
-                <span className="font-mono text-emerald-700 font-bold block text-xs mt-0.5">{t.capex}</span>
+                <span className="text-xs max-w-48 break-words block mx-auto font-bold">{t.title.split(':')[1] || t.title}</span>
+                <span className="font-mono text-slate-700 font-semibold block text-xs mt-0.5">{t.capex}</span>
               </th>
             ))}
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100">
           <tr className="bg-slate-50/50 font-semibold">
-            <td className="py-2 px-3 text-slate-600">Workload Alignment</td>
+            <td className="sticky left-0 z-10 bg-slate-50 py-2 px-3 text-slate-600">Workload Alignment</td>
             {tiers.map((t, idx) => (
               <td key={idx} className={`py-2 px-3 text-center ${t.isOptimal ? 'bg-emerald-50/50 font-bold text-emerald-800' : ''}`}>
                 {t.intentMatch}
@@ -151,7 +152,7 @@ export default function MatrixComparisonTable({ tiers = [], standardCategories =
           </tr>
           {tiers.some(tier => tier.supplyMetrics) && (
             <tr className="bg-slate-50/50">
-              <td className="py-2 px-3 font-semibold text-slate-600">BOM lead-time estimate</td>
+              <td className="sticky left-0 z-10 bg-slate-50 py-2 px-3 font-semibold text-slate-600">BOM lead-time estimate</td>
               {tiers.map(tier => (
                 <td key={tier.rank} className="px-3 py-2 text-center">
                   <AvailabilityCell tier={tier} />
@@ -162,7 +163,7 @@ export default function MatrixComparisonTable({ tiers = [], standardCategories =
 
           {visibleCategories.map(cat => (
             <tr key={cat.id} className="hover:bg-slate-50/80 transition-colors">
-              <td className="py-2.5 px-3 font-medium text-slate-700 bg-slate-50/30">
+              <td className="py-2.5 px-3 font-medium text-slate-700 bg-slate-50 sticky left-0 z-10">
                 {cat.label}
               </td>
               {tiers.map((t, idx) => {
@@ -189,6 +190,7 @@ export default function MatrixComparisonTable({ tiers = [], standardCategories =
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

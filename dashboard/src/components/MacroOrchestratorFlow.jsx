@@ -181,7 +181,7 @@ function StageOneVerificationCard({
             disabled={isTaskRunning}
             className="btn-primary text-xs flex items-center gap-2 shadow-sm"
           >
-            <FileUp className="w-4 h-4" /> Load BOQ & Evaluate
+            <FileUp className="w-4 h-4" /> Direct BOQ evaluation
           </button>
 
           {hasEval && (

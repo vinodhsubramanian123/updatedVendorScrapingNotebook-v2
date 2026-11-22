@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { requestJson } from '../../../services/api.js';
 
 /**
  * Custom hook to manage telemetry data fetching, NLM metrics, health status, and refresh lifecycle.
@@ -14,22 +15,16 @@ export function useTelemetryData(initialTelemetry, propTelemetry) {
     setLoading(true);
     setFetchError(null);
     try {
-      const res = await fetch('/api/telemetry');
-      if (!res.ok) throw new Error(`HTTP ${res.status}: Failed to fetch telemetry`);
-      const data = await res.json();
+      const options = { timeoutMs: 10000 };
+      const data = await requestJson('/api/telemetry', options);
       setTelemetry(data);
 
-      const nlmRes = await fetch('/api/notebooklm-consultations');
-      if (nlmRes.ok) {
-        const nlmData = await nlmRes.json();
-        setNlmMetrics(nlmData);
-      }
-
-      const healthRes = await fetch('/api/test-notebooklm');
-      if (healthRes.ok) {
-        const healthData = await healthRes.json();
-        setNlmHealth(healthData);
-      }
+      const [consultations, health] = await Promise.allSettled([
+        requestJson('/api/notebooklm-consultations', options),
+        requestJson('/api/test-notebooklm', options)
+      ]);
+      if (consultations.status === 'fulfilled') setNlmMetrics(consultations.value);
+      if (health.status === 'fulfilled') setNlmHealth(health.value);
     } catch (err) {
       console.error('Failed to fetch telemetry:', err);
       setFetchError(err.message || 'Error connecting to telemetry bridge');

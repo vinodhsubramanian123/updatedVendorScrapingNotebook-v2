@@ -428,6 +428,7 @@ export function normalizeEvalResult(payload) {
   return {
     ...data,
     runId: payload.runId || data.runId || null,
+    evaluationStartedAt: payload.evaluationStartedAt ?? data.evaluationStartedAt,
     inputDescriptor: payload.inputDescriptor || data.inputDescriptor || null,
     ..._hoistEvaluationFields(data, inner),
     ...extractHardwareMetrics(data, inner),
