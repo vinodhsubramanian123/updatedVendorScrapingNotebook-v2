@@ -33,4 +33,6 @@ RULE_31	CONDITIONAL_VISIBILITY	Graphics Options	Private Product is not valid for
 RULE_32	CONDITIONAL_VISIBILITY	Virtualization	Private Product is not valid for current customer account	12	S4F93AAE, S4F95AAE, S4F99AAE, S4G01AAE, S4R66AAE, S4R67AAE, S4R68AAE, S4R69AAE, S4R70AAE, S4R71AAE, S4R75AAE, S4R77AAE
 RULE_33	CONDITIONAL_VISIBILITY	Virtualization	Private Product is not valid for current customer account	3	S4R76AAE, S4F94AAE, S4G00AAE
 RULE_34	CONDITIONAL_VISIBILITY	Virtualization	Private Product is not valid for current customer account	6	S4R78AAE, S4F96AAE, S4G02AAE, S4R79AAE, S4F97AAE, S4G03AAE
-RULE_35	CONDITIONAL_VISIBILITY	Private Cloud Business Edition	Not Supported ProStack Server Software	7	S1T84A, S1T85A, S3V79A, S3V80A, S3V87A, S4V16A, S6F19A
+RULE_35	CONDITIONAL_VISIBILITY	HPE Compute Ops Management	Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers	2	R7A11AAE, S2E10AAE
+RULE_36	CONDITIONAL_VISIBILITY	HPE Compute Ops Management	For Gen11/Gen12/Gen13 servers ONLY	3	S5E59AAE, S5E60AAE, S5E61AAE
+RULE_37	CONDITIONAL_VISIBILITY	Private Cloud Business Edition	Not Supported ProStack Server Software	7	S1T84A, S1T85A, S3V79A, S3V80A, S3V87A, S4V16A, S6F19A

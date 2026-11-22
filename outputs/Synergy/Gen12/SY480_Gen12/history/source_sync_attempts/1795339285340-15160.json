@@ -1,0 +1,18 @@
+{
+  "product": "SY480_Gen12",
+  "notebookId": "49a3c69e-115f-4332-9454-c5d4f2941327",
+  "replacementSourceId": "5c0255b6-2802-4914-ae71-eda19b7cd07d",
+  "verifiedAt": "2026-11-22T09:21:25.341Z",
+  "contentFingerprints": null,
+  "legacyFingerprint": "1af9c75e64fe23738b134f9c472be4cc30b25a2a6915a267dcd166e7ad250fef",
+  "retirementRequested": true,
+  "plannedRetirementIds": [
+    "c33cb173-011b-4f9e-bc8d-a0ad25e7b579"
+  ],
+  "status": "CONSOLIDATED",
+  "retiredSourceIds": [
+    "c33cb173-011b-4f9e-bc8d-a0ad25e7b579"
+  ],
+  "remainingSourceIds": [],
+  "retirementErrors": []
+}

@@ -53428,5 +53428,55 @@
     "field": "Vendor Attributes",
     "oldValue": "{\"listPrice\":0,\"Product Number\":\"S1J77A\"}",
     "newValue": ""
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7A11AAE",
+    "chassis": "DL385 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "S2E10AAE",
+    "chassis": "DL385 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "S5E59AAE",
+    "chassis": "DL385 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "S5E60AAE",
+    "chassis": "DL385 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "S5E61AAE",
+    "chassis": "DL385 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
   }
 ]

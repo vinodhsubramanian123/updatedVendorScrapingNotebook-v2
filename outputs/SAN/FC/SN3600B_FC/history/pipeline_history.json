@@ -1,6 +1,100 @@
 [
   {
     "summary": {
+      "runId": "run_SN3600B_FC_1795332824877",
+      "sessionName": "SN3600B_FC",
+      "startTime": "2026-11-22T07:33:44.771Z",
+      "endTime": "2026-11-22T07:33:47.368Z",
+      "durationMs": 2597,
+      "durationSec": "2.60",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 82,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 82,
+      "validationStats": {
+        "totalEntries": 11,
+        "totalSKUs": 82,
+        "validSKUs": 82,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 4,
+        "zeroPriceSKUs": 22,
+        "priceErrors": 0,
+        "ruleCount": 22,
+        "categoryCount": 5
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-22T07:33:44.878Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/.catalog-staging/staging_SN3600B_FC_1795332823908/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/.catalog-staging/staging_SN3600B_FC_1795332823908/SN3600B_FC_Catalog.json",
+          "chassisLabel": "SN3600B FC"
+        }
+      },
+      {
+        "timestamp": "2026-11-22T07:33:47.063Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 11,
+          "totalUniqueSKUs": 82,
+          "incrementalStats": {
+            "totalScrapedSkus": 82,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 82,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-22T07:33:47.070Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 11,
+            "totalSKUs": 82,
+            "validSKUs": 82,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 4,
+            "zeroPriceSKUs": 22,
+            "priceErrors": 0,
+            "ruleCount": 22,
+            "categoryCount": 5
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-22T07:33:47.368Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/.catalog-staging/staging_SN3600B_FC_1795332823908/SN3600B_FC_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 82,
+      "classified": 82,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_SN3600B_FC_1795316266806",
       "sessionName": "SN3600B_FC",
       "startTime": "2026-11-22T02:57:46.804Z",

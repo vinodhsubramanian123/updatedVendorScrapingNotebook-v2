@@ -77,10 +77,10 @@
       "replaySuiteVersion": "1.1.0",
       "replaySuiteSha256": "b8b507b9fde1f7013524a6700cad414341341f9316cde9ecbbce5a8e860256c5",
       "replayInputHashes": {
-        "Catalog.json": "8426ac064cf611774ad3fccce3983d022df58231e74a9beae92c143eee02ce6a",
-        "Services.json": "b5960b442c7dd232b6e9c932c71863793b23b8be836fca8a8c0c7c54c6ebc06d",
-        "Catalog_Rules.json": "728fd9c916a15a8272b6a3189013c44ae22a913136ee0af59a63eedab875be91",
-        "OCA_Catalog.xlsx": "d33e89f14b2b90dfe9beb62d5cfaa0bcd4c91844837f1577389af59e105171b4",
+        "Catalog.json": "93ecb33d6f9495b39ca6c86841ca05d23d0b76dff030e50e35dff0c11df06ae8",
+        "Services.json": "8ccbb152c0d7e81e05660078daac8f5bf86380cb18199a18029a10de96a19e76",
+        "Catalog_Rules.json": "65a8f1ded92c63230ca00e62924e59ccf9c9325ac9ef8f7717dff3b1b8c49c76",
+        "OCA_Catalog.xlsx": "f147f6cd97470d956f046374d500d79c161ed9f21ad47353f11a32847ee4f24e",
         "conditional_skus.json": "7e5e111cfafe21297f7d4798fd170ada3e49755883e1b1a08dd539406402a5fe"
       }
     },
@@ -100,19 +100,19 @@
     }
   },
   "counts": {
-    "hardware": 202,
+    "hardware": 201,
     "services": 100,
-    "rules": 132,
-    "categories": 9,
-    "retainedHardware": 202,
+    "rules": 131,
+    "categories": 8,
+    "retainedHardware": 201,
     "hardwareTombstones": 0
   },
   "previousCounts": null,
   "hashes": {
-    "Catalog.json": "8426ac064cf611774ad3fccce3983d022df58231e74a9beae92c143eee02ce6a",
-    "Services.json": "b5960b442c7dd232b6e9c932c71863793b23b8be836fca8a8c0c7c54c6ebc06d",
-    "Catalog_Rules.json": "728fd9c916a15a8272b6a3189013c44ae22a913136ee0af59a63eedab875be91",
-    "OCA_Catalog.xlsx": "d33e89f14b2b90dfe9beb62d5cfaa0bcd4c91844837f1577389af59e105171b4"
+    "Catalog.json": "93ecb33d6f9495b39ca6c86841ca05d23d0b76dff030e50e35dff0c11df06ae8",
+    "Services.json": "8ccbb152c0d7e81e05660078daac8f5bf86380cb18199a18029a10de96a19e76",
+    "Catalog_Rules.json": "65a8f1ded92c63230ca00e62924e59ccf9c9325ac9ef8f7717dff3b1b8c49c76",
+    "OCA_Catalog.xlsx": "f147f6cd97470d956f046374d500d79c161ed9f21ad47353f11a32847ee4f24e"
   },
   "rawSha256": "69a139b51894f2740bf7c8e4ad4beef51374c69d64bea741bb1e593b39a46e16",
   "sheets": [
@@ -538,5 +538,5 @@
     "error": null
   },
   "promotedAt": "2026-11-21T12:46:16.021Z",
-  "rebuiltAt": "2026-11-22T02:53:15.632Z"
+  "rebuiltAt": "2026-11-22T07:28:09.357Z"
 }

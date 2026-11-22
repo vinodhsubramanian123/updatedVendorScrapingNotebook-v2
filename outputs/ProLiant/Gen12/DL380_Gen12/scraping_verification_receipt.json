@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-11-21T13:53:24.781Z",
+  "verifiedAt": "2026-11-22T09:31:12.030Z",
   "productId": "DL380_Gen12",
   "family": "ProLiant",
   "generation": "Gen12",
@@ -61,10 +61,10 @@
     },
     "cloudSyncState": "CLOUD_VERIFIED",
     "notebookId": "1d190853-4e9c-48df-aa70-eae66c6f2c1f",
-    "verifiedSourceId": "82aa2ae9-95a1-4d06-93e3-eda707812ea8",
+    "verifiedSourceId": "0f91a010-4433-408c-a7f2-495a571e06c7",
     "verifiedSourceName": "DL380_Gen12_OCA_Catalog_2026-11-20",
-    "payloadSha256": "8084217e29cb6508f3427b0bf6b1f2651b195b6de5c03408a3ef61d1794d13f8",
-    "cloudVerifiedAt": "2026-11-21T13:53:24.781Z",
+    "payloadSha256": "0d051f07d1034d912f83b8114983a7cb8b058d3306389fcc4333965aaa55ef63",
+    "cloudVerifiedAt": "2026-11-22T09:31:12.030Z",
     "readbackVerified": true,
     "canaryVerified": true
   },

@@ -1,7 +1,7 @@
 {
   "success": true,
   "spreadsheetId": "1U6GAUs69k8JnI_CGZ6_MkaWQ9oN7Ik_LgrWlesjMZpA",
-  "backupFile": "outputs/history/drive_backups/drive_backup_3bfbc1b8-aa2c-4260-bb39-df8e08a18940.json",
+  "backupFile": "outputs/history/drive_backups/drive_backup_fd0dd425-d74c-424f-a2ee-b05942b75ad4.json",
   "tabsWritten": [
     {
       "title": "Certified Catalog",
@@ -93,7 +93,7 @@
     "Certified Catalog": "9811355c161a0352c1259e2366b5e3b6b7a2b55881d38dcc7cceb81487df867c",
     "Verified Learnings": "42fc017bf0bdc8cdbbe0f63dbe6bf7935bdd37c2be01f7a97773082777c6c18f",
     "Change Log": "1a956788acd9ee262c4138941d76ece7b1b4fdeaa4f3823a6d586923ebc1574f",
-    "Sync Metadata": "33dfe674da5b3238bbf9cc179ffccdec94798a7424d13577dce40d15857eaf39",
+    "Sync Metadata": "18b0d224aab8e326cd5c617616ac7fc7e7351a5522635444c2fa57f61093195a",
     "Category Summary": "69be93b88d38063ee54539a08dc13c37eaf7ca19247a5aeb8d1db4952467848c",
     "All SKUs": "3913157d470fed840624a05efedcf02f9c1fcc1ba073197fab80d17598fe8de4",
     "Chassis Variants": "2f4e98ba387daeea4ea381b4c3f30149c875cd00e0ff51aaaa8dce56b2997836",
@@ -112,7 +112,7 @@
     "Supply Chain & Lead Times": "d1534a97a4926ac88c8e7aa0f1e5e4cb4933937583f25c74c4463da97bbfed8f",
     "Metadata": "4b42fc60b7ae71f7d80913934a6ddb69d3214822e361501b2f7045ac7dbae816"
   },
-  "verifiedAt": "2026-11-21T13:44:49.983Z",
+  "verifiedAt": "2026-11-22T09:15:26.188Z",
   "fingerprints": {
     "catalog": "9811355c161a0352c1259e2366b5e3b6b7a2b55881d38dcc7cceb81487df867c",
     "learnings": "1428d798aace17fd9ddddd545e6cac9de4d30120cc28600fbd134eb5e84aafb1",

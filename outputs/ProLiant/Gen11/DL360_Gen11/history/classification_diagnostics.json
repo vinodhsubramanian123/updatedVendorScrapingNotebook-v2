@@ -1,20 +1,20 @@
 {
   "version": "1.0.0",
   "chassis": "DL360_Gen11",
-  "generatedAt": "2026-11-22T02:53:58.180Z",
-  "executionDurationMs": 17286,
+  "generatedAt": "2026-11-22T08:14:59.553Z",
+  "executionDurationMs": 5754,
   "summary": {
-    "totalRawTables": 110,
-    "validProductTables": 109,
-    "skippedTablesCount": 27,
-    "rejectedRowsCount": 5,
+    "totalRawTables": 130,
+    "validProductTables": 124,
+    "skippedTablesCount": 32,
+    "rejectedRowsCount": 7,
     "parseFailedPriceCount": 0,
-    "unmeasuredLeadTimeCount": 521,
+    "unmeasuredLeadTimeCount": 522,
     "selfHealedTablesCount": 0,
     "selfHealedSkusCount": 0,
-    "totalExtractedSKUs": 761,
-    "totalUniqueSKUs": 757,
-    "totalRulesExtracted": 220,
+    "totalExtractedSKUs": 807,
+    "totalUniqueSKUs": 803,
+    "totalRulesExtracted": 270,
     "chassisVariantsCount": 3
   },
   "skippedTables": [
@@ -152,6 +152,31 @@
       "tableIndex": 26,
       "reason": "Table rows < 2 or empty",
       "sampleSnippet": null
+    },
+    {
+      "tableIndex": 137,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 138,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 139,
+      "reason": "Solution hierarchy BOM summary table",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 140,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 148,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
     }
   ],
   "rejectedRows": [
@@ -188,6 +213,27 @@
       "reason": "NO_VALID_HEADER_OR_SKU",
       "sampleCells": [
         "Private Cloud Business Edition"
+      ]
+    },
+    {
+      "tableIndex": 137,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Hardware",
+        "USD71,918.00",
+        "Support",
+        "USD12,339.00"
+      ]
+    },
+    {
+      "tableIndex": 140,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
       ]
     }
   ],
@@ -862,10 +908,10 @@
       "parentCategory": "Cooling / Thermal",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Cooling / Thermal",
-      "constraint": "max 2",
-      "minQty": 0,
-      "maxQty": 2,
-      "maxQtySemantics": "BOUNDED",
+      "constraint": "required",
+      "minQty": 1,
+      "maxQty": null,
+      "maxQtySemantics": "REQUIRED",
       "skuCount": 2,
       "rulesCount": 1
     },
@@ -1609,6 +1655,201 @@
       "maxQtySemantics": "UNBOUNDED",
       "skuCount": 41,
       "rulesCount": 1
+    },
+    {
+      "tableIndex": 141,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 142,
+      "subCategory": "High Availability Computing - Cluster Software",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 143,
+      "subCategory": "Energy Star",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 144,
+      "subCategory": "Energy Star",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "maxQtySemantics": "BOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 145,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 10,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 146,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 147,
+      "subCategory": "Data Management Framework DMF",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 149,
+      "subCategory": "OCP3 Networking Adapters",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 150,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 151,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 152,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 153,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 6,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 154,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 155,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 156,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": null,
+      "maxQtySemantics": "UNBOUNDED",
+      "skuCount": 10,
+      "rulesCount": 1
     }
   ],
   "categoryDistribution": {
@@ -1620,10 +1861,10 @@
     "Memory": 36,
     "Storage Controllers": 24,
     "Cables & Enablement Kits": 42,
-    "Drive Enclosures / Drives": 7,
-    "Software & Licenses": 455,
+    "Drive Enclosures / Drives": 52,
+    "Software & Licenses": 457,
     "PCIe Risers": 3,
-    "Networking": 78,
+    "Networking": 77,
     "Power Supplies": 7,
     "Graphics & GPU": 3,
     "Support Services": 1
@@ -1655,18 +1896,19 @@
     "duplicateSKUs": []
   },
   "attributeFidelity": {
-    "skusWithLeadTime": 240,
+    "skusWithLeadTime": 285,
     "skusWithCost": 0,
-    "skusWithPriceDelta": 105,
-    "skusWithPricePerGb": 36,
+    "skusWithPriceDelta": 102,
+    "skusWithPricePerGb": 33,
     "clicStatusDistribution": {
       "Valid": 3,
-      "Unpublished": 758
+      "Unpublished": 759,
+      "Selectable under selector gate": 45
     },
     "lifecycleStatusDistribution": {
-      "Active": 443,
+      "Active": 487,
       "Constrained Supply (CS)": 12,
-      "EOL Warning (90-Day)": 47,
+      "EOL Warning (90-Day)": 49,
       "Obsolete (OB)": 253,
       "Direct Ship (DS)": 6
     }

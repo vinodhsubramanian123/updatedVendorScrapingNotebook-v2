@@ -72338,5 +72338,405 @@
     "field": "Vendor Attributes",
     "oldValue": "{}",
     "newValue": ""
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P52499-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Start Date",
+    "oldValue": "2026-09-16",
+    "newValue": "01/10/2023"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P52499-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Discontinued Date",
+    "oldValue": "05/31/2028",
+    "newValue": "04/30/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P52499-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time",
+    "oldValue": "EDT 27 - 34 days",
+    "newValue": "14 days"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P52499-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P52499-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Speed Tier",
+    "oldValue": "Standard Delivery (8-30d)",
+    "newValue": "OCA Estimate"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P52498-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time",
+    "oldValue": "EDT 27 - 34 days",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P52498-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time Source",
+    "oldValue": "OCA candidate estimate",
+    "newValue": "Not published by OCA"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P52498-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Speed Tier",
+    "oldValue": "Standard Delivery (8-30d)",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P52500-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time",
+    "oldValue": "EDT 27 - 34 days",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P52500-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time Source",
+    "oldValue": "OCA candidate estimate",
+    "newValue": "Not published by OCA"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P52500-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Speed Tier",
+    "oldValue": "Standard Delivery (8-30d)",
+    "newValue": "Unpublished"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P47789-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "804398-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P47184-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P47777-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P47781-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P47785-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P58335-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P65333-H21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"30\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":5425,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"30\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":7331,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P48907-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Power Cooling Options",
+    "field": "Constraint",
+    "oldValue": "max 2",
+    "newValue": "required"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P48907-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Power Cooling Options",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Power Cooling Options: max 2",
+    "newValue": "Selection constraint for Power Cooling Options: required"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P48907-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Power Cooling Options",
+    "field": "Max Qty",
+    "oldValue": "2",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P54697-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Power Cooling Options",
+    "field": "Constraint",
+    "oldValue": "max 2",
+    "newValue": "required"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P54697-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Power Cooling Options",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Power Cooling Options: max 2",
+    "newValue": "Selection constraint for Power Cooling Options: required"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P54697-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Power Cooling Options",
+    "field": "Max Qty",
+    "oldValue": "2",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P11086-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P11086-051",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P11086-041",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P11083-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P11083-051",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P11083-041",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P11083-061",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P11083-071",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P45879-041",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P45879-071",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P45862-051",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Integrated Lights Out Software",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P46172-021",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":394,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":407,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P46128-B21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":6899,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":7260,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P46171-021",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":948,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":988,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P46171-A21",
+    "chassis": "DL360 Gen11",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":948,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":988,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
   }
 ]

@@ -206,5 +206,69 @@
     "subCategory": "System Options",
     "firstSeenDate": "2026-09-22",
     "status": "ACTIVE"
+  },
+  "H30RYA1": {
+    "productNumber": "H30RYA1",
+    "description": "HPE Container Adopt Ph2 Redht Onsite SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "H30SDA1": {
+    "productNumber": "H30SDA1",
+    "description": "HPE Container Adopt Ph1 Anths Onsite SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "H57GHA1": {
+    "productNumber": "H57GHA1",
+    "description": "HPE Education 5 Day Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "H57GJA1": {
+    "productNumber": "H57GJA1",
+    "description": "HPE Education 5 Day Onsite SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "H57GKA1": {
+    "productNumber": "H57GKA1",
+    "description": "HPE Education 1 Day Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Support & Deployment Services",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "H39DLA4#Y36": {
+    "productNumber": "H39DLA4#Y36",
+    "description": "HPE 4Y CC SB ATS Storage Base SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "H39DLA5#Y36": {
+    "productNumber": "H39DLA5#Y36",
+    "description": "HPE 5Y CC SB ATS Storage Base SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "H39DMA3#Y36": {
+    "productNumber": "H39DMA3#Y36",
+    "description": "HPE 3Y CC SB ATS Storage Ext SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
   }
 }

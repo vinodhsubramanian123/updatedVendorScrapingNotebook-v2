@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-11-21T13:42:25.106Z",
+  "verifiedAt": "2026-11-22T09:04:42.042Z",
   "productId": "MSL3040_Tape",
   "family": "StoreEver",
   "generation": "Tape",
@@ -61,10 +61,10 @@
     },
     "cloudSyncState": "CLOUD_VERIFIED",
     "notebookId": "644020e5-42f9-4c4b-95cc-fcf82122685c",
-    "verifiedSourceId": "a753a1a9-787d-445b-8dfc-2cef3cd05a54",
+    "verifiedSourceId": "feb07157-c6ba-4a01-a399-e14e69251adc",
     "verifiedSourceName": "MSL3040_Tape_OCA_Catalog_2026-11-20",
-    "payloadSha256": "2b286f24d4d00582ca9a1d89a7e1452a29155fb3e5460feecda9e87b0fc54529",
-    "cloudVerifiedAt": "2026-11-21T13:42:25.106Z",
+    "payloadSha256": "06815a3c77093358f7fc7a56779f5de561ba5728328577d2f00a1b074df406b3",
+    "cloudVerifiedAt": "2026-11-22T09:04:42.042Z",
     "readbackVerified": true,
     "canaryVerified": true
   },

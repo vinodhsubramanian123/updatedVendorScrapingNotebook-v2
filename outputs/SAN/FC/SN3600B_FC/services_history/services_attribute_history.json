@@ -10168,5 +10168,265 @@
     "field": "Vendor Attributes",
     "oldValue": "{\"Extended Price (USD)\":\"0\"}",
     "newValue": ""
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1Z10AAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Port Upgrade Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "07/03/2022",
+    "newValue": "07/24/2022"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R3P47AAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SANnav - New License",
+    "field": "Discontinued Date",
+    "oldValue": "08/31/2031",
+    "newValue": "10/31/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R3P50AAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SANnav - New License",
+    "field": "Discontinued Date",
+    "oldValue": "08/31/2031",
+    "newValue": "10/31/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4P31AAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SANnav - New License",
+    "field": "Discontinued Date",
+    "oldValue": "08/31/2031",
+    "newValue": "10/31/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R3P45AAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SANnav - New License",
+    "field": "Discontinued Date",
+    "oldValue": "08/31/2031",
+    "newValue": "10/31/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R3P48AAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SANnav - New License",
+    "field": "Discontinued Date",
+    "oldValue": "08/31/2031",
+    "newValue": "10/31/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4P29AAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SANnav - New License",
+    "field": "Discontinued Date",
+    "oldValue": "08/31/2031",
+    "newValue": "10/31/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R3P46AAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SANnav - New License",
+    "field": "Discontinued Date",
+    "oldValue": "08/31/2031",
+    "newValue": "10/31/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R3P49AAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SANnav - New License",
+    "field": "Discontinued Date",
+    "oldValue": "08/31/2031",
+    "newValue": "10/31/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4P30AAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SANnav - New License",
+    "field": "Discontinued Date",
+    "oldValue": "08/31/2031",
+    "newValue": "10/31/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "S1S58AAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SANnav - Renewal License",
+    "field": "Discontinued Date",
+    "oldValue": "08/31/2031",
+    "newValue": "10/31/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "S1S52AAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SANnav - Renewal License",
+    "field": "Discontinued Date",
+    "oldValue": "08/31/2031",
+    "newValue": "10/31/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "S1S55AAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SANnav - Renewal License",
+    "field": "Discontinued Date",
+    "oldValue": "08/31/2031",
+    "newValue": "10/31/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AG629A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AG629A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P1F75A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F75A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P1F74A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F74A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P1F76A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"SUPPORT_SERVICE\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F76A\",\"rowType\":\"SUPPORT_SERVICE\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P1F79A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F79A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P1F78A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F78A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P1F69A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F69A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P1F80A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F80A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P1F82A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F82A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P1F71A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F71A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "BQ337A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"BQ337A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "BQ335A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"BQ335A\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AG628A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AG628A\",\"rowType\":\"HARDWARE_OPTION\"}"
   }
 ]

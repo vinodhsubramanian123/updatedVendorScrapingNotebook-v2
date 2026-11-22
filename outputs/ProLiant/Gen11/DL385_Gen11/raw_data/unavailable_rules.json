@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-11-20T17:34:18.999Z",
+  "timestamp": "2026-11-22T08:27:23.783Z",
   "chassisName": "DL385_Gen11",
-  "totalUnavailableRules": 34,
-  "totalUnavailableSkus": 100,
+  "totalUnavailableRules": 37,
+  "totalUnavailableSkus": 106,
   "rules": [
     {
       "ruleId": "RULE_1",
@@ -194,8 +194,8 @@
       "affectedSkusCount": 3,
       "affectedSkus": [
         "S6W30C",
-        "S8A40C",
-        "S6W21C"
+        "S6W21C",
+        "S8A40C"
       ]
     },
     {
@@ -207,10 +207,10 @@
       "affectedSkus": [
         "P73574-B21",
         "P80743-B21",
-        "P85893-B21",
         "P94841-B21",
         "P82106-B21",
         "P82523-B21",
+        "P85893-B21",
         "S4A90C"
       ]
     },
@@ -339,6 +339,16 @@
     {
       "ruleId": "RULE_30",
       "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Security Options",
+      "reason": "Maximum 1 quantity of each of Security Hardware can be ordered per base model",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "P55441-B21"
+      ]
+    },
+    {
+      "ruleId": "RULE_31",
+      "ruleType": "MUTUAL_EXCLUSION",
       "section": "Virtualization",
       "reason": "Private Product is not valid for current customer account",
       "affectedSkusCount": 12,
@@ -358,7 +368,7 @@
       ]
     },
     {
-      "ruleId": "RULE_31",
+      "ruleId": "RULE_32",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Virtualization",
       "reason": "Private Product is not valid for current customer account",
@@ -370,7 +380,7 @@
       ]
     },
     {
-      "ruleId": "RULE_32",
+      "ruleId": "RULE_33",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Virtualization",
       "reason": "Private Product is not valid for current customer account",
@@ -385,7 +395,7 @@
       ]
     },
     {
-      "ruleId": "RULE_33",
+      "ruleId": "RULE_34",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "3PO",
       "reason": "Private Product is not valid for current customer account",
@@ -395,7 +405,30 @@
       ]
     },
     {
-      "ruleId": "RULE_34",
+      "ruleId": "RULE_35",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "HPE Compute Ops Management",
+      "reason": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "R7A11AAE",
+        "S2E10AAE"
+      ]
+    },
+    {
+      "ruleId": "RULE_36",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "HPE Compute Ops Management",
+      "reason": "For Gen11/Gen12/Gen13 servers ONLY",
+      "affectedSkusCount": 3,
+      "affectedSkus": [
+        "S5E59AAE",
+        "S5E60AAE",
+        "S5E61AAE"
+      ]
+    },
+    {
+      "ruleId": "RULE_37",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Private Cloud Business Edition",
       "reason": "Not Supported ProStack Server Software",
@@ -1037,13 +1070,13 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "S8A40C",
-      "rawSku": "S8A40C",
+      "sku": "S6W21C",
+      "rawSku": "S6W21C",
       "isPrivateSku": false,
-      "description": "AMD Instinct MI350P 144GB PCIe Accelerator for HPE",
-      "listPrice": 92899,
-      "startDate": "08/03/2026",
-      "discontinuedDate": "07/31/2028",
+      "description": "NVIDIA RTX PRO 6000D 84GB PCIe Accelerator for HPE",
+      "listPrice": 37899,
+      "startDate": "03/02/2026",
+      "discontinuedDate": "12/31/2028",
       "section": "Graphics Options",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Doublewide GPU can be selected only with GPU CTO Server",
@@ -1053,13 +1086,13 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "S6W21C",
-      "rawSku": "S6W21C",
+      "sku": "S8A40C",
+      "rawSku": "S8A40C",
       "isPrivateSku": false,
-      "description": "NVIDIA RTX PRO 6000D 84GB PCIe Accelerator for HPE",
-      "listPrice": 37899,
-      "startDate": "03/02/2026",
-      "discontinuedDate": "12/31/2028",
+      "description": "AMD Instinct MI350P 144GB PCIe Accelerator for HPE",
+      "listPrice": 92899,
+      "startDate": "08/03/2026",
+      "discontinuedDate": "07/31/2028",
       "section": "Graphics Options",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Doublewide GPU can be selected only with GPU CTO Server",
@@ -1092,22 +1125,6 @@
       "listPrice": 302,
       "startDate": "04/07/2025",
       "discontinuedDate": "09/30/2028",
-      "section": "Graphics Options",
-      "ruleType": "MUTUAL_EXCLUSION",
-      "ineligibilityReason": "This GPU option can be selected only with GPU CTO Server",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
-      "sku": "P85893-B21",
-      "rawSku": "P85893-B21",
-      "isPrivateSku": false,
-      "description": "HPE ProLiant DL385 Gen11 12-pin 0.8m GPU Power Cable Kit",
-      "listPrice": 213,
-      "startDate": "11/17/2025",
-      "discontinuedDate": "06/30/2028",
       "section": "Graphics Options",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "This GPU option can be selected only with GPU CTO Server",
@@ -1155,6 +1172,22 @@
       "description": "HPE ProLiant DL385 Gen11 GPU Blank Kit",
       "listPrice": 150,
       "startDate": "07/07/2025",
+      "discontinuedDate": "06/30/2028",
+      "section": "Graphics Options",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "This GPU option can be selected only with GPU CTO Server",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P85893-B21",
+      "rawSku": "P85893-B21",
+      "isPrivateSku": false,
+      "description": "HPE ProLiant DL385 Gen11 12-pin 0.8m GPU Power Cable Kit",
+      "listPrice": 213,
+      "startDate": "11/17/2025",
       "discontinuedDate": "06/30/2028",
       "section": "Graphics Options",
       "ruleType": "MUTUAL_EXCLUSION",
@@ -1549,6 +1582,22 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
+      "sku": "P55441-B21",
+      "rawSku": "P55441-B21",
+      "isPrivateSku": false,
+      "description": "HPE OEM ProLiant Gen11 2U Bezel Kit\n        \n             Current selection.",
+      "listPrice": 88,
+      "startDate": "12/10/2022",
+      "discontinuedDate": "11/30/2028",
+      "section": "Security Options",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Maximum 1 quantity of each of Security Hardware can be ordered per base model",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
       "sku": "S4F93AAE",
       "rawSku": "OB\n         S4F93AAE\n\n    PVT",
       "isPrivateSku": true,
@@ -1895,6 +1944,86 @@
       "section": "3PO",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Private Product is not valid for current customer account",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "R7A11AAE",
+      "rawSku": "R7A11AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Standard 3-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 450,
+      "startDate": "06/06/2022",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S2E10AAE",
+      "rawSku": "S2E10AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Standard 7-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 1050,
+      "startDate": "09/03/2024",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S5E59AAE",
+      "rawSku": "S5E59AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Advanced 3-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 919.08,
+      "startDate": "04/07/2025",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "For Gen11/Gen12/Gen13 servers ONLY",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S5E60AAE",
+      "rawSku": "S5E60AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Advanced 5-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 1531.8,
+      "startDate": "04/07/2025",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "For Gen11/Gen12/Gen13 servers ONLY",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S5E61AAE",
+      "rawSku": "S5E61AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Advanced 7-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 2144.52,
+      "startDate": "04/07/2025",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "For Gen11/Gen12/Gen13 servers ONLY",
       "supplyBadge": "",
       "supplyTitle": "",
       "isSelectable": false,

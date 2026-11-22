@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-12",
     "scrapeTimestamp": "2026-11-12T11:02:23.642Z",
-    "builtAt": "2026-11-22T02:58:26.523Z",
+    "builtAt": "2026-11-22T07:27:53.629Z",
     "totalSubcategories": 23,
     "totalUniqueSKUs": 257,
     "totalTables": 35,
@@ -28,18 +28,18 @@
       "scrapeDate": "2026-11-12",
       "categoryBreakdown": {
         "Chassis": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 6130,
+          "minPrice": 6130,
+          "maxPrice": 6130,
           "subcategories": {
             "Variants": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 6130,
+              "avgPrice": 6130
             }
           },
-          "avgPrice": 0
+          "avgPrice": 6130
         },
         "Frame Options": {
           "totalSKUs": 21,
@@ -260,14 +260,14 @@
     },
     "incrementalStats": {
       "totalScrapedSkus": 257,
-      "unchangedSkusCount": 249,
-      "modifiedSkusCount": 8,
+      "unchangedSkusCount": 255,
+      "modifiedSkusCount": 2,
       "addedSkusCount": 0,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotFingerprint": "dc5cc5ca3e7c338c5d35811e28aaa6f7b045a3c509b4fc52e2d302abc26594aa"
+    "snapshotFingerprint": "14d29b645a449588b285ebcbe2f2caf3a76c0d0b6d96f7b3d6c55b66531989d4"
   },
   "subcategories": [
     {
@@ -323,12 +323,12 @@
           "Component Role": "Base Chassis",
           "Description": "HPE Synergy 12000 Configure-to-order Frame",
           "Current Qty": "1",
-          "Unit Price (USD)": "",
-          "List Price (USD)": "",
+          "Unit Price (USD)": "6130.00",
+          "List Price (USD)": "6130.00",
           "Cost (USD)": "",
           "costPrice": null,
-          "listPrice": null,
-          "priceProvenance": "UNPRICED",
+          "listPrice": 6130,
+          "priceProvenance": "CHASSIS_MAP_FALLBACK",
           "CLIC Status": "Valid",
           "clicStatus": "Valid",
           "Lifecycle Status": "Active",
@@ -354,7 +354,7 @@
             "bayCount": 12,
             "interconnectBays": 6
           },
-          "Price State": "UNPRICED",
+          "Price State": "PRICED",
           "Previous List Price (USD)": "N/A",
           "Attribute Deltas": "None",
           "Diff Status": "UNCHANGED",

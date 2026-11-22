@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-11-21T13:30:00.232Z",
+  "verifiedAt": "2026-11-22T08:57:17.076Z",
   "productId": "DL145_Gen11",
   "family": "ProLiant",
   "generation": "Gen11",
@@ -61,10 +61,10 @@
     },
     "cloudSyncState": "CLOUD_VERIFIED",
     "notebookId": "7a48061a-331a-429b-8477-7e0473491714",
-    "verifiedSourceId": "3d63671a-957f-4177-a639-9cea482f52dd",
+    "verifiedSourceId": "56fc77a6-fc80-4e9b-ba1a-279c97195af7",
     "verifiedSourceName": "DL145_Gen11_OCA_Catalog_2026-11-20",
-    "payloadSha256": "bdd1a94380c4045f9e8721f063bf4e44fc0cb070e18c2e144a42e0e97511bc5d",
-    "cloudVerifiedAt": "2026-11-21T13:30:00.232Z",
+    "payloadSha256": "183d925128b9f78549ccdc861a377ab8b40e37f8d286255a1d29b8a8dffde73c",
+    "cloudVerifiedAt": "2026-11-22T08:57:17.076Z",
     "readbackVerified": true,
     "canaryVerified": true
   },

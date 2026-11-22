@@ -8,10 +8,10 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-21",
     "scrapeTimestamp": "2026-11-21T12:46:05.706Z",
-    "builtAt": "2026-11-22T02:53:05.741Z",
-    "totalSubcategories": 14,
-    "totalUniqueSKUs": 202,
-    "totalTables": 43,
+    "builtAt": "2026-11-22T07:28:05.145Z",
+    "totalSubcategories": 13,
+    "totalUniqueSKUs": 201,
+    "totalTables": 42,
     "diffSummary": {
       "added": 0,
       "removed": 0,
@@ -19,7 +19,7 @@
       "priceChanged": 0,
       "attributeChanged": 0,
       "priceAndAttributeChanged": 0,
-      "unchanged": 202,
+      "unchanged": 201,
       "reinstated": 0,
       "discontinuedTotal": 0
     },
@@ -27,20 +27,6 @@
     "priceAnalytics": {
       "scrapeDate": "2026-11-21",
       "categoryBreakdown": {
-        "Chassis": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
-          "subcategories": {
-            "Variants": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            }
-          },
-          "avgPrice": 0
-        },
         "Accessories & Infrastructure": {
           "totalSKUs": 4,
           "totalPrice": 16107,
@@ -186,86 +172,18 @@
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 202,
-      "unchangedSkusCount": 202,
+      "totalScrapedSkus": 201,
+      "unchangedSkusCount": 201,
       "modifiedSkusCount": 0,
       "addedSkusCount": 0,
-      "removedSkusCount": 0,
+      "removedSkusCount": 1,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotFingerprint": "5da2de11e66c7231ffcafc3907d198b085f090463147cd792ef60d480c1f50e6"
+    "snapshotFingerprint": "4f7bc4c2dc48443e5a3e63749c6879c32a2fc28570da8ad59c59f4bcaf031037"
   },
   "subcategories": [],
   "entries": [
-    {
-      "parentCategory": "Chassis",
-      "subCategory": "Variants",
-      "constraint": "min 1, max 1 — Active OCA CTO chassis",
-      "minQty": 1,
-      "maxQty": 1,
-      "maxQtySemantics": "BOUNDED",
-      "rules": [
-        "Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis"
-      ],
-      "headers": [
-        "Product #",
-        "Description",
-        "Unit Price (USD)",
-        "Start Date",
-        "Discontinued Date",
-        "Lead Time"
-      ],
-      "skuCount": 1,
-      "skus": [
-        {
-          "Product #": "S7U66A",
-          "sku": "S7U66A",
-          "Option Type": "CTO",
-          "Component Role": "Base Chassis",
-          "Description": "S7U66A/S7U67A - HPE Alletra Storage MP B10000 KSA",
-          "Current Qty": "1",
-          "Unit Price (USD)": "0.00",
-          "List Price (USD)": "0.00",
-          "Cost (USD)": "",
-          "costPrice": null,
-          "listPrice": 0,
-          "priceProvenance": "UNPRICED",
-          "CLIC Status": "Valid",
-          "clicStatus": "Valid",
-          "Lifecycle Status": "Active",
-          "lifecycleStatus": "Active",
-          "HPE Recommended": "No",
-          "Availability": "Available in OCA product catalog",
-          "Lead Time": "",
-          "Lead Time Days": "",
-          "leadTimeDays": null,
-          "Speed Tier": "Unpublished",
-          "Lead Time Source": "Not published by OCA",
-          "Start Date": "",
-          "Discontinued Date": "",
-          "provenance": "HPE OCA Product Search via authenticated CDP session",
-          "ownerProduct": "Alletra_MP_B10000",
-          "subCategory": "Variants",
-          "lifecycleCanonical": "Active",
-          "rowType": "BASE_SYSTEM",
-          "canonicalSpecs": {
-            "vendor": "HPE",
-            "category": "Storage Array",
-            "arrayTopology": "Modular Disaggregated",
-            "mediaTier": "NVMe All-Flash",
-            "uHeight": 2
-          },
-          "Price State": "ZERO_UNCONFIRMED",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
-          "Price History Trail": "2026-11-21: (no price)"
-        }
-      ]
-    },
     {
       "parentCategory": "Accessories & Infrastructure",
       "subCategory": "Accessories & Infrastructure Options",

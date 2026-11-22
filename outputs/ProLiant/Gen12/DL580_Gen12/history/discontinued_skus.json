@@ -5434,5 +5434,85 @@
     "subCategory": "High Availability Computing - Cluster Software",
     "firstSeenDate": "2026-11-20",
     "status": "ACTIVE"
+  },
+  "P40497-B21": {
+    "productNumber": "P40497-B21",
+    "description": "HPE 480GB SATA 6G Read Intensive SFF BC Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "P40498-B21": {
+    "productNumber": "P40498-B21",
+    "description": "HPE 960GB SATA 6G Read Intensive SFF BC Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "P40499-B21": {
+    "productNumber": "P40499-B21",
+    "description": "HPE 1.92TB SATA 6G Read Intensive SFF BC Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "P40500-B21": {
+    "productNumber": "P40500-B21",
+    "description": "HPE 3.84TB SATA 6G Read Intensive SFF BC Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "P40504-B21": {
+    "productNumber": "P40504-B21",
+    "description": "HPE 1.92TB SATA 6G Mixed Use SFF BC Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "P40509-B21": {
+    "productNumber": "P40509-B21",
+    "description": "HPE 7.68TB SAS 12G Read Intensive SFF BC Value SAS Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "P40510-B21": {
+    "productNumber": "P40510-B21",
+    "description": "HPE 960GB SAS 12G Mixed Use SFF BC Value SAS Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "P40511-B21": {
+    "productNumber": "P40511-B21",
+    "description": "HPE 1.92TB SAS 12G Mixed Use SFF BC Value SAS Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "P49035-B21": {
+    "productNumber": "P49035-B21",
+    "description": "HPE 3.84TB SAS 24G Read Intensive SFF BC Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
+  },
+  "P49041-B21": {
+    "productNumber": "P49041-B21",
+    "description": "HPE 7.68TB SAS 24G Read Intensive SFF BC Multi Vendor SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+    "firstSeenDate": "2026-11-22",
+    "status": "ACTIVE"
   }
 }

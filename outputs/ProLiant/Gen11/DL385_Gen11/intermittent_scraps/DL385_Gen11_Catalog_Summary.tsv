@@ -10,7 +10,7 @@ Software	Dropbox Software	no max	0	Unlimited	0	No	0
 Software	Hadoop Software	no max	0	Unlimited	0	No	0
 OEM Software	OEM Software	max 999	0	999	0	No	0
 Energy Star	Energy Star	max 1	0	1	0	No	0
-Processor	Processors	max 2	0	2	40	Yes	1
+Processor	Processors	max 2	0	2	35	Yes	1
 Processor	Heatsink Kit	max 3	0	3	0	No	0
 Memory	Memory	max 12	0	12	29	Yes	29
 Factory Configuration Settings	Factory Configuration Settings	max 1	0	1	0	No	0
@@ -124,7 +124,7 @@ Software & Licenses	MS Windows Server Additional License	max 999	0	999	19	Yes	1
 Software & Licenses	MS Windows Server CALs	no max	0	Unlimited	30	Yes	1
 Software & Licenses	MS Windows Server Not Preinstalled	no max	0	Unlimited	9	Yes	1
 Software & Licenses	MS Windows Server Preinstalled	no max	0	Unlimited	2	Yes	1
-Software & Licenses	Red Hat Operating Systems	no max	0	Unlimited	67	Yes	2
+Software & Licenses	Red Hat Operating Systems	no max	0	Unlimited	63	Yes	2
 Software & Licenses	Red Hat SAP Operating System	no max	0	Unlimited	32	Yes	2
 Software & Licenses	Red Hat-Virtualization	no max	0	Unlimited	16	Yes	2
 Software & Licenses	SUSE Add-ons	no max	0	Unlimited	4	Yes	2
@@ -134,10 +134,13 @@ Software & Licenses	OneView Management Software	max 1	0	1	7	Yes	2
 Software & Licenses	Proliant Software Media Kits	no max	0	Unlimited	9	Yes	9
 Software & Licenses	Integrated Lights Out Software	no max	0	Unlimited	40	Yes	2
 Software & Licenses	Linux Value Added Software	no max	0	Unlimited	32	Yes	2
-Software & Licenses	HPC Software Products	no max	0	Unlimited	167	Yes	2
+Software & Licenses	HPC Software Products	no max	0	Unlimited	147	Yes	2
 Support Services	Support Services Options	no max	0	Unlimited	1	Yes	1
 Software & Licenses	High Availability Computing - Cluster Software	no max	0	Unlimited	64	Yes	4
 Software & Licenses	Partner Software - Operating System 8pks	max 30969	0	30969	31	Yes	2
+Drive Enclosures / Drives	SSD - Read Intensive (Drive Cage Selector)	Requires selector P55087-B21	0	Unlimited	10	Yes	10
+Drive Enclosures / Drives	SSD - Mixed Use (Drive Cage Selector)	Requires selector P55087-B21	0	Unlimited	10	Yes	10
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P55087-B21	0	Unlimited	25	Yes	25
 Support Services	Manufacturing Services	max 1	0	1	1	Yes	1
 Software & Licenses	VMware NSX	no max	0	Unlimited	20	Yes	1
 Software & Licenses	SUSE containers	no max	0	Unlimited	38	Yes	1

@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "chassis": "Synergy_12000_Frame",
-  "generatedAt": "2026-11-22T02:58:24.715Z",
-  "executionDurationMs": 5457,
+  "generatedAt": "2026-11-22T07:27:51.722Z",
+  "executionDurationMs": 6710,
   "summary": {
     "totalRawTables": 59,
     "validProductTables": 50,
@@ -820,7 +820,7 @@
     "P51174-B21": {
       "description": "HPE Synergy 12000 Configure-to-order Frame",
       "formFactor": "Unknown",
-      "listPrice": null,
+      "listPrice": 6130,
       "diffStatus": "UNCHANGED"
     }
   },

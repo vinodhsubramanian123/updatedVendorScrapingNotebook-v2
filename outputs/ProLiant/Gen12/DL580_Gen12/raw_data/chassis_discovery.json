@@ -2,7 +2,7 @@
   "query": "DL580 Gen12",
   "selectedSku": "P75399-B21",
   "source": "HPE OCA Product Search via authenticated CDP session",
-  "capturedAt": "2026-11-20T12:47:36.505Z",
+  "capturedAt": "2026-11-22T08:33:49.329Z",
   "deliveryEstimate": "",
   "candidates": [
     {
@@ -11,14 +11,20 @@
       "optionValue": "P75399-B21",
       "text": "P75399-B21 - HPE ProLiant Compute DL580 Gen12 SFF Configure-to-order Server",
       "sku": "P75399-B21",
-      "listPriceUsd": 0,
+      "listPriceUsd": 13674,
       "availability": "Available in OCA product catalog",
-      "leadTime": "",
+      "leadTime": "14 days",
       "deliveryLabel": "",
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false,
+      "priceVerified": true,
+      "priceSource": "OCA_BOM_TAB",
+      "leadTimeDays": 14,
+      "startDate": "06/02/2025",
+      "discontinuedDate": "06/30/2029"
     },
     {
       "type": "dropdown-option",
@@ -33,7 +39,8 @@
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     }
   ],
   "excludedCandidates": [
@@ -50,7 +57,8 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -65,7 +73,8 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -80,7 +89,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -95,7 +105,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -110,7 +121,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -125,7 +137,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -140,7 +153,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -155,7 +169,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -170,7 +185,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -185,7 +201,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -200,7 +217,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -215,7 +233,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -230,7 +249,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -245,7 +265,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -260,7 +281,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -275,7 +297,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -290,7 +313,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -305,7 +329,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -320,7 +345,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -335,7 +361,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -350,7 +377,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -365,7 +393,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -380,7 +409,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -395,7 +425,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -410,7 +441,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -425,7 +457,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -440,7 +473,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -455,7 +489,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -470,7 +505,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -485,7 +521,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -500,7 +537,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -515,7 +553,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -530,7 +569,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -545,7 +585,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -560,7 +601,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -575,7 +617,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -590,7 +633,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -605,7 +649,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -620,7 +665,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -635,7 +681,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -650,7 +697,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -665,7 +713,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -680,7 +729,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -695,7 +745,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -710,7 +761,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     }
   ]
 }

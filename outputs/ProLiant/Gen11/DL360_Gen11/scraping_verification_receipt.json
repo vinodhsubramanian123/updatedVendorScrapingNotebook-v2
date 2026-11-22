@@ -1,10 +1,10 @@
 {
-  "verifiedAt": "2026-11-21T13:32:15.787Z",
+  "verifiedAt": "2026-11-22T08:20:20.478Z",
   "productId": "DL360_Gen11",
   "family": "ProLiant",
   "generation": "Gen11",
   "preflight": {
-    "recordedAt": "2026-11-20T17:16:37.093Z",
+    "recordedAt": "2026-11-22T08:08:38.667Z",
     "pass": true,
     "product": {
       "pass": true,
@@ -42,31 +42,30 @@
     "status": "VERIFIED",
     "qualityAuditPassed": true,
     "diffSummaryError": null,
-    "hwSkuCount": 698,
-    "serviceSkuCount": 621,
-    "totalSkuCount": 1319,
-    "conditionalSkusCount": 93,
-    "unavailableRulesCount": 35,
+    "hwSkuCount": 803,
+    "serviceSkuCount": 681,
+    "totalSkuCount": 1484,
+    "conditionalSkusCount": 138,
+    "unavailableRulesCount": 37,
     "diffSummaryPresent": true,
     "diffCounts": {
-      "ADDED": 12,
-      "MODIFIED": 1301,
+      "ADDED": 175,
+      "MODIFIED": 33,
       "PRICE_CHANGED": 0,
-      "ATTRIBUTE_CHANGED": 627,
-      "PRICE_AND_ATTRIBUTE_CHANGED": 674,
+      "ATTRIBUTE_CHANGED": 17,
+      "PRICE_AND_ATTRIBUTE_CHANGED": 16,
       "REINSTATED": 0,
-      "REMOVED": 10,
+      "REMOVED": 0,
       "DISCONTINUED": 0,
-      "UNCHANGED": 0
+      "UNCHANGED": 1280
     },
     "cloudSyncState": "CLOUD_VERIFIED",
     "notebookId": "528d2896-92ac-4c85-98c3-6405b4925b0c",
-    "verifiedSourceId": "630d3fd4-eca2-4818-9988-4e7770a2e2f6",
-    "verifiedSourceName": "DL360_Gen11_OCA_Catalog_2026-11-20",
-    "payloadSha256": "61ce0a09db007be524b11dcc031b737315552d0663ac43c09a1515b3ba723601",
-    "cloudVerifiedAt": "2026-11-21T13:32:15.787Z",
+    "verifiedSourceId": "9baa0833-c431-4940-bc76-499f83c571c3",
+    "verifiedSourceName": "DL360_Gen11_OCA_Catalog_2026-11-22",
+    "payloadSha256": "c264e1fa5bfb331e6d5a0087c41fc51e8833d04504fbb960accaf7bcf692c0dd",
+    "cloudVerifiedAt": "2026-11-22T08:20:20.478Z",
     "readbackVerified": true,
     "canaryVerified": true
-  },
-  "overallPass": true
+  }
 }

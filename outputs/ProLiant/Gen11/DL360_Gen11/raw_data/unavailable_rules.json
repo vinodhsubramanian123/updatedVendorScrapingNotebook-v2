@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-11-20T17:21:03.762Z",
+  "timestamp": "2026-11-22T08:14:58.542Z",
   "chassisName": "DL360_Gen11",
-  "totalUnavailableRules": 35,
-  "totalUnavailableSkus": 93,
+  "totalUnavailableRules": 37,
+  "totalUnavailableSkus": 98,
   "rules": [
     {
       "ruleId": "RULE_1",
@@ -398,6 +398,29 @@
     },
     {
       "ruleId": "RULE_35",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "HPE Compute Ops Management",
+      "reason": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "R7A11AAE",
+        "S2E10AAE"
+      ]
+    },
+    {
+      "ruleId": "RULE_36",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "HPE Compute Ops Management",
+      "reason": "For Gen11/Gen12/Gen13 servers ONLY",
+      "affectedSkusCount": 3,
+      "affectedSkus": [
+        "S5E59AAE",
+        "S5E60AAE",
+        "S5E61AAE"
+      ]
+    },
+    {
+      "ruleId": "RULE_37",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Private Cloud Business Edition",
       "reason": "Not Supported ProStack Server Software",
@@ -1785,6 +1808,86 @@
       "section": "Virtualization",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Private Product is not valid for current customer account",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "R7A11AAE",
+      "rawSku": "R7A11AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Standard 3-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 450,
+      "startDate": "06/06/2022",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S2E10AAE",
+      "rawSku": "S2E10AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Standard 7-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 1050,
+      "startDate": "09/03/2024",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S5E59AAE",
+      "rawSku": "S5E59AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Advanced 3-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 919.08,
+      "startDate": "04/07/2025",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "For Gen11/Gen12/Gen13 servers ONLY",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S5E60AAE",
+      "rawSku": "S5E60AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Advanced 5-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 1531.8,
+      "startDate": "04/07/2025",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "For Gen11/Gen12/Gen13 servers ONLY",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S5E61AAE",
+      "rawSku": "S5E61AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Advanced 7-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 2144.52,
+      "startDate": "04/07/2025",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "For Gen11/Gen12/Gen13 servers ONLY",
       "supplyBadge": "",
       "supplyTitle": "",
       "isSelectable": false,

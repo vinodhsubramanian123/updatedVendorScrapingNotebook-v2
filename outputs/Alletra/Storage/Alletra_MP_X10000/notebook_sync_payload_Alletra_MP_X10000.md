@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/STORAGE/Alletra/Storage/Alletra_MP_X10000`
 
-**Sync Timestamp**: 2026-11-21T13:22:32.314Z
+**Sync Timestamp**: 2026-11-22T08:59:58.199Z
 
-**Total Verified SKUs**: `85` (`82` Hardware + `3` Services)
+**Total Verified SKUs**: `83` (`80` Hardware + `3` Services)
 
 **Total Synced KnowledgeDeltas**: `22`
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Price & Attr Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|----------------------|------------|--------|
-| **Hardware Components** | 82 | 0 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Hardware Components** | 80 | 0 | 0 | 0 | 0 | 0 | **CERTIFIED** |
 | **Support Services & SLAs** | 3 | 0 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **85** | **0** | **0** | **0** | **0** | **0** | **ACTIVE** |
+| **Total Portfolio** | **83** | **0** | **0** | **0** | **0** | **0** | **ACTIVE** |
 
 
 ## Configured child menus
@@ -147,13 +147,13 @@ ACTIVE_SCOPE_UNVERIFIED.  Other selector states require separate observation.
 
 | Category | Total SKUs | Added | Modified | Unchanged | Clearance / Drops | Category Planning Insight |
 |---|---:|---:|---:|---:|---:|---|
-| **Chassis** | 3 | 0 | 0 | 3 | 0 | Stable portfolio |
-| **Accessories & Infrastructure** | 4 | 0 | 0 | 4 | 0 | Stable portfolio |
+| **Chassis** | 1 | 0 | 0 | 1 | 0 | Stable portfolio |
+| **Accessories & Infrastructure** | 5 | 0 | 0 | 5 | 0 | Stable portfolio |
 | **Storage Controllers** | 2 | 0 | 0 | 2 | 0 | Stable portfolio |
-| **Power Supplies** | 9 | 0 | 0 | 9 | 0 | Stable portfolio |
+| **Power Supplies** | 5 | 0 | 0 | 5 | 0 | Stable portfolio |
 | **Cables & Enablement Kits** | 41 | 0 | 0 | 41 | 0 | Stable portfolio |
 | **Drive Enclosures / Drives** | 13 | 0 | 0 | 13 | 0 | Stable portfolio |
-| **Networking** | 10 | 0 | 0 | 10 | 0 | Stable portfolio |
+| **Networking** | 13 | 0 | 0 | 13 | 0 | Stable portfolio |
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
@@ -167,10 +167,10 @@ ACTIVE_SCOPE_UNVERIFIED.  Other selector states require separate observation.
 
 ### Structural Field & Evidence Coverage
 
-- **Row Types**: BASE_SYSTEM: 3, HARDWARE_OPTION: 80, INTERNAL_CONFIGURATION: 1, SUPPORT_SERVICE: 1
-- **Price States**: UNPRICED: 4, PRICED: 81
-- **Lead-Time Measurement**: Numeric Days: 72, ETA Date Only: 0, Unpublished: 13
-- **Visibility Coverage**: VISIBLE: 55, SELECTOR_HIDDEN: 30
+- **Row Types**: BASE_SYSTEM: 1, HARDWARE_OPTION: 80, INTERNAL_CONFIGURATION: 1, SUPPORT_SERVICE: 1
+- **Price States**: PRICED: 82, UNPRICED: 1
+- **Lead-Time Measurement**: Numeric Days: 72, ETA Date Only: 0, Unpublished: 11
+- **Visibility Coverage**: VISIBLE: 53, SELECTOR_HIDDEN: 30
 
 ## ⏱️ 10. Supply Chain & Delivery Lead Time Intelligence
 
@@ -212,7 +212,7 @@ ACTIVE_SCOPE_UNVERIFIED.  Other selector states require separate observation.
 
 
 <!-- MANAGED_FULL_CATALOG -->
-Content fingerprint: 6bd9ceabb255403f182d6aabbdeb2ee9e7b569d459be80fb041ac9bcaf2c4fda
+Content fingerprint: b15e7db33cbf8029ff1e428b28d16f5a15bf04a8e1b1d7ff52dceced8da4f6fa
 
 ## Complete workbook text projection
 
@@ -236,14 +236,14 @@ Displayed cell values follow by sheet and original row. Formatting, charts and f
 | 12 | Power Supplies | Data Intelligence SaaS | max 5 | 0 | 5 | 0 | No | 0 |
 | 13 | Power Supplies | Data protection accelerator node | no max | 0 | Unlimited | 0 | No | 0 |
 | 14 | Power Supplies | Drive Enclosure | max 16 | 0 | 16 | 0 | No | 0 |
-| 15 | Power Supplies | BlueTooth Connectivity Kit | max 1 | 0 | 1 | 1 | Yes | 1 |
-| 16 | Power Supplies | Back-End Switches | max 2 | 0 | 2 | 3 | Yes | 3 |
+| 15 | Power Supplies | BlueTooth Connectivity Kit | max 1 | 0 | 1 | 0 | No | 0 |
+| 16 | Power Supplies | Back-End Switches | max 2 | 0 | 2 | 0 | No | 0 |
 | 17 | Power Supplies | Back-End Switch Rail Kits | max 8 | 0 | 8 | 0 | No | 0 |
 | 18 | Cables | Management Cables | no max | 0 | Unlimited | 0 | No | 0 |
 | 19 | Cables | DAC Cables | no max | 0 | Unlimited | 0 | No | 0 |
 | 20 | Cables | Configuration Indicators | max 2 | 0 | 2 | 0 | No | 0 |
 | 21 | Cables | Commvault Tracking SKU | max 1 | 0 | 1 | 0 | No | 0 |
-| 22 | Chassis | Variants | min 1, max 1 — Active OCA CTO chassis | 1 | 1 | 3 | Yes | 1 |
+| 22 | Chassis | Variants | min 1, max 1 — Active OCA CTO chassis | 1 | 1 | 1 | Yes | 1 |
 | 23 | Accessories &amp; Infrastructure | Node Chassis | max 8 | 0 | 8 | 1 | Yes | 1 |
 | 24 | Storage Controllers | Node | max 4 | 0 | 4 | 2 | Yes | 3 |
 | 25 | Power Supplies | -48VDC Power Supplies &amp; Cable Kits | min 1, max 2 | 1 | 2 | 4 | Yes | 6 |
@@ -251,11 +251,13 @@ Displayed cell values follow by sheet and original row. Formatting, charts and f
 | 27 | Accessories &amp; Infrastructure | System Options | optional | 0 | Optional | 2 | Yes | 3 |
 | 28 | Drive Enclosures / Drives | Drive Enclosure | max 16 | 0 | 16 | 13 | Yes | 16 |
 | 29 | Networking | Optical Transceivers &amp; DAC Cables | max 8 | 0 | 8 | 10 | Yes | 12 |
-| 30 | Cables &amp; Enablement Kits | Back-End Switch Rail Kits | max 8 | 0 | 8 | 1 | Yes | 1 |
-| 31 | Cables &amp; Enablement Kits | Management Cables | no max | 0 | Unlimited | 4 | Yes | 1 |
-| 32 | Cables &amp; Enablement Kits | DAC Cables | no max | 0 | Unlimited | 16 | Yes | 1 |
-| 33 | Accessories &amp; Infrastructure | Commvault Tracking SKU | max 1 | 0 | 1 | 1 | Yes | 1 |
-| 34 | Support Services | Configuration Indicators | max 2 | 0 | 2 | 3 | Yes | 1 |
+| 30 | Accessories &amp; Infrastructure | BlueTooth Connectivity Kit | max 1 | 0 | 1 | 1 | Yes | 1 |
+| 31 | Networking | Back-End Switches | max 2 | 0 | 2 | 3 | Yes | 3 |
+| 32 | Cables &amp; Enablement Kits | Back-End Switch Rail Kits | max 8 | 0 | 8 | 1 | Yes | 1 |
+| 33 | Cables &amp; Enablement Kits | Management Cables | no max | 0 | Unlimited | 4 | Yes | 1 |
+| 34 | Cables &amp; Enablement Kits | DAC Cables | no max | 0 | Unlimited | 16 | Yes | 1 |
+| 35 | Accessories &amp; Infrastructure | Commvault Tracking SKU | max 1 | 0 | 1 | 1 | Yes | 1 |
+| 36 | Support Services | Configuration Indicators | max 2 | 0 | 2 | 3 | Yes | 1 |
 
 
 ### All SKUs
@@ -263,88 +265,86 @@ Displayed cell values follow by sheet and original row. Formatting, charts and f
 | Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 | Column 14 | Column 15 | Column 16 | Column 17 | Column 18 | Column 19 | Column 20 | Column 21 | Column 22 | Column 23 | Column 24 | Column 25 | Column 26 | Column 27 | Column 28 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
-| 2 | Chassis | Variants | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Chassis &gt; Variants | Base Chassis | min 1, max 1 | 1 | 1 | Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis | S3L12A | CTO | HPE Alletra Storage MP X10000 Base Configuration | 1 | $0.00 |  |  |  |  | No | Available in OCA product catalog | Unpublished |  | Unpublished | Not published by OCA | Valid | Active |  |  |  |
-| 3 | Chassis | Variants | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Chassis &gt; Variants | Base Chassis | min 1, max 1 | 1 | 1 | Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis | S7Z87A | CTO | HPE Alletra Storage MP X10000 KSA | 1 | $0.00 |  |  |  |  | No | Available in OCA product catalog | Unpublished |  | Unpublished | Not published by OCA | Valid | Active |  |  |  |
-| 4 | Chassis | Variants | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Chassis &gt; Variants | Base Chassis | min 1, max 1 | 1 | 1 | Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis | S6W29A | CTO | HPE Alletra Storage MP X10000 Disconnected Add-on KSA | 1 | $0.00 |  |  |  |  | No | Available in OCA product catalog | Unpublished |  | Unpublished | Not published by OCA | Valid | Active |  |  |  |
-| 5 | Accessories &amp; Infrastructure | Node Chassis | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Accessories &amp; Infrastructure &gt; Node Chassis | Option Component | max 8 | 0 | 8 | Selection constraint for Node Chassis: max 8 | R7C75A | Standard | HPE Alletra Storage MP 10000 2U Chassis | 2 | $13,749.00 |  |  | $27,498.00 |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2029 | [TEXT_1] |
-| 6 | Storage Controllers | Node | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Storage Controllers &gt; Node | Storage Controller | max 4 | 0 | 4 | Selection constraint for Node: max 4 | R7C71A | Standard | HPE Alletra Storage MP X10250 Controller Node | 0 | $403,464.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 11/18/2024 | 10/31/2028 | [TEXT_2] |
-| 7 | Storage Controllers | Node | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Storage Controllers &gt; Node | Storage Controller | max 4 | 0 | 4 | [TEXT_3] | R7C71B | Standard | HPE Alletra Storage MP X10250 Controller Node Field Upgrade | 0 | $524,503.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 08/04/2025 | 10/31/2031 | [TEXT_4] |
-| 8 | Power Supplies | Power Supplies | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Power Supplies &gt; Power Supplies | Power Supply | max 4 | 0 | 4 | Selection constraint for Power Supplies: max 4 | R7C76A | Standard | HPE Alletra Storage MP C14 1600W AC Power Supply | 4 | $2,327.00 |  |  | $9,308.00 |  | No | Available | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_5] |
-| 9 | Power Supplies | -48VDC Power Supplies &amp; Cable Kits | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Power Supplies &gt; -48VDC Power Supplies &amp; Cable Kits | Cable Kit | min 1, max 2 | 1 | 2 | [TEXT_6] | R7C78A | Standard | HPE Alletra Storage MP 1600W -48VDC Power Supply | 0 | $11,842.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 10/02/2023 | 12/31/2032 | [TEXT_7] |
-| 10 | Power Supplies | -48VDC Power Supplies &amp; Cable Kits | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Power Supplies &gt; -48VDC Power Supplies &amp; Cable Kits | Cable Kit | min 1, max 2 | 1 | 2 | [TEXT_8] | R9Z97A | Standard | HPE Alletra Storage MP C14 2200W AC Power Supply | 0 | $3,332.00 |  |  | NA |  | No | Not published by OCA | 14 | 14 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 10/02/2023 | 12/31/2032 | [TEXT_9] |
-| 11 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R55A | Standard | HPE C13 - Schuko 250V 10Amp EU Power Cord | 0 | $64.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_10] |
-| 12 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9S00A | Standard | HPE C13 - C14 250V 10Amp Gray 1.4m WW Power Cord | 2 | $23.00 |  |  | $46.00 |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_11] |
-| 13 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R52A | Standard | HPE C13 - C14 250V 10Amp Black 1.4m WW Power Cord | 2 | $83.00 |  |  | $166.00 |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_12] |
-| 14 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R53A | Standard | HPE C13 - C14 250V 10Amp Black 1.37m IN Power Cord | 0 | $59.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_13] |
-| 15 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R54A | Standard | HPE C13 - AS3112 250V 10Amp AU Power Cord | 0 | $196.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_14] |
-| 16 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R56A | Standard | HPE C13 - BS1363 250V 10Amp UK Power Cord | 0 | $36.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_15] |
-| 17 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R57A | Standard | HPE C13 - NEMA 5-15P 250V 10Amp US Power Cord | 0 | $21.00 |  |  | NA |  | No | Available | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_16] |
-| 18 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R58A | Standard | HPE C13 - GB2099 250V 10Amp CN Power Cord | 0 | $26.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_17] |
-| 19 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R59A | Standard | HPE C13 - JIS8303 125V 11Amp TW/JP Power Cord | 0 | $148.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_18] |
-| 20 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R60A | Standard | HPE C13 - JIS8303 6-15P 250V 12Amp JP Power Cord | 0 | $43.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_19] |
-| 21 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R61A | Standard | HPE C13 - IN1293 250V 16Amp IN Power Cord | 0 | $61.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_20] |
-| 22 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R62A | Standard | HPE C13 - SANS164-1 250V 16Amp ZA Power Cord | 0 | $21.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_21] |
-| 23 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R63A | Standard | HPE C13 - SI32 250V 16Amp IL Power Cord | 0 | $24.00 |  |  | NA |  | No | Available | 14 | 14 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_22] |
-| 24 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R64A | Standard | HPE C13 - CEI23-16 250V 10Amp IT Power Cord | 0 | $29.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_23] |
-| 25 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R65A | Standard | HPE C13 - WS-010A 250V 10Amp KR Power Cord | 0 | $31.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_24] |
-| 26 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9S01A | Standard | HPE C13 - C14 250V 10Amp Gray 1.37m IN Power Cord | 0 | $59.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_13] |
-| 27 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | S3L68A | Standard | HPE C13 - C14 250V 10Amp Black 2m WW Power Cord | 0 | $23.00 |  |  | NA |  | No | Available | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 02/05/2024 | 12/31/2032 | [TEXT_25] |
-| 28 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | S3L69A | Standard | HPE C13 - C14 250V 10Amp Gray 2m WW Power Cord | 0 | $123.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 02/05/2024 | 12/31/2032 | [TEXT_26] |
-| 29 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | S3L70A | Standard | HPE C13 - C14 250V 10Amp Black 2m IN Power Cord | 0 | $76.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 02/05/2024 | 12/31/2032 | [TEXT_27] |
-| 30 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | S3L71A | Standard | HPE C13 - C14 250V 10Amp Gray 2m IN Power Cord | 0 | $72.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 02/05/2024 | 12/31/2032 | [TEXT_28] |
-| 31 | Power Supplies | -48VDC Power Supplies &amp; Cable Kits | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Power Supplies &gt; -48VDC Power Supplies &amp; Cable Kits | Cable Kit | min 1, max 2 | 1 | 2 | [TEXT_29] | P22173-B21 | Standard | [TEXT_30] | 0 | $818.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 12/07/2020 | 07/31/2028 | [TEXT_31] |
-| 32 | Power Supplies | -48VDC Power Supplies &amp; Cable Kits | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Power Supplies &gt; -48VDC Power Supplies &amp; Cable Kits | Cable Kit | min 1, max 2 | 1 | 2 | [TEXT_32] | P36877-B21 | Standard | [TEXT_33] | 0 | $135.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 12/07/2020 | 07/31/2029 | [TEXT_34] |
-| 33 | Accessories &amp; Infrastructure | System Options | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Accessories &amp; Infrastructure &gt; System Options | Option Component | Optional | 0 | Optional | [TEXT_35] | G2H95A | Standard | E-T-A S541 2x16 Output DC Breaker Panels | 0 | $5,682.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 12/12/2013 | 11/30/2031 | [TEXT_36] |
-| 34 | Accessories &amp; Infrastructure | System Options | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Accessories &amp; Infrastructure &gt; System Options | Option Component | Optional | 0 | Optional | [TEXT_37] | Q9N54A | Standard | E-T-A 6401 Two Grounding Bars w/ Screws | 0 | $196.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 12/01/2017 | 11/30/2031 | [TEXT_38] |
-| 35 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | Selection constraint for Drive Enclosure: max 16 | S1J10A | CTO | HPE Alletra Storage MP 10001 NVMe Configure-to-order Expansion Shelf | 0 | $19,654.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 10/02/2023 | 12/31/2032 | [TEXT_39] |
-| 36 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_40] | S2T35A | Standard | HPE Storage 100GbE QSFP28 SR4 Extended Temperature Pull Tab Transceiver | 0 | $3,299.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 02/05/2024 | 07/31/2029 | [TEXT_41] |
-| 37 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_42] | Q2F19A | Standard | HPE 100GbE QSFP28 SR4 100m Transceiver | 0 | $2,425.00 |  |  | NA |  | No | Not published by OCA | 14 | 14 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 09/25/2017 | 12/31/2028 | [TEXT_43] |
-| 38 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_44] | R9F76A | Standard | HPE Aruba Networking 100G QSFP28 to QSFP28 2m Active Optical Cable | 0 | $2,649.00 |  |  | NA |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/06/2021 | 12/31/2029 | [TEXT_45] |
-| 39 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_46] | R9F79A | Standard | HPE Aruba Networking 100G QSFP28 to QSFP28 7m Active Optical Cable | 0 | $2,739.00 |  |  | NA |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/06/2021 | 12/31/2029 | [TEXT_47] |
-| 40 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_48] | R9F80A | Standard | HPE Aruba Networking 100G QSFP28 to QSFP28 15m Active Optical Cable | 0 | $2,959.00 |  |  | NA |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/06/2021 | 12/31/2029 | [TEXT_49] |
-| 41 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_50] | R9F81A | Standard | HPE Aruba Networking 100G QSFP28 to QSFP28 30m Active Optical Cable | 0 | $2,959.00 |  |  | NA |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/06/2021 | 12/31/2029 | [TEXT_49] |
-| 42 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_51] | S1D25A | Standard | HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 3m Active Optical Cable | 0 | $5,039.00 |  |  | NA |  | No | Not published by OCA | 78 | 78 | Constrained / Long Lead Time (&gt;45d) | OCA row attribute | Unpublished | Active | 02/06/2023 | 12/31/2029 | [TEXT_52] |
-| 43 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_53] | S1D26A | Standard | HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 7m Active Optical Cable | 0 | $5,039.00 |  |  | NA |  | No | Not published by OCA | 78 | 78 | Constrained / Long Lead Time (&gt;45d) | OCA row attribute | Unpublished | Active | 02/06/2023 | 12/31/2029 | [TEXT_52] |
-| 44 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_54] | S1D27A | Standard | HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 15m Active Optical Cable | 0 | $6,829.00 |  |  | NA |  | No | Not published by OCA | 78 | 78 | Constrained / Long Lead Time (&gt;45d) | OCA row attribute | Unpublished | Active | 02/06/2023 | 12/31/2029 | [TEXT_55] |
-| 45 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_56] | S1D28A | Standard | HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 30m Active Optical Cable | 0 | $6,829.00 |  |  | NA |  | No | Not published by OCA | 78 | 78 | Constrained / Long Lead Time (&gt;45d) | OCA row attribute | Unpublished | Active | 02/06/2023 | 12/31/2029 | [TEXT_55] |
-| 46 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_57] | R9H71B | Standard | HPE Alletra Storage MP 3.84TB NVMe Read Intensive FIPS 140-3 Encrypted SSD                       Max 24 drive supported | 0 | $58,713.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 08/04/2025 | 12/31/2029 | [TEXT_58] |
-| 47 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_59] | R9H73B | Standard | HPE Alletra Storage MP 15.36TB NVMe Read Intensive FIPS 140-3 Encrypted SSD                       Max 24 drive supported | 0 | $235,872.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 08/04/2025 | 12/31/2029 | [TEXT_60] |
-| 48 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_61] | R9H72B | Standard | HPE Alletra Storage MP 7.68TB NVMe Read Intensive FIPS 140-3 Encrypted SSD                       Max 24 drive supported | 0 | $131,890.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 08/04/2025 | 12/31/2029 | [TEXT_62] |
-| 49 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_63] | S4P49A | Standard | HPE Alletra Storage MP 30.72TB NVMe SFF FIPS Encrypted SSD                       Max 24 drive supported | 0 | $376,435.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 06/02/2025 | 01/31/2028 | [TEXT_64] |
-| 50 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_65] | S1Z68A | Standard | HPE Alletra Storage MP 30.72TB NVMe SFF Self-encrypting SSD                       Max 24 drive supported | 0 | $342,214.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 11/30/2023 | 01/31/2028 | [TEXT_66] |
-| 51 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_67] | R9H67A | Standard | HPE Alletra Storage MP 3.84TB NVMe SFF Self-encrypting SSD                       Max 24 drive supported | 0 | $53,373.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 01/08/2024 | 12/31/2029 | [TEXT_68] |
-| 52 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_69] | R9H66A | Standard | HPE Alletra Storage MP 1.92TB NVMe SFF Self-encrypting SSD                       Max 24 drive supported | 0 | $36,109.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 01/08/2024 | 12/31/2029 | [TEXT_70] |
-| 53 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_71] | R9H69A | Standard | HPE Alletra Storage MP 15.36TB NVMe SFF Self-encrypting SSD                       Max 24 drive supported | 0 | $214,426.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 01/08/2024 | 12/31/2029 | [TEXT_72] |
-| 54 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_73] | R9H68A | Standard | HPE Alletra Storage MP 7.68TB NVMe SFF Self-encrypting SSD                       Max 24 drive supported | 0 | $119,901.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 01/08/2024 | 12/31/2029 | [TEXT_74] |
-| 55 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_75] | S4P40A | Standard | HPE Alletra Storage MP 61.44TB NVMe SFF QLC SSD                       Max 24 drive supported | 0 | $420,983.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 06/02/2025 | 09/30/2027 | [TEXT_76] |
-| 56 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_77] | S3L74A | Standard | HPE Alletra Storage MP 30.72TB NVMe SFF QLC SSD                       Max 24 drive supported | 0 | $241,214.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 10/07/2024 | 09/30/2027 | [TEXT_78] |
-| 57 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_79] | S3L73A | Standard | HPE Alletra Storage MP 15.36TB NVMe SFF QLC SSD                       Max 24 drive supported | 0 | $126,796.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 10/07/2024 | 09/30/2027 | [TEXT_80] |
-| 58 | Power Supplies | BlueTooth Connectivity Kit | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Power Supplies &gt; BlueTooth Connectivity Kit | Option Component | max 1 | 0 | 1 | Selection constraint for BlueTooth Connectivity Kit: max 1 | S0U79A | Standard | HPE Alletra Storage MP CDM Bluetooth Connect Kit | 1 | $197.00 |  |  | $197.00 |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_81] |
-| 59 | Power Supplies | Back-End Switches | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Power Supplies &gt; Back-End Switches | Network Switch | max 2 | 0 | 2 | Selection constraint for Back-End Switches: max 2 | S1R08A | Standard | HPE Alletra Storage MP 32-port 100GbE Switch Bundle | 0 | $43,467.00 |  |  | NA |  | No | Available | 5 | 5 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 03/31/2040 | [TEXT_82] |
-| 60 | Power Supplies | Back-End Switches | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Power Supplies &gt; Back-End Switches | Network Switch | max 2 | 0 | 2 | Selection constraint for Back-End Switches: max 2 | S6L90A | Standard | HPE Alletra Storage MP 9300-32D 32-port 400Gb Switch Bundle | 0 | $128,140.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/06/2026 | 12/31/2032 | [TEXT_83] |
-| 61 | Power Supplies | Back-End Switches | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Power Supplies &gt; Back-End Switches | Network Switch | max 2 | 0 | 2 | [TEXT_84] | S1S69A | Standard | HPE Alletra Storage MP 32-port 100GbE -48VDC Switch Bundle | 0 | $49,176.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 02/05/2024 | 03/31/2040 | [TEXT_85] |
-| 62 | Cables &amp; Enablement Kits | Back-End Switch Rail Kits | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Back-End Switch Rail Kits | Cable Kit | max 8 | 0 | 8 | Selection constraint for Back-End Switch Rail Kits: max 8 | S0A95A | Standard | HPE Switch Pair Installation Kit with 4U Cable Tray | 0 | $3,075.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_86] |
-| 63 | Cables &amp; Enablement Kits | Management Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Management Cables | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Management Cables: no max | C7535A | Standard | HPE RJ45 to RJ45 Cat5e Black M/M 7.6ft 1-pack Data Cable | 0 | $20.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/01/2001 | 08/31/2027 | [TEXT_87] |
-| 64 | Cables &amp; Enablement Kits | Management Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Management Cables | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Management Cables: no max | C7536A | Standard | HPE 4.3m/14ft CAT5 RJ45 M/M Ethernet Cable | 0 | $21.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 03/01/2001 | 08/31/2027 | [TEXT_88] |
-| 65 | Cables &amp; Enablement Kits | Management Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Management Cables | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Management Cables: no max | C7537A | Standard | HPE 7.6m/25ft CAT5 RJ45 M/M Ethernet Cable | 0 | $46.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/01/2001 | 08/31/2027 | [TEXT_89] |
-| 66 | Cables &amp; Enablement Kits | Management Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Management Cables | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Management Cables: no max | C7542A | Standard | HPE 15.2m/50ft CAT5 RJ45 M/M Ethernet Cable | 0 | $86.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/01/2001 | 08/31/2027 | [TEXT_90] |
-| 67 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | 487655-B21 | Standard | HPE BladeSystem c-Class 10GbE SFP+ to SFP+ 3m Direct Attach Copper Cable | 0 | $285.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 12/01/2008 | 08/30/2027 | [TEXT_91] |
-| 68 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | 537963-B21 | Standard | HPE BladeSystem c-Class 10GbE SFP+ to SFP+ 5m Direct Attach Copper Cable | 0 | $327.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 09/14/2009 | 08/30/2027 | [TEXT_92] |
-| 69 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | 844477-B21 | Standard | HPE 25Gb SFP28 to SFP28 3m Direct Attach Copper Cable | 0 | $392.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 06/06/2016 | 08/31/2027 | [TEXT_93] |
-| 70 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | 844483-B21 | Standard | HPE 25Gb SFP28 to SFP28 7m Active Optical Cable | 0 | $2,451.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 12/03/2018 | 08/30/2027 | [TEXT_94] |
-| 71 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | 845416-B21 | Standard | HPE 100Gb QSFP28 to 4x25Gb SFP28 3m Direct Attach Copper Cable | 0 | $916.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 06/06/2016 | 08/31/2028 | [TEXT_95] |
-| 72 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | J9283D | Standard | HPE Aruba Networking 10G SFP+ to SFP+ 3m Direct Attach Copper Cable | 0 | $315.00 |  |  | NA |  | No | Available | 13 | 13 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 12/04/2017 | 12/31/2099 | [TEXT_96] |
-| 73 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | J9285D | Standard | HPE Aruba Networking 10G SFP+ to SFP+ 7m Direct Attach Copper Cable | 0 | $430.00 |  |  | NA |  | No | Available | 13 | 13 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 12/04/2017 | 12/31/2099 | [TEXT_97] |
-| 74 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | JD097C | Standard | HPE Networking X240 10G SFP+ SFP+ 3m DAC Cable | 0 | $314.00 |  |  | NA |  | No | Available | 13 | 13 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 05/14/2012 | 12/31/2099 | [TEXT_98] |
-| 75 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | JG081C | Standard | HPE Networking X240 10G SFP+ SFP+ 5m DAC Cable | 0 | $346.00 |  |  | NA |  | No | Available | 13 | 13 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 05/14/2012 | 12/31/2099 | [TEXT_99] |
-| 76 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | JG330A | Standard | HPE Networking Comware X240 40G QSFP+ to 4x10G SFP+ 3m Direct Attach Copper Splitter Cable | 0 | $850.00 |  |  | NA |  | No | Available | 13 | 13 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 02/13/2012 | 12/31/2099 | [TEXT_100] |
-| 77 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | JG331A | Standard | HPE Networking Comware X240 40G QSFP+ to 4x10G SFP+ 5m Direct Attach Copper Splitter Cable | 0 | $986.00 |  |  | NA |  | No | Available | 13 | 13 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 02/13/2012 | 12/31/2099 | [TEXT_101] |
-| 78 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | K2Q21A | Standard | HPE C-series 3M Passive Copper SFP+ Cable | 0 | $467.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 12/01/2014 | 10/23/2026 | [TEXT_102] |
-| 79 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | K2Q22A | Standard | HPE C-series 5M Passive Copper SFP+ Cable | 0 | $535.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 12/01/2014 | 10/23/2026 | [TEXT_103] |
-| 80 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | Q9S67A | Standard | HPE 25GbE SFP28 to SFP28 3m Smart Active Optical Cable | 0 | $975.00 |  |  | NA |  | No | Available | 49 | 49 | Constrained / Long Lead Time (&gt;45d) | OCA row attribute | Unpublished | Active | 09/04/2018 | 12/31/2028 | [TEXT_104] |
-| 81 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | Q9S68A | Standard | HPE 25GbE SFP28 to SFP28 5m Smart Active Optical Cable | 0 | $1,075.00 |  |  | NA |  | No | Available | 35 | 35 | Extended Schedule (31-45d) | OCA row attribute | Unpublished | Active | 09/04/2018 | 12/31/2028 | [TEXT_105] |
-| 82 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | QK701A | Standard | HPE C-series SFP+ to SFP+ Active Copper 7.0m Direct Attach Cable | 0 | $1,216.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 05/09/2011 | 10/23/2026 | [TEXT_106] |
-| 83 | Accessories &amp; Infrastructure | Commvault Tracking SKU | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Accessories &amp; Infrastructure &gt; Commvault Tracking SKU | Chassis Infrastructure | max 1 | 0 | 1 | Selection constraint for Commvault Tracking SKU: max 1 | S6X66A | Standard | HPE Alletra Storage MP X10000 Solution for Commvault HyperScale Flex FIO Tracking | 0 | $1.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/01/2025 | 04/30/2027 | [TEXT_107] |
+| 2 | Chassis | Variants | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Chassis &gt; Variants | Base Chassis | min 1, max 1 | 1 | 1 | Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis | S3L12A | CTO | HPE Alletra Storage MP X10000 Base Configuration | 1 | $1.00 |  |  |  |  | No | Available in OCA product catalog | Unpublished |  | Unpublished | Not published by OCA | Valid | Active |  |  |  |
+| 3 | Accessories &amp; Infrastructure | Node Chassis | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Accessories &amp; Infrastructure &gt; Node Chassis | Option Component | max 8 | 0 | 8 | Selection constraint for Node Chassis: max 8 | R7C75A | Standard | HPE Alletra Storage MP 10000 2U Chassis | 2 | $13,749.00 |  |  | $27,498.00 |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2029 | [TEXT_1] |
+| 4 | Storage Controllers | Node | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Storage Controllers &gt; Node | Storage Controller | max 4 | 0 | 4 | Selection constraint for Node: max 4 | R7C71A | Standard | HPE Alletra Storage MP X10250 Controller Node | 0 | $403,464.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 11/18/2024 | 10/31/2028 | [TEXT_2] |
+| 5 | Storage Controllers | Node | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Storage Controllers &gt; Node | Storage Controller | max 4 | 0 | 4 | [TEXT_3] | R7C71B | Standard | HPE Alletra Storage MP X10250 Controller Node Field Upgrade | 0 | $524,503.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 08/04/2025 | 10/31/2031 | [TEXT_4] |
+| 6 | Power Supplies | Power Supplies | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Power Supplies &gt; Power Supplies | Power Supply | max 4 | 0 | 4 | Selection constraint for Power Supplies: max 4 | R7C76A | Standard | HPE Alletra Storage MP C14 1600W AC Power Supply | 4 | $2,327.00 |  |  | $9,308.00 |  | No | Available | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_5] |
+| 7 | Power Supplies | -48VDC Power Supplies &amp; Cable Kits | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Power Supplies &gt; -48VDC Power Supplies &amp; Cable Kits | Cable Kit | min 1, max 2 | 1 | 2 | [TEXT_6] | R7C78A | Standard | HPE Alletra Storage MP 1600W -48VDC Power Supply | 0 | $11,842.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 10/02/2023 | 12/31/2032 | [TEXT_7] |
+| 8 | Power Supplies | -48VDC Power Supplies &amp; Cable Kits | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Power Supplies &gt; -48VDC Power Supplies &amp; Cable Kits | Cable Kit | min 1, max 2 | 1 | 2 | [TEXT_8] | R9Z97A | Standard | HPE Alletra Storage MP C14 2200W AC Power Supply | 0 | $3,332.00 |  |  | NA |  | No | Not published by OCA | 14 | 14 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 10/02/2023 | 12/31/2032 | [TEXT_9] |
+| 9 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R55A | Standard | HPE C13 - Schuko 250V 10Amp EU Power Cord | 0 | $64.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_10] |
+| 10 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9S00A | Standard | HPE C13 - C14 250V 10Amp Gray 1.4m WW Power Cord | 2 | $23.00 |  |  | $46.00 |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_11] |
+| 11 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R52A | Standard | HPE C13 - C14 250V 10Amp Black 1.4m WW Power Cord | 2 | $83.00 |  |  | $166.00 |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_12] |
+| 12 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R53A | Standard | HPE C13 - C14 250V 10Amp Black 1.37m IN Power Cord | 0 | $59.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_13] |
+| 13 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R54A | Standard | HPE C13 - AS3112 250V 10Amp AU Power Cord | 0 | $196.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_14] |
+| 14 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R56A | Standard | HPE C13 - BS1363 250V 10Amp UK Power Cord | 0 | $36.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_15] |
+| 15 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R57A | Standard | HPE C13 - NEMA 5-15P 250V 10Amp US Power Cord | 0 | $21.00 |  |  | NA |  | No | Available | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_16] |
+| 16 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R58A | Standard | HPE C13 - GB2099 250V 10Amp CN Power Cord | 0 | $26.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_17] |
+| 17 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R59A | Standard | HPE C13 - JIS8303 125V 11Amp TW/JP Power Cord | 0 | $148.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_18] |
+| 18 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R60A | Standard | HPE C13 - JIS8303 6-15P 250V 12Amp JP Power Cord | 0 | $43.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_19] |
+| 19 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R61A | Standard | HPE C13 - IN1293 250V 16Amp IN Power Cord | 0 | $61.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_20] |
+| 20 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R62A | Standard | HPE C13 - SANS164-1 250V 16Amp ZA Power Cord | 0 | $21.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_21] |
+| 21 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R63A | Standard | HPE C13 - SI32 250V 16Amp IL Power Cord | 0 | $24.00 |  |  | NA |  | No | Available | 14 | 14 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_22] |
+| 22 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R64A | Standard | HPE C13 - CEI23-16 250V 10Amp IT Power Cord | 0 | $29.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_23] |
+| 23 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9R65A | Standard | HPE C13 - WS-010A 250V 10Amp KR Power Cord | 0 | $31.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_24] |
+| 24 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | R9S01A | Standard | HPE C13 - C14 250V 10Amp Gray 1.37m IN Power Cord | 0 | $59.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_13] |
+| 25 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | S3L68A | Standard | HPE C13 - C14 250V 10Amp Black 2m WW Power Cord | 0 | $23.00 |  |  | NA |  | No | Available | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 02/05/2024 | 12/31/2032 | [TEXT_25] |
+| 26 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | S3L69A | Standard | HPE C13 - C14 250V 10Amp Gray 2m WW Power Cord | 0 | $123.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 02/05/2024 | 12/31/2032 | [TEXT_26] |
+| 27 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | S3L70A | Standard | HPE C13 - C14 250V 10Amp Black 2m IN Power Cord | 0 | $76.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 02/05/2024 | 12/31/2032 | [TEXT_27] |
+| 28 | Cables &amp; Enablement Kits | Power Cord | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Power Cord | Cable Kit | max 8 | 0 | 8 | Selection constraint for Power Cord: max 8 | S3L71A | Standard | HPE C13 - C14 250V 10Amp Gray 2m IN Power Cord | 0 | $72.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 02/05/2024 | 12/31/2032 | [TEXT_28] |
+| 29 | Power Supplies | -48VDC Power Supplies &amp; Cable Kits | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Power Supplies &gt; -48VDC Power Supplies &amp; Cable Kits | Cable Kit | min 1, max 2 | 1 | 2 | [TEXT_29] | P22173-B21 | Standard | [TEXT_30] | 0 | $818.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 12/07/2020 | 07/31/2028 | [TEXT_31] |
+| 30 | Power Supplies | -48VDC Power Supplies &amp; Cable Kits | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Power Supplies &gt; -48VDC Power Supplies &amp; Cable Kits | Cable Kit | min 1, max 2 | 1 | 2 | [TEXT_32] | P36877-B21 | Standard | [TEXT_33] | 0 | $135.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 12/07/2020 | 07/31/2029 | [TEXT_34] |
+| 31 | Accessories &amp; Infrastructure | System Options | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Accessories &amp; Infrastructure &gt; System Options | Option Component | Optional | 0 | Optional | [TEXT_35] | G2H95A | Standard | E-T-A S541 2x16 Output DC Breaker Panels | 0 | $5,682.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 12/12/2013 | 11/30/2031 | [TEXT_36] |
+| 32 | Accessories &amp; Infrastructure | System Options | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Accessories &amp; Infrastructure &gt; System Options | Option Component | Optional | 0 | Optional | [TEXT_37] | Q9N54A | Standard | E-T-A 6401 Two Grounding Bars w/ Screws | 0 | $196.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 12/01/2017 | 11/30/2031 | [TEXT_38] |
+| 33 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | Selection constraint for Drive Enclosure: max 16 | S1J10A | CTO | HPE Alletra Storage MP 10001 NVMe Configure-to-order Expansion Shelf | 0 | $19,654.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 10/02/2023 | 12/31/2032 | [TEXT_39] |
+| 34 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_40] | S2T35A | Standard | HPE Storage 100GbE QSFP28 SR4 Extended Temperature Pull Tab Transceiver | 0 | $3,299.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 02/05/2024 | 07/31/2029 | [TEXT_41] |
+| 35 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_42] | Q2F19A | Standard | HPE 100GbE QSFP28 SR4 100m Transceiver | 0 | $2,425.00 |  |  | NA |  | No | Not published by OCA | 14 | 14 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 09/25/2017 | 12/31/2028 | [TEXT_43] |
+| 36 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_44] | R9F76A | Standard | HPE Aruba Networking 100G QSFP28 to QSFP28 2m Active Optical Cable | 0 | $2,649.00 |  |  | NA |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/06/2021 | 12/31/2029 | [TEXT_45] |
+| 37 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_46] | R9F79A | Standard | HPE Aruba Networking 100G QSFP28 to QSFP28 7m Active Optical Cable | 0 | $2,739.00 |  |  | NA |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/06/2021 | 12/31/2029 | [TEXT_47] |
+| 38 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_48] | R9F80A | Standard | HPE Aruba Networking 100G QSFP28 to QSFP28 15m Active Optical Cable | 0 | $2,959.00 |  |  | NA |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/06/2021 | 12/31/2029 | [TEXT_49] |
+| 39 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_50] | R9F81A | Standard | HPE Aruba Networking 100G QSFP28 to QSFP28 30m Active Optical Cable | 0 | $2,959.00 |  |  | NA |  | No | Not published by OCA | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/06/2021 | 12/31/2029 | [TEXT_49] |
+| 40 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_51] | S1D25A | Standard | HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 3m Active Optical Cable | 0 | $5,039.00 |  |  | NA |  | No | Not published by OCA | 78 | 78 | Constrained / Long Lead Time (&gt;45d) | OCA row attribute | Unpublished | Active | 02/06/2023 | 12/31/2029 | [TEXT_52] |
+| 41 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_53] | S1D26A | Standard | HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 7m Active Optical Cable | 0 | $5,039.00 |  |  | NA |  | No | Not published by OCA | 78 | 78 | Constrained / Long Lead Time (&gt;45d) | OCA row attribute | Unpublished | Active | 02/06/2023 | 12/31/2029 | [TEXT_52] |
+| 42 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_54] | S1D27A | Standard | HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 15m Active Optical Cable | 0 | $6,829.00 |  |  | NA |  | No | Not published by OCA | 78 | 78 | Constrained / Long Lead Time (&gt;45d) | OCA row attribute | Unpublished | Active | 02/06/2023 | 12/31/2029 | [TEXT_55] |
+| 43 | Networking | Optical Transceivers &amp; DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Optical Transceivers &amp; DAC Cables | Transceiver | max 8 | 0 | 8 | [TEXT_56] | S1D28A | Standard | HPE Aruba Networking 200G QSFP-DD to 2x QSFP28 100G 30m Active Optical Cable | 0 | $6,829.00 |  |  | NA |  | No | Not published by OCA | 78 | 78 | Constrained / Long Lead Time (&gt;45d) | OCA row attribute | Unpublished | Active | 02/06/2023 | 12/31/2029 | [TEXT_55] |
+| 44 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_57] | R9H71B | Standard | HPE Alletra Storage MP 3.84TB NVMe Read Intensive FIPS 140-3 Encrypted SSD                       Max 24 drive supported | 0 | $58,713.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 08/04/2025 | 12/31/2029 | [TEXT_58] |
+| 45 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_59] | R9H73B | Standard | HPE Alletra Storage MP 15.36TB NVMe Read Intensive FIPS 140-3 Encrypted SSD                       Max 24 drive supported | 0 | $235,872.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 08/04/2025 | 12/31/2029 | [TEXT_60] |
+| 46 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_61] | R9H72B | Standard | HPE Alletra Storage MP 7.68TB NVMe Read Intensive FIPS 140-3 Encrypted SSD                       Max 24 drive supported | 0 | $131,890.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 08/04/2025 | 12/31/2029 | [TEXT_62] |
+| 47 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_63] | S4P49A | Standard | HPE Alletra Storage MP 30.72TB NVMe SFF FIPS Encrypted SSD                       Max 24 drive supported | 0 | $376,435.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 06/02/2025 | 01/31/2028 | [TEXT_64] |
+| 48 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_65] | S1Z68A | Standard | HPE Alletra Storage MP 30.72TB NVMe SFF Self-encrypting SSD                       Max 24 drive supported | 0 | $342,214.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 11/30/2023 | 01/31/2028 | [TEXT_66] |
+| 49 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_67] | R9H67A | Standard | HPE Alletra Storage MP 3.84TB NVMe SFF Self-encrypting SSD                       Max 24 drive supported | 0 | $53,373.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 01/08/2024 | 12/31/2029 | [TEXT_68] |
+| 50 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_69] | R9H66A | Standard | HPE Alletra Storage MP 1.92TB NVMe SFF Self-encrypting SSD                       Max 24 drive supported | 0 | $36,109.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 01/08/2024 | 12/31/2029 | [TEXT_70] |
+| 51 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_71] | R9H69A | Standard | HPE Alletra Storage MP 15.36TB NVMe SFF Self-encrypting SSD                       Max 24 drive supported | 0 | $214,426.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 01/08/2024 | 12/31/2029 | [TEXT_72] |
+| 52 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_73] | R9H68A | Standard | HPE Alletra Storage MP 7.68TB NVMe SFF Self-encrypting SSD                       Max 24 drive supported | 0 | $119,901.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 01/08/2024 | 12/31/2029 | [TEXT_74] |
+| 53 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_75] | S4P40A | Standard | HPE Alletra Storage MP 61.44TB NVMe SFF QLC SSD                       Max 24 drive supported | 0 | $420,983.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 06/02/2025 | 09/30/2027 | [TEXT_76] |
+| 54 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_77] | S3L74A | Standard | HPE Alletra Storage MP 30.72TB NVMe SFF QLC SSD                       Max 24 drive supported | 0 | $241,214.00 |  |  | NA |  | No | Not published by OCA | 4 | 4 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 10/07/2024 | 09/30/2027 | [TEXT_78] |
+| 55 | Drive Enclosures / Drives | Drive Enclosure | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Drive Enclosures / Drives &gt; Drive Enclosure | Drive Cage / Drive | max 16 | 0 | 16 | [TEXT_79] | S3L73A | Standard | HPE Alletra Storage MP 15.36TB NVMe SFF QLC SSD                       Max 24 drive supported | 0 | $126,796.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 10/07/2024 | 09/30/2027 | [TEXT_80] |
+| 56 | Accessories &amp; Infrastructure | BlueTooth Connectivity Kit | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Accessories &amp; Infrastructure &gt; BlueTooth Connectivity Kit | Option Component | max 1 | 0 | 1 | Selection constraint for BlueTooth Connectivity Kit: max 1 | S0U79A | Standard | HPE Alletra Storage MP CDM Bluetooth Connect Kit | 1 | $197.00 |  |  | $197.00 |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_81] |
+| 57 | Networking | Back-End Switches | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Back-End Switches | Network Switch | max 2 | 0 | 2 | Selection constraint for Back-End Switches: max 2 | S1R08A | Standard | HPE Alletra Storage MP 32-port 100GbE Switch Bundle | 0 | $43,467.00 |  |  | NA |  | No | Available | 5 | 5 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 03/31/2040 | [TEXT_82] |
+| 58 | Networking | Back-End Switches | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Back-End Switches | Network Switch | max 2 | 0 | 2 | Selection constraint for Back-End Switches: max 2 | S6L90A | Standard | HPE Alletra Storage MP 9300-32D 32-port 400Gb Switch Bundle | 0 | $128,140.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 04/06/2026 | 12/31/2032 | [TEXT_83] |
+| 59 | Networking | Back-End Switches | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Networking &gt; Back-End Switches | Network Switch | max 2 | 0 | 2 | [TEXT_84] | S1S69A | Standard | HPE Alletra Storage MP 32-port 100GbE -48VDC Switch Bundle | 0 | $49,176.00 |  |  | NA |  | No | Not published by OCA | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 02/05/2024 | 03/31/2040 | [TEXT_85] |
+| 60 | Cables &amp; Enablement Kits | Back-End Switch Rail Kits | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Back-End Switch Rail Kits | Cable Kit | max 8 | 0 | 8 | Selection constraint for Back-End Switch Rail Kits: max 8 | S0A95A | Standard | HPE Switch Pair Installation Kit with 4U Cable Tray | 0 | $3,075.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/03/2023 | 12/31/2032 | [TEXT_86] |
+| 61 | Cables &amp; Enablement Kits | Management Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Management Cables | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Management Cables: no max | C7535A | Standard | HPE RJ45 to RJ45 Cat5e Black M/M 7.6ft 1-pack Data Cable | 0 | $20.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/01/2001 | 08/31/2027 | [TEXT_87] |
+| 62 | Cables &amp; Enablement Kits | Management Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Management Cables | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Management Cables: no max | C7536A | Standard | HPE 4.3m/14ft CAT5 RJ45 M/M Ethernet Cable | 0 | $21.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 03/01/2001 | 08/31/2027 | [TEXT_88] |
+| 63 | Cables &amp; Enablement Kits | Management Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Management Cables | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Management Cables: no max | C7537A | Standard | HPE 7.6m/25ft CAT5 RJ45 M/M Ethernet Cable | 0 | $46.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/01/2001 | 08/31/2027 | [TEXT_89] |
+| 64 | Cables &amp; Enablement Kits | Management Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; Management Cables | Cable Kit | Unlimited | 0 | Unlimited | Selection constraint for Management Cables: no max | C7542A | Standard | HPE 15.2m/50ft CAT5 RJ45 M/M Ethernet Cable | 0 | $86.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 04/01/2001 | 08/31/2027 | [TEXT_90] |
+| 65 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | 487655-B21 | Standard | HPE BladeSystem c-Class 10GbE SFP+ to SFP+ 3m Direct Attach Copper Cable | 0 | $285.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 12/01/2008 | 08/30/2027 | [TEXT_91] |
+| 66 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | 537963-B21 | Standard | HPE BladeSystem c-Class 10GbE SFP+ to SFP+ 5m Direct Attach Copper Cable | 0 | $327.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 09/14/2009 | 08/30/2027 | [TEXT_92] |
+| 67 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | 844477-B21 | Standard | HPE 25Gb SFP28 to SFP28 3m Direct Attach Copper Cable | 0 | $392.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 06/06/2016 | 08/31/2027 | [TEXT_93] |
+| 68 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | 844483-B21 | Standard | HPE 25Gb SFP28 to SFP28 7m Active Optical Cable | 0 | $2,451.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 12/03/2018 | 08/30/2027 | [TEXT_94] |
+| 69 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | 845416-B21 | Standard | HPE 100Gb QSFP28 to 4x25Gb SFP28 3m Direct Attach Copper Cable | 0 | $916.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 06/06/2016 | 08/31/2028 | [TEXT_95] |
+| 70 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | J9283D | Standard | HPE Aruba Networking 10G SFP+ to SFP+ 3m Direct Attach Copper Cable | 0 | $315.00 |  |  | NA |  | No | Available | 13 | 13 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 12/04/2017 | 12/31/2099 | [TEXT_96] |
+| 71 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | J9285D | Standard | HPE Aruba Networking 10G SFP+ to SFP+ 7m Direct Attach Copper Cable | 0 | $430.00 |  |  | NA |  | No | Available | 13 | 13 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 12/04/2017 | 12/31/2099 | [TEXT_97] |
+| 72 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | JD097C | Standard | HPE Networking X240 10G SFP+ SFP+ 3m DAC Cable | 0 | $314.00 |  |  | NA |  | No | Available | 13 | 13 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 05/14/2012 | 12/31/2099 | [TEXT_98] |
+| 73 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | JG081C | Standard | HPE Networking X240 10G SFP+ SFP+ 5m DAC Cable | 0 | $346.00 |  |  | NA |  | No | Available | 13 | 13 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 05/14/2012 | 12/31/2099 | [TEXT_99] |
+| 74 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | JG330A | Standard | HPE Networking Comware X240 40G QSFP+ to 4x10G SFP+ 3m Direct Attach Copper Splitter Cable | 0 | $850.00 |  |  | NA |  | No | Available | 13 | 13 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 02/13/2012 | 12/31/2099 | [TEXT_100] |
+| 75 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | JG331A | Standard | HPE Networking Comware X240 40G QSFP+ to 4x10G SFP+ 5m Direct Attach Copper Splitter Cable | 0 | $986.00 |  |  | NA |  | No | Available | 13 | 13 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 02/13/2012 | 12/31/2099 | [TEXT_101] |
+| 76 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | K2Q21A | Standard | HPE C-series 3M Passive Copper SFP+ Cable | 0 | $467.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 12/01/2014 | 10/23/2026 | [TEXT_102] |
+| 77 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | K2Q22A | Standard | HPE C-series 5M Passive Copper SFP+ Cable | 0 | $535.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 12/01/2014 | 10/23/2026 | [TEXT_103] |
+| 78 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | Q9S67A | Standard | HPE 25GbE SFP28 to SFP28 3m Smart Active Optical Cable | 0 | $975.00 |  |  | NA |  | No | Available | 49 | 49 | Constrained / Long Lead Time (&gt;45d) | OCA row attribute | Unpublished | Active | 09/04/2018 | 12/31/2028 | [TEXT_104] |
+| 79 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | Q9S68A | Standard | HPE 25GbE SFP28 to SFP28 5m Smart Active Optical Cable | 0 | $1,075.00 |  |  | NA |  | No | Available | 35 | 35 | Extended Schedule (31-45d) | OCA row attribute | Unpublished | Active | 09/04/2018 | 12/31/2028 | [TEXT_105] |
+| 80 | Cables &amp; Enablement Kits | DAC Cables | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Cables &amp; Enablement Kits &gt; DAC Cables | Transceiver | Unlimited | 0 | Unlimited | Selection constraint for DAC Cables: no max | QK701A | Standard | HPE C-series SFP+ to SFP+ Active Copper 7.0m Direct Attach Cable | 0 | $1,216.00 |  |  | NA |  | No | Obsolete (OB) | Unpublished |  | Unpublished | Unpublished | Unpublished | Obsolete (OB) | 05/09/2011 | 10/23/2026 | [TEXT_106] |
+| 81 | Accessories &amp; Infrastructure | Commvault Tracking SKU | HPE OCA &gt; Alletra MP X10000 [S3L12A] &gt; Accessories &amp; Infrastructure &gt; Commvault Tracking SKU | Chassis Infrastructure | max 1 | 0 | 1 | Selection constraint for Commvault Tracking SKU: max 1 | S6X66A | Standard | HPE Alletra Storage MP X10000 Solution for Commvault HyperScale Flex FIO Tracking | 0 | $1.00 |  |  | NA |  | No | Available | Unpublished |  | Unpublished | Unpublished | Unpublished | Active | 12/01/2025 | 04/30/2027 | [TEXT_107] |
 
 
 ### Chassis Variants
@@ -352,9 +352,7 @@ Displayed cell values follow by sheet and original row. Formatting, charts and f
 | Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Product # | Form Factor | Description | Option Type | HPE Recommended | List Price (USD) | Constraint | Start Date | Discontinued Date | Note |
-| 2 | S3L12A | Unknown | HPE Alletra Storage MP X10000 Base Configuration | CTO | No | $0.00 | min 1, max 1 |  | Unknown | [TEXT_108] |
-| 3 | S7Z87A | Unknown | HPE Alletra Storage MP X10000 KSA | CTO | No | $0.00 | min 1, max 1 |  | Unknown | [TEXT_108] |
-| 4 | S6W29A | Unknown | HPE Alletra Storage MP X10000 Disconnected Add-on KSA | CTO | No | $0.00 | min 1, max 1 |  | Unknown | [TEXT_108] |
+| 2 | S3L12A | Unknown | HPE Alletra Storage MP X10000 Base Configuration | CTO | No | $1.00 | min 1, max 1 |  | Unknown | Select ONE chassis variant as the mandatory CTO base. All component rules, drive bay limits, and power constraints depend on this selection. |
 
 
 ### Chassis Options Matrix
@@ -362,9 +360,7 @@ Displayed cell values follow by sheet and original row. Formatting, charts and f
 | Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Base SKU | Form Factor | Option Type | HPE Recommended | List Price (USD) | Drive Media Supported | Base Drive Bays | Max Expandability | Power Envelope | Lifecycle Status | Start Date | Discontinued Date | Architectural Rules |
-| 2 | S3L12A | Unknown | CTO | No | $0.00 | UNVERIFIED — variant-specific evidence required | UNVERIFIED — title is not a bay inventory | UNVERIFIED — variant-specific evidence required | UNVERIFIED — variant-specific evidence required | Active |  | Unknown | NOT VERIFIED: do not transfer compatibility or rules between base SKUs without scoped vendor evidence. |
-| 3 | S7Z87A | Unknown | CTO | No | $0.00 | UNVERIFIED — variant-specific evidence required | UNVERIFIED — title is not a bay inventory | UNVERIFIED — variant-specific evidence required | UNVERIFIED — variant-specific evidence required | Active |  | Unknown | NOT VERIFIED: do not transfer compatibility or rules between base SKUs without scoped vendor evidence. |
-| 4 | S6W29A | Unknown | CTO | No | $0.00 | UNVERIFIED — variant-specific evidence required | UNVERIFIED — title is not a bay inventory | UNVERIFIED — variant-specific evidence required | UNVERIFIED — variant-specific evidence required | Active |  | Unknown | NOT VERIFIED: do not transfer compatibility or rules between base SKUs without scoped vendor evidence. |
+| 2 | S3L12A | Unknown | CTO | No | $1.00 | UNVERIFIED — variant-specific evidence required | UNVERIFIED — title is not a bay inventory | UNVERIFIED — variant-specific evidence required | UNVERIFIED — variant-specific evidence required | Active |  | Unknown | NOT VERIFIED: do not transfer compatibility or rules between base SKUs without scoped vendor evidence. |
 
 
 ### Rules &amp; Constraints
@@ -434,10 +430,10 @@ Displayed cell values follow by sheet and original row. Formatting, charts and f
 | 61 | Drive Enclosures / Drives | Drive Enclosure | max 16 | Configuration Rule | S4P40A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL |
 | 62 | Drive Enclosures / Drives | Drive Enclosure | max 16 | Configuration Rule | S3L74A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL |
 | 63 | Drive Enclosures / Drives | Drive Enclosure | max 16 | Configuration Rule | S3L73A conditional visibility: portal selector activation required (Max quantity of product class limited by space available.); PORTAL_CONDITIONAL |
-| 64 | Power Supplies | BlueTooth Connectivity Kit | max 1 | Configuration Rule | Selection constraint for BlueTooth Connectivity Kit: max 1 |
-| 65 | Power Supplies | Back-End Switches | max 2 | Configuration Rule | Selection constraint for Back-End Switches: max 2 |
-| 66 | Power Supplies | Back-End Switches | max 2 | Configuration Rule | If “acPowerFlag” is selected then S1S69A not supported |
-| 67 | Power Supplies | Back-End Switches | max 2 | Configuration Rule | S1S69A conditional visibility: portal selector activation required (If “acPowerFlag” is selected then S1S69A not supported); PORTAL_CONDITIONAL |
+| 64 | Accessories &amp; Infrastructure | BlueTooth Connectivity Kit | max 1 | Configuration Rule | Selection constraint for BlueTooth Connectivity Kit: max 1 |
+| 65 | Networking | Back-End Switches | max 2 | Configuration Rule | Selection constraint for Back-End Switches: max 2 |
+| 66 | Networking | Back-End Switches | max 2 | Configuration Rule | If “acPowerFlag” is selected then S1S69A not supported |
+| 67 | Networking | Back-End Switches | max 2 | Configuration Rule | S1S69A conditional visibility: portal selector activation required (If “acPowerFlag” is selected then S1S69A not supported); PORTAL_CONDITIONAL |
 | 68 | Cables &amp; Enablement Kits | Back-End Switch Rail Kits | max 8 | Configuration Rule | Selection constraint for Back-End Switch Rail Kits: max 8 |
 | 69 | Cables &amp; Enablement Kits | Management Cables | no max | Configuration Rule | Selection constraint for Management Cables: no max |
 | 70 | Cables &amp; Enablement Kits | DAC Cables | no max | Configuration Rule | Selection constraint for DAC Cables: no max |
@@ -495,16 +491,19 @@ Displayed cell values follow by sheet and original row. Formatting, charts and f
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
 
-Row 2: identical to sheet All SKUs, row 36.
-Row 3: identical to sheet All SKUs, row 37.
-Row 4: identical to sheet All SKUs, row 38.
-Row 5: identical to sheet All SKUs, row 39.
-Row 6: identical to sheet All SKUs, row 40.
-Row 7: identical to sheet All SKUs, row 41.
-Row 8: identical to sheet All SKUs, row 42.
-Row 9: identical to sheet All SKUs, row 43.
-Row 10: identical to sheet All SKUs, row 44.
-Row 11: identical to sheet All SKUs, row 45.
+Row 2: identical to sheet All SKUs, row 34.
+Row 3: identical to sheet All SKUs, row 35.
+Row 4: identical to sheet All SKUs, row 36.
+Row 5: identical to sheet All SKUs, row 37.
+Row 6: identical to sheet All SKUs, row 38.
+Row 7: identical to sheet All SKUs, row 39.
+Row 8: identical to sheet All SKUs, row 40.
+Row 9: identical to sheet All SKUs, row 41.
+Row 10: identical to sheet All SKUs, row 42.
+Row 11: identical to sheet All SKUs, row 43.
+Row 12: identical to sheet All SKUs, row 57.
+Row 13: identical to sheet All SKUs, row 58.
+Row 14: identical to sheet All SKUs, row 59.
 
 ### Power Supplies
 
@@ -512,15 +511,11 @@ Row 11: identical to sheet All SKUs, row 45.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
 
-Row 2: identical to sheet All SKUs, row 8.
-Row 3: identical to sheet All SKUs, row 9.
-Row 4: identical to sheet All SKUs, row 10.
-Row 5: identical to sheet All SKUs, row 31.
-Row 6: identical to sheet All SKUs, row 32.
-Row 7: identical to sheet All SKUs, row 58.
-Row 8: identical to sheet All SKUs, row 59.
-Row 9: identical to sheet All SKUs, row 60.
-Row 10: identical to sheet All SKUs, row 61.
+Row 2: identical to sheet All SKUs, row 6.
+Row 3: identical to sheet All SKUs, row 7.
+Row 4: identical to sheet All SKUs, row 8.
+Row 5: identical to sheet All SKUs, row 29.
+Row 6: identical to sheet All SKUs, row 30.
 
 ### Chassis
 
@@ -529,8 +524,6 @@ Row 10: identical to sheet All SKUs, row 61.
 | 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
 
 Row 2: identical to sheet All SKUs, row 2.
-Row 3: identical to sheet All SKUs, row 3.
-Row 4: identical to sheet All SKUs, row 4.
 
 ### Accessories &amp; Infrastructure
 
@@ -538,10 +531,11 @@ Row 4: identical to sheet All SKUs, row 4.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
 
-Row 2: identical to sheet All SKUs, row 5.
-Row 3: identical to sheet All SKUs, row 33.
-Row 4: identical to sheet All SKUs, row 34.
-Row 5: identical to sheet All SKUs, row 83.
+Row 2: identical to sheet All SKUs, row 3.
+Row 3: identical to sheet All SKUs, row 31.
+Row 4: identical to sheet All SKUs, row 32.
+Row 5: identical to sheet All SKUs, row 56.
+Row 6: identical to sheet All SKUs, row 81.
 
 ### Storage Controllers
 
@@ -549,8 +543,8 @@ Row 5: identical to sheet All SKUs, row 83.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
 
-Row 2: identical to sheet All SKUs, row 6.
-Row 3: identical to sheet All SKUs, row 7.
+Row 2: identical to sheet All SKUs, row 4.
+Row 3: identical to sheet All SKUs, row 5.
 
 ### Cables &amp; Enablement Kits
 
@@ -558,47 +552,47 @@ Row 3: identical to sheet All SKUs, row 7.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
 
-Row 2: identical to sheet All SKUs, row 11.
-Row 3: identical to sheet All SKUs, row 12.
-Row 4: identical to sheet All SKUs, row 13.
-Row 5: identical to sheet All SKUs, row 14.
-Row 6: identical to sheet All SKUs, row 15.
-Row 7: identical to sheet All SKUs, row 16.
-Row 8: identical to sheet All SKUs, row 17.
-Row 9: identical to sheet All SKUs, row 18.
-Row 10: identical to sheet All SKUs, row 19.
-Row 11: identical to sheet All SKUs, row 20.
-Row 12: identical to sheet All SKUs, row 21.
-Row 13: identical to sheet All SKUs, row 22.
-Row 14: identical to sheet All SKUs, row 23.
-Row 15: identical to sheet All SKUs, row 24.
-Row 16: identical to sheet All SKUs, row 25.
-Row 17: identical to sheet All SKUs, row 26.
-Row 18: identical to sheet All SKUs, row 27.
-Row 19: identical to sheet All SKUs, row 28.
-Row 20: identical to sheet All SKUs, row 29.
-Row 21: identical to sheet All SKUs, row 30.
-Row 22: identical to sheet All SKUs, row 62.
-Row 23: identical to sheet All SKUs, row 63.
-Row 24: identical to sheet All SKUs, row 64.
-Row 25: identical to sheet All SKUs, row 65.
-Row 26: identical to sheet All SKUs, row 66.
-Row 27: identical to sheet All SKUs, row 67.
-Row 28: identical to sheet All SKUs, row 68.
-Row 29: identical to sheet All SKUs, row 69.
-Row 30: identical to sheet All SKUs, row 70.
-Row 31: identical to sheet All SKUs, row 71.
-Row 32: identical to sheet All SKUs, row 72.
-Row 33: identical to sheet All SKUs, row 73.
-Row 34: identical to sheet All SKUs, row 74.
-Row 35: identical to sheet All SKUs, row 75.
-Row 36: identical to sheet All SKUs, row 76.
-Row 37: identical to sheet All SKUs, row 77.
-Row 38: identical to sheet All SKUs, row 78.
-Row 39: identical to sheet All SKUs, row 79.
-Row 40: identical to sheet All SKUs, row 80.
-Row 41: identical to sheet All SKUs, row 81.
-Row 42: identical to sheet All SKUs, row 82.
+Row 2: identical to sheet All SKUs, row 9.
+Row 3: identical to sheet All SKUs, row 10.
+Row 4: identical to sheet All SKUs, row 11.
+Row 5: identical to sheet All SKUs, row 12.
+Row 6: identical to sheet All SKUs, row 13.
+Row 7: identical to sheet All SKUs, row 14.
+Row 8: identical to sheet All SKUs, row 15.
+Row 9: identical to sheet All SKUs, row 16.
+Row 10: identical to sheet All SKUs, row 17.
+Row 11: identical to sheet All SKUs, row 18.
+Row 12: identical to sheet All SKUs, row 19.
+Row 13: identical to sheet All SKUs, row 20.
+Row 14: identical to sheet All SKUs, row 21.
+Row 15: identical to sheet All SKUs, row 22.
+Row 16: identical to sheet All SKUs, row 23.
+Row 17: identical to sheet All SKUs, row 24.
+Row 18: identical to sheet All SKUs, row 25.
+Row 19: identical to sheet All SKUs, row 26.
+Row 20: identical to sheet All SKUs, row 27.
+Row 21: identical to sheet All SKUs, row 28.
+Row 22: identical to sheet All SKUs, row 60.
+Row 23: identical to sheet All SKUs, row 61.
+Row 24: identical to sheet All SKUs, row 62.
+Row 25: identical to sheet All SKUs, row 63.
+Row 26: identical to sheet All SKUs, row 64.
+Row 27: identical to sheet All SKUs, row 65.
+Row 28: identical to sheet All SKUs, row 66.
+Row 29: identical to sheet All SKUs, row 67.
+Row 30: identical to sheet All SKUs, row 68.
+Row 31: identical to sheet All SKUs, row 69.
+Row 32: identical to sheet All SKUs, row 70.
+Row 33: identical to sheet All SKUs, row 71.
+Row 34: identical to sheet All SKUs, row 72.
+Row 35: identical to sheet All SKUs, row 73.
+Row 36: identical to sheet All SKUs, row 74.
+Row 37: identical to sheet All SKUs, row 75.
+Row 38: identical to sheet All SKUs, row 76.
+Row 39: identical to sheet All SKUs, row 77.
+Row 40: identical to sheet All SKUs, row 78.
+Row 41: identical to sheet All SKUs, row 79.
+Row 42: identical to sheet All SKUs, row 80.
 
 ### Drive Enclosures  Drives
 
@@ -606,19 +600,19 @@ Row 42: identical to sheet All SKUs, row 82.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
 
-Row 2: identical to sheet All SKUs, row 35.
-Row 3: identical to sheet All SKUs, row 46.
-Row 4: identical to sheet All SKUs, row 47.
-Row 5: identical to sheet All SKUs, row 48.
-Row 6: identical to sheet All SKUs, row 49.
-Row 7: identical to sheet All SKUs, row 50.
-Row 8: identical to sheet All SKUs, row 51.
-Row 9: identical to sheet All SKUs, row 52.
-Row 10: identical to sheet All SKUs, row 53.
-Row 11: identical to sheet All SKUs, row 54.
-Row 12: identical to sheet All SKUs, row 55.
-Row 13: identical to sheet All SKUs, row 56.
-Row 14: identical to sheet All SKUs, row 57.
+Row 2: identical to sheet All SKUs, row 33.
+Row 3: identical to sheet All SKUs, row 44.
+Row 4: identical to sheet All SKUs, row 45.
+Row 5: identical to sheet All SKUs, row 46.
+Row 6: identical to sheet All SKUs, row 47.
+Row 7: identical to sheet All SKUs, row 48.
+Row 8: identical to sheet All SKUs, row 49.
+Row 9: identical to sheet All SKUs, row 50.
+Row 10: identical to sheet All SKUs, row 51.
+Row 11: identical to sheet All SKUs, row 52.
+Row 12: identical to sheet All SKUs, row 53.
+Row 13: identical to sheet All SKUs, row 54.
+Row 14: identical to sheet All SKUs, row 55.
 
 ### Metadata
 
@@ -628,11 +622,11 @@ Row 14: identical to sheet All SKUs, row 57.
 | 2 | Chassis | Alletra MP X10000 |
 | 3 | Scrape Date | 2026-11-21 |
 | 4 | Source | OCA (Online Configuration Application) |
-| 5 | Total Sub-Categories | 33 |
-| 6 | Total Hardware SKUs | 82 |
+| 5 | Total Sub-Categories | 35 |
+| 6 | Total Hardware SKUs | 80 |
 | 7 | Total Service/Software SKUs | 3 |
-| 8 | Total Combined SKUs | 85 |
-| 9 | Chassis Variant Options | 3 |
+| 8 | Total Combined SKUs | 83 |
+| 9 | Chassis Variant Options | 1 |
 | 10 | Total Rules | 83 |
 | 11 | Unavailable DOM Rules | 15 |
 | 12 | Total Tables | 22 |
@@ -642,11 +636,11 @@ Row 14: identical to sheet All SKUs, row 57.
 | 16 | Diff Attr Changed | 0 |
 | 17 | Diff Price+Attr Changed | 0 |
 | 18 | Diff Reinstated SKUs | 0 |
-| 19 | Diff Unchanged SKUs | 85 |
+| 19 | Diff Unchanged SKUs | 83 |
 | 20 | Discontinued (All-Time) | 0 |
 | 21 | Reinstated (All-Time) | 0 |
-| 22 | Services JSON | outputs/.catalog-staging/staging_Alletra_MP_X10000_1795263535114/Alletra_MP_X10000_Services.json |
-| 23 | Output Folder | outputs/.catalog-staging/staging_Alletra_MP_X10000_1795263535114 |
+| 22 | Services JSON | outputs/Alletra/Storage/Alletra_MP_X10000/Alletra_MP_X10000_Services.json |
+| 23 | Output Folder | outputs/Alletra/Storage/Alletra_MP_X10000 |
 
 
 ## Shared cell text
@@ -1080,8 +1074,4 @@ If “acPowerFlag” is selected then S1S69A not supported &#124; S1S69A conditi
 ### TEXT_107
 
 {"leadTime":"Unpublished","lifecycleCanonical":"Active","listPrice":1,"priceState":"PRICED","priceStatus":"PRICED","rowType":"INTERNAL_CONFIGURATION"}
-
-### TEXT_108
-
-Select ONE chassis variant as the mandatory CTO base. All component rules, drive bay limits, and power constraints depend on this selection.
 

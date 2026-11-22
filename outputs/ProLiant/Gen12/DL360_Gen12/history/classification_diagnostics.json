@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "chassis": "DL360_Gen12",
-  "generatedAt": "2026-11-22T02:55:43.333Z",
-  "executionDurationMs": 24053,
+  "generatedAt": "2026-11-22T07:26:17.098Z",
+  "executionDurationMs": 20992,
   "summary": {
     "totalRawTables": 148,
     "validProductTables": 134,
@@ -2230,13 +2230,13 @@
     "P72175-B21": {
       "description": "HPE ProLiant Compute DL360 Gen12 8SFF NC Configure-to-order Server",
       "formFactor": "Small Form Factor (8-Bay SFF)",
-      "listPrice": null,
+      "listPrice": 5089,
       "diffStatus": "UNCHANGED"
     },
     "P72174-B21": {
       "description": "HPE ProLiant Compute DL360 Gen12 4LFF NC Configure-to-order Server",
       "formFactor": "Large Form Factor (8-Bay LFF)",
-      "listPrice": null,
+      "listPrice": 5342,
       "diffStatus": "UNCHANGED"
     },
     "P72176-B21": {

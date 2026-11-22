@@ -14,6 +14,15 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":7223,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ],
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-22",
+      "price": 7223,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Discontinued Date: \"07/03/2022\" -> \"07/24/2022\""
       ]
     }
   ],
@@ -32,6 +41,15 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":135058,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ],
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-22",
+      "price": 135058,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Discontinued Date: \"08/31/2031\" -> \"10/31/2031\""
       ]
     }
   ],
@@ -50,6 +68,15 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":324137,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ],
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-22",
+      "price": 324137,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Discontinued Date: \"08/31/2031\" -> \"10/31/2031\""
       ]
     }
   ],
@@ -68,6 +95,15 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":540233,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ],
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-22",
+      "price": 540233,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Discontinued Date: \"08/31/2031\" -> \"10/31/2031\""
       ]
     }
   ],
@@ -86,6 +122,15 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":36018,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ],
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-22",
+      "price": 36018,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Discontinued Date: \"08/31/2031\" -> \"10/31/2031\""
       ]
     }
   ],
@@ -104,6 +149,15 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":86443,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ],
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-22",
+      "price": 86443,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Discontinued Date: \"08/31/2031\" -> \"10/31/2031\""
       ]
     }
   ],
@@ -122,6 +176,15 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":144076,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ],
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-22",
+      "price": 144076,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Discontinued Date: \"08/31/2031\" -> \"10/31/2031\""
       ]
     }
   ],
@@ -140,6 +203,15 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":90047,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ],
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-22",
+      "price": 90047,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Discontinued Date: \"08/31/2031\" -> \"10/31/2031\""
       ]
     }
   ],
@@ -158,6 +230,15 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":216111,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ],
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-22",
+      "price": 216111,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Discontinued Date: \"08/31/2031\" -> \"10/31/2031\""
       ]
     }
   ],
@@ -176,6 +257,15 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":360192,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ],
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-22",
+      "price": 360192,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Discontinued Date: \"08/31/2031\" -> \"10/31/2031\""
       ]
     }
   ],
@@ -194,6 +284,15 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":135058,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ],
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-22",
+      "price": 135058,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Discontinued Date: \"08/31/2031\" -> \"10/31/2031\""
       ]
     }
   ],
@@ -212,6 +311,15 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":36018,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ],
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-22",
+      "price": 36018,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Discontinued Date: \"08/31/2031\" -> \"10/31/2031\""
       ]
     }
   ],
@@ -230,6 +338,15 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Extended Price (USD)\":\"0\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":90047,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}\""
+      ],
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-22",
+      "price": 90047,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Discontinued Date: \"08/31/2031\" -> \"10/31/2031\""
       ]
     }
   ],
@@ -645,6 +762,14 @@
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Product Number\":\"AG629A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
       ]
+    },
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AG629A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P1F75A": [
@@ -662,6 +787,14 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Product Number\":\"P1F75A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F75A\",\"rowType\":\"HARDWARE_OPTION\"}\""
       ]
     }
   ],
@@ -681,6 +814,14 @@
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Product Number\":\"P1F74A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
       ]
+    },
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F74A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P1F76A": [
@@ -698,6 +839,14 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Product Number\":\"P1F76A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"SUPPORT_SERVICE\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F76A\",\"rowType\":\"SUPPORT_SERVICE\"}\""
       ]
     }
   ],
@@ -717,6 +866,14 @@
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
       ]
+    },
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F79A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P1F78A": [
@@ -734,6 +891,14 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Product Number\":\"P1F78A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F78A\",\"rowType\":\"HARDWARE_OPTION\"}\""
       ]
     }
   ],
@@ -753,6 +918,14 @@
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Product Number\":\"P1F69A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
       ]
+    },
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F69A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P1F80A": [
@@ -770,6 +943,14 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F80A\",\"rowType\":\"HARDWARE_OPTION\"}\""
       ]
     }
   ],
@@ -789,6 +970,14 @@
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
       ]
+    },
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F82A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "P1F71A": [
@@ -806,6 +995,14 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Product Number\":\"P1F71A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F71A\",\"rowType\":\"HARDWARE_OPTION\"}\""
       ]
     }
   ],
@@ -825,6 +1022,14 @@
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Product Number\":\"BQ337A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
       ]
+    },
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"BQ337A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "BQ335A": [
@@ -843,6 +1048,14 @@
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Product Number\":\"BQ335A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
       ]
+    },
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"BQ335A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
     }
   ],
   "AG628A": [
@@ -860,6 +1073,14 @@
         "Speed Tier: \"(None)\" -> \"Unpublished\"",
         "Vendor Recommended: \"(None)\" -> \"false\"",
         "Vendor Attributes: \"{\"Product Number\":\"AG628A\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED",
+      "attributeDeltas": [
+        "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" -> \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AG628A\",\"rowType\":\"HARDWARE_OPTION\"}\""
       ]
     }
   ],
@@ -2103,7 +2324,8 @@
       "date": "2026-09-22",
       "price": 7071,
       "status": "CATEGORY_MIGRATED",
-      "targetCategory": "Networking"
+      "targetCategory": "Networking",
+      "validationState": "VALIDATED"
     }
   ],
   "HA546A1": [],
@@ -2122,5 +2344,61 @@
   "H57FDA1": [],
   "P1F70A": [],
   "P1F72A": [],
-  "P1F73A": []
+  "P1F73A": [],
+  "H30RYA1": [
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SDA1": [
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H57GHA1": [
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H57GJA1": [
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H57GKA1": [
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DLA4#Y36": [
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DLA5#Y36": [
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H39DMA3#Y36": [
+    {
+      "date": "2026-11-22",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ]
 }

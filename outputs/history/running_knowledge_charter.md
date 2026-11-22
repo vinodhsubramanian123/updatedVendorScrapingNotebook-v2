@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-11-21T14:15:27.052Z<br>
-**Total Deduplicated Learned Rules:** 184<br>
+**Last Synchronized:** 2026-11-22T09:33:24.183Z<br>
+**Total Deduplicated Learned Rules:** 189<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -168,7 +168,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **184**.
+Total verified rules indexed in this build: **189**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -333,6 +333,11 @@ Total verified rules indexed in this build: **184**.
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_TIMING_ADVISORY` | `undefined` | `—` | In navigate_oca.js, _sortAndFilterEligibleCandidates ranks global commercial CTO and Wizard cards ahead of KSA/Disconnec | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CAPTURE_COVERAGE_ADVISORY` | `undefined` | `—` | attribute_vectors.js loads multi-vendor matchers from scripts/config/vendors/*/policy.json and materializes compact cano | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_NLM_AUTH_PERSISTENCE_ADVISORY` | `undefined` | `—` | To prevent daily NotebookLM AuthenticationError expiration of rotating Google cookies (__Secure-1PSIDRTS, SIDCC, SNlM0e) | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CAPTURE_COVERAGE_ADVISORY` | `undefined` | `—` | For refreshed DL380 Gen12 workbooks, compare active catalog and services SKU coverage and require populated core views.  | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CAPTURE_COVERAGE_ADVISORY` | `undefined` | `—` | Live OCA audit (2026-11-22) proved that skipped non-empty raw tables were benign UI chrome/summary tables (0 lost hardwa | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_DOM_EXTRACTION_ADVISORY` | `undefined` | `—` | Real *_Catalog.json files store rows under entry.skus (not entry.options); generic_domain_templates.js:resolveCapability | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_EPISTEMIC_GUARDRAIL_ADVISORY` | `undefined` | `—` | Unverified arbitration branches in resource_arbitrator.js must remain status PROPOSED and verifiedBuildable false until  | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_DOM_EXTRACTION_ADVISORY` | `undefined` | `—` | HPE OCA Product Search dropdowns omit CTO base list prices; bom_base_price.js must extract exact official Unit List Pric | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `EXCLUSION_UNBUILDABLE` | `R3P67A` | `Q2E58AAE` | On HPE Synergy 12000 Frames (P51174-B21) populated solely with SY480 Gen12 compute nodes (P68217-B21), selecting Virtual | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `STANDALONE_ORDERING_TAXONOMY` | `R3P67A` | `R3P67AAE` | R3P67A is a Factory Integrated Option (FIO LTU) ending in 'A', which strictly requires sub-iteming under a factory CTO c | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `MULTI_ORDER_PARTITIONING_PATTERN` | `P51174-B21` | `Q2E58AAE` | When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial orders (Option B | 1x |

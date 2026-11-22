@@ -1,0 +1,1814 @@
+{
+  "schemaVersion": 1,
+  "product": "SN3600B_FC",
+  "vendor": "HPE",
+  "capturedAt": "2026-11-22T07:33:43.920Z",
+  "auditedAt": "2026-11-22T07:33:50.605Z",
+  "incompleteLegacyBaselinePreserved": false,
+  "mode": "REFRESH",
+  "status": "LOCAL_PROMOTED",
+  "provenance": {
+    "baseSku": "R4G55B",
+    "ownerConfiguration": "HPE SN3600B 32Gb 24/8 8-port 16Gb Short Wave SFP+ Fibre Channel Switch [R4G55B]",
+    "solutionDomain": "NETWORKING",
+    "observedUrl": "https://oca.ext.hpe.com/oca/OCAInternalLogin"
+  },
+  "coverage": {
+    "textExtractionMode": "FULL_BODY_TEXT",
+    "outsideTableNotesCaptured": true,
+    "conditionalDiscovery": "HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED",
+    "ownedMenuDiscovery": {
+      "status": "OBSERVED_CONFIGURED_CHILD_MENUS",
+      "children": []
+    },
+    "baseSku": "R4G55B",
+    "ownerConfiguration": "HPE SN3600B 32Gb 24/8 8-port 16Gb Short Wave SFP+ Fibre Channel Switch [R4G55B]",
+    "solutionDomain": "NETWORKING",
+    "observedSelectors": [
+      {
+        "selector": "#extended_overview_menu",
+        "value": "EXPANDED"
+      },
+      {
+        "selector": "ambientTemperature",
+        "value": "DEFAULT_AND_SWEEP_RESTORED"
+      }
+    ],
+    "missingProvenance": [],
+    "completeness": "CAPTURED_STATES_ONLY",
+    "policy": {
+      "valid": true,
+      "reason": "",
+      "profileProduct": "SN3600B_FC",
+      "archivedStub": false,
+      "scope": "PROFILE_STAGING_HARDENED",
+      "stagingFloorMetrics": {
+        "actualDrives": 0,
+        "actualGpuCards": 0,
+        "zeroPriceBaseVariants": 0,
+        "ageDays": 0
+      },
+      "stagingFloorAdvisories": []
+    },
+    "qualityGate": {
+      "passed": true,
+      "skipped": false,
+      "warningsCount": 0,
+      "replayResults": [
+        {
+          "id": "SN3600B_R7R97A_BASE",
+          "issues": [],
+          "passed": true,
+          "status": "PASSED"
+        },
+        {
+          "id": "SN3600B_ACTIVE_PRICED",
+          "issues": [],
+          "returnedCount": 50,
+          "evidenceStatus": "PARTIAL",
+          "passed": true,
+          "status": "PASSED"
+        }
+      ],
+      "replayExecutedCount": 2,
+      "replaySuiteVersion": "1.1.0",
+      "replaySuiteSha256": "b8b507b9fde1f7013524a6700cad414341341f9316cde9ecbbce5a8e860256c5",
+      "replayInputHashes": {
+        "Catalog.json": "8a93cf10ab413a228765cffd3527f209048eabdc7d3ce0d7e07b1b200f77a992",
+        "Services.json": "a79f9115737a3f90c01ab5688f949d76fb7244730a8e9cb0dcee4846a75dd2e5",
+        "Catalog_Rules.json": "7857d3e6bd8a4a4b4df45006a52f9c6a0d0d4fd846d524281731f4be5dcc8648",
+        "OCA_Catalog.xlsx": "b2d3b9825b3e40bfb51587d757cf501716c54c165c689310ae2452fff4928552",
+        "conditional_skus.json": "56ac6617244f625c4e4296ca148b4fd8f5bc92397dc9119cb4eb4c2ea67bdba1"
+      }
+    }
+  },
+  "counts": {
+    "hardware": 82,
+    "services": 126,
+    "rules": 26,
+    "categories": 5,
+    "retainedHardware": 82,
+    "hardwareTombstones": 0
+  },
+  "previousCounts": {
+    "hardware": 79,
+    "services": 126,
+    "rules": 14,
+    "categories": 5
+  },
+  "hashes": {
+    "Catalog.json": "8a93cf10ab413a228765cffd3527f209048eabdc7d3ce0d7e07b1b200f77a992",
+    "Services.json": "a79f9115737a3f90c01ab5688f949d76fb7244730a8e9cb0dcee4846a75dd2e5",
+    "Catalog_Rules.json": "7857d3e6bd8a4a4b4df45006a52f9c6a0d0d4fd846d524281731f4be5dcc8648",
+    "OCA_Catalog.xlsx": "b2d3b9825b3e40bfb51587d757cf501716c54c165c689310ae2452fff4928552"
+  },
+  "rawSha256": "81b4f3aa6faf4a9702afc08e3432f179538293c9274f01a6f9bc12387c4b3957",
+  "sheets": [
+    {
+      "name": "Category Summary",
+      "rows": 27
+    },
+    {
+      "name": "All SKUs",
+      "rows": 83
+    },
+    {
+      "name": "Chassis Variants",
+      "rows": 5
+    },
+    {
+      "name": "Chassis Options Matrix",
+      "rows": 5
+    },
+    {
+      "name": "Rules & Constraints",
+      "rows": 38
+    },
+    {
+      "name": "Unavailable Rules & Gates",
+      "rows": 2
+    },
+    {
+      "name": "Software & Licenses",
+      "rows": 15
+    },
+    {
+      "name": "Support Services",
+      "rows": 114
+    },
+    {
+      "name": "Catalog Diffs",
+      "rows": 110
+    },
+    {
+      "name": "Price History Timeline",
+      "rows": 209
+    },
+    {
+      "name": "Networking",
+      "rows": 28
+    },
+    {
+      "name": "Chassis",
+      "rows": 5
+    },
+    {
+      "name": "Drive Enclosures  Drives",
+      "rows": 2
+    },
+    {
+      "name": "Cables & Enablement Kits",
+      "rows": 50
+    },
+    {
+      "name": "Discontinued SKUs",
+      "rows": 27
+    },
+    {
+      "name": "Supply Chain & Lead Times",
+      "rows": 209
+    },
+    {
+      "name": "Metadata",
+      "rows": 23
+    }
+  ],
+  "deltas": {
+    "hardware": {
+      "added": [
+        "R4G55B",
+        "R8P28A",
+        "R8P29A"
+      ],
+      "removed": [],
+      "modified": [
+        {
+          "sku": "R7M09A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "19950.00",
+          "currentPrice": "19950.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"03/31/2028\" → \"04/30/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":19950,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":19950,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "R7M10A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "12951.00",
+          "currentPrice": "12951.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2027\" → \"10/31/2027\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":12951,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":12951,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "QK724A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "417.00",
+          "currentPrice": "417.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"03/31/2027\" → \"04/30/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":417,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":417,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "R6B10A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "1946.00",
+          "currentPrice": "1946.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"03/31/2027\" → \"04/30/2027\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":1946,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":1946,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "R6W28A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "13290.00",
+          "currentPrice": "13290.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"06/30/2027\" → \"10/31/2027\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":13290,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":13290,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "H6Z29A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "7071.00",
+          "currentPrice": "7071.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"12/01/2022\" → \"12/02/2022\""
+        },
+        {
+          "sku": "QK725A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "3400.00",
+          "currentPrice": "3400.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"02/23/2023\" → \"02/24/2023\""
+        },
+        {
+          "sku": "R6B11A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "6614.00",
+          "currentPrice": "6614.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"05/31/2025\" → \"06/15/2025\""
+        },
+        {
+          "sku": "R6B21A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "27508.00",
+          "currentPrice": "27508.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"05/31/2025\" → \"06/30/2025\""
+        },
+        {
+          "sku": "R7M17A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "35170.00",
+          "currentPrice": "35170.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"02/28/2028\" → \"03/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":35170,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":35170,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "P9H29A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "6100.00",
+          "currentPrice": "6100.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"10/31/2021\" → \"11/30/2021\""
+        },
+        {
+          "sku": "P9H32A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "2199.00",
+          "currentPrice": "2199.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"08/03/2022\" → \"08/05/2022\""
+        },
+        {
+          "sku": "R0Q23A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "15989.00",
+          "currentPrice": "15989.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"04/15/2023\" → \"04/17/2023\""
+        },
+        {
+          "sku": "R6B12A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "2691.00",
+          "currentPrice": "2691.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"02/28/2028\" → \"03/31/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2691,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2691,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "R6B13A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "8838.00",
+          "currentPrice": "8838.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"02/28/2028\" → \"03/31/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":8838,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":8838,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "R6W26A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "19567.00",
+          "currentPrice": "19567.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"10/31/2027\" → \"11/30/2027\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":19567,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":19567,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "N9Y63A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "436.00",
+          "currentPrice": "436.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"04/30/2026\" → \"05/31/2026\""
+        },
+        {
+          "sku": "295633-B22",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "102.00",
+          "currentPrice": "102.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"07/31/2028\" → \"08/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":102,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":102,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "R1C66A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "88.00",
+          "currentPrice": "88.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"10/31/2031\" → \"11/30/2031\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":88,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":88,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "142257-002",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "34.00",
+          "currentPrice": "34.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2026\" → \"07/31/2029\" | Lifecycle Status: \"EOL Warning (90-Day)\" → \"Active\" | Lifecycle Badge: \"90\" → \"(None)\" | Availability: \"EOL Warning (90-Day)\" → \"Available\" | Lead Time: \"Unpublished\" → \"8\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"8\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":34,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"8\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":34,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "A0N33A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "78.00",
+          "currentPrice": "78.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2031\" → \"10/31/2031\" | Lead Time: \"Unpublished\" → \"14\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"14\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":78,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":78,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF556A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "55.00",
+          "currentPrice": "55.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF557A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "156.00",
+          "currentPrice": "156.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"10/31/2031\" → \"11/30/2031\" | Lead Time: \"Unpublished\" → \"21\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"21\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":156,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"21\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":156,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF558A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "65.00",
+          "currentPrice": "65.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF559A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "55.00",
+          "currentPrice": "55.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF560A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "55.00",
+          "currentPrice": "55.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF561A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "55.00",
+          "currentPrice": "55.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"14\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"14\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF562A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "194.00",
+          "currentPrice": "194.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"10/31/2031\" → \"11/30/2031\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":194,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":194,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF564A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "55.00",
+          "currentPrice": "55.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF565A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "55.00",
+          "currentPrice": "55.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"11\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"11\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"11\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF566A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "55.00",
+          "currentPrice": "55.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"11\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"11\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"11\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF567A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "65.00",
+          "currentPrice": "65.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF568A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "71.00",
+          "currentPrice": "71.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"10/31/2031\" → \"11/30/2031\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":71,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":71,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF569A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "65.00",
+          "currentPrice": "65.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"11\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"11\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"11\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF570A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "55.00",
+          "currentPrice": "55.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"13\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"13\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"13\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF571A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2018\" → \"10/31/2018\""
+        },
+        {
+          "sku": "AF572A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "60.00",
+          "currentPrice": "60.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":60,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":60,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AF591A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "49.00",
+          "currentPrice": "49.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"10/31/2031\" → \"11/30/2031\" | Lead Time: \"Unpublished\" → \"8\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"8\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":49,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"8\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":49,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "R1C65A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "119.00",
+          "currentPrice": "119.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"10/31/2031\" → \"11/30/2031\" | Lead Time: \"Unpublished\" → \"8\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"8\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":119,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"8\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":119,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "SG579A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "142.00",
+          "currentPrice": "142.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2022\" → \"12/31/2022\""
+        },
+        {
+          "sku": "SK792A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "30.00",
+          "currentPrice": "30.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2022\" → \"12/31/2022\""
+        },
+        {
+          "sku": "AJ833A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "65.00",
+          "currentPrice": "65.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AJ836A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "115.00",
+          "currentPrice": "115.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":115,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":115,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AJ837A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "162.00",
+          "currentPrice": "162.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":162,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":162,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AJ838A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "208.00",
+          "currentPrice": "208.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":208,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":208,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AJ839A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "253.00",
+          "currentPrice": "253.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":253,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":253,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AJ834A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "70.00",
+          "currentPrice": "70.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":70,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":70,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AJ835A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "95.00",
+          "currentPrice": "95.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":95,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":95,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "QK729A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "719.00",
+          "currentPrice": "719.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":719,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":719,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "QK731A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "2000.00",
+          "currentPrice": "2000.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "QK732A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "115.00",
+          "currentPrice": "115.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":115,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":115,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "QK737A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "415.00",
+          "currentPrice": "415.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":415,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":415,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "QK733A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "130.00",
+          "currentPrice": "130.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"14\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"14\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":130,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":130,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "QK734A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "147.00",
+          "currentPrice": "147.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"14\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"14\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":147,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":147,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "QK735A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "195.00",
+          "currentPrice": "195.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"14\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"14\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":195,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":195,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "QK736A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "239.00",
+          "currentPrice": "239.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":239,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":239,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "Q2B45A#05Y",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Start Date: \"03/27/2017\" → \"06/05/2017\" | Discontinued Date: \"06/13/2018\" → \"06/14/2018\""
+        },
+        {
+          "sku": "Q2B46A#05Y",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Start Date: \"03/27/2017\" → \"06/05/2017\" | Discontinued Date: \"06/13/2018\" → \"06/14/2018\""
+        },
+        {
+          "sku": "Q2B44A#05Y",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Start Date: \"03/27/2017\" → \"06/05/2017\" | Discontinued Date: \"06/13/2018\" → \"06/14/2018\""
+        },
+        {
+          "sku": "R4G55B#AC3",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "0.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Main Category: \"Networking\" → \"Cables & Enablement Kits\" | Sub-Category: \"Optical Transceivers & DAC Cables\" → \"Switch-PDU Power Cord\" | Constraint: \"max 8\" → \"max 1\" | Rule/Note: \"Each base model only accepts its own localization option.\" → \"Selection constraint for Switch-PDU Power Cord: max 1\" | Max Qty: \"8\" → \"1\" | Component Role: \"Transceiver\" → \"Cable Kit\" | Discontinued Date: \"10/31/2026\" → \"02/28/2027\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "R8P28A#AC3",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "0.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"06/30/2027\" → \"07/31/2027\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "Q1H71B#05Y",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "0.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"04/05/2023\" → \"04/06/2023\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+        },
+        {
+          "sku": "Q1H70B#05Y",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "0.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"01/16/2023\" → \"01/31/2023\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+        },
+        {
+          "sku": "R4G55A#05Y",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "0.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"07/15/2022\" → \"07/30/2022\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+        },
+        {
+          "sku": "Q1H72B#05Y",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "0.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"07/31/2022\" → \"08/14/2022\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+        },
+        {
+          "sku": "R8P29A#AC3",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "0.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"06/30/2027\" → \"07/31/2027\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "R7R97A#AC3",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "0.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Main Category: \"Cables & Enablement Kits\" → \"Networking\" | Sub-Category: \"Switch-PDU Power Cord\" → \"Optical Transceivers & DAC Cables\" | Constraint: \"max 1\" → \"max 8\" | Rule/Note: \"Selection constraint for Switch-PDU Power Cord: max 1\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Max Qty: \"1\" → \"8\" | Component Role: \"Cable Kit\" → \"Transceiver\" | Discontinued Date: \"06/30/2027\" → \"07/31/2027\" | Availability: \"Available\" → \"Not published by OCA\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "R4G55A#AC3",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "0.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"07/15/2022\" → \"07/30/2022\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+        },
+        {
+          "sku": "Q1H72B#AC3",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "0.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"07/31/2022\" → \"08/14/2022\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+        },
+        {
+          "sku": "Q1H70B#AC3",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "0.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"01/16/2023\" → \"01/31/2023\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+        },
+        {
+          "sku": "Q1H71B#AC3",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "0.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"04/05/2023\" → \"04/06/2023\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+        },
+        {
+          "sku": "Q1Z11BAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "11806.00",
+          "currentPrice": "11806.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"10/31/2028\" → \"01/31/2029\""
+        }
+      ]
+    },
+    "services": {
+      "added": [
+        "H30RYA1",
+        "H30SDA1",
+        "H57GHA1",
+        "H57GJA1",
+        "H57GKA1",
+        "H39DLA4#Y36",
+        "H39DLA5#Y36",
+        "H39DMA3#Y36"
+      ],
+      "removed": [
+        "H1Y14A1#799",
+        "H30RVA1",
+        "HA0Z0A1",
+        "HR2R4A1",
+        "HR2R5A1",
+        "H34MTA3#Y34",
+        "H34MTA4#Y34",
+        "H34MTA5#Y34"
+      ],
+      "modified": [
+        {
+          "sku": "Q1Z10AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "7223.00",
+          "currentPrice": "7223.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"07/03/2022\" → \"07/24/2022\""
+        },
+        {
+          "sku": "R3P47AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "135058.00",
+          "currentPrice": "135058.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+        },
+        {
+          "sku": "R3P50AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "324137.00",
+          "currentPrice": "324137.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+        },
+        {
+          "sku": "R4P31AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "540233.00",
+          "currentPrice": "540233.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+        },
+        {
+          "sku": "R3P45AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "36018.00",
+          "currentPrice": "36018.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+        },
+        {
+          "sku": "R3P48AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "86443.00",
+          "currentPrice": "86443.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+        },
+        {
+          "sku": "R4P29AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "144076.00",
+          "currentPrice": "144076.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+        },
+        {
+          "sku": "R3P46AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "90047.00",
+          "currentPrice": "90047.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+        },
+        {
+          "sku": "R3P49AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "216111.00",
+          "currentPrice": "216111.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+        },
+        {
+          "sku": "R4P30AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "360192.00",
+          "currentPrice": "360192.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+        },
+        {
+          "sku": "S1S58AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "135058.00",
+          "currentPrice": "135058.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+        },
+        {
+          "sku": "S1S52AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "36018.00",
+          "currentPrice": "36018.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+        },
+        {
+          "sku": "S1S55AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "90047.00",
+          "currentPrice": "90047.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+        },
+        {
+          "sku": "AG629A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AG629A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "P1F75A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F75A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "P1F74A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F74A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "P1F76A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"SUPPORT_SERVICE\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F76A\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+        },
+        {
+          "sku": "P1F79A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F79A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "P1F78A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F78A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "P1F69A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F69A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "P1F80A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F80A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "P1F82A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F82A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "P1F71A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F71A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "BQ337A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"BQ337A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "BQ335A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"BQ335A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "AG628A",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "N/A",
+          "currentPrice": "",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AG628A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        }
+      ]
+    },
+    "modifiedCount": 98,
+    "modifiedSkus": [
+      {
+        "sku": "R7M09A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "19950.00",
+        "currentPrice": "19950.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"03/31/2028\" → \"04/30/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":19950,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":19950,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "R7M10A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "12951.00",
+        "currentPrice": "12951.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2027\" → \"10/31/2027\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":12951,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":12951,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "QK724A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "417.00",
+        "currentPrice": "417.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"03/31/2027\" → \"04/30/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":417,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":417,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "R6B10A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "1946.00",
+        "currentPrice": "1946.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"03/31/2027\" → \"04/30/2027\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":1946,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":1946,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "R6W28A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "13290.00",
+        "currentPrice": "13290.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"06/30/2027\" → \"10/31/2027\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":13290,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":13290,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "H6Z29A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "7071.00",
+        "currentPrice": "7071.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"12/01/2022\" → \"12/02/2022\""
+      },
+      {
+        "sku": "QK725A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "3400.00",
+        "currentPrice": "3400.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"02/23/2023\" → \"02/24/2023\""
+      },
+      {
+        "sku": "R6B11A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "6614.00",
+        "currentPrice": "6614.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"05/31/2025\" → \"06/15/2025\""
+      },
+      {
+        "sku": "R6B21A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "27508.00",
+        "currentPrice": "27508.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"05/31/2025\" → \"06/30/2025\""
+      },
+      {
+        "sku": "R7M17A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "35170.00",
+        "currentPrice": "35170.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"02/28/2028\" → \"03/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":35170,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":35170,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "P9H29A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "6100.00",
+        "currentPrice": "6100.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"10/31/2021\" → \"11/30/2021\""
+      },
+      {
+        "sku": "P9H32A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "2199.00",
+        "currentPrice": "2199.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"08/03/2022\" → \"08/05/2022\""
+      },
+      {
+        "sku": "R0Q23A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "15989.00",
+        "currentPrice": "15989.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"04/15/2023\" → \"04/17/2023\""
+      },
+      {
+        "sku": "R6B12A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "2691.00",
+        "currentPrice": "2691.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"02/28/2028\" → \"03/31/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2691,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2691,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "R6B13A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "8838.00",
+        "currentPrice": "8838.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"02/28/2028\" → \"03/31/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":8838,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":8838,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "R6W26A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "19567.00",
+        "currentPrice": "19567.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"10/31/2027\" → \"11/30/2027\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":19567,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":19567,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "N9Y63A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "436.00",
+        "currentPrice": "436.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"04/30/2026\" → \"05/31/2026\""
+      },
+      {
+        "sku": "295633-B22",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "102.00",
+        "currentPrice": "102.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"07/31/2028\" → \"08/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":102,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":102,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "R1C66A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "88.00",
+        "currentPrice": "88.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"10/31/2031\" → \"11/30/2031\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":88,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":88,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "142257-002",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "34.00",
+        "currentPrice": "34.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2026\" → \"07/31/2029\" | Lifecycle Status: \"EOL Warning (90-Day)\" → \"Active\" | Lifecycle Badge: \"90\" → \"(None)\" | Availability: \"EOL Warning (90-Day)\" → \"Available\" | Lead Time: \"Unpublished\" → \"8\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"8\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":34,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"8\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":34,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "A0N33A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "78.00",
+        "currentPrice": "78.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2031\" → \"10/31/2031\" | Lead Time: \"Unpublished\" → \"14\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"14\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":78,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":78,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF556A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "55.00",
+        "currentPrice": "55.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF557A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "156.00",
+        "currentPrice": "156.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"10/31/2031\" → \"11/30/2031\" | Lead Time: \"Unpublished\" → \"21\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"21\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":156,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"21\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":156,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF558A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "65.00",
+        "currentPrice": "65.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF559A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "55.00",
+        "currentPrice": "55.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF560A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "55.00",
+        "currentPrice": "55.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF561A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "55.00",
+        "currentPrice": "55.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"14\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"14\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF562A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "194.00",
+        "currentPrice": "194.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"10/31/2031\" → \"11/30/2031\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":194,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":194,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF564A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "55.00",
+        "currentPrice": "55.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF565A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "55.00",
+        "currentPrice": "55.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"11\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"11\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"11\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF566A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "55.00",
+        "currentPrice": "55.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"11\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"11\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"11\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF567A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "65.00",
+        "currentPrice": "65.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF568A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "71.00",
+        "currentPrice": "71.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"10/31/2031\" → \"11/30/2031\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":71,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":71,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF569A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "65.00",
+        "currentPrice": "65.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"11\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"11\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"11\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF570A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "55.00",
+        "currentPrice": "55.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"13\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"13\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"13\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF571A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2018\" → \"10/31/2018\""
+      },
+      {
+        "sku": "AF572A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "60.00",
+        "currentPrice": "60.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"09/30/2028\" → \"07/31/2029\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":60,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":60,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AF591A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "49.00",
+        "currentPrice": "49.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"10/31/2031\" → \"11/30/2031\" | Lead Time: \"Unpublished\" → \"8\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"8\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":49,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"8\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":49,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "R1C65A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "119.00",
+        "currentPrice": "119.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"10/31/2031\" → \"11/30/2031\" | Lead Time: \"Unpublished\" → \"8\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"8\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":119,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"8\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":119,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "SG579A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "142.00",
+        "currentPrice": "142.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2022\" → \"12/31/2022\""
+      },
+      {
+        "sku": "SK792A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "30.00",
+        "currentPrice": "30.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2022\" → \"12/31/2022\""
+      },
+      {
+        "sku": "AJ833A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "65.00",
+        "currentPrice": "65.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AJ836A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "115.00",
+        "currentPrice": "115.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":115,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":115,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AJ837A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "162.00",
+        "currentPrice": "162.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":162,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":162,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AJ838A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "208.00",
+        "currentPrice": "208.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":208,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":208,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AJ839A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "253.00",
+        "currentPrice": "253.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":253,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":253,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AJ834A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "70.00",
+        "currentPrice": "70.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":70,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":70,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AJ835A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "95.00",
+        "currentPrice": "95.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":95,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":95,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "QK729A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "719.00",
+        "currentPrice": "719.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":719,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":719,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "QK731A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "2000.00",
+        "currentPrice": "2000.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "QK732A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "115.00",
+        "currentPrice": "115.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":115,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":115,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "QK737A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "415.00",
+        "currentPrice": "415.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":415,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":415,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "QK733A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "130.00",
+        "currentPrice": "130.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"14\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"14\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":130,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":130,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "QK734A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "147.00",
+        "currentPrice": "147.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"14\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"14\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":147,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":147,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "QK735A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "195.00",
+        "currentPrice": "195.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"14\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"14\" | Speed Tier: \"Unpublished\" → \"Standard Delivery (8-30d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":195,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":195,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "QK736A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "239.00",
+        "currentPrice": "239.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"11/30/2028\" → \"12/31/2028\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":239,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":239,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "Q2B45A#05Y",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Start Date: \"03/27/2017\" → \"06/05/2017\" | Discontinued Date: \"06/13/2018\" → \"06/14/2018\""
+      },
+      {
+        "sku": "Q2B46A#05Y",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Start Date: \"03/27/2017\" → \"06/05/2017\" | Discontinued Date: \"06/13/2018\" → \"06/14/2018\""
+      },
+      {
+        "sku": "Q2B44A#05Y",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Start Date: \"03/27/2017\" → \"06/05/2017\" | Discontinued Date: \"06/13/2018\" → \"06/14/2018\""
+      },
+      {
+        "sku": "R4G55B#AC3",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "0.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Main Category: \"Networking\" → \"Cables & Enablement Kits\" | Sub-Category: \"Optical Transceivers & DAC Cables\" → \"Switch-PDU Power Cord\" | Constraint: \"max 8\" → \"max 1\" | Rule/Note: \"Each base model only accepts its own localization option.\" → \"Selection constraint for Switch-PDU Power Cord: max 1\" | Max Qty: \"8\" → \"1\" | Component Role: \"Transceiver\" → \"Cable Kit\" | Discontinued Date: \"10/31/2026\" → \"02/28/2027\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "R8P28A#AC3",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "0.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"06/30/2027\" → \"07/31/2027\" | Lead Time: \"Unpublished\" → \"3\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"3\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "Q1H71B#05Y",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "0.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"04/05/2023\" → \"04/06/2023\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+      },
+      {
+        "sku": "Q1H70B#05Y",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "0.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"01/16/2023\" → \"01/31/2023\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+      },
+      {
+        "sku": "R4G55A#05Y",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "0.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"07/15/2022\" → \"07/30/2022\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+      },
+      {
+        "sku": "Q1H72B#05Y",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "0.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"07/31/2022\" → \"08/14/2022\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+      },
+      {
+        "sku": "R8P29A#AC3",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "0.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"06/30/2027\" → \"07/31/2027\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "R7R97A#AC3",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "0.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Main Category: \"Cables & Enablement Kits\" → \"Networking\" | Sub-Category: \"Switch-PDU Power Cord\" → \"Optical Transceivers & DAC Cables\" | Constraint: \"max 1\" → \"max 8\" | Rule/Note: \"Selection constraint for Switch-PDU Power Cord: max 1\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Max Qty: \"1\" → \"8\" | Component Role: \"Cable Kit\" → \"Transceiver\" | Discontinued Date: \"06/30/2027\" → \"07/31/2027\" | Availability: \"Available\" → \"Not published by OCA\" | Lead Time: \"Unpublished\" → \"4\" | Lead Time Source: \"Unpublished\" → \"OCA row attribute\" | Lead Time Days: \"(None)\" → \"4\" | Speed Tier: \"Unpublished\" → \"Fast-Ship Certified (<=7d)\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\" | Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "R4G55A#AC3",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "0.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"07/15/2022\" → \"07/30/2022\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+      },
+      {
+        "sku": "Q1H72B#AC3",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "0.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"07/31/2022\" → \"08/14/2022\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+      },
+      {
+        "sku": "Q1H70B#AC3",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "0.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"01/16/2023\" → \"01/31/2023\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+      },
+      {
+        "sku": "Q1H71B#AC3",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "0.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"Each base model only accepts its own localization option.\" → \"Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL\" | Discontinued Date: \"04/05/2023\" → \"04/06/2023\" | Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\" | Condition Type: \"(None)\" → \"PORTAL_CONDITIONAL_VIEW\""
+      },
+      {
+        "sku": "Q1Z11BAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "11806.00",
+        "currentPrice": "11806.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"10/31/2028\" → \"01/31/2029\""
+      },
+      {
+        "sku": "Q1Z10AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "7223.00",
+        "currentPrice": "7223.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"07/03/2022\" → \"07/24/2022\""
+      },
+      {
+        "sku": "R3P47AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "135058.00",
+        "currentPrice": "135058.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+      },
+      {
+        "sku": "R3P50AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "324137.00",
+        "currentPrice": "324137.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+      },
+      {
+        "sku": "R4P31AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "540233.00",
+        "currentPrice": "540233.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+      },
+      {
+        "sku": "R3P45AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "36018.00",
+        "currentPrice": "36018.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+      },
+      {
+        "sku": "R3P48AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "86443.00",
+        "currentPrice": "86443.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+      },
+      {
+        "sku": "R4P29AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "144076.00",
+        "currentPrice": "144076.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+      },
+      {
+        "sku": "R3P46AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "90047.00",
+        "currentPrice": "90047.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+      },
+      {
+        "sku": "R3P49AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "216111.00",
+        "currentPrice": "216111.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+      },
+      {
+        "sku": "R4P30AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "360192.00",
+        "currentPrice": "360192.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+      },
+      {
+        "sku": "S1S58AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "135058.00",
+        "currentPrice": "135058.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+      },
+      {
+        "sku": "S1S52AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "36018.00",
+        "currentPrice": "36018.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+      },
+      {
+        "sku": "S1S55AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "90047.00",
+        "currentPrice": "90047.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"08/31/2031\" → \"10/31/2031\""
+      },
+      {
+        "sku": "AG629A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AG629A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "P1F75A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F75A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "P1F74A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F74A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "P1F76A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"SUPPORT_SERVICE\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F76A\",\"rowType\":\"SUPPORT_SERVICE\"}\""
+      },
+      {
+        "sku": "P1F79A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F79A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "P1F78A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F78A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "P1F69A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F69A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "P1F80A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F80A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "P1F82A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F82A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "P1F71A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"P1F71A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "BQ337A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"BQ337A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "BQ335A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"BQ335A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "AG628A",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "N/A",
+        "currentPrice": "",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"priceState\":\"UNPRICED\",\"priceStatus\":\"UNPRICED\",\"Product Number\":\"AG628A\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      }
+    ],
+    "rulesChanged": true,
+    "hardwareChanges": {
+      "added": 3,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 72,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 7,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "serviceChanges": {
+      "added": 8,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 26,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 92,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    }
+  },
+  "cloud": {
+    "status": "CLOUD_VERIFIED",
+    "success": true,
+    "sourceId": "9496c748-a8d8-4fcc-8c36-f1966fd3bb30",
+    "consolidationVerified": true,
+    "error": "Uploaded and canary-verified \"SN3600B_FC_OCA_Catalog_2026-11-22\" in NotebookLM (d7f84352-1cdb-4842-84ca-39d2a10b91eb). Existing sources were preserved unless explicit retirement was confirmed."
+  },
+  "promotedAt": "2026-11-22T07:38:18.353Z"
+}

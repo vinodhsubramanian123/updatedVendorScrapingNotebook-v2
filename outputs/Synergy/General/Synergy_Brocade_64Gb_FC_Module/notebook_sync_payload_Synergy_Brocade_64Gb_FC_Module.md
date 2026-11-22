@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/NETWORKING/Synergy/General/Synergy_Brocade_64Gb_FC_Module`
 
-**Sync Timestamp**: 2026-11-21T13:48:32.085Z
+**Sync Timestamp**: 2026-11-22T09:12:16.296Z
 
 **Total Verified SKUs**: `40` (`24` Hardware + `16` Services)
 

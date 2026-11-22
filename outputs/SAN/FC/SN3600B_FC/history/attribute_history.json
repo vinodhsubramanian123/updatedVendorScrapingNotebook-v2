@@ -4978,5 +4978,3685 @@
     "field": "Vendor Attributes",
     "oldValue": "{\"Extended Price (USD)\":\"0\"}",
     "newValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":11806,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"SOFTWARE_SUBSCRIPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M09A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Active Port Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2028",
+    "newValue": "04/30/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M09A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Active Port Transceivers",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M09A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Active Port Transceivers",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M09A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Active Port Transceivers",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M09A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Active Port Transceivers",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M09A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Active Port Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":19950,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":19950,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M10A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Active Port Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2027",
+    "newValue": "10/31/2027"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M10A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Active Port Transceivers",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M10A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Active Port Transceivers",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M10A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Active Port Transceivers",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M10A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Active Port Transceivers",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M10A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Active Port Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":12951,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":12951,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK724A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2027",
+    "newValue": "04/30/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK724A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK724A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK724A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK724A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK724A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":417,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":417,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B10A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2027",
+    "newValue": "04/30/2027"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B10A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B10A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B10A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B10A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B10A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":1946,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":1946,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6W28A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "06/30/2027",
+    "newValue": "10/31/2027"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6W28A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6W28A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6W28A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6W28A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6W28A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":13290,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":13290,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "H6Z29A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "12/01/2022",
+    "newValue": "12/02/2022"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK725A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "02/23/2023",
+    "newValue": "02/24/2023"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B11A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "05/31/2025",
+    "newValue": "06/15/2025"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B21A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "16Gb Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "05/31/2025",
+    "newValue": "06/30/2025"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M17A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "02/28/2028",
+    "newValue": "03/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M17A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M17A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M17A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M17A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7M17A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":35170,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":35170,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P9H29A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2021",
+    "newValue": "11/30/2021"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "P9H32A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "08/03/2022",
+    "newValue": "08/05/2022"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R0Q23A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "04/15/2023",
+    "newValue": "04/17/2023"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B12A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "02/28/2028",
+    "newValue": "03/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B12A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B12A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B12A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B12A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B12A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2691,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2691,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B13A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "02/28/2028",
+    "newValue": "03/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B13A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B13A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B13A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B13A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6B13A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":8838,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":8838,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6W26A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6W26A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6W26A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6W26A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6W26A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R6W26A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "32Gb Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":19567,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":19567,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "N9Y63A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "System Options",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2026",
+    "newValue": "05/31/2026"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "295633-B22",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2028",
+    "newValue": "08/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "295633-B22",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "295633-B22",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "295633-B22",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "295633-B22",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "295633-B22",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":102,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":102,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R1C66A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2031",
+    "newValue": "11/30/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R1C66A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R1C66A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R1C66A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R1C66A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R1C66A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":88,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":88,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "142257-002",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2026",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "142257-002",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lifecycle Status",
+    "oldValue": "EOL Warning (90-Day)",
+    "newValue": "Active"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "142257-002",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lifecycle Badge",
+    "oldValue": "90",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "142257-002",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Availability",
+    "oldValue": "EOL Warning (90-Day)",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "142257-002",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "142257-002",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "142257-002",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "142257-002",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "142257-002",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":34,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"8\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":34,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "A0N33A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2031",
+    "newValue": "10/31/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "A0N33A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "A0N33A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "A0N33A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "A0N33A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "A0N33A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":78,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":78,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF556A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF556A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF556A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF556A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF556A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF556A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF557A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2031",
+    "newValue": "11/30/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF557A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "21"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF557A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF557A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "21"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF557A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF557A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":156,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"21\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":156,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF558A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF558A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF558A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF558A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF558A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF558A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF559A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF559A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF559A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF559A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF559A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF559A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF560A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF560A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF560A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF560A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF560A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF560A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF561A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF561A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF561A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF561A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF561A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF561A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF562A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2031",
+    "newValue": "11/30/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF562A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF562A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF562A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF562A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF562A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":194,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":194,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF564A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF564A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF564A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF564A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF564A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF564A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF565A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF565A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "11"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF565A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF565A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "11"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF565A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF565A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"11\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF566A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF566A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "11"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF566A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF566A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "11"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF566A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF566A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"11\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF567A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF567A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF567A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF567A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF567A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF567A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF568A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2031",
+    "newValue": "11/30/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF568A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF568A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF568A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF568A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF568A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":71,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":71,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF569A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF569A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "11"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF569A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF569A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "11"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF569A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF569A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"11\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF570A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF570A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF570A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF570A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF570A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF570A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"13\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":55,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF571A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2018",
+    "newValue": "10/31/2018"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF572A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF572A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF572A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF572A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF572A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF572A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":60,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":60,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF591A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2031",
+    "newValue": "11/30/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF591A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF591A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF591A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF591A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AF591A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":49,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"8\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":49,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R1C65A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2031",
+    "newValue": "11/30/2031"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R1C65A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R1C65A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R1C65A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R1C65A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R1C65A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":119,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"8\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":119,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "SG579A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2022",
+    "newValue": "12/31/2022"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "SK792A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords for Wall Outlets",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2022",
+    "newValue": "12/31/2022"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ833A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ833A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ833A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ833A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ833A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ833A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":65,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ836A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ836A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ836A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ836A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ836A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ836A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":115,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":115,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ837A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ837A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ837A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ837A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ837A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ837A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":162,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":162,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ838A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ838A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ838A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ838A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ838A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ838A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":208,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":208,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ839A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ839A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ839A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ839A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ839A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ839A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":253,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":253,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ834A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ834A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ834A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ834A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ834A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ834A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":70,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":70,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ835A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ835A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ835A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ835A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ835A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "AJ835A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OM3 LC-LC type connectors cable",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":95,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":95,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK729A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK729A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK729A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK729A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK729A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK729A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":719,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":719,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK731A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK731A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK731A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK731A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK731A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK731A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":2000,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK732A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK732A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK732A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK732A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK732A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK732A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":115,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":115,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK737A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK737A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK737A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK737A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK737A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK737A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":415,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":415,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK733A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK733A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK733A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK733A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK733A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK733A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":130,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":130,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK734A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK734A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK734A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK734A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK734A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK734A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":147,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":147,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK735A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK735A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK735A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK735A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK735A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK735A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":195,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"14\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":195,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK736A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK736A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK736A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK736A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK736A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "QK736A",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Premier Flex OM4",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":239,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":239,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q2B45A#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Start Date",
+    "oldValue": "03/27/2017",
+    "newValue": "06/05/2017"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q2B45A#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "06/13/2018",
+    "newValue": "06/14/2018"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q2B46A#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Start Date",
+    "oldValue": "03/27/2017",
+    "newValue": "06/05/2017"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q2B46A#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "06/13/2018",
+    "newValue": "06/14/2018"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q2B44A#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Start Date",
+    "oldValue": "03/27/2017",
+    "newValue": "06/05/2017"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q2B44A#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "06/13/2018",
+    "newValue": "06/14/2018"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Main Category",
+    "oldValue": "Networking",
+    "newValue": "Cables & Enablement Kits"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Sub-Category",
+    "oldValue": "Optical Transceivers & DAC Cables",
+    "newValue": "Switch-PDU Power Cord"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Constraint",
+    "oldValue": "max 8",
+    "newValue": "max 1"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Rule/Note",
+    "oldValue": "Each base model only accepts its own localization option.",
+    "newValue": "Selection constraint for Switch-PDU Power Cord: max 1"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Max Qty",
+    "oldValue": "8",
+    "newValue": "1"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Component Role",
+    "oldValue": "Transceiver",
+    "newValue": "Cable Kit"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2026",
+    "newValue": "02/28/2027"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Switch-PDU Power Cord",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P28A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Each base model only accepts its own localization option.",
+    "newValue": "Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P28A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "06/30/2027",
+    "newValue": "07/31/2027"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P28A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P28A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P28A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P28A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P28A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P28A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P28A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"3\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H71B#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Each base model only accepts its own localization option.",
+    "newValue": "Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H71B#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "04/05/2023",
+    "newValue": "04/06/2023"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H71B#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H71B#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H70B#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Each base model only accepts its own localization option.",
+    "newValue": "Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H70B#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "01/16/2023",
+    "newValue": "01/31/2023"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H70B#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H70B#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55A#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Each base model only accepts its own localization option.",
+    "newValue": "Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55A#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/15/2022",
+    "newValue": "07/30/2022"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55A#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55A#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H72B#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Each base model only accepts its own localization option.",
+    "newValue": "Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H72B#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2022",
+    "newValue": "08/14/2022"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H72B#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H72B#05Y",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P29A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Each base model only accepts its own localization option.",
+    "newValue": "Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P29A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "06/30/2027",
+    "newValue": "07/31/2027"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P29A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P29A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P29A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P29A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P29A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P29A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R8P29A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Main Category",
+    "oldValue": "Cables & Enablement Kits",
+    "newValue": "Networking"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Sub-Category",
+    "oldValue": "Switch-PDU Power Cord",
+    "newValue": "Optical Transceivers & DAC Cables"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Constraint",
+    "oldValue": "max 1",
+    "newValue": "max 8"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Selection constraint for Switch-PDU Power Cord: max 1",
+    "newValue": "Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Max Qty",
+    "oldValue": "1",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Component Role",
+    "oldValue": "Cable Kit",
+    "newValue": "Transceiver"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "06/30/2027",
+    "newValue": "07/31/2027"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "Not published by OCA"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7R97A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}",
+    "newValue": "{\"leadTime\":\"4\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":0,\"priceState\":\"ZERO_UNCONFIRMED\",\"priceStatus\":\"ZERO_UNCONFIRMED\",\"rowType\":\"HARDWARE_OPTION\"}"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Each base model only accepts its own localization option.",
+    "newValue": "Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/15/2022",
+    "newValue": "07/30/2022"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R4G55A#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H72B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Each base model only accepts its own localization option.",
+    "newValue": "Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H72B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2022",
+    "newValue": "08/14/2022"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H72B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H72B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H70B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Each base model only accepts its own localization option.",
+    "newValue": "Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H70B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "01/16/2023",
+    "newValue": "01/31/2023"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H70B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H70B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H71B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Rule/Note",
+    "oldValue": "Each base model only accepts its own localization option.",
+    "newValue": "Each base model only accepts its own localization option. | R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL | Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H71B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "04/05/2023",
+    "newValue": "04/06/2023"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H71B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1H71B#AC3",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "Q1Z11BAE",
+    "chassis": "SN3600B FC",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Port Upgrade Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "01/31/2029"
   }
 ]

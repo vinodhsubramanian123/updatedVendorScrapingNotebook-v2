@@ -1,7 +1,7 @@
 {
   "success": true,
   "spreadsheetId": "1eUD72j0GX55M3yz9qx1okH6l3bYk2kZQSgcuOk-gJRs",
-  "backupFile": "outputs/history/drive_backups/drive_backup_adbfe17a-3c6f-4f16-89c0-33ce6d5cc7d7.json",
+  "backupFile": "outputs/history/drive_backups/drive_backup_750824ae-a407-4880-ad33-656b68463776.json",
   "tabsWritten": [
     {
       "title": "Certified Catalog",
@@ -70,29 +70,29 @@
   ],
   "readbackVerified": true,
   "readbackFingerprints": {
-    "Certified Catalog": "4d5c6cfee3b7f6405609c15a5650a7739fc892c848311fd65937af716afac990",
-    "Verified Learnings": "87602683546dc1ad501ac771c6838243bf4ef59c315b536a61c81024be5990f8",
-    "Change Log": "48a3c1630b3b6fe643c23d2dc9d69c23abc6cd634ef083148052fe38d90b2189",
-    "Sync Metadata": "b3c4bd946405ce90361b532e31d80cab014d243070b574ee0f94b3f30a01f88f",
+    "Certified Catalog": "b8444aefc71c15f2f39bbb57855d822a58f1f341005ca66a56efcd09d063d8dd",
+    "Verified Learnings": "da7050cff1c8d3c9b03990d4f45bc49a96f3384b55bbd2fecf8c45f311baab87",
+    "Change Log": "9facad8a54aff1d709b38714820f88bdc23375454b571d802e62d468c7041f24",
+    "Sync Metadata": "4262ab3170e2fee0983938ebe4c9cd93f7f0937a7fd9daec9e141fc672c24300",
     "Category Summary": "42689c51f9f653daafb21462839967af0314276f5569a340c4a1515f2fddd586",
-    "All SKUs": "3fcdaaa24ca3a688886252246ed2bff78c39ba123bdc508ffe11f1bbf5dde100",
-    "Chassis Variants": "08bd4ecf8008e8dd9a63c2761cee07bb284698d7317a8f8b758a507113f99fcf",
-    "Chassis Options Matrix": "1323e107af10081f534ebd8d083489930a70b2b4ecc6b47d13e2347bc829edf8",
+    "All SKUs": "95ba34dbfe6465342756058dcd43a21b4df253684efc68d4e1785ff8a9857e95",
+    "Chassis Variants": "95127ffab8b79b4ed2b095b12d80ec5e067b02c024d8c92167d5374994ffc3ac",
+    "Chassis Options Matrix": "d390ad4ed95eba4556ee911aa925f192b40b8110d2245347170f00c98141df28",
     "Rules & Constraints": "fd6cd621d69ef0784f213e614a461647de3b19226be31081c5b967b7dfabe4c4",
     "Unavailable Rules & Gates": "cd284069fcce84a747e249b901b272421dcfb5810473181a423a1b399fff5c47",
-    "Price History Timeline": "7d23ff15c16b167465194b63fd1c2eb0bdbb68f62c21f93e5a3063b9648685c7",
+    "Price History Timeline": "53df9d00b4f23ff4aa77238fcc1ea7265f5ad738685571b2190f208ac5cdf6dc",
     "Networking": "ad125ea2656f84907df3ba107d818ee70d24880e123176f43ab99877316b9e1b",
-    "Chassis": "d7598fcca00e8a398fd551dca8ff2e779325baacb07b5861ca934fdf69f3b85b",
+    "Chassis": "34acb56c796dd9316408f5b4baf165f1b7e2b9ecd9850fbf614c66945f790f6b",
     "Cables & Enablement Kits": "934acc532ecc363d7983a56c6911b3244c2c8bd427e58febf62744735b99d672",
-    "Supply Chain & Lead Times": "6ee33df73f88e9361f4c53fdd03ada69fb3bcd0203c02298c127e9124ded9ee7",
+    "Supply Chain & Lead Times": "a98ec888c2fa88f7dcc816bb351a1159d480d0d32bd9b1a48b8117b883b089f5",
     "Metadata": "c8d679c3d1f41595e5bcd23c428f484ecc2953344c20b4287cba8907ce52e815"
   },
-  "verifiedAt": "2026-11-21T13:47:30.193Z",
+  "verifiedAt": "2026-11-22T09:10:22.864Z",
   "fingerprints": {
-    "catalog": "4d5c6cfee3b7f6405609c15a5650a7739fc892c848311fd65937af716afac990",
-    "learnings": "75fb186d251822afedb9be7502244e85e0ea03522f910f15a13741585458d776",
-    "changes": "48a3c1630b3b6fe643c23d2dc9d69c23abc6cd634ef083148052fe38d90b2189",
-    "workbook": "0eddfc48bca03e1b10a15962a02e005fb8400268a2243ff602cc888abf1e05b3",
-    "combined": "d26d74cf20c9dfb6709af4f7daa9e3a9c36905bc5b16c6df32dc51d257edde29"
+    "catalog": "b8444aefc71c15f2f39bbb57855d822a58f1f341005ca66a56efcd09d063d8dd",
+    "learnings": "037e7dd4448a5ba84261ad24aee4013b887465c5197346c78c944086e17f2a37",
+    "changes": "9facad8a54aff1d709b38714820f88bdc23375454b571d802e62d468c7041f24",
+    "workbook": "3ae51053a2648b9b572ffa1e47a6ea3b5a317024de5281a17dd0bed6c77ee15a",
+    "combined": "e5f9e11c5d512f81038aaa38b4a4dd11b28fdff0be0765e67d0fba221f2dc28f"
   }
 }

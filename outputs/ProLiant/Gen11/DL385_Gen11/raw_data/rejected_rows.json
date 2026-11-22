@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "product": "DL385_Gen11",
-  "generatedAt": "2026-11-22T02:55:15.095Z",
+  "generatedAt": "2026-11-22T08:27:30.719Z",
   "rejectedCount": 8,
   "rows": [
     {
@@ -51,7 +51,7 @@
       "reason": "NO_VALID_HEADER_OR_SKU",
       "sampleCells": [
         "Hardware",
-        "USD67,886.00",
+        "USD68,812.00",
         "Support",
         "USD15,057.00"
       ]

@@ -2,7 +2,7 @@
   "query": "DL385 Gen11",
   "selectedSku": "P53921-B21",
   "source": "HPE OCA Product Search via authenticated CDP session",
-  "capturedAt": "2026-11-20T17:33:29.639Z",
+  "capturedAt": "2026-11-22T08:21:43.610Z",
   "deliveryEstimate": "",
   "candidates": [
     {
@@ -11,14 +11,20 @@
       "optionValue": "P53921-B21",
       "text": "P53921-B21 - HPE ProLiant DL385 Gen11 8SFF Configure-to-order Server",
       "sku": "P53921-B21",
-      "listPriceUsd": 0,
+      "listPriceUsd": 4403,
       "availability": "Available in OCA product catalog",
-      "leadTime": "",
+      "leadTime": "14 days",
       "deliveryLabel": "",
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false,
+      "priceVerified": true,
+      "priceSource": "OCA_BOM_TAB",
+      "leadTimeDays": 14,
+      "startDate": "11/10/2022",
+      "discontinuedDate": "06/30/2028"
     },
     {
       "type": "dropdown-option",
@@ -33,7 +39,8 @@
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -48,7 +55,8 @@
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -63,7 +71,8 @@
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -78,7 +87,8 @@
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -93,7 +103,8 @@
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -108,7 +119,8 @@
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -123,59 +135,78 @@
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385G11vSanAF2_8SFF",
       "text": "P53921-B21 - vSAN ESA AF-2 - HPE DL385 Gen11 8SFF CTO Svr (P53921-B21)",
-      "sku": "DL385G11VSANAF2_8SFF",
-      "listPriceUsd": 0,
+      "sku": "P53921-B21",
+      "listPriceUsd": 4403,
       "availability": "Available in OCA product catalog",
-      "leadTime": "",
+      "leadTime": "14 days",
       "deliveryLabel": "",
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false,
+      "priceVerified": true,
+      "priceSource": "OCA_BOM_TAB",
+      "leadTimeDays": 14,
+      "startDate": "11/10/2022",
+      "discontinuedDate": "06/30/2028"
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385G11vSanAF4_8SFF",
       "text": "P53921-B21 - vSAN ESA AF-4 - HPE DL385 Gen11 8SFF CTO Svr (P53921-B21)",
-      "sku": "DL385G11VSANAF4_8SFF",
-      "listPriceUsd": 0,
+      "sku": "P53921-B21",
+      "listPriceUsd": 4403,
       "availability": "Available in OCA product catalog",
-      "leadTime": "",
+      "leadTime": "14 days",
       "deliveryLabel": "",
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false,
+      "priceVerified": true,
+      "priceSource": "OCA_BOM_TAB",
+      "leadTimeDays": 14,
+      "startDate": "11/10/2022",
+      "discontinuedDate": "06/30/2028"
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385G11vSanAF6_8SFF",
       "text": "P53921-B21 - vSAN ESA AF-6 - HPE DL385 Gen11 8SFF CTO Svr (P53921-B21)",
-      "sku": "DL385G11VSANAF6_8SFF",
-      "listPriceUsd": 0,
+      "sku": "P53921-B21",
+      "listPriceUsd": 4403,
       "availability": "Available in OCA product catalog",
-      "leadTime": "",
+      "leadTime": "14 days",
       "deliveryLabel": "",
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false,
+      "priceVerified": true,
+      "priceSource": "OCA_BOM_TAB",
+      "leadTimeDays": 14,
+      "startDate": "11/10/2022",
+      "discontinuedDate": "06/30/2028"
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385G11vSanAF2_12EDSFF",
       "text": "P53929-B21 - vSAN ESA AF-2 HPE DL385 Gen11 12EDSFF CTO Svr(P53929-B21)",
-      "sku": "DL385G11VSANAF2_12EDSFF",
+      "sku": "P53929-B21",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -183,14 +214,15 @@
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385G11vSanAF4_12EDSFF",
       "text": "P53929-B21 - vSAN ESA AF-4 HPE DL385 Gen11 12EDSFF CTO Svr(P53929-B21)",
-      "sku": "DL385G11VSANAF4_12EDSFF",
+      "sku": "P53929-B21",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -198,14 +230,15 @@
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385G11vSanAF6_12EDSFF",
       "text": "P53929-B21 - vSAN ESA AF-6 - HPE DL385 Gen11 12EDSFF CTO Svr (P53929-B21)",
-      "sku": "DL385G11VSANAF6_12EDSFF",
+      "sku": "P53929-B21",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -213,14 +246,15 @@
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385g11OEMnebs",
       "text": "P55226-B21 - Carrier Grade OEM DL385 Gen11 (NEBS)",
-      "sku": "DL385G11OEMNEBS",
+      "sku": "P55226-B21",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -228,22 +262,29 @@
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385g11nebs",
       "text": "P53921-B21 - Carrier Grade DL385 Gen11 (NEBS)",
-      "sku": "DL385G11NEBS",
-      "listPriceUsd": 0,
+      "sku": "P53921-B21",
+      "listPriceUsd": 4403,
       "availability": "Available in OCA product catalog",
-      "leadTime": "",
+      "leadTime": "14 days",
       "deliveryLabel": "",
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false,
+      "priceVerified": true,
+      "priceSource": "OCA_BOM_TAB",
+      "leadTimeDays": 14,
+      "startDate": "11/10/2022",
+      "discontinuedDate": "06/30/2028"
     }
   ],
   "excludedCandidates": [
@@ -260,7 +301,8 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -275,7 +317,8 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -290,7 +333,8 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -305,7 +349,8 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -320,7 +365,8 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -335,7 +381,8 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -350,7 +397,8 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -365,14 +413,15 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385G11vSanAF2_12EDSFF#GTA",
       "text": "P53929-B21#GTA - vSAN ESA AF-2 HPE DL385 Gen11 12EDSFF CTO Svr(P53929-B21#GTA)",
-      "sku": "DL385G11VSANAF2_12EDSFF#GTA",
+      "sku": "P53929-B21#GTA",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -380,14 +429,15 @@
       "isBto": false,
       "isTaa": false,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385G11vSanAF2_8SFF#GTA",
       "text": "P53921-B21#GTA - vSAN ESA AF-2 - HPE DL385 Gen11 8SFF CTO Svr (P53921-B21)",
-      "sku": "DL385G11VSANAF2_8SFF#GTA",
+      "sku": "P53921-B21#GTA",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -395,14 +445,15 @@
       "isBto": false,
       "isTaa": false,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385G11vSanAF4_12EDSFF#GTA",
       "text": "P53929-B21#GTA - vSAN ESA AF-4 HPE DL385 Gen11 12EDSFF CTO Svr(P53929-B21#GTA)",
-      "sku": "DL385G11VSANAF4_12EDSFF#GTA",
+      "sku": "P53929-B21#GTA",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -410,14 +461,15 @@
       "isBto": false,
       "isTaa": false,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385G11vSanAF4_8SFF#GTA",
       "text": "P53921-B21#GTA - vSAN ESA AF-4 - HPE DL385 Gen11 8SFF CTO Svr (P53921-B21)",
-      "sku": "DL385G11VSANAF4_8SFF#GTA",
+      "sku": "P53921-B21#GTA",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -425,14 +477,15 @@
       "isBto": false,
       "isTaa": false,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385G11vSanAF6_12EDSFF#GTA",
       "text": "P53929-B21#GTA - vSAN ESA AF-6 - HPE DL385 Gen11 12EDSFF CTO Svr (P53929-B21#GTA)",
-      "sku": "DL385G11VSANAF6_12EDSFF#GTA",
+      "sku": "P53929-B21#GTA",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -440,14 +493,15 @@
       "isBto": false,
       "isTaa": false,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385G11vSanAF6_8SFF#GTA",
       "text": "P53921-B21#GTA - vSAN ESA AF-6 - HPE DL385 Gen11 8SFF CTO Svr (P53921-B21)",
-      "sku": "DL385G11VSANAF6_8SFF#GTA",
+      "sku": "P53921-B21#GTA",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -455,14 +509,15 @@
       "isBto": false,
       "isTaa": false,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385g11OEMnebs#GTA",
       "text": "P55226-B21#GTA - Carrier Grade OEM DL385 Gen11 (NEBS)",
-      "sku": "DL385G11OEMNEBS#GTA",
+      "sku": "P55226-B21#GTA",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -470,14 +525,15 @@
       "isBto": false,
       "isTaa": false,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl385g11nebs#GTA",
       "text": "P53921-B21#GTA - Carrier Grade DL385 Gen11 (NEBS)",
-      "sku": "DL385G11NEBS#GTA",
+      "sku": "P53921-B21#GTA",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -485,7 +541,8 @@
       "isBto": false,
       "isTaa": false,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -500,7 +557,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -515,7 +573,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -530,7 +589,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -545,7 +605,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -560,7 +621,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -575,7 +637,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -590,7 +653,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -605,7 +669,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -620,7 +685,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -635,7 +701,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -650,7 +717,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -665,7 +733,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -680,7 +749,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -695,7 +765,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -710,7 +781,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -725,7 +797,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -740,7 +813,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -755,7 +829,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -770,7 +845,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -785,7 +861,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -800,7 +877,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -815,7 +893,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -830,7 +909,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -845,7 +925,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -860,7 +941,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -875,7 +957,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -890,7 +973,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -905,7 +989,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -920,7 +1005,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -935,7 +1021,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -950,7 +1037,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -965,7 +1053,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -980,7 +1069,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -995,7 +1085,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1010,7 +1101,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1025,7 +1117,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1040,7 +1133,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1055,7 +1149,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1070,7 +1165,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1085,7 +1181,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1100,7 +1197,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1115,7 +1213,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1130,7 +1229,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1145,7 +1245,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1160,7 +1261,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1175,7 +1277,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1190,7 +1293,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1205,7 +1309,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1220,7 +1325,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -1235,7 +1341,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     }
   ]
 }

@@ -52,12 +52,12 @@
       "UNCHANGED": 140
     },
     "cloudSyncState": "CLOUD_VERIFIED",
-    "verifiedSourceId": "1037765d-30f5-4656-afe5-bb3cbad29051",
-    "cloudVerifiedAt": "2026-11-21T13:45:32.603Z",
+    "verifiedSourceId": "83af3e70-42b3-4719-8257-b6b8445ec84d",
+    "cloudVerifiedAt": "2026-11-22T09:17:05.653Z",
     "readbackVerified": true,
     "canaryVerified": true,
     "notebookId": "c6390834-ff1e-4602-9391-8415f673afa3",
     "verifiedSourceName": "SY100Gb_F32_Module_OCA_Catalog_2026-11-11",
-    "payloadSha256": "c0438898426b4957c1ca7569311acf3cda636286b6d4d33ed5bc86b7742aedba"
+    "payloadSha256": "7572d70ac36b6e7d1ffa45538cf3b54f9b9fcb775eb2f45348577f60434af440"
   }
 }

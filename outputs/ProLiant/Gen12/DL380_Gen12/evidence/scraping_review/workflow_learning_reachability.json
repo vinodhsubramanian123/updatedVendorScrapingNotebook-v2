@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-11-22T06:36:23.452Z",
+  "recordedAt": "2026-11-22T09:22:33.471Z",
   "results": [
     {
       "deltaId": "LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001",
@@ -152,11 +152,11 @@
         "reachable": true,
         "ruleId": "LEARN_DL380A_GPU_MODE_AND_DRIVE_CAGE_SELECTOR_GATES_20261122",
         "ruleType": "WORKFLOW_CAPTURE_COVERAGE_ADVISORY",
-        "affectedSku": "P75008-B21",
+        "affectedSku": "",
         "targetSku": "",
         "scopeTaxonomy": "CHASSIS_SPECIFIC",
         "simulationResult": null,
-        "verifiedAt": "2026-11-22T06:36:22.982Z"
+        "verifiedAt": "2026-11-22T09:22:33.150Z"
       }
     },
     {
@@ -170,21 +170,29 @@
         "targetSku": "",
         "scopeTaxonomy": "CHASSIS_SPECIFIC",
         "simulationResult": null,
-        "verifiedAt": "2026-11-22T06:36:23.211Z"
+        "verifiedAt": "2026-11-22T09:22:33.281Z"
       }
     },
     {
       "deltaId": "LEARN_PROPOSED_BRANCH_AND_REASONING_OBSERVATION_HONESTY_20261122",
+      "persisted": false,
+      "alreadyRecorded": true,
+      "certification": {
+        "reachable": true
+      }
+    },
+    {
+      "deltaId": "LEARN_BOM_BASE_PRICE_AND_DIRECT_TOGGLE_DRIVE_CAGE_PROBE_20261122",
       "persisted": true,
       "certification": {
         "reachable": true,
-        "ruleId": "LEARN_PROPOSED_BRANCH_AND_REASONING_OBSERVATION_HONESTY_20261122",
-        "ruleType": "WORKFLOW_EPISTEMIC_GUARDRAIL_ADVISORY",
+        "ruleId": "LEARN_BOM_BASE_PRICE_AND_DIRECT_TOGGLE_DRIVE_CAGE_PROBE_20261122",
+        "ruleType": "WORKFLOW_DOM_EXTRACTION_ADVISORY",
         "affectedSku": "",
         "targetSku": "",
         "scopeTaxonomy": "CHASSIS_SPECIFIC",
         "simulationResult": null,
-        "verifiedAt": "2026-11-22T06:36:23.383Z"
+        "verifiedAt": "2026-11-22T09:22:33.409Z"
       }
     }
   ],

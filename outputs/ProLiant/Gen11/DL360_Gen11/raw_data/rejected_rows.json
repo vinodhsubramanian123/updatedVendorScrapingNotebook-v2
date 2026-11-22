@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "product": "DL360_Gen11",
-  "generatedAt": "2026-11-22T02:54:07.271Z",
-  "rejectedCount": 5,
+  "generatedAt": "2026-11-22T08:15:04.792Z",
+  "rejectedCount": 7,
   "rows": [
     {
       "tableIndex": 4,
@@ -37,6 +37,27 @@
       "reason": "NO_VALID_HEADER_OR_SKU",
       "sampleCells": [
         "Private Cloud Business Edition"
+      ]
+    },
+    {
+      "tableIndex": 137,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "Hardware",
+        "USD71,918.00",
+        "Support",
+        "USD12,339.00"
+      ]
+    },
+    {
+      "tableIndex": 140,
+      "reason": "NO_VALID_HEADER_OR_SKU",
+      "sampleCells": [
+        "",
+        "Qty",
+        "Reactive support",
+        "Install",
+        "Device specific services"
       ]
     }
   ]

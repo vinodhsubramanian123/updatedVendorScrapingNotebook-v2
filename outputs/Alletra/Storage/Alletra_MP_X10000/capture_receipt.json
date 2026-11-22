@@ -71,10 +71,10 @@
       "replaySuiteVersion": "1.1.0",
       "replaySuiteSha256": "b8b507b9fde1f7013524a6700cad414341341f9316cde9ecbbce5a8e860256c5",
       "replayInputHashes": {
-        "Catalog.json": "1d61f5e1e81274b0b77b6dce5cf87c09d6cb291aa6a1ee0944fbe3da6da48b3a",
-        "Services.json": "dbecaf8c3e192b3f737933314bd78d2705a0898f898efe479525f70dce68f4f6",
-        "Catalog_Rules.json": "4d32e965b534c8a507f3aff44472df2ed8085708f509e9671e423dd1e7f412a2",
-        "OCA_Catalog.xlsx": "b9c4d33d0f471693df15fe3008d991f01529db5778110bbbbdfe5c820f0c45dd",
+        "Catalog.json": "36ff563ab345f0dbc97e32fab40c8910506a7fee2d5ace08fd1d1bdcf6005502",
+        "Services.json": "d3507e57fb2c3d0f320edb2c6922c86e85df4b2091688d396f4a8265c22f3802",
+        "Catalog_Rules.json": "3a8a931d6f73d968d9fdf677ee814909edb235d12690bbd1be790bf6bb3df129",
+        "OCA_Catalog.xlsx": "59665de3c25166e8ab61d2434a98176c5c03f4fc7268b2493dfd587b14424d6a",
         "conditional_skus.json": "5071c9dcf30972014d9004a591f4c82e4d07b14e4c3a9dbd26e81fe8b2449584"
       }
     },
@@ -94,19 +94,19 @@
     }
   },
   "counts": {
-    "hardware": 82,
+    "hardware": 80,
     "services": 3,
     "rules": 70,
     "categories": 7,
-    "retainedHardware": 82,
+    "retainedHardware": 80,
     "hardwareTombstones": 0
   },
   "previousCounts": null,
   "hashes": {
-    "Catalog.json": "1d61f5e1e81274b0b77b6dce5cf87c09d6cb291aa6a1ee0944fbe3da6da48b3a",
-    "Services.json": "dbecaf8c3e192b3f737933314bd78d2705a0898f898efe479525f70dce68f4f6",
-    "Catalog_Rules.json": "4d32e965b534c8a507f3aff44472df2ed8085708f509e9671e423dd1e7f412a2",
-    "OCA_Catalog.xlsx": "b9c4d33d0f471693df15fe3008d991f01529db5778110bbbbdfe5c820f0c45dd"
+    "Catalog.json": "36ff563ab345f0dbc97e32fab40c8910506a7fee2d5ace08fd1d1bdcf6005502",
+    "Services.json": "d3507e57fb2c3d0f320edb2c6922c86e85df4b2091688d396f4a8265c22f3802",
+    "Catalog_Rules.json": "3a8a931d6f73d968d9fdf677ee814909edb235d12690bbd1be790bf6bb3df129",
+    "OCA_Catalog.xlsx": "59665de3c25166e8ab61d2434a98176c5c03f4fc7268b2493dfd587b14424d6a"
   },
   "rawSha256": "674c30f1cb047c8c989a784bd8a7afa76f248f3790147b602957e02b95e8b8be",
   "sheets": [
@@ -311,5 +311,5 @@
     "error": null
   },
   "promotedAt": "2026-11-21T12:57:04.440Z",
-  "rebuiltAt": "2026-11-22T02:53:28.808Z"
+  "rebuiltAt": "2026-11-22T07:28:15.601Z"
 }

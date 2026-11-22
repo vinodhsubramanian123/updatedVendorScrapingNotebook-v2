@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/NETWORKING/Synergy/General/Synergy_4Port_Frame_Link_Module`
 
-**Sync Timestamp**: 2026-11-21T13:47:16.232Z
+**Sync Timestamp**: 2026-11-22T09:09:58.381Z
 
 **Total Verified SKUs**: `62` (`62` Hardware + `0` Services)
 
@@ -122,7 +122,7 @@ Service scope: OWNER_ABSENT_IN_OBSERVED_SERVICE_TREE. Unexecuted: alternative se
 ### Structural Field & Evidence Coverage
 
 - **Row Types**: BASE_SYSTEM: 1, HARDWARE_OPTION: 61
-- **Price States**: UNPRICED: 2, PRICED: 60
+- **Price States**: PRICED: 61, UNPRICED: 1
 - **Lead-Time Measurement**: Numeric Days: 35, ETA Date Only: 0, Unpublished: 27
 - **Visibility Coverage**: VISIBLE: 30, SELECTOR_HIDDEN: 32
 
@@ -180,7 +180,7 @@ Service scope: OWNER_ABSENT_IN_OBSERVED_SERVICE_TREE. Unexecuted: alternative se
 
 
 <!-- MANAGED_FULL_CATALOG -->
-Content fingerprint: d26d74cf20c9dfb6709af4f7daa9e3a9c36905bc5b16c6df32dc51d257edde29
+Content fingerprint: e5f9e11c5d512f81038aaa38b4a4dd11b28fdff0be0765e67d0fba221f2dc28f
 
 ## Complete workbook text projection
 
@@ -211,7 +211,7 @@ Displayed cell values follow by sheet and original row. Formatting, charts and f
 | Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 | Column 14 | Column 15 | Column 16 | Column 17 | Column 18 | Column 19 | Column 20 | Column 21 | Column 22 | Column 23 | Column 24 | Column 25 | Column 26 | Column 27 | Column 28 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Cost (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Days | Speed Tier | Lead Time Source | CLIC Status | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) |
-| 2 | Chassis | Variants | HPE OCA &gt; Synergy 4Port Frame Link Module [876852-B21] &gt; Chassis &gt; Variants | Base Chassis | min 1, max 1 | 1 | 1 | Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis | 876852-B21 | CTO | HPE Synergy 4-port Frame Link Module [876852-B21] | 1 |  |  |  |  |  | No | Available in OCA product catalog | Unpublished |  | Unpublished | Not published by OCA | Not evaluated | Active |  |  |  |
+| 2 | Chassis | Variants | HPE OCA &gt; Synergy 4Port Frame Link Module [876852-B21] &gt; Chassis &gt; Variants | Base Chassis | min 1, max 1 | 1 | 1 | Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis | 876852-B21 | CTO | HPE Synergy 4-port Frame Link Module [876852-B21] | 1 | $2,210.00 |  |  |  |  | No | Available in OCA product catalog | Unpublished |  | Unpublished | Not published by OCA | Not evaluated | Active |  |  |  |
 | 3 | Networking | SFP Transceivers | HPE OCA &gt; Synergy 4Port Frame Link Module [876852-B21] &gt; Networking &gt; SFP Transceivers | Transceiver | max 4 | 0 | 4 | Selection constraint for SFP Transceivers: max 4 | 455886-B21 | Standard | HPE BladeSystem c-Class 10Gb SFP+ LR Transceiver | 0 | $1,751.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 05/06/2016 | 12/31/2030 | [TEXT_1] |
 | 4 | Networking | SFP Transceivers | HPE OCA &gt; Synergy 4Port Frame Link Module [876852-B21] &gt; Networking &gt; SFP Transceivers | Transceiver | max 4 | 0 | 4 | Selection constraint for SFP Transceivers: max 4 | 813874-B21 | Standard | HPE 10GBase-T SFP+ Transceiver | 0 | $1,173.00 |  |  | NA |  | No | Available | 3 | 3 | Fast-Ship Certified (&lt;=7d) | OCA row attribute | Unpublished | Active | 05/06/2016 | 08/30/2027 | [TEXT_2] |
 | 5 | Networking | SFP Transceivers | HPE OCA &gt; Synergy 4Port Frame Link Module [876852-B21] &gt; Networking &gt; SFP Transceivers | Transceiver | max 4 | 0 | 4 | Selection constraint for SFP Transceivers: max 4 | 455883-B21 | Standard | HPE BladeSystem c-Class 10Gb SFP+ SR Transceiver | 0 | $842.00 |  |  | NA |  | No | Available | 8 | 8 | Standard Delivery (8-30d) | OCA row attribute | Unpublished | Active | 05/06/2016 | 12/31/2030 | [TEXT_3] |
@@ -280,7 +280,7 @@ Displayed cell values follow by sheet and original row. Formatting, charts and f
 | Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Product # | Form Factor | Description | Option Type | HPE Recommended | List Price (USD) | Constraint | Start Date | Discontinued Date | Note |
-| 2 | 876852-B21 | Unknown | HPE Synergy 4-port Frame Link Module [876852-B21] | CTO | No |  | min 1, max 1 |  | Unknown | Select ONE chassis variant as the mandatory CTO base. All component rules, drive bay limits, and power constraints depend on this selection. |
+| 2 | 876852-B21 | Unknown | HPE Synergy 4-port Frame Link Module [876852-B21] | CTO | No | $2,210.00 | min 1, max 1 |  | Unknown | Select ONE chassis variant as the mandatory CTO base. All component rules, drive bay limits, and power constraints depend on this selection. |
 
 
 ### Chassis Options Matrix
@@ -288,7 +288,7 @@ Displayed cell values follow by sheet and original row. Formatting, charts and f
 | Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Base SKU | Form Factor | Option Type | HPE Recommended | List Price (USD) | Drive Media Supported | Base Drive Bays | Max Expandability | Power Envelope | Lifecycle Status | Start Date | Discontinued Date | Architectural Rules |
-| 2 | 876852-B21 | Unknown | CTO | No |  | UNVERIFIED — variant-specific evidence required | UNVERIFIED — title is not a bay inventory | UNVERIFIED — variant-specific evidence required | UNVERIFIED — variant-specific evidence required | Active |  | Unknown | NOT VERIFIED: do not transfer compatibility or rules between base SKUs without scoped vendor evidence. |
+| 2 | 876852-B21 | Unknown | CTO | No | $2,210.00 | UNVERIFIED — variant-specific evidence required | UNVERIFIED — title is not a bay inventory | UNVERIFIED — variant-specific evidence required | UNVERIFIED — variant-specific evidence required | Active |  | Unknown | NOT VERIFIED: do not transfer compatibility or rules between base SKUs without scoped vendor evidence. |
 
 
 ### Rules &amp; Constraints

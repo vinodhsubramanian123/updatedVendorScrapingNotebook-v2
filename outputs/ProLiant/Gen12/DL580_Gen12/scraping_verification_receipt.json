@@ -1,10 +1,10 @@
 {
-  "verifiedAt": "2026-11-21T13:40:57.132Z",
+  "verifiedAt": "2026-11-22T08:43:27.984Z",
   "productId": "DL580_Gen12",
   "family": "ProLiant",
   "generation": "Gen12",
   "preflight": {
-    "recordedAt": "2026-11-20T12:46:56.451Z",
+    "recordedAt": "2026-11-22T08:33:08.975Z",
     "pass": true,
     "product": {
       "pass": true,
@@ -42,31 +42,30 @@
     "status": "VERIFIED",
     "qualityAuditPassed": true,
     "diffSummaryError": null,
-    "hwSkuCount": 519,
-    "serviceSkuCount": 487,
-    "totalSkuCount": 1006,
-    "conditionalSkusCount": 55,
-    "unavailableRulesCount": 14,
+    "hwSkuCount": 594,
+    "serviceSkuCount": 405,
+    "totalSkuCount": 999,
+    "conditionalSkusCount": 65,
+    "unavailableRulesCount": 16,
     "diffSummaryPresent": true,
     "diffCounts": {
-      "ADDED": 173,
-      "MODIFIED": 813,
+      "ADDED": 10,
+      "MODIFIED": 39,
       "PRICE_CHANGED": 0,
-      "ATTRIBUTE_CHANGED": 783,
-      "PRICE_AND_ATTRIBUTE_CHANGED": 30,
+      "ATTRIBUTE_CHANGED": 35,
+      "PRICE_AND_ATTRIBUTE_CHANGED": 4,
       "REINSTATED": 0,
-      "REMOVED": 20,
+      "REMOVED": 0,
       "DISCONTINUED": 0,
-      "UNCHANGED": 0
+      "UNCHANGED": 950
     },
     "cloudSyncState": "CLOUD_VERIFIED",
     "notebookId": "3f5344ce-da79-4f6d-a131-f303d1e43dc3",
-    "verifiedSourceId": "673dc828-5688-4d3a-8357-c8e151fbc7ee",
-    "verifiedSourceName": "DL580_Gen12_OCA_Catalog_2026-11-20",
-    "payloadSha256": "ffea262981269c5f8f89172891b69d7d09317b1012391b28bd4e8d6305afa4b8",
-    "cloudVerifiedAt": "2026-11-21T13:40:57.132Z",
+    "verifiedSourceId": "4939cdb0-2f7f-4ef9-99b1-d5cda0895e52",
+    "verifiedSourceName": "DL580_Gen12_OCA_Catalog_2026-11-22",
+    "payloadSha256": "73a024d12580f083bb6a138406a443fbff9767ba99b6390208e7fdd400c3f48f",
+    "cloudVerifiedAt": "2026-11-22T08:43:27.984Z",
     "readbackVerified": true,
     "canaryVerified": true
-  },
-  "overallPass": true
+  }
 }

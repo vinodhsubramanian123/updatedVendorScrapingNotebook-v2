@@ -8,9 +8,9 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-21",
     "scrapeTimestamp": "2026-11-21T12:18:55.119Z",
-    "builtAt": "2026-11-22T02:53:18.968Z",
+    "builtAt": "2026-11-22T07:28:11.104Z",
     "totalSubcategories": 15,
-    "totalUniqueSKUs": 82,
+    "totalUniqueSKUs": 80,
     "totalTables": 22,
     "diffSummary": {
       "added": 0,
@@ -19,7 +19,7 @@
       "priceChanged": 0,
       "attributeChanged": 0,
       "priceAndAttributeChanged": 0,
-      "unchanged": 82,
+      "unchanged": 80,
       "reinstated": 0,
       "discontinuedTotal": 0
     },
@@ -28,18 +28,18 @@
       "scrapeDate": "2026-11-21",
       "categoryBreakdown": {
         "Chassis": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 1,
+          "minPrice": 1,
+          "maxPrice": 1,
           "subcategories": {
             "Variants": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
             }
           },
-          "avgPrice": 0
+          "avgPrice": 1
         },
         "Accessories & Infrastructure": {
           "totalSKUs": 5,
@@ -168,25 +168,25 @@
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 82,
-      "unchangedSkusCount": 82,
-      "modifiedSkusCount": 0,
+      "totalScrapedSkus": 80,
+      "unchangedSkusCount": 79,
+      "modifiedSkusCount": 1,
       "addedSkusCount": 0,
-      "removedSkusCount": 0,
+      "removedSkusCount": 2,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotFingerprint": "79bdcb54d326a4862184f75773cae9b894f84bfedb6214986cb851e1e3f12eda",
-    "chassisVariantCount": 3,
-    "rulesGeneratedAt": "2026-11-22T02:53:20.040Z"
+    "snapshotFingerprint": "8b12088d6b57045af25bf0e88b49d23ebf24d525b886ef82a417b2d2b1542306",
+    "chassisVariantCount": 1,
+    "rulesGeneratedAt": "2026-11-22T07:28:11.650Z"
   },
   "chassisVariants": [
     {
       "sku": "S3L12A",
       "description": "HPE Alletra Storage MP X10000 Base Configuration",
       "formFactor": "Unknown",
-      "listPrice": 0,
-      "listPriceFormatted": "$0.00",
+      "listPrice": 1,
+      "listPriceFormatted": "$1.00",
       "optionType": "CTO",
       "hpeRecommended": "No",
       "HPE Recommended": "No",
@@ -195,39 +195,7 @@
       "constraint": "min 1, max 1",
       "maxQty": "1",
       "diffStatus": "BASELINE",
-      "priceHistoryTrail": "2026-11-21: (no price)"
-    },
-    {
-      "sku": "S7Z87A",
-      "description": "HPE Alletra Storage MP X10000 KSA",
-      "formFactor": "Unknown",
-      "listPrice": 0,
-      "listPriceFormatted": "$0.00",
-      "optionType": "CTO",
-      "hpeRecommended": "No",
-      "HPE Recommended": "No",
-      "startDate": "",
-      "discontinuedDate": "",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "BASELINE",
-      "priceHistoryTrail": "2026-11-21: (no price)"
-    },
-    {
-      "sku": "S6W29A",
-      "description": "HPE Alletra Storage MP X10000 Disconnected Add-on KSA",
-      "formFactor": "Unknown",
-      "listPrice": 0,
-      "listPriceFormatted": "$0.00",
-      "optionType": "CTO",
-      "hpeRecommended": "No",
-      "HPE Recommended": "No",
-      "startDate": "",
-      "discontinuedDate": "",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "BASELINE",
-      "priceHistoryTrail": "2026-11-21: (no price)"
+      "priceHistoryTrail": "2026-11-21: $1.00"
     }
   ],
   "chassisVariantMatrix": {
@@ -235,8 +203,8 @@
       "sku": "S3L12A",
       "description": "HPE Alletra Storage MP X10000 Base Configuration",
       "formFactor": "Unknown",
-      "listPrice": 0,
-      "listPriceFormatted": "$0.00",
+      "listPrice": 1,
+      "listPriceFormatted": "$1.00",
       "optionType": "CTO",
       "hpeRecommended": "No",
       "HPE Recommended": "No",
@@ -245,39 +213,7 @@
       "constraint": "min 1, max 1",
       "maxQty": "1",
       "diffStatus": "BASELINE",
-      "priceHistoryTrail": "2026-11-21: (no price)"
-    },
-    "S7Z87A": {
-      "sku": "S7Z87A",
-      "description": "HPE Alletra Storage MP X10000 KSA",
-      "formFactor": "Unknown",
-      "listPrice": 0,
-      "listPriceFormatted": "$0.00",
-      "optionType": "CTO",
-      "hpeRecommended": "No",
-      "HPE Recommended": "No",
-      "startDate": "",
-      "discontinuedDate": "",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "BASELINE",
-      "priceHistoryTrail": "2026-11-21: (no price)"
-    },
-    "S6W29A": {
-      "sku": "S6W29A",
-      "description": "HPE Alletra Storage MP X10000 Disconnected Add-on KSA",
-      "formFactor": "Unknown",
-      "listPrice": 0,
-      "listPriceFormatted": "$0.00",
-      "optionType": "CTO",
-      "hpeRecommended": "No",
-      "HPE Recommended": "No",
-      "startDate": "",
-      "discontinuedDate": "",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "BASELINE",
-      "priceHistoryTrail": "2026-11-21: (no price)"
+      "priceHistoryTrail": "2026-11-21: $1.00"
     }
   },
   "smartChassisCombinations": [],

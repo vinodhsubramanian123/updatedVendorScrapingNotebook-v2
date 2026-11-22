@@ -103,7 +103,8 @@ Software & Licenses	MS Windows Server - Essentials	no max	0	Unlimited	38	Yes	2
 Software & Licenses	SUSE Linux Enterprise Server	no max	0	Unlimited	44	Yes	2
 Software & Licenses	Microsoft Windows CAL Packs	no max	0	Unlimited	30	Yes	1
 Software & Licenses	Red Hat Enterprise Linux Server-Virtualization	no max	0	Unlimited	36	Yes	2
-Support Services	Server Management & Operating System Licenses	no max	0	Unlimited	31	Yes	5
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P80429-B21	0	Unlimited	10	Yes	10
+Support Services	Server Management & Operating System Licenses	no max	0	Unlimited	11	Yes	5
 Software & Licenses	Partner Software - Interconnect Management Array	no max	0	Unlimited	3	Yes	1
 Software & Licenses	Compute Ops Management Enablement SKUs	max 1	0	1	2	Yes	1
 Software & Licenses	Red Hat OpenShift Platform Container	no max	0	Unlimited	9	Yes	1

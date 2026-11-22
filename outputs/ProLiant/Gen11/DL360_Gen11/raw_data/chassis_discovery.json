@@ -2,8 +2,8 @@
   "query": "DL360 Gen11",
   "selectedSku": "P52499-B21",
   "source": "HPE OCA Product Search via authenticated CDP session",
-  "capturedAt": "2026-11-20T17:19:10.597Z",
-  "deliveryEstimate": "EDT 27 - 34 days",
+  "capturedAt": "2026-11-22T08:09:27.249Z",
+  "deliveryEstimate": "",
   "candidates": [
     {
       "type": "dropdown-option",
@@ -11,14 +11,20 @@
       "optionValue": "P52499-B21",
       "text": "P52499-B21 - HPE ProLiant DL360 Gen11 8SFF NC Configure-to-order Server",
       "sku": "P52499-B21",
-      "listPriceUsd": 0,
+      "listPriceUsd": 5045,
       "availability": "Available in OCA product catalog",
-      "leadTime": "EDT 27 - 34 days",
+      "leadTime": "14 days",
       "deliveryLabel": "",
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false,
+      "priceVerified": true,
+      "priceSource": "OCA_BOM_TAB",
+      "leadTimeDays": 14,
+      "startDate": "01/10/2023",
+      "discontinuedDate": "04/30/2028"
     },
     {
       "type": "dropdown-option",
@@ -28,12 +34,13 @@
       "sku": "P52498-B21",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
-      "leadTime": "EDT 27 - 34 days",
+      "leadTime": "",
       "deliveryLabel": "",
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -43,12 +50,13 @@
       "sku": "P52500-B21",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
-      "leadTime": "EDT 27 - 34 days",
+      "leadTime": "",
       "deliveryLabel": "",
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -58,12 +66,13 @@
       "sku": "P55428-B21",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
-      "leadTime": "EDT 27 - 34 days",
+      "leadTime": "",
       "deliveryLabel": "",
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -73,12 +82,50 @@
       "sku": "P55429-B21",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
-      "leadTime": "EDT 27 - 34 days",
+      "leadTime": "",
       "deliveryLabel": "",
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
+    },
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"0\"]",
+      "optionValue": "dl360g11nebs",
+      "text": "P52499-B21 - Carrier Grade DL360 Gen11 (NEBS)",
+      "sku": "P52499-B21",
+      "listPriceUsd": 5045,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "14 days",
+      "deliveryLabel": "",
+      "isBto": false,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": true,
+      "isWizard": false,
+      "priceVerified": true,
+      "priceSource": "OCA_BOM_TAB",
+      "leadTimeDays": 14,
+      "startDate": "01/10/2023",
+      "discontinuedDate": "04/30/2028"
+    },
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"0\"]",
+      "optionValue": "dl360g11oemnebs",
+      "text": "P55428-B21 - Carrier Grade OEM DL360 Gen11 (NEBS)",
+      "sku": "P55428-B21",
+      "listPriceUsd": 0,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "",
+      "deliveryLabel": "",
+      "isBto": false,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -88,12 +135,13 @@
       "sku": "S0V51A",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
-      "leadTime": "EDT 27 - 34 days",
+      "leadTime": "",
       "deliveryLabel": "",
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -103,56 +151,13 @@
       "sku": "S6X65A",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
-      "leadTime": "EDT 27 - 34 days",
+      "leadTime": "",
       "deliveryLabel": "",
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
-    },
-    {
-      "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"12\"]",
-      "text": "DL360 Gen11 Optimized for Virtualization, Containers, Read-Heavy NVMe, Databases, Networking & Edge Efficiency The HPE ProLiant DL360 Gen11Configure to Order Server with two Intel Xeon Silver 4510 processors, 24 physical cores total, 128 GB DDR5-5600 memory, and two 960 GB NVMe Read Intensive SSDs is best suited to compute-dense, moderately memory-intensive enterprise workloads that benefit from fast read storage. It is particularly appropriate for virtualization, container hosting, web and application services, network infrastructure, edge computing, read-heavy databases, and caching. With HPE Zerto disaster recovery SW helping organizations move faster, recover smarter, and operate through disruption with continuous protection, application mobility, and resilience built for the AI era. - 2x 2.4GHz 12-core - 128GB - HPE 960GB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 Static V2 Multi Vendor SSD i Unlocked Compare STs USD 44,621.46 Estimated Net Price Customize Quote",
-      "sku": "DL360",
-      "listPriceUsd": 0,
-      "availability": "Available in OCA product catalog",
-      "leadTime": "EDT 27 - 34 days",
-      "deliveryLabel": "",
-      "isBto": false,
-      "isTaa": false,
-      "isGta": false,
-      "isCto": true
-    },
-    {
-      "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"0\"]",
-      "optionValue": "dl360g11nebs",
-      "text": "P52499-B21 - Carrier Grade DL360 Gen11 (NEBS)",
-      "sku": "DL360G11NEBS",
-      "listPriceUsd": 0,
-      "availability": "Available in OCA product catalog",
-      "leadTime": "EDT 27 - 34 days",
-      "deliveryLabel": "",
-      "isBto": false,
-      "isTaa": false,
-      "isGta": false,
-      "isCto": true
-    },
-    {
-      "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"0\"]",
-      "optionValue": "dl360g11oemnebs",
-      "text": "P55428-B21 - Carrier Grade OEM DL360 Gen11 (NEBS)",
-      "sku": "DL360G11OEMNEBS",
-      "listPriceUsd": 0,
-      "availability": "Available in OCA product catalog",
-      "leadTime": "EDT 27 - 34 days",
-      "deliveryLabel": "",
-      "isBto": false,
-      "isTaa": false,
-      "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     }
   ],
   "excludedCandidates": [
@@ -169,7 +174,8 @@
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -184,7 +190,8 @@
       "isBto": false,
       "isTaa": false,
       "isGta": false,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -199,7 +206,8 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -214,7 +222,8 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -229,7 +238,8 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -244,7 +254,8 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -259,7 +270,8 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -274,14 +286,15 @@
       "isBto": false,
       "isTaa": true,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl360g11nebs#GTA",
       "text": "P52499-B21#GTA - Carrier Grade DL360 Gen11 (NEBS)",
-      "sku": "DL360G11NEBS#GTA",
+      "sku": "P52499-B21#GTA",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -289,14 +302,15 @@
       "isBto": false,
       "isTaa": false,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"0\"]",
       "optionValue": "dl360g11oemnebs#GTA",
       "text": "P55428-B21#GTA - Carrier Grade OEM DL360 Gen11 (NEBS)",
-      "sku": "DL360G11OEMNEBS#GTA",
+      "sku": "P55428-B21#GTA",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -304,7 +318,8 @@
       "isBto": false,
       "isTaa": false,
       "isGta": true,
-      "isCto": true
+      "isCto": true,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -319,7 +334,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -334,7 +350,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -349,7 +366,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -364,7 +382,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -379,7 +398,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -394,7 +414,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -409,7 +430,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -424,7 +446,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -439,7 +462,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -454,7 +478,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -469,7 +494,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -484,7 +510,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -499,7 +526,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -514,7 +542,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -529,7 +558,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -544,7 +574,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -559,7 +590,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -574,7 +606,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -589,7 +622,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -604,7 +638,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -619,7 +654,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -634,7 +670,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -649,7 +686,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -664,7 +702,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -679,7 +718,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     },
     {
       "type": "dropdown-option",
@@ -694,119 +734,8 @@
       "isBto": true,
       "isTaa": false,
       "isGta": false,
-      "isCto": false
-    },
-    {
-      "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"4\"]",
-      "text": "DL360 Gen11 Compact Server for Scalable Enterprise Workloads The HPE ProLiant DL360 Gen11 is a compact 1U server designed for high-performance workloads in space-constrained environments. Featuring an Intel Xeon-Gold 6442Y 24-core processor, 384GB of memory, and 1.92TB NVMe Gen4 mainstream performance read-intensive SSD storage, it provides excellent speed and efficiency for virtualization, cloud computing, and data-centric applications. Backed by HPE 3-Year Tech Care Essential Service, this server ensures reliability and scalability for enterprise operations. - i Unlocked Compare STs USD 94,328.46 Estimated Net Price Customize Quote",
-      "sku": "DL360",
-      "listPriceUsd": 0,
-      "availability": "Available in OCA product catalog",
-      "leadTime": "",
-      "deliveryLabel": "",
-      "isBto": true,
-      "isTaa": false,
-      "isGta": false,
-      "isCto": false
-    },
-    {
-      "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"5\"]",
-      "text": "DL360 Gen11 Compact Server with Massive High-Performance Storage The HPE ProLiant DL360 Gen11 is a high-performance 1U server designed for data-intensive tasks and enterprise workloads. It is powered by an Intel Xeon-Platinum 8444H 16-core processor, 768GB of memory, and an impressive 15.36TB NVMe Gen5 High Performance read-intensive SSD storage. Backed by HPE 3-Year Tech Care Essential Service, this server is ideal for large-scale analytics, virtualization, and storage-heavy applications requiring exceptional speed and reliability. - i Unlocked Compare STs USD 470,040.01 Estimated Net Price Customize Quote",
-      "sku": "DL360",
-      "listPriceUsd": 0,
-      "availability": "Available in OCA product catalog",
-      "leadTime": "",
-      "deliveryLabel": "",
-      "isBto": true,
-      "isTaa": false,
-      "isGta": false,
-      "isCto": false
-    },
-    {
-      "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"6\"]",
-      "text": "DL360 Gen11 Compact Server Built for Scalability and Power The HPE ProLiant DL360 Gen11 is a compact yet powerful 1U server featuring an Intel Xeon-Gold 6430 32-core processor, 1024GB memory, and 480GB SATA Mixed Use SSD storage. Supported by HPE 3-Year Tech Care Essential Service, it’s ideal for high-performance workloads and enterprise scalability. - i Unlocked Compare STs USD 195,981.60 Estimated Net Price Customize Quote",
-      "sku": "DL360",
-      "listPriceUsd": 0,
-      "availability": "Available in OCA product catalog",
-      "leadTime": "",
-      "deliveryLabel": "",
-      "isBto": true,
-      "isTaa": false,
-      "isGta": false,
-      "isCto": false
-    },
-    {
-      "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"7\"]",
-      "text": "DL360 Gen11 Compact Server for Compute-Intensive Enterprise Workloads The HPE ProLiant DL360 Gen11 is a compact and high-performance 1U server optimized for compute-intensive workloads. Featuring an Intel Xeon-Gold 6430 32-core processor, 1024GB of memory, and a 1.92TB NVMe Gen4 mainstream performance read-intensive SSD, it delivers exceptional speed and efficiency for virtualization, cloud computing, and data-driven applications. Supported by HPE 3-Year Tech Care Essential Service, this server ensures reliability and scalability in space-constrained environments. - i Unlocked Compare STs USD 201,862.31 Estimated Net Price Customize Quote",
-      "sku": "DL360",
-      "listPriceUsd": 0,
-      "availability": "Available in OCA product catalog",
-      "leadTime": "",
-      "deliveryLabel": "",
-      "isBto": true,
-      "isTaa": false,
-      "isGta": false,
-      "isCto": false
-    },
-    {
-      "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"8\"]",
-      "text": "DL380 Gen11 DL380 Gen11 Optimized for Virtualization, Networking, Caching & Read-Optimized NVMe The HPE ProLiant DL380 Gen11 Configure to Order Server with with two Intel Xeon-S 4510 12-core processors, 128 GB DDR5 5600 MHz memory, and two 960GB NVMe Read Intensive SSDs is best suited to network infrastructure, moderate virtualization, containerized services, web/API tiers, read-heavy databases, caching, and edge computing. The DL360 Gen11 is designed for physical, virtualized, and containerized IT infrastructure and supports high-speed networking, PCIe Gen5 I/O, and substantial future memory and storage expansion. With HPE Zerto disaster recovery SW helping organizations move faster, recover smarter, and operate through disruption with continuous protection, application mobility, and resilience built for the AI era. - 1x 2.9GHz 24-core - 128GB - HPE 960GB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 Static V2 Multi Vendor SSD i Unlocked Compare STs USD 47,693.63 Estimated Net Price Customize Quote",
-      "sku": "DL380",
-      "listPriceUsd": 0,
-      "availability": "Available in OCA product catalog",
-      "leadTime": "",
-      "deliveryLabel": "",
-      "isBto": false,
-      "isTaa": false,
-      "isGta": false,
-      "isCto": true
-    },
-    {
-      "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"9\"]",
-      "text": "DL360 Gen11 Compact Server with High Storage and Performance The HPE ProLiant DL360 Gen11 is a compact powerhouse featuring an Intel Xeon-Gold 6438N 32-core processor, 512GB memory, and 7.68TB SATA Read Intensive SSD storage. Supported by HPE 3-Year Tech Care Essential Service, it’s built for performance-driven workloads and enterprise reliability. - i Unlocked Compare STs USD 75,312.83 Estimated Net Price Customize Quote",
-      "sku": "DL360",
-      "listPriceUsd": 0,
-      "availability": "Available in OCA product catalog",
-      "leadTime": "",
-      "deliveryLabel": "",
-      "isBto": true,
-      "isTaa": false,
-      "isGta": false,
-      "isCto": false
-    },
-    {
-      "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"10\"]",
-      "text": "DL360 Gen11 Compact Powerhouse for Scalable Enterprise Workloads The HPE ProLiant DL360 Gen11 is a compact and powerful 1U server featuring an Intel Xeon-Gold 6538N 32-core processor, 512GB memory, and a 480GB SATA SSD. Supported by HPE 3-Year Tech Care Essential Service, it’s ideal for performance-driven workloads in space-constrained environments. - i Unlocked Compare STs USD 53,789.43 Estimated Net Price Customize Quote",
-      "sku": "DL360",
-      "listPriceUsd": 0,
-      "availability": "Available in OCA product catalog",
-      "leadTime": "",
-      "deliveryLabel": "",
-      "isBto": true,
-      "isTaa": false,
-      "isGta": false,
-      "isCto": false
-    },
-    {
-      "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"11\"]",
-      "text": "DL360 Gen11 Compact Server Built for High-End Performance The HPE ProLiant DL360 Gen11 is a compact, high-performance 1U server powered by an Intel Xeon-Gold 6430 32-core processor and 512GB memory. Supported by HPE 3-Year Tech Care Essential Service, it’s ideal for demanding workloads in space-constrained environments. - i Unlocked Compare STs USD 54,290.36 Estimated Net Price Customize Quote",
-      "sku": "DL360",
-      "listPriceUsd": 0,
-      "availability": "Available in OCA product catalog",
-      "leadTime": "",
-      "deliveryLabel": "",
-      "isBto": true,
-      "isTaa": false,
-      "isGta": false,
-      "isCto": false
+      "isCto": false,
+      "isWizard": false
     }
   ]
 }

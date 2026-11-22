@@ -8,8 +8,10 @@ RULE_6	CONDITIONAL_VISIBILITY	Storage Devices	BTO products are not allowed in CT
 RULE_7	CONDITIONAL_VISIBILITY	Storage Devices	BTO products are not allowed in CTO Base Model.	1	666987-B21
 RULE_8	CONDITIONAL_VISIBILITY	Networking	BTO products are not allowed in CTO Base Model.	1	487655-B21
 RULE_9	CONDITIONAL_VISIBILITY	Manufacturing Services	Power cord cannot be selected if HPE Remove Standard Power Cords(469774-409) is in the configuration.	1	469774-409
-RULE_10	CONDITIONAL_VISIBILITY	Power and Cooling	Mixing of Power Supplies is not allowed.	3	P67248-B21, P73210-B21, P67244-B21
-RULE_11	CONDITIONAL_VISIBILITY	Power and Cooling	Supports C19/ C19-C20 Power Cords only.	27	AF556A, AF568A, P73874-B21, AF557A, AF558A, AF559A, AF560A, AF561A, AF562A, AF564A, AF565A, AF566A, AF567A, AF569A, AF570A, AF572A, AF573A, AF591A, P78130-B21, P78131-B21, P78144-B21, P78145-B21, P78147-B21, P78156-B21, P78940-B21, P78941-B21, R1C65A
+RULE_10	CONDITIONAL_VISIBILITY	Power and Cooling	Mixing of Power Supplies is not allowed.	3	P73210-B21, P67244-B21, P67248-B21
+RULE_11	CONDITIONAL_VISIBILITY	Power and Cooling	Supports C19/ C19-C20 Power Cords only.	27	P73874-B21, AF556A, AF557A, AF558A, AF559A, AF560A, AF561A, AF562A, AF564A, AF565A, AF566A, AF567A, AF568A, AF569A, AF570A, AF572A, AF573A, AF591A, P78130-B21, P78131-B21, P78144-B21, P78145-B21, P78147-B21, P78156-B21, P78940-B21, P78941-B21, R1C65A
 RULE_12	CONDITIONAL_VISIBILITY	Power and Cooling	Mixing of Power cords is not allowed	4	P78148-B21, P78155-B21, P78164-B21, P78157-B21
 RULE_13	CONDITIONAL_VISIBILITY	Power and Cooling	BTO products are not allowed in CTO Base Model.	2	A0K02A, A0N33A
-RULE_14	CONDITIONAL_VISIBILITY	Virtualization	Private Product is not valid for current customer account	3	S4F94AAE, S4G00AAE, S4R76AAE
+RULE_14	CONDITIONAL_VISIBILITY	HPE Compute Ops Management	Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers	2	R7A11AAE, S2E10AAE
+RULE_15	CONDITIONAL_VISIBILITY	HPE Compute Ops Management	For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers	3	S5E59AAE, S5E60AAE, S5E61AAE
+RULE_16	CONDITIONAL_VISIBILITY	Virtualization	Private Product is not valid for current customer account	3	S4F94AAE, S4G00AAE, S4R76AAE

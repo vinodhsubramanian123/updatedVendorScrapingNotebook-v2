@@ -1,6 +1,100 @@
 [
   {
     "summary": {
+      "runId": "run_Synergy_12000_Frame_1795332471721",
+      "sessionName": "Synergy_12000_Frame",
+      "startTime": "2026-11-22T07:27:51.717Z",
+      "endTime": "2026-11-22T07:27:58.384Z",
+      "durationMs": 6667,
+      "durationSec": "6.67",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 258,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 257,
+      "validationStats": {
+        "totalEntries": 35,
+        "totalSKUs": 258,
+        "validSKUs": 258,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 63,
+        "priceErrors": 0,
+        "ruleCount": 95,
+        "categoryCount": 11
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-22T07:27:51.722Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/Synergy/General/Synergy_12000_Frame/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/Synergy/General/Synergy_12000_Frame/Synergy_12000_Frame_Catalog.json",
+          "chassisLabel": "Synergy 12000 Frame"
+        }
+      },
+      {
+        "timestamp": "2026-11-22T07:27:55.099Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 23,
+          "totalUniqueSKUs": 257,
+          "incrementalStats": {
+            "totalScrapedSkus": 257,
+            "unchangedSkusCount": 255,
+            "modifiedSkusCount": 2,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-22T07:27:55.121Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 35,
+            "totalSKUs": 258,
+            "validSKUs": 258,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 63,
+            "priceErrors": 0,
+            "ruleCount": 95,
+            "categoryCount": 11
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-22T07:27:58.384Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/Synergy/General/Synergy_12000_Frame/Synergy_12000_Frame_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 258,
+      "classified": 258,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_Synergy_12000_Frame_1795316304714",
       "sessionName": "Synergy_12000_Frame",
       "startTime": "2026-11-22T02:58:24.709Z",

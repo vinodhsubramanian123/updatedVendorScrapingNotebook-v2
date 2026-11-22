@@ -76128,5 +76128,55 @@
     "field": "Vendor Attributes",
     "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
     "newValue": ""
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "R7A11AAE",
+    "chassis": "DL580 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "S2E10AAE",
+    "chassis": "DL580 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "S5E59AAE",
+    "chassis": "DL580 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "S5E60AAE",
+    "chassis": "DL580 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-11-22",
+    "productNumber": "S5E61AAE",
+    "chassis": "DL580 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
   }
 ]

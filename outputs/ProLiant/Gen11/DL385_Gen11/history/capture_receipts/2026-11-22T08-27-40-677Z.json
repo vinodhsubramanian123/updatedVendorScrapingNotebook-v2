@@ -1,0 +1,957 @@
+{
+  "schemaVersion": 1,
+  "product": "DL385_Gen11",
+  "vendor": "HPE",
+  "capturedAt": "2026-11-22T08:27:23.643Z",
+  "auditedAt": "2026-11-22T08:27:40.677Z",
+  "incompleteLegacyBaselinePreserved": false,
+  "mode": "REFRESH",
+  "status": "LOCAL_PROMOTED",
+  "provenance": {
+    "baseSku": "P53921-B21",
+    "ownerConfiguration": "HPE ProLiant DL385 Gen11 8SFF Configure-to-order Server [P53921-B21]",
+    "solutionDomain": "SERVER",
+    "observedUrl": "https://oca.ext.hpe.com/oca/OCAInternalLogin"
+  },
+  "coverage": {
+    "textExtractionMode": "FULL_BODY_TEXT",
+    "outsideTableNotesCaptured": true,
+    "conditionalDiscovery": "HIDDEN_DOM_AMBIENT_AND_SCOPED_BACKPLANE_SELECTORS_OTHER_MACROS_UNVERIFIED",
+    "ownedMenuDiscovery": {
+      "status": "OBSERVED_CONFIGURED_CHILD_MENUS",
+      "children": []
+    },
+    "baseSku": "P53921-B21",
+    "ownerConfiguration": "HPE ProLiant DL385 Gen11 8SFF Configure-to-order Server [P53921-B21]",
+    "solutionDomain": "SERVER",
+    "observedSelectors": [
+      {
+        "selector": "#extended_overview_menu",
+        "value": "EXPANDED"
+      },
+      {
+        "selector": "ambientTemperature",
+        "value": "DEFAULT_AND_SWEEP_RESTORED"
+      },
+      {
+        "selector": "item_tr_P55087-B21_storage_DriveCageChoice",
+        "sku": "P55087-B21",
+        "value": "SET_1_CAPTURED_AND_RESTORED_0",
+        "revealedRows": 45,
+        "restoredCountAfter": 0
+      }
+    ],
+    "missingProvenance": [],
+    "completeness": "CAPTURED_STATES_ONLY",
+    "policy": {
+      "valid": true,
+      "reason": "",
+      "profileProduct": "DL385_Gen11",
+      "archivedStub": false,
+      "scope": "PROFILE_STAGING_HARDENED",
+      "stagingFloorMetrics": {
+        "actualDrives": 46,
+        "actualGpuCards": 6,
+        "zeroPriceBaseVariants": 0,
+        "ageDays": 0
+      },
+      "stagingFloorAdvisories": []
+    },
+    "qualityGate": {
+      "passed": true,
+      "skipped": false,
+      "warningsCount": 0,
+      "replayResults": [
+        {
+          "id": "DL385_G11_P53921_BASE",
+          "issues": [],
+          "passed": true,
+          "status": "PASSED"
+        },
+        {
+          "id": "DL385_G11_ACTIVE_PRICED",
+          "issues": [],
+          "returnedCount": 50,
+          "evidenceStatus": "PARTIAL",
+          "passed": true,
+          "status": "PASSED"
+        }
+      ],
+      "replayExecutedCount": 2,
+      "replaySuiteVersion": "1.1.0",
+      "replaySuiteSha256": "b8b507b9fde1f7013524a6700cad414341341f9316cde9ecbbce5a8e860256c5",
+      "replayInputHashes": {
+        "Catalog.json": "b71a0c3f8127f0ccfaeb74160c601b9eee77c6a8b9b23a710dbc8a3ac8763f5c",
+        "Services.json": "83dbbebbcf0ea540c6dd941bd8ad3138b1f681927172196be55c907acfa0f6cf",
+        "Catalog_Rules.json": "b1516b5d6ee56d3311e61c510990eb6e6061626a956400126f86ed0233f816db",
+        "OCA_Catalog.xlsx": "416db2f300fa9a8945dfe54a9246a20d2a5ef5ec1188a786bf8742afa21b37a2",
+        "conditional_skus.json": "da21bd704ff22b41701c6b4b739a106205980acdfc9f584aa816dff263c7fe3c"
+      }
+    }
+  },
+  "counts": {
+    "hardware": 794,
+    "services": 671,
+    "rules": 285,
+    "categories": 15,
+    "retainedHardware": 794,
+    "hardwareTombstones": 0
+  },
+  "previousCounts": {
+    "hardware": 749,
+    "services": 671,
+    "rules": 237,
+    "categories": 15
+  },
+  "hashes": {
+    "Catalog.json": "b71a0c3f8127f0ccfaeb74160c601b9eee77c6a8b9b23a710dbc8a3ac8763f5c",
+    "Services.json": "83dbbebbcf0ea540c6dd941bd8ad3138b1f681927172196be55c907acfa0f6cf",
+    "Catalog_Rules.json": "b1516b5d6ee56d3311e61c510990eb6e6061626a956400126f86ed0233f816db",
+    "OCA_Catalog.xlsx": "416db2f300fa9a8945dfe54a9246a20d2a5ef5ec1188a786bf8742afa21b37a2"
+  },
+  "rawSha256": "7c83fcce8c27eec4f43652a8f536e6e433745b4b1a09c5a6d24fb997ff1e29c0",
+  "sheets": [
+    {
+      "name": "Category Summary",
+      "rows": 151
+    },
+    {
+      "name": "All SKUs",
+      "rows": 795
+    },
+    {
+      "name": "Chassis Variants",
+      "rows": 6
+    },
+    {
+      "name": "Chassis Options Matrix",
+      "rows": 6
+    },
+    {
+      "name": "Rules & Constraints",
+      "rows": 382
+    },
+    {
+      "name": "Unavailable Rules & Gates",
+      "rows": 38
+    },
+    {
+      "name": "Software & Licenses",
+      "rows": 1001
+    },
+    {
+      "name": "Support Services",
+      "rows": 122
+    },
+    {
+      "name": "Catalog Diffs",
+      "rows": 86
+    },
+    {
+      "name": "Price History Timeline",
+      "rows": 1466
+    },
+    {
+      "name": "Processor",
+      "rows": 44
+    },
+    {
+      "name": "Memory",
+      "rows": 30
+    },
+    {
+      "name": "Networking",
+      "rows": 75
+    },
+    {
+      "name": "Power Supplies",
+      "rows": 6
+    },
+    {
+      "name": "Chassis",
+      "rows": 6
+    },
+    {
+      "name": "Accessories & Infrastructure",
+      "rows": 32
+    },
+    {
+      "name": "Cooling  Thermal",
+      "rows": 11
+    },
+    {
+      "name": "OS Boot Device",
+      "rows": 3
+    },
+    {
+      "name": "Cables & Enablement Kits",
+      "rows": 35
+    },
+    {
+      "name": "Drive Enclosures  Drives",
+      "rows": 67
+    },
+    {
+      "name": "Storage Controllers",
+      "rows": 34
+    },
+    {
+      "name": "Graphics & GPU",
+      "rows": 5
+    },
+    {
+      "name": "PCIe Risers",
+      "rows": 8
+    },
+    {
+      "name": "Support Services_2",
+      "rows": 2
+    },
+    {
+      "name": "Discontinued SKUs",
+      "rows": 139
+    },
+    {
+      "name": "Supply Chain & Lead Times",
+      "rows": 1466
+    },
+    {
+      "name": "Metadata",
+      "rows": 23
+    }
+  ],
+  "deltas": {
+    "hardware": {
+      "added": [
+        "P40497-B21",
+        "P40498-B21",
+        "P40499-B21",
+        "P40500-B21",
+        "P40509-B21",
+        "P40507-B21",
+        "P49031-B21",
+        "P78806-B21",
+        "P40501-B21",
+        "P40506-B21",
+        "P40504-B21",
+        "P40510-B21",
+        "P40511-B21",
+        "P40503-B21",
+        "P40512-B21",
+        "P49047-B21",
+        "P49049-B21",
+        "P58244-B21",
+        "P78801-B21",
+        "P78804-B21",
+        "P40430-B21",
+        "P53561-B21",
+        "P28352-B21",
+        "P28586-B21",
+        "P53562-B21",
+        "P50216-B21",
+        "P50219-B21",
+        "P50224-B21",
+        "P64842-B21",
+        "P64846-B21",
+        "P84236-B21",
+        "P84244-B21",
+        "P64844-B21",
+        "P64848-B21",
+        "P84239-B21",
+        "P50227-B21",
+        "P50233-B21",
+        "P64999-B21",
+        "P91241-B21",
+        "P65007-B21",
+        "P65015-B21",
+        "P65023-B21",
+        "P50230-B21",
+        "P61043-B21",
+        "P61051-B21"
+      ],
+      "removed": [],
+      "modified": [
+        {
+          "sku": "P53921-B21",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "2450.00",
+          "currentPrice": "4403.00",
+          "priceChange": "+$1953.00",
+          "attributeDeltas": "Start Date: \"(None)\" → \"11/10/2022\" | Discontinued Date: \"(None)\" → \"06/30/2028\" | Lead Time: \"(None)\" → \"14 days\" | Lead Time Source: \"Not published by OCA\" → \"OCA candidate estimate\" | Lead Time Days: \"(None)\" → \"14\" | Speed Tier: \"Unpublished\" → \"OCA Estimate\""
+        },
+        {
+          "sku": "P63492-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "12983.00",
+          "currentPrice": "12983.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Discontinued Date: \"02/28/2027\" → \"06/30/2027\""
+        },
+        {
+          "sku": "P47789-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "4229.00",
+          "currentPrice": "4229.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Availability: \"Not published by OCA\" → \"Available\""
+        },
+        {
+          "sku": "804398-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "1775.00",
+          "currentPrice": "1775.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Availability: \"Not published by OCA\" → \"Available\""
+        },
+        {
+          "sku": "P47184-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "11155.00",
+          "currentPrice": "11155.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Availability: \"Not published by OCA\" → \"Available\""
+        },
+        {
+          "sku": "P47777-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "7649.00",
+          "currentPrice": "7649.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Availability: \"Not published by OCA\" → \"Available\""
+        },
+        {
+          "sku": "P47781-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "7299.00",
+          "currentPrice": "7299.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Availability: \"Not published by OCA\" → \"Available\""
+        },
+        {
+          "sku": "P47785-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "4329.00",
+          "currentPrice": "4329.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Availability: \"Not published by OCA\" → \"Available\""
+        },
+        {
+          "sku": "P58335-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "5679.00",
+          "currentPrice": "5679.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Availability: \"Not published by OCA\" → \"Available\""
+        },
+        {
+          "sku": "S6W30C",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "18882.00",
+          "currentPrice": "18882.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"Doublewide GPU can be selected only with GPU CTO Server | S6W30C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S8A40C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S6W21C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"Doublewide GPU can be selected only with GPU CTO Server | S6W30C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S6W21C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S8A40C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "S6W21C",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "37899.00",
+          "currentPrice": "37899.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"Doublewide GPU can be selected only with GPU CTO Server | S6W30C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S8A40C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S6W21C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"Doublewide GPU can be selected only with GPU CTO Server | S6W30C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S6W21C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S8A40C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "S8A40C",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "92899.00",
+          "currentPrice": "92899.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"Doublewide GPU can be selected only with GPU CTO Server | S6W30C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S8A40C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S6W21C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"Doublewide GPU can be selected only with GPU CTO Server | S6W30C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S6W21C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S8A40C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "P73574-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "192.00",
+          "currentPrice": "192.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "P80743-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "302.00",
+          "currentPrice": "302.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "P94841-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "338.00",
+          "currentPrice": "338.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "P82106-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "202.00",
+          "currentPrice": "202.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "P82523-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "150.00",
+          "currentPrice": "150.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "P85893-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "213.00",
+          "currentPrice": "213.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "S4A90C",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "1100.00",
+          "currentPrice": "1100.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Rule/Note: \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "P65333-H21",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "5425.00",
+          "currentPrice": "7331.00",
+          "priceChange": "+$1906.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"30\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":5425,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"30\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":7331,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "P55441-B21",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "88.00",
+          "currentPrice": "88.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "P11086-B21",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "28.00",
+          "currentPrice": "20.00",
+          "priceChange": "$-8.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+        },
+        {
+          "sku": "P11086-051",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "28.00",
+          "currentPrice": "20.00",
+          "priceChange": "$-8.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+        },
+        {
+          "sku": "P11086-041",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "28.00",
+          "currentPrice": "20.00",
+          "priceChange": "$-8.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+        },
+        {
+          "sku": "P11083-B21",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "28.00",
+          "currentPrice": "20.00",
+          "priceChange": "$-8.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+        },
+        {
+          "sku": "P11083-051",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "28.00",
+          "currentPrice": "20.00",
+          "priceChange": "$-8.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+        },
+        {
+          "sku": "P11083-041",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "28.00",
+          "currentPrice": "20.00",
+          "priceChange": "$-8.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+        },
+        {
+          "sku": "P11083-061",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "28.00",
+          "currentPrice": "20.00",
+          "priceChange": "$-8.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+        },
+        {
+          "sku": "P11083-071",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "28.00",
+          "currentPrice": "20.00",
+          "priceChange": "$-8.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+        },
+        {
+          "sku": "P45879-041",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "28.00",
+          "currentPrice": "20.00",
+          "priceChange": "$-8.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+        },
+        {
+          "sku": "P45879-071",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "28.00",
+          "currentPrice": "20.00",
+          "priceChange": "$-8.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+        },
+        {
+          "sku": "P45862-051",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "28.00",
+          "currentPrice": "20.00",
+          "priceChange": "$-8.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+        },
+        {
+          "sku": "P46128-B21",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "6899.00",
+          "currentPrice": "7260.00",
+          "priceChange": "+$361.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":6899,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":7260,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "P46171-021",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "948.00",
+          "currentPrice": "988.00",
+          "priceChange": "+$40.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":948,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":988,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        },
+        {
+          "sku": "P46171-A21",
+          "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+          "previousPrice": "948.00",
+          "currentPrice": "988.00",
+          "priceChange": "+$40.00",
+          "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":948,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":988,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+        }
+      ]
+    },
+    "services": {
+      "added": [],
+      "removed": [],
+      "modified": [
+        {
+          "sku": "R7A11AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "450.00",
+          "currentPrice": "450.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "S2E10AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "1050.00",
+          "currentPrice": "1050.00",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "S5E59AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "919.08",
+          "currentPrice": "919.08",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "S5E60AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "1531.80",
+          "currentPrice": "1531.80",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\""
+        },
+        {
+          "sku": "S5E61AAE",
+          "diffStatus": "ATTRIBUTE_CHANGED",
+          "previousPrice": "2144.52",
+          "currentPrice": "2144.52",
+          "priceChange": "$0.00",
+          "attributeDeltas": "Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\""
+        }
+      ]
+    },
+    "modifiedCount": 40,
+    "modifiedSkus": [
+      {
+        "sku": "P53921-B21",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "2450.00",
+        "currentPrice": "4403.00",
+        "priceChange": "+$1953.00",
+        "attributeDeltas": "Start Date: \"(None)\" → \"11/10/2022\" | Discontinued Date: \"(None)\" → \"06/30/2028\" | Lead Time: \"(None)\" → \"14 days\" | Lead Time Source: \"Not published by OCA\" → \"OCA candidate estimate\" | Lead Time Days: \"(None)\" → \"14\" | Speed Tier: \"Unpublished\" → \"OCA Estimate\""
+      },
+      {
+        "sku": "P63492-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "12983.00",
+        "currentPrice": "12983.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Discontinued Date: \"02/28/2027\" → \"06/30/2027\""
+      },
+      {
+        "sku": "P47789-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "4229.00",
+        "currentPrice": "4229.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Availability: \"Not published by OCA\" → \"Available\""
+      },
+      {
+        "sku": "804398-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "1775.00",
+        "currentPrice": "1775.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Availability: \"Not published by OCA\" → \"Available\""
+      },
+      {
+        "sku": "P47184-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "11155.00",
+        "currentPrice": "11155.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Availability: \"Not published by OCA\" → \"Available\""
+      },
+      {
+        "sku": "P47777-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "7649.00",
+        "currentPrice": "7649.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Availability: \"Not published by OCA\" → \"Available\""
+      },
+      {
+        "sku": "P47781-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "7299.00",
+        "currentPrice": "7299.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Availability: \"Not published by OCA\" → \"Available\""
+      },
+      {
+        "sku": "P47785-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "4329.00",
+        "currentPrice": "4329.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Availability: \"Not published by OCA\" → \"Available\""
+      },
+      {
+        "sku": "P58335-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "5679.00",
+        "currentPrice": "5679.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Availability: \"Not published by OCA\" → \"Available\""
+      },
+      {
+        "sku": "S6W30C",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "18882.00",
+        "currentPrice": "18882.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"Doublewide GPU can be selected only with GPU CTO Server | S6W30C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S8A40C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S6W21C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"Doublewide GPU can be selected only with GPU CTO Server | S6W30C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S6W21C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S8A40C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "S6W21C",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "37899.00",
+        "currentPrice": "37899.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"Doublewide GPU can be selected only with GPU CTO Server | S6W30C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S8A40C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S6W21C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"Doublewide GPU can be selected only with GPU CTO Server | S6W30C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S6W21C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S8A40C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "S8A40C",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "92899.00",
+        "currentPrice": "92899.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"Doublewide GPU can be selected only with GPU CTO Server | S6W30C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S8A40C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S6W21C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"Doublewide GPU can be selected only with GPU CTO Server | S6W30C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S6W21C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S8A40C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "P73574-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "192.00",
+        "currentPrice": "192.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "P80743-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "302.00",
+        "currentPrice": "302.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "P94841-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "338.00",
+        "currentPrice": "338.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "P82106-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "202.00",
+        "currentPrice": "202.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "P82523-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "150.00",
+        "currentPrice": "150.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "P85893-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "213.00",
+        "currentPrice": "213.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "S4A90C",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "1100.00",
+        "currentPrice": "1100.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Rule/Note: \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\" → \"This GPU option can be selected only with GPU CTO Server | P73574-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P94841-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82106-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL | S4A90C conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "P65333-H21",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "5425.00",
+        "currentPrice": "7331.00",
+        "priceChange": "+$1906.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"30\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":5425,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"30\",\"leadTimeUnit\":\"DAYS\",\"lifecycleCanonical\":\"Active\",\"listPrice\":7331,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "P55441-B21",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "88.00",
+        "currentPrice": "88.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "P11086-B21",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "28.00",
+        "currentPrice": "20.00",
+        "priceChange": "$-8.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+      },
+      {
+        "sku": "P11086-051",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "28.00",
+        "currentPrice": "20.00",
+        "priceChange": "$-8.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+      },
+      {
+        "sku": "P11086-041",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "28.00",
+        "currentPrice": "20.00",
+        "priceChange": "$-8.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+      },
+      {
+        "sku": "P11083-B21",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "28.00",
+        "currentPrice": "20.00",
+        "priceChange": "$-8.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+      },
+      {
+        "sku": "P11083-051",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "28.00",
+        "currentPrice": "20.00",
+        "priceChange": "$-8.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+      },
+      {
+        "sku": "P11083-041",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "28.00",
+        "currentPrice": "20.00",
+        "priceChange": "$-8.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+      },
+      {
+        "sku": "P11083-061",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "28.00",
+        "currentPrice": "20.00",
+        "priceChange": "$-8.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+      },
+      {
+        "sku": "P11083-071",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "28.00",
+        "currentPrice": "20.00",
+        "priceChange": "$-8.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+      },
+      {
+        "sku": "P45879-041",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "28.00",
+        "currentPrice": "20.00",
+        "priceChange": "$-8.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+      },
+      {
+        "sku": "P45879-071",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "28.00",
+        "currentPrice": "20.00",
+        "priceChange": "$-8.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+      },
+      {
+        "sku": "P45862-051",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "28.00",
+        "currentPrice": "20.00",
+        "priceChange": "$-8.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":28,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"90-Day Warning\",\"listPrice\":20,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"INTERNAL_CONFIGURATION\"}\""
+      },
+      {
+        "sku": "P46128-B21",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "6899.00",
+        "currentPrice": "7260.00",
+        "priceChange": "+$361.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":6899,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":7260,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "P46171-021",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "948.00",
+        "currentPrice": "988.00",
+        "priceChange": "+$40.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":948,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":988,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "P46171-A21",
+        "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+        "previousPrice": "948.00",
+        "currentPrice": "988.00",
+        "priceChange": "+$40.00",
+        "attributeDeltas": "Vendor Attributes: \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":948,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\" → \"{\"leadTime\":\"Unpublished\",\"lifecycleCanonical\":\"Obsolete\",\"listPrice\":988,\"priceState\":\"PRICED\",\"priceStatus\":\"PRICED\",\"rowType\":\"HARDWARE_OPTION\"}\""
+      },
+      {
+        "sku": "R7A11AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "450.00",
+        "currentPrice": "450.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "S2E10AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "1050.00",
+        "currentPrice": "1050.00",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "S5E59AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "919.08",
+        "currentPrice": "919.08",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "S5E60AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "1531.80",
+        "currentPrice": "1531.80",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\""
+      },
+      {
+        "sku": "S5E61AAE",
+        "diffStatus": "ATTRIBUTE_CHANGED",
+        "previousPrice": "2144.52",
+        "currentPrice": "2144.52",
+        "priceChange": "$0.00",
+        "attributeDeltas": "Portal Visibility: \"(None)\" → \"PORTAL_CONDITIONAL\""
+      }
+    ],
+    "rulesChanged": true,
+    "hardwareChanges": {
+      "added": 45,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 19,
+      "priceAndAttributeChanged": 16,
+      "unchanged": 714,
+      "reinstated": 0,
+      "discontinuedTotal": 5
+    },
+    "serviceChanges": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 5,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 666,
+      "reinstated": 0,
+      "discontinuedTotal": 24
+    }
+  },
+  "cloud": {
+    "status": "CLOUD_VERIFIED",
+    "success": true,
+    "sourceId": "ad3b05b6-3eff-4f2e-be26-c696d9e41ea9",
+    "consolidationVerified": true,
+    "error": "Uploaded and canary-verified \"DL385_Gen11_OCA_Catalog_2026-11-22\" in NotebookLM (52364fcf-acc3-442f-b4ff-f911053d45d2). Existing sources were preserved unless explicit retirement was confirmed."
+  },
+  "promotedAt": "2026-11-22T08:32:19.646Z"
+}

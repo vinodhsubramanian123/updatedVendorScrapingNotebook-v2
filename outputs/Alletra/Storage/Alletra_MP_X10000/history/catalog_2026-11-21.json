@@ -8,9 +8,9 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-11-21",
     "scrapeTimestamp": "2026-11-21T12:18:55.119Z",
-    "builtAt": "2026-11-22T02:53:18.968Z",
+    "builtAt": "2026-11-22T07:28:11.104Z",
     "totalSubcategories": 15,
-    "totalUniqueSKUs": 82,
+    "totalUniqueSKUs": 80,
     "totalTables": 22,
     "diffSummary": {
       "added": 0,
@@ -19,7 +19,7 @@
       "priceChanged": 0,
       "attributeChanged": 0,
       "priceAndAttributeChanged": 0,
-      "unchanged": 82,
+      "unchanged": 80,
       "reinstated": 0,
       "discontinuedTotal": 0
     },
@@ -28,18 +28,18 @@
       "scrapeDate": "2026-11-21",
       "categoryBreakdown": {
         "Chassis": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 1,
+          "minPrice": 1,
+          "maxPrice": 1,
           "subcategories": {
             "Variants": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
             }
           },
-          "avgPrice": 0
+          "avgPrice": 1
         },
         "Accessories & Infrastructure": {
           "totalSKUs": 5,
@@ -168,16 +168,16 @@
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 82,
-      "unchangedSkusCount": 82,
-      "modifiedSkusCount": 0,
+      "totalScrapedSkus": 80,
+      "unchangedSkusCount": 79,
+      "modifiedSkusCount": 1,
       "addedSkusCount": 0,
-      "removedSkusCount": 0,
+      "removedSkusCount": 2,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotChecksum": "b8007b99dfbedf0cdc80171902e928ae185f2cd8cc75460cda3ba8e8b0d5de7b",
-    "snapshotTimestamp": "2026-11-22T02:53:19.629Z"
+    "snapshotChecksum": "d73fdad7fc3a2c203d950313d499483437b881200e1e1d606896734b6e87c0fb",
+    "snapshotTimestamp": "2026-11-22T07:28:11.481Z"
   },
   "subcategories": [
     {
@@ -208,7 +208,7 @@
         "Discontinued Date",
         "Lead Time"
       ],
-      "skuCount": 3,
+      "skuCount": 1,
       "skus": [
         {
           "Product #": "S3L12A",
@@ -217,12 +217,12 @@
           "Component Role": "Base Chassis",
           "Description": "HPE Alletra Storage MP X10000 Base Configuration",
           "Current Qty": "1",
-          "Unit Price (USD)": "0.00",
-          "List Price (USD)": "0.00",
+          "Unit Price (USD)": "1.00",
+          "List Price (USD)": "1.00",
           "Cost (USD)": "",
           "costPrice": null,
-          "listPrice": 0,
-          "priceProvenance": "UNPRICED",
+          "listPrice": 1,
+          "priceProvenance": "CHASSIS_MAP_FALLBACK",
           "CLIC Status": "Valid",
           "clicStatus": "Valid",
           "Lifecycle Status": "Active",
@@ -248,105 +248,13 @@
             "mediaTier": "NVMe All-Flash",
             "uHeight": 2
           },
-          "Price State": "ZERO_UNCONFIRMED",
+          "Price State": "PRICED",
           "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
           "Attribute Deltas": "None",
-          "Price History Trail": "2026-11-21: (no price)"
-        },
-        {
-          "Product #": "S7Z87A",
-          "sku": "S7Z87A",
-          "Option Type": "CTO",
-          "Component Role": "Base Chassis",
-          "Description": "HPE Alletra Storage MP X10000 KSA",
-          "Current Qty": "1",
-          "Unit Price (USD)": "0.00",
-          "List Price (USD)": "0.00",
-          "Cost (USD)": "",
-          "costPrice": null,
-          "listPrice": 0,
-          "priceProvenance": "UNPRICED",
-          "CLIC Status": "Valid",
-          "clicStatus": "Valid",
-          "Lifecycle Status": "Active",
-          "lifecycleStatus": "Active",
-          "HPE Recommended": "No",
-          "Availability": "Available in OCA product catalog",
-          "Lead Time": "",
-          "Lead Time Days": "",
-          "leadTimeDays": null,
-          "Speed Tier": "Unpublished",
-          "Lead Time Source": "Not published by OCA",
-          "Start Date": "",
-          "Discontinued Date": "",
-          "provenance": "HPE OCA Product Search via authenticated CDP session",
-          "ownerProduct": "Alletra_MP_X10000",
-          "subCategory": "Variants",
-          "lifecycleCanonical": "Active",
-          "rowType": "BASE_SYSTEM",
-          "canonicalSpecs": {
-            "vendor": "HPE",
-            "category": "Storage Array",
-            "arrayTopology": "Switched",
-            "mediaTier": "NVMe All-Flash",
-            "uHeight": 2
-          },
-          "Price State": "ZERO_UNCONFIRMED",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
-          "Price History Trail": "2026-11-21: (no price)"
-        },
-        {
-          "Product #": "S6W29A",
-          "sku": "S6W29A",
-          "Option Type": "CTO",
-          "Component Role": "Base Chassis",
-          "Description": "HPE Alletra Storage MP X10000 Disconnected Add-on KSA",
-          "Current Qty": "1",
-          "Unit Price (USD)": "0.00",
-          "List Price (USD)": "0.00",
-          "Cost (USD)": "",
-          "costPrice": null,
-          "listPrice": 0,
-          "priceProvenance": "UNPRICED",
-          "CLIC Status": "Valid",
-          "clicStatus": "Valid",
-          "Lifecycle Status": "Active",
-          "lifecycleStatus": "Active",
-          "HPE Recommended": "No",
-          "Availability": "Available in OCA product catalog",
-          "Lead Time": "",
-          "Lead Time Days": "",
-          "leadTimeDays": null,
-          "Speed Tier": "Unpublished",
-          "Lead Time Source": "Not published by OCA",
-          "Start Date": "",
-          "Discontinued Date": "",
-          "provenance": "HPE OCA Product Search via authenticated CDP session",
-          "ownerProduct": "Alletra_MP_X10000",
-          "subCategory": "Variants",
-          "lifecycleCanonical": "Active",
-          "rowType": "BASE_SYSTEM",
-          "canonicalSpecs": {
-            "vendor": "HPE",
-            "category": "Storage Array",
-            "arrayTopology": "Switched",
-            "mediaTier": "NVMe All-Flash",
-            "uHeight": 2
-          },
-          "Price State": "ZERO_UNCONFIRMED",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
-          "Price History Trail": "2026-11-21: (no price)"
+          "Price History Trail": "2026-11-21: $1.00"
         }
       ]
     },

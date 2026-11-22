@@ -52,12 +52,12 @@
       "UNCHANGED": 62
     },
     "cloudSyncState": "CLOUD_VERIFIED",
-    "verifiedSourceId": "1a15f04c-f81c-4e65-8d08-e1d169ecb45b",
-    "cloudVerifiedAt": "2026-11-21T13:48:16.492Z",
+    "verifiedSourceId": "7c74c639-0104-4882-8025-048a92ce92d2",
+    "cloudVerifiedAt": "2026-11-22T09:11:31.528Z",
     "readbackVerified": true,
     "canaryVerified": true,
     "notebookId": "4734668c-e278-4404-8343-b2a99853b58d",
     "verifiedSourceName": "Synergy_4Port_Frame_Link_Module_OCA_Catalog_2026-11-12",
-    "payloadSha256": "594cc422debb1c16e843ca6ae0ff63d771dea99d0fe8d57462d0b3a207a7ca4c"
+    "payloadSha256": "3db0dd367fae4c0149c57ce57544da88a3e917373ff93ddbaf9e53983c252836"
   }
 }

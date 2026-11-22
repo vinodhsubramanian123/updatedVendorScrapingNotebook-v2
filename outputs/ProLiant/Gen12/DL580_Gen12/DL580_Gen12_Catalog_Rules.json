@@ -6,40 +6,40 @@
     "generation": "Gen12",
     "pillar": "SERVER",
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
-    "scrapeDate": "2026-11-20",
-    "scrapeTimestamp": "2026-11-20T12:48:02.040Z",
-    "builtAt": "2026-11-22T02:57:31.531Z",
-    "totalSubcategories": 50,
-    "totalUniqueSKUs": 584,
-    "totalTables": 68,
+    "scrapeDate": "2026-11-22",
+    "scrapeTimestamp": "2026-11-22T08:37:52.399Z",
+    "builtAt": "2026-11-22T08:37:57.293Z",
+    "totalSubcategories": 51,
+    "totalUniqueSKUs": 594,
+    "totalTables": 69,
     "diffSummary": {
-      "added": 102,
+      "added": 10,
       "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 462,
-      "priceAndAttributeChanged": 20,
-      "unchanged": 0,
+      "attributeChanged": 30,
+      "priceAndAttributeChanged": 4,
+      "unchanged": 550,
       "reinstated": 0,
       "discontinuedTotal": 0
     },
-    "historySnapshot": "catalog_2026-11-20.json",
+    "historySnapshot": "catalog_2026-11-22.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-11-20",
+      "scrapeDate": "2026-11-22",
       "categoryBreakdown": {
         "Chassis": {
           "totalSKUs": 1,
-          "totalPrice": 9950,
-          "minPrice": 9950,
-          "maxPrice": 9950,
+          "totalPrice": 13674,
+          "minPrice": 13674,
+          "maxPrice": 13674,
           "subcategories": {
             "Variants": {
               "totalSKUs": 1,
-              "totalPrice": 9950,
-              "avgPrice": 9950
+              "totalPrice": 13674,
+              "avgPrice": 13674
             }
           },
-          "avgPrice": 9950
+          "avgPrice": 13674
         },
         "Accessories & Infrastructure": {
           "totalSKUs": 8,
@@ -177,10 +177,10 @@
           "avgPrice": 67241
         },
         "Drive Enclosures / Drives": {
-          "totalSKUs": 5,
-          "totalPrice": 1391,
+          "totalSKUs": 15,
+          "totalPrice": 150466,
           "minPrice": 124,
-          "maxPrice": 513,
+          "maxPrice": 33188,
           "subcategories": {
             "Drive Cage": {
               "totalSKUs": 2,
@@ -191,9 +191,14 @@
               "totalSKUs": 3,
               "totalPrice": 488,
               "avgPrice": 162.66666666666666
+            },
+            "Hot Plug SFF Drives (2SFF Stacking Backplane)": {
+              "totalSKUs": 10,
+              "totalPrice": 149075,
+              "avgPrice": 14907.5
             }
           },
-          "avgPrice": 278.2
+          "avgPrice": 10031.066666666668
         },
         "Storage Controllers": {
           "totalSKUs": 54,
@@ -231,7 +236,7 @@
         },
         "Software & Licenses": {
           "totalSKUs": 317,
-          "totalPrice": 8042913,
+          "totalPrice": 8042897,
           "minPrice": 1,
           "maxPrice": 543984,
           "subcategories": {
@@ -302,8 +307,8 @@
             },
             "MS Windows Server - Essentials": {
               "totalSKUs": 32,
-              "totalPrice": 401436,
-              "avgPrice": 12544.875
+              "totalPrice": 401420,
+              "avgPrice": 12544.375
             },
             "SUSE Linux Enterprise Server": {
               "totalSKUs": 16,
@@ -321,7 +326,7 @@
               "avgPrice": 5902.833333333333
             }
           },
-          "avgPrice": 25371.965299684543
+          "avgPrice": 25371.91482649842
         },
         "PCIe Risers": {
           "totalSKUs": 1,
@@ -339,7 +344,7 @@
         },
         "Networking": {
           "totalSKUs": 63,
-          "totalPrice": 249391,
+          "totalPrice": 251297,
           "minPrice": 227,
           "maxPrice": 15334,
           "subcategories": {
@@ -350,8 +355,8 @@
             },
             "InfiniBand PCIe": {
               "totalSKUs": 13,
-              "totalPrice": 94354,
-              "avgPrice": 7258
+              "totalPrice": 96260,
+              "avgPrice": 7404.615384615385
             },
             "Optical Transceivers & DAC Cables": {
               "totalSKUs": 1,
@@ -374,7 +379,7 @@
               "avgPrice": 2611.266666666667
             }
           },
-          "avgPrice": 3958.5873015873017
+          "avgPrice": 3988.84126984127
         },
         "Power Supplies": {
           "totalSKUs": 4,
@@ -397,35 +402,26 @@
         }
       }
     },
-    "incrementalStats": {
-      "totalScrapedSkus": 584,
-      "unchangedSkusCount": 580,
-      "modifiedSkusCount": 0,
-      "addedSkusCount": 4,
-      "removedSkusCount": 0,
-      "estimatedTokensSaved": 0,
-      "estimatedProcessingTimeSavedMs": 0
-    },
-    "snapshotFingerprint": "864abd301f1e8fbd0919fb39e734738c54bae721566fce6d77be9475ebfe1cfe",
+    "snapshotFingerprint": "2503b3a4fc219de4a33984b5d67eae180db8098a756cbc14c6b5c9d78d2f2964",
     "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-11-22T02:57:34.234Z"
+    "rulesGeneratedAt": "2026-11-22T08:38:00.033Z"
   },
   "chassisVariants": [
     {
       "sku": "P75399-B21",
       "description": "HPE ProLiant Compute DL580 Gen12 SFF Configure-to-order Server",
       "formFactor": "Small Form Factor (8-Bay SFF)",
-      "listPrice": 9950,
-      "listPriceFormatted": "$9950.00",
+      "listPrice": 13674,
+      "listPriceFormatted": "$13674.00",
       "optionType": "CTO",
       "hpeRecommended": "No",
       "HPE Recommended": "No",
-      "startDate": "",
-      "discontinuedDate": "",
+      "startDate": "06/02/2025",
+      "discontinuedDate": "06/30/2029",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-09-09: $9950.00 [Δ Attr] → 2026-09-13: $9950.00 [Δ Attr] → 2026-11-20: $9950.00 [Δ Attr: CLIC Status: \"Active\" -> \"Valid\"; Speed Tier: \"(None)\" -> \"Unpublished\"]"
+      "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-09-09: $9950.00 [Δ Attr] → 2026-09-13: $9950.00 [Δ Attr] → 2026-11-20: $9950.00 [Δ Attr: CLIC Status: \"Active\" -> \"Valid\"; Speed Tier: \"(None)\" -> \"Unpublished\"] → 2026-11-22: $13674.00 (▲) [Δ Attr: Start Date: \"(None)\" -> \"06/02/2025\"; Discontinued Date: \"(None)\" -> \"06/30/2029\"; Lead Time: \"(None)\" -> \"14 days\"; Lead Time Source: \"Not published by OCA\" -> \"OCA candidate estimate\"; Lead Time Days: \"(None)\" -> \"14\"; Speed Tier: \"Unpublished\" -> \"OCA Estimate\"]"
     }
   ],
   "chassisVariantMatrix": {
@@ -433,17 +429,17 @@
       "sku": "P75399-B21",
       "description": "HPE ProLiant Compute DL580 Gen12 SFF Configure-to-order Server",
       "formFactor": "Small Form Factor (8-Bay SFF)",
-      "listPrice": 9950,
-      "listPriceFormatted": "$9950.00",
+      "listPrice": 13674,
+      "listPriceFormatted": "$13674.00",
       "optionType": "CTO",
       "hpeRecommended": "No",
       "HPE Recommended": "No",
-      "startDate": "",
-      "discontinuedDate": "",
+      "startDate": "06/02/2025",
+      "discontinuedDate": "06/30/2029",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-09-09: $9950.00 [Δ Attr] → 2026-09-13: $9950.00 [Δ Attr] → 2026-11-20: $9950.00 [Δ Attr: CLIC Status: \"Active\" -> \"Valid\"; Speed Tier: \"(None)\" -> \"Unpublished\"]"
+      "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-09-09: $9950.00 [Δ Attr] → 2026-09-13: $9950.00 [Δ Attr] → 2026-11-20: $9950.00 [Δ Attr: CLIC Status: \"Active\" -> \"Valid\"; Speed Tier: \"(None)\" -> \"Unpublished\"] → 2026-11-22: $13674.00 (▲) [Δ Attr: Start Date: \"(None)\" -> \"06/02/2025\"; Discontinued Date: \"(None)\" -> \"06/30/2029\"; Lead Time: \"(None)\" -> \"14 days\"; Lead Time Source: \"Not published by OCA\" -> \"OCA candidate estimate\"; Lead Time Days: \"(None)\" -> \"14\"; Speed Tier: \"Unpublished\" -> \"OCA Estimate\"]"
     }
   },
   "smartChassisCombinations": [],
@@ -456,9 +452,9 @@
       "total": 134074
     },
     "deliveryAndSupport": {
-      "iconId": "I158526512-01",
+      "iconId": "I158546047-01",
       "edt": "24 - 30 days",
-      "configName": "OCA Config 2Icon ID: I158526512-01EDT: 24 - 30 days",
+      "configName": "OCA Config 2Icon ID: I158546047-01EDT: 24 - 30 days",
       "attachedServices": [
         {
           "deviceTarget": "DL580 Gen12  #1P75399-B21CTO",
@@ -1172,23 +1168,6 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "P67248-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P67248-B21 conditional visibility: portal selector activation required (Mixing of Power Supplies is not allowed.); PORTAL_CONDITIONAL",
-      "parentCategory": "Power Supplies",
-      "subCategory": "-48VDC Power Supplies & Cable Kits",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
         "P73210-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -1223,32 +1202,15 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "AF556A"
+        "P67248-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "conditionKey": "portalSelector",
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "AF556A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "-48VDC Power Supplies & Cable Kits",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "AF568A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "AF568A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
+      "rule": "P67248-B21 conditional visibility: portal selector activation required (Mixing of Power Supplies is not allowed.); PORTAL_CONDITIONAL",
+      "parentCategory": "Power Supplies",
       "subCategory": "-48VDC Power Supplies & Cable Kits",
       "constraint": "",
       "maxQty": ""
@@ -1265,6 +1227,23 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "P73874-B21 conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF556A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF556A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL",
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "-48VDC Power Supplies & Cable Kits",
       "constraint": "",
@@ -1435,6 +1414,23 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "AF567A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AF568A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF568A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL",
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "-48VDC Power Supplies & Cable Kits",
       "constraint": "",
@@ -1834,6 +1830,186 @@
     {
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40497-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P80429-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40497-B21 conditional visibility: portal selector activation required (Revealed when P80429-B21 (HPE ProLiant Compute DL580 Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40498-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P80429-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40498-B21 conditional visibility: portal selector activation required (Revealed when P80429-B21 (HPE ProLiant Compute DL580 Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40499-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P80429-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40499-B21 conditional visibility: portal selector activation required (Revealed when P80429-B21 (HPE ProLiant Compute DL580 Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40500-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P80429-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40500-B21 conditional visibility: portal selector activation required (Revealed when P80429-B21 (HPE ProLiant Compute DL580 Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40504-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P80429-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40504-B21 conditional visibility: portal selector activation required (Revealed when P80429-B21 (HPE ProLiant Compute DL580 Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40509-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P80429-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40509-B21 conditional visibility: portal selector activation required (Revealed when P80429-B21 (HPE ProLiant Compute DL580 Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40510-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P80429-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40510-B21 conditional visibility: portal selector activation required (Revealed when P80429-B21 (HPE ProLiant Compute DL580 Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40511-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P80429-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40511-B21 conditional visibility: portal selector activation required (Revealed when P80429-B21 (HPE ProLiant Compute DL580 Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P49035-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P80429-B21",
+      "portalVerificationRequired": true,
+      "rule": "P49035-B21 conditional visibility: portal selector activation required (Revealed when P80429-B21 (HPE ProLiant Compute DL580 Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P49041-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P80429-B21",
+      "portalVerificationRequired": true,
+      "rule": "P49041-B21 conditional visibility: portal selector activation required (Revealed when P80429-B21 (HPE ProLiant Compute DL580 Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
       "vendorRuleClassification": "MUTUAL_EXCLUSION",
       "parentCategory": "Processor",
       "subCategory": "Configuration Rules",
@@ -2012,9 +2188,9 @@
       "thresholdValue": null,
       "observedTemperatureC": null,
       "affectedSkus": [
-        "P67248-B21",
         "P73210-B21",
-        "P67244-B21"
+        "P67244-B21",
+        "P67248-B21"
       ],
       "ineligibilityReason": "Mixing of Power Supplies is not allowed.",
       "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
@@ -2034,9 +2210,8 @@
       "thresholdValue": null,
       "observedTemperatureC": null,
       "affectedSkus": [
-        "AF556A",
-        "AF568A",
         "P73874-B21",
+        "AF556A",
         "AF557A",
         "AF558A",
         "AF559A",
@@ -2047,6 +2222,7 @@
         "AF565A",
         "AF566A",
         "AF567A",
+        "AF568A",
         "AF569A",
         "AF570A",
         "AF572A",
@@ -2107,6 +2283,49 @@
         "A0N33A"
       ],
       "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "HPE Compute Ops Management",
+      "subCategory": "Configuration Rules",
+      "constraint": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "R7A11AAE",
+        "S2E10AAE"
+      ],
+      "ineligibilityReason": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "HPE Compute Ops Management",
+      "subCategory": "Configuration Rules",
+      "constraint": "For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S5E59AAE",
+        "S5E60AAE",
+        "S5E61AAE"
+      ],
+      "ineligibilityReason": "For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers",
       "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
       "portalVerificationRequired": true
     },

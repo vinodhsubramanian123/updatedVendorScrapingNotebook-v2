@@ -6,40 +6,40 @@
     "generation": "Gen11",
     "pillar": "SERVER",
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
-    "scrapeDate": "2026-11-20",
-    "scrapeTimestamp": "2026-11-20T17:34:18.858Z",
-    "builtAt": "2026-11-22T02:55:10.585Z",
-    "totalSubcategories": 71,
-    "totalUniqueSKUs": 754,
-    "totalTables": 103,
+    "scrapeDate": "2026-11-22",
+    "scrapeTimestamp": "2026-11-22T08:27:23.643Z",
+    "builtAt": "2026-11-22T08:27:27.768Z",
+    "totalSubcategories": 74,
+    "totalUniqueSKUs": 794,
+    "totalTables": 106,
     "diffSummary": {
-      "added": 88,
-      "removed": 5,
+      "added": 45,
+      "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 620,
-      "priceAndAttributeChanged": 36,
-      "unchanged": 5,
+      "attributeChanged": 19,
+      "priceAndAttributeChanged": 16,
+      "unchanged": 714,
       "reinstated": 0,
       "discontinuedTotal": 5
     },
-    "historySnapshot": "catalog_2026-11-20.json",
+    "historySnapshot": "catalog_2026-11-22.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-11-20",
+      "scrapeDate": "2026-11-22",
       "categoryBreakdown": {
         "Chassis": {
           "totalSKUs": 5,
-          "totalPrice": 12250,
+          "totalPrice": 14203,
           "minPrice": 2450,
-          "maxPrice": 2450,
+          "maxPrice": 4403,
           "subcategories": {
             "Variants": {
               "totalSKUs": 5,
-              "totalPrice": 12250,
-              "avgPrice": 2450
+              "totalPrice": 14203,
+              "avgPrice": 2840.6
             }
           },
-          "avgPrice": 2450
+          "avgPrice": 2840.6
         },
         "Accessories & Infrastructure": {
           "totalSKUs": 31,
@@ -96,15 +96,15 @@
           "avgPrice": 182.6451612903226
         },
         "Processor": {
-          "totalSKUs": 48,
-          "totalPrice": 651936,
+          "totalSKUs": 43,
+          "totalPrice": 568075,
           "minPrice": 1633,
-          "maxPrice": 31495,
+          "maxPrice": 29908,
           "subcategories": {
             "Processors": {
-              "totalSKUs": 40,
-              "totalPrice": 587737,
-              "avgPrice": 14693.425
+              "totalSKUs": 35,
+              "totalPrice": 503876,
+              "avgPrice": 14396.457142857143
             },
             "Processor Options": {
               "totalSKUs": 8,
@@ -112,7 +112,7 @@
               "avgPrice": 8024.875
             }
           },
-          "avgPrice": 13582
+          "avgPrice": 13211.046511627907
         },
         "Cooling / Thermal": {
           "totalSKUs": 10,
@@ -231,10 +231,10 @@
           "avgPrice": 1722.030303030303
         },
         "Drive Enclosures / Drives": {
-          "totalSKUs": 21,
-          "totalPrice": 7607,
+          "totalSKUs": 66,
+          "totalPrice": 982520,
           "minPrice": 1,
-          "maxPrice": 1145,
+          "maxPrice": 83798,
           "subcategories": {
             "NVMe Enablement Setting": {
               "totalSKUs": 4,
@@ -260,13 +260,28 @@
               "totalSKUs": 3,
               "totalPrice": 548,
               "avgPrice": 182.66666666666666
+            },
+            "SSD - Read Intensive (Drive Cage Selector)": {
+              "totalSKUs": 10,
+              "totalPrice": 188352,
+              "avgPrice": 18835.2
+            },
+            "SSD - Mixed Use (Drive Cage Selector)": {
+              "totalSKUs": 10,
+              "totalPrice": 169230,
+              "avgPrice": 16923
+            },
+            "Hot Plug SFF Drives (2SFF Stacking Backplane)": {
+              "totalSKUs": 25,
+              "totalPrice": 617331,
+              "avgPrice": 24693.24
             }
           },
-          "avgPrice": 362.23809523809524
+          "avgPrice": 14886.666666666666
         },
         "Software & Licenses": {
           "totalSKUs": 423,
-          "totalPrice": 11396060,
+          "totalPrice": 11396413,
           "minPrice": 1,
           "maxPrice": 978579,
           "subcategories": {
@@ -277,8 +292,8 @@
             },
             "Server Management & Operating System Licenses": {
               "totalSKUs": 117,
-              "totalPrice": 1309495,
-              "avgPrice": 11192.264957264957
+              "totalPrice": 1309936,
+              "avgPrice": 11196.034188034188
             },
             "Red Hat Enterprise Virtualization": {
               "totalSKUs": 3,
@@ -367,8 +382,8 @@
             },
             "Integrated Lights Out Software": {
               "totalSKUs": 36,
-              "totalPrice": 204128,
-              "avgPrice": 5670.222222222223
+              "totalPrice": 204040,
+              "avgPrice": 5667.777777777777
             },
             "Linux Value Added Software": {
               "totalSKUs": 18,
@@ -391,7 +406,7 @@
               "avgPrice": 4085.2
             }
           },
-          "avgPrice": 26941.040189125295
+          "avgPrice": 26941.874704491725
         },
         "Storage Controllers": {
           "totalSKUs": 33,
@@ -457,14 +472,14 @@
         },
         "Networking": {
           "totalSKUs": 72,
-          "totalPrice": 282317,
+          "totalPrice": 284223,
           "minPrice": 72,
           "maxPrice": 15334,
           "subcategories": {
             "InfiniBand PCIe": {
               "totalSKUs": 16,
-              "totalPrice": 76624,
-              "avgPrice": 4789
+              "totalPrice": 78530,
+              "avgPrice": 4908.125
             },
             "OCP Infiniband": {
               "totalSKUs": 4,
@@ -507,7 +522,7 @@
               "avgPrice": 72
             }
           },
-          "avgPrice": 3921.0694444444443
+          "avgPrice": 3947.5416666666665
         },
         "Power Supplies": {
           "totalSKUs": 5,
@@ -544,35 +559,26 @@
         }
       }
     },
-    "incrementalStats": {
-      "totalScrapedSkus": 754,
-      "unchangedSkusCount": 750,
-      "modifiedSkusCount": 0,
-      "addedSkusCount": 4,
-      "removedSkusCount": 0,
-      "estimatedTokensSaved": 0,
-      "estimatedProcessingTimeSavedMs": 0
-    },
-    "snapshotFingerprint": "06b7766d927c3ac0b357c00f5fe19a0612d68cdfe6a41fee03c20fa8acc8ebb1",
+    "snapshotFingerprint": "f385358d2c009d880071e9766616e10f72a008e811aa5dd09c3513eec81289f0",
     "chassisVariantCount": 5,
-    "rulesGeneratedAt": "2026-11-22T02:55:15.283Z"
+    "rulesGeneratedAt": "2026-11-22T08:27:30.786Z"
   },
   "chassisVariants": [
     {
       "sku": "P53921-B21",
       "description": "HPE ProLiant DL385 Gen11 8SFF Configure-to-order Server",
       "formFactor": "Small Form Factor (8-Bay SFF)",
-      "listPrice": 2450,
-      "listPriceFormatted": "$2450.00",
+      "listPrice": 4403,
+      "listPriceFormatted": "$4403.00",
       "optionType": "CTO",
       "hpeRecommended": "No",
       "HPE Recommended": "No",
-      "startDate": "",
-      "discontinuedDate": "",
+      "startDate": "11/10/2022",
+      "discontinuedDate": "06/30/2028",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-10-21: $2450.00"
+      "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-10-21: $2450.00 → 2026-11-22: $4403.00 (▲) [Δ Attr: Start Date: \"(None)\" -> \"11/10/2022\"; Discontinued Date: \"(None)\" -> \"06/30/2028\"; Lead Time: \"(None)\" -> \"14 days\"; Lead Time Source: \"Not published by OCA\" -> \"OCA candidate estimate\"; Lead Time Days: \"(None)\" -> \"14\"; Speed Tier: \"Unpublished\" -> \"OCA Estimate\"]"
     },
     {
       "sku": "P57844-B21",
@@ -644,17 +650,17 @@
       "sku": "P53921-B21",
       "description": "HPE ProLiant DL385 Gen11 8SFF Configure-to-order Server",
       "formFactor": "Small Form Factor (8-Bay SFF)",
-      "listPrice": 2450,
-      "listPriceFormatted": "$2450.00",
+      "listPrice": 4403,
+      "listPriceFormatted": "$4403.00",
       "optionType": "CTO",
       "hpeRecommended": "No",
       "HPE Recommended": "No",
-      "startDate": "",
-      "discontinuedDate": "",
+      "startDate": "11/10/2022",
+      "discontinuedDate": "06/30/2028",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-10-21: $2450.00"
+      "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-10-21: $2450.00 → 2026-11-22: $4403.00 (▲) [Δ Attr: Start Date: \"(None)\" -> \"11/10/2022\"; Discontinued Date: \"(None)\" -> \"06/30/2028\"; Lead Time: \"(None)\" -> \"14 days\"; Lead Time Source: \"Not published by OCA\" -> \"OCA candidate estimate\"; Lead Time Days: \"(None)\" -> \"14\"; Speed Tier: \"Unpublished\" -> \"OCA Estimate\"]"
     },
     "P57844-B21": {
       "sku": "P57844-B21",
@@ -724,16 +730,16 @@
   "smartChassisCombinations": [],
   "solutionManifest": {
     "commercialBreakdown": {
-      "hardware": 67886,
+      "hardware": 68812,
       "support": 15057,
       "services": 1444,
       "software": 1220,
-      "total": 85607
+      "total": 86533
     },
     "deliveryAndSupport": {
-      "iconId": "I158536409-01",
+      "iconId": "I158545732-01",
       "edt": "24 - 30 days",
-      "configName": "OCA Config 2Icon ID: I158536409-01EDT: 24 - 30 days",
+      "configName": "OCA Config 2Icon ID: I158545732-01EDT: 24 - 30 days",
       "attachedServices": [
         {
           "deviceTarget": "DL385 Gen11  #1P53921-B21CTO",
@@ -880,11 +886,11 @@
         "hierarchyLevel": "(2)",
         "sku": "P03178-B21",
         "optionCode": "",
-        "quantity": 1,
+        "quantity": 2,
         "description": "HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit",
         "configName": "DL385 Gen11  #1",
         "unitPrice": 926,
-        "extPrice": 926,
+        "extPrice": 1852,
         "startDate": "12/05/2022",
         "discDate": "06/30/2028"
       },
@@ -892,7 +898,7 @@
         "hierarchyLevel": "(3)",
         "sku": "P03178-B21",
         "optionCode": "0D1",
-        "quantity": 1,
+        "quantity": 2,
         "description": "Factory Integrated",
         "configName": "DL385 Gen11  #1",
         "unitPrice": 0,
@@ -1880,14 +1886,14 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "S8A40C"
+        "S6W21C"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "conditionKey": "portalSelector",
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S8A40C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL",
+      "rule": "S6W21C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL",
       "parentCategory": "Graphics & GPU",
       "subCategory": "GPU Accelerators",
       "constraint": "",
@@ -1897,14 +1903,14 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "S6W21C"
+        "S8A40C"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "conditionKey": "portalSelector",
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S6W21C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL",
+      "rule": "S8A40C conditional visibility: portal selector activation required (Doublewide GPU can be selected only with GPU CTO Server); PORTAL_CONDITIONAL",
       "parentCategory": "Graphics & GPU",
       "subCategory": "GPU Accelerators",
       "constraint": "",
@@ -1939,23 +1945,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "P80743-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL",
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "GPU Accelerators",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P85893-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL",
       "parentCategory": "Accessories & Infrastructure",
       "subCategory": "GPU Accelerators",
       "constraint": "",
@@ -2007,6 +1996,23 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "P82523-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL",
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "GPU Accelerators",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85893-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P85893-B21 conditional visibility: portal selector activation required (This GPU option can be selected only with GPU CTO Server); PORTAL_CONDITIONAL",
       "parentCategory": "Accessories & Infrastructure",
       "subCategory": "GPU Accelerators",
       "constraint": "",
@@ -2916,6 +2922,816 @@
     {
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40497-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40497-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Read Intensive (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40498-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40498-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Read Intensive (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40499-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40499-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Read Intensive (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40500-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40500-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Read Intensive (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40509-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40509-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Read Intensive (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40507-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40507-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Read Intensive (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P49031-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P49031-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Read Intensive (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78806-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P78806-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Read Intensive (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40501-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40501-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Read Intensive (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40506-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40506-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Read Intensive (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40504-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40504-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Mixed Use (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40510-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40510-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Mixed Use (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40511-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40511-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Mixed Use (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40503-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40503-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Mixed Use (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40512-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40512-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Mixed Use (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P49047-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P49047-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Mixed Use (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P49049-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P49049-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Mixed Use (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P58244-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P58244-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Mixed Use (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78801-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P78801-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Mixed Use (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78804-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P78804-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SSD - Mixed Use (Drive Cage Selector)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40430-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40430-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P53561-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P53561-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P28352-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P28352-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P28586-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P28586-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P53562-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P53562-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50216-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P50216-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50219-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P50219-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50224-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P50224-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64842-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P64842-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64846-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P64846-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P84236-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P84236-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P84244-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P84244-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64844-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P64844-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64848-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P64848-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P84239-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P84239-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50227-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P50227-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50233-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P50233-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64999-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P64999-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91241-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91241-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P65007-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P65007-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P65015-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P65015-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P65023-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P65023-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50230-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P50230-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P61043-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P61043-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P61051-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P55087-B21",
+      "portalVerificationRequired": true,
+      "rule": "P61051-B21 conditional visibility: portal selector activation required (Revealed when P55087-B21 (HPE ProLiant DL385 Gen11 8SFF Tri-Mode U.3 x4 Mid Tray Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
       "vendorRuleClassification": "MUTUAL_EXCLUSION",
       "parentCategory": "Processor",
       "subCategory": "Configuration Rules",
@@ -3270,8 +4086,8 @@
       "observedTemperatureC": null,
       "affectedSkus": [
         "S6W30C",
-        "S8A40C",
-        "S6W21C"
+        "S6W21C",
+        "S8A40C"
       ],
       "ineligibilityReason": "Doublewide GPU can be selected only with GPU CTO Server",
       "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
@@ -3293,10 +4109,10 @@
       "affectedSkus": [
         "P73574-B21",
         "P80743-B21",
-        "P85893-B21",
         "P94841-B21",
         "P82106-B21",
         "P82523-B21",
+        "P85893-B21",
         "S4A90C"
       ],
       "ineligibilityReason": "This GPU option can be selected only with GPU CTO Server",
@@ -3499,6 +4315,26 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Security Options",
+      "subCategory": "Configuration Rules",
+      "constraint": "Maximum 1 quantity of each of Security Hardware can be ordered per base model",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Maximum 1 quantity of each of Security Hardware can be ordered per base model",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P55441-B21"
+      ],
+      "ineligibilityReason": "Maximum 1 quantity of each of Security Hardware can be ordered per base model",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
       "parentCategory": "Virtualization",
       "subCategory": "Configuration Rules",
       "constraint": "Private Product is not valid for current customer account",
@@ -3543,6 +4379,49 @@
         "R6Q42A"
       ],
       "ineligibilityReason": "Private Product is not valid for current customer account",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "HPE Compute Ops Management",
+      "subCategory": "Configuration Rules",
+      "constraint": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "R7A11AAE",
+        "S2E10AAE"
+      ],
+      "ineligibilityReason": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "HPE Compute Ops Management",
+      "subCategory": "Configuration Rules",
+      "constraint": "For Gen11/Gen12/Gen13 servers ONLY",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] For Gen11/Gen12/Gen13 servers ONLY",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S5E59AAE",
+        "S5E60AAE",
+        "S5E61AAE"
+      ],
+      "ineligibilityReason": "For Gen11/Gen12/Gen13 servers ONLY",
       "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
       "portalVerificationRequired": true
     },

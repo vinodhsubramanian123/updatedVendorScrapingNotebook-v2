@@ -6,40 +6,40 @@
     "generation": "FC",
     "pillar": "NETWORKING",
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
-    "scrapeDate": "2026-09-22",
-    "scrapeTimestamp": "2026-09-22T02:35:27.250Z",
-    "builtAt": "2026-11-22T02:57:48.141Z",
+    "scrapeDate": "2026-11-22",
+    "scrapeTimestamp": "2026-11-22T07:33:43.920Z",
+    "builtAt": "2026-11-22T07:33:46.746Z",
     "totalSubcategories": 11,
-    "totalUniqueSKUs": 79,
+    "totalUniqueSKUs": 82,
     "totalTables": 11,
     "diffSummary": {
-      "added": 22,
+      "added": 3,
       "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 34,
-      "priceAndAttributeChanged": 23,
-      "unchanged": 0,
+      "attributeChanged": 72,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 7,
       "reinstated": 0,
       "discontinuedTotal": 0
     },
-    "historySnapshot": "catalog_2026-09-22.json",
+    "historySnapshot": "catalog_2026-11-22.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-09-22",
+      "scrapeDate": "2026-11-22",
       "categoryBreakdown": {
         "Chassis": {
-          "totalSKUs": 1,
-          "totalPrice": 19746,
-          "minPrice": 19746,
-          "maxPrice": 19746,
+          "totalSKUs": 4,
+          "totalPrice": 131335,
+          "minPrice": 13899,
+          "maxPrice": 54440,
           "subcategories": {
             "Variants": {
-              "totalSKUs": 1,
-              "totalPrice": 19746,
-              "avgPrice": 19746
+              "totalSKUs": 4,
+              "totalPrice": 131335,
+              "avgPrice": 32833.75
             }
           },
-          "avgPrice": 19746
+          "avgPrice": 32833.75
         },
         "Networking": {
           "totalSKUs": 16,
@@ -129,20 +129,27 @@
         }
       }
     },
-    "incrementalStats": {
-      "totalScrapedSkus": 79,
-      "unchangedSkusCount": 79,
-      "modifiedSkusCount": 0,
-      "addedSkusCount": 0,
-      "removedSkusCount": 0,
-      "estimatedTokensSaved": 0,
-      "estimatedProcessingTimeSavedMs": 0
-    },
-    "snapshotFingerprint": "296978d4ce3ed00e087b91827649e21b964cac6a6140734c75fef740741ac644",
-    "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-11-22T02:57:48.979Z"
+    "snapshotFingerprint": "3b44c3a26c8ea984b601c68cb5e68c4ebffeec228438f751569a2cf78c3d3c25",
+    "chassisVariantCount": 4,
+    "rulesGeneratedAt": "2026-11-22T07:33:47.156Z"
   },
   "chassisVariants": [
+    {
+      "sku": "R4G55B",
+      "description": "HPE SN3600B 32Gb 24/8 8-port 16Gb Short Wave SFP+ Fibre Channel Switch",
+      "formFactor": "Unknown",
+      "listPrice": 13899,
+      "listPriceFormatted": "$13899.00",
+      "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
+      "startDate": "09/07/2021",
+      "discontinuedDate": "01/31/2027",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-09-22: (no price) → 2026-11-22: $13899.00"
+    },
     {
       "sku": "R7R97A",
       "description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
@@ -156,11 +163,59 @@
       "discontinuedDate": "05/31/2028",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-09-21: (no price) → 2026-09-22: $19746.00 [Δ Attr: CLIC Status: \"Active\" -> \"Valid\"; Speed Tier: \"(None)\" -> \"Unpublished\"]"
+    },
+    {
+      "sku": "R8P28A",
+      "description": "HPE SN3600B 32Gb 24/24 Power Pack+ 24-port 32Gb Short Wave SFP28 Fibre Channel Switch",
+      "formFactor": "Unknown",
+      "listPrice": 54440,
+      "listPriceFormatted": "$54440.00",
+      "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-09-22: (no price) → 2026-11-22: $54440.00"
+    },
+    {
+      "sku": "R8P29A",
+      "description": "HPE SN3600B 32Gb 24/24 Power Pack+ 24-port 16Gb Short Wave SFP+ Fibre Channel Switch",
+      "formFactor": "Unknown",
+      "listPrice": 43250,
+      "listPriceFormatted": "$43250.00",
+      "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-09-22: (no price) → 2026-11-22: $43250.00"
     }
   ],
   "chassisVariantMatrix": {
+    "R4G55B": {
+      "sku": "R4G55B",
+      "description": "HPE SN3600B 32Gb 24/8 8-port 16Gb Short Wave SFP+ Fibre Channel Switch",
+      "formFactor": "Unknown",
+      "listPrice": 13899,
+      "listPriceFormatted": "$13899.00",
+      "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
+      "startDate": "09/07/2021",
+      "discontinuedDate": "01/31/2027",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-09-22: (no price) → 2026-11-22: $13899.00"
+    },
     "R7R97A": {
       "sku": "R7R97A",
       "description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
@@ -174,27 +229,59 @@
       "discontinuedDate": "05/31/2028",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-09-21: (no price) → 2026-09-22: $19746.00 [Δ Attr: CLIC Status: \"Active\" -> \"Valid\"; Speed Tier: \"(None)\" -> \"Unpublished\"]"
+    },
+    "R8P28A": {
+      "sku": "R8P28A",
+      "description": "HPE SN3600B 32Gb 24/24 Power Pack+ 24-port 32Gb Short Wave SFP28 Fibre Channel Switch",
+      "formFactor": "Unknown",
+      "listPrice": 54440,
+      "listPriceFormatted": "$54440.00",
+      "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-09-22: (no price) → 2026-11-22: $54440.00"
+    },
+    "R8P29A": {
+      "sku": "R8P29A",
+      "description": "HPE SN3600B 32Gb 24/24 Power Pack+ 24-port 16Gb Short Wave SFP+ Fibre Channel Switch",
+      "formFactor": "Unknown",
+      "listPrice": 43250,
+      "listPriceFormatted": "$43250.00",
+      "optionType": "CTO",
+      "hpeRecommended": "No",
+      "HPE Recommended": "No",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "ADDED",
+      "priceHistoryTrail": "2026-09-22: (no price) → 2026-11-22: $43250.00"
     }
   },
   "smartChassisCombinations": [],
   "solutionManifest": {
     "commercialBreakdown": {
-      "hardware": 21306,
-      "support": 2705,
+      "hardware": 15459,
+      "support": 2520,
       "services": 537,
       "software": 0,
-      "total": 24548
+      "total": 18516
     },
     "deliveryAndSupport": {
-      "iconId": "I155845745-01",
-      "edt": "14 - 18 days",
-      "configName": "OCA Config 2",
+      "iconId": "I158545492-01",
+      "edt": "24 - 30 days",
+      "configName": "OCA Config 2Icon ID: I158545492-01EDT: 24 - 30 days",
       "attachedServices": [
         {
-          "deviceTarget": "SN3600B/CN3360B Switch #1\nR7R97A",
-          "reactiveSupport": "HU4A6A5#ZTL HPE 5Y Tech Care Essential Service",
+          "deviceTarget": "SN3600B/CN3360B Switch #1R4G55B",
+          "reactiveSupport": "HU4A3A5#ZTQ HPE 5Y Tech Care Critical Service",
           "installation": "HA113A1#5GA HPE Installation Service",
           "deviceSpecific": ""
         }
@@ -203,15 +290,15 @@
     "baselineHierarchy": [
       {
         "hierarchyLevel": "(1)",
-        "sku": "R7R97A",
+        "sku": "90R4G55B",
         "optionCode": "",
         "quantity": 1,
-        "description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
+        "description": "HPE SN3600B 32Gb 24/8 8-port 16Gb Short Wave SFP+ Fibre Channel Switch",
         "configName": "SN3600B/CN3360B Switch #1",
-        "unitPrice": 19746,
-        "extPrice": 19746,
-        "startDate": "06/07/2021",
-        "discDate": "06/30/2027"
+        "unitPrice": 13899,
+        "extPrice": 13899,
+        "startDate": "09/07/2021",
+        "discDate": "01/31/2027"
       },
       {
         "hierarchyLevel": "(1)",
@@ -251,10 +338,10 @@
       },
       {
         "hierarchyLevel": "(1)",
-        "sku": "HU4A6A5",
+        "sku": "HU4A3A5",
         "optionCode": "",
         "quantity": 1,
-        "description": "HPE 5Y Tech Care Essential Service",
+        "description": "HPE 5Y Tech Care Critical Service",
         "configName": "SN3600B/CN3360B Switch #1",
         "unitPrice": 0,
         "extPrice": 0,
@@ -263,13 +350,13 @@
       },
       {
         "hierarchyLevel": "(2)",
-        "sku": "HU4A6A5",
-        "optionCode": "ZTL",
+        "sku": "HU4A3A5",
+        "optionCode": "ZTQ",
         "quantity": 1,
-        "description": "HPE SN3600B 24/8 8p 32G Swch Support",
+        "description": "HPE SN3600B 16Gb 24/8 8p FC Swch Support",
         "configName": "SN3600B/CN3360B Switch #1",
-        "unitPrice": 2705,
-        "extPrice": 2705,
+        "unitPrice": 2520,
+        "extPrice": 2520,
         "startDate": "03/01/2021",
         "discDate": "12/31/2050"
       }
@@ -277,6 +364,223 @@
   },
   "subcategories": [],
   "rules": [
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R8P28A#AC3"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R8P28A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "Q1H71B#05Y"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "Q1H71B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "Q1H70B#05Y"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "Q1H70B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R4G55A#05Y"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R4G55A#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "Q1H72B#05Y"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "Q1H72B#05Y conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R8P29A#AC3"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R8P29A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R7R97A#AC3"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R7R97A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "R4G55A#AC3"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "R4G55A#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "Q1H72B#AC3"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "Q1H72B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "Q1H70B#AC3"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "Q1H70B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "Q1H71B#AC3"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "Q1H71B#AC3 conditional visibility: portal selector activation required (Each base model only accepts its own localization option.); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Switch Enclosure Options",
+      "subCategory": "Configuration Rules",
+      "constraint": "Each base model only accepts its own localization option.",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Each base model only accepts its own localization option.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "R8P28A#AC3",
+        "Q1H71B#05Y",
+        "Q1H70B#05Y",
+        "R4G55A#05Y",
+        "Q1H72B#05Y",
+        "R8P29A#AC3",
+        "R7R97A#AC3",
+        "R4G55A#AC3",
+        "Q1H72B#AC3",
+        "Q1H70B#AC3",
+        "Q1H71B#AC3"
+      ],
+      "ineligibilityReason": "Each base model only accepts its own localization option.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
     {
       "parentCategory": "Chassis",
       "subCategory": "Variants",

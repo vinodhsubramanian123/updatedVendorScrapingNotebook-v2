@@ -1,20 +1,20 @@
 {
   "version": "1.0.0",
   "chassis": "DL580_Gen12",
-  "generatedAt": "2026-11-22T02:57:29.469Z",
-  "executionDurationMs": 8870,
+  "generatedAt": "2026-11-22T08:37:53.711Z",
+  "executionDurationMs": 6819,
   "summary": {
     "totalRawTables": 93,
     "validProductTables": 87,
     "skippedTablesCount": 29,
     "rejectedRowsCount": 11,
     "parseFailedPriceCount": 0,
-    "unmeasuredLeadTimeCount": 393,
+    "unmeasuredLeadTimeCount": 392,
     "selfHealedTablesCount": 0,
     "selfHealedSkusCount": 0,
-    "totalExtractedSKUs": 584,
-    "totalUniqueSKUs": 584,
-    "totalRulesExtracted": 140,
+    "totalExtractedSKUs": 594,
+    "totalUniqueSKUs": 594,
+    "totalRulesExtracted": 152,
     "chassisVariantsCount": 1
   },
   "skippedTables": [
@@ -1391,7 +1391,7 @@
     "Cooling / Thermal": 6,
     "Cables & Enablement Kits": 49,
     "Memory": 8,
-    "Drive Enclosures / Drives": 8,
+    "Drive Enclosures / Drives": 18,
     "Storage Controllers": 85,
     "Software & Licenses": 344,
     "PCIe Risers": 1,
@@ -1402,8 +1402,8 @@
     "P75399-B21": {
       "description": "HPE ProLiant Compute DL580 Gen12 SFF Configure-to-order Server",
       "formFactor": "Small Form Factor (8-Bay SFF)",
-      "listPrice": 9950,
-      "diffStatus": "ATTRIBUTE_CHANGED"
+      "listPrice": 13674,
+      "diffStatus": "PRICE_AND_ATTRIBUTE_CHANGED"
     }
   },
   "dataAnomalies": {
@@ -1413,19 +1413,20 @@
     "duplicateSKUs": []
   },
   "attributeFidelity": {
-    "skusWithLeadTime": 191,
+    "skusWithLeadTime": 202,
     "skusWithCost": 0,
     "skusWithPriceDelta": 42,
     "skusWithPricePerGb": 8,
     "clicStatusDistribution": {
       "Valid": 1,
-      "Unpublished": 583
+      "Unpublished": 583,
+      "Selectable under selector gate": 10
     },
     "lifecycleStatusDistribution": {
-      "Active": 434,
+      "Active": 443,
       "Constrained Supply (CS)": 5,
       "Obsolete (OB)": 109,
-      "EOL Warning (90-Day)": 36
+      "EOL Warning (90-Day)": 37
     }
   }
 }
