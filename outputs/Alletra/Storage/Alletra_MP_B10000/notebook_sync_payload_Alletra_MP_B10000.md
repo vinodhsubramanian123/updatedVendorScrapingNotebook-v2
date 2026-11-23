@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/STORAGE/Alletra/Storage/Alletra_MP_B10000`
 
-**Sync Timestamp**: 2026-11-22T08:57:52.706Z
+**Sync Timestamp**: 2026-11-23T14:07:47.234Z
 
 **Total Verified SKUs**: `301` (`201` Hardware + `100` Services)
 

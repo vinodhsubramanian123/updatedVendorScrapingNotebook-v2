@@ -1,0 +1,18 @@
+{
+  "product": "Alletra_MP_B10000",
+  "notebookId": "b4131379-36ec-47c3-8016-882fc26a171c",
+  "replacementSourceId": "eb3226ec-1b9e-45f8-8da9-87ce4cbdc08a",
+  "verifiedAt": "2026-11-23T14:09:01.979Z",
+  "contentFingerprints": null,
+  "legacyFingerprint": "94e2d4b7640351b2f2639b68a10647b7100c79f7171a2814f69cd5f1b721e0ee",
+  "retirementRequested": false,
+  "plannedRetirementIds": [
+    "01727c2c-0461-46ea-a742-97094806853d"
+  ],
+  "status": "RETIREMENT_PENDING",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [
+    "01727c2c-0461-46ea-a742-97094806853d"
+  ],
+  "retirementErrors": []
+}

@@ -1,7 +1,7 @@
 {
   "success": true,
   "spreadsheetId": "1tx81EnqrsGwHXiATi3yA2ypPuWelWOL0JYgquBi450U",
-  "backupFile": "outputs/history/drive_backups/drive_backup_276ea1d7-beeb-47a2-8a89-abeb17b141c9.json",
+  "backupFile": "outputs/history/drive_backups/drive_backup_75e55e4c-f318-4e1f-9909-493ce3d7c394.json",
   "tabsWritten": [
     {
       "title": "Certified Catalog",
@@ -85,7 +85,7 @@
     "Certified Catalog": "71d52a45e06b0949042d4d02918d99f7c1707288146ea4347c8d08c8b20ed2bd",
     "Verified Learnings": "13ea956477f47fe0618d00dfdb5bcacb5c197ae6890e55b5804cc97e753a78fc",
     "Change Log": "9a039e2168fa53c9a1bda9f2db98897d591c155fcadbcdf8ace5e18259ae8d24",
-    "Sync Metadata": "d263fce0b9476e96b6bf636c817b703146a17a55adf89ff1209f9760d945a51c",
+    "Sync Metadata": "ac8bdb88fbf87b6ffe76870b4f514f010857ac61a948cc2db777a7a4c50b3fa3",
     "Category Summary": "90e2643acb38131c71afde7433e01805e138911261dcd6905bf67e2a5c749e9a",
     "All SKUs": "0c1013e40bf30dc4319aeec524a0121dd94397709ca5cd818ffede79ff768f91",
     "Rules & Constraints": "b202a1db199121815652d9df26222187b8957e082e74f5e1a7ee04697822f8f5",
@@ -102,7 +102,7 @@
     "Supply Chain & Lead Times": "86a5c2976ac45b80068fdea47d8bd772e9d4e964a0f559bf635e16761c1914f1",
     "Metadata": "87fd5b65d06c1a432ae328dfe506b70a77c8e5fc87ec4e08ba2ed39d662c62f2"
   },
-  "verifiedAt": "2026-11-22T08:58:14.368Z",
+  "verifiedAt": "2026-11-23T14:08:03.263Z",
   "fingerprints": {
     "catalog": "71d52a45e06b0949042d4d02918d99f7c1707288146ea4347c8d08c8b20ed2bd",
     "learnings": "0628ab0844eb6e13106c17da72369728a397fe805e17546c105752c2b4013897",

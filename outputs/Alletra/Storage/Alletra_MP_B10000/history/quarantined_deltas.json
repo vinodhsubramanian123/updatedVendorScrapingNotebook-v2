@@ -1,0 +1,195 @@
+[
+  {
+    "deltaId": "DELTA_RAG_DEP_S1J10A_S1R28A_1795442435373",
+    "chassis": "Alletra MP B10000",
+    "errorType": "PERMANENT_PHYSICAL_DEPENDENCY",
+    "ruleType": "DEPENDENCY_CHAIN",
+    "affectedSku": "S1J10A",
+    "requiredDependencySku": "S1R28A",
+    "requiredCapability": null,
+    "reasoning": "Grounding Verification: Selecting S1J10A requires auxiliary component S1R28A to satisfy physical/telemetry routing.",
+    "rawMessage": "| **Enclosure** | S1J10A (CTO Shelf) | **VALID** | Requires 2x S1R28A shelf nodes, 2x PSUs, min 8 / max 24 drives [2]. |",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "source": "NOTEBOOKLM_GROUNDING",
+    "timestamp": "2026-11-23T14:00:35.374Z",
+    "confidenceScore": 0.9,
+    "citations": [
+      {
+        "index": "1",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "2",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "3",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "4",
+        "sourceId": "01727c2c-0461-46ea-a742-97094806853d",
+        "title": "<cited_table> Rules & Constraints"
+      },
+      {
+        "index": "5",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "6",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "7",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "8",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "9",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "10",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "11",
+        "sourceId": "01727c2c-0461-46ea-a742-97094806853d",
+        "title": "<cited_table> Rules & Constraints"
+      },
+      {
+        "index": "12",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "13",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "14",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "15",
+        "sourceId": "01727c2c-0461-46ea-a742-97094806853d",
+        "title": "<cited_table> Rules & Constraints"
+      },
+      {
+        "index": "16",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "17",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "18",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "19",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "20",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "21",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "22",
+        "sourceId": "01727c2c-0461-46ea-a742-97094806853d",
+        "title": "<cited_table> Rules & Constraints"
+      },
+      {
+        "index": "23",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "24",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "25",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "26",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "27",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "28",
+        "sourceId": "01727c2c-0461-46ea-a742-97094806853d",
+        "title": "<cited_table> Rules & Constraints"
+      },
+      {
+        "index": "29",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "30",
+        "sourceId": "721f7e84-e50a-4f75-9eb0-2b739be0c396",
+        "title": "HPE Alletra Storage MP B10100 (switchless) <cited_table>"
+      },
+      {
+        "index": "31",
+        "sourceId": "01727c2c-0461-46ea-a742-97094806853d",
+        "title": "<cited_table> Rules & Constraints"
+      },
+      {
+        "index": "32",
+        "sourceId": "01727c2c-0461-46ea-a742-97094806853d",
+        "title": "<cited_table> Rules & Constraints"
+      }
+    ],
+    "scope": "CHASSIS_SPECIFIC",
+    "knowledgeFingerprint": "6830c63430858e8b089cbccc04a0332fb9b092cf053e96c6aceba12af116a67f",
+    "validatedAt": "2026-11-23T14:00:35.416Z",
+    "governanceStatus": "QUARANTINED",
+    "quarantineId": "QUARANTINE_6830c63430858e8b",
+    "firstSeenAt": "2026-11-23T14:00:35.418Z",
+    "lastSeenAt": "2026-11-23T14:00:35.418Z",
+    "observationCount": 1,
+    "evidenceObservationCount": 0,
+    "reinforcementEvidenceIds": [],
+    "autoPromotable": false,
+    "quarantinedAt": "2026-11-23T14:00:35.418Z",
+    "quarantineReasons": [
+      "Required SKU S1R28A not found in target catalog; held in quarantine for manual verification"
+    ],
+    "status": "IN_QUARANTINE"
+  }
+]
