@@ -1,90 +1,60 @@
 'use strict';
 /**
- * scripts/lib/conflict/resolution_matrix.js — Generates recommendations for Lifecycle Risks
+ * scripts/lib/conflict/resolution_matrix.js — Generates recommendations for lifecycle risks.
  */
 
 const { cleanBaseSKU, buildCatalogSkuIndex, classifyLifecycleState } = require('../catalog/sku.js');
 const { analyzeRetirementDate } = require('../catalog/lifecycle.js');
+const { formatLifecycleCommercialRemarks } = require('../boq/commercial_remarks.js');
+const { findActiveLifecycleReplacement } = require('./least_delta_combinator.js');
 
-function _buildRetirementRecommendation(it, retirement, alternativeSku) {
-  const isPast = retirement.isPast;
-  return {
-    sku: cleanBaseSKU(it.sku),
-    originalDesc: it.description,
-    risk: isPast ? 'Discontinuation Date Passed' : 'Approaching Discontinuation',
-    action: isPast ? 'Do not use for a new design; select a supported successor' : 'Confirm supply and offer a supported successor option',
-    alternative: alternativeSku || 'Resolve the closest supported equivalent from the same product-generation catalog',
-    discontinuedDate: retirement.retirementDate,
-    daysRemaining: retirement.daysRemaining
-  };
-}
+const LIFECYCLE_ADVICE = {
+  OBSOLETE: ['Obsolete (OB)', 'Upgrade to Next-Gen Equivalent'],
+  DISCONTINUED: ['Discontinued', 'Select an active successor'],
+  EOL: ['End of Life (EOL)', 'Select an active successor'],
+  CONSTRAINED_SUPPLY: ['Constrained Supply (CS)', 'Confirm vendor supply or select an active equivalent'],
+  DIRECT_SHIP: ['Direct Ship (DS)', 'Confirm direct-ship terms and supply with HPE'],
+  '90_DAY_WARNING': ['EOL Warning (90-Day)', 'Plan upgrade within 90 days'],
+  RETIRED: ['Discontinuation Date Passed', 'Select a supported successor for new designs'],
+  APPROACHING_RETIREMENT: ['Approaching Discontinuation', 'Confirm supply and offer a supported successor']
+};
 
-function _buildBlockedLifecycleRec(cleanSku, it, itemLc, catLc, alternativeSku) {
-  let risk = 'Obsolete (OB)';
-  if (itemLc.isHardEol || catLc.isHardEol) risk = 'End of Life (EOL)';
-  else if (itemLc.isDiscontinued || catLc.isDiscontinued) risk = 'Discontinued';
-  return {
-    sku: cleanSku,
-    originalDesc: it.description,
-    risk,
-    action: 'Upgrade to Next-Gen Equivalent',
-    alternative: alternativeSku || 'Consult HPE QuickSpecs for direct replacement'
-  };
-}
+function getLifecycleRecommendation(part, skuIndex, options) {
+  const sku = cleanBaseSKU(part.sku);
+  const catalogItem = skuIndex.get(sku);
+  const row = catalogItem?.skuData || {};
+  const description = row.Description || row.description || part.description || '';
+  const retirement = analyzeRetirementDate(row['Discontinued Date'] || row.discontinuedDate || part.discontinuedDate || '', options);
+  const input = classifyLifecycleState(part.lifecycleStatus, part.diffStatus, part.sku, part.description, part.vendorSupplyStatus);
+  const catalog = catalogItem?.lifecycleState;
+  const status = [input, catalog].find(state => state?.isBlockedForProduction)?.canonicalStatus
+    || (retirement.isPast ? 'RETIRED' : null)
+    || [input, catalog].find(state => state?.isClearanceOrRestricted)?.canonicalStatus
+    || (retirement.isNear ? 'APPROACHING_RETIREMENT' : null);
+  if (!status) return null;
 
-function _buildSupplyRecommendation(sku, description, alternativeSku) {
+  const [risk, action] = LIFECYCLE_ADVICE[status];
+  const replacement = findActiveLifecycleReplacement({ ...part, sku, description }, skuIndex, options);
   return {
     sku,
     originalDesc: description,
-    risk: 'Constrained Supply (CS)',
-    action: 'Confirm vendor supply or select an available compatible equivalent',
-    alternative: alternativeSku || 'Resolve a compatible equivalent in this product catalog'
+    lifecycleStatus: status,
+    risk,
+    action,
+    replacement,
+    alternative: replacement?.sku || 'Confirm a compatible active SKU with HPE',
+    discontinuedDate: retirement.retirementDate ?? null,
+    daysRemaining: retirement.daysRemaining ?? null,
+    commercialRemarks: formatLifecycleCommercialRemarks({ sku, status, risk, retirement, replacement })
   };
 }
 
-function _classifyItemLifecycleRecommendation(it, skuIndex, options) {
-  const rawSku = String(it.sku || '').trim();
-  const cleanSku = cleanBaseSKU(it.sku);
-  const catalogItem = skuIndex.get(cleanSku);
-  const skuData = catalogItem?.skuData || {};
-  const diffStatus = catalogItem?.diffStatus || it.diffStatus || '';
-  const alternativeSku = skuData['Alternative SKU'] || '';
-
-  const itemLc = classifyLifecycleState(it.lifecycleStatus, it.diffStatus, rawSku, it.description, it.vendorSupplyStatus);
-  const catLc = classifyLifecycleState(catalogItem?.lifecycleStatus, diffStatus, rawSku, skuData.Description, skuData.vendorSupplyStatus);
-
-  if (itemLc.isBlockedForProduction || catLc.isBlockedForProduction || /^DS\s+/i.test(rawSku)) {
-    return _buildBlockedLifecycleRec(cleanSku, it, itemLc, catLc, alternativeSku);
-  }
-  if (itemLc.isConstrainedSupply || catLc.isConstrainedSupply) {
-    return _buildSupplyRecommendation(cleanSku, it.description, alternativeSku);
-  }
-  if (itemLc.is90DayWarning || catLc.is90DayWarning || itemLc.isDirectShip || catLc.isDirectShip) {
-    return {
-      sku: cleanSku,
-      originalDesc: it.description,
-      risk: (itemLc.isDirectShip || catLc.isDirectShip) ? 'Direct Ship (DS)' : 'EOL Warning (90-Day)',
-      action: 'Plan upgrade within 90 days',
-      alternative: alternativeSku || 'Prepare transition to next-gen equivalent'
-    };
-  }
-  const retirement = analyzeRetirementDate(skuData['Discontinued Date'] || skuData.discontinuedDate || it.discontinuedDate || '', options);
-  if (retirement.known && (retirement.isNear || retirement.isPast)) {
-    return _buildRetirementRecommendation(it, retirement, alternativeSku);
-  }
-  return null;
-}
-
 function generateLifecycleRecommendations(items, catalogData = null, options = {}) {
-  const recommendations = [];
   const skuIndex = buildCatalogSkuIndex(catalogData);
-  for (const it of items) {
-    const rec = _classifyItemLifecycleRecommendation(it, skuIndex, options);
-    if (rec) recommendations.push(rec);
-  }
-  return recommendations;
+  return items.map(part => getLifecycleRecommendation(part, skuIndex, options)).filter(Boolean);
 }
 
 module.exports = {
+  getLifecycleRecommendation,
   generateLifecycleRecommendations
 };

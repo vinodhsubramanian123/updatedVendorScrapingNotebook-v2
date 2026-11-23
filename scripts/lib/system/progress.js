@@ -36,6 +36,7 @@ function emitProgress(step, total, action, status = 'in_progress', detail = '', 
       itemsScraped: extra.itemsScraped,
       category: extra.category,
       sku: extra.sku,
+      qualifications: extra.qualifications,
       timestamp: new Date().toISOString()
     };
     process.stdout.write(JSON.stringify(event) + '\n');

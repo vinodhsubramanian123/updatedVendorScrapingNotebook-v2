@@ -13,7 +13,7 @@
  * - Item deduplication and consolidation
  */
 
-const { cleanBaseSKU, isValidHpeSKU, HPE_SKU_EXTRACT_REGEX } = require('../catalog/sku.js');
+const { cleanBaseSKU, isValidHpeSKU, HPE_SKU_EXTRACT_REGEX, classifyLifecycleState } = require('../catalog/sku.js');
 const { isGlobalItem } = require('./configuration_context');
 
 /**
@@ -235,6 +235,7 @@ function _assignColumnRole(col, idx, map) {
   if (col.includes('clic status') || col.includes('validation status')) {
     map.clicStatus = idx;
   }
+  if (col === 'lifecycle status' || col === 'lifecycle') map.lifecycleStatus = idx;
   const ownershipColumns = { 'configuration id': 'configurationId', 'parent id': 'parentId', 'sub-parent id': 'subParentId', 'quantity scope': 'quantityScope', 'quantity basis': 'quantityBasis' };
   if (ownershipColumns[col]) map[ownershipColumns[col]] = idx;
   if (/^(?:purpose|allocation|notes|status\s*\/\s*notes)$/.test(col)) map.purpose = idx;
@@ -433,6 +434,7 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
   const rawClicStatus = activeColumnMap?.clicStatus !== undefined && activeColumnMap.clicStatus !== -1
     ? String(parts[activeColumnMap.clicStatus] || '').trim() : null;
 
+  const lifecycle = classifyLifecycleState(parts[activeColumnMap?.lifecycleStatus] || rawClicStatus, undefined, rawSkuPart, rawDescPart);
   const isFioModifierCompanion = Boolean(
     (/\b(?:0D1|B19|0D2)\b/i.test(rawSkuPart) || rawDescPart.trim().toLowerCase() === 'factory integrated') &&
     (!unitPriceUsd || unitPriceUsd === 0) &&
@@ -449,6 +451,7 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
     unitPriceUsd,
     leadTime: rawLeadTime || null,
     clicStatus: rawClicStatus || null,
+    ...(lifecycle.isNonActive ? { lifecycleStatus: lifecycle.canonicalStatus } : {}),
     isConfirmedZeroPrice,
     isFactoryIntegrated: isFioLine,
     isFioModifierCompanion
@@ -496,9 +499,13 @@ function extractFreeFormSkuRows(line) {
       cleanDesc = cleanSku;
     }
 
+    const prefix = normalizedLine.toUpperCase().split(cleanSku, 1)[0].trim();
+    const badge = /^(?:OB|OS|CS|DS|90|EOL)$/.test(prefix) ? prefix : '';
+    const lifecycle = classifyLifecycleState(badge, undefined, '', validMatches.length === 1 ? cleanDesc : '');
     results.push({
       sku: cleanSku,
       description: cleanDesc,
+      ...(lifecycle.isNonActive ? { lifecycleStatus: lifecycle.canonicalStatus } : {}),
       quantity: lineQty,
       unitPriceUsd: null,
       isConfirmedZeroPrice: false,
@@ -588,7 +595,11 @@ function _mergeParsedItemIntoMap(item, itemMap, currentMultiplier, currentCluste
     currentCluster.items.push({ ...item });
   }
   if (itemMap.has(itemKey)) {
-    _updateExistingItemPricing(itemMap.get(itemKey), item, totalQty);
+    const existing = itemMap.get(itemKey);
+    if (item.lifecycleStatus && !classifyLifecycleState(existing.lifecycleStatus).isBlockedForProduction) {
+      existing.lifecycleStatus = item.lifecycleStatus;
+    }
+    _updateExistingItemPricing(existing, item, totalQty);
   } else {
     const isKnown = _isPriceKnown(item.unitPriceUsd, item.isConfirmedZeroPrice);
     const finalUnitPrice = isKnown ? item.unitPriceUsd : null;

@@ -244,7 +244,7 @@ describe('P0 · Enforce Local-Only Policy Before OCR and Grounding', () => {
         const preRes = await fetch(`${baseUrl}/api/preprocess-boq`, {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ filepath: fp, offline: false, offlineMode: false, enableCloudValidation: true })
+          body: JSON.stringify({ filepath: fp })
         });
         assert.strictEqual(preRes.status, 422);
         const preBody = await preRes.json();
@@ -306,7 +306,7 @@ describe('P0 · Enforce Local-Only Policy Before OCR and Grounding', () => {
     });
   });
 
-  it('7. Explicitly cloud-enabled preflight reaches OCR adapter exactly once when server offline flags are unset', async () => {
+  it('7. Default cloud preflight reaches OCR adapter exactly once when server offline flags are unset', async () => {
     global.__allowOcrMockCall = true;
     await withServer(async baseUrl => {
       resetSpies();
@@ -314,13 +314,14 @@ describe('P0 · Enforce Local-Only Policy Before OCR and Grounding', () => {
       const res = await fetch(`${baseUrl}/api/preprocess-boq`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ filepath: fp, offline: false, offlineMode: false, enableCloudValidation: true })
+        body: JSON.stringify({ filepath: fp })
       });
       assert.strictEqual(res.status, 200);
       const body = await res.json();
       assert.strictEqual(body.status, 'SUCCESS');
       assert.strictEqual(body.isOcrProcessed, true);
       assert.strictEqual(body.effectivePolicy?.offline, false);
+      assert.strictEqual(body.effectivePolicy?.source, 'DEFAULT_CLOUD_PERMITTED');
       assert.strictEqual(spyCounts.ocrCalls, 1);
       assert.strictEqual(spyCounts.rotatorExecute, 1);
     });

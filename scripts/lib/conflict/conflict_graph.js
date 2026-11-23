@@ -238,7 +238,7 @@ function _buildUnifiedBomMap(boqItems, missingDependencies) {
   boqItems.forEach(it => {
     const sku = cleanBaseSKU(it.sku);
     if (!sku) return;
-    const qty = it.quantity || 1;
+    const qty = Number(it.quantity ?? it.qty ?? 1) || 1;
     if (fullBomMap.has(sku)) {
       fullBomMap.get(sku).quantity = (fullBomMap.get(sku).quantity || 0) + qty;
     } else {
@@ -476,19 +476,76 @@ function _evaluateVendorBtoCtoRules(fullBomList, chassisInfo, learnedDeltas, rec
   }
 }
 
+function _collectQuantityCeilingSkus(delta, primarySku) {
+  const raw = [primarySku, ...(Array.isArray(delta.affectedSkus) ? delta.affectedSkus : [])];
+  const unique = new Set();
+  for (const token of raw) {
+    const sku = cleanBaseSKU(token || '');
+    if (sku && !SKU_BLACKLIST.has(sku.toUpperCase()) && isValidHpeSKU(sku)) {
+      unique.add(sku);
+    }
+  }
+  return Array.from(unique);
+}
+
+function _evaluateLearnedQuantityCeiling(delta, primarySku, msg, fullBomMap, recordAudit, conflicts) {
+  const maxQty = Number(delta.thresholdValue);
+  if (!Number.isFinite(maxQty) || maxQty < 0) return false;
+
+  const targetSkus = _collectQuantityCeilingSkus(delta, primarySku);
+  let matchedAny = false;
+  for (const sku of targetSkus) {
+    const part = fullBomMap.get(sku);
+    if (!part || part.isFix) continue;
+    matchedAny = true;
+    const qty = Number(part.quantity ?? part.qty ?? 1) || 1;
+    if (qty > maxQty) {
+      const ruleTag = delta.vendorRuleId ? `CLIC Rule ${delta.vendorRuleId}` : (delta.deltaId || delta.ruleId || 'LEARNED');
+      const err = `Learned Quantity Ceiling Violation (${delta.deltaId || delta.ruleId || 'LEARNED'} / ${ruleTag}): SKU ${sku} quantity ${qty} exceeds maximum allowed ${maxQty} per base model. ${msg}`;
+      const diagnosticHint = {
+        deltaId: delta.deltaId || delta.ruleId || 'LEARNED_LESSON',
+        vendorRuleId: delta.vendorRuleId || null,
+        rule: delta.ruleUpdate || delta.description || msg,
+        rationale: delta.humanReasoning || null,
+        provenance: delta.provenance || delta.sourceType || 'CLIC_VERIFIED_HISTORICAL_RECORD',
+        referenceNotice: `💡 Diagnostic Hint [${delta.deltaId || 'LEARNED'}]: ${ruleTag} caps ${sku} at max qty ${maxQty} per server.`
+      };
+      conflicts.push({
+        level: 'LEARNED_DELTA',
+        type: 'QUANTITY_CEILING_EXCEEDED',
+        sku,
+        observedQty: qty,
+        maxAllowedQty: maxQty,
+        vendorRuleId: delta.vendorRuleId || null,
+        message: err,
+        diagnosticHint
+      });
+      _recordLearnedAudit(recordAudit, delta, `Learned Quantity Ceiling on ${sku} (max ${maxQty})`, 'FAIL', err, sku, true);
+    } else {
+      _recordLearnedAudit(recordAudit, delta, `Learned Quantity Ceiling on ${sku} (max ${maxQty})`, 'PASS', `Satisfied: ${sku} quantity ${qty} <= max ${maxQty}.`, sku, true);
+    }
+  }
+  return matchedAny;
+}
+
 function _evaluateLearnedDeltas(fullBomMap, learnedDeltas, targetChassis, recordAudit, conflicts, learnedSubstitutions = []) {
   const dependencyEdges = new Set();
 
   learnedDeltas.forEach(delta => {
     const affectedSku = cleanBaseSKU(delta.affectedSku || delta.sku || '');
     const requiredSku = cleanBaseSKU(delta.requiredDependencySku || delta.requiredSku || '');
-    const msg = delta.rawMessage || delta.errorMessage || delta.ruleUpdate || '';
+    const msg = delta.rawMessage || delta.errorMessage || delta.ruleUpdate || delta.description || '';
 
     // Gate 2 first for universal policy rules without specific SKU
     if (!_isDeltaApplicableToTarget(delta, targetChassis)) return;
 
     if (!affectedSku && delta.ruleType === 'COMPATIBILITY_AND_FULFILLMENT_BOUNDARY') {
       _recordLearnedAudit(recordAudit, delta, `Universal Fulfillment Policy: ${delta.ruleId}`, 'INFO', msg, '', false);
+      return;
+    }
+
+    if (delta.ruleType === 'QUANTITY_CEILING') {
+      _evaluateLearnedQuantityCeiling(delta, affectedSku, msg, fullBomMap, recordAudit, conflicts);
       return;
     }
 

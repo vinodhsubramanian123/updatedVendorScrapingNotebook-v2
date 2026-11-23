@@ -2,10 +2,11 @@
 
 const fs = require('fs');
 const path = require('path');
+const { classifyLifecycleState } = require('./sku.js');
 
 const DEFAULT_POLICY_PATH = path.resolve(__dirname, '../../config/sku_zero_price_policies.json');
 
-const SKU_OR_BADGE_TOKEN_RE = /[A-Z0-9]{4,8}-[A-Z0-9]{2,4}(?:#[A-Z0-9]{2,4})?|\[(?:90|OB|DS|EOL|CS)\]/i;
+const SKU_OR_BADGE_TOKEN_RE = /[A-Z0-9]{4,8}-[A-Z0-9]{2,4}(?:#[A-Z0-9]{2,4})?|\[(?:90|OB|OS|DS|EOL|CS)\]/i;
 const DATE_TOKEN_RE = /\b(?:\d{4}-\d{1,2}-\d{1,2}|\d{1,2}\/\d{1,2}\/\d{2,4})\b/;
 const PRICE_DELTA_TOKEN_RE = /(?:->|=>|\(\s*[+-]\s*\$?\d|\bwas\s+\$|\bdelta\b)/i;
 const STRICT_CURRENCY_RE = /^(?:USD\s*)?\$?\s*(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d{1,4})?(?:\s*USD)?$/i;
@@ -465,13 +466,13 @@ function parseLeadTimeOrEta(rawInput, explicitDays = null, speedTierHint = null)
 function normalizeLifecycleCanonical(rawStatus) {
   const s = String(rawStatus || '').trim();
   const lower = s.toLowerCase();
-  if (/^\[?90\]?$|\b90[\s-]*day\b|near\s*eol|end\s*of\s*sale\s*warning/i.test(lower)) {
+  if (/^\[?90\]?$|\b90[\s_-]*day(?:\b|_)|near\s*eol|end\s*of\s*sale\s*warning/i.test(lower)) {
     return { lifecycleCanonical: '90-Day Warning', lifecycleBadge: '90', warningFlag: true, isObsoleteOrDiscontinued: false };
   }
-  if (/\b(?:obsolete|discontinued|eol|end\s*of\s*life|retired|not\s*orderable)\b|^\[?ob\]?$/i.test(lower)) {
+  if (/\b(?:obsolete|discontinued|eol|end\s*of\s*life|retired|not\s*orderable|out[\s_-]+of[\s_-]+stock)\b|^\[?(?:ob|os)\]?$/i.test(lower)) {
     return { lifecycleCanonical: 'Obsolete', lifecycleBadge: 'OB', warningFlag: true, isObsoleteOrDiscontinued: true };
   }
-  if (/direct[\s-]*ship|drop[\s-]*ship|^\[?ds\]?$/i.test(lower)) {
+  if (/direct[\s_-]*ship|drop[\s_-]*ship|^\[?ds\]?$/i.test(lower)) {
     return { lifecycleCanonical: 'Direct Ship', lifecycleBadge: 'DS', warningFlag: true, isObsoleteOrDiscontinued: false };
   }
   if (/^\[?cs\]?$|\b(?:constrained[\s_-]*supply|supply[\s_-]*(?:restricted|constrained))\b/i.test(lower)) {
@@ -508,7 +509,10 @@ function buildAvailabilityContract({ skuRow = {}, conditionalEntry = null, ruleE
   const visibility = observedVisibility === 'DOM_HIDDEN' ? 'DOM_HIDDEN'
     : isConditional ? 'SELECTOR_HIDDEN'
       : observedVisibility || (skuRow.isSelectable === true ? 'VISIBLE' : 'UNOBSERVED');
-  const lifecycle = normalizeLifecycleCanonical(skuRow.lifecycleStatus || skuRow['Lifecycle Status'] || skuRow['CLIC Status'] || '');
+  const rawStatus = skuRow.lifecycleStatus || skuRow['Lifecycle Status'] || skuRow['CLIC Status'] || '';
+  const state = classifyLifecycleState(rawStatus, skuRow['Diff Status'] || skuRow.diffStatus,
+    skuRow['Product #'] || skuRow.sku, skuRow.Description || skuRow.description, skuRow.vendorSupplyStatus);
+  const lifecycle = normalizeLifecycleCanonical(state.isNonActive ? state.canonicalStatus : rawStatus);
   const supply = normalizeLifecycleCanonical(skuRow.vendorSupplyStatus);
   const observedLifecycle = !lifecycle.isObsoleteOrDiscontinued && supply.isConstrainedSupply ? supply : lifecycle;
   const conditions = observations.map(item => item.condition || item.trigger || item.selectorTriggerSku || item.ruleContext).filter(Boolean);

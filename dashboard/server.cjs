@@ -98,9 +98,11 @@ app.use('/api', notebookRouter);
 
 // ── Health Check Endpoint ─────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
+  const { isServerOffline } = require('../scripts/lib/system/policy_resolver.js');
   const activeTask = getActiveTask();
   res.json({
     status: 'OK',
+    serverOffline: isServerOffline(),
     isTaskRunning: !!activeTask,
     activeTask: activeTask ? { type: activeTask.type, runId: activeTask.runId } : null,
     timestamp: new Date().toISOString()

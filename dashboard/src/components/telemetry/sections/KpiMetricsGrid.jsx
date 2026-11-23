@@ -21,9 +21,7 @@ export default function KpiMetricsGrid({
     ? (history.reduce((acc, curr) => acc + (curr.durationMs || 0), 0) / history.length / 1000).toFixed(1) + 's'
     : '—';
 
-  const totalExports = telemetry.totalExports > 0
-    ? telemetry.totalExports
-    : (history.length > 0 ? Math.max(1, history.length) : '—');
+  const totalExports = telemetry.totalExports ?? '—';
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">

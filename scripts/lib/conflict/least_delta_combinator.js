@@ -14,7 +14,8 @@
  */
 
 const { cleanBaseSKU, buildCatalogSkuIndex, classifyLifecycleState } = require('../catalog/sku.js');
-const { extractCatalogItemLeadTime } = require('../taxonomy/sku_resolver.js');
+const { extractCatalogItemLeadTime, extractCatalogItemPrice } = require('../taxonomy/sku_resolver.js');
+const { analyzeRetirementDate } = require('../catalog/lifecycle.js');
 const fs = require('fs');
 const path = require('path');
 
@@ -953,6 +954,51 @@ function compareAvailabilityReplacement(originalDesc, originalAttrs, candidateDe
   return category === 'THERMAL' && sameDescription ? 'EQUIVALENT' : null;
 }
 
+function isActiveLifecycleCandidate(item, options = {}) {
+  const row = item?.skuData;
+  if (!row || item.lifecycleState?.isNonActive) return false;
+  if (row.selectability === false || row.selectable === false || row.isSelectable === false || row.isVisible === false) return false;
+  if (row.selectorTriggerSku || row.portalConditional) return false;
+  if (/hidden|conditional|unselectable/i.test(row.visibility || row.visibilityState || '')) return false;
+  const status = item.lifecycleStatus || row['Lifecycle Status'] || row.lifecycleStatus || row.Status || '';
+  if (/\binactive\b|^unknown$/i.test(status)) return false;
+  const supply = row.Availability || row.availability || row.orderabilityEvidence?.availability || row.vendorSupplyStatus || '';
+  if (/unavailable|out[\s_-]+of[\s_-]+stock|not[\s_-]+(?:yet[\s_-]+)?(?:available|orderable|selectable)|allocation[\s_-]+hold|constrained|discontinued|obsolete/i.test(supply)) return false;
+  return ![row['Discontinued Date'], row['Obsolete Date'], row.discontinuedDate, row.obsoleteDate]
+    .some(date => {
+      const retirement = analyzeRetirementDate(date, options);
+      return retirement.isPast || retirement.isNear;
+    });
+}
+
+/** Find the closest active, specification-qualified option in the same product catalog. */
+function findActiveLifecycleReplacement(part, skuIndex, options = {}) {
+  const original = skuIndex.get(part.sku);
+  const originalAttrs = _extractDriveOrComponentAttrs(part.description, part.sku, part.category);
+  const vendorAlternative = cleanBaseSKU(original?.skuData['Alternative SKU']);
+  const candidates = [];
+  for (const [sku, item] of skuIndex) {
+    if (sku === part.sku || !isActiveLifecycleCandidate(item, options)) continue;
+    if (original?.parentCategory && original.parentCategory !== item.parentCategory) continue;
+    const row = item.skuData;
+    const originalScope = original?.skuData?.scopeProvenance;
+    const candidateScope = row.scopeProvenance;
+    if (['ownerProduct', 'baseSku'].some(key => originalScope?.[key] && candidateScope?.[key] && originalScope[key] !== candidateScope[key])) continue;
+    const description = row.Description || row.description || '';
+    const matchType = compareAvailabilityReplacement(part.description, originalAttrs, description, sku);
+    if (!matchType && (sku !== vendorAlternative || original?.subCategory !== item.subCategory)) continue;
+    const { price } = extractCatalogItemPrice(row);
+    const leadTimeDays = extractCatalogItemLeadTime(row)?.days ?? null;
+    const score = _scoreActiveReplacementCandidate({ sku, description, price }, originalAttrs, 0, part.description);
+    if (score < 0 && matchType) continue;
+    candidates.push({ sku, description, price, leadTimeDays, matchType: matchType || 'VENDOR_LISTED', score });
+  }
+  const matchOrder = { EQUIVALENT: 0, UPGRADE: 1, VENDOR_LISTED: 2 };
+  candidates.sort((a, b) => matchOrder[a.matchType] - matchOrder[b.matchType] ||
+    b.score - a.score || a.sku.localeCompare(b.sku));
+  return candidates[0] || null;
+}
+
 function _resolveHistoricalSkuPrice(cleanSku, chassisInfo) {
   const chassisDir = chassisInfo?.chassisDir || chassisInfo?.catalogDir || '';
   if (!chassisDir) return 0;
@@ -984,11 +1030,11 @@ function _findDirectSuccessorSku(successorSku, activeSkuMap, catalogData, histPr
         const lc = classifyLifecycleState(
           found['Lifecycle Status'] || found.lifecycleStatus || found.Status || '',
           found['Diff Status'] || found.diffStatus || '',
-          successorSku,
+          found['Product #'] || found.sku || found.SKU,
           found.Description || found.description,
           found.vendorSupplyStatus
         );
-        if (lc.isBlockedForProduction || lc.isDirectShip || lc.isConstrainedSupply) return null;
+        if (!isActiveLifecycleCandidate({ skuData: found, lifecycleState: lc })) return null;
         const price = parseFloat(String(found['Unit Price (USD)'] || found['Price (USD)'] || found.priceUsd || '0').replace(/[^0-9.]/g, '')) || 0;
         return {
           sku: successorSku,
@@ -1014,11 +1060,11 @@ function _collectActiveReplacementCandidates(catalogData, cleanSku, origAttrs, h
       const lc = classifyLifecycleState(
         s['Lifecycle Status'] || s.lifecycleStatus || s.Status || '',
         s['Diff Status'] || s.diffStatus || '',
-        sSku,
+        s['Product #'] || s.sku || s.SKU,
         s.Description || s.description,
         s.vendorSupplyStatus
       );
-      if (lc.isBlockedForProduction || lc.isDirectShip || lc.isConstrainedSupply) return;
+      if (!isActiveLifecycleCandidate({ skuData: s, lifecycleState: lc })) return;
 
       const sDesc = s.Description || s.description || '';
       const sPrice = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || s.priceUsd || '0').replace(/[^0-9.]/g, '')) || 0;
@@ -1094,11 +1140,11 @@ function _buildActiveSkuMap(catalogData) {
       const lc = classifyLifecycleState(
         s['Lifecycle Status'] || s.lifecycleStatus || s.Status || '',
         s['Diff Status'] || s.diffStatus || '',
-        k,
+        rawSku,
         s.Description || s.description,
         s.vendorSupplyStatus
       );
-      if (k && !lc.isBlockedForProduction && !lc.isDirectShip && !lc.isConstrainedSupply) {
+      if (k && isActiveLifecycleCandidate({ skuData: s, lifecycleState: lc })) {
         activeSkuMap.set(k, {
           sku: k,
           rawSku,
@@ -1112,7 +1158,7 @@ function _buildActiveSkuMap(catalogData) {
   return activeSkuMap;
 }
 
-function _resolveDiscontinuedStatus(cleanSku, chassisDir, activeSkuMap) {
+function _resolveDiscontinuedStatus(cleanSku, chassisDir, skuIndex) {
   const { getSkuAuditHistory } = require('../catalog/sku_versioning.js');
   let audit = null;
   if (chassisDir) {
@@ -1123,11 +1169,11 @@ function _resolveDiscontinuedStatus(cleanSku, chassisDir, activeSkuMap) {
 
   const isMarkedDiscontinued = audit?.currentStatus === 'DISCONTINUED' ||
     (audit?.discontinuedInfo && String(audit.discontinuedInfo.status || '').toUpperCase() === 'DISCONTINUED');
-  const isNotInActiveCatalog = activeSkuMap.size > 0 && !activeSkuMap.has(cleanSku);
+  const isNotInCatalog = skuIndex.size > 0 && !skuIndex.has(cleanSku);
 
   return {
     audit,
-    isDiscontinuedOrMissing: isMarkedDiscontinued || isNotInActiveCatalog
+    isDiscontinuedOrMissing: isMarkedDiscontinued || isNotInCatalog
   };
 }
 
@@ -1171,20 +1217,46 @@ function _buildDiscontinuedReplacementResult(cleanSku, it, audit, replacement) {
   };
 }
 
-function _checkDiscontinuedAndObsoleteSkus(items = [], catalogData = null, chassisInfo = {}) {
+function _buildLifecycleReplacementAction(lifecycle) {
+  const { sku, originalDesc, replacement, commercialRemarks } = lifecycle;
+  return {
+    type: 'LIFECYCLE_SKU_SUBSTITUTION',
+    action: 'SUBSTITUTE_ACTIVE_SKU',
+    originalSku: sku,
+    originalDesc,
+    alternativeSku: replacement.sku,
+    alternativeDesc: replacement.description,
+    troublesomeReason: commercialRemarks.original,
+    functionalEquivalence: `Catalog match for ${sku}: ${replacement.sku} (${replacement.description}).`,
+    presalesValuePitch: commercialRemarks.production,
+    commercialRemarks,
+    cascadingSkusEliminated: []
+  };
+}
+
+function _checkDiscontinuedAndObsoleteSkus(items, catalogData, chassisInfo, lifecycleRecommendations) {
   const results = [];
   const chassisDir = chassisInfo?.chassisDir || chassisInfo?.catalogDir || '';
   const { isValidHpeSKU } = require('../catalog/sku.js');
 
-  const activeSkuMap = _buildActiveSkuMap(catalogData);
+  let activeSkuMap;
+  const lifecycleBySku = new Map(lifecycleRecommendations.map(rec => [rec.sku, rec]));
+  const skuIndex = buildCatalogSkuIndex(catalogData);
 
   for (const it of items) {
     const cleanSku = cleanBaseSKU(it.sku);
     if (!cleanSku || !isValidHpeSKU(cleanSku)) continue;
 
-    const { audit, isDiscontinuedOrMissing } = _resolveDiscontinuedStatus(cleanSku, chassisDir, activeSkuMap);
+    const lifecycle = lifecycleBySku.get(cleanSku);
+    if (lifecycle) {
+      if (lifecycle.replacement && lifecycle.replacement.matchType !== 'VENDOR_LISTED') results.push(_buildLifecycleReplacementAction(lifecycle));
+      continue;
+    }
+
+    const { audit, isDiscontinuedOrMissing } = _resolveDiscontinuedStatus(cleanSku, chassisDir, skuIndex);
     if (!isDiscontinuedOrMissing) continue;
 
+    activeSkuMap ??= _buildActiveSkuMap(catalogData);
     const replacement = findBestAlternativeForDiscontinuedSku(
       cleanSku,
       it.description || audit?.latestDetails?.description || '',
@@ -1304,7 +1376,10 @@ function identifyTroublesomeSkus(items = [], evalResults = {}, catalogData = nul
 
   troublesome.push(..._checkGenerationalCpuAndMemory(items, missing, chassisInfo, catalogData));
 
-  troublesome.push(..._checkDiscontinuedAndObsoleteSkus(items, catalogData, chassisInfo));
+  const lifecycleRecommendations = evalResults.lifecycleRecommendations || evalResults.evalSummary?.lifecycleRecommendations || [];
+  const lifecycleActions = _checkDiscontinuedAndObsoleteSkus(items, catalogData, chassisInfo, lifecycleRecommendations);
+  const occupiedSkus = new Set(troublesome.map(action => action.originalSku));
+  troublesome.push(...lifecycleActions.filter(action => !occupiedSkus.has(action.originalSku)));
 
   const raid1Geometry = _checkRaid1FactoryArrayGeometry(items, storage, missing, catalogData, chassisInfo);
   if (raid1Geometry) troublesome.push(raid1Geometry);
@@ -1363,10 +1438,20 @@ function _processTroublePartItem(p, trouble, chassisInfo, getPrice, deltaCounts,
     description: trouble.alternativeDesc,
     quantity: p.quantity || 1,
     unitPriceUsd: altPrice,
-    extendedPriceUsd: altPrice * (p.quantity || 1),
+    extendedPriceUsd: altPrice == null ? null : altPrice * (p.quantity || 1),
     isFixInjected: false,
     isStrategyAddon: true,
     isLeastDeltaSubstitution: true,
+    ...(trouble.type === 'LIFECYCLE_SKU_SUBSTITUTION' ? {
+      lifecycleStatus: 'ACTIVE',
+      configurationId: p.configurationId,
+      quantityScope: p.quantityScope,
+      quantityBasis: p.quantityBasis,
+      perNodeQuantity: p.perNodeQuantity,
+      clusterQuantity: p.clusterQuantity,
+      parentId: p.parentId,
+      subParentId: p.subParentId
+    } : {}),
     category: (trouble.type?.startsWith('GENERATIONAL') || trouble.type === 'DISCONTINUED_SKU_SUPERSEDED')
       ? 'Modernized Platform Hardware'
       : 'Least-Delta Functional Replacement'
@@ -1410,6 +1495,7 @@ function _filterAndAppendFixParts(candidateParts, fixParts, allCascadingEliminat
 function _resolveLeastDeltaStrategyNaming(appliedActions, primaryTrouble, allCascadingEliminated, totalDeltaOperations) {
   const hasGenerationalUpgrade = appliedActions.some(a => a.type === 'GENERATIONAL_CPU_OBSOLESCENCE');
   const hasDiscontinuedUpgrade = appliedActions.some(a => a.type === 'DISCONTINUED_SKU_SUPERSEDED');
+  const lifecycleActions = appliedActions.filter(a => a.type === 'LIFECYCLE_SKU_SUBSTITUTION');
 
   const summaryPitches = appliedActions.map(a => a.presalesValuePitch).filter(Boolean);
   const combinedPitch = summaryPitches.length > 0 ? summaryPitches.join(' ') : primaryTrouble.presalesValuePitch;
@@ -1422,6 +1508,9 @@ function _resolveLeastDeltaStrategyNaming(appliedActions, primaryTrouble, allCas
   } else if (hasDiscontinuedUpgrade) {
     tierTitle = 'Rank 2: Modernized Active Baseline (Discontinued SKUs Replaced)';
     strategyName = 'MODERNIZED_ACTIVE_BASELINE';
+  } else if (lifecycleActions.length) {
+    tierTitle = 'Rank 2: Active Production Alternatives';
+    strategyName = 'MODERNIZED_ACTIVE_BASELINE';
   }
 
   let sharedIntelligenceReasoning = `Least-Delta Architecture Strategy: Identified ${appliedActions.length} troublesome SKU(s) causing cascading additions (${allCascadingEliminated.join(', ') || 'multiple auxiliary parts'}). Replaced/pruned with verified functional alternatives. ${primaryTrouble.functionalEquivalence} Result: ${totalDeltaOperations} delta operations, eliminating ${allCascadingEliminated.length} accessory kits.`;
@@ -1433,6 +1522,9 @@ function _resolveLeastDeltaStrategyNaming(appliedActions, primaryTrouble, allCas
     sharedIntelligenceReasoning = `Modernized Active Baseline Strategy: Replaced ${discTroubles.length} discontinued/delisted SKU(s) with live active vendor replacements while preserving customer performance tiers and budget baselines: ${substSummary}. Guarantees 100% portal buildability with minimum mutation.`;
   }
 
+  if (lifecycleActions.length) {
+    sharedIntelligenceReasoning = lifecycleActions.map(a => `${a.troublesomeReason} ${a.presalesValuePitch}`).join(' ');
+  }
   return { tierTitle, strategyName, combinedPitch, sharedIntelligenceReasoning };
 }
 
@@ -1528,6 +1620,8 @@ module.exports = {
   buildLeastDeltaCandidate,
   findBestAlternativeInCatalog,
   findBestAlternativeForDiscontinuedSku,
+  findActiveLifecycleReplacement,
+  isActiveLifecycleCandidate,
   isSkuVisibleAtDefaultAmbient,
   extractComponentAttributes: _extractDriveOrComponentAttrs,
   scoreReplacementCandidate: _scoreActiveReplacementCandidate,

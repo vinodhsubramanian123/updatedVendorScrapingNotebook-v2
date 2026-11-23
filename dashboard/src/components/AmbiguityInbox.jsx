@@ -16,7 +16,7 @@ function computeAmbiguityTriggerState(evalResults) {
   const isTriggered = score < 0.85
     || hasErrors
     || Boolean(evalResults.requiresUserChassisConfirmation)
-    || Boolean(evalResults.confidence?.isHitlTriggered)
+    || Boolean(evalResults.confidence?.isHitlTriggered || evalResults.requirementResolution?.requiresHumanClarification)
     || ctoAnomalies.length > 0;
 
   return { score, ctoAnomalies, partResolutions, isTriggered };
@@ -399,6 +399,11 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
               {evalResults.confidence?.summary || evalResults.goldenRuleSummary || 'Hardware rule ambiguity, missing dependency, or non-integer CTO divisor detected.'}
             </p>
 
+            {evalResults.confidence?.confidenceReasons?.length > 0 && (
+              <ul className="list-disc space-y-1 pl-4 text-slate-700">
+                {evalResults.confidence.confidenceReasons.slice(0, 3).map((reason, index) => <li key={index}>{reason}</li>)}
+              </ul>
+            )}
             <CtoAnomaliesList ctoAnomalies={ctoAnomalies} />
             <PartResolutionsList
               partResolutions={partResolutions}
@@ -406,8 +411,8 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
               onSelectCandidate={handleSelectCandidate}
             />
 
-            <p className="pt-2 border-t border-amber-300 text-[11px] text-slate-700">
-              No canned SKU fix is applied here. Every decision must identify the exact product generation, evidence, reviewer, and reasoning.
+            <p role="alert" className="pt-2 border-t border-amber-300 text-[11px] font-semibold text-amber-950">
+              Confirm the product, affected part or quantity, and supporting vendor evidence below before re-evaluating.
             </p>
           </div>
 

@@ -137,6 +137,7 @@ export default function TelemetryCard({ initialTelemetry, telemetry: propTelemet
       />
       <ExportsModal
         isOpen={activeModal === 'exports'}
+        telemetry={telemetry}
         onClose={() => setActiveModal(null)}
       />
       <AccuracyModal

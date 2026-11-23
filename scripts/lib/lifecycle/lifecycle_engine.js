@@ -146,7 +146,7 @@ class LifecycleEngine {
     return Object.fromEntries([...this.executedPhases.values()].map(record => [`phase_${record.phaseNum}`, { ...record, phaseId: record.id, phaseNumber: record.phaseNum, phaseName: record.name }]));
   }
 
-  async executePipelineDAG(context = {}, phaseHandlers = {}) {
+  async executePipelineDAG(context = {}, phaseHandlers = {}, onPhaseChange) {
     const ordered = this.getExecutionOrder();
     for (const phase of ordered) {
       if (phase.mandatory && typeof (phaseHandlers[phase.id] || phaseHandlers[phase.phaseNum]) !== 'function') {
@@ -157,7 +157,8 @@ class LifecycleEngine {
       const handler = phaseHandlers[phase.id] || phaseHandlers[phase.phaseNum];
       if (typeof handler !== 'function') {
         this.startPhase(phase.id);
-        this.completePhase(phase.id, 'SKIPPED', { skipReason: 'No optional handler configured', policyCode: 'OPTIONAL_HANDLER_ABSENT' });
+        const skipped = this.completePhase(phase.id, 'SKIPPED', { skipReason: 'No optional handler configured', policyCode: 'OPTIONAL_HANDLER_ABSENT' });
+        onPhaseChange?.(skipped);
         continue;
       }
       for (const prereq of phase.dependsOn) {
@@ -165,19 +166,22 @@ class LifecycleEngine {
         if (!prereqRecord) throw new Error(`Phase ${phase.id} prerequisite ${prereq} has not been executed.`);
         if (prereqRecord.status === 'FAILED') throw new Error(`Phase ${phase.id} cannot run because prerequisite ${prereq} failed.`);
       }
-      this.startPhase(phase.id);
+      const running = this.startPhase(phase.id);
+      onPhaseChange?.(running);
       try {
         const result = await handler(context, this);
         const status = result?.status;
         const summary = result?.summary || result || {};
         const checks = result?.checks || [];
-        this.completePhase(phase.id, status, summary, checks);
+        const completed = this.completePhase(phase.id, status, summary, checks);
+        onPhaseChange?.(completed);
       } catch (err) {
         terminalOwner.failRunningPhase(this, phase, err, () => {
-        if (this.executedPhases.get(phase.id)?.status === 'RUNNING') {
-          this.completePhase(phase.id, 'FAILED', { error: err.message }, [], [], [err.message]);
-        }
+          if (this.executedPhases.get(phase.id)?.status === 'RUNNING') {
+            this.completePhase(phase.id, 'FAILED', { error: err.message }, [], [], [err.message]);
+          }
         });
+        onPhaseChange?.(this.executedPhases.get(phase.id));
         throw err;
       }
     }

@@ -2,10 +2,45 @@
 
 const test = require('node:test');
 const assert = require('node:assert');
-const { cleanBaseSKU, isValidHpeSKU } = require('../../scripts/lib/catalog/sku.js');
+const { cleanBaseSKU, isValidHpeSKU, classifyLifecycleState } = require('../../scripts/lib/catalog/sku.js');
 const { generateLifecycleRecommendations } = require('../../scripts/lib/conflict/resolution_matrix.js');
 const { evalSupportServices } = require('../../scripts/lib/aspects/support_services.js');
 const { parseVendorDate, analyzeRetirementDate } = require('../../scripts/lib/catalog/lifecycle.js');
+
+test('OS, CS, DS and 90-day rows get a scoped active alternative even when their badges are the only evidence', () => {
+  const { parseSkuLines } = require('../../scripts/lib/boq/boq_parser.js');
+  const { identifyTroublesomeSkus } = require('../../scripts/lib/conflict/least_delta_combinator.js');
+  const description = 'HPE 3.84TB NVMe Gen4 Read Intensive SFF U.3 SSD';
+  const originalRows = ['OS', 'CS', 'DS', '90'].map((badge, index) => ({
+    'Product #': `P6100${index}-B21 [${badge}]`,
+    Description: description,
+    'Lifecycle Status': 'Active'
+  }));
+  const active = { 'Product #': 'P61008-B21', Description: description, 'Lifecycle Status': 'Active' };
+  const hidden = { ...active, 'Product #': 'P61004-B21', visibilityState: 'HIDDEN' };
+  const lowerCapacity = { ...active, 'Product #': 'P61005-B21', Description: description.replace('3.84TB', '1.92TB') };
+  const catalog = { entries: [{ parentCategory: 'Storage', subCategory: 'NVMe', skus: [...originalRows, active, hidden, lowerCapacity] }] };
+  const items = originalRows.map(row => ({ sku: cleanBaseSKU(row['Product #']), description, quantity: 2 }));
+  const recommendations = generateLifecycleRecommendations(items, catalog);
+
+  assert.deepStrictEqual(recommendations.map(row => row.lifecycleStatus), [
+    'OBSOLETE', 'CONSTRAINED_SUPPLY', 'DIRECT_SHIP', '90_DAY_WARNING'
+  ]);
+  for (const recommendation of recommendations) {
+    assert.strictEqual(recommendation.replacement.sku, active['Product #']);
+    assert.strictEqual(recommendation.replacement.leadTimeDays, null);
+    assert.strictEqual(recommendation.replacement.price, null);
+    assert.match(recommendation.commercialRemarks.original, new RegExp(recommendation.sku));
+  }
+  assert.equal(identifyTroublesomeSkus(items, { evalSummary: { lifecycleRecommendations: recommendations } }, catalog)
+    .filter(action => action.type === 'LIFECYCLE_SKU_SUBSTITUTION').length, 4);
+
+  const restrictedOnly = { entries: [{ ...catalog.entries[0], skus: [...originalRows, hidden, lowerCapacity] }] };
+  assert.ok(generateLifecycleRecommendations(items, restrictedOnly).every(row => row.replacement === null));
+  assert.equal(parseSkuLines(['SKU,Quantity,Description', 'OS P61005-B21,2,Test SSD']).items[0].lifecycleStatus, 'OBSOLETE');
+  assert.equal(parseSkuLines(['SKU,Quantity,Description,Lifecycle Status', 'P61005-B21,2,Test SSD,OS']).items[0].lifecycleStatus, 'OBSOLETE');
+  assert.equal(classifyLifecycleState('Active', '', 'P61005-B21', 'OS licensing option').isNonActive, false);
+});
 
 test('Lifecycle Status Tag & Clean PID Separation (INV-21)', async (t) => {
   await t.test('should cleanly strip obsolete (OB) and direct ship (DS) badges from base SKUs', () => {

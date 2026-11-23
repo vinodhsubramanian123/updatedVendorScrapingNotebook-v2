@@ -29,7 +29,9 @@ import { useSSEStream } from './hooks/useSSEStream.js';
 import { useRagPoller } from './hooks/useRagPoller.js';
 import { useCatalogs } from './hooks/useCatalogs.js';
 import { requestJson, postJson, uploadBoqFile } from './services/api.js';
-import { normalizeEvalResult } from './services/evalNormalizer.js';
+import EvaluationProgressSteps from './components/uploader/EvaluationProgressSteps';
+import { LifecycleAlternatives } from './components/uploader/EvaluationOutcomeCard';
+import { deriveDualBrainBadges, normalizeEvalResult } from './services/evalNormalizer.js';
 import { useModalFocus } from './hooks/useModalFocus.js';
 
 const IMMEDIATE_RAG_STATUSES = ['COMPLETED', 'CLOUD_VERIFIED', 'LOCAL_FALLBACK'];
@@ -154,7 +156,7 @@ function triggerMatrixRecomputeIfApplicable(prev, fullData, fallbackChassis) {
 async function executeSmartSearchRequest({
   query,
   selectedChassis,
-  localOnly = true,
+  localOnly = false,
   setIsRagOpen,
   setIsQueryingRag,
   setRagElapsedTime,
@@ -226,7 +228,7 @@ function writeSessionJson(key, value) {
   } catch {}
 }
 
-async function executeBoqEvaluationRequest(boqInput, maybeRawText, currentCat, setLogStream, setEvalResults, localOnly = true, runId = null) {
+async function executeBoqEvaluationRequest(boqInput, maybeRawText, currentCat, setLogStream, setEvalResults, localOnly = false, runId = null) {
   setLogStream([]);
   setEvalResults(null);
   try {
@@ -243,6 +245,39 @@ async function executeBoqEvaluationRequest(boqInput, maybeRawText, currentCat, s
     setEvalResults(errResult);
     return { error: err.message, remediationAction: err.remediationAction, code: err.code, status: err.status };
   }
+}
+
+function EvaluationWorkspaceDetails({ visible, uploaderOpen, evalResults, evaluatedProduct, onReEvaluate }) {
+  if (!visible) return null;
+  const showDetails = !uploaderOpen && evalResults && !evalResults.clarificationRequired;
+  return (
+    <>
+      <DualBrainBadgesBar evalResults={evalResults} />
+      {showDetails && (
+        <>
+          <AmbiguityInbox evalResults={evalResults} chassisContext={evaluatedProduct || 'Unknown Chassis'} onReEvaluate={onReEvaluate} />
+          {evalResults.lifecycleRecommendations?.length > 0 && (
+            <div className="glass-card p-4">
+              <LifecycleAlternatives recommendations={evalResults.lifecycleRecommendations} />
+            </div>
+          )}
+        </>
+      )}
+    </>
+  );
+}
+
+function WorkspaceEvaluationProgress({ uploaderOpen, progress, logStream }) {
+  if (uploaderOpen || (progress?.task !== 'EVAL_BOQ' && !progress?.qualifications)) return null;
+  return (
+    <EvaluationProgressSteps
+      isEvaluating={progress.task === 'EVAL_BOQ'}
+      currentStep={progress.currentStep}
+      action={progress.action}
+      qualifications={progress.qualifications}
+      logStream={logStream}
+    />
+  );
 }
 
 function DualBrainBadgesBar({ evalResults }) {
@@ -448,10 +483,12 @@ function AppToolModals({
   setIsRagOpen,
   handleSmartSearch,
   handleEvaluateBoq,
+  handleReEvaluate,
   handleTriggerScrape,
   auditReport,
   setAuditReport,
   boqLocalOnly,
+  serverOffline,
   setBoqLocalOnly
 }) {
   const [boqProductId, setBoqProductId] = useState('');
@@ -485,6 +522,7 @@ function AppToolModals({
           logStream={logStream}
           activeProgress={activeProgress}
           localOnly={boqLocalOnly}
+          serverOffline={serverOffline}
           onLocalOnlyChange={setBoqLocalOnly}
           onOpenMatrix={() => setActiveModal('resolutionMatrix')}
           onOpenReconciliation={() => setActiveModal('reconciliation')}
@@ -497,8 +535,8 @@ function AppToolModals({
           <div className="mt-6 space-y-6 animate-fade-in">
             <AmbiguityInbox
               evalResults={evalResults}
-              chassisContext={selectedChassis || 'Unknown Chassis'}
-              onReEvaluate={(extraText) => handleEvaluateBoq({ rawText: extraText || '' })}
+              chassisContext={evalResults.chassisPrefix || evalResults.chassis || selectedChassis || 'Unknown Chassis'}
+              onReEvaluate={handleReEvaluate}
             />
             <WorkloadDnaCard dnaData={evalResults.workloadDna} />
           </div>
@@ -550,7 +588,16 @@ function completeMatrixRagForRun(answer, fullData, context, state) {
   if (context?.epoch !== state.evaluationEpoch.current || context?.runId !== state.evaluationRunRef.current) return;
   const previous = state.evalRef.current;
   if (!previous || previous.runId !== context.runId) return;
-  const updated = { ...previous, ragAnswer: answer, ragData: fullData };
+  const isFallback = ['LOCAL_RAG_FALLBACK', 'LOCAL_FALLBACK'].includes(fullData.source) || fullData.isFallback === true;
+  const notebookLmStatus = {
+    ...previous.notebookLmStatus,
+    isFallback,
+    isCloudGrounded: fullData.isCloudGrounded === true,
+    citationsCount: fullData.citations?.length || 0,
+    fallbackReason: fullData.fallbackReason || fullData.cloudUnavailableReason || null
+  };
+  const updated = { ...previous, ragAnswer: answer, ragData: fullData, notebookLmStatus };
+  updated.dualBrainBadges = deriveDualBrainBadges({ ...updated, isCloudGrounded: notebookLmStatus.isCloudGrounded });
   state.evalRef.current = updated;
   state.setEvalResults(updated);
   state.setRagData(fullData);
@@ -678,7 +725,7 @@ function receiveTaskCompletion(payload, state) {
   state.visibleRunRef.current = payload.runId;
   state.activeRunRef.current = null;
   state.setIsTaskRunning(false);
-  state.setActiveProgress(null);
+  state.setActiveProgress(previous => previous?.qualifications ? { ...previous, task: null } : null);
   state.setRunActivity(previous => payload.runId ? {
     ...(previous?.runId === payload.runId ? previous : {}),
     ...payload,
@@ -938,15 +985,16 @@ function useProgressStream({
 
     onProgress: useCallback((payload) => {
       if (payload.runId && payload.runId !== activeRunRef.current) return;
-      setActiveProgress({
+      setActiveProgress(previous => previous?.qualifications && !payload.qualifications ? previous : ({
         task: payload.task || 'RUNNING',
         currentStep: payload.step,
         totalSteps: payload.total,
         action: payload.action,
         stage: payload.stage,
         status: payload.status,
-        detail: payload.detail
-      });
+        detail: payload.detail,
+        qualifications: payload.qualifications
+      }));
       setLogStream(prev => [...prev.slice(-200), payload]);
     }, [activeRunRef, setActiveProgress, setLogStream]),
 
@@ -980,6 +1028,29 @@ function computeRunActivityDisplay({ activeTab, runActivity, streamConnected, is
     (activeTab === 'pipeline' ? Boolean(runActivity) : evaluationActivity && (isEvalWorkspaceTab || isTaskRunning));
   const bannerRun = activeTab === 'pipeline' || evaluationActivity || activeRunVisible ? runActivity : null;
   return { isEvalWorkspaceTab, showRunActivityBanner, bannerRun };
+}
+
+function useServerOfflinePolicy() {
+  const [serverOffline, setServerOffline] = useState(null);
+  useEffect(() => {
+    const controller = new AbortController();
+    const onSnapshot = ({ detail }) => {
+      if (typeof detail?.serverOffline === 'boolean') setServerOffline(detail.serverOffline);
+    };
+    window.addEventListener('dashboard-sse-snapshot', onSnapshot);
+    requestJson('/api/health', { signal: controller.signal })
+      .then(({ serverOffline }) => {
+        if (!controller.signal.aborted && typeof serverOffline === 'boolean') {
+          setServerOffline(previous => previous ?? serverOffline);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      controller.abort();
+      window.removeEventListener('dashboard-sse-snapshot', onSnapshot);
+    };
+  }, []);
+  return serverOffline;
 }
 
 export default function App() {
@@ -1030,7 +1101,9 @@ export default function App() {
   const [isQuarantineOpen, setIsQuarantineOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [selectedCardForFeedback, setSelectedCardForFeedback] = useState(null);
-  const [boqLocalOnly, setBoqLocalOnly] = useState(true);
+  const [localOnlyPreference, setBoqLocalOnly] = useState(false);
+  const serverOffline = useServerOfflinePolicy();
+  const boqLocalOnly = serverOffline === true || localOnlyPreference;
 
   const completeMatrixRag = (answer, fullData, context) => completeMatrixRagForRun(answer, fullData, context,
     { evaluationEpoch, evaluationRunRef, evalRef, setEvalResults, setRagData });
@@ -1162,6 +1235,10 @@ export default function App() {
     setActiveTab
   });
 
+  const evaluatedProduct = evalResults?.chassisPrefix || evalResults?.chassisDir;
+  const handleReEvaluate = evaluatedProduct ? () => replayClarifiedIntake(
+    evaluatedProduct, recoverIntake(inputRef.current, evalResults), catalogs, handleEvaluateBoq, setActionError
+  ) : undefined;
   const activeBannerError = computeActiveBannerError(actionError, catalogError);
   const { isEvalWorkspaceTab, showRunActivityBanner, bannerRun } = computeRunActivityDisplay({
     activeTab, runActivity, streamConnected, isTaskRunning
@@ -1210,13 +1287,18 @@ export default function App() {
           />
         )}
 
-        {isEvalWorkspaceTab && (
-          <DualBrainBadgesBar evalResults={evalResults} />
-        )}
+        <EvaluationWorkspaceDetails
+          visible={isEvalWorkspaceTab}
+          uploaderOpen={activeModal === 'boqUploader'}
+          evalResults={evalResults}
+          evaluatedProduct={evaluatedProduct}
+          onReEvaluate={handleReEvaluate}
+        />
 
         <ErrorBoundary fallbackTitle="View Rendering Error">
           <div hidden={activeTab !== 'orchestrator'}>
-            <PresalesRequestPanel catalogs={catalogs} isTaskRunning={isTaskRunning} onEvaluateBoq={handleEvaluateBoq} />
+            <WorkspaceEvaluationProgress uploaderOpen={activeModal === 'boqUploader'} progress={activeProgress} logStream={logStream} />
+            <PresalesRequestPanel catalogs={catalogs} isTaskRunning={isTaskRunning} onEvaluateBoq={handleEvaluateBoq} localOnly={boqLocalOnly} onLocalOnlyChange={setBoqLocalOnly} serverOffline={serverOffline} />
           </div>
           <AppMainTabContent
             restoringEvaluation={restoringEvaluation}
@@ -1269,10 +1351,12 @@ export default function App() {
         setIsRagOpen={setIsRagOpen}
         handleSmartSearch={handleSmartSearch}
         handleEvaluateBoq={handleEvaluateBoq}
+        handleReEvaluate={handleReEvaluate}
         handleTriggerScrape={handleTriggerScrape}
         auditReport={auditReport}
         setAuditReport={setAuditReport}
         boqLocalOnly={boqLocalOnly}
+        serverOffline={serverOffline}
         setBoqLocalOnly={setBoqLocalOnly}
       />
 

@@ -1,10 +1,10 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-11-22T09:33:24.148Z",
-  "lastUpdated": "2026-11-22T09:33:24.148Z",
-  "totalLearnedRules": 189,
-  "totalDeduplicatedRules": 189,
+  "generatedAt": "2026-11-23T13:06:57.922Z",
+  "lastUpdated": "2026-11-23T13:06:57.922Z",
+  "totalLearnedRules": 190,
+  "totalDeduplicatedRules": 190,
   "productFamiliesSynced": [
     "Alletra",
     "DL380a",
@@ -15,7 +15,7 @@
   "counts": {
     "universal": 22,
     "familyGen": 0,
-    "chassisSpecific": 167
+    "chassisSpecific": 168
   },
   "universalRules": [
     {
@@ -1329,6 +1329,50 @@
       "provenance": "Live HPE OCA Configurator UCID 5157776172-01, CLIC Rule 81322276, and INV-207",
       "scopeTaxonomy": "CHASSIS_SPECIFIC",
       "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "solutionType": "DL385_Gen11 CTO Server"
+    },
+    {
+      "deltaId": "CLIC_81353846_DL385_G11_CABLE_MAX1",
+      "ruleId": "CLIC_81353846_DL385_G11_CABLE_MAX1",
+      "vendorRuleId": "81353846",
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen11",
+      "productId": "DL385_Gen11",
+      "chassis": "DL385_Gen11",
+      "baseSku": "P53921-B21",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "ruleType": "QUANTITY_CEILING",
+      "errorType": "UNBUILDABLE_CLIC_QUANTITY_LIMIT",
+      "affectedSku": "P57848-B21",
+      "affectedSkus": [
+        "P57846-B21",
+        "P57847-B21",
+        "P57848-B21",
+        "P57853-B21",
+        "P57854-B21",
+        "P57855-B21",
+        "P57856-B21",
+        "P57859-B21",
+        "P57862-B21",
+        "P57863-B21",
+        "P57864-B21",
+        "P57865-B21",
+        "P57868-B21",
+        "P57869-B21"
+      ],
+      "conditionKey": "quantity",
+      "conditionOperator": "<=",
+      "thresholdValue": 1,
+      "evidenceType": "LIVE_CLIC_REJECTION",
+      "sourceType": "TIER_3_LIVE_CLIC_RECEIPT",
+      "status": "ACTIVE",
+      "governanceStatus": "APPROVED",
+      "reviewedBy": "human_live_clic_validation",
+      "description": "CLIC Rule 81353846 (P53921-B21): Maximum 1 quantity of each DL385 Gen11 storage cable kit (P57846/P57847/P57848/P57853/P57854/P57855/P57856/P57859/P57862/P57863/P57864/P57865/P57868/P57869-B21) can be ordered per base model. Multi-cage 16SFF/24SFF configs still use qty 1 of P57848-B21 (multi-cable kit).",
+      "rawMessage": "Product#: P53921-B21 Rule#: 81353846 UNBUILDABLE CONFIGURATION: Maximum 1 quantity of each DL385 Gen11 storage cable kit can be ordered per base model.",
+      "timestamp": "2026-11-23T12:38:01.712Z",
       "solutionType": "DL385_Gen11 CTO Server"
     },
     {

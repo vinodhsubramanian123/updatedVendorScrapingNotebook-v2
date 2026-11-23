@@ -1,3 +1,4 @@
+import { LifecycleAlternatives } from './uploader/EvaluationOutcomeCard';
 import React, { useEffect, useRef, useState } from 'react';
 import { postJson, requestJson, uploadBoqFile } from '../services/api.js';
 import { formatPrice } from '../services/pricing.js';
@@ -368,7 +369,7 @@ function ClarificationAlert({ missingReqs }) {
   const missingList = Array.isArray(missingReqs) && missingReqs.length > 0 ? ` (Missing: ${missingReqs.join(', ')})` : '';
   return (
     <div role="alert" className="text-xs font-semibold text-amber-900 bg-amber-50 p-2.5 rounded-lg border border-amber-300">
-      ⚠️ <strong>Human Clarification Required:</strong> Sizing requirements are incomplete or ambiguous{missingList}. Please refine the query before evaluation.
+      ⚠️ <strong>Human Clarification Required:</strong> Sizing requirements are incomplete or ambiguous{missingList}. Confirm the missing requirements and product scope before evaluation.
     </div>
   );
 }
@@ -414,11 +415,15 @@ function RoutedOutcome({ envelope, onExportExcel, onEvaluateCandidateBom }) {
       {result.message && <p className="text-xs text-slate-700">{String(result.message)}</p>}
       <PriceDriftView report={result.priceDrifts} />
       <CatalogSearchView report={result.catalogSearch} />
+      <LifecycleAlternatives recommendations={result.lifecycleRecommendations} />
       {result.historicalPricing && (
         <p className="text-xs text-slate-700">
           {result.targetSku} · As of {result.historicalPricing.targetDate} · {formatPrice(result.historicalPricing.nullablePriceUsd)}
           {result.historicalPricing.effectiveDate && ` · Observed ${result.historicalPricing.effectiveDate}`}
         </p>
+      )}
+      {result.answer && result.isCloudGrounded === false && result.effectivePolicy?.offline === false && (
+        <span className="badge badge-amber">Local RAG fallback · Cloud grounding unavailable</span>
       )}
       <GroundedAnswerView answer={result.answer} citations={result.citations} />
       <ReconciliationSummaryView report={result.reconciliationReport || result.auditReport} />
@@ -660,7 +665,7 @@ function usePresalesRunner(query, product, primary, secondary, localOnly, onEval
   return { plan, result, busy, error, classify, execute, exportExcel, evaluateCandidateBom };
 }
 
-function PresalesInputControls({ query, setQuery, primary, setPrimary, secondary, setSecondary, localOnly, setLocalOnly }) {
+function PresalesInputControls({ query, setQuery, primary, setPrimary, secondary, setSecondary, localOnly, setLocalOnly, serverOffline }) {
   return (
     <>
       <label className="block text-sm">
@@ -704,7 +709,7 @@ function PresalesInputControls({ query, setQuery, primary, setPrimary, secondary
           />
         </label>
         <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-700 pb-1.5">
-          <input type="checkbox" checked={localOnly} onChange={event => setLocalOnly(event.target.checked)} className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" />
+          <input type="checkbox" checked={localOnly} disabled={serverOffline} onChange={event => setLocalOnly(event.target.checked)} className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" />
           Use local catalog only
         </label>
       </div>
@@ -767,18 +772,22 @@ function PresalesActionToolbar({ busy, isTaskRunning, queryEmpty, classify, plan
 }
 
 /** Route supported presales requests through the existing canonical engine. */
-export default function PresalesRequestPanel({ product: initialProduct, catalogs = [], isTaskRunning, onEvaluateBoq }) {
+export default function PresalesRequestPanel({ product: initialProduct, catalogs = [], isTaskRunning, onEvaluateBoq, localOnly: localOnlyProp, onLocalOnlyChange, serverOffline }) {
   const [pinnedProductId, setPinnedProductId] = useState(null);
   const product = catalogs.find(catalog => catalog.id === pinnedProductId)
     || (pinnedProductId === null ? initialProduct : null);
   const [query, setQuery] = useState('');
   const [primary, setPrimary] = useState(null);
   const [secondary, setSecondary] = useState(null);
-  const [localOnly, setLocalOnly] = useState(true);
+  const [localOnlyPreference, setLocalOnlyPreference] = useState(false);
+  const localOnly = Boolean(serverOffline || (localOnlyProp ?? localOnlyPreference));
+  const setLocalOnly = onLocalOnlyChange || setLocalOnlyPreference;
 
   const { plan, result, busy, error, classify, execute, exportExcel, evaluateCandidateBom } = usePresalesRunner(
     query, product, primary, secondary, localOnly, onEvaluateBoq, pinnedProductId
   );
+
+  if (serverOffline === null) return <p role="status" className="text-xs text-slate-600">Reading server evaluation policy…</p>;
 
   return (
     <section className="glass-card p-5 mb-5 space-y-3">
@@ -806,7 +815,7 @@ export default function PresalesRequestPanel({ product: initialProduct, catalogs
         query={query} setQuery={setQuery}
         primary={primary} setPrimary={setPrimary}
         secondary={secondary} setSecondary={setSecondary}
-        localOnly={localOnly} setLocalOnly={setLocalOnly}
+        localOnly={localOnly} setLocalOnly={setLocalOnly} serverOffline={serverOffline}
       />
       <PresalesActionToolbar
         busy={busy} isTaskRunning={isTaskRunning} queryEmpty={!query.trim() && !primary && !secondary}

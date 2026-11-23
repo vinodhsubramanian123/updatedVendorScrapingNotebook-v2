@@ -43,11 +43,11 @@ export default function RunHistoryTable({
           />
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <select
             value={statusFilter}
             onChange={e => setStatusFilter(e.target.value)}
-            className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+            className="max-w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
           >
             <option value="ALL">All Statuses</option>
             <option value="COMPLETED">Completed</option>
@@ -60,7 +60,7 @@ export default function RunHistoryTable({
           <select
             value={typeFilter}
             onChange={e => setTypeFilter(e.target.value)}
-            className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+            className="max-w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
           >
             <option value="ALL">All Tasks</option>
             <option value="EVAL_BOQ">BOQ Evaluations</option>

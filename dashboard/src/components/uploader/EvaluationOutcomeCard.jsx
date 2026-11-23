@@ -39,6 +39,38 @@ function PcieTopologySummaryCard({ pcieTopology }) {
   );
 }
 
+export function LifecycleAlternatives({ recommendations = [] }) {
+  if (!recommendations.length) return null;
+  return (
+    <section aria-label="Lifecycle alternatives" className="space-y-2">
+      <h4 className="text-sm font-semibold text-slate-900">Lifecycle alternatives</h4>
+      {recommendations.map(({ sku, risk, originalDesc, replacement, commercialRemarks }, index) => (
+        <div key={`${sku}-${index}`} className="grid gap-3 rounded-xl border border-slate-200 p-3 text-xs sm:grid-cols-2">
+          <div>
+            <div className="font-semibold text-amber-900">{sku} · {risk}</div>
+            <div className="text-slate-700">{originalDesc}</div>
+            <p className="mt-1 text-slate-600">{commercialRemarks?.original}</p>
+          </div>
+          <div>
+            <div className="font-semibold text-slate-900">{replacement ? `${replacement.sku} · Active candidate` : 'Active replacement pending'}</div>
+            {replacement && (
+              <>
+                <div className="text-slate-700">{replacement.description}</div>
+                <div className="text-slate-600">
+                  {replacement.price == null ? 'Price unpublished' : `${replacement.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })} per unit`}
+                  {' · '}
+                  {replacement.leadTimeDays == null ? 'Lead time unpublished' : `${replacement.leadTimeDays} days`}
+                </div>
+              </>
+            )}
+            <p className="mt-1 text-slate-600">{commercialRemarks?.production}</p>
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
 export default function EvaluationOutcomeCard({
   evalResults,
   outcomeRef,
@@ -96,7 +128,9 @@ export default function EvaluationOutcomeCard({
         <div className="p-3 bg-amber-50/80 border border-amber-200 rounded-lg text-xs text-amber-900 flex items-start gap-2.5">
           <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
           <div>
-            <span className="font-semibold">Local Verified Fallback Active:</span> NotebookLM Cloud was not consulted ({evalResults.notebookLmStatus.fallbackReason || 'Timeout or Local Mode'}). Rules and physical constraints evaluated via deterministic rule engine.
+            {evalResults.effectivePolicy?.offline || evalResults.offlineMode
+              ? <span className="font-semibold">Local-only evaluation</span>
+              : <><span className="font-semibold">Local RAG fallback</span> · Cloud grounding unavailable ({evalResults.notebookLmStatus.fallbackReason || 'cloud unavailable'}). Local findings are available for review.</>}
           </div>
         </div>
       )}
@@ -109,6 +143,7 @@ export default function EvaluationOutcomeCard({
         </div>
       )}
 
+      <LifecycleAlternatives recommendations={evalResults.lifecycleRecommendations} />
       <GuardrailReviewStatus status={evalResults.agenticReviewStatus} review={evalResults.agenticReview} />
       {evalResults.pcieTopology && <PcieTopologySummaryCard pcieTopology={evalResults.pcieTopology} />}
 

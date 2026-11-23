@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import TelemetryModalWrapper from './TelemetryModalWrapper';
 import ExportHistoryCard from '../../ExportHistoryCard';
+import { evaluationInsight, learningInsight, durationInsight, exportInsight, EXPLANATIONS, isLowConfidenceRun, formatConfidence } from './insights';
 
 export function ViolationsModal({ isOpen, onClose, history = [] }) {
   const failedRuns = history.filter(h => h.criticalViolationsCount > 0);
@@ -18,6 +19,7 @@ export function ViolationsModal({ isOpen, onClose, history = [] }) {
       isOpen={isOpen}
       onClose={onClose}
       title="Evaluation Violations Ledger"
+      insight={isOpen ? evaluationInsight(failedRuns, "violations") : null}
       icon={AlertTriangle}
       iconColor="text-amber-500"
     >
@@ -53,11 +55,13 @@ export function ViolationsModal({ isOpen, onClose, history = [] }) {
 
 export function LearnedRulesModal({ isOpen, onClose, telemetry = {} }) {
   const learnedDeltas = telemetry.learnedDeltas || [];
+  const pending = telemetry.pendingRuleObservations || [];
   return (
     <TelemetryModalWrapper
       isOpen={isOpen}
       onClose={onClose}
       title="Learned Rules & Knowledge Deltas Inspector"
+      insight={isOpen ? learningInsight([...pending, ...learnedDeltas]) : null}
       subtitle="Detailed ledger of promoted rules, restrictions, and dependency overrides with review and evidence provenance."
       icon={Sparkles}
       iconColor="text-purple-600"
@@ -115,6 +119,7 @@ export function EvaluationsModal({ isOpen, onClose, history = [], telemetry = {}
       isOpen={isOpen}
       onClose={onClose}
       title="Total BOQ Evaluations Ledger"
+      insight={isOpen ? evaluationInsight(history, "evaluations") : null}
       subtitle="Complete history of all BOQ file parsing, graph checking, and confidence scoring operations."
       icon={BarChart2}
       iconColor="text-blue-600"
@@ -172,6 +177,7 @@ export function ConfidenceModal({ isOpen, onClose, history = [], telemetry = {} 
       isOpen={isOpen}
       onClose={onClose}
       title="Confidence Score & Quality Audit"
+      insight={isOpen ? evaluationInsight(history.filter(isLowConfidenceRun), "confidence") : null}
       subtitle="How the system computes overall confidence scores across conflict graph validation and RAG double-proofing."
       icon={ShieldCheck}
       iconColor="text-emerald-600"
@@ -183,19 +189,16 @@ export function ConfidenceModal({ isOpen, onClose, history = [], telemetry = {} 
         <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-center">
           <p className="text-slate-500 font-semibold uppercase text-[10px] mb-1">Average System Confidence</p>
           <p className="text-3xl font-extrabold text-emerald-700">
-            {telemetry.evaluationsCount > 0 ? (telemetry.avgConfidenceScore * 100).toFixed(0) + '%' : '100%'}
+            {formatConfidence(telemetry.avgConfidenceScore)}
           </p>
           <p className="text-[11px] text-emerald-800 mt-1">Based on {history.length} recent evaluation runs</p>
         </div>
 
         <div className="space-y-2">
-          <h4 className="font-bold text-slate-900">Confidence Scoring Criteria:</h4>
-          <ul className="space-y-1.5 list-disc pl-4 text-slate-600">
-            <li><strong>100% (Clean Pass):</strong> All physical rules, cable dependencies, power calculations, and thermal constraints pass without error.</li>
-            <li><strong>75% - 90% (Warning):</strong> Non-blocking recommendations or optional riser/cable preferences flagged.</li>
-            <li><strong>&lt;75% (HITL Flagged):</strong> Critical physical dependency missing (e.g. storage controller missing cable kit). Triggers Human-In-The-Loop review.</li>
-            <li><strong>0% (Human Delta Triggered):</strong> A user feedback portal delta override was submitted, resetting engine baseline.</li>
-          </ul>
+          <h4 className="font-bold text-slate-900">Recent runs flagged for confidence review</h4>
+          {history.filter(isLowConfidenceRun).slice(0, 5).map((entry, index) => (
+            <p key={entry.id || index}>{entry.runId || entry.id || 'Evaluation'} · {formatConfidence(entry.confidenceScore ?? entry.confidence)} · {EXPLANATIONS[entry.rootCauseAttribution]?.[0] || 'Cause unavailable'}</p>
+          ))}
         </div>
       </div>
     </TelemetryModalWrapper>
@@ -215,6 +218,7 @@ export function DurationModal({ isOpen, onClose, history = [] }) {
       isOpen={isOpen}
       onClose={onClose}
       title="Pipeline Latency & Duration Breakdown"
+      insight={isOpen ? durationInsight(history) : null}
       subtitle="Execution runtime metrics across BOQ file parsing, conflict graph matrix traversal, and RAG double-proofing."
       icon={Clock}
       iconColor="text-indigo-600"
@@ -234,34 +238,19 @@ export function DurationModal({ isOpen, onClose, history = [] }) {
           </div>
         </div>
 
-        <div className="space-y-2">
-          <h4 className="font-bold text-slate-900">Pipeline Processing Stages:</h4>
-          <div className="space-y-2">
-            <div className="bg-white p-2.5 rounded-lg border border-slate-200 flex justify-between items-center">
-              <span>1. BOQ Ingestion & SKU Sanitization</span>
-              <span className="font-mono text-slate-500">~15ms</span>
-            </div>
-            <div className="bg-white p-2.5 rounded-lg border border-slate-200 flex justify-between items-center">
-              <span>2. Aspect Math & CLIC Engine Traversal</span>
-              <span className="font-mono text-slate-500">~45ms</span>
-            </div>
-            <div className="bg-white p-2.5 rounded-lg border border-slate-200 flex justify-between items-center">
-              <span>3. Gemini NotebookLM Async RAG Double-Proofing</span>
-              <span className="font-mono text-slate-500">~1.2s - 2.5s</span>
-            </div>
-          </div>
-        </div>
+
       </div>
     </TelemetryModalWrapper>
   );
 }
 
-export function ExportsModal({ isOpen, onClose }) {
+export function ExportsModal({ isOpen, onClose, telemetry = {} }) {
   return (
     <TelemetryModalWrapper
       isOpen={isOpen}
       onClose={onClose}
       title="Workflow & BOQ Exports Ledger"
+      insight={isOpen ? exportInsight(telemetry) : null}
       subtitle="Complete history of generated corrected BOQ spreadsheets, XLSX artifacts, and reconciliation ledgers."
       icon={Server}
       iconColor="text-emerald-600"

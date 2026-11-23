@@ -1261,15 +1261,11 @@ function _checkProductionLifecycleGate(output, context = {}) {
   for (const part of parts) {
     const clean = cleanBaseSKU(part.sku);
     const catItem = catalogIndex?.get(clean);
-    const lc = classifyLifecycleState(
-      catItem?.lifecycleStatus || part.lifecycleStatus || '',
-      catItem?.diffStatus || part.diffStatus || '',
-      part.sku || '',
-      catItem?.skuData?.Description || part.description,
-      catItem?.skuData?.vendorSupplyStatus || part.vendorSupplyStatus
-    );
-    if (lc.isBlockedForProduction) blockedSkus.push(`${clean} (${lc.canonicalStatus})`);
-    else if (lc.isConstrainedSupply) supplyConstrainedSkus.push(clean);
+    const catalogState = catItem?.lifecycleState;
+    const inputState = classifyLifecycleState(part.lifecycleStatus, part.diffStatus, part.sku, part.description, part.vendorSupplyStatus);
+    const blocked = [catalogState, inputState].find(state => state?.isBlockedForProduction);
+    if (blocked) blockedSkus.push(`${clean} (${blocked.canonicalStatus})`);
+    else if (catalogState?.isConstrainedSupply || inputState.isConstrainedSupply) supplyConstrainedSkus.push(clean);
   }
   if (supplyConstrainedSkus.length > 0) {
     return makeCheck('B21', 'Active Production Lifecycle Gate (Non-OB / Non-EOL)', 'BLOCK', 'ACTION_REQUIRED',

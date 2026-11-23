@@ -248,6 +248,7 @@ function extractProvenanceAndTrace(data, inner) {
     totalUnsolicitedCostUsd: _pick(inner.totalUnsolicitedCostUsd, data.totalUnsolicitedCostUsd, 0),
     stageBreakdown: _pick(inner.stageBreakdown, data.stageBreakdown, {}),
     notebookLmStatus: _pick(inner.notebookLmStatus, data.notebookLmStatus, null),
+    lifecycleRecommendations: inner.lifecycleRecommendations ?? inner.evalSummary?.lifecycleRecommendations ?? data.lifecycleRecommendations ?? [],
     postFlowSync: _pick(inner.postFlowSync, data.postFlowSync, null),
     requirementResolution: _pick(inner.requirementResolution, data.requirementResolution, null),
     pcieTopology: _pick(inner.evalSummary?.pcie?.slotLayout, data.pcieTopology, null)
@@ -282,6 +283,14 @@ export function deriveDualBrainBadges(data = {}, inner = {}) {
       label: 'Cloud Grounded: VERIFIED',
       variant: 'indigo',
       tooltip: 'Verified word-for-word against official vendor QuickSpecs and master catalog in Gemini NotebookLM.'
+    });
+  } else if (inner.notebookLmStatus?.isFallback || data.notebookLmStatus?.isFallback) {
+    const offline = (inner.effectivePolicy ?? data.effectivePolicy)?.offline ?? inner.offlineMode ?? data.offlineMode;
+    badges.push({
+      id: offline ? 'LOCAL_ONLY' : 'LOCAL_RAG_FALLBACK',
+      label: offline ? 'Local-only evaluation' : 'Local RAG fallback',
+      variant: offline ? 'blue' : 'amber',
+      tooltip: (inner.notebookLmStatus ?? data.notebookLmStatus)?.fallbackReason || 'Cloud grounding unavailable.'
     });
   } else if (isDegraded) {
     badges.push({

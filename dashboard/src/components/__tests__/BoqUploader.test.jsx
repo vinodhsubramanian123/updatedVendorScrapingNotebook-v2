@@ -44,7 +44,35 @@ describe('BoqUploader', () => {
     );
   });
 
-  it('defaults to local-only mode and warns when a PDF/image quote is selected under local-only mode', () => {
+  it('defaults to cloud and reflects when the server enforces local-only', () => {
+    const props = { onEvaluateBoq: vi.fn(), evalResults: null };
+    const { rerender } = render(<BoqUploader {...props} />);
+    const checkbox = screen.getByRole('checkbox', { name: /Use local catalog only/i });
+    expect(checkbox).not.toBeChecked();
+    fireEvent.click(checkbox);
+    expect(checkbox).toBeChecked();
+    fireEvent.click(checkbox);
+    rerender(<BoqUploader {...props} serverOffline />);
+    expect(checkbox).toBeChecked();
+    expect(checkbox).toBeDisabled();
+  });
+
+  it('shows qualification reasons from the running evaluation', () => {
+    render(<BoqUploader onEvaluateBoq={vi.fn()} activeProgress={{
+      task: 'EVAL_BOQ',
+      currentStep: 2,
+      qualifications: [
+        { step: 1, title: 'Read input', mode: 'Sequential', status: 'PASSED', reason: 'Four hardware lines parsed.' },
+        { step: 2, title: 'Check catalog', mode: 'Sequential', status: 'FAILED', reason: 'Product catalog is missing.' },
+        { step: 3, title: 'Check hardware', mode: 'Sequential', status: 'NOT_STARTED' }
+      ]
+    }} />);
+    expect(screen.getByRole('list', { name: 'Stage qualification' })).toHaveTextContent('Four hardware lines parsed.');
+    expect(screen.getByText(/Product catalog is missing/)).toBeInTheDocument();
+    expect(screen.getByText('Not reached')).toBeInTheDocument();
+  });
+
+  it('honors explicit local-only mode and warns when a PDF/image quote is selected under local-only mode', () => {
     const mockToggle = vi.fn();
     render(<BoqUploader onEvaluateBoq={vi.fn()} evalResults={null} logStream={[]} chassisDir="DL380_Gen12_SFF" localOnly={true} onLocalOnlyChange={mockToggle} />);
 

@@ -25,6 +25,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { execSync, spawnSync } = require('child_process');
+const { safeWriteJsonAtomic } = require('../lib/system/fs_compat');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 
@@ -329,7 +330,16 @@ function configureMcpServers(extractedDir, sys) {
     return `${baseName}${binExt}`;
   }
 
-  const nlmCommand = resolveMcpBinary('notebooklm-mcp');
+  let notebookMcp = { command: resolveMcpBinary('notebooklm-mcp'), args: [] };
+  if (sys.isWin) {
+    const toolDir = spawnSync('uv', ['tool', 'dir'], { encoding: 'utf8', windowsHide: true });
+    if (toolDir.status === 0) {
+      const python = path.join(toolDir.stdout.trim(), 'notebooklm-mcp-cli', 'Scripts', 'python.exe');
+      if (fs.existsSync(python)) {
+        notebookMcp = { command: python, args: ['-B', path.join(__dirname, 'nlm_windows_mcp.py')] };
+      }
+    }
+  }
 
   const julesConfig = {
     command: "npx",
@@ -346,10 +356,7 @@ function configureMcpServers(extractedDir, sys) {
 
   const mcpConfig = {
     mcpServers: {
-      "gemini-notebook-mcp": {
-        command: nlmCommand,
-        args: []
-      },
+      "gemini-notebook-mcp": notebookMcp,
       "jules": julesConfig,
       "graphify": {
         command: graphifyMcpCommand,
@@ -374,7 +381,7 @@ function configureMcpServers(extractedDir, sys) {
     info(`Configured Antigravity built-in extension MCP servers via: ${proxyBundle}`);
   }
 
-  fs.writeFileSync(mcpConfigFile, JSON.stringify(mcpConfig, null, 2), 'utf-8');
+  safeWriteJsonAtomic(mcpConfigFile, mcpConfig);
   success(`Generated machine-accurate MCP configuration at: ${mcpConfigFile}`);
 }
 

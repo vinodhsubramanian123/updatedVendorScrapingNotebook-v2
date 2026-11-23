@@ -1182,6 +1182,7 @@ function _buildAnalysisSerializedFields(evalResults) {
   return {
     needsActions: evalResults.evalSummary?.needsActions || [],
     requirementResolution: evalResults.requirementResolution || null,
+    lifecycleRecommendations: evalResults.evalSummary?.lifecycleRecommendations || [],
     pcieTopology: evalResults.evalSummary?.pcie?.slotLayout || null,
     unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
     totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,

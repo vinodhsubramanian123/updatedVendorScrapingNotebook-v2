@@ -272,7 +272,7 @@ router.post('/preprocess-boq', asyncHandler(async (req, res) => {
     clientOfflineMode: offlineMode,
     enableCloudValidation,
     inheritedPolicy: parentRun?.effectivePolicy || null,
-    defaultOffline: true,
+    defaultOffline: false,
     lockInheritedOffline: true
   });
   const isOffline = effectivePolicy.offline;
@@ -539,7 +539,7 @@ router.post('/eval-boq', (req, res) => {
     clientOfflineMode: req.body.offlineMode,
     enableCloudValidation: req.body.enableCloudValidation,
     inheritedPolicy: parentRun?.effectivePolicy || candidateRef?.effectivePolicy || req.body?.effectivePolicy || null,
-    defaultOffline: true,
+    defaultOffline: false,
     lockInheritedOffline: true
   });
   const isOffline = effectivePolicy.offline;
@@ -1053,7 +1053,11 @@ router.post('/recompute-matrix', (req, res) => {
 // ── Telemetry ─────────────────────────────────────────────────────────────────
 router.get('/telemetry', (req, res) => {
   const { summarizeCatalogProbes } = require('../../scripts/lib/catalog/catalog_probe_queue.js');
-  res.json({ ...telemetryLib.loadTelemetry(), catalogProbeQueue: summarizeCatalogProbes() });
+  const { getQuarantinedDeltas } = require('../../scripts/lib/feedback/quarantined_deltas.js');
+  const pendingRuleObservations = getQuarantinedDeltas()
+    .filter(delta => (delta.governanceStatus || delta.status) === 'QUARANTINED')
+    .map(({ errorType, chassis, affectedSku }) => ({ errorType, chassis, affectedSku, governanceStatus: 'QUARANTINED' }));
+  res.json({ ...telemetryLib.loadTelemetry(), pendingRuleObservations, catalogProbeQueue: summarizeCatalogProbes() });
 });
 
 // ── Decision Traces (GAP 7) ───────────────────────────────────────────────────
@@ -1080,7 +1084,7 @@ function resolveQueryContext(input) {
     clientOfflineMode: context.offlineMode,
     enableCloudValidation: context.enableCloudValidation,
     inheritedPolicy: context.effectivePolicy || parentRun?.effectivePolicy || null,
-    defaultOffline: true,
+    defaultOffline: false,
     lockInheritedOffline: true
   });
   context.effectivePolicy = effectivePolicy;

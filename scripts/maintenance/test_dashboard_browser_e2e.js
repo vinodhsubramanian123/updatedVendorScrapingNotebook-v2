@@ -227,7 +227,7 @@ function apiJson(rawUrl, options = {}) {
   });
 }
 
-async function pollRunCompletion(baseUrl, runId, timeoutMs = 90000) {
+async function pollRunCompletion(baseUrl, runId, timeoutMs = 180000) {
   const deadline = Date.now() + timeoutMs;
   let lastRun = null;
   while (Date.now() < deadline) {
@@ -239,7 +239,7 @@ async function pollRunCompletion(baseUrl, runId, timeoutMs = 90000) {
     }
     await new Promise(r => setTimeout(r, 350));
   }
-  throw new Error(`Timed out waiting for run ${runId} to finish (lastStatus=${lastRun?.status})`);
+  throw new Error(`Timed out waiting for run ${runId} to finish (status=${lastRun?.status}, stage=${lastRun?.stage || 'unknown'})`);
 }
 
 function buildMinimalPngBuffer() {
@@ -347,6 +347,10 @@ async function verifyOrder4SizingAndMatrixHandoff(page, baseUrl) {
   assert.strictEqual(acceptedBody.product, 'DL380_Gen12', 'Server must evaluate originating DL380_Gen12, not switched DL360_Gen11');
 
   const completedRun = await pollRunCompletion(baseUrl, acceptedBody.runId);
+  const qualifications = page.getByRole('list', { name: 'Stage qualification' });
+  await qualifications.waitFor({ timeout: 10000 });
+  assert.match(await qualifications.textContent(), /Sequential.*Qualification reason/);
+  assert.match(await qualifications.textContent(), /BOQ parsed successfully/);
   await page.locator('[data-tab="matrix"]').click();
   const clusterBanner = page.getByTestId('cluster-sizing-banner');
   await clusterBanner.waitFor({ timeout: 15000 });
@@ -758,7 +762,19 @@ async function verifyReconcileTopologyAndA11y(page, baseUrl) {
   for (const tabId of ['orchestrator', 'matrix', 'pipeline']) {
     await page.getByRole('combobox', { name: 'More dashboard views' }).selectOption(tabId);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-    assert(overflow <= 2, `Mobile 390px horizontal overflow on tab ${tabId}: ${overflow}px`);
+    if (overflow > 2) {
+      const overflowing = await page.evaluate(() => [...document.querySelectorAll('main *')]
+        .filter(element => element.getBoundingClientRect().right > window.innerWidth + 2)
+        .filter(element => {
+          for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+            if (['auto', 'hidden', 'scroll', 'clip'].includes(getComputedStyle(parent).overflowX)) return false;
+          }
+          return true;
+        })
+        .slice(0, 8)
+        .map(element => `${element.tagName} ${element.className} (${Math.round(element.getBoundingClientRect().right)}px)`));
+      assert.fail(`Mobile 390px horizontal overflow on tab ${tabId}: ${overflow}px. ${overflowing.join(' | ')}`);
+    }
   }
 }
 

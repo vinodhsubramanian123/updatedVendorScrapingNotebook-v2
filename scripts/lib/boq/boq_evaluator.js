@@ -176,6 +176,7 @@ function _normalizeStructuredBoqItem(item) {
   return {
     ...item,
     sku: item.sku || item.partNumber || item.pn || item['Product #'] || item['Part No'],
+    ...(item['Lifecycle Status'] !== undefined ? { lifecycleStatus: item.lifecycleStatus ?? item['Lifecycle Status'] } : {}),
     quantity: item.quantity ?? item.qty ?? 1
   };
 }
@@ -1620,6 +1621,9 @@ function _buildArchiveTapeEvalResult(items, archiveRes, catalogData, topology, d
     evalSummary: {
       archive: archiveRes,
       lifecycleRisks: lifecycle,
+      lifecycleRecommendations: (options.skipLifecycle || options.skipGraphValidation)
+        ? []
+        : generateLifecycleRecommendations(items, catalogData, options.lifecycle || {}),
       errors,
       warnings,
       missingDependencies: [],

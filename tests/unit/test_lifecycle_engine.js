@@ -4,6 +4,24 @@ const test = require('node:test');
 const assert = require('node:assert');
 const { LifecycleEngine, CANONICAL_BOQ_PHASES } = require('../../scripts/lib/lifecycle/lifecycle_engine.js');
 
+test('Phase observer receives qualification before the dependent phase and observes a failure', async () => {
+  const engine = new LifecycleEngine('qualification_test', [
+    { id: 'FIRST', name: 'First', mandatory: true },
+    { id: 'SECOND', name: 'Second', mandatory: true, dependsOn: ['FIRST'] }
+  ]);
+  const records = [];
+  await assert.rejects(engine.executePipelineDAG({}, {
+    FIRST: () => ({ status: 'PASSED', checks: [{ status: 'PASS', label: 'Input validated' }] }),
+    SECOND: () => { throw new Error('Missing catalog evidence'); }
+  }, phase => records.push([phase.id, phase.status, phase.checklistItems[0]?.label || phase.errors[0]])), /Missing catalog evidence/);
+  assert.deepStrictEqual(records, [
+    ['FIRST', 'RUNNING', undefined],
+    ['FIRST', 'PASSED', 'Input validated'],
+    ['SECOND', 'RUNNING', undefined],
+    ['SECOND', 'FAILED', 'Missing catalog evidence']
+  ]);
+});
+
 test('LifecycleEngine — Registers and retrieves canonical pipeline phases', () => {
   const engine = new LifecycleEngine();
   const phases = engine.getPhases();

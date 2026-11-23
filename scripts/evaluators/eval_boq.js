@@ -936,9 +936,9 @@ async function executeGroundedRagValidation(ctx) {
   if (isOffline) {
     const { queryLocalKnowledgeBase } = require('../lib/rag/local_rag_search.js');
     const localRes = queryLocalKnowledgeBase(ragPayload, _resolveRagChassisLabel(catalogData, chassisDetection, detectedChassisName));
-    const policyReason = ctx.effectivePolicy?.serverEnforced || evalResults.effectivePolicy?.serverEnforced
+    const policyReason = ctx.cloudFallbackReason || (ctx.effectivePolicy?.serverEnforced || evalResults.effectivePolicy?.serverEnforced
       ? 'Local evaluation mode enforced by server (OFFLINE_MODE/LOCAL_EVAL_ONLY/USE_LOCAL_RAG_ONLY)'
-      : 'Offline evaluation mode requested in options';
+      : 'Offline evaluation mode requested in options');
     ragResult = {
       ...localRes,
       source: 'LOCAL_RAG_FALLBACK',
@@ -1472,6 +1472,44 @@ function _revalidateAndRankCandidates(evalResults, ingestCtx, evidenceLedger) {
   _recordCandidateValidationsEvidence(evidenceLedger, evalResults, ingestCtx);
 }
 
+function _qualificationReason(record) {
+  const summary = record.outputSummary || {};
+  if (record.status === 'RUNNING') return 'Checks in progress.';
+  if (record.errors?.length) return record.errors[0];
+  if (summary.skipReason) return summary.skipReason;
+  if (typeof summary.deliveryError === 'string') return summary.deliveryError;
+  if (record.id === 'RAG_GROUNDING') {
+    if (summary.solutionSourceValidation?.success) return 'NotebookLM returned applicable document evidence for the candidate.';
+    if (summary.cloudJobDeferred) return 'Local evidence prepared. NotebookLM grounding continues after local evaluation.';
+    if (summary.localOnly) return 'Local-only policy selected. Cloud document verification was skipped.';
+  }
+  const checks = record.checklistItems || [];
+  const relevant = record.status === 'PASSED'
+    ? checks.filter(check => check.status === 'PASS')
+    : checks.filter(check => ['FAIL', 'FAILED', 'WARN', 'WARNING'].includes(check.status));
+  return relevant.slice(0, 3).map(check => check.detail || check.details || check.label).filter(Boolean).join(' · ')
+    || summary.error || 'See the evaluation evidence for this phase.';
+}
+
+function _createBoqQualificationReporter(engine) {
+  if (process.env.STRUCTURED_PROGRESS !== '1') return undefined;
+  let qualifications = engine.getPhases().map(phase => ({
+    step: phase.phaseNum,
+    title: phase.name,
+    mode: 'Sequential',
+    status: 'NOT_STARTED'
+  }));
+  return record => {
+    const reason = _qualificationReason(record);
+    qualifications = qualifications.map(phase => phase.step === record.phaseNum
+      ? { ...phase, status: record.status, reason }
+      : phase);
+    emitProgress(record.phaseNum, qualifications.length, record.name,
+      record.status === 'RUNNING' ? 'in_progress' : record.status === 'FAILED' ? 'error' : 'completed',
+      reason, { stage: record.id, qualifications });
+  };
+}
+
 async function _handleBoqIngestionPhase(ctx, options, evidenceLedger) {
   emitProgress(1, 10, 'Reading the BOQ', 'in_progress', 'Parsing intake and workload requirements.', { stage: 'LOAD' });
   evidenceLedger.startPhase(1, 'Intake, Ingestion & CTO Normalization', { boqFile: options.inputFile || options.BOQ_FILE });
@@ -1690,6 +1728,9 @@ async function _handleBoqRagGroundingPhase(ctx, options, evidenceLedger) {
     ...ctx.ingestCtx,
     evalResults: ctx.evalResults,
     OFFLINE_MODE: options.OFFLINE_MODE || (!options.DEFER_RAG && !sourceReady),
+    cloudFallbackReason: !options.OFFLINE_MODE && !options.DEFER_RAG && !sourceReady
+      ? `NotebookLM QuickSpecs verification unavailable (${quickSpecs.status})`
+      : null,
     effectivePolicy: options.effectivePolicy || ctx.evalResults.effectivePolicy || null,
     JSON_MODE: options.JSON_MODE,
     SYNC_RAG: options.SYNC_RAG,
@@ -1735,7 +1776,11 @@ async function _handleBoqRagGroundingPhase(ctx, options, evidenceLedger) {
 
   return {
     status: phase7Status,
-    summary: evidenceLedger.phases.phase_7.outputSummary,
+    summary: {
+      ...evidenceLedger.phases.phase_7.outputSummary,
+      cloudJobDeferred: ctx.evalResults.cloudGroundingStatus === 'CLOUD_PENDING',
+      localOnly: options.OFFLINE_MODE === true
+    },
     checks: _buildRagGroundingPhaseChecks(ctx, options)
   };
 }
@@ -1968,7 +2013,7 @@ async function _runLegacyEvaluationPipelineWithinTrace(options) {
       REFLECTION_LEARNING: ctx => _handleBoqReflectionPhase(ctx)
     };
 
-    const lifecycleHealth = await lifecycleEngine.executePipelineDAG(dagContext, phaseHandlers);
+    const lifecycleHealth = await lifecycleEngine.executePipelineDAG(dagContext, phaseHandlers, _createBoqQualificationReporter(lifecycleEngine));
     dagContext.evalResults.lifecycleEngine = lifecycleEngine;
     dagContext.evalResults.lifecycleHealth = lifecycleHealth;
     return dagContext.evalResults;

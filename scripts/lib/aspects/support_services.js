@@ -59,11 +59,11 @@ function _evaluateSupportLifecycleItem(it, skuIndex, discontinuedSet, options, s
   const catalogSku = catalogItem?.skuData || {};
   const diffStatus = catalogItem?.diffStatus || it.diffStatus || '';
 
-  const itemLc = classifyLifecycleState(it.lifecycleStatus || '', it.diffStatus || '', rawSku, it.description || '');
-  const catLc = classifyLifecycleState(catalogItem?.lifecycleStatus || '', diffStatus, rawSku, catalogSku.Description || catalogSku.description || '');
+  const itemLc = classifyLifecycleState(it.lifecycleStatus, it.diffStatus, rawSku, it.description, it.vendorSupplyStatus);
+  const catLc = catalogItem?.lifecycleState || classifyLifecycleState('', diffStatus);
   const isTombstone = discontinuedSet.has(cleanSku);
 
-  if (itemLc.isBlockedForProduction || catLc.isBlockedForProduction || isTombstone || /^DS\s+/i.test(rawSku)) {
+  if (itemLc.isBlockedForProduction || catLc.isBlockedForProduction || isTombstone) {
     state.hasObsoleteRisk = true;
     state.obsoleteSkus.push({
       sku: it.sku,

@@ -22,7 +22,7 @@ export default function ExportHistoryCard() {
       const res = await fetch(`/api/history/exports?limit=${limit}`);
       if (res.ok) {
         const data = await res.json();
-        setExportsList(data);
+        setExportsList(Array.isArray(data) ? data : []);
       }
     } catch (e) {
       console.error('Failed to fetch exports history', e);

@@ -109,7 +109,30 @@ function formatDualTrackClearanceRemarks(options = {}) {
   };
 }
 
+function formatLifecycleCommercialRemarks({ sku, status, risk, retirement, replacement }) {
+  const date = retirement.retirementDate
+    ? ` Published discontinuation date is ${retirement.retirementDate}.`
+    : '';
+  const originals = {
+    '90_DAY_WARNING': `${ACTIONS.FAST_TRACK_CLEARANCE} ${sku} has a 90-day warning. Confirm stock before committing to a rollout.`,
+    DIRECT_SHIP: `${ACTIONS.DELIVERY_RISK_WARNING} ${sku} is Direct Ship. Confirm shipping terms and lead time.`,
+    CONSTRAINED_SUPPLY: `${ACTIONS.DELIVERY_RISK_WARNING} ${sku} requires supplier confirmation for the requested quantity.`,
+    APPROACHING_RETIREMENT: `${ACTIONS.DELIVERY_RISK_WARNING} ${sku} is approaching its discontinuation date.`
+  };
+  let production = 'No qualified active replacement was found in this product catalog.';
+  if (replacement?.matchType === 'VENDOR_LISTED') {
+    production = `${replacement.sku} is a vendor-listed successor. Confirm technical parity, configuration and supply in OCA.`;
+  } else if (replacement) {
+    production = `${ACTIONS.RECOMMENDED_PRODUCTION_BASELINE} ${replacement.sku} is a scoped catalog candidate. Confirm configuration and supply in OCA.`;
+  }
+  return {
+    original: (originals[status] || `${sku} is flagged ${risk}. Use an active option for new production.`) + date,
+    production
+  };
+}
+
 module.exports = {
+  formatLifecycleCommercialRemarks,
   resolveTenderColumns,
   formatCommercialRemark,
   appendCommercialRemarks,

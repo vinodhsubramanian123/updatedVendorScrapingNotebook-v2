@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-11-22T09:33:24.183Z<br>
-**Total Deduplicated Learned Rules:** 189<br>
+**Last Synchronized:** 2026-11-23T13:06:58.023Z<br>
+**Total Deduplicated Learned Rules:** 190<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -168,7 +168,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **189**.
+Total verified rules indexed in this build: **190**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -232,6 +232,7 @@ Total verified rules indexed in this build: **189**.
 | 📦 CHASSIS | `DL385_Gen11` | `PROCESSOR_CACHE_TRADE_OFF_STRATEGY` | `P53712-B21` | `P53701-B21` | When modernizing AMD EPYC 7543 (32c, 2.8GHz, 256MB L3, 225W), EPYC 9334 (32c, 2.7GHz, 128MB L3, 210W, ,170 USD) saves Ca | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `FAN_PACKAGING_MODALITY_RULE` | `P58465-B21` | `P53921-B21` | On HPE ProLiant DL385 Gen11 (and DL3X5 AMD platforms), P58465-B21 (HPE ProLiant DL3X5 Gen11 2U Performance Fan Kit, .00  | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `MANAGEMENT_LICENSE_VS_FIO_TOKEN_SEPARATION` | `S1A05A` | `R7A11AAE` | On DL385 Gen11 CTO builds (P53921-B21), R7A11AAE (HPE Compute Ops Management Standard 3-year Upfront SaaS, .00 USD) sati | 1x |
+| 📦 CHASSIS | `DL385_Gen11` | `QUANTITY_CEILING` | `P57848-B21` | `—` | Product#: P53921-B21 Rule#: 81353846 UNBUILDABLE CONFIGURATION: Maximum 1 quantity of each DL385 Gen11 storage cable kit | 1x |
 | 📦 CHASSIS | `DL360_Gen12` | `SELECTOR_STATE_CONDITIONAL` | `P40497-B21` | `P72223-B21` | P40497-B21 on DL360 Gen12 hybrid base P72176-B21 is conditionally revealed behind backplane stacking kit P72223-B21 (= 1 | 1x |
 | 📦 CHASSIS | `DL360_Gen12` | `STORAGE_OCP_TOPOLOGY_CABLE_PATH` | `P58335-B21` | `P72600-B21` | MR408i-o OCP Slot A (P58335-B21) with Slot B OCP3 NIC (P26256-B21) requires Slot A storage cable P72600-B21, Slot B enab | 1x |
 | 📦 CHASSIS | `DL360_Gen12` | `CHASSIS_THERMAL_AND_OCP_SLOT_RULES` | `P72176-B21` | `P48908-B21` | Use DL360 Gen12 thermal kits P48908-B21 and P74787-B21, classify P72600-B21/P72203-B21 as cables rather than OCP adapter | 1x |

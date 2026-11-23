@@ -15,7 +15,8 @@ export default function BoqInputZone({
   onDirectEvaluate,
   isEvaluating,
   onLoadSampleBoq,
-  localOnly = true,
+  localOnly = false,
+  serverOffline,
   onLocalOnlyChange
 }) {
   const isImageOrPdfFile = Boolean(file?.name && /\.(pdf|png|jpe?g|webp|tiff|gif|bmp)$/i.test(file.name));
@@ -109,7 +110,7 @@ export default function BoqInputZone({
 
       {localOnly && isImageOrPdfFile && (
         <div role="alert" className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900">
-          <strong>Local-only mode active:</strong> PDF and image files cannot be sent to cloud OCR while <em>Use local catalog only</em> is checked. Provide pasted text or upload CSV/XLSX, or uncheck local-only mode if cloud OCR is permitted.
+          <strong>Local-only mode active:</strong> PDF and image files cannot be sent to cloud OCR while <em>Use local catalog only</em> is checked. Provide pasted text or upload CSV/XLSX.{!serverOffline && ' To use cloud OCR, uncheck local-only mode.'}
         </div>
       )}
 
@@ -118,6 +119,7 @@ export default function BoqInputZone({
           <input
             type="checkbox"
             checked={localOnly}
+            disabled={serverOffline}
             onChange={(e) => onLocalOnlyChange && onLocalOnlyChange(e.target.checked)}
           />
           Use local catalog only

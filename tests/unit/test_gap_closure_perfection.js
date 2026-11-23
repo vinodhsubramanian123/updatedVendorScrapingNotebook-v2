@@ -201,28 +201,28 @@ test('3. strategy_synthesizer credits equivalent replacements, penalizes GPU dow
   );
   assert.strictEqual(noFast, null);
 
-  // Fast-ship across CPU category: 25d -> 4d (>= 21d baseline & >= 14d saved)
+  // CPU fast-ship candidate crosses the 30-day availability target.
   const fastCat = {
     entries: [{
       parentCategory: 'Processors',
       subCategory: 'Intel Xeon',
       skus: [
-        { 'Product #': 'P67080-B21', Description: 'Intel Xeon-G 6530 32C 2.1GHz 270W Processor', 'Lifecycle Status': 'Active', Price: '3500', leadTimeDays: 25 },
+        { 'Product #': 'P67080-B21', Description: 'Intel Xeon-G 6530 32C 2.1GHz 270W Processor', 'Lifecycle Status': 'Active', Price: '3500', leadTimeDays: 35 },
         { 'Product #': 'P67082-B21', Description: 'Intel Xeon-G 6530 32C 2.2GHz 270W Processor', 'Lifecycle Status': 'Active', Price: '3550', leadTimeDays: 4 }
       ]
     }]
   };
   const fastAlt = synthesizeFastShipAlternative(
-    [{ sku: 'P67080-B21', description: 'Intel Xeon-G 6530 32C 2.1GHz 270W Processor', category: 'Processors', quantity: 2, leadTimeDays: 25 }],
-    { maxLeadTimeDays: 25, unknownLeadTimeCount: 0, leadTimeOutliers: [] },
+    [{ sku: 'P67080-B21', description: 'Intel Xeon-G 6530 32C 2.1GHz 270W Processor', category: 'Processors', quantity: 2, leadTimeDays: 35 }],
+    { maxLeadTimeDays: 35, solutionEdtDays: 35, unknownLeadTimeCount: 0, leadTimeOutliers: [] },
     fastCat,
     {},
     sku => (sku === 'P67082-B21' ? 3550 : 3500),
     parts => ({ parts, totalCost: 7100, physicalMathClean: true, aspectErrors: [], injectedFixes: [] }),
-    it => ({ leadTimeDays: it.sku === 'P67082-B21' ? 4 : 25 })
+    sku => ({ leadTimeDays: sku === 'P67082-B21' ? 4 : 35 })
   );
-  assert.ok(fastAlt, 'Fast-ship should synthesize alternative for 25d -> 4d across categories');
-  assert.strictEqual(fastAlt.deliveryDaysSaved, 21);
+  assert.ok(fastAlt, 'Fast-ship should synthesize the 35d to 4d CPU alternative');
+  assert.strictEqual(fastAlt.deliveryDaysSaved, 31);
 
   // Multi-pass loop supporting REMOVE, SUBSTITUTE, ADJUST_QTY, plus cycle/oscillation guard
   let callCount = 0;

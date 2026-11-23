@@ -8,6 +8,7 @@
 
 const express = require('express');
 const router = express.Router();
+const { isServerOffline } = require('../../scripts/lib/system/policy_resolver.js');
 const { addSseClient, removeSseClient, getRunSnapshot } = require('../services/taskManager.cjs');
 
 router.get('/stream-logs', (req, res) => {
@@ -18,7 +19,7 @@ router.get('/stream-logs', (req, res) => {
 
   addSseClient(res);
   res.write(`data: ${JSON.stringify({ type: 'CONNECTED', message: 'SSE Stream Active' })}\n\n`);
-  res.write(`data: ${JSON.stringify({ type: 'RUN_SNAPSHOT', ...getRunSnapshot() })}\n\n`);
+  res.write(`data: ${JSON.stringify({ type: 'RUN_SNAPSHOT', ...getRunSnapshot(), serverOffline: isServerOffline() })}\n\n`);
   const heartbeat = setInterval(() => res.write(': heartbeat\n\n'), 15000);
 
   req.on('close', () => { clearInterval(heartbeat); removeSseClient(res); });

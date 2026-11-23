@@ -12,7 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { cleanBaseSKU, buildCatalogSkuIndex, isServiceSku } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex, isServiceSku, classifyLifecycleState } = require('../catalog/sku.js');
 const { analyzeRetirementDate } = require('../catalog/lifecycle.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 const { extractWorkloadDna, validateNumaMemoryTopology } = require('./workload_dna.js');
@@ -296,6 +296,7 @@ function createLiveRagGrounding(chassisInfo) {
 function computeBaseParts(items, getPrice) {
   return items.map(it => {
     const role = classifyComponentRole(it.category || '', it.description || '');
+    const lifecycle = classifyLifecycleState(it.lifecycleStatus, it.diffStatus, it.sku, it.description, it.vendorSupplyStatus);
     const priceFromCatalog = getPrice(it.sku);
     const itemPrice = (typeof it.unitPriceUsd === 'number' && Number.isFinite(it.unitPriceUsd) && it.unitPriceUsd > 0)
       ? it.unitPriceUsd
@@ -310,6 +311,7 @@ function computeBaseParts(items, getPrice) {
 
     return {
       sku: cleanBaseSKU(it.sku),
+      ...(lifecycle.isNonActive ? { lifecycleStatus: lifecycle.canonicalStatus } : {}),
       description: it.description || `HPE Hardware Option (${cleanBaseSKU(it.sku)})`,
       quantity: it.quantity || 1,
       unitPriceUsd: price,

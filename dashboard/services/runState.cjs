@@ -353,14 +353,14 @@ function captureEvent(event) {
 
   if (event.type === 'PROGRESS') {
     if (targetRun) {
-      targetRun.progress = scoped;
+      targetRun.progress = event.qualifications || !targetRun.progress?.qualifications ? scoped : targetRun.progress;
       const nextStage = event.stage || event.action;
       if (nextStage && nextStage !== targetRun.stage) {
         targetRun.stage = nextStage;
         persistRunRecord(targetRun);
       }
     }
-    if (runId === snapshot.activeTask?.runId) snapshot.progress = scoped;
+    if (runId === snapshot.activeTask?.runId && (event.qualifications || !snapshot.progress?.qualifications)) snapshot.progress = scoped;
   } else if (event.type === 'LOG') {
     if (targetRun) {
       if (targetRun.logs.length >= 200) targetRun.logs.shift();

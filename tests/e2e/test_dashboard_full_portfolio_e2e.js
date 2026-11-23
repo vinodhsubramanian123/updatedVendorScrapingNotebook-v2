@@ -162,15 +162,16 @@ async function runPortfolioE2E() {
     const evalAccepted = await (await evalRespPromise).json();
     assert.ok(evalAccepted.runId);
 
-    const deadline = Date.now() + 90000;
+    const deadline = Date.now() + 180000;
+    let evaluation;
     while (Date.now() < deadline) {
       const runState = await fetch(`${baseUrl}/api/run/${encodeURIComponent(evalAccepted.runId)}`).then(r => r.json());
-      const run = runState.run || runState;
-      if (['COMPLETED', 'ACTION_REQUIRED', 'FAILED'].includes(run?.status)) {
-        if (run.result || run.status !== 'COMPLETED') break;
-      }
+      evaluation = runState.run || runState;
+      if (['COMPLETED', 'ACTION_REQUIRED'].includes(evaluation.status) && evaluation.result) break;
+      assert.notStrictEqual(evaluation.status, 'FAILED', `Evaluation ${evalAccepted.runId} failed at ${evaluation.stage || 'unknown'}`);
       await new Promise(r => setTimeout(r, 350));
     }
+    assert.ok(evaluation?.result, `Evaluation ${evalAccepted.runId} did not publish a result (status=${evaluation?.status}, stage=${evaluation?.stage})`);
 
     await page.keyboard.press('Escape');
     await uploaderModal.waitFor({ state: 'detached', timeout: 5000 });

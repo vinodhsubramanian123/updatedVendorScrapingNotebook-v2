@@ -88,10 +88,10 @@ function cleanBaseSKU(skuStr) {
   if (!skuStr) return '';
   let str = String(skuStr).replace(/[\r\n\t]+/g, ' ').trim();
   // Strip bracketed badges like [OB], [DS], [90], [EOL] at start or end
-  str = str.replace(/\s*\[(?:OB|DS|90|EOL|NA|N\/A|CS)\]\s*$/i, '').trim();
-  str = str.replace(/^\s*\[(?:OB|DS|90|EOL|NA|N\/A|CS)\]\s*/i, '').trim();
+  str = str.replace(/\s*\[(?:OB|OS|DS|90|EOL|NA|N\/A|CS)\]\s*$/i, '').trim();
+  str = str.replace(/^\s*\[(?:OB|OS|DS|90|EOL|NA|N\/A|CS)\]\s*/i, '').trim();
   // Strip leading lifecycle / status badges (e.g. "OB\n P49631-B21", "DS P49632-B21", "90\n P49639-B21", "EOL P49654-B21")
-  str = str.replace(/^(?:OB|DS|90|EOL|NA|N\/A|BTO|CTO|FIO)\s+/i, '').trim();
+  str = str.replace(/^(?:OB|OS|DS|90|EOL|NA|N\/A|CS|BTO|CTO|FIO)\s+/i, '').trim();
   // Strip trailing PVT / Private badge
   str = str.replace(/\s+PVT$/i, '').trim();
   // Strip leading DOM target element prefix 't' or 'T' if followed by valid SKU pattern starting with P, Q, R, or digit (e.g. tP69726-B21 or TP73111-B21 -> P69726-B21)
@@ -265,14 +265,15 @@ function classifyLifecycleState(lifecycleStatus = '', diffStatus = '', rawSku = 
   const diff = String(diffStatus || '').trim().toUpperCase();
   const text = `${String(rawSku || '').trim().toUpperCase()} ${String(rawDesc || '').trim().toUpperCase()}`;
 
-  const is90DayWarning = /\b90[-\s]?DAY\b|WARNING|\[90\]|^90(?=\s)/i.test(status) || /(?:^|\s)\[?90\]?\s|90[-\s]?DAY/i.test(text);
-  const isObsolete = /\bOB\b|\(OB\)|OBSOLETE|^OB(?=\s)/i.test(status) || /(?:^|\s)(?:\[OB\]|OB\s+)/i.test(text);
+  const is90DayWarning = /\b90[-_\s]?DAY(?:\b|_)|\[90\]|^90(?:$|\s)/i.test(status) || /\[90\]|(?:^|\s)90\s|90[-\s]?DAY/i.test(text);
+  const isObsolete = /\b(?:OB|OS|OBSOLETE)\b|\bOUT[\s_-]+OF[\s_-]+STOCK\b/i.test(status) || /\[(?:OB|OS)\]/i.test(text) ||
+    /^(?:OB|OS)\s+/i.test(String(rawSku || '').trim()) || /^\s*OB\s+/i.test(rawDesc || '');
   const isDiscontinued = status.includes('DISCONTINUED') || diff === 'REMOVED';
   const isHardEol = !is90DayWarning && (
-    /\bEOL\b|\(EOL\)|END[-\s]OF[-\s]LIFE/i.test(status) || /(?:^|\s)(?:\[EOL\]|EOL\s+)/i.test(text)
+    /\bEOL\b|\(EOL\)|END[-\s]OF[-\s]LIFE/i.test(status) || /\[EOL\]|(?:^|\s)EOL\s+/i.test(text)
   );
-  const isDirectShip = /\bDS\b|\(DS\)|DIRECT\s*SHIP/i.test(status) || /(?:^|\s)(?:\[DS\]|DS\s+)/i.test(text);
-  const isConstrainedSupply = vendorSupplyStatus === 'CONSTRAINED_SUPPLY' || /\bCS\b|CONSTRAINED[\s_-]*SUPPLY|SUPPLY[\s_-]*(?:RESTRICTED|CONSTRAINED)/i.test(status) || /(?:^|\s)(?:\[CS\]|CS\s+)/i.test(text);
+  const isDirectShip = /\bDS\b|\(DS\)|DIRECT[\s_-]*SHIP/i.test(status) || /\[DS\]|(?:^|\s)DS\s+/i.test(text);
+  const isConstrainedSupply = vendorSupplyStatus === 'CONSTRAINED_SUPPLY' || /\bCS\b|CONSTRAINED[\s_-]*SUPPLY|SUPPLY[\s_-]*(?:RESTRICTED|CONSTRAINED)/i.test(status) || /\[CS\]|(?:^|\s)CS\s+/i.test(text);
 
   const isBlockedForProduction = isObsolete || isDiscontinued || isHardEol;
   const isClearanceOrRestricted = is90DayWarning || isDirectShip || isConstrainedSupply;

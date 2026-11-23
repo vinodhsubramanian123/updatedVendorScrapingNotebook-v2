@@ -38,7 +38,7 @@ function isValidFileObject(candidate) {
   return (candidate instanceof File) || Boolean(candidate && typeof candidate.name === 'string' && typeof candidate.size === 'number');
 }
 
-async function runBoqPreprocessRequest(currentFile, currentText, chassisDir, offline = true) {
+async function runBoqPreprocessRequest(currentFile, currentText, chassisDir, offline = false) {
   let filepath = null;
   if (currentFile) {
     const uploadData = await uploadBoqFile(currentFile);
@@ -120,6 +120,7 @@ export default function BoqUploader({
   onOpenReconciliation,
   onOpenTopology,
   localOnly,
+  serverOffline,
   onLocalOnlyChange
 }) {
   const [isDragging, setIsDragging] = useState(false);
@@ -127,8 +128,8 @@ export default function BoqUploader({
   const [rawText, setRawText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [evalError, setEvalError] = useState(null);
-  const [internalLocalOnly, setInternalLocalOnly] = useState(true);
-  const effectiveLocalOnly = typeof localOnly === 'boolean' ? localOnly : internalLocalOnly;
+  const [internalLocalOnly, setInternalLocalOnly] = useState(false);
+  const effectiveLocalOnly = Boolean(serverOffline || (localOnly ?? internalLocalOnly));
   const handleLocalOnlyChange = onLocalOnlyChange || setInternalLocalOnly;
 
   const [isPreprocessing, setIsPreprocessing] = useState(false);
@@ -215,23 +216,28 @@ export default function BoqUploader({
 
   return (
     <div className="space-y-6">
-      <BoqInputZone
-        isDragging={isDragging}
-        setIsDragging={setIsDragging}
-        file={file}
-        setFile={setFile}
-        rawText={rawText}
-        setRawText={setRawText}
-        onDrop={(e) => { e.preventDefault(); setIsDragging(false); if (e.dataTransfer.files?.[0]) setFile(e.dataTransfer.files[0]); }}
-        onFileChange={(e) => { if (e.target.files?.[0]) setFile(e.target.files[0]); }}
-        onPreprocess={handlePreprocess}
-        isPreprocessing={isPreprocessing}
-        onDirectEvaluate={handleDirectEvaluate}
-        isEvaluating={isEvaluating}
-        onLoadSampleBoq={(type) => { setRawText(type === 'standard' ? STANDARD_SAMPLE_LINES : MULTI_SAMPLE_LINES); setFile(null); }}
-        localOnly={effectiveLocalOnly}
-        onLocalOnlyChange={handleLocalOnlyChange}
-      />
+      {serverOffline === null ? (
+        <p role="status" className="text-xs text-slate-600">Reading server evaluation policy…</p>
+      ) : (
+        <BoqInputZone
+          isDragging={isDragging}
+          setIsDragging={setIsDragging}
+          file={file}
+          setFile={setFile}
+          rawText={rawText}
+          setRawText={setRawText}
+          onDrop={(e) => { e.preventDefault(); setIsDragging(false); if (e.dataTransfer.files?.[0]) setFile(e.dataTransfer.files[0]); }}
+          onFileChange={(e) => { if (e.target.files?.[0]) setFile(e.target.files[0]); }}
+          onPreprocess={handlePreprocess}
+          isPreprocessing={isPreprocessing}
+          onDirectEvaluate={handleDirectEvaluate}
+          isEvaluating={isEvaluating}
+          onLoadSampleBoq={(type) => { setRawText(type === 'standard' ? STANDARD_SAMPLE_LINES : MULTI_SAMPLE_LINES); setFile(null); }}
+          localOnly={effectiveLocalOnly}
+          serverOffline={serverOffline}
+          onLocalOnlyChange={handleLocalOnlyChange}
+        />
+      )}
 
       {evalError && (
         <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700">
@@ -252,8 +258,9 @@ export default function BoqUploader({
       <EvaluationProgressSteps
         isEvaluating={isEvaluating}
         currentStep={isRunningEvaluation ? activeProgress.currentStep : undefined}
-        action={isRunningEvaluation ? activeProgress.action : undefined}
-        logStream={isRunningEvaluation ? logStream : []}
+        action={activeProgress?.action}
+        qualifications={activeProgress?.qualifications}
+        logStream={activeProgress?.qualifications || isRunningEvaluation ? logStream : []}
         logsEndRef={logsEndRef}
       />
 

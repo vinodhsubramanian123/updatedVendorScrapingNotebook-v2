@@ -1,7 +1,15 @@
 import { describe, it, expect } from 'vitest';
-import { normalizeEvalResult, buildAspectChecksFromEval } from '../evalNormalizer.js';
+import { normalizeEvalResult, buildAspectChecksFromEval, deriveDualBrainBadges } from '../evalNormalizer.js';
 
 describe('evalNormalizer', () => {
+  it('discloses cloud fallback separately from an explicit local-only evaluation', () => {
+    const result = { isMathClean: true, notebookLmStatus: { isFallback: true, fallbackReason: 'AUTH_REQUIRED' } };
+    const fallback = deriveDualBrainBadges({ ...result, effectivePolicy: { offline: false } });
+    expect(fallback).toContainEqual(expect.objectContaining({ id: 'LOCAL_RAG_FALLBACK', tooltip: 'AUTH_REQUIRED' }));
+    expect(fallback.map(badge => badge.id)).not.toContain('CLOUD_GROUNDED_VERIFIED');
+    const localOnly = deriveDualBrainBadges({ ...result, effectivePolicy: { offline: true } });
+    expect(localOnly).toContainEqual(expect.objectContaining({ id: 'LOCAL_ONLY' }));
+  });
   it('keeps invalid contract diagnostics blocked despite a successful nested result', () => {
     const result = normalizeEvalResult({ status: 'SCHEMA_INVALID', error: { message: 'Invalid quantity', issues: ['quantity'] },
       data: { status: 'SUCCESS', isContractInvalid: true, items: [{ sku: 'TEST', quantity: 1.5 }],

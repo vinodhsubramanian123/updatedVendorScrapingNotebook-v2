@@ -26,7 +26,6 @@ const {
   isValidHpeSKU,
   isSmartChoiceOrBtoSku,
   classifyCommercialFulfillmentMode,
-  classifyLifecycleState,
   attachCompanionServices,
   buildCatalogSkuIndex
 } = require('../lib/catalog/sku.js');
@@ -1334,40 +1333,41 @@ function _handleCatalogIntelligence(queryText, context) {
   };
 }
 
-function _buildClearanceAdvisoryForSku(sku, catalogIndex, chassisInfo, generatePresalesLifecycleAdvisories, formatDualTrackClearanceRemarks) {
+function _buildClearanceAdvisoryForSku(sku, catalogIndex, chassisInfo, generatePresalesLifecycleAdvisories) {
+  const { getLifecycleRecommendation } = require('../lib/conflict/resolution_matrix.js');
+  const { isActiveLifecycleCandidate } = require('../lib/conflict/least_delta_combinator.js');
+  const { extractCatalogItemLeadTime } = require('../lib/taxonomy/sku_resolver.js');
   const item = catalogIndex.get(sku);
-  const lc = classifyLifecycleState(item?.lifecycleStatus, item?.diffStatus, sku, item?.skuData?.Description, item?.skuData?.vendorSupplyStatus);
   const versionAdvisory = chassisInfo.catalogDir
-    ? generatePresalesLifecycleAdvisories([{ sku, lifecycleStatus: item?.lifecycleStatus }], chassisInfo.catalogDir)[0] || null
+    ? generatePresalesLifecycleAdvisories([{ sku, lifecycleStatus: item?.lifecycleStatus }], chassisInfo.catalogDir).find(advisory => advisory.lifecycleStatus) || null
     : null;
-  const proposedSku = cleanBaseSKU(item?.skuData?.['Alternative SKU'] || versionAdvisory?.replacementSku || '');
-  const proposed = catalogIndex.get(proposedSku);
-  const proposedLifecycle = proposed?.lifecycleState;
-  const altSku = proposedLifecycle && !proposedLifecycle.isNonActive ? proposedSku : '';
-  const productionEligible = !lc.isBlockedForProduction && !lc.isDirectShip && !lc.isConstrainedSupply;
-  const leadDays = item?.leadTimeDays ?? null;
-  const riskNote = leadDays !== null && leadDays >= 21 ? `Estimated availability lead time ${leadDays} days.` : '';
-  const commercialRemarks = formatDualTrackClearanceRemarks({
-    clearanceSku: (lc.is90DayWarning || lc.isDirectShip || lc.isBlockedForProduction) ? sku : '',
-    productionSku: altSku || (productionEligible ? sku : ''),
-    deliveryRiskNote: riskNote
-  });
+  const description = item?.skuData?.Description || item?.skuData?.description || versionAdvisory?.description || '';
+  const recommendation = getLifecycleRecommendation({
+    sku, description, lifecycleStatus: !item ? versionAdvisory?.lifecycleStatus : undefined,
+    discontinuedDate: !item ? versionAdvisory?.discontinuationDate : undefined
+  }, catalogIndex);
+  const lc = item?.lifecycleState;
+  const productionEligible = !recommendation && isActiveLifecycleCandidate(item);
+  const leadTimeDays = extractCatalogItemLeadTime(item?.skuData)?.days ?? null;
+  const productionRemark = recommendation?.commercialRemarks.production ||
+    (productionEligible ? `${sku} has no recorded lifecycle warning in the scoped catalog.` : 'No production baseline was established.');
+  const clearanceRemark = recommendation?.commercialRemarks.original || 'No clearance flag was found for this SKU.';
   return {
     sku,
-    description: item?.description || '',
-    lifecycleState: lc.canonicalStatus,
-    clearanceEligible: lc.is90DayWarning || lc.isDirectShip,
+    description,
+    lifecycleState: recommendation?.lifecycleStatus || lc?.canonicalStatus || 'UNKNOWN',
+    clearanceEligible: Boolean(recommendation && ['DIRECT_SHIP', '90_DAY_WARNING'].includes(recommendation.lifecycleStatus)),
     productionEligible,
-    leadTimeDays: leadDays,
-    recommendedProductionSku: altSku || null,
+    leadTimeDays,
+    recommendedProductionSku: recommendation?.replacement?.sku || null,
     versionAdvisory,
-    commercialRemarks
+    recommendation,
+    commercialRemarks: { productionRemark, clearanceRemark, deliveryRiskRemark: null, summary: [productionRemark, clearanceRemark] }
   };
 }
 
 function _handlePresalesClearanceStrategy(queryText, context) {
   const { generatePresalesLifecycleAdvisories } = require('../lib/catalog/sku_versioning.js');
-  const { formatDualTrackClearanceRemarks } = require('../lib/boq/commercial_remarks.js');
   const chassisInfo = getChassisCatalog(queryText, context);
   const skuCandidates = (queryText.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/gi) || [])
     .filter(isValidHpeSKU)
@@ -1379,8 +1379,7 @@ function _handlePresalesClearanceStrategy(queryText, context) {
   const inspectedSkus = [...skuCandidates];
   if (inspectedSkus.length === 0) {
     for (const [k, item] of catalogIndex.entries()) {
-      const lc = classifyLifecycleState(item.lifecycleStatus, item.diffStatus, k, item.description);
-      if (lc.is90DayWarning || lc.isDirectShip) {
+      if (item.lifecycleState.isClearanceOrRestricted) {
         inspectedSkus.push(k);
         if (inspectedSkus.length >= 10) break;
       }
@@ -1388,7 +1387,7 @@ function _handlePresalesClearanceStrategy(queryText, context) {
   }
 
   const advisories = inspectedSkus.map(sku =>
-    _buildClearanceAdvisoryForSku(sku, catalogIndex, chassisInfo, generatePresalesLifecycleAdvisories, formatDualTrackClearanceRemarks)
+    _buildClearanceAdvisoryForSku(sku, catalogIndex, chassisInfo, generatePresalesLifecycleAdvisories)
   );
   const primary = advisories[0] || null;
   return {
@@ -1397,7 +1396,13 @@ function _handlePresalesClearanceStrategy(queryText, context) {
     clearanceTrack: advisories.filter(a => a.clearanceEligible),
     productionTrack: advisories.filter(a => a.productionEligible || a.recommendedProductionSku),
     advisories,
-    commercialRemarks: primary?.commercialRemarks || formatDualTrackClearanceRemarks(),
+    lifecycleRecommendations: advisories.map(advisory => advisory.recommendation).filter(Boolean),
+    commercialRemarks: primary?.commercialRemarks || {
+      productionRemark: 'No production baseline was established.',
+      clearanceRemark: 'No lifecycle warnings were found in scope.',
+      deliveryRiskRemark: null,
+      summary: []
+    },
     message: advisories.length > 0
       ? `Dual-track 90-day clearance & active production baseline evaluated for ${advisories.length} SKU(s) on ${chassisInfo.chassisKey}.`
       : `No active 90-day clearance/Direct-Ship warnings identified on ${chassisInfo.chassisKey}.`
