@@ -25,3 +25,10 @@ Use these checks when changing OCA capture, product catalog queries, learned rul
 - Run synthetic dashboard reconciliation in read-only mode. The browser release test checks the reconciliation result and verifies that fixture discrepancies stay out of the product learning store.
 - Check dashboard health endpoints with server offline mode enabled. NotebookLM and OCA browser status must return local standby without launching a NotebookLM CLI probe or reading the OCA browser session.
 - Preserve the distinction between a request timeout and cancellation when a catalog changes. Active requests that time out must clear the loading state and surface the error.
+
+## Dashboard and publication learnings from 23 November 2026
+
+- Resolve server policy before enabling presales and BOQ intake. Exercise both default cloud access and the server-enforced local-only override, including the OCR guard. Show a local RAG fallback when a cloud attempt cannot ground the answer.
+- Show phase qualifications from the evaluator's events. In browser tests, wait for the classification response before checking the next control, then require the evaluation's own terminal result and reported phase reasons. Check the Pipeline with populated portfolio controls at mobile widths.
+- Preserve lifecycle markers from both the source BOQ and the scoped catalog. Offer replacements with comparable specifications in the same product and exclude hidden, unselectable, and restricted options. Keep missing prices and lead times null.
+- Reopen the exact publication receipt and check the payload hash, source binding, and readback. The Alletra MP B10000 receipt records the replacement source and a pending legacy-source retirement. Keep its shelf-node observation quarantined pending independent review. The shared revision is recorded for 17 notebooks, and the active master registry still contains 190 rules.

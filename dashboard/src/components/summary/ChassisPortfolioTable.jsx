@@ -44,7 +44,7 @@ export default function ChassisPortfolioTable({
             />
           </div>
 
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
+          <div className="flex max-w-full flex-wrap items-center gap-1 bg-slate-100 p-1 rounded-xl">
             {['ALL', 'HEALTHY', 'PARSED_NO_RULES', 'STALE_CAPTURE', 'INCOMPLETE'].map(s => (
               <button
                 key={s}
@@ -58,7 +58,7 @@ export default function ChassisPortfolioTable({
             ))}
           </div>
 
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
+          <div className="flex max-w-full flex-wrap items-center gap-1 bg-slate-100 p-1 rounded-xl">
             <button
               onClick={() => setSelectedFamily('ALL')}
               className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
