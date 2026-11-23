@@ -26,7 +26,7 @@ export default function KpiMetricsGrid({
     : (history.length > 0 ? Math.max(1, history.length) : '—');
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 mb-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
       <div
         className="bg-white p-4 rounded-xl border border-slate-200 flex items-center gap-3 cursor-pointer hover:border-blue-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 w-full shadow-sm animate-fade-in-up stagger-1"
         onClick={onOpenEvaluations}
@@ -35,9 +35,9 @@ export default function KpiMetricsGrid({
         <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center font-bold shrink-0">
           <BarChart2 className="w-5 h-5" />
         </div>
-        <div className="truncate">
-          <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider truncate">Total Evaluations</p>
-          <p className="text-xl font-bold text-slate-900">{telemetry.evaluationsCount > 0 ? telemetry.evaluationsCount : '—'}</p>
+        <div className="min-w-0">
+          <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Total Evaluations</p>
+          <p className="text-xl font-bold text-slate-900 tabular-nums">{telemetry.evaluationsCount > 0 ? telemetry.evaluationsCount : '—'}</p>
         </div>
       </div>
 
@@ -49,9 +49,9 @@ export default function KpiMetricsGrid({
         <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold shrink-0">
           <ShieldCheck className="w-5 h-5" />
         </div>
-        <div className="truncate">
-          <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider truncate">Avg Confidence</p>
-          <p className="text-xl font-bold text-slate-900 flex items-baseline gap-1">{avgConfidence}</p>
+        <div className="min-w-0">
+          <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Avg Confidence</p>
+          <p className="text-xl font-bold text-slate-900 flex items-baseline gap-1 tabular-nums">{avgConfidence}</p>
         </div>
       </div>
 
@@ -63,9 +63,9 @@ export default function KpiMetricsGrid({
         <div className="w-10 h-10 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center font-bold shrink-0">
           <Sparkles className="w-5 h-5" />
         </div>
-        <div className="truncate">
-          <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider truncate">Learned Rules</p>
-          <p className="text-xl font-bold text-slate-900">{telemetry.totalDeltasLearned > 0 ? telemetry.totalDeltasLearned : '—'}</p>
+        <div className="min-w-0">
+          <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Learned Rules</p>
+          <p className="text-xl font-bold text-slate-900 tabular-nums">{telemetry.totalDeltasLearned > 0 ? telemetry.totalDeltasLearned : '—'}</p>
         </div>
       </div>
 
@@ -77,9 +77,9 @@ export default function KpiMetricsGrid({
         <div className="w-10 h-10 rounded-lg bg-rose-50 text-rose-700 flex items-center justify-center font-bold shrink-0">
           <AlertTriangle className="w-5 h-5" />
         </div>
-        <div className="truncate">
-          <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider truncate">Failed Evals</p>
-          <p className="text-xl font-bold text-slate-900">{failedEvalsCount > 0 ? failedEvalsCount : '—'}</p>
+        <div className="min-w-0">
+          <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Failed Evals</p>
+          <p className="text-xl font-bold text-slate-900 tabular-nums">{failedEvalsCount > 0 ? failedEvalsCount : '—'}</p>
         </div>
       </div>
 
@@ -91,9 +91,9 @@ export default function KpiMetricsGrid({
         <div className="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold shrink-0">
           <Clock className="w-5 h-5" />
         </div>
-        <div className="truncate">
-          <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider truncate">Avg Duration</p>
-          <p className="text-xl font-bold text-slate-900">{avgDuration}</p>
+        <div className="min-w-0">
+          <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Avg Duration</p>
+          <p className="text-xl font-bold text-slate-900 tabular-nums">{avgDuration}</p>
         </div>
       </div>
 
@@ -105,9 +105,9 @@ export default function KpiMetricsGrid({
         <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold shrink-0">
           <Server className="w-5 h-5" />
         </div>
-        <div className="truncate">
-          <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider truncate">Workflow Exports</p>
-          <p className="text-xl font-bold text-slate-900">{totalExports}</p>
+        <div className="min-w-0">
+          <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Workflow Exports</p>
+          <p className="text-xl font-bold text-slate-900 tabular-nums">{totalExports}</p>
         </div>
       </div>
     </div>

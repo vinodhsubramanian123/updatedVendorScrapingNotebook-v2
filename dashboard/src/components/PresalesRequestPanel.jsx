@@ -786,10 +786,13 @@ export default function PresalesRequestPanel({ product: initialProduct, catalogs
       <p className="text-xs text-slate-600">
         Describe what you need or attach a quote, then review the proposed workflow.
       </p>
-      <label className="block text-sm font-medium text-slate-700">
-        Product scope
+      <div className="space-y-1">
+        <label htmlFor="presales-product-scope" className="block text-sm font-medium text-slate-700">
+          Product scope
+        </label>
         <select
-          className="mt-1 block w-full max-w-sm rounded-lg border border-slate-300 bg-white p-2 text-sm"
+          id="presales-product-scope"
+          className="w-full max-w-sm rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
           value={pinnedProductId ?? initialProduct?.id ?? ''}
           onChange={event => setPinnedProductId(event.target.value)}
         >
@@ -798,7 +801,7 @@ export default function PresalesRequestPanel({ product: initialProduct, catalogs
             <option key={catalog.id} value={catalog.id}>{catalog.chassis || catalog.label || catalog.id}</option>
           ))}
         </select>
-      </label>
+      </div>
       <PresalesInputControls
         query={query} setQuery={setQuery}
         primary={primary} setPrimary={setPrimary}

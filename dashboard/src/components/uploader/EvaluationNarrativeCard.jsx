@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FileText, ChevronDown, ChevronUp, Copy, CheckCircle2 } from 'lucide-react';
+import MarkdownText from '../MarkdownText.jsx';
 
 export default function EvaluationNarrativeCard({ narrative, _chassis }) {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -74,32 +75,24 @@ export default function EvaluationNarrativeCard({ narrative, _chassis }) {
       </div>
 
       {isExpanded && (
-        <div className="p-4 space-y-3 text-xs bg-slate-50/40 divide-y divide-slate-100">
+        <div className="p-4 space-y-3 text-xs bg-slate-50/40 divide-y divide-slate-100 overflow-x-hidden">
           {sections.map((sec, idx) => {
-            const firstLine = sec.split('\n')[0].replace(/^###\s+/, '');
-            const bodyLines = sec.split('\n').slice(1).filter(l => l.trim().length > 0);
+            const firstLine = sec.split('\n')[0].replace(/^#{1,6}\s+/, '').trim();
+            const bodyText = sec.split('\n').slice(1).join('\n').trim();
 
             return (
-              <div key={idx} className={idx > 0 ? 'pt-3' : ''}>
-                <h4 className="font-bold text-slate-800 text-xs mb-1.5 flex items-center gap-2">
+              <div key={idx} className={idx > 0 ? 'pt-3 min-w-0' : 'min-w-0'}>
+                <h4 className="font-bold text-slate-800 text-xs mb-1.5 flex items-center gap-2 min-w-0">
                   <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-800 font-bold text-[10px] flex items-center justify-center shrink-0">
                     {idx + 1}
                   </span>
-                  {firstLine}
+                  <span className="break-words">{firstLine}</span>
                 </h4>
-                <div className="pl-7 space-y-1 font-sans text-slate-700 text-[11px] leading-relaxed">
-                  {bodyLines.map((line, lIdx) => {
-                    const isBullet = line.trim().startsWith('-');
-                    const clean = line.replace(/^-\s*/, '').replace(/\*\*/g, '');
-
-                    return (
-                      <div key={lIdx} className={isBullet ? 'flex items-start gap-1.5' : 'text-slate-600'}>
-                        {isBullet && <span className="text-slate-400 font-bold">•</span>}
-                        <span>{clean}</span>
-                      </div>
-                    );
-                  })}
-                </div>
+                {bodyText && (
+                  <div className="pl-7 font-sans text-slate-700 text-[11px] leading-relaxed break-words min-w-0">
+                    <MarkdownText text={bodyText} />
+                  </div>
+                )}
               </div>
             );
           })}

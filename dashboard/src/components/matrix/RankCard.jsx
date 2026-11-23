@@ -10,14 +10,14 @@ function RankSkuPartsSection({ tier, isExpanded, onToggleExpand, onCopyBom, isCo
 
   return (
     <div className="mt-4 pt-3 border-t border-slate-100">
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
         <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">
           Full Configuration BOM ({tier.skuPartsList.length} SKUs)
         </span>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={() => onCopyBom(tier)}
-            className="text-[11px] font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 transition-colors"
+            className="text-[11px] font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer whitespace-nowrap"
             title="Copy BOM to clipboard"
           >
             {isCopied ? (
@@ -35,7 +35,7 @@ function RankSkuPartsSection({ tier, isExpanded, onToggleExpand, onCopyBom, isCo
           <button
             aria-expanded={isExpanded}
             onClick={() => onToggleExpand(tier.rank)}
-            className="text-[11px] font-semibold text-blue-600 hover:text-blue-800"
+            className="text-[11px] font-semibold text-blue-600 hover:text-blue-800 cursor-pointer whitespace-nowrap"
           >
             {isExpanded ? 'Collapse' : 'Expand'}
           </button>
@@ -336,7 +336,7 @@ export default function RankCard({
 
   return (
     <div
-      className={`glass-card flex flex-col justify-between transition-all duration-300 hover:shadow-lg ${
+      className={`glass-card p-5 flex flex-col justify-between transition-all duration-300 hover:shadow-lg ${
         tier.isOptimal ? 'border-2 border-emerald-500 ring-4 ring-emerald-50/50' : 'border border-slate-200'
       }`}
     >
@@ -367,9 +367,9 @@ export default function RankCard({
             <span className="text-slate-500 font-medium">Workload Intent Alignment:</span>
             <span className="font-bold text-slate-800">{tier.intentMatch}</span>
           </div>
-          <div className="flex items-center justify-between text-xs gap-2">
-            <span className="text-slate-500 font-medium">Estimated CapEx Budget:</span>
-            <span className="font-bold font-mono text-emerald-700 text-sm text-right">{tier.capex}</span>
+          <div className="flex flex-wrap items-baseline justify-between text-xs gap-x-2 gap-y-0.5">
+            <span className="text-slate-500 font-medium shrink-0">Estimated CapEx Budget:</span>
+            <span className="font-bold font-mono text-emerald-700 text-xs sm:text-sm text-right leading-snug">{tier.capex}</span>
           </div>
           <BudgetBreakdownSection tier={tier} />
         </div>

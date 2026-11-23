@@ -14,8 +14,8 @@ export default function MatrixToolbar({
     <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="badge badge-emerald">Strategy Matrix</span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="badge badge-emerald whitespace-nowrap shrink-0">Strategy Matrix</span>
             <span className="text-xs text-slate-500 font-mono">Rank 1–5 Multi-Metric Tradeoffs</span>
           </div>
           <h2 className="text-lg font-bold text-slate-900 mt-1">Multi-Tier Strategic Resolution Matrix</h2>

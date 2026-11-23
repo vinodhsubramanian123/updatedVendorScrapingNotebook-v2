@@ -85,14 +85,16 @@ export default function ChassisSyncSummaryView({
     setError(null);
     try {
       const url = forceRefresh ? '/api/chassis-sync-summary?refresh=1' : '/api/chassis-sync-summary';
-      const res = await fetch(url, { signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(10000)]) : AbortSignal.timeout(10000) });
+      const res = await fetch(url, { signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(25000)]) : AbortSignal.timeout(25000) });
       if (!res.ok) throw new Error(`HTTP ${res.status}: Failed to load sync summary`);
       const result = await res.json();
       if (!signal?.aborted) setData(result);
     } catch (err) {
       if (err?.name === 'AbortError' || signal?.aborted) return;
-      console.error('Error fetching chassis sync summary:', err);
-      setError(err.message);
+      const message = err?.name === 'TimeoutError'
+        ? 'Sync summary request timed out while scanning catalogs. Click Retry to reload.'
+        : (err?.message || 'Failed to load sync summary');
+      setError(message);
     } finally {
       if (!signal?.aborted) setIsLoading(false);
     }

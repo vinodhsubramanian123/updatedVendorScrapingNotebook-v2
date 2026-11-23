@@ -57,7 +57,7 @@ function ToolModal({ isOpen, onClose, title, children }) {
             </svg>
           </button>
         </div>
-        <div className="flex-1 overflow-y-auto p-6">{children}</div>
+        <div className="flex-1 overflow-y-auto overflow-x-hidden p-6">{children}</div>
       </div>
     </div>
   );
@@ -460,14 +460,16 @@ function AppToolModals({
 
   return (
     <>
-      <ToolModal isOpen={activeModal === 'boqUploader'} onClose={() => setActiveModal(null)} title="Stage 1: BOQ Quote Ingestion & 6-Aspect Math Engine">
-        <label className="mb-4 block text-sm font-semibold text-slate-700">
-          Product scope
-          <select className="mt-1 block max-w-full rounded-lg border border-slate-300 bg-white p-2" value={boqProductId} onChange={event => setBoqProductId(event.target.value)}>
+      <ToolModal isOpen={activeModal === 'boqUploader'} onClose={() => setActiveModal(null)} title="Stage 1: BOQ Quote Ingestion & 7-Aspect Math Engine">
+        <div className="mb-4 space-y-1">
+          <label htmlFor="boq-modal-product-scope" className="block text-sm font-semibold text-slate-700">
+            Product scope
+          </label>
+          <select id="boq-modal-product-scope" className="w-full max-w-sm rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-normal" value={boqProductId} onChange={event => setBoqProductId(event.target.value)}>
             <option value="">Auto · Identify from BOQ</option>
             {catalogs.map(catalog => <option key={catalog.id} value={catalog.id}>{catalog.chassis || catalog.id}</option>)}
           </select>
-        </label>
+        </div>
         <BoqUploader
           chassisDir={boqProduct ? boqProduct.chassisDir || boqProduct.id : undefined}
           onEvaluateBoq={async (input, rawText) => {

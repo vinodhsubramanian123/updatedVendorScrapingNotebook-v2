@@ -2,7 +2,7 @@ import React from 'react';
 
 function renderInlineTokens(text, keyPrefix) {
   const parts = [];
-  const pattern = /(\*\*[^*]+\*\*|`[^`]+`)/g;
+  const pattern = /(\*\*[^*]+\*\*|`[^`]+`|(?<![\w/])_[^_\n]+_(?![\w/]))/g;
   let lastIndex = 0;
   let match;
   let idx = 0;
@@ -20,9 +20,15 @@ function renderInlineTokens(text, keyPrefix) {
       );
     } else if (token.startsWith('`') && token.endsWith('`')) {
       parts.push(
-        <code key={`${keyPrefix}-c-${idx++}`} className="font-mono text-[10px] px-1 py-0.5 rounded bg-black/5">
+        <code key={`${keyPrefix}-c-${idx++}`} className="font-mono text-[10px] px-1 py-0.5 rounded bg-black/5 break-all">
           {token.slice(1, -1)}
         </code>
+      );
+    } else if (token.startsWith('_') && token.endsWith('_')) {
+      parts.push(
+        <em key={`${keyPrefix}-i-${idx++}`} className="italic text-slate-500">
+          {token.slice(1, -1)}
+        </em>
       );
     }
     lastIndex = pattern.lastIndex;
@@ -68,6 +74,16 @@ export default function MarkdownText({ text, className = '' }) {
         <div key={`h-${idx}`} className="font-bold mt-1.5 mb-0.5 text-inherit">
           {renderInlineTokens(headingMatch[1], `h-${idx}`)}
         </div>
+      );
+      return;
+    }
+    const quoteMatch = line.match(/^>\s*(.+)$/);
+    if (quoteMatch) {
+      flushList(idx);
+      blocks.push(
+        <blockquote key={`q-${idx}`} className="my-1 border-l-2 border-blue-300 bg-blue-50/50 pl-2.5 py-1 text-slate-600 rounded-r">
+          {renderInlineTokens(quoteMatch[1], `q-${idx}`)}
+        </blockquote>
       );
       return;
     }

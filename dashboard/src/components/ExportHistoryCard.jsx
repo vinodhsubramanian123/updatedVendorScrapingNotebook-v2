@@ -123,7 +123,7 @@ export default function ExportHistoryCard() {
                       <Server className="w-3.5 h-3.5 text-slate-400" />
                       {exp.product || exp.chassisId}
                     </span>
-                    <span className="badge badge-indigo inline-flex items-center gap-1 max-w-[200px] truncate" title={formatExportRankLabel(exp.rank, exp.solutionName)}>
+                    <span className="badge badge-indigo inline-flex items-center gap-1 whitespace-normal text-left leading-tight max-w-[260px]" title={formatExportRankLabel(exp.rank, exp.solutionName)}>
                       {formatExportRankLabel(exp.rank, exp.solutionName)}
                     </span>
                   </td>

@@ -119,11 +119,11 @@ function LiveScrapeControlCard({ targetRequired, canScrape, cdpState, scrapeMode
       <button
         onClick={handleStartScrapeClick}
         disabled={isTaskRunning || targetRequired}
-        className={`w-full justify-center text-xs mb-2 ${canScrape ? 'btn-primary' : 'bg-slate-200 text-slate-600 hover:bg-slate-300 font-semibold py-2 px-4 rounded-lg cursor-pointer'}`}
+        className={`w-full inline-flex items-center justify-center gap-2 text-xs mb-2 ${canScrape ? 'btn-primary' : 'bg-slate-200 text-slate-600 hover:bg-slate-300 font-semibold py-2 px-4 rounded-lg cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed'}`}
         title={canScrape ? "Start Scraping" : "Click for connection instructions"}
       >
-        {isTaskRunning ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Play className="w-3.5 h-3.5" />}
-        {targetRequired ? 'Choose a target product' : canScrape ? 'Start Scrape' : 'Live Scrape Disabled (CDP Port Unattached)'}
+        {isTaskRunning ? <RefreshCw className="w-3.5 h-3.5 animate-spin shrink-0" /> : <Play className="w-3.5 h-3.5 shrink-0" />}
+        <span>{targetRequired ? 'Choose a target product' : canScrape ? 'Start Scrape' : 'Live Scrape Disabled (CDP Port Unattached)'}</span>
       </button>
 
       {!canScrape && cdpState.status !== 'DISCONNECTED' && (

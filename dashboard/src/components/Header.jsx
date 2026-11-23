@@ -90,6 +90,7 @@ export default function Header({
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const searchContainerRef = useRef(null);
   const searchInputRef = useRef(null);
+  const slashShortcutAtRef = useRef(0);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -101,6 +102,8 @@ export default function Header({
         const tag = document.activeElement?.tagName;
         if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || document.activeElement?.isContentEditable) return;
         e.preventDefault();
+        e.stopPropagation();
+        slashShortcutAtRef.current = Date.now();
         searchInputRef.current?.focus();
       }
     };
@@ -109,10 +112,10 @@ export default function Header({
         setIsSearchOpen(false);
       }
     };
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown, true);
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDown, true);
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
@@ -156,7 +159,13 @@ export default function Header({
         <div className="flex-1 min-w-[160px] basis-full md:basis-0 md:max-w-md order-3 md:order-2">
           <SmartSearchInput
             searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
+            setSearchQuery={(val) => {
+              if (val === '/' && Date.now() - slashShortcutAtRef.current < 250) {
+                slashShortcutAtRef.current = 0;
+                return;
+              }
+              setSearchQuery(val);
+            }}
             isSearchOpen={isSearchOpen}
             setIsSearchOpen={setIsSearchOpen}
             hasCatalog={Boolean(catalogData)}

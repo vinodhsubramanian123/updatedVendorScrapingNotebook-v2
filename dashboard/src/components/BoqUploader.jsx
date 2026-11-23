@@ -95,6 +95,21 @@ function formatUploaderErrorMessage(baseMessage, remediationAction, fallback = '
   return `${text} ${remediationAction}`;
 }
 
+function useOutcomeScrollOnUpdate(evalResults, outcomeRef, setIsSubmitting) {
+  const prevRef = useRef(evalResults);
+  useEffect(() => {
+    if (!evalResults) {
+      prevRef.current = null;
+      return;
+    }
+    setIsSubmitting(false);
+    if (prevRef.current !== evalResults) {
+      prevRef.current = evalResults;
+      outcomeRef.current?.scrollIntoView({ block: 'nearest' });
+    }
+  }, [evalResults, outcomeRef, setIsSubmitting]);
+}
+
 export default function BoqUploader({
   onEvaluateBoq,
   evalResults,
@@ -139,11 +154,7 @@ export default function BoqUploader({
     if (isEvaluating && logArea) logArea.scrollTop = logArea.scrollHeight;
   }, [logStream, isEvaluating]);
 
-  useEffect(() => {
-    if (!evalResults) return;
-    setIsSubmitting(false);
-    outcomeRef.current?.scrollIntoView({ block: 'nearest' });
-  }, [evalResults]);
+  useOutcomeScrollOnUpdate(evalResults, outcomeRef, setIsSubmitting);
 
   const handlePreprocess = async (overrideFile = null, overrideRawText = null) => {
     const revision = intakeRevision.current;
