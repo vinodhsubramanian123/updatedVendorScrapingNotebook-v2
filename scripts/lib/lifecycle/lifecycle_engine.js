@@ -11,6 +11,7 @@
 
 const PipelineLogger = require('../system/pipeline_logger.js');
 const terminalOwner = require('./canonical_terminal_owner.js');
+const { CANONICAL_EXECUTION_PHASES } = require('../contracts/workflow_contract.js');
 
 const ALLOWED_STATUSES = Object.freeze(new Set([
   'NOT_STARTED',
@@ -24,17 +25,26 @@ const ALLOWED_STATUSES = Object.freeze(new Set([
   'NOT_REACHED'
 ]));
 
-const CANONICAL_BOQ_9_PHASES = Object.freeze([
-  { id: 'INGESTION', phaseNum: 1, name: 'BOM Ingestion & Normalization', mandatory: true, dependsOn: [] },
-  { id: 'FINGERPRINTING', phaseNum: 2, name: 'Non-Repudiation Checksums & Baseline', mandatory: true, dependsOn: ['INGESTION'] },
-  { id: 'DOMAIN_ASPECTS', phaseNum: 3, name: 'Deterministic Domain Physical Math', mandatory: true, allowActionRequired: true, dependsOn: ['FINGERPRINTING'] },
-  { id: 'CONFLICT_GRAPH', phaseNum: 4, name: '5-Level Dependency Graph Validation', mandatory: true, allowActionRequired: true, dependsOn: ['DOMAIN_ASPECTS'] },
-  { id: 'MODERNIZATION_LEAST_DELTA', phaseNum: 5, name: 'Generational Modernization & Least-Delta Combinator', mandatory: false, dependsOn: ['DOMAIN_ASPECTS'] },
-  { id: 'STRATEGY_SYNTHESIS', phaseNum: 6, name: 'Multi-Tier Strategy Matrix Synthesis', mandatory: true, allowActionRequired: true, dependsOn: ['DOMAIN_ASPECTS', 'CONFLICT_GRAPH'] },
-  { id: 'RAG_GROUNDING', phaseNum: 7, name: 'NotebookLM Ground-Truth Verification', mandatory: true, allowActionRequired: true, dependsOn: ['STRATEGY_SYNTHESIS'] },
-  { id: 'DELIVERABLES_FINALIZATION', phaseNum: 8, name: 'Deliverables Generation & Ledger Seal', mandatory: true, allowActionRequired: true, dependsOn: ['STRATEGY_SYNTHESIS', 'RAG_GROUNDING'] },
-  { id: 'REFLECTION_LEARNING', phaseNum: 9, name: 'Closed-Loop Reflection & Shared State Export', mandatory: false, allowActionRequired: true, dependsOn: ['DELIVERABLES_FINALIZATION'] }
-]);
+const PHASE_DEPENDENCIES = Object.freeze({
+  INGESTION: { mandatory: true, dependsOn: [] },
+  FINGERPRINTING: { mandatory: true, dependsOn: ['INGESTION'] },
+  DOMAIN_ASPECTS: { mandatory: true, allowActionRequired: true, dependsOn: ['FINGERPRINTING'] },
+  CONFLICT_GRAPH: { mandatory: true, allowActionRequired: true, dependsOn: ['DOMAIN_ASPECTS'] },
+  MODERNIZATION_LEAST_DELTA: { mandatory: false, dependsOn: ['DOMAIN_ASPECTS'] },
+  STRATEGY_SYNTHESIS: { mandatory: true, allowActionRequired: true, dependsOn: ['DOMAIN_ASPECTS', 'CONFLICT_GRAPH'] },
+  RAG_GROUNDING: { mandatory: true, allowActionRequired: true, dependsOn: ['STRATEGY_SYNTHESIS'] },
+  DELIVERABLES_FINALIZATION: { mandatory: true, allowActionRequired: true, dependsOn: ['STRATEGY_SYNTHESIS', 'RAG_GROUNDING'] },
+  REFLECTION_LEARNING: { mandatory: false, allowActionRequired: true, dependsOn: ['DELIVERABLES_FINALIZATION'] }
+});
+
+const CANONICAL_BOQ_9_PHASES = Object.freeze(
+  CANONICAL_EXECUTION_PHASES.map(phase => ({
+    id: phase.id,
+    phaseNum: phase.phaseNum,
+    name: phase.name,
+    ...(PHASE_DEPENDENCIES[phase.id] || { mandatory: false, dependsOn: [] })
+  }))
+);
 
 const CANONICAL_BOQ_PHASES = CANONICAL_BOQ_9_PHASES;
 

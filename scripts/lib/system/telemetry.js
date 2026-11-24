@@ -1,22 +1,27 @@
 'use strict';
 /**
- * scripts/lib/system/telemetry.js — Pipeline Telemetry & Structured Audit Observability Engine
+ * scripts/lib/system/telemetry.js — Pipeline Telemetry & Structured Audit Observability Engine (v2)
+ *
+ * Enforces epistemic honesty (INV-278): missing confidences, rules, platforms, or stage
+ * timings stay null / 'UNSPECIFIED_PLATFORM' instead of fabricating 1.0 or synthetic splits.
  */
 
 const fs = require('fs');
 const path = require('path');
-const { safeWriteJsonAtomic } = require('./fs_compat.js');
+const { safeWriteJsonAtomic, withFileLock } = require('./fs_compat.js');
 const { getTraceId } = require('./trace_context.js');
+const {
+  CANONICAL_EXECUTION_PHASES,
+  mapStageTimingsToCanonicalPhases
+} = require('../contracts/workflow_contract.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const TELEMETRY_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'pipeline_telemetry.json');
+const _ephemeralTestStores = new Map();
 
-/**
- * Maximum entries per telemetry history array before FIFO eviction (Gap 5 fix).
- * Prevents unbounded file growth. Each array caps independently.
- */
 const MAX_TELEMETRY_ENTRIES = {
   history: 100,
+  routedQueries: 100,
   learnedDeltas: 50,
   notebookConsultations: 50,
   cleansingAuditLogs: 50,
@@ -27,12 +32,78 @@ const MAX_TELEMETRY_ENTRIES = {
   selfHealingEvents: 50
 };
 
-/**
- * FIFO-prune all telemetry history arrays to their configured max size.
- * Called on load to retroactively trim oversized files from previous runs.
- * @param {object} data - Telemetry payload (mutated in place)
- * @returns {boolean} True if any pruning occurred
- */
+function _createEmptyTelemetryStore() {
+  return {
+    version: '2.0.0',
+    lastUpdated: new Date().toISOString(),
+    evaluationsCount: 0,
+    totalRoutedQueries: 0,
+    totalDeltasLearned: 0,
+    totalRulesEvaluated: 0,
+    avgConfidenceScore: null,
+    evalAccuracyScore: null,
+    ragFallbackRatio: null,
+    cloudGroundingRatio: null,
+    p50DurationMs: null,
+    p95DurationMs: null,
+    totalExports: 0,
+    totalNlmQueries: 0,
+    avgNlmResponseTimeMs: null,
+    nlmAgreementIndex: null,
+    nlmCitationMatchRate: null,
+    totalGuardrailRuns: 0,
+    avgGuardrailDurationMs: null,
+    avgGuardrailTurns: null,
+    guardrailSuccessRate: null,
+    totalReconciliations: 0,
+    totalSelfHealingEvents: 0,
+    learningEffectiveness: {
+      activeRulesReachedCount: 0,
+      appliedRulesCount: 0,
+      proposedDeltasCount: 0,
+      promotedDeltasCount: 0
+    },
+    history: [],
+    routedQueries: [],
+    learnedDeltas: [],
+    notebookConsultations: [],
+    cleansingAuditLogs: [],
+    ocrAuditLogs: [],
+    exportHistory: [],
+    reconciliationHistory: [],
+    guardrailHistory: [],
+    selfHealingEvents: []
+  };
+}
+
+function _resolveTargetFile(options = {}) {
+  const explicitFile = options.telemetryFile || process.env.ANTIGRAVITY_TELEMETRY_FILE || null;
+  return path.resolve(explicitFile || TELEMETRY_FILE);
+}
+
+function _isEphemeralTestTelemetryMode(targetFile, options = {}) {
+  if (options.telemetryFile || process.env.ANTIGRAVITY_TELEMETRY_FILE) return false;
+  if (process.env.SKILL_ISOLATION_ROOT) return false;
+  const isTestEnv = process.env.NODE_ENV === 'test' || Boolean(process.env.NODE_TEST_CONTEXT);
+  if (!isTestEnv) return false;
+  return path.resolve(targetFile) === path.resolve(TELEMETRY_FILE);
+}
+
+function _finiteNonNegativeOrNull(value) {
+  return typeof value === 'number' && Number.isFinite(value) && value >= 0 ? value : null;
+}
+
+function _finiteScoreOrNull(value) {
+  return typeof value === 'number' && Number.isFinite(value) ? value : null;
+}
+
+function _computePercentile(sortedValues, pct) {
+  if (!Array.isArray(sortedValues) || sortedValues.length === 0) return null;
+  const rank = Math.ceil((pct / 100) * sortedValues.length) - 1;
+  const idx = Math.min(sortedValues.length - 1, Math.max(0, rank));
+  return Math.round(sortedValues[idx]);
+}
+
 function pruneTelemetry(data) {
   let pruned = false;
   for (const [key, max] of Object.entries(MAX_TELEMETRY_ENTRIES)) {
@@ -44,42 +115,71 @@ function pruneTelemetry(data) {
   return pruned;
 }
 
-/**
- * Read existing telemetry data or initialize default telemetry object.
- * Applies FIFO pruning on load to cap unbounded growth (Gap 5).
- * @returns {object} Telemetry payload
- */
-function loadTelemetry() {
-  if (fs.existsSync(TELEMETRY_FILE)) {
-    try {
-      const data = JSON.parse(fs.readFileSync(TELEMETRY_FILE, 'utf-8'));
-      // Retroactive FIFO pruning on load (Gap 5 fix)
-      if (pruneTelemetry(data)) {
-        data.lastUpdated = new Date().toISOString();
-        safeWriteJsonAtomic(TELEMETRY_FILE, data);
-      }
-      return data;
-    } catch (_) { const _logger = require('./pipeline_logger.js'); _logger.warn('ERROR', 'telemetry.js', _); }
+function _normalizeLoadedStore(data) {
+  const defaults = _createEmptyTelemetryStore();
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return defaults;
+  for (const key of Object.keys(MAX_TELEMETRY_ENTRIES)) {
+    if (!Array.isArray(data[key])) data[key] = [];
   }
-  return {
-    version: '1.2.0',
-    lastUpdated: new Date().toISOString(),
-    evaluationsCount: 0,
-    totalDeltasLearned: 0,
-    totalRulesEvaluated: 0,
-    avgConfidenceScore: 0,
-    totalExports: 0,
-    history: [],
-    exportHistory: []
-  };
+  if (!data.learningEffectiveness || typeof data.learningEffectiveness !== 'object') {
+    data.learningEffectiveness = { ...defaults.learningEffectiveness };
+  }
+  return data;
 }
 
-/**
- * Record a BOQ evaluation run in telemetry.
- * @param {object} evalResults 
- * @param {string} boqFile 
- * @param {number} durationMs 
- */
+function loadTelemetry(options = {}) {
+  const targetFile = _resolveTargetFile(options);
+  const ephemeral = _isEphemeralTestTelemetryMode(targetFile, options);
+
+  if (ephemeral && _ephemeralTestStores.has(targetFile)) {
+    const cached = structuredClone(_ephemeralTestStores.get(targetFile));
+    pruneTelemetry(cached);
+    return cached;
+  }
+
+  if (fs.existsSync(targetFile)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(targetFile, 'utf-8'));
+      const wasPruned = pruneTelemetry(data);
+      if (wasPruned && !ephemeral && options.persist !== false) {
+        data.lastUpdated = new Date().toISOString();
+        withFileLock(targetFile, () => safeWriteJsonAtomic(targetFile, data));
+      }
+      return data;
+    } catch (err) {
+      const _logger = require('./pipeline_logger.js');
+      _logger.warn('ERROR', 'telemetry.js', err);
+    }
+  }
+  return _createEmptyTelemetryStore();
+}
+
+function _persistTelemetryUpdate(updater, options = {}) {
+  const targetFile = _resolveTargetFile(options);
+  const ephemeral = _isEphemeralTestTelemetryMode(targetFile, options);
+  const skipDiskWrite = ephemeral || options.persist === false;
+
+  const applyUpdate = () => {
+    const data = _normalizeLoadedStore(loadTelemetry({ telemetryFile: options.telemetryFile || targetFile, persist: options.persist }));
+    const entry = updater(data);
+    pruneTelemetry(data);
+    data.lastUpdated = new Date().toISOString();
+    if (ephemeral && options.persist !== false) {
+      _ephemeralTestStores.set(targetFile, structuredClone(data));
+    } else if (!skipDiskWrite) {
+      const dir = path.dirname(targetFile);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      safeWriteJsonAtomic(targetFile, data);
+    }
+    return entry;
+  };
+
+  if (skipDiskWrite) return applyUpdate();
+  const dir = path.dirname(targetFile);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  return withFileLock(targetFile, applyUpdate);
+}
+
 function _extractDomainMap(missingDependencies = []) {
   const domainMap = {
     THERMAL: 0,
@@ -89,54 +189,42 @@ function _extractDomainMap(missingDependencies = []) {
     POWER_REDUNDANCY: 0,
     ACCESSORY_CABLE: 0
   };
-
-  (missingDependencies || []).forEach(dep => {
-    const key = (dep.key || dep.sku || '').toUpperCase();
+  for (const dep of missingDependencies || []) {
+    const key = (dep?.key || dep?.sku || '').toUpperCase();
     if (key.includes('FAN') || key.includes('HEATSINK') || key.includes('TDP')) domainMap.THERMAL++;
     else if (key.includes('LUG') || key.includes('DC') || key.includes('VOLT')) domainMap.ELECTRICAL++;
     else if (key.includes('BATTERY') || key.includes('CACHE') || key.includes('CONTROLLER')) domainMap.STORAGE_CACHE_BATTERY++;
     else if (key.includes('MEMORY') || key.includes('DIMM')) domainMap.MEMORY_CHANNEL++;
     else if (key.includes('POWER') || key.includes('PSU')) domainMap.POWER_REDUNDANCY++;
     else domainMap.ACCESSORY_CABLE++;
-  });
-
+  }
   return domainMap;
 }
 
-function _deriveRootCauseAttribution(evalResults) {
+function _deriveRootCauseAttribution(evalResults = {}) {
   const errors = evalResults.errors || [];
   const warnings = evalResults.warnings || [];
   const discrepancies = evalResults.opinionDiscrepancies || [];
 
-  if (evalResults.requirementResolution?.requiresHumanClarification) {
-    return 'INPUT_AMBIGUITY';
-  }
-  if (errors.some(e => /not found in.*catalog|uncataloged|invalid sku/i.test(e))) {
-    return 'CATALOG_GAP';
-  }
-  if (errors.length > 0) {
-    return 'PHYSICAL_VIOLATION';
-  }
-  if (discrepancies.length > 0) {
-    return 'RAG_DISCREPANCY';
-  }
-  if (evalResults.budgetOptimization?.isBudgetExceeded) {
-    return 'BUDGET_OVERRUN';
-  }
-  if (warnings.length > 0) {
-    return 'ADVISORY_WARNING';
-  }
+  if (evalResults.requirementResolution?.requiresHumanClarification) return 'INPUT_AMBIGUITY';
+  if (errors.some(e => /not found in.*catalog|uncataloged|invalid sku/i.test(String(e)))) return 'CATALOG_GAP';
+  if (errors.length > 0) return 'PHYSICAL_VIOLATION';
+  if (discrepancies.length > 0) return 'RAG_DISCREPANCY';
+  if (evalResults.budgetOptimization?.isBudgetExceeded) return 'BUDGET_OVERRUN';
+  if (warnings.length > 0) return 'ADVISORY_WARNING';
   return 'CLEAN_BUILD';
 }
 
-function _extractGroundingStatus(evalResults) {
-  const ragFallbackUsed = evalResults.ragFallbackUsed || false;
+function _extractGroundingStatus(evalResults = {}) {
+  const ragFallbackUsed = Boolean(evalResults.ragFallbackUsed);
   const notebookLmStatus = evalResults.notebookLmStatus || null;
-  const notebookLmMode = (notebookLmStatus && notebookLmStatus.source) || (ragFallbackUsed ? 'LOCAL_RAG_FALLBACK' : 'NOTEBOOK_LM_CLOUD');
-  const notebookLmSourcesUsed = (notebookLmStatus && notebookLmStatus.sourcesUsed) || [];
-  const notebookLmCitationsCount = (notebookLmStatus && notebookLmStatus.citationsCount) || 0;
+  const notebookLmMode = notebookLmStatus?.source || (ragFallbackUsed ? 'LOCAL_RAG_FALLBACK' : 'UNMEASURED');
+  const notebookLmSourcesUsed = notebookLmStatus?.sourcesUsed || [];
+  const notebookLmCitationsCount = notebookLmStatus?.citationsCount || 0;
   const cloudGroundingConfirmed = Boolean(notebookLmStatus && notebookLmStatus.source === 'NOTEBOOK_LM_CLOUD' && !ragFallbackUsed);
-  const groundingIntegrity = notebookLmStatus?.isCloudGrounded ? '100%_CLOUD_GROUNDED' : (ragFallbackUsed ? 'LOCAL_SAFETY_NET' : 'DETERMINISTIC_RULES');
+  const groundingIntegrity = notebookLmStatus?.isCloudGrounded
+    ? '100%_CLOUD_GROUNDED'
+    : (ragFallbackUsed ? 'LOCAL_SAFETY_NET' : 'DETERMINISTIC_RULES');
   const silentFallbackDetected = Boolean(ragFallbackUsed && !notebookLmStatus?.diagnostic);
 
   return {
@@ -151,176 +239,171 @@ function _extractGroundingStatus(evalResults) {
 }
 
 function _updateRollingStatistics(data) {
-  const totalScore = data.history.reduce((acc, curr) => acc + curr.confidenceScore, 0);
-  data.avgConfidenceScore = parseFloat((totalScore / data.history.length).toFixed(2));
-  
-  const fallbackRuns = data.history.filter(h => h.ragFallbackUsed || h.notebookLmMode === 'LOCAL_RAG_FALLBACK').length;
-  data.ragFallbackRatio = parseFloat(((fallbackRuns / data.history.length) * 100).toFixed(1));
-  data.cloudGroundingRatio = parseFloat((((data.history.length - fallbackRuns) / data.history.length) * 100).toFixed(1));
-
-  const highConfidenceRuns = data.history.filter(h => h.confidenceScore >= 0.85).length;
-  data.evalAccuracyScore = parseFloat(((highConfidenceRuns / data.history.length) * 100).toFixed(1));
-}
-
-function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
-  const telemetryDir = path.dirname(TELEMETRY_FILE);
-  if (!fs.existsSync(telemetryDir)) {
-    fs.mkdirSync(telemetryDir, { recursive: true });
+  const history = Array.isArray(data.history) ? data.history : [];
+  const scoredRuns = history.filter(h => _finiteScoreOrNull(h?.confidenceScore) !== null);
+  if (scoredRuns.length > 0) {
+    const totalScore = scoredRuns.reduce((acc, curr) => acc + curr.confidenceScore, 0);
+    data.avgConfidenceScore = parseFloat((totalScore / scoredRuns.length).toFixed(2));
+    const highConfidenceRuns = scoredRuns.filter(h => h.confidenceScore >= 0.85).length;
+    data.evalAccuracyScore = parseFloat(((highConfidenceRuns / scoredRuns.length) * 100).toFixed(1));
+  } else {
+    data.avgConfidenceScore = null;
+    data.evalAccuracyScore = null;
   }
 
-  const data = loadTelemetry();
-  const graph = evalResults.conflictGraph || {};
-  const score = evalResults.confidence ? evalResults.confidence.score : 1.0;
-  const domainMap = _extractDomainMap(evalResults.missingDependencies);
+  if (history.length > 0) {
+    const fallbackRuns = history.filter(h => h?.ragFallbackUsed || h?.notebookLmMode === 'LOCAL_RAG_FALLBACK').length;
+    data.ragFallbackRatio = parseFloat(((fallbackRuns / history.length) * 100).toFixed(1));
+    data.cloudGroundingRatio = parseFloat((((history.length - fallbackRuns) / history.length) * 100).toFixed(1));
+  } else {
+    data.ragFallbackRatio = null;
+    data.cloudGroundingRatio = null;
+  }
 
-  const stageBreakdown = evalResults.stageBreakdown || {
-    stage1ParsingMs: Math.round(durationMs * 0.15),
-    stage2AspectMathMs: Math.round(durationMs * 0.25),
-    stage3RAGConsultationMs: Math.round(durationMs * 0.20),
-    stage4GeminiVerificationMs: Math.round(durationMs * 0.25),
-    stage5ResolutionMatrixMs: Math.round(durationMs * 0.15)
+  const durations = history.map(h => _finiteNonNegativeOrNull(h?.durationMs)).filter(v => v !== null).sort((a, b) => a - b);
+  data.p50DurationMs = _computePercentile(durations, 50);
+  data.p95DurationMs = _computePercentile(durations, 95);
+
+  const deltas = Array.isArray(data.learnedDeltas) ? data.learnedDeltas : [];
+  data.learningEffectiveness = {
+    activeRulesReachedCount: history.reduce((sum, h) => sum + (Number.isFinite(h?.activeRulesReachedCount) ? h.activeRulesReachedCount : 0), 0),
+    appliedRulesCount: history.reduce((sum, h) => sum + (Number.isFinite(h?.appliedRulesCount) ? h.appliedRulesCount : 0), 0),
+    proposedDeltasCount: deltas.length,
+    promotedDeltasCount: deltas.filter(d => d?.governanceStatus === 'ACTIVE' || d?.governanceStatus === 'PROMOTED').length
   };
+}
 
+function _extractLedgerLearningCounts(ledger) {
+  const activeRulesReachedCount = Array.isArray(ledger?.activeRulesReached) ? ledger.activeRulesReached.length : 0;
+  const appliedRulesCount = Array.isArray(ledger?.skuAuditLedger)
+    ? ledger.skuAuditLedger.filter(s => ['INJECTED_MANDATORY_FIX', 'DELTA_AUTO_PROMOTED', 'REMEDIATED'].includes(s?.action)).length
+    : 0;
+  return { activeRulesReachedCount, appliedRulesCount };
+}
+
+function _buildTelemetryMemoryUsage() {
+  const mem = process.memoryUsage ? process.memoryUsage() : { rss: 0, heapUsed: 0, heapTotal: 0 };
+  return {
+    rssMb: Math.round(mem.rss / (1024 * 1024)),
+    heapUsedMb: Math.round(mem.heapUsed / (1024 * 1024)),
+    heapTotalMb: Math.round(mem.heapTotal / (1024 * 1024))
+  };
+}
+
+function _buildStageAndClusterSnapshot(evalResults) {
+  const hasMeasuredStages = Boolean(evalResults.stageBreakdown && typeof evalResults.stageBreakdown === 'object');
+  const stageBreakdown = hasMeasuredStages
+    ? { ...evalResults.stageBreakdown }
+    : { stage1ParsingMs: null, stage2AspectMathMs: null, stage3RAGConsultationMs: null, stage4GeminiVerificationMs: null, stage5ResolutionMatrixMs: null };
+  const phaseDurationsMs = mapStageTimingsToCanonicalPhases(evalResults.stageBreakdown || {}, evalResults.evidenceLedger?.phases || null);
+  const clusterPartitionCount = evalResults.clusters ? evalResults.clusters.length : (evalResults.clusterSizing?.totalNodes ? 1 : null);
+  return {
+    stageBreakdown,
+    stageTimingsMeasured: hasMeasuredStages,
+    phaseDurationsMs,
+    clusterPartitionCount,
+    totalNodesEvaluated: evalResults.clusterSizing?.totalNodes ?? evalResults.multiplier ?? null
+  };
+}
+
+function _buildEvaluationTelemetryEntry(evalResults = {}, boqFile = '', durationMs = null) {
+  const graph = evalResults.conflictGraph || {};
+  const score = _finiteScoreOrNull(evalResults.confidence?.score);
   const activeTrace = getTraceId();
   const entryId = activeTrace !== 'NO_TRACE_CONTEXT' ? activeTrace : `EVAL-${Date.now()}`;
-  const mem = process.memoryUsage ? process.memoryUsage() : { rss: 0, heapUsed: 0, heapTotal: 0 };
-  const rootCauseAttribution = _deriveRootCauseAttribution(evalResults);
-  const grounding = _extractGroundingStatus(evalResults);
+  const { activeRulesReachedCount, appliedRulesCount } = _extractLedgerLearningCounts(evalResults.evidenceLedger);
+  const snapshot = _buildStageAndClusterSnapshot(evalResults);
 
-  const entry = {
+  return {
     id: entryId,
     timestamp: new Date().toISOString(),
-    boqFile: path.basename(boqFile),
-    chassisModel: graph.chassisInfo ? graph.chassisInfo.model : 'DL380 Gen12 SFF',
+    boqFile: boqFile ? path.basename(String(boqFile)) : null,
+    chassisModel: graph.chassisInfo?.model || evalResults.chassis || 'UNSPECIFIED_PLATFORM',
     confidenceScore: score,
-    rootCauseAttribution,
-    isHitlTriggered: evalResults.confidence?.isHitlTriggered ?? score < 0.75,
+    rootCauseAttribution: _deriveRootCauseAttribution(evalResults),
+    isHitlTriggered: evalResults.confidence?.isHitlTriggered ?? (score !== null ? score < 0.75 : null),
     criticalViolationsCount: (evalResults.errors || []).length,
     warningsCount: (evalResults.warnings || []).length,
     missingDependenciesCount: (evalResults.missingDependencies || []).length,
-    graphRulesEvaluated: graph.totalRulesEvaluated || 33,
+    graphRulesEvaluated: _finiteNonNegativeOrNull(graph.totalRulesEvaluated),
     graphWholeSolutionValid: graph.isWholeSolutionValid === true,
-    stageBreakdown,
-    stageTimingsMeasured: Boolean(evalResults.stageBreakdown),
-    domainMap,
-    ...grounding,
-    syncStatus: (evalResults.postFlowSync && evalResults.postFlowSync.driftStatus) || 'NOT_RUN',
-    learnedDeltasThisRun: (evalResults.postFlowSync && evalResults.postFlowSync.masterRegistryRulesCount) || 0,
-    clusterPartitionCount: evalResults.clusters ? evalResults.clusters.length : (evalResults.clusterSizing?.totalNodes ? 1 : 1),
-    totalNodesEvaluated: evalResults.clusterSizing?.totalNodes || evalResults.multiplier || 1,
-    valueEngineeringSavingsUsd: evalResults.valueEngineering?.totalEstimatedSavingsUsd || 0,
+    ...snapshot,
+    domainMap: _extractDomainMap(evalResults.missingDependencies),
+    ..._extractGroundingStatus(evalResults),
+    syncStatus: evalResults.postFlowSync?.driftStatus || 'NOT_RUN',
+    learnedDeltasThisRun: evalResults.postFlowSync?.masterRegistryRulesCount ?? null,
+    activeRulesReachedCount,
+    appliedRulesCount,
+    valueEngineeringSavingsUsd: _finiteNonNegativeOrNull(evalResults.valueEngineering?.totalEstimatedSavingsUsd),
     guardrailRetries: evalResults.guardrailRetries || 0,
     traceId: evalResults.provenanceTrace?.traceId || entryId,
     provenanceTrace: evalResults.provenanceTrace || null,
-    memoryUsage: {
-      rssMb: Math.round(mem.rss / (1024 * 1024)),
-      heapUsedMb: Math.round(mem.heapUsed / (1024 * 1024)),
-      heapTotalMb: Math.round(mem.heapTotal / (1024 * 1024))
-    },
-    durationMs
+    memoryUsage: _buildTelemetryMemoryUsage(),
+    durationMs: _finiteNonNegativeOrNull(durationMs)
   };
-
-  data.evaluationsCount += 1;
-  data.history.unshift(entry);
-  if (data.history.length > 100) data.history.pop();
-
-  _updateRollingStatistics(data);
-  data.lastUpdated = new Date().toISOString();
-
-  safeWriteJsonAtomic(TELEMETRY_FILE, data);
-  pruneRunLogFiles(100);
-  return entry;
 }
 
-/**
- * Prune historical run JSON log files in outputs/history/runs/ to prevent unbounded disk growth.
- * @param {number} maxFiles 
- */
-function pruneRunLogFiles(maxFiles = 100) {
-  const runsDir = path.join(PROJECT_ROOT, 'outputs', 'history', 'runs');
-  if (!fs.existsSync(runsDir)) return;
-  try {
-    const files = fs.readdirSync(runsDir)
-      .filter(f => f.startsWith('run_') && f.endsWith('.json'))
-      .map(f => {
-        try {
-          return {
-            name: f,
-            filePath: path.join(runsDir, f),
-            mtime: fs.statSync(path.join(runsDir, f)).mtimeMs
-          };
-        } catch (_) {
-          return null;
-        }
-      })
-      .filter(Boolean)
-      .sort((a, b) => b.mtime - a.mtime); // Newest first
-
-    if (files.length > maxFiles) {
-      const toDelete = files.slice(maxFiles);
-      toDelete.forEach(f => {
-        try { fs.unlinkSync(f.filePath); } catch (_) {}
-      });
-    }
-  } catch (_) {}
+function recordEvaluationTelemetry(evalResults = {}, boqFile = '', durationMs = null, options = {}) {
+  const entry = _buildEvaluationTelemetryEntry(evalResults, boqFile, durationMs);
+  return _persistTelemetryUpdate(data => {
+    data.evaluationsCount = (data.evaluationsCount || 0) + 1;
+    data.history.unshift(entry);
+    _updateRollingStatistics(data);
+    return entry;
+  }, options);
 }
 
-/**
- * Record a learned portal feedback delta in telemetry.
- * @param {object} delta 
- */
-function recordFeedbackTelemetry(delta) {
-  const telemetryDir = path.dirname(TELEMETRY_FILE);
-  if (!fs.existsSync(telemetryDir)) {
-    fs.mkdirSync(telemetryDir, { recursive: true });
-  }
+function recordRoutedQueryTelemetry(envelope = {}, options = {}) {
+  const cls = envelope.classification || {};
+  const res = envelope.result || {};
+  const entry = {
+    id: envelope.traceId || `ROUTE-${Date.now()}`,
+    traceId: envelope.traceId || null,
+    timestamp: new Date().toISOString(),
+    intent: cls.intent || 'UNKNOWN',
+    skillTarget: cls.skillTarget || null,
+    resolvedPlatform: envelope.resolvedPlatform || 'UNSPECIFIED_PLATFORM',
+    classificationConfidence: _finiteScoreOrNull(envelope.classificationConfidence),
+    hitlRequired: typeof envelope.hitlRequired === 'boolean' ? envelope.hitlRequired : null,
+    executionTimeMs: _finiteNonNegativeOrNull(envelope.executionTimeMs),
+    epistemicTier: envelope.reasoningAnalysis?.epistemicIntegrity?.tier || null,
+    phaseDurationsMs: mapStageTimingsToCanonicalPhases(res.stageBreakdown || {}, res.evidenceLedger?.phases || null)
+  };
+  return _persistTelemetryUpdate(data => {
+    data.totalRoutedQueries = (data.totalRoutedQueries || 0) + 1;
+    data.routedQueries.unshift(entry);
+    return entry;
+  }, options);
+}
 
-  const data = loadTelemetry();
-  if (!data.learnedDeltas) data.learnedDeltas = [];
-
+function recordFeedbackTelemetry(delta = {}, options = {}) {
   const entry = {
     id: delta.deltaId || `DELTA-${Date.now()}`,
     timestamp: delta.timestamp || new Date().toISOString(),
-    chassis: delta.chassis || 'Unknown_Chassis',
+    chassis: delta.chassis || 'UNSPECIFIED_PLATFORM',
     errorType: delta.errorType || 'PERMANENT_PHYSICAL_DEPENDENCY',
     affectedSku: delta.affectedSku || '',
     requiredSku: delta.requiredDependencySku || null,
     ruleUpdate: delta.ruleUpdate || '',
     governanceStatus: delta.governanceStatus || delta.status || 'UNKNOWN',
     knowledgeFingerprint: delta.knowledgeFingerprint || null,
-    preConfidenceScore: delta.preConfidenceScore ?? null,
-    postConfidenceScore: delta.postConfidenceScore ?? delta.confidenceScore ?? null,
+    preConfidenceScore: _finiteScoreOrNull(delta.preConfidenceScore),
+    postConfidenceScore: _finiteScoreOrNull(delta.postConfidenceScore ?? delta.confidenceScore),
     reviewer: delta.humanReview?.reviewer || delta.promotedBy || null,
     reviewerReasoning: delta.humanReview?.reasoning || delta.humanReasoning || null,
     evidenceIds: Array.isArray(delta.humanReview?.evidence)
       ? delta.humanReview.evidence.map(item => item.id || item.url).filter(Boolean)
       : []
   };
-
-  data.learnedDeltas.unshift(entry);
-  if (data.learnedDeltas.length > 50) data.learnedDeltas.pop();
-
-  data.totalDeltasLearned = (data.totalDeltasLearned || 0) + 1;
-  
-  data.lastUpdated = new Date().toISOString();
-
-  safeWriteJsonAtomic(TELEMETRY_FILE, data);
-  return entry;
+  return _persistTelemetryUpdate(data => {
+    data.learnedDeltas.unshift(entry);
+    data.totalDeltasLearned = (data.totalDeltasLearned || 0) + 1;
+    _updateRollingStatistics(data);
+    return entry;
+  }, options);
 }
 
-/**
- * Record a Gemini Notebook consultation in telemetry.
- * @param {object} consultation
- */
-function recordNotebookConsultationTelemetry(consultation) {
-  const telemetryDir = path.dirname(TELEMETRY_FILE);
-  if (!fs.existsSync(telemetryDir)) {
-    fs.mkdirSync(telemetryDir, { recursive: true });
-  }
-
-  const data = loadTelemetry();
-  if (!data.notebookConsultations) data.notebookConsultations = [];
-
+function recordNotebookConsultationTelemetry(consultation = {}, options = {}) {
   const entry = {
     id: `NLM-${Date.now()}`,
     timestamp: new Date().toISOString(),
@@ -328,132 +411,75 @@ function recordNotebookConsultationTelemetry(consultation) {
     sanitizedQuery: consultation.sanitizedQuery || consultation.query || '',
     answer: consultation.answer || '',
     citations: consultation.citations || [],
-    // Use the real measured duration; null means "not measured" — never fabricate a number.
-    durationMs: (typeof consultation.durationMs === 'number' && consultation.durationMs > 0)
-      ? consultation.durationMs
-      : null,
+    durationMs: (typeof consultation.durationMs === 'number' && consultation.durationMs > 0) ? consultation.durationMs : null,
     scenario: consultation.scenario || 'GENERAL_QUICKSPECS',
-    // agreementScore must come from an actual RAG reconciliation (C3 fix). Until that
-    // is wired, store null rather than the previously fabricated constant 0.95.
-    agreementScore: (typeof consultation.agreementScore === 'number')
-      ? consultation.agreementScore
-      : null,
+    agreementScore: _finiteScoreOrNull(consultation.agreementScore),
     nextActionExecuted: consultation.nextActionExecuted || 'DEPENDENCY_VALIDATED',
-    chassis: consultation.chassis || 'UNKNOWN'
+    chassis: consultation.chassis || 'UNSPECIFIED_PLATFORM'
   };
-
-  data.notebookConsultations.unshift(entry);
-  if (data.notebookConsultations.length > 50) data.notebookConsultations.pop();
-
-  data.totalNlmQueries = (data.totalNlmQueries || 0) + 1;
-
-  // Compute aggregate RAG telemetry metrics across history
-  const consultations = data.notebookConsultations;
-  const validDurations = consultations.filter(c => typeof c.durationMs === 'number' && c.durationMs > 0);
-  // avgNlmResponseTimeMs is null when no measured durations exist — not 140
-  data.avgNlmResponseTimeMs = validDurations.length > 0
-    ? Math.round(validDurations.reduce((acc, c) => acc + c.durationMs, 0) / validDurations.length)
-    : null;
-
-  const validScores = consultations.filter(c => typeof c.agreementScore === 'number');
-  // nlmAgreementIndex is null when no scored consultations exist — not 95
-  data.nlmAgreementIndex = validScores.length > 0
-    ? Math.round((validScores.reduce((acc, c) => acc + c.agreementScore, 0) / validScores.length) * 100)
-    : null;
-
-  const withCitations = consultations.filter(c => Array.isArray(c.citations) && c.citations.length > 0);
-  data.nlmCitationMatchRate = consultations.length > 0
-    ? Math.round((withCitations.length / consultations.length) * 100)
-    : null;
-
-  const scenarioCounts = {};
-  consultations.forEach(c => {
-    const s = c.scenario || 'GENERAL_QUICKSPECS';
-    scenarioCounts[s] = (scenarioCounts[s] || 0) + 1;
-  });
-  data.nlmScenarioBreakdown = scenarioCounts;
-
-  data.lastUpdated = new Date().toISOString();
-
-  safeWriteJsonAtomic(TELEMETRY_FILE, data);
-  return entry;
+  return _persistTelemetryUpdate(data => {
+    data.notebookConsultations.unshift(entry);
+    data.totalNlmQueries = (data.totalNlmQueries || 0) + 1;
+    const consultations = data.notebookConsultations;
+    const validDurations = consultations.filter(c => typeof c.durationMs === 'number' && c.durationMs > 0);
+    data.avgNlmResponseTimeMs = validDurations.length > 0
+      ? Math.round(validDurations.reduce((acc, c) => acc + c.durationMs, 0) / validDurations.length)
+      : null;
+    const validScores = consultations.filter(c => typeof c.agreementScore === 'number');
+    data.nlmAgreementIndex = validScores.length > 0
+      ? Math.round((validScores.reduce((acc, c) => acc + c.agreementScore, 0) / validScores.length) * 100)
+      : null;
+    const withCitations = consultations.filter(c => Array.isArray(c.citations) && c.citations.length > 0);
+    data.nlmCitationMatchRate = consultations.length > 0
+      ? Math.round((withCitations.length / consultations.length) * 100)
+      : null;
+    const scenarioCounts = {};
+    for (const c of consultations) {
+      const s = c.scenario || 'GENERAL_QUICKSPECS';
+      scenarioCounts[s] = (scenarioCounts[s] || 0) + 1;
+    }
+    data.nlmScenarioBreakdown = scenarioCounts;
+    return entry;
+  }, options);
 }
 
-/**
- * Record a 5-Stage Cleansing Subflow preflight in telemetry.
- * @param {object} preflightPipeline
- * @param {string} boqFile
- */
-function recordCleansingPreflightTelemetry(preflightPipeline, boqFile = '') {
-  const telemetryDir = path.dirname(TELEMETRY_FILE);
-  if (!fs.existsSync(telemetryDir)) {
-    fs.mkdirSync(telemetryDir, { recursive: true });
-  }
-
-  const data = loadTelemetry();
-  if (!data.cleansingAuditLogs) data.cleansingAuditLogs = [];
-
+function recordCleansingPreflightTelemetry(preflightPipeline = {}, boqFile = '', options = {}) {
   const entry = {
     id: `PREFLIGHT-${Date.now()}`,
     timestamp: new Date().toISOString(),
-    boqFile: path.basename(boqFile),
-    hasNonIntegerFraction: preflightPipeline?.hasNonInteger || false,
-    baseChassisQty: preflightPipeline?.baseChassisQty || 1,
-    baseChassisSku: preflightPipeline?.baseChassisSku || 'CTO Base Chassis',
+    boqFile: boqFile ? path.basename(String(boqFile)) : null,
+    hasNonIntegerFraction: Boolean(preflightPipeline?.hasNonInteger),
+    baseChassisQty: preflightPipeline?.baseChassisQty ?? null,
+    baseChassisSku: preflightPipeline?.baseChassisSku || 'UNSPECIFIED_CHASSIS',
     stagesCleared: (preflightPipeline?.stages || []).filter(s => s.passed).length,
-    totalStages: preflightPipeline?.stages?.length || 5,
+    totalStages: preflightPipeline?.stages?.length ?? null,
     anomaliesCount: preflightPipeline?.totalAnomaliesCount || 0,
     status: preflightPipeline?.hasNonInteger ? 'FRACTIONAL_ANOMALY_FLAGGED' : 'CLEANSED_CLEARED'
   };
-
-  data.cleansingAuditLogs.unshift(entry);
-  if (data.cleansingAuditLogs.length > 50) data.cleansingAuditLogs.pop();
-
-  data.lastUpdated = new Date().toISOString();
-  safeWriteJsonAtomic(TELEMETRY_FILE, data);
-  return entry;
+  return _persistTelemetryUpdate(data => {
+    data.cleansingAuditLogs.unshift(entry);
+    return entry;
+  }, options);
 }
 
-/**
- * Record Gemini Multimodal OCR vision extraction telemetry.
- * @param {object} ocrMeta
- */
-function recordOcrTelemetry(ocrMeta) {
-  const telemetryDir = path.dirname(TELEMETRY_FILE);
-  if (!fs.existsSync(telemetryDir)) {
-    fs.mkdirSync(telemetryDir, { recursive: true });
-  }
-
-  const data = loadTelemetry();
-  if (!data.ocrAuditLogs) data.ocrAuditLogs = [];
-
+function recordOcrTelemetry(ocrMeta = {}, options = {}) {
   const entry = {
     id: `OCR-${Date.now()}`,
     timestamp: new Date().toISOString(),
-    fileName: ocrMeta.fileName || 'image_quote.png',
-    fileSizeBytes: ocrMeta.fileSizeBytes || 0,
-    charLength: ocrMeta.charLength || 0,
-    extractedSkusCount: ocrMeta.extractedSkusCount || 0,
-    modelUsed: ocrMeta.modelUsed || process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash',
-    durationMs: ocrMeta.durationMs || 0
+    fileName: ocrMeta.fileName || null,
+    fileSizeBytes: _finiteNonNegativeOrNull(ocrMeta.fileSizeBytes),
+    charLength: _finiteNonNegativeOrNull(ocrMeta.charLength),
+    extractedSkusCount: _finiteNonNegativeOrNull(ocrMeta.extractedSkusCount),
+    modelUsed: ocrMeta.modelUsed || process.env.GEMINI_MODEL_NAME || null,
+    durationMs: _finiteNonNegativeOrNull(ocrMeta.durationMs)
   };
-
-  data.ocrAuditLogs.unshift(entry);
-  if (data.ocrAuditLogs.length > 50) data.ocrAuditLogs.pop();
-
-  data.lastUpdated = new Date().toISOString();
-  safeWriteJsonAtomic(TELEMETRY_FILE, data);
-  return entry;
+  return _persistTelemetryUpdate(data => {
+    data.ocrAuditLogs.unshift(entry);
+    return entry;
+  }, options);
 }
 
-function recordExportTelemetry(exportData) {
-  const telemetryDir = path.dirname(TELEMETRY_FILE);
-  if (!fs.existsSync(telemetryDir)) {
-    fs.mkdirSync(telemetryDir, { recursive: true });
-  }
-  const data = loadTelemetry();
-  if (!data.exportHistory) data.exportHistory = [];
-  
+function recordExportTelemetry(exportData = {}, options = {}) {
   const entry = {
     id: exportData.id || `EXP-${Date.now()}`,
     timestamp: exportData.exportedAt || new Date().toISOString(),
@@ -461,149 +487,132 @@ function recordExportTelemetry(exportData) {
     chassisId: exportData.chassisId,
     rank: exportData.rank,
     solutionName: exportData.solutionName,
-    estimatedCostUsd: exportData.estimatedCostUsd
+    estimatedCostUsd: exportData.estimatedCostUsd ?? null
   };
-  
-  data.totalExports = (data.totalExports || 0) + 1;
-  data.exportHistory.unshift(entry);
-  if (data.exportHistory.length > 100) data.exportHistory.pop();
-  
-  data.lastUpdated = new Date().toISOString();
-  safeWriteJsonAtomic(TELEMETRY_FILE, data);
-  return entry;
+  return _persistTelemetryUpdate(data => {
+    data.totalExports = (data.totalExports || 0) + 1;
+    data.exportHistory.unshift(entry);
+    return entry;
+  }, options);
 }
 
-/**
- * Record a Partner Portal BOM Reconciliation & Cross-Verification event in telemetry.
- * @param {object} auditReport
- */
-function recordReconciliationTelemetry(auditReport) {
-  const telemetryDir = path.dirname(TELEMETRY_FILE);
-  if (!fs.existsSync(telemetryDir)) {
-    fs.mkdirSync(telemetryDir, { recursive: true });
-  }
-  const data = loadTelemetry();
-  if (!data.reconciliationHistory) data.reconciliationHistory = [];
-
+function recordReconciliationTelemetry(auditReport = {}, options = {}) {
   const entry = {
     id: `RECON-${Date.now()}`,
     timestamp: auditReport.verificationTimestamp || new Date().toISOString(),
-    chassisModel: auditReport.chassisModel || 'Unknown_Chassis',
-    proposedRank: auditReport.proposedRank || 1,
+    chassisModel: auditReport.chassisModel || 'UNSPECIFIED_PLATFORM',
+    proposedRank: auditReport.proposedRank ?? null,
     totalVendorSkus: auditReport.totalVendorSkus || 0,
     totalProposedSkus: auditReport.totalProposedSkus || 0,
-    is100PercentMatch: auditReport.is100PercentMatch || false,
-    requiresFreshScrape: auditReport.requiresFreshScrape || false,
+    is100PercentMatch: Boolean(auditReport.is100PercentMatch),
+    requiresFreshScrape: Boolean(auditReport.requiresFreshScrape),
     addedCount: auditReport.discrepancies?.addedByVendor?.length || 0,
     removedCount: auditReport.discrepancies?.removedByVendor?.length || 0,
     priceDeltaCount: auditReport.discrepancies?.priceDeltas?.length || 0,
     uncatalogedCount: auditReport.discrepancies?.uncatalogedSkus?.length || 0
   };
-
-  data.totalReconciliations = (data.totalReconciliations || 0) + 1;
-  data.reconciliationHistory.unshift(entry);
-  if (data.reconciliationHistory.length > 100) data.reconciliationHistory.pop();
-
-  data.lastUpdated = new Date().toISOString();
-  safeWriteJsonAtomic(TELEMETRY_FILE, data);
-  return entry;
+  return _persistTelemetryUpdate(data => {
+    data.totalReconciliations = (data.totalReconciliations || 0) + 1;
+    data.reconciliationHistory.unshift(entry);
+    return entry;
+  }, options);
 }
 
-/**
- * Record an Agentic Guardrail execution in telemetry.
- * @param {object} guardrailResult - { turns, executedToolCalls, durationMs, success, error }
- * @param {string} chassisId - Target chassis identifier
- * @param {number} preConfidence - Confidence score before guardrail ran
- * @param {number} postConfidence - Confidence score after guardrail completed
- */
-function recordGuardrailTelemetry(guardrailResult, chassisId = 'Unknown_Chassis', preConfidence = 0, postConfidence = 0) {
-  const telemetryDir = path.dirname(TELEMETRY_FILE);
-  if (!fs.existsSync(telemetryDir)) {
-    fs.mkdirSync(telemetryDir, { recursive: true });
-  }
-
-  const data = loadTelemetry();
-  if (!data.guardrailHistory) data.guardrailHistory = [];
-
+function recordGuardrailTelemetry(guardrailResult = {}, chassisId = 'UNSPECIFIED_PLATFORM', preConfidence = null, postConfidence = null, options = {}) {
   const toolCalls = guardrailResult.executedToolCalls || [];
   const toolCallCounts = {};
-  toolCalls.forEach(t => {
-    toolCallCounts[t] = (toolCallCounts[t] || 0) + 1;
-  });
+  for (const t of toolCalls) toolCallCounts[t] = (toolCallCounts[t] || 0) + 1;
+  const pre = _finiteScoreOrNull(preConfidence);
+  const post = _finiteScoreOrNull(postConfidence);
 
   const entry = {
     id: `GUARD-${Date.now()}`,
     timestamp: new Date().toISOString(),
     chassisId,
-    success: guardrailResult.success || false,
+    success: Boolean(guardrailResult.success),
     error: guardrailResult.error || null,
-    turns: guardrailResult.turns || 0,
+    turns: guardrailResult.turns ?? null,
     totalToolCalls: toolCalls.length,
     toolCallBreakdown: toolCallCounts,
-    durationMs: guardrailResult.durationMs || 0,
-    preConfidence,
-    postConfidence,
-    confidenceLift: parseFloat((postConfidence - preConfidence).toFixed(2)),
-    knowledgeDeltasRecorded: toolCallCounts['record_knowledge_delta'] || 0,
-    simulateBuildsRun: toolCallCounts['simulate_build'] || 0,
-    ragQueriesRun: (toolCallCounts['query_notebooklm'] || 0) + (toolCallCounts['query_catalog_db'] || 0)
+    durationMs: _finiteNonNegativeOrNull(guardrailResult.durationMs),
+    preConfidence: pre,
+    postConfidence: post,
+    confidenceLift: (pre !== null && post !== null) ? parseFloat((post - pre).toFixed(2)) : null,
+    knowledgeDeltasRecorded: toolCallCounts.record_knowledge_delta || 0,
+    simulateBuildsRun: toolCallCounts.simulate_build || 0,
+    ragQueriesRun: (toolCallCounts.query_notebooklm || 0) + (toolCallCounts.query_catalog_db || 0)
   };
-
-  data.guardrailHistory.unshift(entry);
-  if (data.guardrailHistory.length > 50) data.guardrailHistory.pop();
-
-  // Aggregate guardrail metrics
-  data.totalGuardrailRuns = (data.totalGuardrailRuns || 0) + 1;
-  const validDurations = data.guardrailHistory.filter(h => typeof h.durationMs === 'number' && h.durationMs > 0);
-  data.avgGuardrailDurationMs = validDurations.length > 0
-    ? Math.round(validDurations.reduce((acc, h) => acc + h.durationMs, 0) / validDurations.length)
-    : 0;
-  const validTurns = data.guardrailHistory.filter(h => typeof h.turns === 'number');
-  data.avgGuardrailTurns = validTurns.length > 0
-    ? parseFloat((validTurns.reduce((acc, h) => acc + h.turns, 0) / validTurns.length).toFixed(1))
-    : 0;
-  const successRuns = data.guardrailHistory.filter(h => h.success).length;
-  data.guardrailSuccessRate = data.guardrailHistory.length > 0
-    ? parseFloat(((successRuns / data.guardrailHistory.length) * 100).toFixed(1))
-    : 100;
-
-  data.lastUpdated = new Date().toISOString();
-  safeWriteJsonAtomic(TELEMETRY_FILE, data);
-  return entry;
+  return _persistTelemetryUpdate(data => {
+    data.guardrailHistory.unshift(entry);
+    data.totalGuardrailRuns = (data.totalGuardrailRuns || 0) + 1;
+    const validDurations = data.guardrailHistory.filter(h => typeof h.durationMs === 'number' && h.durationMs > 0);
+    data.avgGuardrailDurationMs = validDurations.length > 0
+      ? Math.round(validDurations.reduce((acc, h) => acc + h.durationMs, 0) / validDurations.length)
+      : null;
+    const validTurns = data.guardrailHistory.filter(h => typeof h.turns === 'number');
+    data.avgGuardrailTurns = validTurns.length > 0
+      ? parseFloat((validTurns.reduce((acc, h) => acc + h.turns, 0) / validTurns.length).toFixed(1))
+      : null;
+    const successRuns = data.guardrailHistory.filter(h => h.success).length;
+    data.guardrailSuccessRate = data.guardrailHistory.length > 0
+      ? parseFloat(((successRuns / data.guardrailHistory.length) * 100).toFixed(1))
+      : null;
+    return entry;
+  }, options);
 }
 
-// CP6 opt-in measurement contracts; the legacy persistence/metric paths are unchanged.
 function normalizeTelemetryMeasurement(input) {
   return require('./telemetry_measurement.js').normalizeTelemetryMeasurement(input);
 }
+
 function migrateLegacyTelemetry(legacy, options) {
   return require('./telemetry_legacy_migration.js').migrateLegacyTelemetry(legacy, options);
 }
+
 function summarizeTelemetryPopulation(entries, selection) {
   return require('./telemetry_populations.js').summarizeTelemetryPopulation(entries, selection);
 }
 
-function recordSelfHealingEvent(eventType, details = {}) {
-  const telemetryDir = path.dirname(TELEMETRY_FILE);
-  if (!fs.existsSync(telemetryDir)) {
-    fs.mkdirSync(telemetryDir, { recursive: true });
-  }
-  const data = loadTelemetry();
-  if (!Array.isArray(data.selfHealingEvents)) data.selfHealingEvents = [];
+function recordSelfHealingEvent(eventType, details = {}, options = {}) {
   const entry = {
     timestamp: new Date().toISOString(),
     traceId: getTraceId(),
     eventType: String(eventType || 'UNKNOWN_SELF_HEAL'),
     ...details
   };
-  data.selfHealingEvents.unshift(entry);
-  if (data.selfHealingEvents.length > MAX_TELEMETRY_ENTRIES.selfHealingEvents) {
-    data.selfHealingEvents.pop();
-  }
-  data.totalSelfHealingEvents = (data.totalSelfHealingEvents || 0) + 1;
-  data.lastUpdated = new Date().toISOString();
-  safeWriteJsonAtomic(TELEMETRY_FILE, data);
-  return entry;
+  return _persistTelemetryUpdate(data => {
+    data.selfHealingEvents.unshift(entry);
+    data.totalSelfHealingEvents = (data.totalSelfHealingEvents || 0) + 1;
+    return entry;
+  }, options);
+}
+
+function getTelemetrySummary(options = {}) {
+  const data = _normalizeLoadedStore(loadTelemetry(options));
+  _updateRollingStatistics(data);
+  return {
+    version: data.version || '2.0.0',
+    lastUpdated: data.lastUpdated || null,
+    evaluationsCount: data.evaluationsCount || 0,
+    totalRoutedQueries: data.totalRoutedQueries || 0,
+    avgConfidenceScore: data.avgConfidenceScore ?? null,
+    evalAccuracyScore: data.evalAccuracyScore ?? null,
+    ragFallbackRatio: data.ragFallbackRatio ?? null,
+    cloudGroundingRatio: data.cloudGroundingRatio ?? null,
+    p50DurationMs: data.p50DurationMs ?? null,
+    p95DurationMs: data.p95DurationMs ?? null,
+    totalExports: data.totalExports || 0,
+    totalDeltasLearned: data.totalDeltasLearned || 0,
+    totalNlmQueries: data.totalNlmQueries || 0,
+    avgNlmResponseTimeMs: data.avgNlmResponseTimeMs ?? null,
+    nlmAgreementIndex: data.nlmAgreementIndex ?? null,
+    nlmCitationMatchRate: data.nlmCitationMatchRate ?? null,
+    totalGuardrailRuns: data.totalGuardrailRuns || 0,
+    avgGuardrailDurationMs: data.avgGuardrailDurationMs ?? null,
+    avgGuardrailTurns: data.avgGuardrailTurns ?? null,
+    guardrailSuccessRate: data.guardrailSuccessRate ?? null,
+    learningEffectiveness: data.learningEffectiveness
+  };
 }
 
 module.exports = {
@@ -621,5 +630,8 @@ module.exports = {
   recordExportTelemetry,
   recordReconciliationTelemetry,
   recordGuardrailTelemetry,
-  recordSelfHealingEvent
+  recordSelfHealingEvent,
+  recordRoutedQueryTelemetry,
+  getTelemetrySummary,
+  CANONICAL_EXECUTION_PHASES
 };

@@ -1,249 +1,92 @@
 # AGENTS.md — Master Operating Charter & Dynamic Skill Router
 
-## Current Presales Evidence, Solution Intelligence & OCA Session Contracts (2026-11-19)
-
-**Current review state & findings:** Refer to [`docs/audits/2026-11-19-solution-intelligence-certification-report.md`](file:///docs/audits/2026-11-19-solution-intelligence-certification-report.md), [`docs/audits/2026-11-19-solution-intelligence-end-to-end-implementation-plan.md`](file:///docs/audits/2026-11-19-solution-intelligence-end-to-end-implementation-plan.md), [`docs/audits/2026-11-19-si00-baseline-and-ownership-register.md`](file:///docs/audits/2026-11-19-si00-baseline-and-ownership-register.md), [`docs/audits/2026-11-11-dashboard-gap-closure-and-e2e-certification.md`](file:///docs/audits/2026-11-11-dashboard-gap-closure-and-e2e-certification.md), [`docs/audits/2026-11-11-dashboard-release-gap-plan.md`](file:///docs/audits/2026-11-11-dashboard-release-gap-plan.md), [`docs/audits/2026-11-11-dashboard-usability-and-workflow-plan.md`](file:///docs/audits/2026-11-11-dashboard-usability-and-workflow-plan.md), [`docs/audits/2026-11-10-dashboard-gap-audit-and-fix-plan.md`](file:///docs/audits/2026-11-10-dashboard-gap-audit-and-fix-plan.md), [`docs/audits/2026-11-09-remaining-correctness-fixes.md`](file:///docs/audits/2026-11-09-remaining-correctness-fixes.md), [`docs/audits/2026-11-08-solution-reasoning-and-self-correction-gap-review.md`](file:///docs/audits/2026-11-08-solution-reasoning-and-self-correction-gap-review.md), [`docs/audits/2026-11-07-cross-gen-isolation-rag-extractor-hardening-and-universal-cc30-audit.md`](file:///docs/audits/2026-11-07-cross-gen-isolation-rag-extractor-hardening-and-universal-cc30-audit.md), [`docs/audits/2026-11-06-cyclomatic-complexity-30-and-full-portfolio-audit.md`](file:///docs/audits/2026-11-06-cyclomatic-complexity-30-and-full-portfolio-audit.md), [`docs/audits/2026-11-04-auth-probe-safety-fixes.md`](file:///docs/audits/2026-11-04-auth-probe-safety-fixes.md), [`docs/audits/2026-11-04-dl380a-gen12-raid1-storage-and-presales-turnkey-closure.md`](file:///docs/audits/2026-11-04-dl380a-gen12-raid1-storage-and-presales-turnkey-closure.md), [`docs/audits/2026-11-03-nlm-interactive-auth-and-openclaw-cdp-closure.md`](file:///docs/audits/2026-11-03-nlm-interactive-auth-and-openclaw-cdp-closure.md), [`docs/audits/2026-11-02-multi-product-knowledge-sync-and-learning-closure.md`](file:///docs/audits/2026-11-02-multi-product-knowledge-sync-and-learning-closure.md), [`docs/audits/2026-10-28-teamwork-preview-and-gap-closure-certification.md`](file:///docs/audits/2026-10-28-teamwork-preview-and-gap-closure-certification.md), [`docs/audits/2026-10-24-intelligence-and-verifiability-closure.md`](file:///docs/audits/2026-10-24-intelligence-and-verifiability-closure.md), [`docs/audits/2026-10-22-deep-code-and-architecture-remediation.md`](file:///docs/audits/2026-10-22-deep-code-and-architecture-remediation.md), [`docs/audits/2026-10-20-sku-lifecycle-and-presales-clearance-strategy.md`](file:///docs/audits/2026-10-20-sku-lifecycle-and-presales-clearance-strategy.md), [`docs/audits/2026-10-20-antigravity-followup-review.md`](file:///docs/audits/2026-10-20-antigravity-followup-review.md), and [`docs/audits/2026-10-19-antigravity-review-and-execution-handoff.md`](file:///docs/audits/2026-10-19-antigravity-review-and-execution-handoff.md). Findings F15–F22, INT-1, ADD-1–ADD-5, FP-1–FP-4, JP-1, F-DOM1–F-DOM2, F-VEND1–F-VEND2, F-REAS1, F-NLM1–F-NLM2, F-CONS1 (INV-192), F-RANK1 (INV-193), F-GATE1 (INV-194), INV-195–INV-243, and End-to-End Solution Intelligence `SI-00`–`SI-10` (`INV-244`–`INV-252`) are implemented and offline-verified: honest zero-denominator benchmark & narrative metrics (`SI-01`), typed lossless requirement accounting (`SI-02`, `INV-244`), mechanical claim/evidence adjudication & independent lanes (`SI-03`, `INV-245`), typed constraints & ablation-verified infeasibility diagnosis (`SI-04`, `INV-246`), rollback-safe repair transactions & once-only compound workflow execution (`SI-05`, `INV-247`), workload demand provenance & nullable Pareto ranking (`SI-06`, `INV-248`), unified `SolutionIntelligenceEnvelope` projection & `B22`–`B24` gates (`SI-07`, `INV-249`), `EvidenceDependency` DAG invalidation & consumed learning segregation (`SI-08`, `INV-250`), 39-skill registry conformance (`SI-09`, `INV-251`), and 24-family / 48-case `dev` + `held_out` quality evaluation (`SI-10`, `INV-252`). Live OCA portal acceptance and live NotebookLM/cloud publication remain separate (`PORTAL VALIDATION PENDING` without current Tier 3 receipt).
-
-Before declaring OCA unavailable or changing session navigation, read `docs/audits/2026-10-19-oca-session-startup-remediation.md` and the `oca-portal-navigator` skill. Run `npm.cmd run oca:session -- "DL380 Gen12"` with the exact requested product; use `--recover` only for deliberate fresh recovery. CDP availability does not establish HPE authentication. A connected browser may be a NotebookLM profile. Preserve unrelated tabs, verify actual credential fields, and launch OCA through Partner Portal. The ordinary **OEM Software** category must never cause a commercial base configuration to be rejected. Retain sanitized session receipts under `outputs/history/oca_sessions/`; navigation readiness does not establish CLIC acceptance or cloud synchronization.
-
-### Catalog evidence and reuse (2026-11-21)
-
-Before changing catalog queries, capture promotion, learned rules, or BOQ export, follow [Catalog evidence, replay, and learning](docs/CATALOG_EVIDENCE_AND_LEARNING.md). Verify each affected workflow with a negative control. Use separate evidence for local capture, cloud readback, and CLIC acceptance.
-- **Flagship HPE Alletra Storage MP Dual-Source Architecture & Switchless/Switched Separation (`INV-265`–`INV-268`)**: Dedicated flagship catalogs `Alletra_MP_B10000` (`outputs/Alletra/Storage/Alletra_MP_B10000/`, 302 SKUs: 202 HW + 100 Services + 162 Ninja Online sizing SKUs + QuickSpecs `a50006985enw`) and `Alletra_MP_X10000` (`outputs/Alletra/Storage/Alletra_MP_X10000/`, 82 HW + 3 Services + 45 Ninja Online sizing SKUs + TLC/QLC performance grids) combine live HPE OCA extraction with HPE Ninja Online sizing telemetry (`scripts/scrapers/capture_ninja_online_sizing.js`). Switchless `B10100` (`S0B84A`, up to 24 internal chassis drives, 0–3 JBOFs, max 24/72 drives, no backend switches) and Switched `B10200` (`S1R06A`, 0 internal drives, 1–8 mandatory JBOFs, up to 384 drives, mandatory backend NVMe-oF switches) are mutually exclusive. Core sizing MUST be performed in HPE Ninja Online and exported as OCA JSON; post-import adaptations in HPE OCA cover optical transceivers (SFPs/QSFPs), cabling, Pointnext/Tech Care support services (`Services -> Edit`), and final CLIC validation.
-- **Unified NotebookLM Chrome Profile, WMI Detachment & `chrome-port-map.json` Auto-Refresh (`INV-269`)**: Both `nlm_interactive_auth.js` (port `18801`) and `notebooklm-mcp-cli` / `gemini-notebook-mcp` (`run_headless_auth`) share `~/.notebooklm-mcp-cli/chrome-profiles/<profile>` (`getNlmProfileDir(profile)`), migrated once with `Local State` + `Default/Network/Cookies` from `%LOCALAPPDATA%\NlmInteractiveChrome` via `syncLegacyInteractiveProfile()`. On Windows, `spawnChromeDetached` spawns Chrome via WMI `Win32_Process.Create` (escaping `KILL_ON_JOB_CLOSE`), and `registerPortMapEntry(18801, profile)` writes the listening PID (`netstat.exe -ano -p tcp`) into `~/.notebooklm-mcp-cli/chrome-port-map.json` so `run_headless_auth` refreshes rotating Google cookies (`__Secure-1PSIDRTS`, `SIDCC`, `SNlM0e`) automatically without daily manual healing.
-- **Catalog Perfection, Multi-Product Comparison, Scaling Interpolation, 7 Workloads, Domain Evaluators, Live Drive-Cage/BOM Closure & Epistemic Hardening (`INV-270`–`INV-274`, `2026-11-22`)**: See [`docs/audits/2026-11-22-catalog-perfection-and-intelligence-closure.md`](file:///docs/audits/2026-11-22-catalog-perfection-and-intelligence-closure.md). Fixed `generic_domain_templates.js` (`entry.skus`), hardened `attribute_vectors.js` + `gpu_specs_lookup.js` (0 bogus `socketCount`, QuickSpecs GPU TDP/VRAM, optics reach, MSL3040 Tape & Alletra X10000 taxonomy, Synergy `[OB]` exclusion), added `SOLUTION_COMPARISON` (`solution_comparator.js`, `scaling_interpolator.js`, Ninja Online runtime wiring, `compare_solutions` & `interpolate_scaling` MCP tools), expanded all 7 enterprise workload profiles (`workload_profiles.js`) + production evaluators (`alletra_mp_evaluator.js`, `synergy_composite_evaluator.js`, promoted `MSL3040_Tape`), unlocked `DL380a_Gen12` GPUs (`P75008-B21`), attached all 9 QuickSpecs PDFs & 17/17 `officialSourceIds`, quarantined legacy stubs, integrated Codex's epistemic observation boundaries (`reasoning_post_analyzer.js`, `resource_arbitrator.js`, `route_query.js:evaluateWorkloadBranch` with `cleanBaseSKU`), added live BOM base-price capture (`bom_base_price.js`, `HIGH=0` blindspots across all 19 products) and universal zero-reflow direct-toggle drive-cage probing (`drive_cage_selector_probe.js`), and completed live OCA captures + NotebookLM/Sheets cloud sync for `SN3600B_FC`, `DL360_Gen11`, `DL385_Gen11`, `DL580_Gen12`, and all 17/17 active catalogs (`17/17` staging coverage floors PASS).
-- **Dashboard Hardening, Vite Middleware Realpath/404 Isolation & Live Browser Audit Closure (`INV-275`, `2026-11-22`)**: Aligned `process.cwd()` to `fs.realpathSync(PROJECT_ROOT)` before `createViteServer` in `dashboard/server.cjs`, disabled `server.proxy` inside Vite middleware mode + added explicit `/api` & `/artifacts` JSON 404 guards (eliminating `504 Outdated Optimize Dep` and `ENOBUFS` self-proxy loops), filtered `.promotion.*.previous` dot-directories from catalog discovery (`19` unique active catalogs), cached slow summary/runs/health routes, portaled all modals/drawers to `document.body` (`z-[100]`, `role="dialog"`), wrapped base heading styles in `@layer base`, added XSS-safe `MarkdownText.jsx` + canonical cross-rank SKU grouping/deduplication in `MatrixComparisonTable.jsx`, and verified **9/9** live browser audit areas at `1440×900` & `1024×768` (**0** console/HTTP errors).
-- **Complete Invariant Catalog (INV-1 through INV-275)**: Consult [`docs/INVARIANTS.md`](file:///docs/INVARIANTS.md) for full technical definitions and history.
-
-**Agent Identity:** Lead Solution Execution Architect for the HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.
-**Repository Certified Offline Benchmark (2026-11-19 Solution Intelligence Closure):** Offline deterministic verification covers `SI-00`–`SI-10` across **24 scenario families / 48 cases (`24/24 dev`, `24/24 held_out` PASS, `0` false acceptances, `0` unsupported positive acceptances, `0` repair regressions)**, **103/103** `SI-01`–`SI-10`, workflow contract & active knowledge router tests (`12` suites), **74/74** dashboard Vitest tests (`13` files), clean Vite production build (`2,502` modules), **PASS** offline portfolio Playwright E2E, **0** lint warnings across **747** files (`oxlint`), peak cyclomatic complexity strictly $\le 30$ (`0` breaches across `414` files / `4,400` functions), **0** circular dependencies (`743` files), **0** unexplained orphan library modules (`test:deadcode`, `744` files), **39/39** skills passing, workflow registry `valid: true` (`39` capabilities, `activation: 'UNUSED'`), and **39/39** Graphify skill/code links connected (`15,286` nodes / `29,822` links).
-
-**Validation scope:** Live HPE OCA portal acceptance (`CLIC`), live NotebookLM source synchronization, and cloud publication remain separate qualification stages and are `PORTAL VALIDATION PENDING` unless accompanied by a current Tier 3 receipt. See [`docs/audits/2026-11-19-solution-intelligence-certification-report.md`](file:///docs/audits/2026-11-19-solution-intelligence-certification-report.md).
+**Agent Identity:** Lead Solution Execution Architect — HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.  
+**Active Portfolio & Qualification Scope (`2026-11-24`):** **17 active live-scraped HPE product lines** + **2 quarantined legacy stubs** (`Alletra_Storage_System`, `GX5000_General_RACK`), all `17/17` staging-floor and cloud-sync verified (`CLOUD_VERIFIED`). Offline certification covers `SI-00`–`SI-10` (`INV-244`–`INV-252`), `INV-265`–`INV-280`, **39/39** skills, `CC <= 30` across all production functions, `0` oxlint warnings, and `0` circular dependencies. Per-customer HPE OCA (`CLIC`) portal acceptance remains **`PORTAL VALIDATION PENDING`** until a current manifest-bound Tier 3 receipt is recorded.  
+**Latest Closures:** [`2026-11-24 Intelligence & Hygiene Closure`](file:///docs/audits/2026-11-24-intelligence-elevation-and-hygiene-closure.md) | [`2026-11-22 Catalog & Intelligence Closure`](file:///docs/audits/2026-11-22-catalog-perfection-and-intelligence-closure.md) | [`2026-11-19 Solution Intelligence Report`](file:///docs/audits/2026-11-19-solution-intelligence-certification-report.md) | [`Historical Milestones Index`](file:///docs/audits/HISTORICAL_MILESTONES_INDEX.md).
 
 ---
 
 ## 0. Permanent Universal MCP Auto-Approval & Zero-Waiting Policy (INV-0)
-- **100% Pre-Authorization**: The human developer has granted **FULL, UNCONDITIONAL, AND PERMANENT BLANKET APPROVAL** for EVERY MCP tool call across ALL configured and future servers without exception:
-  - **`jules`**: `create_session`, `send_reply_to_session`, `get_session_state`, `get_bash_outputs`, `list_sessions`, `query_cache`, `get_code_review_context`, `show_code_diff`.
-  - **`gemini-notebook-mcp`**: all 35+ tools (`notebook_query`, `cross_notebook_query`, `notebook_create`, `source_add`, `notebook_list`, etc.).
-  - **`notebooks`**: all 8+ tools (`create_notebook`, `insert_code_cell`, `insert_markdown_cell`, `replace_cell`, etc.).
-  - **`data-agent-kit`**: all tools (`get_active_editor_context`, `get_active_gcp_connection`, `read_resource`, etc.).
-  - **`visualization`**: `render_chart`.
-  - **`graphify`**, CDP browser navigation, knowledge extractor, etc.
-- **Zero Human Waiting**: AI Agents MUST NEVER pause, prompt, ask for human confirmation, or wait for human approvals to execute ANY MCP tool call, plan approval, code review, test run, message dispatch, source addition, or session management action. Execute all operations autonomously and immediately in the background.
+- **100% Blanket Pre-Approval**: Permanent, unconditional authorization is granted for ALL MCP servers and tools (`jules`, `gemini-notebook-mcp`, `notebooks`, `data-agent-kit`, `visualization`, `graphify`, CDP navigation, knowledge extraction).
+- **Zero Human Waiting**: Agents MUST NEVER pause, prompt, or wait for human confirmation before executing MCP calls, background runs, code reviews, or source syncs.
 
 ---
 
-## 1. Mandatory First Step: Dynamic Graph Discovery (Token Optimization)
-- **Query the Graph First:** DO NOT brute-force read large files or run grep/cat loops. Upon entering any session in this repository, use the `graphify` skill (`/graphify query "<question>"`) to dynamically trace code paths, query community boundaries, and locate God nodes.
-- **Keep Graph Current:** If significant uncommitted code changes are made, run `npm run update:graph` to keep the semantic AST graph in sync.
+## 1. Mandatory First Step: Graphify & Indexed Knowledge Lookup (`INV-276`)
+- **Query Graph First**: Start codebase discovery with `graphify query "<question>"` (or inspect `graphify-out/wiki/index.md`) instead of brute-force reads. Run `npm run update:graph` after code edits.
+- **Fast Invariant & Learnings Lookup**: Query `docs/INVARIANTS.md` (`INV-0`–`INV-280`) via `npm run docs:lookup -- INV-<n>` and check [`.agents/ACTIVE_LEARNINGS_DIGEST.md`](file:///.agents/ACTIVE_LEARNINGS_DIGEST.md) + [`.agents/FORENSIC_LEARNINGS.md`](file:///.agents/FORENSIC_LEARNINGS.md) before modifying core subsystems.
 
 ---
 
-## 2. Core Architectural Principles & Golden Directives
-- **Dual-Brain Paradigm**: Local deterministic Rule Engine (7 physical aspect checkers) + Agentic MCP Guardrail (LLM / Grounded NotebookLM). The system MUST operate safely offline and never crash if the cloud is unavailable.
-- **Four-Tier Epistemic Discipline**:
-  - *Tier 0 (Untrusted Claim)*: Raw customer RFPs, quotes, and tenders inherently contain human errors. They are candidate evaluation inputs, never ground truth.
-  - *Tier 1 (Pre-Flight Sanity Check)*: 7 physical aspect checkers enforce mathematical boundaries (TDP, memory channels, PCIe slots, power envelope).
-  - *Tier 2 (Document Citation Check)*: Grounded NotebookLM RAG queries against vendor QuickSpecs PDFs and live 22-sheet catalogs. QuickSpecs provide citations, but do not prove live ordering availability.
-  - *Tier 3 (Official Vendor Acceptance Receipt)*: Live authenticated HPE OCA / CLIC WebLogic configurator response.
-  - **Rule**: Deliverables remain `PORTAL VALIDATION PENDING` until live Tier 3 CLIC verification occurs.
-- **Atomic File Operations**: Always use `safeWriteJsonAtomic` from `scripts/lib/system/fs_compat.js` for writing JSON files to prevent corruption. Windows `EPERM` locks fall back to atomic copy-and-unlink.
-- **Zero-Ad-Hoc Invariant**: Never write one-off throwaway scripts for customer evaluations. Always route through canonical pipelines (`scripts/evaluators/eval_boq.js` or `scripts/evaluators/route_query.js`).
-- **Strict Directory Hierarchy**: Zero loose files at project root or in `scripts/lib/`. All outputs belong inside `outputs/{Family}/{Gen}/{Model}/`.
+## 2. Core Architectural Principles & Epistemic Contracts
+- **Dual-Brain & 4-Tier Epistemic Discipline**:
+  - *Tier 0 (`UNTRUSTED_CLAIM`)*: Raw customer RFPs/quotes/BOQs are candidate inputs, never ground truth (`INV-24`).
+  - *Tier 1 (`PHYSICAL_SANITY`)*: Deterministic aspect/domain checkers (`TDP`, memory, PCIe, power, containment, fabric ports).
+  - *Tier 2 (`DOCUMENT_CITATION`)*: Grounded NotebookLM RAG against official QuickSpecs PDFs + semantic payloads (`LOCAL_RAG` safe offline fallback). Still `PORTAL VALIDATION PENDING`.
+  - *Tier 3 (`OFFICIAL_VENDOR_ACCEPTANCE`)*: Live authenticated HPE OCA / CLIC manifest receipt (`INV-201`).
+- **Two-Tier Data Architecture (`INV-132`–`INV-134`)**: Full Excel `.xlsx`/`.csv`/`Catalog.json` serve humans & Drive; compact `notebook_sync_payload_*.md` serves NotebookLM (`canonicalDriveEnabled: false` for server sheets).
+- **Canonical 9-Phase Reasoning (`INV-278`)**: `eval_boq.js`, `route_query.js`, `evidence_ledger.js`, and `telemetry.js` share `CANONICAL_EXECUTION_PHASES` (`scripts/lib/contracts/workflow_contract.js`) and never fabricate `1.0` defaults or fake stage splits.
+- **Atomic State, Zero-Ad-Hoc & Modular Facades (`INV-72`, `INV-277`)**: Use `safeWriteJsonAtomic`/`withFileLock` (`scripts/lib/system/fs_compat.js`). Never write throwaway BOQ scripts — route via `eval_boq.js` or `route_query.js`. All functions stay `<= 30` CC.
+- **Continuous Learning & Safe Promotion (`INV-279`)**: Non-test runs trigger `runPostExecutionReflection()` (`post_run_reflection.js`), queuing proposals without trusting raw customer inputs (`>= 3` authoritative observations via `npm run learn:promote` before modifying rules/instructions).
 
 ---
 
-## 3. Dynamic Skill Dispatch Matrix (Workflows & Capabilities)
-When a task arrives, dynamically load and read the corresponding `SKILL.md` from [`.agents/skills/`](file:///.agents/skills/):
+## 3. Dynamic Skill Dispatch Matrix (39 Skills)
+Load the corresponding `SKILL.md` from [`.agents/skills/`](file:///.agents/skills/) for specialized tasks:
 
-| Presales / Engineering Intent | Primary Dynamic Skill | Implementation Script / Service |
+| Intent / Capability | Skill | Primary Entrypoint |
 | :--- | :--- | :--- |
-| **Customer BOQ / Hardware BOM Evaluation** | [`boq-eval-skill`](file:///.agents/skills/boq-eval-skill/SKILL.md) | `scripts/evaluators/eval_boq.js` |
-| **Multi-Node Cluster Sizing (42U Rack/Power)** | [`multi-cluster-tender-skill`](file:///.agents/skills/multi-cluster-tender-skill/SKILL.md) | `scripts/lib/boq/multi_cluster_splitter.js` |
-| **Natural Language RFP Sizing (No SKUs)** | [`rfp-sizing-synthesizer`](file:///.agents/skills/rfp-sizing-synthesizer/SKILL.md) | `scripts/evaluators/route_query.js` |
-| **Tender vs. Vendor Quote Reconciliation** | [`bom-reconciliation-skill`](file:///.agents/skills/bom-reconciliation-skill/SKILL.md) | `scripts/evaluators/route_query.js` |
-| **Cross-Vendor Architectural Transpiler** | [`cross-vendor-transformation-skill`](file:///.agents/skills/cross-vendor-transformation-skill/SKILL.md) | `scripts/lib/boq/cross_vendor_transformer.js` |
-| **Scanned PDF / Image Quote Ingestion** | [`ocr-quote-ingestion-skill`](file:///.agents/skills/ocr-quote-ingestion-skill/SKILL.md) | `scripts/lib/ocr/ocr_service.js` |
-| **Least-Delta Alternative Synthesis (Rank 1L)**| [`least-delta-combinator-skill`](file:///.agents/skills/least-delta-combinator-skill/SKILL.md) | `scripts/lib/conflict/conflict_graph.js` |
-| **Pricing Trends & Lifecycle Status (OB/EOL)** | [`catalog-intelligence-skill`](file:///.agents/skills/catalog-intelligence-skill/SKILL.md) | `scripts/lib/catalog/sku_versioning.js` |
-| **Enterprise Workload Matching & DNA** | [`workload-dna-skill`](file:///.agents/skills/workload-dna-skill/SKILL.md) | `scripts/lib/conflict/workload_dna.js` |
-| **Post-Buildability Deal CapEx/OpEx Optimization**| [`value-engineering-skill`](file:///.agents/skills/value-engineering-skill/SKILL.md) | `scripts/lib/boq/budget_optimizer.js` |
-| **Standardized 7-Column Portals & Workbooks** | [`workbook-generator-skill`](file:///.agents/skills/workbook-generator-skill/SKILL.md) | `scripts/lib/boq/generate_boq_xlsx.js` |
-| **Cloud NotebookLM Grounding & Strict SKU Gate**| [`nlm-skill`](file:///.agents/skills/nlm-skill/SKILL.md) | `scripts/lib/sync/nlm_solution_source_validator.js`|
-| **Autonomous Knowledge Sync & Drift Guard** | [`knowledge-sync-skill`](file:///.agents/skills/knowledge-sync-skill/SKILL.md) | `scripts/lib/sync/post_flow_sync.js` |
-| **Live WebLogic OCA Portal Scraping** | [`oca-catalog-scraper`](file:///.agents/skills/oca-catalog-scraper/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` |
-| **Partner Portal SSO & Hands-Free CDP** | [`oca-portal-navigator`](file:///.agents/skills/oca-portal-navigator/SKILL.md) | `scripts/lib/scraper/navigate_oca.js` |
-| **Auditable Trace & 9-Phase Ledger** | [`execution-trace-skill`](file:///.agents/skills/execution-trace-skill/SKILL.md) | `scripts/lib/system/evidence_ledger.js` |
-| **18-Point Pre-Presentation Acceptance Gate** | [`output-validation-skill`](file:///.agents/skills/output-validation-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
-| **Adversarial Chaos & Red-Teaming (10 Modes)** | [`adversarial-validation-skill`](file:///.agents/skills/adversarial-validation-skill/SKILL.md) | `scripts/evaluators/adversarial_agent.js` |
-| **Continuous Learning Reflection & Quarantine** | [`continuous-learning-skill`](file:///.agents/skills/continuous-learning-skill/SKILL.md) | `scripts/lib/feedback/feedback_loop.js` |
-| **Commercial Remarks & Reconciliation Hierarchy** | [`boq-remarks-reconciliation-skill`](file:///.agents/skills/boq-remarks-reconciliation-skill/SKILL.md) | `scripts/lib/boq/commercial_remarks.js` |
-| **Presales Intent Classification & Router** | [`presales-query-router`](file:///.agents/skills/presales-query-router/SKILL.md) | `scripts/evaluators/route_query.js` |
-| **Heterogeneous Multi-Domain Tender Modernization** | [`heterogeneous-tender-modernizer`](file:///.agents/skills/heterogeneous-tender-modernizer/SKILL.md) | `scripts/lib/boq/heterogeneous_tender_modernizer.js` |
-| **Catalog Freshness & Degraded Mode Recovery** | [`degraded-mode-skill`](file:///.agents/skills/degraded-mode-skill/SKILL.md) | `scripts/lib/catalog/product_metadata_manager.js` |
-| **Live CLIC Portal Validation & Receipt Binding** | [`clic-portal-validation-skill`](file:///.agents/skills/clic-portal-validation-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
-| **Scraping-Time Conditional SKU Discovery** | [`conditional-sku-discovery-skill`](file:///.agents/skills/conditional-sku-discovery-skill/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` |
-| **Popperian Falsification & Epistemic Audit** | [`epistemic-verification-skill`](file:///.agents/skills/epistemic-verification-skill/SKILL.md) | `scripts/lib/system/evidence_ledger.js` |
-| **Code Quality Gate & CC <= 30 Ceiling** | [`code-quality-gate-skill`](file:///.agents/skills/code-quality-gate-skill/SKILL.md) | `scripts/maintenance/analyze_complexity.js` |
-| **Self-Correction & Counterfactual Backtracking** | [`self-correction-counterfactual-skill`](file:///.agents/skills/self-correction-counterfactual-skill/SKILL.md) | `scripts/lib/system/evidence_ledger.js` |
-| **Dual-Track 90-Day Clearance vs Production** | [`presales-clearance-strategy-skill`](file:///.agents/skills/presales-clearance-strategy-skill/SKILL.md) | `scripts/lib/catalog/sku_versioning.js` |
-| **Turnkey Racking, Factory RAID & Cabling** | [`turnkey-racking-cabling-skill`](file:///.agents/skills/turnkey-racking-cabling-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
-| **Requirement Clause Accounting & Coverage** | [`requirements-accounting-skill`](file:///.agents/skills/requirements-accounting-skill/SKILL.md) | `scripts/lib/boq/requirements/requirement_records.js` |
-| **Claim Support & Independent Evidence Lanes** | [`claim-evidence-adjudication-skill`](file:///.agents/skills/claim-evidence-adjudication-skill/SKILL.md) | `scripts/lib/boq/evidence/source_adjudicator.js` |
-| **Constraint Diagnosis & Verified Repair Deltas** | [`constraint-diagnosis-skill`](file:///.agents/skills/constraint-diagnosis-skill/SKILL.md) | `scripts/lib/conflict/constraints/conflict_explanations.js` |
-| **Sizing Uncertainty & Pre-Rank Qualification** | [`decision-uncertainty-skill`](file:///.agents/skills/decision-uncertainty-skill/SKILL.md) | `scripts/lib/conflict/sizing/workload_demand.js` |
-| **Engineering Benchmark & Post-Analysis Audit** | [`solution-quality-evaluation-skill`](file:///.agents/skills/solution-quality-evaluation-skill/SKILL.md) | `scripts/lib/system/reasoning_post_analyzer.js` |
-| **Anti-Slop Modern UI / Dashboard Styling** | [`design-taste-frontend`](file:///.agents/skills/design-taste-frontend/SKILL.md) | `dashboard/src/` |
-
-### Asynchronous CI/CD & Macro Lifecycle Protocols (INV-72 Excluded from Customer BOQ Flow)
-| System Architecture Intent | Primary Protocol Skill | Implementation Service |
-| :--- | :--- | :--- |
-| **OpenAI Codex Static Peer Review & Gap Audit** | [`codex-peer-review-skill`](file:///.agents/skills/codex-peer-review-skill/SKILL.md) | `codex review` / `codex exec` |
-| **Google Jules Asynchronous CI/CD & PR Audits** | [`jules-autonomous-protocol`](file:///.agents/skills/jules-autonomous-protocol/SKILL.md) | `scripts/services/jules_task_manager.js` |
-| **Macro 7-Phase Learning Lifecycle & MCP Server** | [`orchestrator-workflow-skill`](file:///.agents/skills/orchestrator-workflow-skill/SKILL.md) | `scripts/services/mcp_server.js` |
+| **Customer BOQ Evaluation** | [`boq-eval-skill`](file:///.agents/skills/boq-eval-skill/SKILL.md) | `scripts/evaluators/eval_boq.js` |
+| **Multi-Cluster Sizing (42U/kW)** | [`multi-cluster-tender-skill`](file:///.agents/skills/multi-cluster-tender-skill/SKILL.md) | `scripts/lib/boq/multi_cluster_splitter.js` |
+| **Natural Language RFP Sizing** | [`rfp-sizing-synthesizer`](file:///.agents/skills/rfp-sizing-synthesizer/SKILL.md) | `scripts/evaluators/route_query.js` |
+| **Tender vs Quote Reconciliation** | [`bom-reconciliation-skill`](file:///.agents/skills/bom-reconciliation-skill/SKILL.md) | `scripts/lib/boq/vendor_bom_verifier.js` |
+| **Commercial Remarks Annotation** | [`boq-remarks-reconciliation-skill`](file:///.agents/skills/boq-remarks-reconciliation-skill/SKILL.md) | `scripts/lib/boq/commercial_remarks.js` |
+| **Cross-Vendor Transpilation** | [`cross-vendor-transformation-skill`](file:///.agents/skills/cross-vendor-transformation-skill/SKILL.md) | `scripts/lib/boq/cross_vendor_transformer.js` |
+| **Mixed-Domain Tender Modernization** | [`heterogeneous-tender-modernizer`](file:///.agents/skills/heterogeneous-tender-modernizer/SKILL.md) | `scripts/lib/boq/heterogeneous_tender_modernizer.js` |
+| **Scanned PDF / Image OCR** | [`ocr-quote-ingestion-skill`](file:///.agents/skills/ocr-quote-ingestion-skill/SKILL.md) | `scripts/lib/ocr/ocr_service.js` |
+| **Least-Delta Pruning (Rank 1L)** | [`least-delta-combinator-skill`](file:///.agents/skills/least-delta-combinator-skill/SKILL.md) | `scripts/lib/conflict/conflict_graph.js` |
+| **Catalog Pricing & Lifecycle** | [`catalog-intelligence-skill`](file:///.agents/skills/catalog-intelligence-skill/SKILL.md) | `scripts/lib/catalog/sku_versioning.js` |
+| **90-Day Clearance Strategy** | [`presales-clearance-strategy-skill`](file:///.agents/skills/presales-clearance-strategy-skill/SKILL.md) | `scripts/lib/catalog/sku_versioning.js` |
+| **Workload DNA & Slot Arbitration** | [`workload-dna-skill`](file:///.agents/skills/workload-dna-skill/SKILL.md) | `scripts/lib/conflict/workload_dna.js` |
+| **Post-Buildability Value Eng.** | [`value-engineering-skill`](file:///.agents/skills/value-engineering-skill/SKILL.md) | `scripts/lib/boq/budget_optimizer.js` |
+| **7-Column Portal & Multi-Rank XLSX** | [`workbook-generator-skill`](file:///.agents/skills/workbook-generator-skill/SKILL.md) | `scripts/lib/boq/generate_boq_xlsx.js` |
+| **NotebookLM Cloud Grounding** | [`nlm-skill`](file:///.agents/skills/nlm-skill/SKILL.md) | `scripts/lib/sync/nlm_solution_source_validator.js` |
+| **Knowledge Sync & Drift Guard** | [`knowledge-sync-skill`](file:///.agents/skills/knowledge-sync-skill/SKILL.md) | `scripts/lib/sync/post_flow_sync.js` |
+| **Live OCA Catalog Scraping** | [`oca-catalog-scraper`](file:///.agents/skills/oca-catalog-scraper/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` |
+| **Partner Portal SSO & CDP** | [`oca-portal-navigator`](file:///.agents/skills/oca-portal-navigator/SKILL.md) | `scripts/lib/scraper/navigate_oca.js` |
+| **9-Phase Evidence Ledger** | [`execution-trace-skill`](file:///.agents/skills/execution-trace-skill/SKILL.md) | `scripts/lib/system/evidence_ledger.js` |
+| **18-Point + B22-B24 Output Gate** | [`output-validation-skill`](file:///.agents/skills/output-validation-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
+| **Adversarial Chaos Red-Teaming** | [`adversarial-validation-skill`](file:///.agents/skills/adversarial-validation-skill/SKILL.md) | `scripts/evaluators/adversarial_agent.js` |
+| **Closed-Loop Learning & Promote** | [`continuous-learning-skill`](file:///.agents/skills/continuous-learning-skill/SKILL.md) | `scripts/lib/feedback/feedback_loop.js` |
+| **Presales Query Intent Router** | [`presales-query-router`](file:///.agents/skills/presales-query-router/SKILL.md) | `scripts/evaluators/route_query.js` |
+| **Degraded Mode & Resync** | [`degraded-mode-skill`](file:///.agents/skills/degraded-mode-skill/SKILL.md) | `scripts/lib/catalog/product_metadata_manager.js` |
+| **Live CLIC Receipt Binding** | [`clic-portal-validation-skill`](file:///.agents/skills/clic-portal-validation-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
+| **Conditional SKU Discovery** | [`conditional-sku-discovery-skill`](file:///.agents/skills/conditional-sku-discovery-skill/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` |
+| **Popperian Epistemic Audit** | [`epistemic-verification-skill`](file:///.agents/skills/epistemic-verification-skill/SKILL.md) | `scripts/lib/system/evidence_ledger.js` |
+| **Code Quality & CC <= 30 Gate** | [`code-quality-gate-skill`](file:///.agents/skills/code-quality-gate-skill/SKILL.md) | `scripts/maintenance/analyze_complexity.js` |
+| **Counterfactual Backtracking** | [`self-correction-counterfactual-skill`](file:///.agents/skills/self-correction-counterfactual-skill/SKILL.md) | `scripts/lib/system/counterfactual_repair.js` |
+| **Turnkey Racking, RAID & Cabling** | [`turnkey-racking-cabling-skill`](file:///.agents/skills/turnkey-racking-cabling-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
+| **Requirement Clause Accounting** | [`requirements-accounting-skill`](file:///.agents/skills/requirements-accounting-skill/SKILL.md) | `scripts/lib/boq/requirements/requirement_records.js` |
+| **Claim & Evidence Adjudication** | [`claim-evidence-adjudication-skill`](file:///.agents/skills/claim-evidence-adjudication-skill/SKILL.md) | `scripts/lib/boq/evidence/source_adjudicator.js` |
+| **Constraint & Ablation Diagnosis** | [`constraint-diagnosis-skill`](file:///.agents/skills/constraint-diagnosis-skill/SKILL.md) | `scripts/lib/conflict/constraints/conflict_explanations.js` |
+| **Sizing Uncertainty & Pareto Rank** | [`decision-uncertainty-skill`](file:///.agents/skills/decision-uncertainty-skill/SKILL.md) | `scripts/lib/conflict/sizing/workload_demand.js` |
+| **Benchmark & Post-Analysis Audit** | [`solution-quality-evaluation-skill`](file:///.agents/skills/solution-quality-evaluation-skill/SKILL.md) | `scripts/lib/system/reasoning_post_analyzer.js` |
+| **Dashboard Anti-Slop UI** | [`design-taste-frontend`](file:///.agents/skills/design-taste-frontend/SKILL.md) | `dashboard/src/` |
+| **Codex Static Review (`INV-72` ex.)** | [`codex-peer-review-skill`](file:///.agents/skills/codex-peer-review-skill/SKILL.md) | `codex review` / `codex exec` |
+| **Jules CI/CD (`INV-72` excluded)** | [`jules-autonomous-protocol`](file:///.agents/skills/jules-autonomous-protocol/SKILL.md) | `scripts/services/jules_task_manager.js` |
+| **Macro Lifecycle & MCP Server** | [`orchestrator-workflow-skill`](file:///.agents/skills/orchestrator-workflow-skill/SKILL.md) | `scripts/services/mcp_server.js` |
 
 ---
 
-## 4. Multi-Agent & Multi-Brain Division of Labor
-- **Antigravity / Gemini 3.8 / 3.6 Flash**: Lead Execution Architect and Pair Programmer. Drives evaluations, manages atomic operations, maintains $CC \le 30$ global ceiling across all functions and 0-warning linter discipline.
-- **Gemini NotebookLM**: Authoritative Ground-Truth Brain. Grounded in official QuickSpecs PDFs and live 22-sheet catalogs.
-- **OpenAI Codex / Claude**: Independent Peer Review & Red-Teaming Safety Layer (`codex-peer-review-skill`). Runs `gpt-6.1-sol` as default for static commit reviews, branch audits, and gap analysis; reserves `gpt-6-astra` for deep architectural proofs under ChatGPT Plus quota.
-- **Google Jules**: Background asynchronous CI/CD, boundary test generation, and pull request audits.
+## 4. Multi-Agent Collaboration & Tool Segregation (`INV-72`)
+- **Customer BOQ Flows (`INV-72`)**: Use ONLY `eval_boq.js`, `route_query.js`, domain evaluators, and `gemini-notebook-mcp`. Never invoke `jules`, `data-agent-kit`, `notebooks`, or `codex` inside live customer flows.
+- **Engineering Peers**: OpenAI Codex (`gpt-6.1-sol` default reviews, `gpt-6-astra` deep proofs; fail-open on 429) and Google Jules (CI/CD PR audits).
 
 ---
 
-## 5. Technical Invariants & Epistemic Rules Reference
-To conserve context tokens, detailed specifications and negative-path implementations are modularized:
-- **Complete Invariant Catalog (INV-1 through INV-264)**: Consult [`docs/INVARIANTS.md`](file:///docs/INVARIANTS.md) for full technical definitions and history.
-- **Deep Cognitive Reasoning & Anti-Pattern Prevention (Anti-Patterns 1 to 22)**: Consult [`.agents/rules/epistemic_truth_and_deep_reasoning.md`](file:///.agents/rules/epistemic_truth_and_deep_reasoning.md).
-- **Consolidated Documentation**:
-  - [`docs/DIRECTORY_STRUCTURE.md`](file:///docs/DIRECTORY_STRUCTURE.md): Canonical repository directory mapping.
-  - [`docs/ARCHITECTURE_AND_DESIGN.md`](file:///docs/ARCHITECTURE_AND_DESIGN.md): Core Dual-Brain architecture and data contracts.
-  - [`docs/WORKFLOWS_AND_LEARNINGS.md`](file:///docs/WORKFLOWS_AND_LEARNINGS.md): E2E pipelines, agentic guardrails, and continuous benchmarking.
-  - [`docs/DEVELOPER_GUIDE.md`](file:///docs/DEVELOPER_GUIDE.md): Local development, testing matrix, and API handling.
-
-## SN3600B workflow continuation and universal support policy (2026-09-22)
-
-For the completed SAN reference workflow, read `docs/audits/2026-09-21-sn3600b-workflow-remediation.md` before changing the configuration. It records the canonical command, exact receipt, fixes and remaining evidence limits. Default all server/storage/networking solutions to product-qualified 3-year Tech Care Basic unless explicitly overridden. Select services independently from Components → owning icon → Services → Edit with both apply-to-all controls off. Never reuse a receipt after changing its manifest or after its freshness window. Use the structured ephemeral NotebookLM validator and native vendor citations; a prose-only model PASS is not grounded verification. Persist new lessons through the continuous-learning API and use the shared scoped registry builder.
-
-
-### Component-domain routing and supported coverage (2026-09-22)
-
-Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md` before onboarding a new product or evaluating mixed domains. Route by owned component role, not family: Synergy compute is server, F32 fabric is networking, and a frame solution is composite. Use exact product catalogs and validate cross-component containment, bays, adapters/fabric, optical endpoints, shared power and per-icon support. Missing profiles stay NOT_EVALUATED; never substitute server checks or certify an entire solution from a successful scrape. Preserve explicit customer requirements in the closest rank; the 3-year Basic default applies only when unspecified or explicitly authorized.
-
-
-For current completion state, pending work and the final check-in record, read `docs/audits/SN3600B_CONTINUATION.md`. The shared Gemini guardrail recovery contract is documented in `GEMINI.md`; model availability, advisory completion, NotebookLM grounding and live vendor acceptance are separate evidence states.
-
-### Conditional SKU Discovery, Domain-Based Testing & Anti-Hallucination Narratives (2026-09-27)
-
-Read `docs/audits/2026-09-27-conditional-sku-and-test-domain-remediation.md` before scraping or modifying evaluation workflows:
-1. **Scraping-Time Conditional Discovery (INV-125)**: Never assume default rendered DOM is exhaustive. Always walk full DOM trees via `extractHiddenElements()` and sweep macro selectors (ambient $\le 27^\circ\text{C}$, 1 vs 2 CPU, backplane, power). Persist trigger gates in `raw_data/conditional_skus.json` and compile into `Catalog_Rules.json` with machine-parseable `thresholdValue`, `conditionOperator`, and `conditionKey`.
-2. **Evaluation Narrative & Anti-Hallucination Audit (INV-126)**: Every customer deliverable must emit the 5-step numbered reasoning narrative (`generateEvaluationNarrative()`). Gated SKUs (e.g. H200 GPU) must be explicitly flagged as `PORTAL_CONDITIONAL` on Rank 1L.
-3. **Domain-Segregated Test Matrix (INV-127)**: Run targeted test domains (`npm run test:smoke`, `npm run test:domain:aspects`, `npm run test:domain:boq`, etc.) to conserve tokens and CPU. Never blindly execute the full matrix for targeted subsystem changes.
-4. **Knowledge Governance & Degraded Mode**: Degraded notebooks (`cloudSyncState: FAILED`) must disclose `DEGRADED_UNGROUNDED` status via `assertNotebookHealth()`; catalogs older than 72 hours trigger `staleCatalogWarning`.
-
-### Core Architecture Hardening, Pre-Presentation Delivery Gate & Non-Empty Matrix (2026-09-30)
-
-Read `docs/audits/2026-09-30-core-and-test-architecture-remediation.md` before modifying core evaluation orchestration or test runner logic:
-1. **Pre-Presentation Cryptographic Delivery Authorization Gate (INV-128)**: Customer deliverables (standardized Excel workbooks, serialized outputs, and Drive sync uploads) require an issued `DeliveryAuthorization` certificate. If pre-presentation acceptance fails, deliverable export is strictly blocked with `customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'`.
-2. **Non-Empty Test Discovery & Silent Pass Prevention (INV-129)**: `run_test_matrix.js` exits with code 1 if suite discovery returns 0 suites unless `--allow-empty` is passed; suites reporting 0 tests under `node:test` are failed as silent passes. E2E live tests require live environments or explicit `ALLOW_E2E_SKIP=true`.
-3. **Factual Grounding of Single-File Quote Audits (INV-130)**: Quotes without a second baseline must be routed as `SINGLE_FILE_AUDIT` (`isTwoBaselineComparison: false`), preserving honest discrepancy metrics without fake missing items.
-4. **Terminal Ledger Status & Corrupted File Quarantine (INV-131)**: Evidence ledger phases never default to `PASSED`. File managers encountering corrupt JSON quarantine the file before re-initializing defaults.
-5. **Certified Matrix Benchmark**: Full isolated test suite count is certified at **249 suites** (179 unit, 41 chaos, 26 integration, 3 E2E).
-
-
-
-### Runtime conditional discovery contract (2026-09-30)
-
-Read [the shared catalog and BOQ runtime procedure](docs/RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.
-
-### Dual-Brain Knowledge Grounding Architecture & Excel vs. Markdown Clarity (2026-10-01)
-
-Read `docs/audits/2026-10-01-vendor-scraping-and-grounding-remediation.md` before modifying the NotebookLM sync pipeline or scraper navigation logic. The following contracts are permanent and resolve past agent/human confusion:
-
-#### INV-132: Two-Tier Data Architecture — Deterministic vs. Semantic
-The scraping pipeline produces two independent, non-competing outputs:
-1. **Deterministic Physical Core** (for humans & presales engineers): Full 26-sheet master Excel `.xlsx`, master flat `.csv`, `Catalog.json`, and `Catalog_Rules.json` — archived locally and synced to Google Drive. This is the authoritative, offline-accessible record used for customer presentations, pivot tables, and financial analysis.
-2. **Semantic AI Grounding Payload** (for LLM/RAG): The curated `notebook_sync_payload_*.md` uploaded to Google NotebookLM. This is structured as semantic markdown tables + architectural rule prose that Gemini can cite word-for-word. Never replace with raw CSV or raw JSON dumps.
-
-**These two tiers serve different audiences. They are both mandatory and complementary. Never treat them as duplicates or choose one over the other.**
-
-#### INV-133: Why Google Sheets Cannot Be a NotebookLM Source
-- Google NotebookLM's `RPC_SYNC_DRIVE` only syncs `application/vnd.google-apps.document` (Google Docs). Attempting to attach or sync Google Sheets (`application/vnd.google-apps.spreadsheet`) causes backend `INVALID_ARGUMENT (code 3)`.
-- Server products (`DL380_Gen12`, `DL380a_Gen12`) MUST have `"canonicalDriveEnabled": false` in `scripts/config/notebooks.json`. This routes knowledge sync through the fingerprint-verified Markdown payload path.
-- Setting `canonicalDriveEnabled: false` does NOT remove the Google Sheet from Drive. The sheet remains fully intact for human use. Only the NLM source attachment uses the `.md` payload route.
-
-#### INV-134: Markdown Payload is NOT Losing Data vs. Excel
-- The `.md` payload sent to NotebookLM is a lossless, structured projection of the catalog optimized for AI semantic retrieval.
-- Flat CSV cannot represent 26 heterogeneous schemas without column collisions (processor cores vs. memory ranks vs. power supply wattage are structurally incompatible in one flat table).
-- Engineering gotchas, conditional rules, and prerequisite chains (e.g. "requires 1x Cable Kit P52410-B21 when installed in Box 1-3, mutually exclusive with OCP NIC slot 1") are embedded as semantic prose that an LLM can cite; raw CSV rows cannot carry this context.
-- Bloat fix (2026-09-30): `nlm_sync_client.js` previously dumped all 26 sheets as stringified raw JSON into the `.md`, inflating it to 10.4 MB and breaching NotebookLM's 500,000-word limit. This was replaced with a high-density inventory table + SHA-256 fingerprint (`~35 KB`).
-
-#### INV-135: Canary Verification Underscore Normalization
-- `isGroundedCanary` in `nlm_sync_client.js` must normalize both `dl380_gen12` (underscore) and `dl380 gen12` (space) forms when verifying grounded LLM responses. Natural language LLM responses use spaces, never underscores. A strict underscore match causes false-negative canary failures.
-
-#### INV-136: Intelligent CTO Selection & Smart CTO Fallback (Case-Sensitive)
-- **Never grep or blindly filter search box input on CTO tokens**. OCA WebLogic search is not full-text; filtering by raw substrings in the search input breaks the chassis selection tree.
-- For HPE: search by model name (e.g. `DL380 Gen12`), then select the rendered CTO variants from the options list. The term `CTO` is case-sensitive and vendor-specific.
-- If standard `CTO` options are not directly visible in the rendered DOM, the agent must select `Smart CTO` from the available category, then disable vendor-applied defaults to expose the full DOM option tree. Only then can hidden conditional SKUs be enumerated.
-- This intelligence lives in `navigate_oca.js:searchAndConfigureChassis()` and must never be simplified to a raw text search.
-- Other vendors may use different terminology for configure-to-order; never assume `CTO` applies cross-vendor.
-
-#### INV-138: Dynamic DOM Attribute Sniffing & Schema Normalization
-- Scrapers and parsers (`dom_extract.js`, `build_catalog.js`) must never hardcode numerical column indices (`cells[3]`).
-- Sniff checkmark icons (`img[src*="check|tick|rec"]`, SVG icons, `:checked` inputs) to populate recommendation flags (`HPE Recommended = 'Yes'`).
-- Normalize multi-generation headers (`Cost (USD)` vs `Price (USD)`, `Lead Time`, `Workload Type`, `Controllers: DA`). Non-canonical columns dynamically populate `vendorAttributes` to maintain zero-loss forward compatibility across vendors.
-
-#### INV-139: Post-Diff Catalog SKU Tally Synchronization
-- When `diffRemovedCatalogEntries` appends tombstone SKUs to `catalogData.entries`, `metadata.totalUniqueSKUs` and `metadata.totalSubcategories` MUST be dynamically re-evaluated before snapshot serialization.
-- `getUniqueSkuCount()` trims and filters non-empty strings, guaranteeing identical counts with `catalog_discovery.js:isCatalogCertified`.
-
-#### INV-140: Unbuildable Candidate BOQ Disposition as `ACTION_REQUIRED`
-- When evaluating unbuildable customer BOQs with physical constraint violations or missing enablement kits, delivery gates intentionally block presentation workbook export (`customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'`).
-- This planned block emits `status: 'ACTION_REQUIRED'` on the evaluation payload, reserving `status: 'ERROR'` strictly for fatal engine crashes.
-- The API router (`evaluation.cjs`) and frontend normalizer (`evalNormalizer.js`) must always broadcast and normalize the evaluation data payload, preserving interactive partner quote reconciliation.
-
-#### Grounded Products Certified as of 2026-10-01
-| Chassis | Notebook ID | Source ID | SKUs | cloudSyncState |
-|---|---|---|---|---|
-| `DL380_Gen12` | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | `20e03410-581e-498a-af46-d1f29c960549` | 26 tabs / 606 HW + 522 Svc | `VERIFIED` |
-| `DL380a_Gen12` | `b233ec88-4682-4164-a801-3ee6ca649dc1` | `aa51f3c8-e350-4b49-8f55-92b86a01d66d` | 27 tabs / 455 HW + 220 Svc | `VERIFIED` |
-
-### Core Architecture, Cryptographic Delivery & Financial Parity Benchmark (2026-10-01)
-
-Read `docs/audits/2026-10-01-post-certification-core-review.md`. Full deterministic test matrix benchmark is certified at **193/193 suites PASSED (100.0%)** (126 unit, 41 chaos, 26 integration) in 409s with 0 lint warnings/errors, clean dashboard build, and $CC \le 135$:
-1. **Financial Parity Distinction vs. Structural Parity (INV-148)**: BOM reconciliation distinguishes structural match from complete pricing. Missing, unquoted, or unconfirmed-zero prices are isolated as `pricingGaps` and never coerced to $0 or catalog list prices.
-2. **Multiplied-Order Receipt Binding & Quantity Scope Isolation (INV-149)**: A single-node portal receipt cannot certify a multiplied multi-node cluster. Candidate order quantities must be computed via canonical multiplier scaling before matching against the receipt manifest. Boolean/array quantities fail closed.
-3. **Multi-Rank Export Transactional Integrity (INV-150)**: Presentation export retries clear previous deliverable pointers; deliverable paths and Google Drive publishing are strictly blocked unless all four presentation artifacts are confirmed non-empty regular files on disk.
-4. **Enriched Presales Router Summaries**: Presales reconciliation routes dynamically enumerate quantity deltas, price deltas, pricing gaps, and uncataloged SKUs in human-facing responses.
-5. **Cross-Process Key Verification**: Validated non-hex custom signing secret propagation across child process boundaries and verified live candidate mutation invalidation before Google Drive publishing.
-
-### Architectural Hardening, Transactional Recovery & Epistemic Parity Benchmark (2026-10-03)
-
-Read `docs/audits/2026-10-03-session-learnings-and-remediation.md` and `docs/audits/2026-10-03-transaction-recovery-fixes.md`. Full deterministic and transaction-recovery test matrix benchmark is certified at **100.0% PASSED** across all domains (Failure Transactions: 24/24 PASS, Core: 18/18 PASS, BOQ: 25/25 PASS, Sync: 22/22 PASS, Catalog: 13/13 PASS, Scraping: 22/22 PASS, Aspects: 16/16 PASS, Guardrail: 18/18 PASS, Conflict: 11/11 PASS) with 0 lint warnings/errors, clean dashboard build, 0 circular dependencies, and $CC \le 130 \le 135$:
-1. **Transactional 4-File Deliverable Export (INV-151)**: Single directory rename commits all four customer presentation deliverables simultaneously; generator errors preserve prior generations intact without mixed-generation files.
-2. **Safe Promotion Recovery & Owner-Aware Leases (INV-152)**: Promotion and recovery validate directory path enclosure, reject path traversal/symlinks, and enforce workflow lease locks (`promotion-${hash}`). Handles crashes occurring before `BASELINE_MOVED` persistence and first-capture rollback cleanly.
-3. **Diagnostic DAG Warning Continuation (INV-153)**: Canonical diagnostic phases configure `allowActionRequired: true`, permitting downstream alternative synthesis on unbuildable BOQs while setting `customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'` without converting warnings to false `PASS`.
-4. **Full Capture Provenance Enforcement (INV-154)**: Capture receipts require explicit observation of base SKU, owner configuration, solution domain, selectors, and restoration. Header-only sheets and service-omitted worksheets fail closed. `skipCoverageValidation` strictly prohibited in production.
-5. **Durable Source Recovery Queue & Active Shielding (INV-155)**: Pre-upload attempt logging under workflow leases, candidate discovery disambiguation, live deletion readback verification, and permanent shielding for protected and pre-existing sources. Corrupt queue files quarantined.
-6. **Pre-Mutation Google Sheet Backup & Formula Rollback (INV-156)**: Per-spreadsheet lock and pre-mutation `includeGridData=true` backup under `outputs/history/drive_backups/` preserving literal values, grid dimensions, and formulas (`userEnteredValue`). Automatic readback rollback restores prior grid and values on mismatch.
-7. **Proactive Headless NLM Auth Pre-Flight & Non-Interactive Recovery (INV-157)**: Pre-flight headless auth verification (`npm run auth:nlm:check` / `nlm login --check`) prevents reactive sync/eval failures at step 10. Non-interactive recovery command `nlm login --force --storage file` overwrites stale tokens and completely bypasses the interactive OS keystore `[y/N]` prompt. Immediate hot-reload via MCP `refresh_auth` re-reads disk tokens into running server memory without process restart.
-
-### Scraping Workflow Hardening, Specialty Chassis & Presentation Delivery Benchmark (2026-10-12)
-
-Read `docs/audits/2026-10-12-scraping-workflow-hardening-remediation.md`. Full scraping domain test matrix benchmark is certified at **24/24 suites certified (100.0%)** (23 unit/chaos/integration suites PASSED, 1 E2E skipped via `ALLOW_E2E_SKIP=true`), with 0 lint warnings/errors, clean dashboard production build, 0 circular dependencies, and $CC \le 130 \le 135$:
-1. **Three-Tier Chassis Domain Categorization (INV-158)**: `catalog_freshness_guard.js` isolates non-server/specialty products (SAN switches, fabrics, tape libraries) from CPU/Memory/Power category requirements, verifies CPU/Memory on Synergy compute blades while delegating power to the enclosure frame, and enforces full server categories on rack chassis.
-2. **Universal Accessory SKU Exemption (INV-159)**: `P36877-B21` (DC lug terminal kit) and vendor-wide accessories are registered in `APPROVED_UNIVERSAL_POLICY_SKUS` in `product_scope.js`, preventing false multi-generation drift quarantines.
-3. **Async Handler Boundary and Sandboxed VM Context Integrity (INV-160)**: VM sandboxes in `test_ingress_cancellation.js` and `test_ingress_cancellation_peer.js` provide `module.exports` and `exports` stubs; handler boundary regex captures `(?:async\s+)?function` without breaking syntax slices.
-4. **Lossless WebLogic Dynamic Expansion & Cost Column Capture (INV-161)**: `cdp.js:expandSections` dynamically sweeps all accordions, discovers all `showmore` inputs, explicitly toggles `show_cost`, and dispatches both native and jQuery `change` events.
-5. **Single-Quote Pre-Flight Audit Delineation (INV-162)**: `VendorMatchTable.jsx` displays `SINGLE_FILE_AUDIT (INV-130)` badges and reports missing/quantity-mismatch counts as `N/A` when evaluating single-quote requests without an opposing customer baseline BOM.
-6. **Dashboard Architectural Narrative & Cryptographic Gate (INV-126 & INV-128)**: Dedicated `EvaluationNarrativeCard.jsx` renders the 5-step numbered reasoning trace; `ResolutionMatrix.jsx` renders cryptographic delivery authorization banners and visualizes `PORTAL_CONDITIONAL` gated options.
-
-### Unified Scraping Pre-Flight/Post-Flight Gate, `OCAInternalLogin` Transport Block & Multi-Vendor Session Policy (2026-10-17)
-
-1. **Transport-Layer `OCAInternalLogin` & In-Place Reload Hard Block (INV-173)**: `https://oca.ext.hpe.com/oca/OCAInternalLogin` is a stateful SAML POST endpoint opened exclusively by clicking `#quick-links-807 a` ("One Config Advanced") from Partner Portal Tab 1 (`https://partner.hpe.com/group/prp`). Because WebLogic OCA is an AJAX SPA, the URL bar remains at `OCAInternalLogin` throughout configuration. `cdp.js:assertSafeCdpNavigationGuard` enforces a deterministic transport-layer block rejecting any `Page.navigate` to `oca.ext.hpe.com`, `OCAInternalLogin`, or `eServiceId=187402`, and rejecting `Page.reload` / `location.reload()` on active OCA tabs.
-2. **Sub-Tab Disambiguation & AJAX Overlay Resilience (INV-174)**: Never confuse an unselected `#extended_overview_menu` sub-tab (when `Services`, `BOM`, or `Summary` was left active) or an in-flight WebLogic AJAX overlay (`.loading_div`) with a session timeout or product mismatch. `navigate_oca.js:checkActiveMenuTab` automatically restores `a[href="#extended_overview_menu"]` and inspects `#extended_overview_menu.textContent` before identity matching; `catalog_tab_capture.js:selectCatalogTab` waits for AJAX spinners to clear and re-clicks the tab if an overlay swallowed the initial click.
-3. **4-Point Pre-Flight Readiness & Post-Flight Delta Verification Gate (INV-175)**: `scraping_preflight_gate.js` executes Step 0 before any DOM scraping begins: (1) Product/Generation/Pillar & `notebooks.json` target resolution across Server, Storage, and Networking, (2) NotebookLM CLI auth check (`45s` Windows cold-start tolerance + auto-heal), (3) Google Drive/Sheets/Docs OAuth scope verification (`autonomous_oauth_flow.js` with automated CDP granular checkbox selection), and (4) Vendor Portal Session Policy (`VENDOR_PORTAL_POLICIES` in `vendor_portal_router.js`). Step 10B verifies post-flight sheet/rule completeness, audits catalog diff deltas (`ADDED`, `MODIFIED`, `REMOVED`), and persists `scraping_verification_receipt.json`.
-4. **High-Density NotebookLM Compression & Transport Failover (INV-176)**: Large catalog notebooks route idempotent read RPCs (`source list`, `source content`, `notebook query`) through Chrome's in-page CDP transport (`nlmReadEnv`) using HTTP/3 QUIC and Brotli compression, cutting 10MB payloads to ~400KB and finishing in <45s. Mutating operations and queries fail over gracefully to `httpx` if CDP port 9223 is unavailable. Recovery queue cleanly transitions zero-candidate notebooks directly to `PURGED`.
-
+## 5. Active Operational & Product Contracts
+- **OCA Session & Tab 1 Recovery (`INV-89`, `INV-173`, `INV-253`, `INV-266`)**: Run `npm.cmd run oca:session -- "<Product>"` (`--recover` only for fresh recovery). Never delete `.chrome_sso_profile`. Never navigate to `OCAInternalLogin` or reload an active OCA tab; recover by closing Tab 2, refreshing Tab 1 (`partner.hpe.com/group/prp`), and re-clicking Quick Links. Standard Commercial CTO ranks ahead of Smart CTO (`_CTOLITE`); OEM Software must not cause false rejection.
+- **Universal Support Policy & Component Domains**: Default unspecified server/storage/networking support to product-qualified 3-year Tech Care Basic (`Services -> Edit`, apply-to-all off); explicit customer SLAs win. Route by owned component role ([`SOLUTION_TOPOLOGY_AND_VALIDATION.md`](file:///docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md)); composite compute+SAN+storage tenders enforce [`composite_solution_validator.js`](file:///scripts/lib/boq/composite_solution_validator.js) (`INV-280`).
+- **Flagship Alletra Storage MP (`INV-265`–`INV-268`)**: Switchless `B10100` (`S0B84A`, <=24 internal drives, 0–3 JBOFs) and Switched `B10200` (`S1R06A`, 0 internal drives, 1–8 JBOFs, mandatory NVMe-oF switches) are mutually exclusive; core sizing runs in Ninja Online (`scripts/scrapers/capture_ninja_online_sizing.js`) -> OCA JSON import for optics/cabling/services/CLIC.
+- **Catalog Reuse, Conditioning & Verification**: Follow [`CATALOG_EVIDENCE_AND_LEARNING.md`](file:///docs/CATALOG_EVIDENCE_AND_LEARNING.md) and [`RUNTIME_CONDITIONAL_DISCOVERY.md`](file:///docs/RUNTIME_CONDITIONAL_DISCOVERY.md). Enforce `DeliveryAuthorization` (`INV-128`), `ACTION_REQUIRED` for unbuildable BOQs (`INV-140`), and run domain-targeted suites (`npm run test:smoke`, `npm run test:domain <name>`) before edits/check-ins.
+- **References**: [`docs/INVARIANTS.md`](file:///docs/INVARIANTS.md) | [`.agents/rules/epistemic_truth_and_deep_reasoning.md`](file:///.agents/rules/epistemic_truth_and_deep_reasoning.md) | [`docs/ARCHITECTURE_AND_DESIGN.md`](file:///docs/ARCHITECTURE_AND_DESIGN.md) | [`docs/DEVELOPER_GUIDE.md`](file:///docs/DEVELOPER_GUIDE.md).

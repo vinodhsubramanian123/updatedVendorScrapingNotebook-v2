@@ -13,6 +13,7 @@ const crypto = require('crypto');
 const { getTraceId } = require('./trace_context.js');
 const { execFileSync } = require('child_process');
 const { safeWriteJsonAtomic, safeWriteTextAtomic } = require('./fs_compat.js');
+const { CANONICAL_EXECUTION_PHASES, getCanonicalPhaseDescriptor } = require('../contracts/workflow_contract.js');
 const logger = require('./pipeline_logger.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
@@ -133,11 +134,12 @@ class EvidenceLedger {
    */
   startPhase(phaseNum, phaseName, inputSummary = {}) {
     if (this.phases[`phase_${phaseNum}`]) throw new Error(`Phase already started: ${phaseNum}`);
+    const resolvedPhaseName = phaseName || getCanonicalPhaseDescriptor(phaseNum)?.name || `Phase ${phaseNum}`;
     this.events.push({ sequence: this.events.length + 1, phaseNum, event: 'STARTED', timestamp: new Date().toISOString() });
     const key = `phase_${phaseNum}`;
     this.phases[key] = {
       phaseNumber: phaseNum,
-      phaseName,
+      phaseName: resolvedPhaseName,
       status: 'RUNNING',
       startedAt: new Date().toISOString(),
       completedAt: null,
@@ -148,7 +150,7 @@ class EvidenceLedger {
       warnings: [],
       errors: []
     };
-    logger.info('EVIDENCE_LEDGER', `[Phase ${phaseNum}: ${phaseName}] STARTED (Trace: ${this.traceId})`);
+    logger.info('EVIDENCE_LEDGER', `[Phase ${phaseNum}: ${resolvedPhaseName}] STARTED (Trace: ${this.traceId})`);
   }
 
   /**
@@ -428,5 +430,6 @@ function createEvidenceLedger(options = {}) {
 module.exports = {
   EvidenceLedger,
   createEvidenceLedger,
-  EVIDENCE_LOGS_DIR
+  EVIDENCE_LOGS_DIR,
+  CANONICAL_EXECUTION_PHASES
 };

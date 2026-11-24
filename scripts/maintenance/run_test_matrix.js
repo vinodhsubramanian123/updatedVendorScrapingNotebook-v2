@@ -327,7 +327,8 @@ const LONG_RUNNING_TEST_PATTERNS = [
   'test_clic_cross_product_validation',
   'test_run_recovery_and_sizing_context',
   'test_skill_workflow_isolation',
-  'test_concurrent_fuzz_memory'
+  'test_concurrent_fuzz_memory',
+  'test_ui_opportunity_boq'
 ];
 
 function getEffectiveTimeoutMs(testFile, timeoutMs) {

@@ -2,6 +2,7 @@
 
 const { getPlatformProfile, GENERIC_DETECTION_PATTERNS } = require('../rules/platform_profiles');
 const { topologyRole } = require('./solution_topology');
+const { validateCompositeSolutionContainment } = require('./composite_solution_validator.js');
 
 function positiveInteger(value, label) {
   const number = typeof value === 'string' && value.trim() ? Number(value) : value;
@@ -359,6 +360,43 @@ function _allocateStoragePools(storage, base, profile, targetPlatformKey, carrie
   }
 }
 
+function _accumulateCarrierEntry(bucket, key, baseMeta, quantity, groupTitle) {
+  const entry = bucket.get(key) || { ...baseMeta, quantity: 0, sources: [] };
+  entry.quantity += quantity;
+  positiveInteger(entry.quantity, baseMeta.totalLabel || 'Component total');
+  entry.sources.push({ groupId: groupTitle, quantity, sku: baseMeta.sku });
+  bucket.set(key, entry);
+}
+
+function _classifyCarrierFleetItem(item, multiplier, groupTitle, pools, flags, unresolvedItems) {
+  const quantity = positiveInteger(item.quantity ?? item.qty, 'Item quantity') * multiplier;
+  positiveInteger(quantity, 'Extended quantity');
+  const description = item.description || item.desc || '';
+  const sku = item.sku || item.pn || '';
+
+  if (GENERIC_DETECTION_PATTERNS.isMemory(description, sku)) {
+    const capacity = Number(item.capacityGb ?? description.match(/(\d+)\s*gb/i)?.[1]);
+    if (Number.isFinite(capacity) && capacity > 0) {
+      _accumulateCarrierEntry(pools.memory, `${sku}|${description}|${capacity}`, { capacity, sku, totalLabel: 'Memory total' }, quantity, groupTitle);
+      return;
+    }
+  }
+  if (flags.allocateStorage && GENERIC_DETECTION_PATTERNS.isDrive(description, sku)) {
+    _accumulateCarrierEntry(pools.storage, `${sku}|${description}`, { description, sku, totalLabel: 'Storage drive total' }, quantity, groupTitle);
+    return;
+  }
+  if (flags.allocatePcie && GENERIC_DETECTION_PATTERNS.isPcieCard(description, sku)) {
+    _accumulateCarrierEntry(pools.pcie, `${sku}|${description}`, { description, sku, totalLabel: 'PCIe card total' }, quantity, groupTitle);
+    return;
+  }
+  unresolvedItems.push({
+    ...structuredClone(item),
+    quantity,
+    sourceGroup: groupTitle,
+    reason: 'Requires product-specific allocation; no automatic PCIe-to-OCP substitution or drive/CPU absorption.'
+  });
+}
+
 function _allocatePciePools(pcie, base, slotsPerServer, carrierPools) {
   for (const entry of pcie.values()) {
     const chassisCount = Math.ceil(entry.quantity / slotsPerServer);
@@ -433,11 +471,13 @@ class HeterogeneousTenderModernizer {
 
   synthesizeCarrierFleet(groups = [], targetPlatformKey = null, options = {}) {
     const sourceGroups = structuredClone(groups);
-    const profile = getPlatformProfile(targetPlatformKey || this.defaultServerPlatform);
+    const platformKey = targetPlatformKey || this.defaultServerPlatform;
+    const profile = getPlatformProfile(platformKey);
     const result = { status: 'NOT_EVALUATED', carrierPools: [], sourceGroups, unresolvedItems: [],
       portalValidationStatus: 'PORTAL VALIDATION PENDING' };
     if (!groups.length) return { ...result, status: 'NOT_APPLICABLE' };
     if (!profile || profile.domain !== 'server') return { ...result, reason: 'SERVER_PLATFORM_PROFILE_REQUIRED', unresolvedItems: sourceGroups };
+
     const maxDimms = profile.memoryArchitecture?.maxDimmsPerChassis;
     const cpus = profile.memoryArchitecture?.minCpuForMaxDimms;
     const base = profile.baseChassis;
@@ -445,66 +485,26 @@ class HeterogeneousTenderModernizer {
       return { ...result, reason: 'MEMORY_CAPACITY_PROFILE_REQUIRED', unresolvedItems: sourceGroups };
     }
 
-    const allocateStorage = Boolean(options.allocateAllCarriers || options.includeStorageCages || options.allocateStorageCarriers);
-    const allocatePcie = Boolean(options.allocateAllCarriers || options.includePcieAdapters || options.allocatePcieCarriers);
-
-    const memory = new Map();
-    const storage = new Map();
-    const pcie = new Map();
+    const flags = {
+      allocateStorage: Boolean(options.allocateAllCarriers || options.includeStorageCages || options.allocateStorageCarriers),
+      allocatePcie: Boolean(options.allocateAllCarriers || options.includePcieAdapters || options.allocatePcieCarriers)
+    };
+    const pools = { memory: new Map(), storage: new Map(), pcie: new Map() };
 
     for (const group of groups) {
       const multiplier = positiveInteger(group.multiplier ?? group.chassisCount ?? 1, 'Group multiplier');
+      const groupTitle = group.groupId || group.title;
       for (const item of group.items || []) {
-        const quantity = positiveInteger(item.quantity ?? item.qty, 'Item quantity') * multiplier;
-        positiveInteger(quantity, 'Extended quantity');
-        const description = item.description || item.desc || '';
-        const sku = item.sku || item.pn || '';
-
-        if (GENERIC_DETECTION_PATTERNS.isMemory(description, sku)) {
-          const capacity = Number(item.capacityGb ?? description.match(/(\d+)\s*gb/i)?.[1]);
-          if (Number.isFinite(capacity) && capacity > 0) {
-            const key = `${sku}|${description}|${capacity}`;
-            const entry = memory.get(key) || { capacity, quantity: 0, sources: [], sku };
-            entry.quantity += quantity;
-            positiveInteger(entry.quantity, 'Memory total');
-            entry.sources.push({ groupId: group.groupId || group.title, quantity, sku });
-            memory.set(key, entry);
-            continue;
-          }
-        }
-
-        if (allocateStorage && GENERIC_DETECTION_PATTERNS.isDrive(description, sku)) {
-          const key = `${sku}|${description}`;
-          const entry = storage.get(key) || { description, quantity: 0, sources: [], sku };
-          entry.quantity += quantity;
-          positiveInteger(entry.quantity, 'Storage drive total');
-          entry.sources.push({ groupId: group.groupId || group.title, quantity, sku });
-          storage.set(key, entry);
-          continue;
-        }
-
-        if (allocatePcie && GENERIC_DETECTION_PATTERNS.isPcieCard(description, sku)) {
-          const key = `${sku}|${description}`;
-          const entry = pcie.get(key) || { description, quantity: 0, sources: [], sku };
-          entry.quantity += quantity;
-          positiveInteger(entry.quantity, 'PCIe card total');
-          entry.sources.push({ groupId: group.groupId || group.title, quantity, sku });
-          pcie.set(key, entry);
-          continue;
-        }
-
-        result.unresolvedItems.push({ ...structuredClone(item), quantity, sourceGroup: group.groupId || group.title,
-          reason: 'Requires product-specific allocation; no automatic PCIe-to-OCP substitution or drive/CPU absorption.' });
+        _classifyCarrierFleetItem(item, multiplier, groupTitle, pools, flags, result.unresolvedItems);
       }
     }
 
-    _allocateMemoryPools(memory, base, maxDimms, cpus, result.carrierPools);
-    if (allocateStorage && storage.size > 0) {
-      _allocateStoragePools(storage, base, profile, targetPlatformKey || this.defaultServerPlatform, result.carrierPools, options);
+    _allocateMemoryPools(pools.memory, base, maxDimms, cpus, result.carrierPools);
+    if (flags.allocateStorage && pools.storage.size > 0) {
+      _allocateStoragePools(pools.storage, base, profile, platformKey, result.carrierPools, options);
     }
-    if (allocatePcie && pcie.size > 0) {
-      const slotsPerServer = profile.slots?.primaryRiserSlots || 3;
-      _allocatePciePools(pcie, base, slotsPerServer, result.carrierPools);
+    if (flags.allocatePcie && pools.pcie.size > 0) {
+      _allocatePciePools(pools.pcie, base, profile.slots?.primaryRiserSlots || 3, result.carrierPools);
     }
 
     this.logEvidence('CARRIER_PLANNING', 'CAPACITY_ESTIMATED', { pools: result.carrierPools.length, unresolved: result.unresolvedItems.length });
@@ -600,10 +600,17 @@ class HeterogeneousTenderModernizer {
       this.logEvidence('CONSERVATION', 'AUDIT_ERROR', { error: err.message });
     }
 
+    const compositeContainment = validateCompositeSolutionContainment({
+      categorizedData,
+      clusters: carrierFleet?.carrierPools,
+      items: productionTables
+    });
+
     return {
       status: 'DRAFT', portalValidationStatus: 'PORTAL VALIDATION PENDING',
       isQuantityConserved: conservationLedger ? conservationLedger.isFullyConserved : true,
       quantityConservationLedger: conservationLedger,
+      compositeContainment,
       internalProductionManifest: structuredClone(categorizedData),
       internalCarrierManifest: structuredClone(carrierFleet),
       clientMatrix: { title: 'Tender Reconciliation Draft', rulesEnforced: ['Source rows retained', 'Positive integer quantities'],

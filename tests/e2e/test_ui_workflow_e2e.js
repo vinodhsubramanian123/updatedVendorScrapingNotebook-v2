@@ -8,6 +8,7 @@
  */
 
 const { chromium } = require('playwright');
+const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 const http = require('http');
@@ -30,14 +31,16 @@ async function runTests() {
   if (!serverAlreadyRunning) {
     console.log(`Starting dashboard server on ${SERVER_URL}...`);
     const serverScript = path.join(__dirname, '../..', 'dashboard', 'server.cjs');
-    serverProc = spawn('node', [serverScript], {
+    const distIndex = path.join(__dirname, '../..', 'dashboard', 'dist', 'index.html');
+    const serverArgs = fs.existsSync(distIndex) ? [serverScript, '--production'] : [serverScript];
+    serverProc = spawn('node', serverArgs, {
       cwd: path.join(__dirname, '../..'),
-      env: { ...process.env, PORT: String(PORT), RAG_TIMEOUT_MS: '5000', OFFLINE_MODE: '1', NODE_ENV: 'test' }
+      env: { ...process.env, PORT: String(PORT), RAG_TIMEOUT_MS: '5000', OFFLINE_MODE: '1', LOCAL_EVAL_ONLY: '1', NODE_ENV: 'test' }
     });
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 40; i++) {
       await new Promise(r => setTimeout(r, 500));
-      if (await isServerRunning(SERVER_URL)) break;
+      if (await isServerRunning(`${SERVER_URL}/api/health`)) break;
     }
   }
 

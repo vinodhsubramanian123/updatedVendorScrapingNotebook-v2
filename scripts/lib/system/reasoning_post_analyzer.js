@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { createEvidenceLedger } = require('./evidence_ledger.js');
+const { getCanonicalPhaseDescriptor } = require('../contracts/workflow_contract.js');
 const logger = require('./pipeline_logger.js');
 const { detectVendor, detectHardwareDomain } = require('../taxonomy/vendor_agnostic_schema.js');
 
@@ -456,8 +457,9 @@ function _recordTerminalReflectionPhase(ledger, {
   const phaseNum = (ledger.phases.phase_8 && !ledger.phases.phase_9) ? 9 : (!ledger.phases.phase_3 ? 3 : null);
   if (!phaseNum) return;
 
+  const canonicalPhase9 = getCanonicalPhaseDescriptor(9)?.name || 'Closed-Loop Reflection & Shared State Export';
   const phaseName = phaseNum === 9
-    ? 'Continuous Learning Reflection & Shared State Export'
+    ? canonicalPhase9
     : 'Reasoning Post-Analysis & Continuous Learning Reflection';
 
   ledger.startPhase(phaseNum, phaseName, {
@@ -711,6 +713,19 @@ function performReasoningPostAnalysis({
     acceptance,
     feedbackResult
   });
+
+  try {
+    const { runPostExecutionReflection } = require('../feedback/post_run_reflection.js');
+    analysis.postRunReflection = runPostExecutionReflection({
+      context,
+      responseData,
+      analysis,
+      traceId: effectiveTraceId,
+      options: context.reflectionOptions || {}
+    });
+  } catch (err) {
+    analysis.postRunReflection = { status: 'REFLECTION_ERROR', error: err.message };
+  }
 
   // Attach analysis transparently to responseData
   if (responseData && typeof responseData === 'object') {

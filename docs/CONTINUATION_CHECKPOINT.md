@@ -1,3 +1,5 @@
+> **Historical Archive Notice (`2026-11-24`):** This September 2026 checkpoint (`CC <= 135`, early Phases 1–9) is preserved strictly for historical provenance and is superseded by [`AGENTS.md`](../AGENTS.md), [`docs/audits/2026-11-19-solution-intelligence-certification-report.md`](audits/2026-11-19-solution-intelligence-certification-report.md), and [`docs/audits/2026-11-22-catalog-perfection-and-intelligence-closure.md`](audits/2026-11-22-catalog-perfection-and-intelligence-closure.md).
+
 > **Session closeout:** [19 September session index](audits/2026-09-19-session-index.md) records saved knowledge, validation evidence, and the three explicitly open post-review quick wins.
 
 > **Current status — 2026-09-19:** Remediation review closed; ready for check-in. Antigravity recorded 172/172 passing suites, and Codex verified 540 current source hashes against three execution manifests with zero mismatches. See [final closure](audits/2026-09-19-final-remediation-closure.md). The earlier testing-pending note below is superseded.
@@ -6,7 +8,7 @@
 
 # Continuation checkpoint — 2026-09-11 (Phases 1–5 Certified)
 
-This is the current engineering status following the completion and verification of Phases 1 through 5 from `GEMINI_REMAINING_WORK_PLAN.md`.
+This is the historical engineering status following the completion and verification of Phases 1 through 5 from [`audits/archive/GEMINI_REMAINING_WORK_PLAN.md`](audits/archive/GEMINI_REMAINING_WORK_PLAN.md).
 
 ## Implemented and Verified Milestones
 

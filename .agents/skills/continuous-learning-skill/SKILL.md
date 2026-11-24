@@ -125,8 +125,10 @@ Both knowledge-sync writers must use buildMasterKnowledgeRegistry so product-sco
 Retain exported evidence beside the product report in its `evidence/` directory; shared history paths may be ignored by Git and must not be the only linked copy. Learn topology coverage gaps and scoped service parent/suffix evidence, not unsupported generic vendor rules.
 
 
-### Multi-Observation Reinforcement Learning (`INV-224`, `INV-225`)
+### Multi-Observation Reinforcement Learning (`INV-224`, `INV-225`, `INV-279`)
 The engine promotes verified cloud-grounded rules and reinforces cited quarantined rules across $\ge 3$ observations, tracked via `telemetry.js:recordSelfHealingEvent`. Read [Normative Language Standard](../../rules/normative_language.md).
+
+Non-test CLI and Dashboard runs invoke [`post_run_reflection.js`](../../../scripts/lib/feedback/post_run_reflection.js) (`runPostExecutionReflection`) inside Phase 9 to inspect deterministic misses, QuickSpecs RAG discrepancies, verified counterfactual wins, and catalog gaps while rejecting untrusted Tier-0 claims (`INV-24`). Proposals are deduplicated atomically under `withFileLock` in `outputs/history/learning/instruction_improvement_queue.json`, reflected in `.agents/ACTIVE_LEARNINGS_DIGEST.md`, and promoted only via [`promote_learned_instructions.js`](../../../scripts/maintenance/promote_learned_instructions.js) (`npm run learn:promote`) with automatic rollback if skill or SI-10 quality gates fail.
 
 Quarantine keeps a raw observation count and an evidence-backed observation count. Replaying a QuickSpecs document, citing another section of that document, or repeating a portal manifest adds to the raw count only. Automatic reinforcement requires three observations with new source identities and a confidence-only quarantine. The activation gate still checks the candidate evidence.
 

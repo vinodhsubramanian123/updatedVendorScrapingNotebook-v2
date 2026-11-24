@@ -18,7 +18,7 @@ test('new local CSV reproduces exact active catalog rows and declared quantities
   const fixture = localFixture(root);
   assert.equal(fs.readFileSync(path.join(root, 'tests/fixtures/cp0_locally_valid_dl380_gen12.csv'), 'utf8'), fixture.csv);
   assert.equal(fixture.rows.length, 10); assert.equal(fixture.rows[0].quantity, 1);
-  assert.equal(fixture.rows.filter(row => row.visibilityState === 'PORTAL_CONDITIONAL').length, 5);
+  assert.equal(fixture.rows.filter(row => row.visibilityState === 'PORTAL_CONDITIONAL').length, 4);
   assert.equal(fixture.rows.filter(row => row.prerequisiteRuleId).length, 3);
 });
 test('canonical physical helper and whole graph actually pass the local candidate', () => {

@@ -172,13 +172,13 @@ async function runE2ETest() {
       await page.waitForTimeout(500);
     }
 
-    // Click "Load BOQ & Evaluate" button to open BoqUploader modal
-    const loadBoqBtn = await page.$('button:has-text("Load BOQ & Evaluate")');
+    // Click BOQ evaluation trigger button to open BoqUploader modal
+    const loadBoqBtn = await page.$('button:has-text("Direct BOQ evaluation"), button:has-text("Load BOQ & Evaluate"), button:has-text("Upload BOQ"), button:has-text("Load / Evaluate BOQ")');
     if (!loadBoqBtn) {
-      throw new Error('Could not find "Load BOQ & Evaluate" button');
+      throw new Error('Could not find BOQ evaluation trigger button ("Direct BOQ evaluation" / "Load BOQ & Evaluate")');
     }
     await loadBoqBtn.click();
-    await page.waitForTimeout(600);
+    await page.waitForSelector('#boq-file-input', { state: 'attached', timeout: 10000 });
 
     // Upload the real Excel BOQ file
     const fileInput = await page.$('#boq-file-input');
@@ -244,7 +244,7 @@ async function runE2ETest() {
           if (isIdle) { console.log(`  Server idle after ${w + 1}s — retrying...`); break; }
         }
         // Re-click the button for next attempt
-        const retryBtn = await page.$('button:has-text("Proceed to Full 6-Aspect Evaluation"), button:has-text("Run 6-Aspect Evaluation")');
+        const retryBtn = await page.$('button:has-text("Proceed to Full 7-Aspect Evaluation"), button:has-text("Proceed to Full 6-Aspect Evaluation"), button:has-text("Run 7-Aspect Evaluation"), button:has-text("Run 6-Aspect Evaluation")');
         if (retryBtn) await retryBtn.click();
         continue;
       }

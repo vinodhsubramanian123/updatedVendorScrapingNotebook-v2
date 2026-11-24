@@ -59,21 +59,21 @@ HALT-ORCH3: If circular execution loop is detected across stage transitions (>3 
 - Dual-tier output: full `.xlsx`/`.csv` for humans on Drive + structured `.md` payload for Gemini semantic reasoning (`INV-132`).
 - Executes via [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md).
 
-### Stage 3: BOQ Ingestion & Conflict Graph Resolution
-- 7 physical aspect checks + 5-tier strategy matrix ranking.
+### Stage 3: BOQ Ingestion & Conflict Graph Resolution (`CANONICAL_EXECUTION_PHASES` 1–6)
+- Executes deterministic 9-phase `LifecycleEngine` / `EvidenceLedger` contract (`scripts/lib/contracts/workflow_contract.js`) covering `1: INGESTION`, `2: FINGERPRINTING`, `3: DOMAIN_ASPECTS`, `4: CONFLICT_GRAPH`, `5: MODERNIZATION_LEAST_DELTA`, and `6: STRATEGY_SYNTHESIS`.
 - Executes via [`boq-eval-skill`](../boq-eval-skill/SKILL.md) and canonical `eval_boq.js`.
 
-### Stage 4: Grounded NotebookLM RAG Validation
-- Authoritative QuickSpecs PDF validation with ephemeral solution sheet pattern (`INV-24`).
+### Stage 4: Grounded NotebookLM RAG Validation (`CANONICAL_EXECUTION_PHASES` 7–8)
+- Authoritative QuickSpecs PDF validation (`7: RAG_GROUNDING`) followed by staged artifact sealing (`8: DELIVERABLES_FINALIZATION`, `INV-24`).
 - Executes via [`nlm-skill`](../nlm-skill/SKILL.md).
 
 ### Stage 5: Live HITL Portal Trial & Acceptance Gate
 - Live authenticated WebLogic verification (`INV-201`, Gate B19).
 - Executes via [`clic-portal-validation-skill`](../clic-portal-validation-skill/SKILL.md).
 
-### Stage 6: Closed-Loop Feedback & Telemetry Learning
-- Persists newly evidenced rules into `catalog_deltas.json` and `master_knowledge_registry.json`.
-- Reinforces cited rules across $\ge 3$ observations (`INV-224`, `INV-225`).
+### Stage 6: Closed-Loop Feedback & Telemetry Learning (`CANONICAL_EXECUTION_PHASES` 9)
+- Executes `9: REFLECTION_LEARNING` via [`post_run_reflection.js`](../../../scripts/lib/feedback/post_run_reflection.js) and [`reasoning_post_analyzer.js`](../../../scripts/lib/system/reasoning_post_analyzer.js), persisting evidence-backed rules into `instruction_improvement_queue.json`, `catalog_deltas.json`, and `master_knowledge_registry.json`.
+- Promotes rules across $\ge 3$ independent authoritative observations (`INV-224`, `INV-225`, `INV-279`) via `npm run learn:promote`.
 - Executes via [`continuous-learning-skill`](../continuous-learning-skill/SKILL.md).
 
 ---

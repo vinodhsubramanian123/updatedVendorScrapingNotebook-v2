@@ -42,7 +42,7 @@ export function humanizeEnum(value, fallback = 'Unknown') {
 }
 
 export function formatDuration(ms) {
-  if (ms === null || ms === undefined || !Number.isFinite(Number(ms))) return '<100ms';
+  if (ms === null || ms === undefined || !Number.isFinite(Number(ms))) return '—';
   const n = Math.max(0, Number(ms));
   if (n < 1000) return `${Math.round(n)}ms`;
   if (n < 60000) return `${(n / 1000).toFixed(1)}s`;

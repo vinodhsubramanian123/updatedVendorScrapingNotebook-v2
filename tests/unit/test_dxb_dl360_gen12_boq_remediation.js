@@ -348,7 +348,7 @@ test('Area A2: probeBackplaneSelectorSkus captures P40497-B21 when hot-plug driv
   ])[0].sku, 'P72223-B21');
   const noopSleep = async () => {};
   let currentQty = '0';
-  let expandCalls = 0;
+  let expandDriveShowmoreCalls = 0;
 
   const makeMockSendCommand = ({ failRestore = false, loseReadback = false, failActivation = false } = {}) => async (_ws, method, params) => {
     assert.strictEqual(method, 'Runtime.evaluate');
@@ -369,6 +369,13 @@ test('Area A2: probeBackplaneSelectorSkus captures P40497-B21 when hot-plug driv
     if (expr.includes('qtyEl.dispatchEvent')) {
       return { result: { value: true } };
     }
+    if (expr.includes('driveShowmore')) {
+      expandDriveShowmoreCalls += 1;
+      return { result: { value: 1 } };
+    }
+    if (expr.includes('#extended_overview_menu')) {
+      return { result: { value: true } };
+    }
     if (expr.includes('ul.popup-menu-body')) {
       if (expr.includes('name=\\"1\\"') && !failActivation) {
         currentQty = '1';
@@ -380,7 +387,7 @@ test('Area A2: probeBackplaneSelectorSkus captures P40497-B21 when hot-plug driv
     if (expr.includes('hotPlugCount:')) {
       return { result: { value: { present: currentQty !== null, qtyText: currentQty, hotPlugCount: currentQty === '1' ? 115 : 0 } } };
     }
-    if (expr.includes('tr.item_tr[id*="HotPlugSFFChoice"], tr.item_tr[id*="HotPlugLFFChoice"], tr.item_tr[id*="EDSFFChoice"]')) {
+    if (expr.includes('HotPlugSFFChoice|HotPlugLFFChoice|EDSFFChoice|SolidStateDrive')) {
       const headers = ['Product #', 'Description', '', 'Price (USD)', '', '', '', 'Est. Lead Time', 'Start', 'Discontinued', 'Obsolete'];
       const rows = currentQty === '1'
         ? [
@@ -410,13 +417,12 @@ test('Area A2: probeBackplaneSelectorSkus captures P40497-B21 when hot-plug driv
   const out = await probeBackplaneSelectorSkus({}, makeMockSendCommand({ failRestore: false }), {
     selectorSkus: ['P72223-B21'],
     baselineSkus: new Set(['BASE01-B21']),
-    expandSections: async () => { expandCalls += 1; },
     sleep: noopSleep
   });
 
   assert.strictEqual(out.skipped, false);
   assert.strictEqual(out.reason, 'BACKPLANE_SELECTOR_PROBED_AND_RESTORED');
-  assert.strictEqual(expandCalls, 1);
+  assert.strictEqual(expandDriveShowmoreCalls, 1);
   assert.strictEqual(currentQty, '0');
   assert.strictEqual(out.conditionalSkus.length, 1);
   assert.strictEqual(out.conditionalSkus[0].sku, 'P40497-B21');

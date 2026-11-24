@@ -234,7 +234,7 @@ async function auditBoqMatrixAndTopologyFlows(page, report) {
   report.flowsTested++;
   console.log('▶ [FLOW 3] BOQ Quote Ingestion, Pre-flight Audit & 6-Aspect Evaluation');
 
-  const loadBoqBtn = page.locator('button:has-text("Load BOQ & Evaluate"), button:has-text("Load / Evaluate BOQ")').first();
+  const loadBoqBtn = page.locator('button:has-text("Direct BOQ evaluation"), button:has-text("Load BOQ & Evaluate"), button:has-text("Upload BOQ"), button:has-text("Load / Evaluate BOQ")').first();
   if (await loadBoqBtn.count() > 0) {
     await loadBoqBtn.click();
     await page.waitForTimeout(600);

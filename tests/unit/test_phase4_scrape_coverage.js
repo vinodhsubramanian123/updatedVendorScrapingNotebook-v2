@@ -140,10 +140,14 @@ describe('Phase 4: Scrape and Chassis Coverage Suite', () => {
     }
   });
 
-  it('8. Known OCA grouping artifacts retained with provenance (PSU in Networking, Riser in Memory)', () => {
-    // DL145: DL110 companion PSUs properly categorized in Power Supplies (or Networking if legacy co-located)
+  it('8. Known OCA grouping artifacts retained with provenance (PSU co-location, Riser in Memory)', () => {
+    // DL145: DL110 companion PSUs retained in Power Supplies or OCA co-located table (Networking / Cooling / Thermal)
     const dl145 = CATALOGS.DL145_Gen11();
-    const psuEntries = dl145.entries.filter(e => e.parentCategory === 'Power Supplies' || e.parentCategory === 'Networking');
+    const psuEntries = dl145.entries.filter(e =>
+      e.parentCategory === 'Power Supplies' ||
+      e.parentCategory === 'Networking' ||
+      e.parentCategory === 'Cooling / Thermal'
+    );
     const psuItems = psuEntries.flatMap(e => (e.skus || [])
       .filter(s => /power supply|flex slot/i.test(s.Description || '')));
     assert.ok(psuItems.length >= 2,

@@ -442,6 +442,17 @@ function _computeSupportQuantityDeficits(t, nodes) {
   };
 }
 
+function _computeManagementTermAlignment(t) {
+  const mgmtTerms = [...new Set(t.managementLicenses.map(m => m.termYears).filter(Boolean))];
+  const hwTerms = [...new Set(t.hardwareSupportTerms.filter(Boolean))];
+  return {
+    managementTermYears: mgmtTerms.length === 1 ? mgmtTerms[0] : null,
+    managementTier: t.managementLicenses[0]?.tier || null,
+    hardwareSupportTermYears: hwTerms.length === 1 ? hwTerms[0] : null,
+    hasManagementSupportTermMismatch: mgmtTerms.length === 1 && hwTerms.length === 1 && mgmtTerms[0] !== hwTerms[0]
+  };
+}
+
 function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 0, serverCount = 1, options = {}) {
   const nodes = Math.max(1, parseInt(serverCount, 10) || 1);
   const t = tallySupportItems(items, catalogData);
@@ -514,20 +525,7 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
     supportPolicy: require('../boq/support_policy').resolveSupportPolicy(items),
     defaultManagementSku: null,
     managementLicenses: t.managementLicenses,
-    managementTermYears: (() => {
-      const terms = [...new Set(t.managementLicenses.map(m => m.termYears).filter(Boolean))];
-      return terms.length === 1 ? terms[0] : null;
-    })(),
-    managementTier: t.managementLicenses[0]?.tier || null,
-    hardwareSupportTermYears: (() => {
-      const terms = [...new Set(t.hardwareSupportTerms.filter(Boolean))];
-      return terms.length === 1 ? terms[0] : null;
-    })(),
-    hasManagementSupportTermMismatch: (() => {
-      const mgmtTerms = [...new Set(t.managementLicenses.map(m => m.termYears).filter(Boolean))];
-      const hwTerms = [...new Set(t.hardwareSupportTerms.filter(Boolean))];
-      return mgmtTerms.length === 1 && hwTerms.length === 1 && mgmtTerms[0] !== hwTerms[0];
-    })(),
+    ..._computeManagementTermAlignment(t),
     iloLicenses: t.iloLicenses,
     hasDiscontinuedIloLicense: t.iloLicenses.some(i => i.isDiscontinued),
     ..._computeSupportQuantityDeficits(t, nodes)

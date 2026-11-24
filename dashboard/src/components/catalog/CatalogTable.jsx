@@ -2,6 +2,76 @@ import React, { useState, useEffect } from 'react';
 import { History, TrendingUp } from 'lucide-react';
 import { humanizeEnum } from '../../utils/formatters';
 
+function StatusBadgeCell({ sku, status }) {
+  if (sku.isObsolete || sku.lifecycleStatus === 'DISCONTINUED' || sku.lifecycleStatus === 'OBSOLETE') {
+    return (
+      <span className="badge badge-rose font-bold text-[10px]" title={sku.lifecycleReason || 'Discontinued / Obsolete SKU'}>
+        Discontinued {sku.obsoleteDate ? `(${sku.obsoleteDate})` : ''}
+      </span>
+    );
+  }
+  if (sku.lifecycleStatus === '90-DAY WARNING') {
+    return (
+      <span className="badge badge-amber font-bold text-[10px]" title="90-Day End-of-Life Warning">
+        90-Day EOL
+      </span>
+    );
+  }
+  if (sku.lifecycleStatus === 'REINSTATED') {
+    return (
+      <span className="badge bg-blue-100 text-blue-700 font-bold text-[10px]" title={`Reinstated on ${sku.reinstatedDate || 'recent date'}`}>
+        Reinstated
+      </span>
+    );
+  }
+  const clsMap = {
+    ADDED: 'badge-emerald',
+    PRICE_CHANGED: 'badge-amber',
+    ATTRIBUTE_CHANGED: 'badge-amber',
+    PRICE_AND_ATTRIBUTE_CHANGED: 'badge-amber',
+    REMOVED: 'badge-rose',
+    REMOVED_DISCONTINUED: 'badge-rose'
+  };
+  return <span className={`badge text-[10px] ${clsMap[status] || 'bg-slate-100 text-slate-600'}`}>{humanizeEnum(status)}</span>;
+}
+
+function CatalogSkuRow({ sku, idx, formatPrice, onOpenSkuAudit, onOpenTrend }) {
+  const status = sku.diffStatus || 'UNCHANGED';
+  const rowTint = status === 'REMOVED' || status === 'REMOVED_DISCONTINUED'
+    ? 'bg-rose-50/40 line-through text-rose-800'
+    : status === 'PRICE_CHANGED' ? 'bg-amber-50/30' : status === 'ADDED' ? 'bg-emerald-50/30' : '';
+  const descText = sku.description || sku.name || sku.subCategory || 'Configuration Option';
+  const deltaCls = String(sku.priceDelta || '').startsWith('-') ? 'text-emerald-600' : 'text-amber-600';
+
+  return (
+    <tr style={{ animationDelay: `${Math.min(idx, 12) * 20}ms` }} className={`animate-row-reveal hover:bg-slate-50/80 transition-colors ${rowTint}`}>
+      <td className="px-3 py-2 whitespace-nowrap"><StatusBadgeCell sku={sku} status={status} /></td>
+      <td className="px-3 py-2 font-bold mono text-slate-900 whitespace-nowrap">{sku.sku || sku.partNumber || sku.id || 'CTO-OPTION'}</td>
+      <td className="px-3 py-2 font-medium text-slate-700 max-w-[240px] truncate" title={descText}>{descText}</td>
+      <td className="px-3 py-2 text-slate-600 max-w-[130px] truncate" title={sku.parentCategory}>{sku.parentCategory}</td>
+      <td className="px-3 py-2 text-slate-500 max-w-[140px] truncate" title={sku.subCategory}>{sku.subCategory}</td>
+      <td className="px-3 py-2 font-semibold text-slate-600 whitespace-nowrap">{sku.optionType || 'CTO'}</td>
+      <td className="px-3 py-2 font-semibold text-slate-900 whitespace-nowrap">
+        {sku.isFioIncluded ? (
+          <span className="inline-flex items-center px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-full border border-blue-200">
+            {sku.fioBadge || 'FIO ($0.00)'}
+          </span>
+        ) : formatPrice(sku.listPrice)}
+        {sku.priceDelta && <span className={`ml-1 text-[10px] font-bold ${deltaCls}`}>({sku.priceDelta})</span>}
+      </td>
+      <td className="px-3 py-2 text-right whitespace-nowrap space-x-1">
+        <button onClick={() => onOpenSkuAudit(sku)} className="p-1 text-blue-600 hover:bg-blue-50 rounded transition-all inline-flex items-center gap-1 text-[11px] font-medium cursor-pointer" title="Audit SKU Version History & SHA-256 Hashes">
+          <History className="w-3.5 h-3.5" />
+          <span>Audit</span>
+        </button>
+        <button onClick={() => onOpenTrend(sku)} className="p-1 text-amber-600 hover:bg-amber-50 rounded transition-all inline-flex items-center gap-1 text-[11px] font-medium cursor-pointer" title="View Real Price History Trail">
+          <TrendingUp className="w-3.5 h-3.5" />
+        </button>
+      </td>
+    </tr>
+  );
+}
+
 export default function CatalogTable({ displayedSkus = [], formatPrice, onOpenSkuAudit, onOpenTrend }) {
   const [selectedPage, setSelectedPage] = useState(1);
   const pageSize = 100;
@@ -34,93 +104,10 @@ export default function CatalogTable({ displayedSkus = [], formatPrice, onOpenSk
           </thead>
           <tbody className="divide-y divide-slate-100">
             {displayedSkus.length === 0 ? (
-              <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-slate-400">
-                  No SKUs matched your filter criteria.
-                </td>
-              </tr>
-            ) : (
-              visibleSkus.map((sku, idx) => {
-                const status = sku.diffStatus || 'UNCHANGED';
-                const isAdded = status === 'ADDED';
-                const isRemoved = status === 'REMOVED' || status === 'REMOVED_DISCONTINUED';
-                const isPriceChanged = status === 'PRICE_CHANGED';
-                const isAttrChanged = status === 'ATTRIBUTE_CHANGED' || status === 'PRICE_AND_ATTRIBUTE_CHANGED';
-                const descText = sku.description || sku.name || sku.subCategory || 'Configuration Option';
-
-                return (
-                  <tr
-                    key={idx}
-                    style={{ animationDelay: `${Math.min(idx, 12) * 20}ms` }}
-                    className={`animate-row-reveal hover:bg-slate-50/80 transition-colors ${
-                      isRemoved ? 'bg-rose-50/40 line-through text-rose-800' : isPriceChanged ? 'bg-amber-50/30' : isAdded ? 'bg-emerald-50/30' : ''
-                    }`}
-                  >
-                    <td className="px-3 py-2 whitespace-nowrap">
-                      {sku.isObsolete || sku.lifecycleStatus === 'DISCONTINUED' || sku.lifecycleStatus === 'OBSOLETE' ? (
-                        <span className="badge badge-rose font-bold text-[10px]" title={sku.lifecycleReason || 'Discontinued / Obsolete SKU'}>
-                          Discontinued {sku.obsoleteDate ? `(${sku.obsoleteDate})` : ''}
-                        </span>
-                      ) : sku.lifecycleStatus === '90-DAY WARNING' ? (
-                        <span className="badge badge-amber font-bold text-[10px]" title="90-Day End-of-Life Warning">
-                          90-Day EOL
-                        </span>
-                      ) : sku.lifecycleStatus === 'REINSTATED' ? (
-                        <span className="badge bg-blue-100 text-blue-700 font-bold text-[10px]" title={`Reinstated on ${sku.reinstatedDate || 'recent date'}`}>
-                          Reinstated
-                        </span>
-                      ) : (
-                        <span className={`badge text-[10px] ${
-                          isAdded ? 'badge-emerald' : isPriceChanged || isAttrChanged ? 'badge-amber' : isRemoved ? 'badge-rose' : 'bg-slate-100 text-slate-600'
-                        }`}>
-                          {humanizeEnum(status)}
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-3 py-2 font-bold mono text-slate-900 whitespace-nowrap">{sku.sku || sku.partNumber || sku.id || 'CTO-OPTION'}</td>
-                    <td className="px-3 py-2 font-medium text-slate-700 max-w-[240px] truncate" title={descText}>
-                      {descText}
-                    </td>
-                    <td className="px-3 py-2 text-slate-600 max-w-[130px] truncate" title={sku.parentCategory}>{sku.parentCategory}</td>
-                    <td className="px-3 py-2 text-slate-500 max-w-[140px] truncate" title={sku.subCategory}>{sku.subCategory}</td>
-                    <td className="px-3 py-2 font-semibold text-slate-600 whitespace-nowrap">{sku.optionType || 'CTO'}</td>
-                    <td className="px-3 py-2 font-semibold text-slate-900 whitespace-nowrap">
-                      {sku.isFioIncluded ? (
-                        <span className="inline-flex items-center px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-full border border-blue-200">
-                          {sku.fioBadge || 'FIO ($0.00)'}
-                        </span>
-                      ) : (
-                        formatPrice(sku.listPrice)
-                      )}
-                      {sku.priceDelta && (
-                        <span className={`ml-1 text-[10px] font-bold ${
-                          String(sku.priceDelta).startsWith('-') ? 'text-emerald-600' : 'text-amber-600'
-                        }`}>
-                          ({sku.priceDelta})
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-3 py-2 text-right whitespace-nowrap space-x-1">
-                      <button
-                        onClick={() => onOpenSkuAudit(sku)}
-                        className="p-1 text-blue-600 hover:bg-blue-50 rounded transition-all inline-flex items-center gap-1 text-[11px] font-medium cursor-pointer"
-                        title="Audit SKU Version History & SHA-256 Hashes"
-                      >
-                        <History className="w-3.5 h-3.5" />
-                        <span>Audit</span>
-                      </button>
-                      <button
-                        onClick={() => onOpenTrend(sku)}
-                        className="p-1 text-amber-600 hover:bg-amber-50 rounded transition-all inline-flex items-center gap-1 text-[11px] font-medium cursor-pointer"
-                        title="View Real Price History Trail"
-                      >
-                        <TrendingUp className="w-3.5 h-3.5" />
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })
-            )}
+              <tr><td colSpan={8} className="px-4 py-8 text-center text-slate-400">No SKUs matched your filter criteria.</td></tr>
+            ) : visibleSkus.map((sku, idx) => (
+              <CatalogSkuRow key={idx} sku={sku} idx={idx} formatPrice={formatPrice} onOpenSkuAudit={onOpenSkuAudit} onOpenTrend={onOpenTrend} />
+            ))}
           </tbody>
         </table>
       </div>

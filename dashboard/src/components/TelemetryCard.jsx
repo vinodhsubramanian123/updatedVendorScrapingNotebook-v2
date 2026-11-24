@@ -155,6 +155,7 @@ export default function TelemetryCard({ initialTelemetry, telemetry: propTelemet
       <PipelineProfilerModal
         isOpen={activeModal === 'profiler'}
         onClose={() => setActiveModal(null)}
+        history={history}
       />
     </div>
   );

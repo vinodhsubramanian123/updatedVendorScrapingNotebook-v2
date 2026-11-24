@@ -64,8 +64,12 @@ outputs/test_boqs/
 *.swp
 *.swo
 
-# Scratch / temp
+# Scratch / temp / Python cache
 scratch/
+temp/
+__pycache__/
+*.pyc
+.agents/teamwork/
 *.crdownload
 tests/**/temp_*.json
 tests/temp_*.json

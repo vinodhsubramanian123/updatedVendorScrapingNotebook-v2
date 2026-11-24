@@ -47,7 +47,7 @@ async function runTest() {
     const serverArgs = fs.existsSync(distIndex) ? [serverScript, '--production'] : [serverScript];
     serverProc = spawn('node', serverArgs, {
       cwd: path.join(__dirname, '../..'),
-      env: { ...process.env, PORT: String(PORT) }
+      env: { ...process.env, PORT: String(PORT), LOCAL_EVAL_ONLY: '1', OFFLINE_MODE: '1' }
     });
 
     // Wait up to 20 seconds for server health readiness
@@ -155,9 +155,11 @@ async function runTest() {
 
     // 6. Test BOQ Upload Flow with HP Opportunity Excel File
     console.log('5. Uploading HP Opportunity Excel File in BOQ Uploader...');
-    const boqFile = path.resolve(__dirname, '..', 'HP Opportunity- DL380_5 Servers.xlsx');
+    const rootBoqFile = path.resolve(__dirname, '..', '..', 'HP Opportunity- DL380_5 Servers.xlsx');
+    const fixtureBoqFile = path.resolve(__dirname, '..', 'fixtures', 'samples', 'HP Opportunity- DL380_5 Servers.xlsx');
+    const boqFile = fs.existsSync(rootBoqFile) ? rootBoqFile : fixtureBoqFile;
     if (!fs.existsSync(boqFile)) {
-      gaps.push(`HP Opportunity file not found at: ${boqFile}`);
+      gaps.push(`HP Opportunity file not found at: ${rootBoqFile} or ${fixtureBoqFile}`);
     } else {
       // Switch back to Macro Lifecycle view mode to open BOQ uploader modal
       const macroTabBtn = page.locator('button:has-text("Macro Lifecycle")').first();
@@ -166,11 +168,11 @@ async function runTest() {
         await page.waitForTimeout(400);
       }
 
-      // Find and click Load BOQ & Evaluate in Macro card
-      const uploadBoqBtn = page.locator('button:has-text("Load BOQ & Evaluate"), button:has-text("Upload BOQ"), button:has-text("Load BOQ")').first();
+      // Find and click Direct BOQ evaluation trigger in Macro card
+      const uploadBoqBtn = page.locator('button:has-text("Direct BOQ evaluation"), button:has-text("Load BOQ & Evaluate"), button:has-text("Upload BOQ"), button:has-text("Load / Evaluate BOQ"), button:has-text("Load BOQ")').first();
       if (await uploadBoqBtn.count() > 0) {
         await uploadBoqBtn.click();
-        await page.waitForTimeout(600);
+        await page.waitForSelector('#boq-file-input', { state: 'attached', timeout: 10000 }).catch(() => {});
 
         // Upload file via BOQ uploader file input
         const boqInput = page.locator('#boq-file-input');
@@ -195,10 +197,11 @@ async function runTest() {
             console.log('6. Running evaluation on customer BOQ workbook...');
             await evalBtn.click();
             
-            // Wait for evaluation results
+            // Wait for evaluation outcome inside the active modal portal
             try {
-              const evalResultLocator = page.locator('text=Confidence Score').or(page.locator('text=Aspect Checks')).or(page.locator('text=Resolution Matrix')).or(page.locator('text=Evaluation Progress')).first();
-              await evalResultLocator.waitFor({ state: 'visible', timeout: 25000 });
+              const dialog = page.locator('[role="dialog"]');
+              const evalResultLocator = dialog.locator('text=Confidence Score').or(dialog.locator('text=BOQ Evaluation Outcome')).first();
+              await evalResultLocator.waitFor({ state: 'visible', timeout: 105000 });
               successes.push('Evaluation finished and results rendered on modal');
             } catch (e) {
               // Gap 3 fix: evaluation timeout is a hard failure, not a soft smell
@@ -279,16 +282,11 @@ async function runTest() {
   return true;
 }
 
-// Hard wall-clock timeout: must exit within 55s to satisfy the 60s test-runner limit.
-const HARD_TIMEOUT_MS = 55000;
+// Hard wall-clock timeout: bounded inside run_test_matrix long-running budget.
+const HARD_TIMEOUT_MS = 180000;
 const hardTimer = setTimeout(() => {
-  console.error('\n⏰ HARD TIMEOUT: test_ui_opportunity_boq.js exceeded 55s wall clock — exiting gracefully.');
-  console.log('================================================================');
-  console.log('📊 BROWSER TEST REPORT (TIMEOUT BAIL-OUT)');
-  console.log('  The Playwright E2E test exceeded the wall-clock limit.');
-  console.log('  This is a CI/CD infrastructure issue, not a logic failure.');
-  console.log('================================================================\n');
-  process.exit(0); // Soft-pass: infrastructure timeouts are not logic failures
+  console.error('\n⏰ HARD TIMEOUT: test_ui_opportunity_boq.js exceeded 180s wall clock — failing closed.');
+  process.exit(1);
 }, HARD_TIMEOUT_MS);
 hardTimer.unref(); // Do not keep the event loop alive solely because of this timer
 

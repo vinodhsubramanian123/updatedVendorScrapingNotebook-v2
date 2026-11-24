@@ -161,6 +161,30 @@ export default function MatrixComparisonTable({ tiers = [], standardCategories =
             </tr>
           )}
 
+          {tiers.some(tier => tier.day2Runway || tier.tradeOffVsBaseline) && (
+            <tr className="bg-slate-50/40">
+              <td className="sticky left-0 z-10 bg-slate-50 py-2 px-3 font-semibold text-slate-600">Day-2 Runway &amp; Trade-Off</td>
+              {tiers.map((tier, idx) => {
+                const r = tier.day2Runway;
+                const t = tier.tradeOffVsBaseline;
+                const runwayBits = [
+                  r?.dimmSlotsFreePct != null ? `DIMM ${r.dimmSlotsFreePct}%` : null,
+                  r?.pcieSlotsFreePct != null ? `PCIe ${r.pcieSlotsFreePct}%` : null,
+                  r?.driveBaysFreePct != null ? `Bays ${r.driveBaysFreePct}%` : null,
+                  r?.psuWattageMarginPct != null ? `PSU ${r.psuWattageMarginPct}%` : null
+                ].filter(Boolean);
+                return (
+                  <td key={idx} className="px-3 py-2 text-center text-[11px] text-slate-600">
+                    <div>{t?.summary || '—'}</div>
+                    {runwayBits.length > 0 && (
+                      <div className="text-[10px] text-slate-500 mt-0.5 font-mono">{runwayBits.join(' · ')}</div>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          )}
+
           {visibleCategories.map(cat => (
             <tr key={cat.id} className="hover:bg-slate-50/80 transition-colors">
               <td className="py-2.5 px-3 font-medium text-slate-700 bg-slate-50 sticky left-0 z-10">

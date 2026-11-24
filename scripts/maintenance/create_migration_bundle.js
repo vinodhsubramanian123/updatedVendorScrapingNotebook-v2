@@ -133,11 +133,14 @@ async function main() {
     success(`Included master knowledge registry and execution ledgers (outputs/history/)`);
   }
 
-  // 6. Include ANTIGRAVITY_RESTORE_INSTRUCTIONS.md
-  const instructionsFile = path.join(PROJECT_ROOT, 'ANTIGRAVITY_RESTORE_INSTRUCTIONS.md');
-  if (fs.existsSync(instructionsFile)) {
+  // 6. Include ANTIGRAVITY_RESTORE_INSTRUCTIONS.md (docs/ primary, root legacy fallback)
+  const instructionsFile = [
+    path.join(PROJECT_ROOT, 'docs', 'ANTIGRAVITY_RESTORE_INSTRUCTIONS.md'),
+    path.join(PROJECT_ROOT, 'ANTIGRAVITY_RESTORE_INSTRUCTIONS.md')
+  ].find(p => fs.existsSync(p));
+  if (instructionsFile) {
     fs.copyFileSync(instructionsFile, path.join(bundleDir, 'ANTIGRAVITY_RESTORE_INSTRUCTIONS.md'));
-    success(`Included ANTIGRAVITY_RESTORE_INSTRUCTIONS.md`);
+    success(`Included ${path.relative(PROJECT_ROOT, instructionsFile)}`);
   }
 
   // 7. Create ZIP Archive Cross-Platform
@@ -152,7 +155,7 @@ async function main() {
 
   info(`Creating ${primaryZip}...`);
 
-  // Use Python's built-in zipfile for guaranteed cross-platform compatibility (macOS/Linux/Windows)
+  // Use Python's built-in zipfile for guaranteed cross-platform compatibility, with PowerShell fallback on Windows.
   const pythonScript = `
 import zipfile, os, sys
 
@@ -168,12 +171,22 @@ with zipfile.ZipFile(output_zip, 'w', zipfile.ZIP_DEFLATED) as zf:
 print("COMPRESSION_COMPLETE")
 `;
 
-  try {
-    execSync(`python3 -c "${pythonScript.replace(/"/g, '\\"')}" "${stagingRoot}" "${primaryZip}"`, { stdio: 'inherit' });
-  } catch (_) {
-    // Fallback: standard zip CLI
+  const pyCmds = process.platform === 'win32' ? ['python', 'python3'] : ['python3', 'python'];
+  let compressed = false;
+  for (const pyBin of pyCmds) {
     try {
-      execSync(`cd "${stagingRoot}" && zip -r -q "${primaryZip}" .`, { stdio: 'inherit' });
+      execSync(`${pyBin} -c "${pythonScript.replace(/"/g, '\\"')}" "${stagingRoot}" "${primaryZip}"`, { stdio: 'inherit' });
+      compressed = true;
+      break;
+    } catch (_) { /* try next */ }
+  }
+  if (!compressed) {
+    try {
+      if (process.platform === 'win32') {
+        execSync(`powershell -NoProfile -Command "Compress-Archive -Path '${stagingRoot}\\*' -DestinationPath '${primaryZip}' -Force"`, { stdio: 'inherit' });
+      } else {
+        execSync(`cd "${stagingRoot}" && zip -r -q "${primaryZip}" .`, { stdio: 'inherit' });
+      }
     } catch (err) {
       errFail(`Failed to compress migration archive: ${err.message}`);
     }

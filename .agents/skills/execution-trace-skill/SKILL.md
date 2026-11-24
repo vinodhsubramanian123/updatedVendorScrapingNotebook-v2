@@ -16,10 +16,24 @@ description: >-
 
 ## 🏗️ Execution Trace Architecture
 
-Every agent-driven presales flow records an immutable 9-phase `EvidenceLedger` via [`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js), persisting:
+Every agent-driven presales flow records an immutable 9-phase `EvidenceLedger` via [`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js) bound to `CANONICAL_EXECUTION_PHASES` in [`workflow_contract.js`](../../../scripts/lib/contracts/workflow_contract.js), persisting:
 
 1. **Machine-Readable Ledger** (`evidence_ledger_{traceId}.json` / `evidence_log_{traceId}.json`) — saved alongside evaluation evidence and `outputs/history/evidence_logs/`
 2. **Human-Readable Summary & Narrative** — emitted by `eval_output_serializer.js` and Phase 9 reflection
+
+### Canonical 9-Phase Execution Contract (`INV-278`)
+
+| Phase | ID | Canonical Phase Name |
+| :---: | :--- | :--- |
+| **1** | `INGESTION` | `BOM Ingestion & Normalization` |
+| **2** | `FINGERPRINTING` | `Non-Repudiation Checksums & Baseline` |
+| **3** | `DOMAIN_ASPECTS` | `Deterministic Domain Physical Math` |
+| **4** | `CONFLICT_GRAPH` | `5-Level Dependency Graph Validation` |
+| **5** | `MODERNIZATION_LEAST_DELTA` | `Generational Modernization & Least-Delta Combinator` |
+| **6** | `STRATEGY_SYNTHESIS` | `Multi-Tier Strategy Matrix Synthesis` |
+| **7** | `RAG_GROUNDING` | `NotebookLM Ground-Truth Verification` |
+| **8** | `DELIVERABLES_FINALIZATION` | `Deliverables Generation & Ledger Seal` |
+| **9** | `REFLECTION_LEARNING` | `Closed-Loop Reflection & Shared State Export` |
 
 ### Evidence Ledger Schema (`evidence_ledger.js` v2)
 
@@ -44,7 +58,7 @@ Every agent-driven presales flow records an immutable 9-phase `EvidenceLedger` v
   "phases": {
     "phase_1": {
       "phaseNumber": 1,
-      "phaseName": "WORKLOAD_DNA_PRE_PROCESSING",
+      "phaseName": "BOM Ingestion & Normalization",
       "status": "PASSED | FAILED | WARNING | SKIPPED | DEGRADED | ACTION_REQUIRED | RESOLVED | NOT_REACHED | NOT_RUN",
       "startedAt": "ISO-8601",
       "completedAt": "ISO-8601",

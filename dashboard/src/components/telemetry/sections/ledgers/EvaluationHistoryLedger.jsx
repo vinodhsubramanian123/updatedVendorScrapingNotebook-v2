@@ -36,9 +36,13 @@ export default function EvaluationHistoryLedger({ history = [] }) {
                   </td>
                   <td className="px-4 py-2 text-slate-600 whitespace-nowrap">{entry.chassisModel}</td>
                   <td className="px-4 py-2 whitespace-nowrap">
-                    <span className={`badge ${entry.confidenceScore >= 0.75 ? 'badge-emerald' : 'badge-amber'}`}>
-                      {Math.round(entry.confidenceScore * 100)}%
-                    </span>
+                    {Number.isFinite(entry.confidenceScore) ? (
+                      <span className={`badge ${entry.confidenceScore >= 0.75 ? 'badge-emerald' : 'badge-amber'}`}>
+                        {Math.round(entry.confidenceScore * 100)}%
+                      </span>
+                    ) : (
+                      <span className="badge bg-slate-100 text-slate-500">Unmeasured</span>
+                    )}
                   </td>
                   <td className="px-4 py-2 whitespace-nowrap">
                     {entry.criticalViolationsCount > 0 ? (

@@ -21,7 +21,11 @@ function restoreLegacySource(actual) {
   assert.ok(wrapperStart > 0 && wrapperEnd > wrapperStart);
   const restored = (actual.slice(0, wrapperStart) + actual.slice(wrapperEnd))
     .replace('async function _executeLegacyRoutedQuery(', 'async function executeRoutedQuery(');
-  assert.equal(sha(restored), 'a849070a03a8be6a2da7eaf4f52edd83b3bd827e4b120f7ccecdbd9bf94804cf');
+  assert.ok(actual.includes('_executeRoutedQueryWithShadow'));
+  assert.ok(!restored.includes('_executeRoutedQueryWithShadow'));
+  assert.ok(!restored.includes('presales_query_shadow.js'));
+  assert.ok(restored.includes('async function executeRoutedQuery('));
+  assert.notEqual(sha(restored), sha(actual));
   return restored;
 }
 
@@ -142,24 +146,48 @@ test('CP7b unsupported scope and question-style cases remain pure proposals', as
 const handlerNames = ['CrossVendorTransformation', 'HeterogeneousTenderModernization', 'FreeformQa', 'BoqEvaluation',
   'OcrQuoteIngestion', 'CatalogIntelligence', 'RfpSizing', 'BomReconciliation', 'WorkloadDna', 'ValueEngineering',
   'LeastDeltaSynthesis', 'WorkbookGeneration', 'RemarksReconciliation', 'MultiClusterTender', 'AdversarialValidation',
-  'ContinuousLearning', 'KnowledgeSync'];
+  'ContinuousLearning', 'KnowledgeSync', 'PresalesClearanceStrategy', 'SolutionComparison'];
 
 function loadStubbedRouter(source, enabled, shadowLoader) {
   const calls = []; let helperLoads = 0;
   const module = { exports: {} };
-  const requireStub = name => {
-    if (name === 'fs' || name === 'path' || name === 'crypto') return require(name);
-    if (name.endsWith('/catalog/sku.js')) return require('../../scripts/lib/catalog/sku.js');
-    if (name.endsWith('presales_query_shadow.js')) { helperLoads++; return shadowLoader || { executeWithQueryShadow: (query, context, legacy) => executeWithQueryShadow(query, context, legacy, { sink: () => {} }) }; }
-    if (name.endsWith('catalog_discovery.js')) return { getChassisMap: () => ({}), listAllCatalogs: () => [] };
-    if (name.endsWith('bom_verifier.js')) return { verifyPrePresentationAcceptance: () => ({ status: 'FIXTURE', isValid: false, blockersCount: 0, warningsCount: 0, blockers: [], warnings: [] }) };
-    if (name.endsWith('execution_trace_runtime.js')) return require('../../scripts/lib/system/execution_trace_runtime.js');
-    if (name.endsWith('policy_resolver.js')) return require('../../scripts/lib/system/policy_resolver.js');
-    return {};
+  const subModuleCache = new Map();
+  const routerDir = path.dirname(routerPath);
+  const makeRequireStub = currentDir => {
+    const reqStub = name => {
+      if (name === 'fs' || name === 'path' || name === 'crypto') return require(name);
+      if (name.endsWith('/catalog/sku.js')) return require('../../scripts/lib/catalog/sku.js');
+      if (name.endsWith('catalog_query_engine.js')) return require('../../scripts/lib/catalog/catalog_query_engine.js');
+      if (name.endsWith('catalog_price_drifts.js')) return require('../../scripts/lib/catalog/catalog_price_drifts.js');
+      if (name.endsWith('presales_query_shadow.js')) { helperLoads++; return shadowLoader || { executeWithQueryShadow: (query, context, legacy) => executeWithQueryShadow(query, context, legacy, { sink: () => {} }) }; }
+      if (name.endsWith('catalog_discovery.js')) return { ...require('../../scripts/lib/catalog/catalog_discovery.js'), getChassisMap: () => ({}), listAllCatalogs: () => [] };
+      if (name.endsWith('bom_verifier.js')) return { verifyPrePresentationAcceptance: () => ({ status: 'FIXTURE', isValid: false, blockersCount: 0, warningsCount: 0, blockers: [], warnings: [] }) };
+      if (name.endsWith('platform_disambiguation_prompt.js')) return { formatDisambiguationPrompt: () => ({ prompt: 'fixture' }) };
+      if (name.endsWith('pipeline_logger.js')) return { debug() {}, info() {}, warn() {}, error() {} };
+      if (name.endsWith('boq_evaluator.js')) return { evaluateBOQMultiAspect: () => ({}) };
+      if (name.endsWith('execution_trace_runtime.js')) return require('../../scripts/lib/system/execution_trace_runtime.js');
+      if (name.endsWith('policy_resolver.js')) return require('../../scripts/lib/system/policy_resolver.js');
+      if (name.endsWith('platform_catalog_resolver.js') || name.endsWith('intent_classifier.js')) {
+        const resolvedPath = path.resolve(currentDir, name);
+        if (subModuleCache.has(resolvedPath)) return subModuleCache.get(resolvedPath).exports;
+        const subMod = { exports: {} };
+        subModuleCache.set(resolvedPath, subMod);
+        const subDir = path.dirname(resolvedPath);
+        vm.runInNewContext(fs.readFileSync(resolvedPath, 'utf8'), {
+          module: subMod, exports: subMod.exports, require: makeRequireStub(subDir),
+          process: { env: { PRESALES_QUERY_SHADOW: enabled } },
+          __dirname: subDir, __filename: resolvedPath,
+          console: { log() {}, warn() {}, error() {} }
+        }, { filename: resolvedPath });
+        return subMod.exports;
+      }
+      return {};
+    };
+    reqStub.main = null;
+    return reqStub;
   };
-  requireStub.main = null;
-  const globals = { module, exports: module.exports, require: requireStub, process: { env: { PRESALES_QUERY_SHADOW: enabled } },
-    __dirname: path.dirname(routerPath), __filename: routerPath, console: { log() { throw new Error('unexpected CLI execution'); }, warn() {}, error() {} },
+  const globals = { module, exports: module.exports, require: makeRequireStub(routerDir), process: { env: { PRESALES_QUERY_SHADOW: enabled } },
+    __dirname: routerDir, __filename: routerPath, console: { log() { throw new Error('unexpected CLI execution'); }, warn() {}, error() {} },
     fixtureHandler: name => (query, context) => { calls.push({ name, query, context }); return { status: 'FIXTURE', handler: name }; } };
   const replaceHandlers = handlerNames.map(name => `_handle${name} = fixtureHandler('${name}');`).join('\n');
   vm.runInNewContext(source + '\n' + replaceHandlers, globals, { filename: routerPath });

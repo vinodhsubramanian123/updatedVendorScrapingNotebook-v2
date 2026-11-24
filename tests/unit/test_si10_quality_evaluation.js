@@ -49,11 +49,11 @@ describe('SI-10 Solution Intelligence Quality Evaluation (Dev & Held-Out)', () =
     assert.equal(report.schemaVersion, SCHEMA_VERSION);
     assert.equal(report.liveQualificationStatus, 'NOT_RUN_OFFLINE_CERTIFICATION_ONLY');
 
-    assert.equal(report.overall.totalCases, 48);
+    assert.equal(report.overall.totalCases, 56);
     assert.equal(report.overall.failedCases, 0, JSON.stringify(report.results.filter(r => !r.passed), null, 2));
-    assert.equal(report.overall.passedCases, 48);
-    assert.equal(report.splits.dev.passedCases, 24);
-    assert.equal(report.splits.held_out.passedCases, 24);
+    assert.equal(report.overall.passedCases, 56);
+    assert.equal(report.splits.dev.passedCases, 28);
+    assert.equal(report.splits.held_out.passedCases, 28);
 
     assert.equal(report.overall.falseAcceptance.count, 0);
     assert.equal(report.overall.materialClaimSupport.unsupportedPositiveAcceptances, 0);
@@ -136,7 +136,7 @@ describe('SI-10 Solution Intelligence Quality Evaluation (Dev & Held-Out)', () =
       assert.equal(saved.workPackage, 'SI-10');
       assert.ok(fs.existsSync(target));
       const disk = JSON.parse(fs.readFileSync(target, 'utf8'));
-      assert.equal(disk.overall.passedCases, 48);
+      assert.equal(disk.overall.passedCases, 56);
       assert.ok(/^[a-f0-9]{64}$/.test(disk.dependencyHashes.scenarioFamiliesSha256));
       assert.ok(/^[a-f0-9]{64}$/.test(disk.dependencyHashes.evaluatorSha256));
       assert.equal(disk.liveQualificationStatus, 'NOT_RUN_OFFLINE_CERTIFICATION_ONLY');

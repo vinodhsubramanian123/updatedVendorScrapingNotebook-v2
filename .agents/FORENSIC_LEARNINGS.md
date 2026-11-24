@@ -1,56 +1,38 @@
-# Antigravity Forensic Knowledge Ledger (v2.0 Diamond)
+# Forensic Technical Learnings Ledger (`updatedVendorScrapingNotebook-v2`)
 
-This ledger documents "hard-won" technical learnings and blindspots identified during the Antigravity Forensic Portal development. Future agents MUST consult this ledger to foresee and prevent recurring issues.
+Hard-won architectural lessons observed directly in this codebase. Consult alongside [`docs/INVARIANTS.md`](../docs/INVARIANTS.md) (`npm run docs:lookup -- INV-<n>`).
 
-## 🔬 1. SKU Normalization (The "PartA vs PART_A" Blindspot)
-- **Issue**: Dependency cycles and catalog lookups often fail because rules use `PART_A` while the catalog uses `partA`.
-- **Learning**: Always match on **Canonical Keys** (`.toUpperCase().replace(/[^A-Z0-9]/g, '')`). 
-- **Remediation**: Use `DataQualityEngine.detectCycles` with the pathKey protocol to ensure consistent matching while preserving display labels.
+## 1. WebLogic OCA `OCAInternalLogin` & `.blockUI` Overlay Trap (`INV-173`, `INV-254`)
+- **Failure Mode:** Calling `Page.reload` / `location.reload()` or navigating directly to `https://oca.ext.hpe.com/oca/OCAInternalLogin` breaks WebLogic server-side SAML conversation memory (403/blank loop). Additionally, WebLogic leaves 100+ transparent `.blockUI.blockOverlay` divs (`opacity: 0`) that trigger infinite false-busy hangs if checked without `parseFloat(style.opacity) > 0.1`.
+- **Enforcement:** `scripts/lib/scraper/cdp.js` (`assertSafeCdpNavigationGuard`), `scripts/lib/scraper/catalog_tab_capture.js` (`isBlockingElement`), and `scripts/lib/scraper/navigate_oca.js` (`CONFIG_WORKSPACE_READY_PREDICATE`). Recover only via Tab 1 (`partner.hpe.com/group/prp`) reload + clicking `#quick-links-807 a`.
 
-## 🎭 2. Playwright Mock Hardening
-- **Issue**: Unit tests targeting `BasePortalService` derivatives often crash with `TypeError: this.page.evaluate is not a function`.
-- **Learning**: `BasePortalService` stabilization logic (e.g., `_waitForDOMSettle`, `clearBlockers`) relies heavily on `evaluate` and `waitForTimeout`.
-- **Remediation**: Every manual `Page` mock in Vitest MUST include these methods, even if they just return `Promise.resolve()`.
+## 2. Windows Chrome Job-Object Termination & Unified NLM Profile (`INV-253`, `INV-269`)
+- **Failure Mode:** Child Chrome processes spawned inside PowerShell tool calls inherit the session Job Object (`KILL_ON_JOB_CLOSE`) and die on turn exit; separately, storing port `18801` interactive NLM cookies outside `~/.notebooklm-mcp-cli/chrome-profiles/<profile>` caused daily `AuthenticationError` rotation drift.
+- **Enforcement:** `scripts/lib/scraper/browser_launcher.js` (`_spawnDetachedChromeProcess`) and `scripts/maintenance/nlm_interactive_auth.js` spawn Chrome via WMI `Win32_Process.Create`, register `18801` PIDs in `~/.notebooklm-mcp-cli/chrome-port-map.json`, and never delete `.chrome_sso_profile` on timeout.
 
-## ⚖️ 3. The "Summary Trap" (Hydration Stalls)
-- **Issue**: Navigating to the "Summary" tab in HPE/Dell portals sometimes triggers a secondary AJAX loader that isn't caught by standard `waitForLoadState`.
-- **Learning**: Portals use nested iframes and background JS workers that don't always signal "Load Complete" to the browser.
-- **Remediation**: Standardize on `_waitForDOMSettle` (MutationObserver-based) after every major tab switch.
+## 3. FIO Option-Tag vs Localization-Suffix SKU Normalization (`INV-265`, `INV-273`)
+- **Failure Mode:** Customer BOQs mix factory integration suffixes (`#0D1`, `#OD1`, `#B19`, `#B21`) with true hardware localization variants (`R7R97A#AC3`, `$0.00`). String-exact matching in `route_query.js:evaluateWorkloadBranch` missed cleaned substitution targets from `resource_arbitrator.js`.
+- **Enforcement:** Always use `cleanBaseSKU()` (`scripts/lib/catalog/sku.js`) for option matching while preserving `#AC3` localization rows as distinct catalog entries.
 
-## 📡 4. IPC Bridge Synchronization
-- **Issue**: UI components (e.g., `LiveAgentTerminal`) sometimes show stale data because of race conditions in state updates.
-- **Learning**: `useEffect` hooks in React might capture stale closure values if they don't use `useRef` for transient mission state.
-- **Remediation**: Use the `activeMissionUcidRef` pattern to ensure log handlers always reference the current mission context.
+## 4. Payload Bloat & Transport Sentinel Leak in E2E Runs (`SI-07`, `INV-249`)
+- **Failure Mode:** Expanding every `UNEVALUATED` rule into `__EVAL_RESULT_JSON__` (~21.5 MB) and pushing raw transport sentinel lines into `dashboard/routes/evaluation.cjs` `run.logs[]` inflated `GET /api/run/:runId` to ~82 MB, exceeding Node's default 5s `keepAliveTimeout` (`ECONNRESET`).
+- **Enforcement:** Summarize unevaluated rules in `scripts/lib/conflict/conflict_graph.js` (`_summarizeUnevaluatedChassisRules`), strip sentinel lines via `_isEvalTransportSentinelLine` in `evaluation.cjs`, and keep `keepAliveTimeout >= 65000` in `dashboard/server.cjs`.
 
-## 🏗️ 5. Architectural Creep (Reconciliation)
-- **Issue**: Portal-added mandatory parts (factory kits) were being flagged as unauthorized drift.
-- **Learning**: The portal is "smarter" than the BOQ; it knows mandatory dependencies.
-- **Remediation**: Update `PortalReconciler` to acknowledge `HEALER_INJECTED` metadata or flag these as `ADVICE` instead of `WARNING`.
+## 5. Vite Middleware Realpath Alignment & Self-Proxy Prevention (`INV-275`)
+- **Failure Mode:** Windows directory junctions cause `process.cwd()` vs `fs.realpathSync(PROJECT_ROOT)` drift that crashes Vite 6.2 `esbuildOutputFromId` (`504 Outdated Optimize Dep`), while `server.proxy` inside `middlewareMode: true` causes Express-mounted Vite to proxy `/api` back to itself (`ENOBUFS`).
+- **Enforcement:** Align `process.cwd()` to `fs.realpathSync(PROJECT_ROOT)` before `createViteServer`, pass `server: { middlewareMode: true, proxy: {} }`, and mount explicit `/api` + `/artifacts` JSON 404 guards ahead of `vite.middlewares` in `dashboard/server.cjs`.
 
-## 🎨 6. Light Theme Specificity Overrides
-- **Issue**: Custom component styles explicitly declared in style files (e.g., `.description-intent { color: var(--aether-text) }`) have high specificity and override default responsive Tailwind class utilities (`text-slate-800`).
-- **Learning**: Tailwind color classes will silently fail if class-level CSS declarations specify color variables.
-- **Remediation**: Always write explicit parent theme overrides (e.g., `.theme-light .description-intent { color: #0f172a !important }`) to ensure perfect readability in light/dark transitions.
+## 6. Atomic JSON Writes, File Leases & Epistemic Nullability (`INV-104`, `INV-197`, `INV-278`)
+- **Failure Mode:** Parallel writes to `catalog_deltas.json` or `pipeline_telemetry.json` lose updates on Windows; defaulting missing confidence to `1.0` or missing prices to `$0` fabricates false certainty.
+- **Enforcement:** Wrap read-modify-write mutations with `withFileLock` + `safeWriteJsonAtomic` (`scripts/lib/system/fs_compat.js`) and preserve `null` / `'UNKNOWN'` / `'NOT_EVALUATED'` wherever observations or denominators are absent.
 
-## 📐 7. Virtualized Grid Column Alignment Shifts
-- **Issue**: Columns in virtualized tables (e.g. React Window grids) get shifted to the left by one position if even a single cell is conditionally or accidentally omitted in the row template.
-- **Learning**: Symmetrical header-row grids depend strictly on rendering the identical cell count as header tracks. Omissions will cause actions or pricing columns to shift left, ruining visual consistency.
-- **Remediation**: Insert placeholder elements or ensure proper cell mapping exists for all columns (e.g. rendering the missing Drift Δ cell in `VirtualRow.tsx`).
+## 7. Complexity Profiler Tokenization & Facade Contract (`INV-277`)
+- **Failure Mode:** Raw character scanning for `{`/`}` inside strings/regexes desynchronized function boundaries, while counting both `if (` and `else if (` double-counted `else if` branches. `skill_workflow_registry.js` AST checks also inspect static `switch` cases in `scripts/evaluators/route_query.js`.
+- **Enforcement:** `scripts/maintenance/analyze_complexity.js` strips comments/strings/regexes before brace and branch measurement; `route_query.js` preserves its top-level intent `switch` while delegating handlers to `scripts/lib/router/*`.
 
-## 🧱 8. Stretch Layout Padding for Wrapping Text
-- **Issue**: Wrapped multi-line text (e.g. `[OPTION]` suffixes) gets clipped at the bottom of virtual rows if parent grids use vertical alignment centering (`items-center`).
-- **Learning**: Grid `items-center` shrinks item tracks to text wraps, compressing them. 
-- **Remediation**: Set virtual rows to use grid alignment **`items-stretch`** and shift vertical centering responsibility to children utilizing full-height centering flex containers (`h-full flex items-center justify-center`). This guarantees zero vertical text clipping.
-
-## 🎛️ 9. Accessible Theme-Aware Scrollbars
-- **Issue**: Narrow 8px scrollbars are extremely difficult to grab, and transparent tracks are completely invisible against light canvases.
-- **Learning**: Data grids require comfortable scrollbars to identify and drag pages comfortably.
-- **Remediation**: Styled custom scrollbars as `14px` thick using transparent borders and `background-clip: padding-box` for spacious grab targets, and mapped dark-slate thumbs for light backgrounds.
-
-## 🤖 10. LLM "Minimum Component" Strictness vs "Preferred" Intent
-- **Issue**: The LLM reasoning engine skipped satisfying "Preferred" requirements (like NVMe storage) because its prompt instructed it to find the "MINIMUM" set of components.
-- **Learning**: Language models interpret "minimum" very literally and will aggressively drop non-mandatory requirements. Also, heuristic NLP fallbacks often misclassify explicit requirements (like "NVMe is required") as "preferred" if they don't dynamically parse context.
-- **Remediation**: Always explicitly instruct LLM prompts to satisfy "Preferred" requirements if resources allow, rather than just asking for the "minimum" set. Implement dynamic keyword parsing (checking for words like "must", "require") in fallback heuristic engines, and log explicitly when components are skipped versus added.
-
----
-*Status: DIAMOND-CERTIFIED*
+## 8. Wave 1–5 Intelligence Elevation & Refactoring Forensics (`INV-276`–`INV-280`, `2026-11-24`)
+- **Returned-Array Property Preservation (`strategy_synthesizer.js`, `tradeoff_explainer.js`):** Non-index array properties (`paretoFrontier`, `evaluatedCandidateSet`) attached to candidate arrays vanish under standard `.map(...)` transforms unless copied via `Object.getOwnPropertyDescriptors`, breaking `SI-06` Pareto certification.
+- **One-Way DAG Promotion Separation (`INV-279`):** Extract shared promotion logic into `scripts/lib/feedback/instruction_promoter.js` so both `scripts/maintenance/promote_learned_instructions.js` and `scripts/maintenance/evaluate_solution_intelligence_quality.js` depend one-way with zero cycles (`test:circular`).
+- **Ephemeral Test Telemetry Isolation (`INV-278`):** Under `NODE_ENV === 'test'` or `NODE_TEST_CONTEXT`, `scripts/lib/system/telemetry.js` isolates writes into `_ephemeralTestStores` unless `telemetryFile`, `ANTIGRAVITY_TELEMETRY_FILE`, or `SKILL_ISOLATION_ROOT` is set, protecting production `pipeline_telemetry.json`.
+- **Windows Junction Vitest & React Portal Selectors:** Run `npm.cmd test --workspace=dashboard` instead of `npx --prefix dashboard vitest` across Windows directory junctions; wait explicitly for `#boq-file-input` after `/api/health` policy hydration and scope Playwright modal outcome locators inside `[role="dialog"]` so `#root` hidden tabs never shadow portal cards.
+- **Catalog Identity, Snapshot Index Cache & Serializer Trim:** Propagate `catalogProductId` from `chassis_base_skus_by_family_gen` onto `chassis_base_skus` in `scripts/lib/catalog/catalog_discovery.js`; maintain stat-fingerprinted `snapshotIndexCache` in `scripts/lib/catalog/sku_versioning.js` (eliminating `O(SKUs × Snapshots)` JSON re-parsing); omit `catalogData`/`catalogRules` from `_buildNestedEvalResults` in `scripts/lib/boq/eval_output_serializer.js`; return `UNKNOWN` (never `PASS`) in `composite_solution_validator.js` (`B25`) when transceiver speed or SAN port denominators are absent.

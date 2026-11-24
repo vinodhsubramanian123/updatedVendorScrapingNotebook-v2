@@ -20,12 +20,15 @@ const {
 } = require('./field_parsers.js');
 
 const catalogPriceCache = new Map();
+const snapshotIndexCache = new Map();
+const MAX_SNAPSHOT_INDEX_CACHE = 128;
 
 /**
- * Clear the internal catalog price cache (useful for tests/hot reloads).
+ * Clear internal catalog price and snapshot index caches (useful for tests/hot reloads).
  */
 function _clearCatalogPriceCache() {
   catalogPriceCache.clear();
+  snapshotIndexCache.clear();
 }
 
 /**
@@ -144,28 +147,56 @@ function _loadDiscontinuedInfo(historyDir, cleanSku) {
   return { discontinuedInfo: null, currentStatus: 'UNKNOWN' };
 }
 
-function _findSkuInSnapshotEntries(content, cleanSku) {
+function _projectSnapshotSkuRow(entry, s, skuCode) {
+  return {
+    parentCategory: entry.parentCategory,
+    subCategory: entry.subCategory,
+    description: s.description || s['Description'] || '',
+    priceUsd: s.priceUsd ?? s['List Price (USD)'] ?? s['Unit Price (USD)'] ?? null,
+    optionType: s.optionType || s['Option Type'] || '',
+    lifecycleStatus: s['Lifecycle Status'] || s.lifecycleStatus || s.Status || '',
+    vendorSupplyStatus: s.vendorSupplyStatus,
+    rawSku: skuCode,
+    diffStatus: s['Diff Status'] || s.diffStatus || ''
+  };
+}
+
+function _buildSnapshotSkuIndex(content) {
+  const byCleanSku = new Map();
   const entriesList = Array.isArray(content?.entries) ? content.entries : [];
   for (const entry of entriesList) {
     const skusList = Array.isArray(entry.skus) ? entry.skus : [];
     for (const s of skusList) {
       const skuCode = s.sku || s['Product #'] || s['SKU'];
-      if (cleanBaseSKU(skuCode) === cleanSku) {
-        return {
-          parentCategory: entry.parentCategory,
-          subCategory: entry.subCategory,
-          description: s.description || s['Description'] || '',
-          priceUsd: s.priceUsd ?? s['List Price (USD)'] ?? s['Unit Price (USD)'] ?? null,
-          optionType: s.optionType || s['Option Type'] || '',
-          lifecycleStatus: s['Lifecycle Status'] || s.lifecycleStatus || s.Status || '',
-          vendorSupplyStatus: s.vendorSupplyStatus,
-          rawSku: skuCode,
-          diffStatus: s['Diff Status'] || s.diffStatus || ''
-        };
-      }
+      const cleanKey = cleanBaseSKU(skuCode);
+      if (!cleanKey || byCleanSku.has(cleanKey)) continue;
+      byCleanSku.set(cleanKey, _projectSnapshotSkuRow(entry, s, skuCode));
     }
   }
-  return null;
+  return byCleanSku;
+}
+
+function _getIndexedCatalogSnapshot(filePath) {
+  const stat = fs.statSync(filePath, { bigint: true });
+  const fingerprint = [stat.ino, stat.mtimeNs, stat.size].join('|');
+  const existing = snapshotIndexCache.get(filePath);
+  if (existing?.fingerprint === fingerprint) return existing;
+
+  const content = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  if (!content || typeof content !== 'object') return null;
+
+  const cached = {
+    fingerprint,
+    checksum: calculateChecksum(content),
+    scrapeDate: content.metadata?.scrapeDate || null,
+    byCleanSku: _buildSnapshotSkuIndex(content)
+  };
+  if (snapshotIndexCache.size >= MAX_SNAPSHOT_INDEX_CACHE) {
+    const oldestKey = snapshotIndexCache.keys().next().value;
+    if (oldestKey !== undefined) snapshotIndexCache.delete(oldestKey);
+  }
+  snapshotIndexCache.set(filePath, cached);
+  return cached;
 }
 
 function _resolveObservedSkuLifecycle(details) {
@@ -178,12 +209,14 @@ function _resolveObservedSkuLifecycle(details) {
 
 function _readCurrentSkuDetails(dir, sku) {
   const product = path.basename(dir);
+  const cleanKey = cleanBaseSKU(sku);
   for (const suffix of ['Catalog', 'Services']) {
     const file = path.join(dir, `${product}_${suffix}.json`);
     if (!fs.existsSync(file)) continue;
     try {
-      const details = _findSkuInSnapshotEntries(JSON.parse(fs.readFileSync(file, 'utf8')), sku);
-      if (details) return details;
+      const indexed = _getIndexedCatalogSnapshot(file);
+      const hit = indexed?.byCleanSku.get(cleanKey);
+      if (hit) return { ...hit };
     } catch (error) {
       console.warn(`[sku_versioning] Error reading ${path.basename(file)}: ${error.message}`);
     }
@@ -203,13 +236,12 @@ function _scanSnapshotOccurrences(historyDir, cleanSku, initialStatus) {
   for (const file of snapshots) {
     const snapshotPath = path.join(historyDir, file);
     try {
-      const content = JSON.parse(fs.readFileSync(snapshotPath, 'utf-8'));
-      if (!content || typeof content !== 'object') continue;
-      const scrapeDate = content.metadata?.scrapeDate || file.replace('catalog_', '').replace('.json', '');
-      const checksum = calculateChecksum(content);
-
-      const skuDetails = _findSkuInSnapshotEntries(content, cleanSku);
-      if (skuDetails) {
+      const indexed = _getIndexedCatalogSnapshot(snapshotPath);
+      if (!indexed) continue;
+      const scrapeDate = indexed.scrapeDate || file.replace('catalog_', '').replace('.json', '');
+      const hit = indexed.byCleanSku.get(cleanSku);
+      if (hit) {
+        const skuDetails = { ...hit };
         if (currentStatus !== 'DISCONTINUED') {
           currentStatus = _resolveObservedSkuLifecycle(skuDetails);
         }
@@ -217,7 +249,7 @@ function _scanSnapshotOccurrences(historyDir, cleanSku, initialStatus) {
         snapshotOccurrences.push({
           snapshotFile: file,
           scrapeDate,
-          snapshotChecksum: checksum,
+          snapshotChecksum: indexed.checksum,
           skuDetails
         });
       }

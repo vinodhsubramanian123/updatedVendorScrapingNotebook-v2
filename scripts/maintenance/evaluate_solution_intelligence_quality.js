@@ -40,6 +40,11 @@ const { issueDeliveryAuthorization, verifyDeliveryAuthorization } = require('../
 const depIndex = require('../lib/boq/evidence/dependency_index.js');
 const { loadActiveKnowledgeRules, recordRuleConsumption } = require('../lib/catalog/active_knowledge_router.js');
 const { preservePrimaryErrorOnReflectionFailure } = require('../lib/feedback/quarantined_deltas.js');
+const { validateCompositeSolutionContainment } = require('../lib/boq/composite_solution_validator.js');
+const { computeCandidateRunwayAndTradeOffs } = require('../lib/conflict/tradeoff_explainer.js');
+const { rankClarificationsByValueOfInformation, collectScopedIntakeTrapAdvisories } = require('../lib/conflict/sizing/voi_clarification_ranker.js');
+const { runPostExecutionReflection } = require('../lib/feedback/post_run_reflection.js');
+const { promoteLearnedInstructions } = require('../lib/feedback/instruction_promoter.js');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const FIXTURE_PATH = path.join(ROOT, 'tests', 'fixtures', 'solution_intelligence', 'scenario_families.js');
@@ -579,6 +584,127 @@ function _evalExportGateScenario(scenario) {
   };
 }
 
+function _evalCompositeContainmentScenario(scenario) {
+  const { input, expected } = scenario;
+  const containment = validateCompositeSolutionContainment(input.solution, input.options || {});
+  const gate = verifyPrePresentationAcceptance(
+    {
+      chassis: 'COMPOSITE_TENDER',
+      status: 'PASSED',
+      aspectChecksCompleted: true,
+      aspectChecks: Array.from({ length: 7 }, (_, i) => ({ id: i + 1, name: `Aspect ${i + 1}`, status: 'PASS', detail: 'OK' })),
+      items: input.solution.items,
+      requireCompositeContainment: Boolean(input.options?.requireCompositeContainment),
+      compositeContainment: containment
+    },
+    'BOQ_EVALUATION',
+    {}
+  );
+  const blocked = !gate.isValid;
+  const passed = containment.status === expected.status &&
+    (!expected.bomVerifierBlocked || blocked);
+  const falseAcc = Number(scenario.criticalSafetyGate && expected.bomVerifierBlocked && !blocked);
+  return {
+    passed,
+    observed: { status: containment.status, blocked, blockers: containment.blockers.length },
+    constraintStats: {
+      tp: Number(expected.status === 'FAIL' && containment.status === 'FAIL'),
+      fp: Number(expected.status !== 'FAIL' && containment.status === 'FAIL'),
+      tn: Number(expected.status !== 'FAIL' && containment.status !== 'FAIL'),
+      fn: Number(expected.status === 'FAIL' && containment.status !== 'FAIL')
+    },
+    safetyStats: { criticalChecked: Number(Boolean(scenario.criticalSafetyGate)), falseAcceptance: falseAcc }
+  };
+}
+
+function _evalTradeOffRunwayScenario(scenario) {
+  const { input, expected } = scenario;
+  const out = computeCandidateRunwayAndTradeOffs(input.candidates || [], {});
+  const first = out[0] || {};
+  const second = out[1] || {};
+  const passed = second.tradeOffVsBaseline?.capExDeltaUsd === expected.secondCapExDeltaUsd &&
+    first.day2Runway?.dimmSlotsFreePct === expected.firstDimmFreePct &&
+    second.day2Runway?.dimmSlotsFreePct === expected.secondDimmFreePct;
+  return {
+    passed,
+    observed: {
+      delta: second.tradeOffVsBaseline?.capExDeltaUsd,
+      firstDimm: first.day2Runway?.dimmSlotsFreePct,
+      secondDimm: second.day2Runway?.dimmSlotsFreePct
+    },
+    safetyStats: {
+      criticalChecked: Number(Boolean(scenario.criticalSafetyGate)),
+      falseAcceptance: Number(expected.secondCapExDeltaUsd === null && second.tradeOffVsBaseline?.capExDeltaUsd === 0)
+    }
+  };
+}
+
+function _evalVoiClarificationScenario(scenario) {
+  const { input, expected } = scenario;
+  const ranked = rankClarificationsByValueOfInformation(input.missingInputs, input.demandContext);
+  const traps = collectScopedIntakeTrapAdvisories(input.platform);
+  const topOk = ranked.topClarification?.field === expected.topField;
+  const hasExpectedTrap = traps.some(t => t.trapId.startsWith(expected.expectedTrapPrefix));
+  const lacksForbiddenTrap = !traps.some(t => t.trapId.startsWith(expected.forbiddenTrapPrefix));
+  const passed = topOk && hasExpectedTrap && lacksForbiddenTrap;
+  return {
+    passed,
+    observed: { topField: ranked.topClarification?.field, trapIds: traps.map(t => t.trapId) },
+    clarificationStats: { criticalAmbiguitiesCaught: Number(Boolean(ranked.topClarification)), unnecessaryClarifications: 0, safeAbstentions: Number(passed), avoidableIncompleteness: Number(!passed) },
+    safetyStats: { criticalChecked: Number(Boolean(scenario.criticalSafetyGate)), falseAcceptance: Number(!lacksForbiddenTrap) }
+  };
+}
+
+async function _evalReflectionPromotionScenario(scenario) {
+  const { input, expected } = scenario;
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'si10-f28-'));
+  try {
+    const queuePath = path.join(tmpDir, 'queue.json');
+    const digestPath = path.join(tmpDir, 'digest.md');
+    const regPath = path.join(tmpDir, 'registry.json');
+    if (input.mode === 'TIER0_REJECT') {
+      const res = runPostExecutionReflection({
+        responseData: input.responseData,
+        analysis: input.analysis,
+        traceId: 'TRC-F28-DEV',
+        options: { forceReflection: true, queuePath, digestPath }
+      });
+      const passed = res.enqueuedCount === expected.enqueuedCount && res.rejectedTier0Count >= expected.minRejectedTier0;
+      return {
+        passed,
+        observed: { enqueuedCount: res.enqueuedCount, rejectedTier0Count: res.rejectedTier0Count },
+        safetyStats: { criticalChecked: Number(Boolean(scenario.criticalSafetyGate)), falseAcceptance: Number(res.enqueuedCount > 0) }
+      };
+    }
+    const initQueue = { version: '1.0.0', lastUpdated: new Date().toISOString(), entries: input.queueEntries };
+    const initReg = { registryVersion: '2.0.0', deltas: [], chassisSpecificRules: [] };
+    safeWriteJsonAtomic(queuePath, initQueue);
+    safeWriteJsonAtomic(regPath, initReg);
+    const beforeQueue = fs.readFileSync(queuePath, 'utf8');
+    const beforeReg = fs.readFileSync(regPath, 'utf8');
+    const res = await promoteLearnedInstructions({
+      apply: true,
+      queuePath,
+      digestPath,
+      masterRegistryPath: regPath,
+      updateCatalogRules: false,
+      validatorFn: async () => ({ ok: false, error: 'Simulated gate regression' })
+    });
+    const afterQueue = fs.readFileSync(queuePath, 'utf8');
+    const afterReg = fs.readFileSync(regPath, 'utf8');
+    const bytesUnchanged = beforeQueue === afterQueue && beforeReg === afterReg;
+    const passed = res.status === expected.status && res.rolledBack === expected.rolledBack && bytesUnchanged;
+    return {
+      passed,
+      observed: { status: res.status, rolledBack: res.rolledBack, bytesUnchanged },
+      recoveryStats: { terminalRecoveryOk: Number(passed), terminalRecoveryTotal: 1, retractionInvalidationOk: 0, retractionInvalidationTotal: 0, freshProcessAppliedRuleEvidence: 0 },
+      safetyStats: { criticalChecked: Number(Boolean(scenario.criticalSafetyGate)), falseAcceptance: Number(!res.rolledBack) }
+    };
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+}
+
 const EVALUATOR_HANDLERS = Object.freeze({
   ROUTER_TRACK: _evalRouterTrack,
   REQUIREMENT_COVERAGE: _evalRequirementCoverageScenario,
@@ -594,7 +720,11 @@ const EVALUATOR_HANDLERS = Object.freeze({
   PROJECTION_PARITY: _evalProjectionParityScenario,
   ERROR_PRESERVATION: _evalErrorPreservationScenario,
   LEARNING_SEGREGATION: _evalLearningSegregationScenario,
-  EXPORT_GATE: _evalExportGateScenario
+  EXPORT_GATE: _evalExportGateScenario,
+  COMPOSITE_CONTAINMENT: _evalCompositeContainmentScenario,
+  TRADEOFF_RUNWAY: _evalTradeOffRunwayScenario,
+  VOI_CLARIFICATION: _evalVoiClarificationScenario,
+  REFLECTION_PROMOTION: _evalReflectionPromotionScenario
 });
 
 async function evaluateScenario(scenario) {

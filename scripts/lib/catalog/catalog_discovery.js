@@ -79,12 +79,17 @@ function _loadChassisMapJson() {
 }
 
 function _ingestConfiguredChassisSections(loaded, aggregated) {
+  const skuToProductId = {};
   for (const [id, v] of Object.entries(loaded.portfolio_products || {})) {
     aggregated[id] = { ...v, id, uHeight: _resolveDefaultUHeight({ id, ...v }), model: v.model || id.replace(/_/g, ' ') };
   }
   for (const group of Object.values(loaded.chassis_base_skus_by_family_gen || {})) {
     const pid = group?.catalogProductId;
-    const firstSku = Object.keys(group?.skus || {})[0] || null;
+    const skuKeys = Object.keys(group?.skus || {});
+    for (const sku of skuKeys) {
+      if (pid) skuToProductId[sku] = pid;
+    }
+    const firstSku = skuKeys[0] || null;
     if (pid && !aggregated[pid]) {
       aggregated[pid] = {
         family: group.family || 'ProLiant',
@@ -97,7 +102,14 @@ function _ingestConfiguredChassisSections(loaded, aggregated) {
     }
   }
   for (const [sku, v] of Object.entries(loaded.chassis_base_skus || {})) {
-    aggregated[sku] = { ...v, uHeight: _resolveDefaultUHeight(v), baseSku: sku, model: v.model || sku };
+    const catalogProductId = v.catalogProductId || skuToProductId[sku] || null;
+    aggregated[sku] = {
+      ...v,
+      catalogProductId,
+      uHeight: _resolveDefaultUHeight(v),
+      baseSku: sku,
+      model: v.model || sku
+    };
   }
 }
 
@@ -202,11 +214,14 @@ function detectChassisVariant(items, overrideVariant = '') {
   for (const it of (items || [])) {
     const clean = cleanBaseSKU(it.sku);
     if (chassisMap[clean]) {
-      return { ...chassisMap[clean], id: clean };
+      return {
+        ...chassisMap[clean],
+        id: chassisMap[clean].catalogProductId || chassisMap[clean].id || clean
+      };
     }
     for (const [id, info] of Object.entries(chassisMap)) {
       if (clean === info.baseSku || (it.description && it.description.toLowerCase().includes(id.toLowerCase()))) {
-        return { ...info, id };
+        return { ...info, id: info.catalogProductId || info.id || id };
       }
     }
   }

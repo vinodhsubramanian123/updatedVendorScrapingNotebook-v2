@@ -27,6 +27,7 @@ const { detectChassisVariant, getChassisMap, autoDetectChassisDir } = require('.
 const { isNonBomSheet } = require('./boq_parser.js');
 const { analyzeDeliveryPacing } = require('./delivery_pacing_analyzer.js');
 const { evaluateItemPricing } = require('./pricing_presence.js');
+const { validateCompositeSolutionContainment } = require('./composite_solution_validator.js');
 
 /**
  * Robustly find a valid HPE SKU within text with multiple tokens.
@@ -1063,6 +1064,7 @@ function analyzeAndPartitionClusters(rawItems, boqName = '', options = {}) {
 
   const overallPacing = analyzeDeliveryPacing(rawItems, { catalogData });
   const quantityConservation = buildQuantityConservationLedger(rawItems, { clusters, sharedInfrastructure });
+  const compositeContainment = validateCompositeSolutionContainment({ clusters, sharedInfrastructure, items: rawItems });
 
   return {
     isMultiCluster: true,
@@ -1071,6 +1073,7 @@ function analyzeAndPartitionClusters(rawItems, boqName = '', options = {}) {
     clusters,
     sharedInfrastructure,
     quantityConservation,
+    compositeContainment,
     deliveryPacing: overallPacing,
     recommendedUcidSplit: overallPacing.recommendedUcidSplit,
     ucidSplitReason: overallPacing.ucidSplitReason
@@ -1083,25 +1086,7 @@ function analyzeAndPartitionClusters(rawItems, boqName = '', options = {}) {
  * @param {string} outputDirectory 
  * @returns {Array<object>} Generated cluster workbooks metadata
  */
-/**
- * Generate separate Excel workbooks for each partitioned cluster.
- * @param {string|Array<object>} inputFilePath 
- * @param {string} outputDirectory 
- * @param {object|string} [options={}]
- * @returns {Array<object>} Generated cluster workbooks metadata
- */
-function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory, options = {}) {
-  const opts = typeof options === 'string' ? { chassis: options } : (options || {});
-
-  if (!fs.existsSync(outputDirectory)) {
-    fs.mkdirSync(outputDirectory, { recursive: true });
-  }
-
-  const rawItems = Array.isArray(inputFilePath) ? inputFilePath : extractRawItemsFromWorkbook(inputFilePath);
-  const partitionResult = analyzeAndPartitionClusters(rawItems);
-  const detectedChassis = partitionResult.detectedChassis || detectChassisVariant(rawItems);
-
-  // DeliveryAuthorization Enforcement (INV-128 / G07)
+function _assertClusterDeliveryAuth(opts, partitionResult, rawItems, detectedChassis) {
   const isDiagnostic = opts.diagnostic === true || opts.allowUncertified === true;
   const auth = opts.deliveryAuthorization || partitionResult.deliveryAuthorization;
   if (auth) {
@@ -1115,83 +1100,66 @@ function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory, options =
   } else if (!isDiagnostic && (opts.strictDeliveryAuth || process.env.STRICT_DELIVERY_AUTH === 'true')) {
     throw new Error('Presentation export blocked: Raw clusters have no DeliveryAuthorization. Use the canonical evaluated manifest or explicit diagnostic mode.');
   }
+}
+
+function _buildClusterWorkbookSheet(items, sheetTitle, outPath, statusFallback) {
+  const wb = XLSX.utils.book_new();
+  const sheetData = [
+    ['Part No', 'Qty', 'Description', 'Category', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']
+  ];
+  for (const item of items) {
+    const { isPriced, unitPriceUsd, isConfirmedZero } = evaluateItemPricing(item);
+    const displayUnitPrice = isPriced ? (unitPriceUsd === 0 ? (isConfirmedZero ? 0 : null) : unitPriceUsd) : null;
+    const displayExtendedPrice = (displayUnitPrice !== null && typeof displayUnitPrice === 'number')
+      ? displayUnitPrice * (item.quantity || 1)
+      : null;
+    sheetData.push([
+      item.sku, item.quantity, item.description, item.category, displayUnitPrice, displayExtendedPrice,
+      typeof statusFallback === 'function' ? statusFallback(item) : statusFallback
+    ]);
+  }
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(sheetData), sheetTitle);
+  XLSX.writeFile(wb, outPath);
+}
+
+/**
+ * Generate separate Excel workbooks for each partitioned cluster.
+ * @param {string|Array<object>} inputFilePath 
+ * @param {string} outputDirectory 
+ * @param {object|string} [options={}]
+ * @returns {Array<object>} Generated cluster workbooks metadata
+ */
+function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory, options = {}) {
+  const opts = typeof options === 'string' ? { chassis: options } : (options || {});
+  if (!fs.existsSync(outputDirectory)) fs.mkdirSync(outputDirectory, { recursive: true });
+
+  const rawItems = Array.isArray(inputFilePath) ? inputFilePath : extractRawItemsFromWorkbook(inputFilePath);
+  const partitionResult = analyzeAndPartitionClusters(rawItems);
+  const detectedChassis = partitionResult.detectedChassis || detectChassisVariant(rawItems);
+  _assertClusterDeliveryAuth(opts, partitionResult, rawItems, detectedChassis);
 
   const generatedWorkbooks = [];
+  const modelName = (detectedChassis.model || 'Server').replace(/\s+/g, '_');
 
-  partitionResult.clusters.forEach(cluster => {
-    const wb = XLSX.utils.book_new();
-    const sheetData = [
-      ['Part No', 'Qty', 'Description', 'Category', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']
-    ];
-
-    cluster.items.forEach(item => {
-      const { isPriced, unitPriceUsd, isConfirmedZero } = evaluateItemPricing(item);
-      const displayUnitPrice = isPriced ? (unitPriceUsd === 0 ? (isConfirmedZero ? 0 : null) : unitPriceUsd) : null;
-      const displayExtendedPrice = (displayUnitPrice !== null && typeof displayUnitPrice === 'number')
-        ? displayUnitPrice * (item.quantity || 1)
-        : null;
-      sheetData.push([
-        item.sku,
-        item.quantity,
-        item.description,
-        item.category,
-        displayUnitPrice,
-        displayExtendedPrice,
-        item.portalStatus || (item.policyMandated ? 'POLICY_MANDATED_LOCAL' : 'PORTAL_VALIDATION_PENDING')
-      ]);
-    });
-
-    const ws = XLSX.utils.aoa_to_sheet(sheetData);
-    XLSX.utils.book_append_sheet(wb, ws, 'Server Config');
-
-    const modelName = (detectedChassis.model || 'Server').replace(/\s+/g, '_');
-    const fileName = `${cluster.name}_${cluster.multiplier}x_${modelName}.xlsx`;
-    const outPath = path.join(outputDirectory, fileName);
-    XLSX.writeFile(wb, outPath);
-
+  for (const cluster of partitionResult.clusters) {
+    const outPath = path.join(outputDirectory, `${cluster.name}_${cluster.multiplier}x_${modelName}.xlsx`);
+    _buildClusterWorkbookSheet(
+      cluster.items, 'Server Config', outPath,
+      item => item.portalStatus || (item.policyMandated ? 'POLICY_MANDATED_LOCAL' : 'PORTAL_VALIDATION_PENDING')
+    );
     generatedWorkbooks.push({
-      clusterName: cluster.name,
-      multiplier: cluster.multiplier,
-      cpuSku: cluster.cpuSku,
-      filePath: outPath,
-      itemCount: cluster.items.length,
-      items: cluster.items
+      clusterName: cluster.name, multiplier: cluster.multiplier, cpuSku: cluster.cpuSku,
+      filePath: outPath, itemCount: cluster.items.length, items: cluster.items
     });
-  });
+  }
 
-  if (Array.isArray(partitionResult.sharedInfrastructure) && partitionResult.sharedInfrastructure.length > 0) {
-    const wb = XLSX.utils.book_new();
-    const sheetData = [
-      ['Part No', 'Qty', 'Description', 'Category', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']
-    ];
-    partitionResult.sharedInfrastructure.forEach(item => {
-      const { isPriced, unitPriceUsd, isConfirmedZero } = evaluateItemPricing(item);
-      const displayUnitPrice = isPriced ? (unitPriceUsd === 0 ? (isConfirmedZero ? 0 : null) : unitPriceUsd) : null;
-      const displayExtendedPrice = (displayUnitPrice !== null && typeof displayUnitPrice === 'number')
-        ? displayUnitPrice * (item.quantity || 1)
-        : null;
-      sheetData.push([
-        item.sku,
-        item.quantity,
-        item.description,
-        item.category,
-        displayUnitPrice,
-        displayExtendedPrice,
-        'PORTAL_VALIDATION_PENDING'
-      ]);
-    });
-    const ws = XLSX.utils.aoa_to_sheet(sheetData);
-    XLSX.utils.book_append_sheet(wb, ws, 'Shared Infrastructure');
+  const shared = partitionResult.sharedInfrastructure;
+  if (Array.isArray(shared) && shared.length > 0) {
     const outPath = path.join(outputDirectory, 'Shared_Infrastructure_Datacenter.xlsx');
-    XLSX.writeFile(wb, outPath);
-
+    _buildClusterWorkbookSheet(shared, 'Shared Infrastructure', outPath, 'PORTAL_VALIDATION_PENDING');
     generatedWorkbooks.push({
-      clusterName: 'Shared_Infrastructure',
-      multiplier: 1,
-      isSharedInfrastructure: true,
-      filePath: outPath,
-      itemCount: partitionResult.sharedInfrastructure.length,
-      items: partitionResult.sharedInfrastructure
+      clusterName: 'Shared_Infrastructure', multiplier: 1, isSharedInfrastructure: true,
+      filePath: outPath, itemCount: shared.length, items: shared
     });
   }
 
@@ -1199,8 +1167,9 @@ function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory, options =
     totalChassis: partitionResult.totalChassis,
     clusterCount: partitionResult.clusters.length,
     workbooks: generatedWorkbooks,
-    sharedInfrastructure: partitionResult.sharedInfrastructure || [],
-    quantityConservation: partitionResult.quantityConservation
+    sharedInfrastructure: shared || [],
+    quantityConservation: partitionResult.quantityConservation,
+    compositeContainment: partitionResult.compositeContainment
   };
 }
 

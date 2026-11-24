@@ -106,6 +106,11 @@ function projectTelemetry(content, parsed) {
   if (validIso(entry.timestamp)) entry.timestamp = marker;
   if (nonnegative(entry.durationMs)) entry.durationMs = marker;
   for (const key of stages) if (nonnegative(entry.stageBreakdown?.[key])) entry.stageBreakdown[key] = marker;
+  if (entry.phaseDurationsMs && typeof entry.phaseDurationsMs === 'object') {
+    for (const [key, val] of Object.entries(entry.phaseDurationsMs)) {
+      if (nonnegative(val)) entry.phaseDurationsMs[key] = marker;
+    }
+  }
   for (const key of ['rssMb', 'heapUsedMb', 'heapTotalMb']) if (nonnegative(entry.memoryUsage?.[key])) entry.memoryUsage[key] = marker;
   return result;
 }

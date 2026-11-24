@@ -74,11 +74,18 @@ test('Bug 2: Rules aggregation includes rules across Hardware and Services', () 
   assert(categoriesInRules.size >= 5, `Expected >= 5 categories in rules, got ${categoriesInRules.size}`);
 });
 
-// 3. Bug 3: Software & Licenses and Hardware Accessories are categorized by category
-test('Bug 3: Hardware Accessories and Software & Licenses sheets routed by category', () => {
-  assert(wb.SheetNames.includes('Hardware Accessories'), 'Missing Hardware Accessories sheet');
+// 3. Bug 3: Software & Licenses, Support Services, and Hardware Accessories / Infrastructure sheets routed by category
+test('Bug 3: Hardware Accessories / Infrastructure, Support Services, and Software & Licenses sheets routed by category', () => {
+  const accessoriesSheetName = wb.SheetNames.includes('Accessories & Infrastructure')
+    ? 'Accessories & Infrastructure'
+    : 'Hardware Accessories';
+  assert(
+    wb.SheetNames.includes(accessoriesSheetName),
+    'Missing Accessories & Infrastructure or Hardware Accessories sheet'
+  );
+  assert(wb.SheetNames.includes('Support Services'), 'Missing Support Services sheet');
   assert(wb.SheetNames.includes('Software & Licenses'), 'Missing Software & Licenses sheet');
-  
+
   const swWS = wb.Sheets['Software & Licenses'];
   const swData = XLSX.utils.sheet_to_json(swWS);
   assert(swData.length > 50, `Expected > 50 software SKUs, got ${swData.length}`);

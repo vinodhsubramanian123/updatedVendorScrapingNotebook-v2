@@ -1,0 +1,24 @@
+# Graphify noise exclusions (INV-276)
+# Prevent catalog spreadsheets, archived audit logs, fixtures, and scratch artifacts from polluting graphify-out/graph.json.
+outputs/
+*.xlsx
+*.xls
+*.xlsm
+*.csv
+*.tsv
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.zip
+docs/audits/archive/
+.agents/teamwork/
+tests/fixtures/
+scratch/
+temp/
+.chrome_sso_profile/
+dashboard/dist/
+node_modules/
+graphify-out/

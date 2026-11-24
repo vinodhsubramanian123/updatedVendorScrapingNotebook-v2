@@ -30,6 +30,7 @@ const {
   analyzePriceTrendAnalytics
 } = require('../conflict/sizing/scaling_interpolator.js');
 const { computeParetoFrontier } = require('../conflict/sizing/pareto_ranker.js');
+const { computeCandidateRunwayAndTradeOffs } = require('../conflict/tradeoff_explainer.js');
 
 const ALLETRA_MP_IDS = new Set(['Alletra_MP_B10000', 'Alletra_MP_X10000']);
 const FLAGSHIP_SERVER_ORDER = Object.freeze([
@@ -817,11 +818,14 @@ function compareSolutionsAcrossPlatforms(specOrQuery, options = {}) {
     (paretoFrontier.dominatedCandidates || []).map(c => [c.candidateId, c.dominatedByCandidateId || null])
   );
 
-  const comparisonMatrix = rows.map(row => ({
+  const rawMatrix = rows.map(row => ({
     ...row,
     paretoOptimal: frontierIds.has(row.platform),
     dominatedByPlatform: dominatedByMap.get(row.platform) || null
   }));
+  const comparisonMatrix = computeCandidateRunwayAndTradeOffs(rawMatrix, {
+    baselineId: rawMatrix[0]?.platform
+  });
   const crossGenerationDeltas = _computePairwiseCrossGenDeltas(comparisonMatrix);
   const hasAnyGaps = unresolvedPlatforms.length > 0 || comparisonMatrix.some(r => (r.catalogCoverageGaps?.length || 0) > 0);
   const status = comparisonMatrix.length === 0

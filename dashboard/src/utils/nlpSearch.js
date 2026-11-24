@@ -1,5 +1,35 @@
 import FlexSearch from 'flexsearch';
 
+function _buildIndexedSkuDoc(entry, skuItem, count) {
+  const rawPrice = skuItem.listPrice ??
+    skuItem['Unit Price (USD)'] ??
+    skuItem['Price (USD)'] ??
+    skuItem['List Price (USD)'] ??
+    skuItem['List Price'] ??
+    'N/A';
+  const rules = entry.rules || [];
+  return {
+    sku: skuItem.sku || skuItem['Product #'] || skuItem.partNumber || `SKU-${count}`,
+    description: skuItem.description || skuItem['Description'] || skuItem.name || '',
+    parentCategory: entry.parentCategory || '',
+    subCategory: entry.subCategory || '',
+    rules,
+    rulesStr: rules.join(' '),
+    optionType: skuItem.optionType || skuItem['Option Type'] || skuItem.Type || 'CTO',
+    listPrice: rawPrice,
+    diffStatus: skuItem.diffStatus || skuItem['Diff Status'] || 'UNCHANGED',
+    priceDelta: skuItem.priceDelta || skuItem['Price Delta (USD)'] || null,
+    constraint: entry.constraint,
+    isFioIncluded: Boolean(skuItem.isFioIncluded),
+    fioBadge: skuItem.fioBadge || '',
+    lifecycleStatus: skuItem.lifecycleStatus || 'ACTIVE',
+    obsoleteDate: skuItem.obsoleteDate || '',
+    lifecycleReason: skuItem.lifecycleReason || '',
+    replacementSku: skuItem.replacementSku || '',
+    isObsolete: Boolean(skuItem.isObsolete)
+  };
+}
+
 /**
  * Client-side SKU & Attribute NLP Indexer using FlexSearch
  */
@@ -33,41 +63,13 @@ class NlpCatalogIndexer {
     });
 
     let count = 0;
-    catalogJson.entries.forEach(entry => {
-      if (entry.skus && Array.isArray(entry.skus)) {
-        entry.skus.forEach(skuItem => {
-          const rawPrice = skuItem.listPrice ??
-            skuItem['Unit Price (USD)'] ??
-            skuItem['Price (USD)'] ??
-            skuItem['List Price (USD)'] ??
-            skuItem['List Price'] ??
-            'N/A';
-
-          const doc = {
-            sku: skuItem.sku || skuItem['Product #'] || skuItem.partNumber || `SKU-${count}`,
-            description: skuItem.description || skuItem['Description'] || skuItem.name || '',
-            parentCategory: entry.parentCategory || '',
-            subCategory: entry.subCategory || '',
-            rules: entry.rules || [],
-            rulesStr: (entry.rules || []).join(' '),
-            optionType: skuItem.optionType || skuItem['Option Type'] || skuItem.Type || 'CTO',
-            listPrice: rawPrice,
-            diffStatus: skuItem.diffStatus || skuItem['Diff Status'] || 'UNCHANGED',
-            priceDelta: skuItem.priceDelta || skuItem['Price Delta (USD)'] || null,
-            constraint: entry.constraint,
-            isFioIncluded: Boolean(skuItem.isFioIncluded),
-            fioBadge: skuItem.fioBadge || '',
-            lifecycleStatus: skuItem.lifecycleStatus || 'ACTIVE',
-            obsoleteDate: skuItem.obsoleteDate || '',
-            lifecycleReason: skuItem.lifecycleReason || '',
-            replacementSku: skuItem.replacementSku || '',
-            isObsolete: Boolean(skuItem.isObsolete)
-          };
-          this.index.add(doc);
-          count++;
-        });
+    for (const entry of catalogJson.entries) {
+      if (!Array.isArray(entry.skus)) continue;
+      for (const skuItem of entry.skus) {
+        this.index.add(_buildIndexedSkuDoc(entry, skuItem, count));
+        count++;
       }
-    });
+    }
     this.indexedCount = count;
   }
 

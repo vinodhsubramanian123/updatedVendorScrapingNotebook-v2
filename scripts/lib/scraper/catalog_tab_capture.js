@@ -193,13 +193,13 @@ async function selectCatalogTab(ws, href, api) {
     expression: `(() => { // CATALOG_TAB_SELECT
       const tab = Array.from(document.querySelectorAll('a.ui-tabs-anchor')).find(el => el.getAttribute('href') === ${JSON.stringify(href)});
       if (!tab) return false;
-      if (window.jQuery) {
+      if (typeof window.jQuery === 'function') {
         window.jQuery(tab).closest('li').data('canOpen', true);
         window.jQuery(tab).data('canOpen', true);
       }
       tab.click();
-      const $tabs = window.jQuery ? window.jQuery(tab).closest('.ui-tabs') : null;
-      const tabIndex = window.jQuery ? window.jQuery(tab).closest('li').index() : -1;
+      const $tabs = typeof window.jQuery === 'function' ? window.jQuery(tab).closest('.ui-tabs') : null;
+      const tabIndex = typeof window.jQuery === 'function' ? window.jQuery(tab).closest('li').index() : -1;
       if ($tabs && tabIndex >= 0) {
         try { $tabs.tabs('option', 'active', tabIndex); } catch (_) {}
       }

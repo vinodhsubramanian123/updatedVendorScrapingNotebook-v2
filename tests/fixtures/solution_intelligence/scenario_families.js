@@ -47,7 +47,12 @@ const SCENARIO_FAMILIES = Object.freeze([
   { familyId: 'F21', dimension: 'LIFECYCLE_INTERFACES', name: 'Offline Air-Gap & Error-Preserving Reflection' },
   { familyId: 'F22', dimension: 'LIFECYCLE_INTERFACES', name: 'Cancellation Discipline & Segregated Learning Consumption' },
   { familyId: 'F23', dimension: 'LIFECYCLE_INTERFACES', name: 'JSON/Markdown/XLSX/MCP Projection Parity & Portal Layout' },
-  { familyId: 'F24', dimension: 'LIFECYCLE_INTERFACES', name: 'Direct Export Gate, Fingerprint & Partial Review Rejection' }
+  { familyId: 'F24', dimension: 'LIFECYCLE_INTERFACES', name: 'Direct Export Gate, Fingerprint & Partial Review Rejection' },
+  // Dimension 4 & 1 & 5 Extension (Wave 4 Intelligence Elevation: F25-F28)
+  { familyId: 'F25', dimension: 'REASONING', name: 'Composite Multi-Domain Fabric & 42U Rack Containment' },
+  { familyId: 'F26', dimension: 'REASONING', name: 'Day-2 Runway & Nullable Marginal CapEx Trade-Offs' },
+  { familyId: 'F27', dimension: 'CUSTOMER_TRACKS', name: 'Value-of-Information Clarification Ranking & Scoped Trap Advisories' },
+  { familyId: 'F28', dimension: 'LIFECYCLE_INTERFACES', name: 'Two-Lane Post-Run Reflection Tier-0 Guard & Regression-Gated Promotion' }
 ]);
 
 const BASE_SERVER_ITEMS = [
@@ -1234,6 +1239,219 @@ const SCENARIO_CASES = Object.freeze([
       tokenValidBeforeStale: true,
       tokenValidAfterStale: false,
       fingerprintChanged: true
+    }
+  },
+
+  // ── F25: Composite Multi-Domain Fabric & 42U Rack Containment ──
+  {
+    id: 'SI10-F25-DEV',
+    familyId: 'F25',
+    dimension: 'REASONING',
+    split: 'dev',
+    origin: 'synthetic',
+    environment: 'offline',
+    adjudicationSource: 'INDEPENDENT_RULE_ADJUDICATION',
+    evaluatorKind: 'COMPOSITE_CONTAINMENT',
+    criticalSafetyGate: true,
+    title: 'Single SAN switch in dual-fabric tender and MM/SM optical mix fail containment & block acceptance',
+    input: {
+      solution: {
+        items: [
+          { sku: 'P73282-B21', description: 'HPE ProLiant DL380 Gen12 8SFF CTO Server', quantity: 2, watts: 800 },
+          { sku: 'R4D85A', description: 'HPE SN3600B 32Gb 24-port SAN Switch', quantity: 1, ports: 24, watts: 150 },
+          { sku: 'S0B84A', description: 'HPE Alletra Storage MP B10100 Storage Array', quantity: 1, watts: 900 },
+          { sku: 'Q2P63A', description: 'HPE 32Gb FC SFP28 OM4 MM Transceiver', quantity: 4 },
+          { sku: 'QK734A', description: 'HPE Single-Mode OS2 SMF LC Cable', quantity: 2 }
+        ]
+      },
+      options: { requireDualFabric: true, requireCompositeContainment: true }
+    },
+    expected: {
+      status: 'FAIL',
+      bomVerifierBlocked: true
+    }
+  },
+  {
+    id: 'SI10-F25-HELD',
+    familyId: 'F25',
+    dimension: 'REASONING',
+    split: 'held_out',
+    origin: 'anonymized_customer_derived',
+    environment: 'offline',
+    adjudicationSource: 'INDEPENDENT_RULE_ADJUDICATION',
+    evaluatorKind: 'COMPOSITE_CONTAINMENT',
+    criticalSafetyGate: true,
+    title: 'Optical SAN fabric missing transceivers and wattage denominator returns UNKNOWN instead of silent PASS',
+    input: {
+      solution: {
+        items: [
+          { sku: 'P73282-B21', description: 'HPE ProLiant DL380 Gen12 8SFF CTO Server', quantity: 2 },
+          { sku: 'R4D85A', description: 'HPE SN3600B 32Gb 24-port SAN Switch', quantity: 2, ports: 24 },
+          { sku: 'S0B84A', description: 'HPE Alletra Storage MP B10100 Array', quantity: 1 }
+        ]
+      },
+      options: { requireDualFabric: true, fcDemandPorts: 16 }
+    },
+    expected: {
+      status: 'UNKNOWN',
+      bomVerifierBlocked: false
+    }
+  },
+
+  // ── F26: Day-2 Runway & Nullable Marginal CapEx Trade-Offs ──
+  {
+    id: 'SI10-F26-DEV',
+    familyId: 'F26',
+    dimension: 'REASONING',
+    split: 'dev',
+    origin: 'synthetic',
+    environment: 'offline',
+    adjudicationSource: 'INDEPENDENT_RULE_ADJUDICATION',
+    evaluatorKind: 'TRADEOFF_RUNWAY',
+    criticalSafetyGate: false,
+    title: 'Marginal trade-off explainer computes exact CapEx delta and nullable Day-2 DIMM runway percentages',
+    input: {
+      candidates: [
+        { strategyId: 'STRATEGY_CLOSEST_INTENT', estimatedCostUsd: 10000, dimmCount: 8, maxDimmSlots: 32, skuPartsList: [{ sku: 'A' }] },
+        { strategyId: 'STRATEGY_EXPANSION', estimatedCostUsd: 12000, dimmCount: 16, maxDimmSlots: 32, skuPartsList: [{ sku: 'A' }, { sku: 'EXP-RAM' }] }
+      ]
+    },
+    expected: {
+      secondCapExDeltaUsd: 2000,
+      firstDimmFreePct: 75,
+      secondDimmFreePct: 50
+    }
+  },
+  {
+    id: 'SI10-F26-HELD',
+    familyId: 'F26',
+    dimension: 'REASONING',
+    split: 'held_out',
+    origin: 'anonymized_customer_derived',
+    environment: 'offline',
+    adjudicationSource: 'INDEPENDENT_RULE_ADJUDICATION',
+    evaluatorKind: 'TRADEOFF_RUNWAY',
+    criticalSafetyGate: true,
+    title: 'Incomplete-pricing alternative retains capExDeltaUsd === null rather than coercing to $0',
+    input: {
+      candidates: [
+        { strategyId: 'STRATEGY_CLOSEST_INTENT', estimatedCostUsd: 15000, pricingComplete: true },
+        { strategyId: 'STRATEGY_PERFORMANCE', estimatedCostUsd: 0, pricingComplete: false }
+      ]
+    },
+    expected: {
+      secondCapExDeltaUsd: null,
+      firstDimmFreePct: null,
+      secondDimmFreePct: null
+    }
+  },
+
+  // ── F27: Value-of-Information Clarification Ranking & Scoped Trap Advisories ──
+  {
+    id: 'SI10-F27-DEV',
+    familyId: 'F27',
+    dimension: 'CUSTOMER_TRACKS',
+    split: 'dev',
+    origin: 'synthetic',
+    environment: 'offline',
+    adjudicationSource: 'INDEPENDENT_RULE_ADJUDICATION',
+    evaluatorKind: 'VOI_CLARIFICATION',
+    criticalSafetyGate: false,
+    title: 'Ranks missing critical sizing inputs deterministically by structural impact and CapEx swing',
+    input: {
+      missingInputs: ['targetSlaTier', 'workingSetGb', 'resilienceMode'],
+      demandContext: { nodeCount: 4 },
+      platform: 'DL380_Gen12'
+    },
+    expected: {
+      topField: 'resilienceMode',
+      expectedTrapPrefix: 'TRAP-DL380G12',
+      forbiddenTrapPrefix: 'TRAP-B10K'
+    }
+  },
+  {
+    id: 'SI10-F27-HELD',
+    familyId: 'F27',
+    dimension: 'CUSTOMER_TRACKS',
+    split: 'held_out',
+    origin: 'anonymized_customer_derived',
+    environment: 'offline',
+    adjudicationSource: 'INDEPENDENT_RULE_ADJUDICATION',
+    evaluatorKind: 'VOI_CLARIFICATION',
+    criticalSafetyGate: true,
+    title: 'DL380a Gen12 scoped intake trap advisories exclude cross-product Alletra MP traps',
+    input: {
+      missingInputs: ['utilityLineVoltage', 'gpuCount'],
+      demandContext: { nodeCount: 2 },
+      platform: 'DL380a Gen12'
+    },
+    expected: {
+      topField: 'gpuCount',
+      expectedTrapPrefix: 'TRAP-DL380A',
+      forbiddenTrapPrefix: 'TRAP-B10K'
+    }
+  },
+
+  // ── F28: Two-Lane Post-Run Reflection & Regression-Gated Promotion ──
+  {
+    id: 'SI10-F28-DEV',
+    familyId: 'F28',
+    dimension: 'LIFECYCLE_INTERFACES',
+    split: 'dev',
+    origin: 'synthetic',
+    environment: 'offline',
+    adjudicationSource: 'INDEPENDENT_RULE_ADJUDICATION',
+    evaluatorKind: 'REFLECTION_PROMOTION',
+    criticalSafetyGate: true,
+    title: 'Post-run reflection blocks Tier-0 untrusted customer input claims from entering queue',
+    input: {
+      mode: 'TIER0_REJECT',
+      responseData: {
+        chassis: 'DL380_Gen12',
+        aspectChecksCompleted: false,
+        missingDependencies: [{ reason: 'Customer upload requires arbitrary X123 kit' }],
+        opinionDiscrepancies: [{ detail: 'Unverified customer claim discrepancy' }]
+      },
+      analysis: { epistemicIntegrity: { tier: 'TIER_0_UNTRUSTED_CLAIM' } }
+    },
+    expected: {
+      enqueuedCount: 0,
+      minRejectedTier0: 2
+    }
+  },
+  {
+    id: 'SI10-F28-HELD',
+    familyId: 'F28',
+    dimension: 'LIFECYCLE_INTERFACES',
+    split: 'held_out',
+    origin: 'anonymized_customer_derived',
+    environment: 'offline',
+    adjudicationSource: 'INDEPENDENT_RULE_ADJUDICATION',
+    evaluatorKind: 'REFLECTION_PROMOTION',
+    criticalSafetyGate: true,
+    title: 'Regression-gated promotion automatically rolls back queue and registry when validator gate fails',
+    input: {
+      mode: 'ROLLBACK_ON_FAIL',
+      queueEntries: [
+        {
+          proposalId: 'LEARN-TESTFAIL1',
+          ruleKey: 'testfail1',
+          status: 'PENDING',
+          chassis: 'DL380_Gen12',
+          category: 'MANDATORY_DEPENDENCY',
+          affectedSku: 'P67088-B21',
+          targetSku: 'P48820-B21',
+          summary: 'High-TDP requires P48820-B21',
+          ruleUpdate: 'Require P48820-B21 for >240W CPUs',
+          authoritativeObservationCount: 3,
+          verifiedPortalOrHumanReceipt: false
+        }
+      ]
+    },
+    expected: {
+      status: 'ROLLED_BACK',
+      rolledBack: true,
+      bytesUnchanged: true
     }
   }
 ]);

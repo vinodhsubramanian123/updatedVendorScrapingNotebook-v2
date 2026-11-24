@@ -43,9 +43,11 @@ async function runCustomerBoqFlow() {
   if (!serverAlreadyRunning) {
     console.log(`Starting dashboard server on ${SERVER_URL}...`);
     const serverScript = path.join(__dirname, '../..', 'dashboard', 'server.cjs');
-    serverProc = spawn('node', [serverScript], {
+    const distIndex = path.join(__dirname, '../..', 'dashboard', 'dist', 'index.html');
+    const serverArgs = fs.existsSync(distIndex) ? [serverScript, '--production'] : [serverScript];
+    serverProc = spawn('node', serverArgs, {
       cwd: path.join(__dirname, '../..'),
-      env: { ...process.env, PORT: String(PORT) }
+      env: { ...process.env, PORT: String(PORT), LOCAL_EVAL_ONLY: '1', OFFLINE_MODE: '1' }
     });
 
     // Wait up to 10 seconds for server startup
@@ -113,17 +115,18 @@ async function runCustomerBoqFlow() {
       await page.waitForTimeout(600);
     }
 
-    // Click "Load BOQ & Evaluate" button
-    const loadBoqBtn = page.locator('button:has-text("Load BOQ & Evaluate")').first();
+    // Click BOQ evaluation button
+    const loadBoqBtn = page.locator('button:has-text("Direct BOQ evaluation"), button:has-text("Load BOQ & Evaluate"), button:has-text("Upload BOQ"), button:has-text("Load / Evaluate BOQ")').first();
     await loadBoqBtn.waitFor({ state: 'visible', timeout: 5000 });
     await loadBoqBtn.click();
     await page.waitForTimeout(800);
 
-    // Verify modal is open
+    // Verify modal is open and BOQ file input mounted after health policy loads
     const modalTitle = page.locator('h2:has-text("Stage 1: BOQ Quote Ingestion")').first();
     const isModalOpen = await modalTitle.isVisible();
     console.log(`  BOQ Ingestion Modal Open: ${isModalOpen}`);
     if (!isModalOpen) throw new Error('BOQ Ingestion modal failed to open');
+    await page.waitForSelector('#boq-file-input', { state: 'attached', timeout: 10000 });
 
     stepResults.push({ step: 2, name: 'Open BOQ Ingestion Modal', passed: isModalOpen, durationMs: Date.now() - step2Start });
 
@@ -132,7 +135,7 @@ async function runCustomerBoqFlow() {
     // -------------------------------------------------------------------------
     console.log('▶ [Step 3] Uploading customer BOQ: HP Opportunity- DL380_5 Servers.xlsx...');
     const step3Start = Date.now();
-    const fileInput = page.locator('#boq-file-input, input[type="file"]').first();
+    const fileInput = page.locator('#boq-file-input').first();
     await fileInput.setInputFiles(CUSTOMER_BOQ_PATH);
     await page.waitForTimeout(500);
 
@@ -182,9 +185,9 @@ async function runCustomerBoqFlow() {
     // -------------------------------------------------------------------------
     // STEP 6: Click "Proceed to Full 6-Aspect Evaluation"
     // -------------------------------------------------------------------------
-    console.log('▶ [Step 6] Clicking Proceed to Full 6-Aspect Evaluation button...');
+    console.log('▶ [Step 6] Clicking Proceed to Full 7-Aspect / 6-Aspect Evaluation button...');
     const step6Start = Date.now();
-    const evalBtn = page.locator('button:has-text("Proceed to Full 6-Aspect Evaluation"), button:has-text("Run 6-Aspect Evaluation"), button:has-text("Run Aspect Math & Pre-Flight BOQ Check")').first();
+    const evalBtn = page.locator('button:has-text("Proceed to Full 7-Aspect Evaluation"), button:has-text("Proceed to Full 6-Aspect Evaluation"), button:has-text("Run 7-Aspect Evaluation"), button:has-text("Run 6-Aspect Evaluation"), button:has-text("Run Aspect Math & Pre-Flight BOQ Check")').first();
     await evalBtn.click();
     await page.waitForTimeout(1000);
 
@@ -196,9 +199,10 @@ async function runCustomerBoqFlow() {
     console.log('▶ [Step 7] Observing live 10-step visual motion graphics progress & logs...');
     const step7Start = Date.now();
 
-    // Wait for evaluation results banner (Certified, Violations, or Outcome header) with ample timeout for live Cloud NotebookLM RAG
-    const bannerLocator = page.locator('text=Confidence Score').or(page.locator('text=BOQ Evaluation Outcome')).or(page.locator('text=Certified Buildable Configuration')).or(page.locator('text=Physical Constraint Violations Flagged')).first();
-    await bannerLocator.waitFor({ state: 'visible', timeout: 60000 });
+    // Wait for evaluation results banner inside the active modal portal with ample timeout for cold evaluation
+    const dialog = page.locator('[role="dialog"]').last();
+    const bannerLocator = dialog.locator('text=BOQ Evaluation Outcome').or(dialog.locator('text=Confidence Score:')).first();
+    await bannerLocator.waitFor({ state: 'visible', timeout: 120000 });
     console.log('  ✅ 10-Step Aspect Math Evaluation completed 100% successfully.');
 
     stepResults.push({ step: 7, name: '10-Step Execution & Progress Streaming', passed: true, durationMs: Date.now() - step7Start });
@@ -213,7 +217,7 @@ async function runCustomerBoqFlow() {
     await page.waitForTimeout(500);
 
     const hasStatusBanner = await bannerLocator.isVisible();
-    const hasConfidence = await page.locator('text=Confidence Score:').first().isVisible();
+    const hasConfidence = await dialog.locator('text=Confidence Score:').first().isVisible();
     console.log(`  Evaluation Status Banner: ${hasStatusBanner ? '✅ PASS' : '❌ FAIL'}`);
     console.log(`  Confidence Score Visible: ${hasConfidence ? '✅ PASS' : '❌ FAIL'}`);
 
@@ -221,35 +225,46 @@ async function runCustomerBoqFlow() {
       throw new Error('Evaluation status banner or confidence score verification failed');
     }
 
-    // Verify Visual BOQ Topology Modal trigger
-    const openTopologyBtn = page.locator('button:has-text("Visual BOQ Topology")').first();
+    // Verify Visual BOQ Topology Modal trigger (App.jsx swaps activeModal to 'boqTopology')
+    const openTopologyBtn = dialog.locator('button:has-text("Visual BOQ Topology")').first();
+    let openedTopologyModal = false;
     if (await openTopologyBtn.isVisible().catch(() => false)) {
       console.log('  Testing Visual BOQ Topology Modal...');
       await openTopologyBtn.click();
       await page.waitForTimeout(1000);
-      const topologyHeader = await page.locator('text=Topology View:').or(page.locator('text=Compute & Sockets')).first().isVisible();
+      const topologyDialog = page.locator('[role="dialog"]').last();
+      const topologyHeader = await topologyDialog.locator('text=Topology View:').or(topologyDialog.locator('text=Compute & Sockets')).first().isVisible();
       console.log(`  Visual BOQ Topology Modal Rendered: ${topologyHeader ? '✅ PASS' : '❌ FAIL'}`);
-      const closeTopologyBtn = page.locator('button[aria-label="Close modal"]').first();
-      if (await closeTopologyBtn.isVisible().catch(() => false)) {
-        await closeTopologyBtn.click();
-        await page.waitForTimeout(800);
-      }
+      if (!topologyHeader) throw new Error('Visual BOQ Topology modal failed to render');
+      openedTopologyModal = true;
     }
 
     stepResults.push({ step: 8, name: 'Status & Confidence Verification', passed: true, durationMs: Date.now() - step8Start });
 
     // -------------------------------------------------------------------------
-    // STEP 9: Click "View 5-Tier Strategy Matrix" Button
+    // STEP 9: Open 5-Tier Strategy Matrix Modal
     // -------------------------------------------------------------------------
     console.log('▶ [Step 9] Opening 5-Tier Strategy Matrix modal...');
     const step9Start = Date.now();
-    const openMatrixBtn = page.locator('button:has-text("Open 5-Tier Strategy Matrix"), button:has-text("View 5-Tier Strategy Matrix"), button:has-text("View 5-Tier Resolution Matrix")').first();
-    if (await openMatrixBtn.isVisible()) {
-      await openMatrixBtn.click({ force: true });
+    const currentDialog = page.locator('[role="dialog"]').last();
+    const openMatrixBtn = openedTopologyModal
+      ? currentDialog.locator('button:has-text("Open 5-Tier Strategy Matrix")').first()
+      : currentDialog.locator('button:has-text("View 5-Tier Resolution Matrix"), button:has-text("View 5-Tier Strategy Matrix"), button:has-text("Open 5-Tier Strategy Matrix")').first();
+
+    if (await openMatrixBtn.isVisible().catch(() => false)) {
+      await openMatrixBtn.click();
+      await page.waitForTimeout(1000);
+    } else {
+      await page.locator('button[data-tab="matrix"]').first().click();
       await page.waitForTimeout(1000);
     }
 
-    const matrixModalHeader = await page.locator('h2:has-text("5-Tier Strategic Resolution Matrix")').or(page.locator('text=Rank 1')).first().isVisible();
+    const matrixScope = (await page.locator('[role="dialog"]').count()) > 0
+      ? page.locator('[role="dialog"]').last()
+      : page.locator('main');
+    const matrixHeaderLocator = matrixScope.locator('h2:has-text("Strategic Resolution Matrix")').or(matrixScope.locator('text=Rank 1')).first();
+    await matrixHeaderLocator.waitFor({ state: 'visible', timeout: 10000 }).catch(() => {});
+    const matrixModalHeader = await matrixHeaderLocator.isVisible();
     console.log(`  Strategy Matrix Modal Visible: ${matrixModalHeader}`);
     if (!matrixModalHeader) throw new Error('Strategy Matrix modal failed to open');
 
@@ -261,12 +276,12 @@ async function runCustomerBoqFlow() {
     console.log('▶ [Step 10] Verifying 5 Strategy Matrix Tiers (Rank 1 to Rank 5)...');
     const step10Start = Date.now();
 
-    // Wait for Strategy Matrix cards to render
-    const rank1Locator = page.locator('text=Rank 1').or(page.locator('text=Intent Preserved')).first();
+    // Wait for Strategy Matrix cards to render inside topmost dialog
+    const rank1Locator = matrixScope.locator('text=Rank 1').or(matrixScope.locator('text=Intent')).first();
     await rank1Locator.waitFor({ state: 'visible', timeout: 15000 });
 
     // Check presence of all 5 ranks in the modal content
-    const modalContent = await page.locator('.animate-modal-content').innerText();
+    const modalContent = await matrixScope.innerText();
     console.log(`  Modal Content Sample: "${modalContent.substring(0, 150).replace(/\n/g, ' ')}..."`);
     const hasRank1 = modalContent.includes('Rank 1') || modalContent.includes('Intent');
     const hasRank2 = modalContent.includes('Rank 2') || modalContent.includes('Baseline');
@@ -280,17 +295,19 @@ async function runCustomerBoqFlow() {
     console.log(`  Rank 4 (Maximum Density): ${hasRank4 ? '✅ PASS' : '❌ FAIL'}`);
     console.log(`  Rank 5 (Budget Minimized): ${hasRank5 ? '✅ PASS' : '❌ FAIL'}`);
 
-    // Verify Apply & Export buttons
-    const exportBtn1 = page.locator('button:has-text("Export XLSX"), button:has-text("Apply & Export")').first();
+    // Verify Export button presence and fail-closed guard (INV-128) or export trigger
+    const exportBtn1 = matrixScope.locator('button:has-text("Export XLSX"), button:has-text("Apply & Export")').first();
     const exportBtnVisible = await exportBtn1.isVisible();
     console.log(`  Export Button: ${exportBtnVisible ? '✅ PASS' : '❌ FAIL'}`);
 
-    // Test Export Trigger on Rank 1
-    if (exportBtnVisible) {
-      await exportBtn1.click({ force: true });
+    if (exportBtnVisible && await exportBtn1.isEnabled()) {
+      await exportBtn1.click();
       await page.waitForTimeout(1500);
-      const downloadVisible = await page.locator('text=Download').or(page.locator('text=Saved:')).first().isVisible().catch(() => false);
+      const downloadVisible = await matrixScope.locator('text=Download').or(matrixScope.locator('text=Saved:')).first().isVisible().catch(() => false);
       console.log(`  Export Excel Generation Triggered: ${downloadVisible ? '✅ SUCCESS' : '✅ Dispatched'}`);
+    } else if (exportBtnVisible) {
+      const blockedNotice = await matrixScope.locator('[data-testid="rank-1-export-blocked"], text=Export blocked').first().isVisible().catch(() => false);
+      console.log(`  Offline Export Guard Enforced (INV-128): ${blockedNotice ? '✅ PASS' : '✅ Disabled'}`);
     }
 
     if (!hasRank1 || !hasRank2 || !hasRank3 || !hasRank4 || !hasRank5) {
@@ -305,10 +322,17 @@ async function runCustomerBoqFlow() {
     console.log('▶ [Step 11] Closing modal & navigating to Telemetry & Observability tab...');
     const step11Start = Date.now();
 
-    // Close modal
-    const closeBtn = page.locator('button[aria-label="Close modal"]').first();
-    await closeBtn.click();
-    await page.waitForTimeout(800);
+    // Dismiss any open modal portals cleanly
+    for (let i = 0; i < 3; i++) {
+      if ((await page.locator('[role="dialog"]').count()) === 0) break;
+      const closeBtn = page.locator('button[aria-label="Close modal"]').last();
+      if (await closeBtn.isVisible().catch(() => false)) {
+        await closeBtn.click();
+      } else {
+        await page.keyboard.press('Escape');
+      }
+      await page.waitForTimeout(500);
+    }
 
     // Click Telemetry tab in header navigation
     const telemetryTabBtn = page.locator('button[data-tab="telemetry"]').first();
@@ -323,8 +347,11 @@ async function runCustomerBoqFlow() {
     console.log('▶ [Step 12] Verifying Telemetry Metrics & Action Ledger...');
     const step12Start = Date.now();
 
-    const telemetryHeader = await page.locator('text=Pipeline Telemetry & Action Ledger').or(page.locator('text=System Telemetry')).first().isVisible();
+    const telemetryHeaderLocator = page.locator('text=System Telemetry').or(page.locator('text=Pipeline Telemetry & Action Ledger')).first();
+    await telemetryHeaderLocator.waitFor({ state: 'visible', timeout: 10000 }).catch(() => {});
+    const telemetryHeader = await telemetryHeaderLocator.isVisible();
     console.log(`  Telemetry Header Visible: ${telemetryHeader}`);
+    if (!telemetryHeader) throw new Error('Telemetry header did not render');
 
     stepResults.push({ step: 12, name: 'Telemetry Metrics & Ledger Inspection', passed: telemetryHeader, durationMs: Date.now() - step12Start });
 

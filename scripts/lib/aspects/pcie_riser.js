@@ -249,28 +249,27 @@ function tallyPcieItems(items, catalogData, mandatorySkus = {}) {
   return tally;
 }
 
-function calculatePcieSlots(t, serverCount = 1) {
-  // Compute per-node values (single server node set) since multi-node cluster configurations
-  // aggregate total units across all server nodes.
-  const nodes = Math.max(1, serverCount || 1);
-  const perNodeCards = t.requiredPcieCards / nodes;
-  const perNodeGpuCount = t.gpuCount / nodes;
-  const perNodeGpuPowerCableKitCount = t.gpuPowerCableKitCount / nodes;
-  const perNodePrimaryRiser = t.primaryRiserCount / nodes;
-  const perNodeSecondaryRiser = t.secondaryRiserCount / nodes;
-  const perNodeTertiaryRiser = t.tertiaryRiserCount / nodes;
-  const perNodeX16Required = t.x16RequiredCount / nodes;
-
-  // On DL380a Gen12 or with DL380a rear FIO kit P74690-B21, all 3 rear slots are native and active.
-  // Standard DL380 Gen11 optional 3x16 riser (P48803-B21) requires Primary Cable Kit (P56073-B21) to activate Slot 1.
+function _resolveActiveSlotEnvelope(t, perNodePrimaryRiser, perNodeSecondaryRiser, perNodeTertiaryRiser) {
   const isDl380a = t.isDl380a || t.riserEvidence.some(r => r.sku === 'P74690-B21' || (r.description && r.description.includes('dl380a')));
   const activePrimarySlots = isDl380a ? 3 : (perNodePrimaryRiser > 0 ? (t.hasPrimaryCableKit ? 3 : 2) : 0);
   const activeSecondarySlots = perNodeSecondaryRiser > 0 ? (t.hasSecondaryCableKit ? 3 : 2) : 0;
   const activeTertiarySlots = perNodeTertiaryRiser > 0 ? 2 : 0;
+  const activeSlotsAvailable = activePrimarySlots + activeSecondarySlots + activeTertiarySlots;
+  return { isDl380a, activePrimarySlots, activeSecondarySlots, activeTertiarySlots, activeSlotsAvailable };
+}
+
+function calculatePcieSlots(t, serverCount = 1) {
+  const nodes = Math.max(1, serverCount || 1);
+  const perNodeCards = t.requiredPcieCards / nodes;
+  const perNodePrimaryRiser = t.primaryRiserCount / nodes;
+  const perNodeSecondaryRiser = t.secondaryRiserCount / nodes;
+  const perNodeTertiaryRiser = t.tertiaryRiserCount / nodes;
+
+  const { isDl380a, activePrimarySlots, activeSecondarySlots, activeTertiarySlots, activeSlotsAvailable } =
+    _resolveActiveSlotEnvelope(t, perNodePrimaryRiser, perNodeSecondaryRiser, perNodeTertiaryRiser);
 
   const installedRiserSlots = t.riserEvidence.reduce((sum, riser) => sum + (riser.slotsPerRiser * (riser.quantity / nodes)), 0);
   const totalPhysicalSlots = 3 + installedRiserSlots;
-  const activeSlotsAvailable = activePrimarySlots + activeSecondarySlots + activeTertiarySlots;
 
   const isExceedingTotalSlots = perNodeCards > totalPhysicalSlots && totalPhysicalSlots > 0;
   const isExceedingActiveSlots = (perNodePrimaryRiser > 0 && perNodeSecondaryRiser > 0)
@@ -278,22 +277,16 @@ function calculatePcieSlots(t, serverCount = 1) {
     : (perNodeCards > activeSlotsAvailable);
 
   const needsPrimaryRiser = !isDl380a && perNodeCards > 0 && perNodePrimaryRiser === 0;
-
-  // INV-31: 5 or more PCIe cards require cable kits for Slot 1 & secondary power
-  const needsPrimaryCableKit = !isDl380a && perNodePrimaryRiser > 0 && !t.hasPrimaryCableKit && 
+  const needsPrimaryCableKit = !isDl380a && perNodePrimaryRiser > 0 && !t.hasPrimaryCableKit &&
     (perNodeCards >= 5 || perNodeCards > (2 + activeSecondarySlots + activeTertiarySlots));
-  
-  const needsSecondaryCableKit = perNodeSecondaryRiser > 0 && !t.hasSecondaryCableKit && 
+  const needsSecondaryCableKit = perNodeSecondaryRiser > 0 && !t.hasSecondaryCableKit &&
     (perNodeCards >= 5 || perNodeCards > (activePrimarySlots + 2 + activeTertiarySlots) || perNodeCards > 4);
-
   const needsSecondaryRiser = perNodeCards > (3 + (perNodePrimaryRiser * 3)) && perNodeSecondaryRiser === 0;
-  const needsGpuPowerCableKit = perNodeGpuCount > perNodeGpuPowerCableKitCount;
+  const needsGpuPowerCableKit = (t.gpuCount / nodes) > (t.gpuPowerCableKitCount / nodes);
 
-  // x16 Lanes: Without primary riser card, 0 lanes available unless DL380a captive bus
-  const x16LanesAvailable = (perNodePrimaryRiser > 0 ? (t.hasPrimaryCableKit ? 2 : 1) : (isDl380a ? 1 : 0)) + 
-                            (perNodeSecondaryRiser > 0 ? (t.hasSecondaryCableKit ? 2 : 1) : 0) + 
+  const x16LanesAvailable = (perNodePrimaryRiser > 0 ? (t.hasPrimaryCableKit ? 2 : 1) : (isDl380a ? 1 : 0)) +
+                            (perNodeSecondaryRiser > 0 ? (t.hasSecondaryCableKit ? 2 : 1) : 0) +
                             (perNodeTertiaryRiser > 0 ? 1 : 0);
-  const laneBifurcationConstraint = perNodeX16Required > x16LanesAvailable;
 
   return {
     totalPhysicalSlots,
@@ -306,7 +299,7 @@ function calculatePcieSlots(t, serverCount = 1) {
     needsSecondaryRiser,
     needsGpuPowerCableKit,
     x16LanesAvailable,
-    laneBifurcationConstraint,
+    laneBifurcationConstraint: (t.x16RequiredCount / nodes) > x16LanesAvailable,
     installedRiserSlots
   };
 }

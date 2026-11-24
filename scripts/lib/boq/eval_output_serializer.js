@@ -23,6 +23,10 @@ const { recordEvaluationTelemetry } = require('../system/telemetry.js');
 const { emitProgress } = require('../system/progress.js');
 const logger = require('../system/pipeline_logger.js');
 const { candidateReviewCurrent, deliveryFingerprint, blocksDependencyAcceptance, catalogEvidenceBoundary } = require('./solution_evidence');
+const _blocksDependencyAcceptance = typeof blocksDependencyAcceptance === 'function'
+  ? blocksDependencyAcceptance
+  : (boundary => Boolean(boundary && (boundary.isStale === true || boundary.status === 'STALE_INVALIDATED' || boundary.canGrantAcceptance === false || (boundary.status !== 'VALID' && boundary.isStale !== false))));
+const _catalogEvidenceBoundary = typeof catalogEvidenceBoundary === 'function' ? catalogEvidenceBoundary : (() => null);
 const { verifyDeliveryAuthorization, assertDeliveryAuthorization, signArtifactIntegrityManifest, verifyArtifactIntegrityManifest } = require('../contracts/workflow_contract');
 const { verifyCurrentPortalReceipt } = require('./portal_receipt.js');
 const { toClickableFileUri, toReportLink } = require('../system/uri_helper.js');
@@ -717,8 +721,8 @@ function _buildTracePayloads(ctx) {
  * Handle Google Drive deliverable upload if requested
  */
 function assertArtifactIntegrity(evaluation) {
-  if (blocksDependencyAcceptance(evaluation.dependencyInvalidation) ||
-      blocksDependencyAcceptance(catalogEvidenceBoundary(evaluation.catalogEvidence))) {
+  if (_blocksDependencyAcceptance(evaluation.dependencyInvalidation) ||
+      _blocksDependencyAcceptance(_catalogEvidenceBoundary(evaluation.catalogEvidence))) {
     throw new Error('Google Sheet publication blocked: Evidence dependency validity is not confirmed.');
   }
   const receipt = evaluation.artifactIntegrityManifest;
@@ -1057,17 +1061,20 @@ function _buildNestedEvalMeta(evalResults) {
     nodeCount: evalResults.nodeCount || serverCount,
     quantityBasis: evalResults.quantityBasis || (serverCount > 1 ? 'CLUSTER_MULTIPLIED' : 'SINGLE_NODE'),
     candidateReference: evalResults.candidateReference || null,
+    notebookLmStatus: evalResults.notebookLmStatus || null,
     postFlowSync: evalResults.postFlowSync || null
   };
 }
 
 function _buildNestedEvalResults(evalResults, provenanceTrace, narrative, solutionIntelligence) {
+  const { catalogData: _omittedCatalog, catalogRules: _omittedRules, ...serializableEval } = evalResults || {};
   return {
-    ...evalResults,
+    ...serializableEval,
     ..._buildNestedEvalMeta(evalResults),
     needsActions: evalResults.evalSummary?.needsActions || [],
     unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
     totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
+    aspectChecks: evalResults.aspectChecks || [],
     stageBreakdown: evalResults.stageBreakdown || {},
     provenanceTrace,
     evaluationNarrative: narrative,
@@ -1160,17 +1167,12 @@ function _buildRagReviewFields(evalResults) {
     notebookLmStatus: evalResults.notebookLmStatus || null,
     agenticReviewStatus: evalResults.agenticReviewStatus || 'NOT_RUN',
     agenticReview: evalResults.agenticReview || null,
-    postFlowSync: evalResults.postFlowSync || null,
-    ragVerified: evalResults.ragVerified ?? null,
-    ragViolationDetected: evalResults.ragViolationDetected ?? null,
-    ephemeralSourceValidation: evalResults.ephemeralSourceValidation || null
+    postFlowSync: evalResults.postFlowSync || null
   };
 }
 
 function _buildTopologyAndDefaultsFields(evalResults) {
   return {
-    solutionTopology: evalResults.solutionTopology || null,
-    stageBreakdown: evalResults.stageBreakdown || {},
     clusterSizing: evalResults.clusterSizing || null,
     chassisDefaults: evalResults.chassisDefaults || [],
     redundantDefaults: evalResults.redundantDefaults || [],
@@ -1179,31 +1181,39 @@ function _buildTopologyAndDefaultsFields(evalResults) {
 }
 
 function _buildAnalysisSerializedFields(evalResults) {
+  const lifecycleField = evalResults.evalSummary?.lifecycleRecommendations
+    ? { lifecycleRecommendations: evalResults.evalSummary.lifecycleRecommendations }
+    : {};
   return {
     needsActions: evalResults.evalSummary?.needsActions || [],
     requirementResolution: evalResults.requirementResolution || null,
-    lifecycleRecommendations: evalResults.evalSummary?.lifecycleRecommendations || [],
+    ...lifecycleField,
     pcieTopology: evalResults.evalSummary?.pcie?.slotLayout || null,
     unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
     totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
     aspectChecks: evalResults.aspectChecks || [],
-    ..._buildTopologyAndDefaultsFields(evalResults),
-    multiRankWorkbookPath: evalResults.multiRankWorkbookPath || null,
-    multiRankCsvPath: evalResults.multiRankCsvPath || null
+    solutionTopology: evalResults.solutionTopology || null,
+    stageBreakdown: evalResults.stageBreakdown || {}
   };
 }
 
 function _buildExtendedSerializedData(evalResults, graph, budgetOpt, queryPayload, provenanceTrace, narrative, safeStartTime) {
   const projectionSource = !evalResults.conflictGraph && graph ? { ...evalResults, conflictGraph: graph } : evalResults;
-  const solutionIntelligence = projectCustomerDecision(projectionSource);
+  const solutionIntelligence = typeof projectCustomerDecision === 'function' ? projectCustomerDecision(projectionSource) : undefined;
   return {
     ..._buildRagReviewFields(evalResults),
     ..._buildAnalysisSerializedFields(evalResults),
     evalResults: _buildNestedEvalResults(evalResults, provenanceTrace, narrative, solutionIntelligence),
-    solutionIntelligence,
+    ..._buildTopologyAndDefaultsFields(evalResults),
+    ...(solutionIntelligence !== undefined ? { solutionIntelligence } : {}),
     conflictGraph: _buildConflictGraphData(graph, evalResults),
     budgetOptimization: budgetOpt,
     notebookPayload: queryPayload,
+    ragVerified: evalResults.ragVerified ?? null,
+    ragViolationDetected: evalResults.ragViolationDetected ?? null,
+    multiRankWorkbookPath: evalResults.multiRankWorkbookPath || null,
+    multiRankCsvPath: evalResults.multiRankCsvPath || null,
+    ephemeralSourceValidation: evalResults.ephemeralSourceValidation || null,
     durationMs: Date.now() - safeStartTime
   };
 }
@@ -1359,8 +1369,8 @@ async function serializeAndExportResults(ctx) {
 
   const targetChassisName = evalResults.chassis || chassisPrefix || ctx.detectedChassisName || (graph.chassisInfo ? graph.chassisInfo.model : '') || (ctx.chassisDir ? path.basename(ctx.chassisDir) : '') || 'PROLIANT_SERVER';
   const candidateFingerprint = deliveryFingerprint(evalResults);
-  const isAuthValid = !blocksDependencyAcceptance(evalResults.dependencyInvalidation) &&
-    !blocksDependencyAcceptance(catalogEvidenceBoundary(evalResults.catalogEvidence)) &&
+  const isAuthValid = !_blocksDependencyAcceptance(evalResults.dependencyInvalidation) &&
+    !_blocksDependencyAcceptance(_catalogEvidenceBoundary(evalResults.catalogEvidence)) &&
     evalResults.acceptanceGate?.isValid === true && verifyDeliveryAuthorization(evalResults.deliveryAuthorization, candidateFingerprint, {
     chassisKey: targetChassisName,
     profile: 'BOQ_EVALUATION'

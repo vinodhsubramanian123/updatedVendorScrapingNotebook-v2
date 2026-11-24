@@ -39,15 +39,17 @@ async function runE2ETest() {
   if (!serverAlreadyRunning) {
     console.log(`Starting dashboard server on ${SERVER_URL}...`);
     const serverScript = path.join(__dirname, '../..', 'dashboard', 'server.cjs');
-    serverProc = spawn('node', [serverScript], {
+    const distIndex = path.join(__dirname, '../..', 'dashboard', 'dist', 'index.html');
+    const serverArgs = fs.existsSync(distIndex) ? [serverScript, '--production'] : [serverScript];
+    serverProc = spawn('node', serverArgs, {
       cwd: path.join(__dirname, '../..'),
-      env: { ...process.env, PORT: String(PORT) }
+      env: { ...process.env, PORT: String(PORT), LOCAL_EVAL_ONLY: '1', OFFLINE_MODE: '1' }
     });
 
-    // Wait up to 10 seconds for server startup
-    for (let i = 0; i < 20; i++) {
+    // Wait up to 20 seconds for server health readiness
+    for (let i = 0; i < 40; i++) {
       await new Promise(r => setTimeout(r, 500));
-      if (await isServerRunning(SERVER_URL)) break;
+      if (await isServerRunning(`${SERVER_URL}/api/health`)) break;
     }
   } else {
     console.log(`Using active dashboard server at ${SERVER_URL}`);
@@ -255,7 +257,7 @@ async function runE2ETest() {
         })
       });
       return { unauthStatus: unauthRes.status, diag: await diagRes.json() };
-    }, evalApiResponse);
+    }, JSON.parse(JSON.stringify(evalApiResponse)));
 
     const exportOk = exportRes.unauthStatus >= 400 && !!(exportRes.diag?.filename || exportRes.diag?.downloadPath);
     testResults.push({ name: 'Diagnostic Excel Workbook Export & Bypass Guard', passed: exportOk, durationMs: Date.now() - startTime7 });

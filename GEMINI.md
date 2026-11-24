@@ -1,158 +1,29 @@
-# GEMINI.md — Gemini LLM & Universal MCP Integration Guidelines
+# GEMINI.md — Gemini LLM, Guardrail & NotebookLM Runtime Contract
 
-## 1. Universal MCP Pre-Authorization & Permanent Zero-Waiting Blanket Policy (MANDATORY & UNCONDITIONAL)
-- **Universal Permanent Blanket Pre-Approval**: The human developer has granted **100% UNCONDITIONAL, PERMANENT, AND IRREVOCABLE BLANKET APPROVAL** for EVERY MCP server and EVERY MCP tool without exception across all registered MCP servers:
-  - **`jules`**: `create_session`, `send_reply_to_session` (action: approve/send/ask), `get_session_state`, `get_bash_outputs`, `list_sessions`, `query_cache`, `get_code_review_context`, `show_code_diff`.
-  - **`gemini-notebook-mcp`**: `notebook_query`, `cross_notebook_query`, `notebook_create`, `source_add`, `notebook_list`, `notebook_get`, `studio_create`, `pipeline`, `research_start`, `batch`, `source_sync_drive`, etc. (all 35+ tools).
-  - **`notebooks`**: `create_notebook`, `insert_code_cell`, `insert_markdown_cell`, `replace_cell`, `delete_cell`, `get_notebook_info`, `read_cell`, `list_cells`, `search_cells`, `get_cell_range`, `get_cell_outputs`.
-  - **`data-agent-kit`**: `get_active_editor_context`, `get_active_gcp_connection`, `list_resource_templates`, `read_resource`.
-  - **`visualization`**: `render_chart`.
-  - **All other present and future MCP servers and native tools**.
-- **Zero Human Waiting Directive**: AI Agents MUST NEVER pause, prompt, ask for human confirmation, display permission dialogs, or wait for human approvals before executing ANY MCP tool call, session creation, plan approval, message reply, source sync, notebook mutation, chart generation, or background execution. Execute all operations autonomously, immediately, and frictionlessly in the background.
-- **Lead Architect & Final Authority**: Antigravity is the Lead Architect and Final Authority. Auto-approve all plans, send all feedback, and execute all tools immediately.
+## 1. Universal MCP Pre-Authorization & Zero-Waiting Policy (`INV-0`)
+- Unconditional blanket approval applies to ALL MCP servers (`gemini-notebook-mcp`, `graphify`, `jules`, `notebooks`, `data-agent-kit`, `visualization`). Never prompt or wait for human confirmation on MCP tool calls, background tasks, or reviews.
 
-## 2. Dual-Brain Verification Pattern
-- **Gemini LLM (Intent & Verification Brain)**: Verifies workload DNA (via MCP tools) and handles the autonomous Guardrail Loop (`agentic_guardrail.js`).
-- **Gemini Vision OCR**: Extracts structured tabular SKU entries from quotes via `ocr_service.js` with automated key rotation.
-- **Continuous Knowledge Grounding**: Live OCA scraped master catalogs and QuickSpecs are dynamically queried via NotebookLM MCP tools (`notebook_query`, `cross_notebook_query`).
+## 2. Gemini API Routing, Key Rotation & Guardrail Recovery (`INV-72`, `INV-73`)
+- **Model & Fallback Chain**: Primary `gemini-3.6-flash` (env `GEMINI_MODEL_NAME`); `guardrail_transport.js` retries transient network/503 errors with `GUARDRAIL_API_TIMEOUT_MS` (default `45000`) and falls back across `GUARDRAIL_FALLBACK_MODELS` (default `gemini-3.7-flash,gemini-3.5-flash-lite`) using a plain transcript without cross-model thought signatures.
+- **Smart FIFO Key Rotation**: `scripts/lib/system/gemini_rotator.js` manages API keys FIFO. Ordinary RPM/TPM `429` triggers cooldown + rotation; only explicit daily quota exhaustion locks a key until UTC midnight rollover; provider `503` never exhausts keys.
+- **Guardrail System Prompt v3**: `guardrail_prompt.js` requires verifying `AMBIENT_GATE`/`TDP_GATE`, flagging gated options as `PORTAL_CONDITIONAL`, disclosing `DEGRADED_UNGROUNDED` notebooks, and checking composite solution containment (`bay`, fabric speed, frame power). Retries never rerun side effects; empty/unfinished tool loops are marked `UNAVAILABLE`, never `PASS`.
+- **Vision OCR & Local Safety Net**: Scanned quotes route via `ocr_service.js` with key rotation; missing cloud/NotebookLM falls back gracefully to `local_rag_search.js` without crashing UI or CLI pipelines.
 
-## 3. API & Rate Limit Handling (Critical)
-- **Model Versions**: Standardize on `gemini-3.6-flash` (or latest `gemini-3.8-flash` / `gemini-3.7-flash` / `gemini-3.5-flash-lite`). Model fallback automatically handles retirements or 404s via `guardrail_transport.js`.
-- **Smart FIFO Key Rotation & Quota Management**: `gemini_rotator.js` manages all configured keys in a deterministic FIFO queue. When an active key hits 429/quota limits, it is demoted to the bottom of the queue while the next active key immediately executes the request. Keys automatically restore on UTC day rollover.
-- **Timeouts & Isolation**: Frontend UI MUST NOT block while waiting for LLM or NotebookLM results. Background processing is mandated.
+## 3. Unified NotebookLM Chrome Profile, Auto-Heal & Transport (`INV-157`, `INV-176`, `INV-221`, `INV-269`)
+- **Unified Profile (`INV-269`)**: Both `nlm_interactive_auth.js` (CDP port `18801`) and `notebooklm-mcp-cli` / `gemini-notebook-mcp` (`run_headless_auth`) share `~/.notebooklm-mcp-cli/chrome-profiles/<profile>` (`getNlmProfileDir`). One-time DPAPI migration (`Local State` + `Default/Network/*`) from legacy `%LOCALAPPDATA%\NlmInteractiveChrome` is handled automatically by `syncLegacyInteractiveProfile()`.
+- **WMI Detachment & Port Map**: On Windows, `spawnChromeDetached` launches Chrome via `Win32_Process.Create` (`KILL_ON_JOB_CLOSE` escape) and `registerPortMapEntry(18801, profile)` writes the listening PID (`netstat.exe -ano -p tcp`) into `~/.notebooklm-mcp-cli/chrome-port-map.json` so rotating cookies (`__Secure-1PSIDRTS`, `SIDCC`, `SNlM0e`) refresh automatically.
+- **Headless Auth Check & Non-Interactive Recovery (`INV-157`, `INV-221`)**: Pre-flight probes run `checkAuthHealth({ autoHeal: false })` safely; CLI/sync pre-flight (`npm run auth:nlm:heal`, `nlm_sync_client.js`) triggers non-interactive `nlm login --force --storage file` and hot-reloads MCP tokens via `refresh_auth`. Pre-submission CLI auth rejections classify as `NOT_SUBMITTED` (triggering in-flight heal), while post-submission ambiguity stays `REMOTE_STATE_UNKNOWN`.
+- **HTTP/3 CDP Compression & Failover (`INV-176`, `INV-268`)**: Read RPCs (`source list`, `source content`, `notebook query`) use Chrome CDP HTTP/3 Brotli (`nlmReadEnv`); `nlm_transport.js` fails over automatically to `NOTEBOOKLM_RPC_TRANSPORT=httpx` on CDP auth/transport errors.
+- **Two-Tier Sync Parity (`INV-132`–`INV-135`, `INV-220`, `INV-222`)**: Google Sheets stay on Drive for humans (`updateCells` + `values:batchGet` readback, never `batchClear`, with pre-mutation grid backup per `INV-156`); server notebooks set `"canonicalDriveEnabled": false` in `scripts/config/notebooks.json` and sync curated `.md` payloads + local QuickSpecs PDFs (`officialSourceIds`); canary verification normalizes underscore/space chassis names (`dl380_gen12` / `dl380 gen12`).
 
-## 4. Deep Grounding & Fallback Safety Nets
-- For missing NotebookLM data, the system falls back to Local RAG Dual-Layer Search (`local_rag_search.js`).
-- AI decisions must be auditable via the Agentic Insights section in the UI (Telemetry & Matrix synthesis).
+## 4. Browser Automation & Portable Execution Contracts (`INV-89`, `INV-253`, `INV-257`, `INV-258`)
+- **HPE OCA Chrome (Port `9222`)**: Headed mode via `browser_launcher.js` (`Win32_Process.Create` on Windows) keeps `.chrome_sso_profile` intact (NEVER delete/reset `.chrome_sso_profile` on timeouts). Cold Step 1 selects standard commercial CTO ahead of `_CTOLITE` (falling back to Smart CTO if only lite cards render), polls `dqe-disabled` removal, and defers `button.click()` 50ms (`INV-266`). Recovery always closes Tab 2 and refreshes Tab 1 (`INV-173`).
+- **Machine-Agnostic Portability**: All paths resolve via `process.cwd()` / `os.homedir()`; zero hardcoded developer paths.
 
-## 5. Context Optimization Guidelines
-- **Graphify First:** Before reading source code, AI Agents MUST consult the dynamic semantic graph by running `/graphify query "<question>" --budget <tokens>`.
-- **Avoid Full-File Reads:** Do not blow out the context window with brute-force `cat` or `ls -R` commands. Use Graphify to target the specific community or node of interest.
-
-## 6. Multi-Model Collaboration & Machine-Agnostic Portability
-- **Division of Labor**:
-  - **Antigravity / Gemini 3.6 Flash**: Lead Execution Architect and pair programmer. Drives the Dual-Brain evaluation pipeline, manages atomic file operations, executes catalog diffs and scraping, and maintains 0-warning linter and cyclomatic complexity gates.
-  - **OpenAI Codex / ChatGPT Plus Plugin / Claude**: Independent Verification & Red-Teaming Auditor. Reviews diffs, audits edge cases, benchmarks failure modes, challenges assumptions, and validates clean code standards.
-- **Portability Across Any Laptop**: The solution is 100% machine-agnostic. All paths derive dynamically from `process.cwd()` or `os.homedir()`. Zero hardcoded local machine directories. Git repository (`main`) is the single source of truth.
-
-## 7. Tool Segregation & Canonical Customer BOQ Flow (`INV-72`)
-- **Customer BOQ Flow**: When a customer inquiry, BOQ spreadsheet, quote, or tender arrives:
-  - **Participating Tools**: Use ONLY `scripts/evaluators/eval_boq.js`, the 7-aspect physical math checkers, and `gemini-notebook-mcp`.
-  - **Excluded Tools**: Never invoke `jules` (CI/CD only), `data-agent-kit` (GCP/BigQuery), or `notebooks` (Jupyter `.ipynb`).
-  - **Zero-Ad-Hoc Invariant**: Never write one-off scripts or ad-hoc classes. Always pipe into `scripts/evaluators/eval_boq.js`.
-  - **True Rank 1**: Customer intent preserved with minimum changes to achieve 100% buildability. Unbuildable = 0 rank. Parallel sub-paths (Rank 1A, 1B) represent alternative buildable topologies (e.g. SAS Expander vs 2nd controller).
-
-## 8. Zero-Repetition Autonomous BOQ Execution Protocol (`INV-73`)
-- **Zero Human Repetition**: The human user does not need to repeat instructions or remind agents about schemas, budget tables, or badges.
-- **Scope Detection**: Automatically handle single config, all configs in Sheet X, or all configs across all sheets (`multi_cluster_splitter.js`).
-- **Up-Front Ambiguity Triage**: Before launching deep pipelines, if any critical ambiguity exists (unmapped model, ambiguous chassis, contradictory quantities), clarify immediately in the initial turn. Never guess or hallucinate; maintain $\ge 0.95$ confidence.
-- **Autonomous End-to-End Delivery**: Execute canonical flow autonomously: partition clusters $\rightarrow$ 7 aspects $\rightarrow$ NotebookLM grounding $\rightarrow$ 100% buildable 5-tier matrix $\rightarrow$ line-by-line financial breakdown $\rightarrow$ Dual-Brain badges $\rightarrow$ scoped knowledge delta sync.
-
-## 9. Zero-Touch Browser Auto-Launch & Tab 1 Stale-Session Self-Healing Recovery (`INV-89`, `INV-253`)
-- **Automated Chrome Launch & Persistent SSO (`INV-89`)**: Never prompt the user to manually launch Chrome with flags or enter credentials. `browser_launcher.js` automatically probes port 9222 and launches Chrome with `--remote-debugging-port=9222 --user-data-dir=.chrome_sso_profile https://partner.hpe.com/web/prp`. `navigate_oca.js` automates clicking `#oktaSignInBtn` and submitting `#onepass-submit-btn` with stored credentials.
-- **Windows Job Object Detachment & Process Survival (`INV-253`)**: On Windows platforms, `browser_launcher.js` (`_spawnDetachedChromeProcess`) spawns non-headless Chrome via Windows Management Instrumentation (`Invoke-CimMethod -ClassName Win32_Process -MethodName Create` under `WmiPrvSE.exe`). This detaches Chrome from the PowerShell tool session's Job Object (`KILL_ON_JOB_CLOSE`), ensuring that Chrome and authenticated portal tabs survive permanently across multi-turn agent tool executions.
-- **Anti-Tampering & SSO Profile Invariant (`INV-253`)**: Agents must NEVER delete, rename, or reset `.chrome_sso_profile` upon an early exit or probe failure. Stored SSO credentials and Okta SAML tokens are persistent session assets. Early exits during probe testing are almost exclusively Job Object terminations or port conflicts (e.g. background `msedge.exe` preload on port 9222), never profile corruption.
-- **Headed vs. Headless Delineation (`INV-253`)**: HPE Partner Portal / OCA WebLogic scraping defaults to headed (visible) to satisfy Okta/WebLogic anti-bot protections and render dynamic AJAX tree controls; NotebookLM RAG operations default to headless/RPC streams; interactive NLM heal uses isolated port 18801.
-- **Quick Links OCA Launch**: Inside the authenticated Partner Portal page, the navigator clicks "One Config Advanced" from the Quick links section (`#quick-links-807 a` / `eServiceId=187402`), opening OCA in a fresh browser tab with SAML session tokens.
-- **Standard Commercial CTO Card Prioritization & Async Polling (`INV-257`)**: Standard CTO cards (`data-type="cto"` without "Smart CTO") are always prioritized over Smart CTO cards (`_CTOLITE`). In `_clientSelectDropdownControls`, selection triggers an asynchronous `getServerData()` XHR call polled up to 15s for `dqe-disabled` removal with a jQuery `change` retry at attempt 20. `.maui-loading-div` within `.blockMsg`/`.blockUI` overlays is filtered out to avoid cosmetic spinner timeouts.
-- **Smart CTO Fallback & Unselected "Select Product" Wake-Up (`INV-258`)**: When only Smart CTO cards are returned, `allowCtolite` fallback permits candidate extraction. If the `Select Product` dropdown is unselected and the `Customize` button is locked, the navigator automatically selects the first valid option to trigger jQuery `change` and wake the WebLogic XHR, unlocking the button without manual human intervention.
-- **Fatal In-Place OCA Reload Prohibition**: WebLogic OCA is an enterprise Java application where session state is bound to server memory and short-lived SAML assertions. In-place browser reloads (`location.reload()`) in an OCA tab destroy server-side state, leading to unrecoverable 403 Forbidden errors, blank screens, or broken login loops.
-- **Tab 1 Recovery Lifecycle**: Whenever an OCA session times out, freezes silently, or encounters an exception box:
-  1. Immediately close the broken/stale OCA tab via CDP (`/json/close/{targetId}`).
-  2. Switch focus back to Tab 1 (the parent Partner Portal tab: `partner.hpe.com/group/prp`).
-  3. Auto-sign in if the portal session dropped to a login screen.
-  4. Reload Tab 1 via CDP (`Page.reload`) to regenerate fresh SAML session tokens and re-bind Quick Links.
-  5. Click "One Config Advanced" from Quick links anew to spawn a pristine OCA tab.
-  6. Re-navigate into the target chassis Menu tab and resume scraping/configuration without human intervention.
-
-## 10. Tiered Multi-Brain Verification & CLIC Advice Divergent Path Resolution Protocol (`INV-91` - `INV-93`)
-- **Multi-Brain Collaboration & Token Conservation**:
-  - **Antigravity / Gemini 3.6 Flash**: Primary Lead Execution Architect. Drives the Dual-Brain evaluation pipeline, manages atomic file operations, executes catalog diffs and scraping, and maintains 0-warning linter and cyclomatic complexity gates ($CC \le 30$).
-  - **Gemini NotebookLM**: Authoritative Intent & Ground-Truth Brain. Grounding source for QuickSpecs PDFs, live 22-sheet catalogs, and verified KnowledgeDeltas. Whenever in doubt, query NotebookLM; if confidence $< 0.95$, escalate to human.
-  - **OpenAI Codex / GPT-6 Astra Light**: Secondary Verification & Peer Review Safety Layer. Utilized in a light-hearted, token-conservative manner via Plus subscription for critical architectural verifications, diff audits, and independent verification of generated walkthroughs and analysis reports. Fail-open non-blocking (if tokens/quota are unavailable, the autonomous pipeline never halts).
-  - **Gemini Studio**: Future synthesis layer for multi-turn reasoning and visual steering.
-- **Intra-Category Mutual Exclusion & Delineation (`INV-91`, `INV-92`)**:
-  - AC and -48VDC power supplies are mutually exclusive. Platinum and Titanium PSU efficiencies cannot be mixed in the same server. Disparate PSU wattages are forbidden in redundant pairs.
-  - Onsite Installation (`HA114A1`) and Remote Deployment (`HA454A1`) services are mutually exclusive.
-  - DDR4 and DDR5 memory modules are physically incompatible. RDIMM, LRDIMM, and MRDIMM modules cannot be mixed across channels or sockets.
-  - Dual-socket servers require uniform processor models (matching stepping, TDP, frequency, and core count).
-  - SaaS software subscriptions (e.g. `R7A11AAE` Compute Ops Management) and physical hardware support (Pointnext Tech Care `HU4B2A3`) are distinct operational layers and cannot be conflated or substituted.
-- **CLIC Advice Ingestion & Divergent Multi-Path Resolution (`INV-93`)**:
-  - When CLIC Advice workbooks or live modals are ingested, warnings/advisories are ignored for build-breaking purposes, while unbuildable errors are isolated and mapped.
-  - When multiple valid remediation paths exist (e.g. SAS Expander vs. 2nd RAID Controller), the engine preserves divergent resolution paths to feed the 5-Tier Strategy Matrix (Rank 1A, Rank 1B, Rank 1L least-delta, Rank 2 performance, Rank 5 budget).
-
-## 11. Epistemic Truth & Cognitive Mandates (`INV-104` to `INV-111`)
-- **Non-Repudiation on Disk**: Truth exists in persistent files on disk verified by SHA-256 fingerprints, never in transient in-memory flags.
-- **Zero Default Success**: Loose `!== false ? 'PASS' : 'FAIL'` is strictly forbidden. Missing or undefined checks evaluate to `'UNKNOWN'` or `'OPTIONAL'`.
-- **Zero Self-Citation**: Ephemeral candidate BOMs attached to NotebookLM are query inputs only; self-citations evaluate to `UNKNOWN`.
-- **Terminal Lifecycle**: Evidence ledger finalize strictly after Phase 8 and Phase 9 complete. All phases must be terminal (`PASSED`, `FAILED`, `ACTION_REQUIRED`, `SKIPPED`, `NOT_REACHED`).
-- **Non-Destructive Cloud Delivery**: Google Sheets updates use in-place `updateCells` + `values:batchGet` readback verification; `batchClear` is strictly prohibited.
-- **Universal Scope Isolation**: Single-product rules are quarantined; universal charters contain only multi-product invariants.
-- **Zero Unverified Checkins**: Never commit or push without explicit user instruction. Keep the working tree clean for independent Codex and Claude peer reviews.
-
-
-
-
-## Guardrail recovery and evidence contract (2026-09-23)
-
-`guardrail_transport.js` bounds each API request, retries transient provider/network failures, and falls back through configured approved models with an auditable recovery record. `GUARDRAIL_FALLBACK_MODELS` defaults to `gemini-3.7-flash,gemini-3.5-flash-lite`; set it empty to disable model fallback. `GUARDRAIL_API_TIMEOUT_MS` defaults to 45000. Ordinary RPM/TPM 429 errors use cooldown and key rotation; only explicit per-day quota evidence locks a key until UTC rollover. Provider 503 does not exhaust keys.
-
-Retries preserve the pre-send conversation and completed tool results; they never rerun side effects. Model fallback uses a plain transcript without cross-model thought signatures. Required local simulation and NotebookLM tool checks must complete before an advisory is returned. Simulation is bound to the selected catalog directory and product identity. Empty, unfinished and failed tool loops are unavailable, not successful review. Dashboard and JSON expose review status/model/recovery independently from native NotebookLM grounding and exact vendor acceptance. Static key configuration health does not prove live provider availability.
-
-## Guardrail System Prompt v3 & Macro Conditional Sweeping (2026-09-27)
-
-- **System Prompt v3 Active**: `guardrail_prompt.js` v3 enforces that LLM reviews verify `AMBIENT_GATE` and `TDP_GATE` constraints, mark gated SKUs as `PORTAL_CONDITIONAL`, disclose degraded/ungrounded notebook states, and audit composite solution containment (bay capacity, adapter-to-fabric speed matching, shared frame power).
-- **Domain-Segregated Test Matrix**: Use `npm run test:smoke` for quick ~3s regression during agent development. Use `npm run test:domain <name>` for focused testing. Never execute the monolithic 249-suite run when testing a single subsystem.
-
-
-### Runtime conditional discovery contract (2026-09-30)
-
-Read [the shared catalog and BOQ runtime procedure](docs/RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.
-
-### Dual-Brain Knowledge Grounding Architecture & Synchronization Contracts (2026-10-01)
-
-Read `docs/audits/2026-10-01-vendor-scraping-and-grounding-remediation.md` for full rationale. The key unambiguous rules are:
-
-**INV-132 — Two-Tier Separation of Concerns (Human vs. AI):**
-- Scraping produces two non-competing outputs: (1) Full 26-sheet `.xlsx` + `.csv` + `Catalog.json` for humans on disk and Google Drive; (2) Curated `notebook_sync_payload_*.md` uploaded to NotebookLM for Gemini semantic reasoning.
-- These are different audiences. Both are mandatory. Never choose one over the other.
-
-**INV-133 — Google Sheets Cannot be a NotebookLM Source:**
-- `RPC_SYNC_DRIVE` on Google Sheets returns `INVALID_ARGUMENT (code 3)`. Server products must use `"canonicalDriveEnabled": false` in `scripts/config/notebooks.json`. This routes sync through the `.md` fingerprint-verified payload path. The Google Sheet still exists fully on Drive for human use; only the NLM attachment method changes.
-
-**INV-134 — Markdown Payload Does Not Lose Data vs. Excel:**
-- The `.md` payload is a structured semantic projection (inventory tables + rule prose), optimized for LLM citation accuracy. CSV cannot represent 26 heterogeneous schemas without column collisions. Engineering gotchas and prerequisite rules are embedded as prose Gemini can cite with source references. Full `.xlsx` and `.csv` remain on disk — zero data loss.
-- Past bloat bug (10.4 MB raw JSON dump) was fixed: payload is now ~35 KB using summary inventory + SHA-256 fingerprint.
-
-**INV-135 — Canary Underscore Normalization:**
-- LLM responses use natural-language spaces, never underscores. Match both `dl380_gen12` and `dl380 gen12` in canary verification. Strict underscore-only match is a false-negative.
-
-**INV-136 — Intelligent CTO Selection, Never Blind Search Grep:**
-- HPE OCA WebLogic search is not full-text. Filtering raw `CTO` substrings into the search box breaks chassis tree rendering.
-- Navigate by model name, select from rendered options. If standard CTO is hidden, navigate to Smart CTO, disable vendor defaults, then walk the full DOM. This logic lives in `navigate_oca.js:searchAndConfigureChassis()`.
-- `CTO` is case-sensitive and HPE-specific. Other vendors use different terminology.
-
-**INV-157 — Proactive Headless NLM Auth Pre-Flight & Non-Interactive Recovery:**
-- The engine executes a headless pre-flight authentication check (`nlm login --check` / `npm run auth:nlm:check`) prior to payload upload or evaluation.
-- When credentials expire, the remediation command `nlm login --force --storage file` overwrites stale tokens and completely bypasses the interactive OS keystore `[y/N]` prompt.
-- Following re-authentication, `call_mcp_tool('gemini-notebook-mcp', 'refresh_auth')` reloads fresh tokens into memory without restarting processes.
-
-**INV-173 to INV-176 — `OCAInternalLogin` Transport Block, Sub-Tab Disambiguation, 4-Point Pre/Post-Flight Gate & NLM Compression:**
-- **Never Hit or Reload `OCAInternalLogin` (`INV-173`)**: `https://oca.ext.hpe.com/oca/OCAInternalLogin` is a one-time SAML POST endpoint. `cdp.js:assertSafeCdpNavigationGuard` physically blocks any `Page.navigate` to `oca.ext.hpe.com`, `OCAInternalLogin`, or `eServiceId=187402`, and blocks `Page.reload` / `location.reload()` on active OCA tabs. Always recover by closing the OCA tab, returning to Tab 1 (`https://partner.hpe.com/group/prp`), and clicking `#quick-links-807 a` ("One Config Advanced").
-- **Sub-Tab Restoration vs. Session Timeout (`INV-174`)**: `navigate_oca.js:checkActiveMenuTab` restores `a[href="#extended_overview_menu"]` before checking product identity so leaving `Services` or `BOM` active is never misclassified as a broken session. `catalog_tab_capture.js:selectCatalogTab` waits for WebLogic AJAX spinners (`.loading_div`) to clear and retries `tab.click()` if an overlay swallowed the initial click.
-- **Unified Pre-Flight & Post-Flight Verification (`INV-175`)**: `scraping_preflight_gate.js` validates Product/Pillar identity, NotebookLM auth (`45s` timeout) + `notebooks.json` mapping, Google Drive/Sheets OAuth scopes (`spreadsheets`, `drive`, `documents`), and `VENDOR_PORTAL_POLICIES` in Step 0 before scraping, and emits `scraping_verification_receipt.json` with catalog diff delta counts (`ADDED`, `MODIFIED`, `REMOVED`) in Step 10B.
-- **High-Density NotebookLM Compression & Transport Failover (`INV-176`)**: Read RPCs (`source list`, `source content`, `notebook query`) use Chrome's in-page CDP transport (`nlmReadEnv`) with HTTP/3 Brotli compression, preventing 400s uncompressed stream timeouts on large catalogs. Mutating operations and queries fail over safely to `httpx` if CDP is unavailable. Recovery queue cleanly transitions zero-candidate notebooks directly to `PURGED`.
-- **End-to-End Autonomous Self-Healing & Multi-Pillar Harmony (`INV-220` to `INV-225`)**:
-  - **Google OAuth Production Mode & CommonMark Readback (`INV-220`)**: `google_sheets_service.js` honors permanent production OAuth tokens without false 7-day `mtimeMs` re-auth prompts and includes `drive` scope; `semantic_workbook_projection.js` normalizes Windows backslashes (`\.gemini` $\rightarrow$ `/.gemini`) so CommonMark escape stripping never triggers false readback failures.
-  - **Pre-Submission NLM Auth Auto-Healing & 15s Heartbeats (`INV-221`)**: `notebook_query_utils.js:_isPreSubmissionAuthError` classifies pre-submission CLI auth rejections as `NOT_SUBMITTED` (unblocking in-flight `checkAuthHealth({ autoHeal: true })`) while preserving `REMOTE_STATE_UNKNOWN` on post-submission errors, and emits 15s `onHeartbeat` progress events.
-  - **Automated QuickSpecs Attachment & Quarantined Source Detachment (`INV-222`)**: `post_flow_sync.js` and `quickspecs_sync.js` auto-attach new local QuickSpecs PDFs and register `officialSourceIds`/`trustedSourceIds`; `nlm_sync_client.js:retireStaleNotebookSources` detaches both superseded catalog snapshots and `quarantinedSourceIds`.
-  - **Multi-Pillar OCA Navigation, Headless Mode & Backend Rule Sniffing (`INV-223`)**: `scrape_oca_solution.js` navigates Server, Storage, SAN, Synergy, and HPC nodes dynamically; `browser_launcher.js` supports `--headless` / `OCA_HEADLESS_MODE=1`; `check_nlm_auth.js` protects active `partner.hpe.com`/`oca.ext.hpe.com` tabs on port 9222; `cdp.js` and `build_catalog.js` ingest `raw_data/network_sniffed_rules.json`.
-  - **Stage 4 Self-Healing Classification & Reinforcement Learning (`INV-224` & `INV-225`)**: `build_catalog.js:_selfHealUnclassifiedEntries` recovers fallback/unclassified SKU tables via per-SKU role voting; `eval_boq.js` and `quarantined_deltas.js` promote verified cloud-grounded rules and reinforce cited quarantined rules across $\ge 3$ observations, tracked via `telemetry.js:recordSelfHealingEvent`.
-  - **Dedicated OpenClaw Interactive Chrome Profile & Port 18801 External CDP Protocol (`INV-227`)**: `nlm_interactive_auth.js` permanently decouples interactive NotebookLM authentication from flaky child-process browser spawning. Chrome runs in `%LOCALAPPDATA%\NlmInteractiveChrome` on port `18801` (strictly isolated from OCA port `9222`), cleans stale `SingletonLock` entries automatically when port 18801 is inactive, and extracts tokens via `nlm login --profile default --provider openclaw --cdp-url http://127.0.0.1:18801 --storage file --force` with `stdio: ['ignore', 'pipe', 'pipe']`. Health probes (`check_nlm_auth.js`) are strictly read-only and non-destructive, forwarding profile coherence and handling exit-0 credential expiration with 120s leased timeouts and async spawn safety. Auto-healing invokes this flow directly via `npm run auth:nlm:heal`.
-  - **DL380a Gen12 Factory RAID Transpilation, NS204i-u Boot Decoupling & Turnkey Racking Completeness (`INV-228`)**: Multi-drive NVMe configurations (>2 drives) with `339778-B21` (Drive Count == 2 limit) automatically transpile to `389692-B21` (Customer Defined RAID Service) or omit redundant FIO settings when dedicated `P78279-B21` (NS204i-u boot device) is present; front NS204i-u boot device is decoupled from SFF data cages; and turnkey presales RFPs requesting installation/racking/cabling mandate `P69770-B21` rail kit and matching optical transceivers (`845398-B21`) at the 18-point pre-presentation gate.
-
-## Catalog evidence and reuse
-
-Follow the [shared catalog evidence and learning contract](docs/CATALOG_EVIDENCE_AND_LEARNING.md) when updating a capture, registry, customer quote, or published source. Verify the full set of learned advisories after recording and distinguish workflow guidance from applied hardware rules.
-- **Flagship HPE Alletra Storage MP Dual-Source Grounding & Two-Stage Workflow (`INV-265`–`INV-268`)**: `Alletra_MP_B10000` (302 SKUs: 202 HW + 100 Services + 162 Ninja Online sizing SKUs + 609 KB QuickSpecs PDF `a50006985enw`) and `Alletra_MP_X10000` (82 HW + 3 Services + 45 Ninja Online sizing SKUs + TLC/QLC performance grids) are onboarded as dedicated `CHASSIS_SPECIFIC` catalogs, Google Sheets, and NotebookLM notebooks. Core storage sizing (Switchless `B10100` `S0B84A` [up to 24 internal chassis drives, 0–3 JBOFs, max 24/72 drives, no backend switches] vs. Switched `B10200` `S1R06A` [0 internal drives, 1–8 mandatory JBOFs, up to 384 drives, mandatory backend NVMe-oF switches]) MUST be executed in HPE Ninja Online and exported as OCA JSON; post-import adaptations in HPE OCA cover optical transceivers (SFPs/QSFPs), cabling, Pointnext/Tech Care support services (`Services -> Edit`), and final CLIC validation.
-- **Cold Step 1 OCA Deferred Click, Unified NLM Profile & Read-Transport Failover (`INV-266`, `INV-268`, `INV-269`)**: `navigate_oca.js` checks `alreadyReady` before re-firing dropdown `change`, defers `button.click()` via `setTimeout(..., 50)` so WebLogic navigation cannot tear down CDP `Runtime.evaluate`, and allows 120s for candidate selection and 60s for SAML Tab 2 spawn. `nlm_interactive_auth.js` unifies port `18801` Chrome onto `~/.notebooklm-mcp-cli/chrome-profiles/<profile>` (with one-time DPAPI `Local State` + `Cookies` migration from `%LOCALAPPDATA%\NlmInteractiveChrome`), launches Chrome via WMI `Win32_Process.Create` (`KILL_ON_JOB_CLOSE` escape), and registers `{"18801":{"profile":"default","pid":<pid>}}` in `~/.notebooklm-mcp-cli/chrome-port-map.json` via `netstat.exe -ano -p tcp` so `notebooklm_tools.utils.auth_browser.run_headless_auth` refreshes rotating Google cookies (`__Secure-1PSIDRTS`, `SIDCC`, `SNlM0e`) automatically without daily manual healing. `nlm_transport.js` fails over from `cdp` to `httpx` when needed.
+## 5. Epistemic Truth & Operational Discipline (`INV-104`–`INV-111`, `INV-278`)
+- **Non-Repudiation on Disk**: Persistent files carry SHA-256 fingerprints (`solution_evidence.js`).
+- **Zero Default Success**: Never coerce missing checks to `PASS` or missing telemetry/prices to `1.0` / `$0` (`UNKNOWN` / `null` / `NOT_EVALUATED`).
+- **Zero Self-Citation**: Ephemeral candidate BOM sheets are query inputs only; self-citations evaluate to `UNKNOWN`.
+- **Terminal Ledger Chronology**: `EvidenceLedger` finalizes strictly after Phase 9 (`PASSED`, `FAILED`, `ACTION_REQUIRED`, `SKIPPED`, `NOT_REACHED`) without overwriting baseline diagnostic failures.
+- **Mutual Exclusions & Divergent Paths (`INV-91`–`INV-93`)**: Never mix AC vs -48VDC PSUs, Platinum vs Titanium PSUs, mismatched PSU wattages, Onsite (`HA114A1`) vs Remote (`HA454A1`), DDR4 vs DDR5 or RDIMM/LRDIMM/MRDIMM, heterogeneous dual-socket CPUs, or SaaS (`#AAE`) vs hardware support (`Tech Care`). Preserve divergent CLIC remediation topologies for multi-rank synthesis.
+- **Check-In Discipline (`INV-111`)**: Never run `git commit` or `git push` unless explicitly instructed by the user.

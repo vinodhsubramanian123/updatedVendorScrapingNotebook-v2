@@ -68,6 +68,7 @@
     "boq:export": "node scripts/lib/boq/generate_boq_xlsx.js",
     "registry:sync": "node scripts/lib/catalog/sync_registry.js",
     "sync:knowledge": "node scripts/lib/sync/knowledge_sync.js",
+    "learn:promote": "node scripts/maintenance/promote_learned_instructions.js",
     "sync:running-knowledge": "node scripts/services/running_knowledge_sync.js",
     "audit:notebooks": "node scripts/maintenance/notebook_health_audit.js",
     "status": "node scripts/maintenance/observability_status.js",
@@ -199,7 +200,8 @@
     "sheets:upload": "node scripts/services/google_sheets_service.js upload",
     "docs:create": "node scripts/services/google_sheets_service.js doc",
     "update:graph": "graphify update . && node scripts/maintenance/link_graphify.js",
-    "verify:graph": "node scripts/maintenance/verify_graph_integrity.js"
+    "verify:graph": "node scripts/maintenance/verify_graph_integrity.js",
+    "docs:lookup": "node scripts/maintenance/lookup_invariant.js"
   },
   "dependencies": {
     "@google/genai": "^2.16.0",

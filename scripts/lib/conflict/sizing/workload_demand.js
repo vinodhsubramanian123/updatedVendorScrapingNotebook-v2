@@ -16,6 +16,10 @@ const {
   deriveProfileDemandOverrides,
   evaluateWorkloadSpecificChecks
 } = require('./workload_profiles.js');
+const {
+  rankClarificationsByValueOfInformation,
+  collectScopedIntakeTrapAdvisories
+} = require('./voi_clarification_ranker.js');
 
 const WORKLOAD_DEMAND_SCHEMA_VERSION = '1.0';
 
@@ -1034,10 +1038,11 @@ function _collectPilotHardFailures(resilience, numa, storage, fabric, service) {
   return failures;
 }
 
-function _buildUnprofiledPilotResponse(demandRecord, effectiveBaseCores, missingCriticalInputs) {
+function _buildUnprofiledPilotResponse(demandRecord, effectiveBaseCores, missingCriticalInputs, options = {}) {
   const unprofiledMissing = demandRecord.authoritativeSizingBasis
     ? missingCriticalInputs
     : ['authoritativeSizingBasis', ...missingCriticalInputs];
+  const { prioritizedClarifications } = rankClarificationsByValueOfInformation(unprofiledMissing, { nodeCount: demandRecord.nodeCount });
   return {
     schemaVersion: WORKLOAD_DEMAND_SCHEMA_VERSION,
     workloadFamily: demandRecord.workloadFamily,
@@ -1049,6 +1054,8 @@ function _buildUnprofiledPilotResponse(demandRecord, effectiveBaseCores, missing
     extrapolationRefused: true,
     demandRecord,
     missingCriticalInputs: unprofiledMissing,
+    prioritizedClarifications,
+    scopedIntakeTraps: collectScopedIntakeTrapAdvisories(options.platform || demandRecord.platform, options),
     nextRequiredInput: _pickDefined([unprofiledMissing[0]], 'authoritativeSizingBasis'),
     scenarioRange: _buildDraftScenarioRange(demandRecord, effectiveBaseCores, unprofiledMissing),
     hardConstraintFailures: [{
@@ -1095,9 +1102,10 @@ function evaluateWorkloadSizingPilot(demandInput = {}, candidateInput = null, op
     if (profile && (safeOpts.allowReferenceProfiles === true || demandRecord.authoritativeSizingBasis !== null)) {
       return evaluateWorkloadSizingWithProfiles(demandInput, candidateInput, safeOpts);
     }
-    return _buildUnprofiledPilotResponse(demandRecord, effectiveBaseCores, missingCriticalInputs);
+    return _buildUnprofiledPilotResponse(demandRecord, effectiveBaseCores, missingCriticalInputs, safeOpts);
   }
   if (missingCriticalInputs.length > 0) {
+    const { prioritizedClarifications } = rankClarificationsByValueOfInformation(missingCriticalInputs, { nodeCount: demandRecord.nodeCount });
     return {
       schemaVersion: WORKLOAD_DEMAND_SCHEMA_VERSION,
       workloadFamily: demandRecord.workloadFamily,
@@ -1107,6 +1115,8 @@ function evaluateWorkloadSizingPilot(demandInput = {}, candidateInput = null, op
       extrapolationRefused: true,
       demandRecord,
       missingCriticalInputs,
+      prioritizedClarifications,
+      scopedIntakeTraps: collectScopedIntakeTrapAdvisories(safeOpts.platform || demandInput?.platform, safeOpts),
       nextRequiredInput: missingCriticalInputs[0],
       scenarioRange: _buildDraftScenarioRange(demandRecord, effectiveBaseCores, missingCriticalInputs),
       hardConstraintFailures: []
@@ -1193,7 +1203,7 @@ function evaluateWorkloadSizingWithProfiles(demandInput = {}, candidateInput = n
   if (!profile) {
     const { cores: baseCores } = _resolveEffectiveCoresDemand(baseDemand);
     const missing = _findMissingCriticalInputs(baseDemand, baseCores, safeOpts);
-    return _buildUnprofiledPilotResponse(baseDemand, baseCores, missing);
+    return _buildUnprofiledPilotResponse(baseDemand, baseCores, missing, safeOpts);
   }
 
   const { enrichedDemand, rawObj, derived } = _buildEnrichedDemandForProfile(demandInput, baseDemand, profile, safeOpts);
@@ -1201,6 +1211,7 @@ function evaluateWorkloadSizingWithProfiles(demandInput = {}, candidateInput = n
   const missingCriticalInputs = _findMissingCriticalInputs(enrichedDemand, effectiveBaseCores, safeOpts);
 
   if (missingCriticalInputs.length > 0) {
+    const { prioritizedClarifications } = rankClarificationsByValueOfInformation(missingCriticalInputs, { nodeCount: enrichedDemand.nodeCount });
     return {
       schemaVersion: WORKLOAD_DEMAND_SCHEMA_VERSION,
       workloadFamily: enrichedDemand.workloadFamily,
@@ -1217,6 +1228,8 @@ function evaluateWorkloadSizingWithProfiles(demandInput = {}, candidateInput = n
       extrapolationRefused: true,
       demandRecord: enrichedDemand,
       missingCriticalInputs,
+      prioritizedClarifications,
+      scopedIntakeTraps: collectScopedIntakeTrapAdvisories(safeOpts.platform || rawObj?.platform, safeOpts),
       nextRequiredInput: missingCriticalInputs[0],
       scenarioRange: _buildDraftScenarioRange(enrichedDemand, effectiveBaseCores, missingCriticalInputs),
       hardConstraintFailures: []

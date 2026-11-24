@@ -15,6 +15,47 @@ require('dotenv').config({ path: path.join(PROJECT_ROOT, '.env') });
 const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
 const KNOWLEDGE_FILE = path.join(OUTPUTS_DIR, 'history', 'master_knowledge_registry.json');
 
+const _jsonFileCache = new Map();
+const _csvLinesCache = new Map();
+const MAX_JSON_CACHE_ENTRIES = 64;
+const MAX_CSV_CACHE_ENTRIES = 32;
+
+function _readJsonFileCached(filePath) {
+  let sig = null;
+  try {
+    const stat = fs.statSync(filePath);
+    sig = `${stat.mtimeMs}:${stat.ctimeMs}:${stat.size}`;
+  } catch {
+    return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  }
+  const hit = _jsonFileCache.get(filePath);
+  if (hit && hit.sig === sig) return hit.data;
+  const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  if (_jsonFileCache.size >= MAX_JSON_CACHE_ENTRIES) {
+    _jsonFileCache.delete(_jsonFileCache.keys().next().value);
+  }
+  _jsonFileCache.set(filePath, { sig, data });
+  return data;
+}
+
+function _readCsvLinesCached(filePath) {
+  let sig = null;
+  try {
+    const stat = fs.statSync(filePath);
+    sig = `${stat.mtimeMs}:${stat.ctimeMs}:${stat.size}`;
+  } catch {
+    return fs.readFileSync(filePath, 'utf-8').split(/\r?\n/);
+  }
+  const hit = _csvLinesCache.get(filePath);
+  if (hit && hit.sig === sig) return hit.lines;
+  const lines = fs.readFileSync(filePath, 'utf-8').split(/\r?\n/);
+  if (_csvLinesCache.size >= MAX_CSV_CACHE_ENTRIES) {
+    _csvLinesCache.delete(_csvLinesCache.keys().next().value);
+  }
+  _csvLinesCache.set(filePath, { sig, lines });
+  return lines;
+}
+
 const STOP_WORDS = new Set([
   'list', 'the', 'having', 'equal', 'more', 'than', 'less', 'with', 'what', 'are', 'is', 'for', 'and', 'or', 'to', 'in', 'of', 'on', 'a', 'an', 'show', 'get', 'find', 'all'
 ]);
@@ -163,9 +204,9 @@ function searchKnowledgeDeltas(chassisName, activeTerms, rawMatches, options = {
   const knowledgeFile = options?.registryPath || options?.masterRegistryPath || KNOWLEDGE_FILE;
   if (!fs.existsSync(knowledgeFile)) return;
   try {
-    const registry = JSON.parse(fs.readFileSync(knowledgeFile, 'utf-8'));
+    const registry = _readJsonFileCached(knowledgeFile);
     const config = options?.notebooksConfig
-      || JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json'), 'utf-8'));
+      || _readJsonFileCached(path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json'));
     const targetIdentity = resolveProductIdentity(chassisName, config);
     if (!targetIdentity) return;
 
@@ -370,7 +411,7 @@ function _scoreCatalogRuleJson(rule, activeTerms, isRuleQuery) {
 
 function _searchCatalogRulesFromJson(rulesJson, folderName, activeTerms, isRuleQuery, rawMatches) {
   try {
-    const rulesData = JSON.parse(fs.readFileSync(rulesJson, 'utf-8'));
+    const rulesData = _readJsonFileCached(rulesJson);
     const rulesArray = Array.isArray(rulesData) ? rulesData : (rulesData.rules || rulesData.entries || []);
     for (const rule of rulesArray) {
       const ruleScore = _scoreCatalogRuleJson(rule, activeTerms, isRuleQuery);
@@ -383,7 +424,7 @@ function _searchCatalogRulesFromJson(rulesJson, folderName, activeTerms, isRuleQ
 
 function _searchCatalogRulesFromCsv(rulesCsv, folderName, activeTerms, isRuleQuery, rawMatches) {
   try {
-    const csvLines = fs.readFileSync(rulesCsv, 'utf-8').split(/\r?\n/);
+    const csvLines = _readCsvLinesCached(rulesCsv);
     for (let i = 1; i < csvLines.length; i++) {
       const line = csvLines[i];
       if (!line) continue;
@@ -575,7 +616,7 @@ function _scanCatalogDirectory(cDir, isProcessorQuery, minCores, searchTerms, ac
 
   if (fs.existsSync(catalogJson)) {
     try {
-      const catData = JSON.parse(fs.readFileSync(catalogJson, 'utf-8'));
+      const catData = _readJsonFileCached(catalogJson);
       searchCatalogSkusAndVariants(catData, folderName, catalogJson, isProcessorQuery, minCores, searchTerms, activeTerms, cleanQuery, matchedProcessorSkus, rawMatches);
     } catch (e) {
       const _logger = require('../system/pipeline_logger.js');
@@ -614,7 +655,7 @@ function queryLocalKnowledgeBase(query, chassisName = '', options = {}) {
 function _resolveChassisFromNotebookId(chassisName, notebookId) {
   if (chassisName || !notebookId) return chassisName;
   try {
-    const config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'config', 'notebooks.json'), 'utf-8'));
+    const config = _readJsonFileCached(path.join(__dirname, '..', '..', 'config', 'notebooks.json'));
     for (const [chassis, entry] of Object.entries(config.notebooks || {})) {
       const nid = typeof entry === 'object' && entry !== null ? entry.notebookId : entry;
       if (nid === notebookId) return chassis;

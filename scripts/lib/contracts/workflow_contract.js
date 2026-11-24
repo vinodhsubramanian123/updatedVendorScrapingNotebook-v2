@@ -400,7 +400,59 @@ function verifyArtifactIntegrityManifest(manifest, authorization) {
   } catch { return false; }
 }
 
+const CANONICAL_EXECUTION_PHASES = Object.freeze([
+  Object.freeze({ phaseNum: 1, key: 'phase_1', id: 'INGESTION', name: 'BOM Ingestion & Normalization' }),
+  Object.freeze({ phaseNum: 2, key: 'phase_2', id: 'FINGERPRINTING', name: 'Non-Repudiation Checksums & Baseline' }),
+  Object.freeze({ phaseNum: 3, key: 'phase_3', id: 'DOMAIN_ASPECTS', name: 'Deterministic Domain Physical Math' }),
+  Object.freeze({ phaseNum: 4, key: 'phase_4', id: 'CONFLICT_GRAPH', name: '5-Level Dependency Graph Validation' }),
+  Object.freeze({ phaseNum: 5, key: 'phase_5', id: 'MODERNIZATION_LEAST_DELTA', name: 'Generational Modernization & Least-Delta Combinator' }),
+  Object.freeze({ phaseNum: 6, key: 'phase_6', id: 'STRATEGY_SYNTHESIS', name: 'Multi-Tier Strategy Matrix Synthesis' }),
+  Object.freeze({ phaseNum: 7, key: 'phase_7', id: 'RAG_GROUNDING', name: 'NotebookLM Ground-Truth Verification' }),
+  Object.freeze({ phaseNum: 8, key: 'phase_8', id: 'DELIVERABLES_FINALIZATION', name: 'Deliverables Generation & Ledger Seal' }),
+  Object.freeze({ phaseNum: 9, key: 'phase_9', id: 'REFLECTION_LEARNING', name: 'Closed-Loop Reflection & Shared State Export' })
+]);
+
+function getCanonicalPhaseDescriptor(phaseNumOrId) {
+  return CANONICAL_EXECUTION_PHASES.find(
+    p => p.phaseNum === phaseNumOrId || p.id === phaseNumOrId || p.key === phaseNumOrId
+  ) || null;
+}
+
+function _finiteDurationOrNull(value) {
+  return typeof value === 'number' && Number.isFinite(value) && value >= 0 ? Math.round(value) : null;
+}
+
+function mapStageTimingsToCanonicalPhases(stageTimings = {}, ledgerPhases = null) {
+  const result = {};
+  const timings = stageTimings && typeof stageTimings === 'object' ? stageTimings : {};
+  const ragSumParts = [
+    _finiteDurationOrNull(timings.stage3RAGConsultationMs ?? timings.ragTimeMs),
+    _finiteDurationOrNull(timings.stage4GeminiVerificationMs ?? timings.guardrailTimeMs)
+  ].filter(v => v !== null);
+  const mappedStageValues = {
+    phase_1: _finiteDurationOrNull(timings.stage1ParsingMs ?? timings.parsingTimeMs),
+    phase_2: null,
+    phase_3: _finiteDurationOrNull(timings.stage2AspectMathMs ?? timings.aspectMathTimeMs),
+    phase_4: null,
+    phase_5: null,
+    phase_6: _finiteDurationOrNull(timings.stage5ResolutionMatrixMs ?? timings.matrixTimeMs),
+    phase_7: ragSumParts.length > 0 ? ragSumParts.reduce((sum, v) => sum + v, 0) : null,
+    phase_8: null,
+    phase_9: null
+  };
+
+  for (const phase of CANONICAL_EXECUTION_PHASES) {
+    const ledgerDuration = ledgerPhases?.[phase.key]?.durationMs;
+    const fromLedger = _finiteDurationOrNull(ledgerDuration);
+    result[phase.key] = fromLedger !== null ? fromLedger : mappedStageValues[phase.key];
+  }
+  return result;
+}
+
 module.exports = {
+  CANONICAL_EXECUTION_PHASES,
+  getCanonicalPhaseDescriptor,
+  mapStageTimingsToCanonicalPhases,
   EvidenceStateEnum,
   StageExecutionStateEnum,
   StageOutcomeEnum,

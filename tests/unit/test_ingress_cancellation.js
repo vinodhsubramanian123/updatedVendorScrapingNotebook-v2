@@ -86,10 +86,12 @@ test('MCP no-signal NotebookLM and simulation retain result meaning', async () =
   const simulation = await app.invoke('simulate_build', { items_json: '[]' });
   assert.equal(JSON.parse(simulation.content[0].text).portalValidationStatus, 'PORTAL VALIDATION PENDING');
   const listed = await app.list();
-  assert.equal(listed.tools.length, 14);
+  assert.equal(listed.tools.length, 19);
   const toolNames = listed.tools.map(t => t.name);
   assert.ok(toolNames.includes('inspect_catalog_deltas'));
   assert.ok(toolNames.includes('check_portal_and_sync_readiness'));
+  assert.ok(toolNames.includes('compare_solutions'));
+  assert.ok(toolNames.includes('interpolate_scaling'));
 });
 
 test('MCP ordinary failure keeps existing error envelope', async () => {

@@ -480,14 +480,16 @@ function analyzeDealValueEngineering(items, evalResults = {}, catalogData = null
   const rationale = (workload.traits && workload.traits.length > 0)
     ? workload.traits.join('; ')
     : (workload.isUnknown ? 'No workload telemetry available' : 'Standard enterprise profile');
+  const workloadProfile = { profileName, rationale };
+  Object.defineProperty(workloadProfile, 'toString', {
+    value: () => profileName,
+    enumerable: false,
+    configurable: true
+  });
 
   return {
     profile: profileName,
-    workloadProfile: {
-      profileName,
-      rationale,
-      toString() { return profileName; }
-    },
+    workloadProfile,
     workloadTraits: workload.traits,
     workloadDna: workload.workloadDna || null,
     hasQuotedPricing: items.some(it => typeof it.unitListPrice === 'number'),

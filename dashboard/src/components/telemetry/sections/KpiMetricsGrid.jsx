@@ -11,14 +11,16 @@ export default function KpiMetricsGrid({
   onOpenDuration,
   onOpenExports
 }) {
-  const avgConfidence = telemetry.evaluationsCount > 0
-    ? (telemetry.avgConfidenceScore * 100).toFixed(0) + '%'
+  const hasAvgConfidence = telemetry.evaluationsCount > 0 && Number.isFinite(Number(telemetry.avgConfidenceScore));
+  const avgConfidence = hasAvgConfidence
+    ? `${(Number(telemetry.avgConfidenceScore) * 100).toFixed(0)}%`
     : '—';
 
   const failedEvalsCount = history.filter(h => h.criticalViolationsCount > 0).length;
 
-  const avgDuration = history.length > 0
-    ? (history.reduce((acc, curr) => acc + (curr.durationMs || 0), 0) / history.length / 1000).toFixed(1) + 's'
+  const measuredDurations = history.map(h => h?.durationMs).filter(v => typeof v === 'number' && Number.isFinite(v) && v >= 0);
+  const avgDuration = measuredDurations.length > 0
+    ? `${(measuredDurations.reduce((acc, val) => acc + val, 0) / measuredDurations.length / 1000).toFixed(1)}s`
     : '—';
 
   const totalExports = telemetry.totalExports ?? '—';

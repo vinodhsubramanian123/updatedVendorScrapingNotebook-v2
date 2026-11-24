@@ -34,7 +34,7 @@ export function ViolationsModal({ isOpen, onClose, history = [] }) {
             <div key={i} className="border border-rose-100 rounded-lg p-3 bg-rose-50/30">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-xs font-bold text-slate-800">{new Date(h.startTime || h.timestamp).toLocaleString()}</span>
-                <span className="badge badge-rose">Confidence: {((h.confidenceScore || h.confidence || 0) * 100).toFixed(0)}%</span>
+                <span className="badge badge-rose">Confidence: {formatConfidence(h.confidenceScore ?? h.confidence)}</span>
               </div>
               <div className="text-[11px] text-slate-600 mb-2 font-mono">
                 Run ID: {h.runId || h.id} <br />
@@ -148,9 +148,13 @@ export function EvaluationsModal({ isOpen, onClose, history = [], telemetry = {}
                 </div>
                 <div>
                   <span className="text-slate-400 text-[10px] uppercase font-semibold block">Confidence</span>
-                  <span className={`badge ${entry.confidenceScore >= 0.75 ? 'badge-emerald' : 'badge-amber'}`}>
-                    {Math.round(entry.confidenceScore * 100)}%
-                  </span>
+                  {Number.isFinite(entry.confidenceScore) ? (
+                    <span className={`badge ${entry.confidenceScore >= 0.75 ? 'badge-emerald' : 'badge-amber'}`}>
+                      {Math.round(entry.confidenceScore * 100)}%
+                    </span>
+                  ) : (
+                    <span className="badge bg-slate-100 text-slate-500">Unmeasured</span>
+                  )}
                 </div>
                 <div>
                   <span className="text-slate-400 text-[10px] uppercase font-semibold block">Violations / Warnings</span>
@@ -160,7 +164,7 @@ export function EvaluationsModal({ isOpen, onClose, history = [], telemetry = {}
                 </div>
                 <div>
                   <span className="text-slate-400 text-[10px] uppercase font-semibold block">Runtime</span>
-                  <span className="font-mono text-slate-600">{entry.durationMs ? `${entry.durationMs}ms` : '<100ms'}</span>
+                  <span className="font-mono text-slate-600">{typeof entry.durationMs === 'number' && Number.isFinite(entry.durationMs) ? `${entry.durationMs}ms` : '—'}</span>
                 </div>
               </div>
             </div>
@@ -206,12 +210,15 @@ export function ConfidenceModal({ isOpen, onClose, history = [], telemetry = {} 
 }
 
 export function DurationModal({ isOpen, onClose, history = [] }) {
-  const avgDuration = history.length > 0
-    ? (history.reduce((acc, curr) => acc + (curr.durationMs || 0), 0) / history.length / 1000).toFixed(1) + 's'
-    : '<0.1s';
-  const fastest = history.length > 0
-    ? (Math.min(...history.map(h => h.durationMs || 100)) / 1000).toFixed(2) + 's'
-    : '<0.1s';
+  const measuredDurations = history
+    .map(h => h?.durationMs)
+    .filter(v => typeof v === 'number' && Number.isFinite(v) && v >= 0);
+  const avgDuration = measuredDurations.length > 0
+    ? `${(measuredDurations.reduce((acc, v) => acc + v, 0) / measuredDurations.length / 1000).toFixed(1)}s`
+    : '—';
+  const fastest = measuredDurations.length > 0
+    ? `${(Math.min(...measuredDurations) / 1000).toFixed(2)}s`
+    : '—';
 
   return (
     <TelemetryModalWrapper
@@ -393,13 +400,33 @@ export function DomainBreakdownModal({ isOpen, onClose }) {
   );
 }
 
-export function PipelineProfilerModal({ isOpen, onClose }) {
+export function PipelineProfilerModal({ isOpen, onClose, history = [] }) {
+  const latest = history[0];
+  const measured = latest?.stageTimingsMeasured !== false ? latest?.stageBreakdown : null;
+  const stageDefs = [
+    { key: 'stage1ParsingMs', label: 'Stage 1: Document Parsing & Tokenization' },
+    { key: 'stage2AspectMathMs', label: 'Stage 2: Deterministic Physical Math Engine' },
+    { key: 'stage3RAGConsultationMs', label: 'Stage 3: QuickSpecs NotebookLM RAG Grounding' },
+    { key: 'stage4GeminiVerificationMs', label: 'Stage 4: Gemini LLM Workload Intent Verification' },
+    { key: 'stage5ResolutionMatrixMs', label: 'Stage 5: 5-Tier Strategic Resolution Matrix' }
+  ];
+  const totalMs = stageDefs.reduce((sum, s) => {
+    const val = measured?.[s.key];
+    return sum + (typeof val === 'number' && Number.isFinite(val) && val > 0 ? val : 0);
+  }, 0);
+  const stages = stageDefs.map(s => {
+    const val = measured?.[s.key];
+    const hasVal = typeof val === 'number' && Number.isFinite(val) && val >= 0;
+    const pct = hasVal && totalMs > 0 ? `${Math.round((val / totalMs) * 100)}%` : '0%';
+    return { stage: s.label, time: hasVal ? `${Math.round(val)}ms` : '—', pct };
+  });
+
   return (
     <TelemetryModalWrapper
       isOpen={isOpen}
       onClose={onClose}
       title="5-Stage Pipeline Execution Profiler"
-      subtitle="Sub-millisecond execution profile across deterministic math and asynchronous LLM verification."
+      subtitle="Measured execution profile across deterministic physical math and asynchronous LLM verification."
       icon={Clock}
       iconColor="text-indigo-600"
       headerBg="bg-indigo-50/50"
@@ -408,20 +435,16 @@ export function PipelineProfilerModal({ isOpen, onClose }) {
     >
       <div className="space-y-3 text-xs text-slate-700">
         <div className="p-3 bg-indigo-50/60 border border-indigo-200 rounded-xl">
-          <span className="font-bold text-indigo-900 text-xs block mb-1">Decoupled Dual-Brain Execution</span>
+          <span className="font-bold text-indigo-900 text-xs block mb-1">Measured Dual-Brain Execution Profile</span>
           <p className="text-indigo-700 text-[11px] leading-relaxed">
-            Stage 1 through Stage 5 deterministic math completes in under 500ms, rendering the 5-Tier Strategy Matrix instantly while Gemini NotebookLM RAG verification runs in the background.
+            {totalMs > 0
+              ? `Latest measured run completed profiled stages in ${totalMs}ms across local deterministic checks and cloud grounding.`
+              : 'No measured stage timings recorded in the current telemetry window.'}
           </p>
         </div>
 
         <div className="space-y-2">
-          {[
-            { stage: 'Stage 1: Document Parsing & Tokenization', time: '~85ms', pct: '15%' },
-            { stage: 'Stage 2: 6-Aspect Deterministic Math Engine', time: '~140ms', pct: '25%' },
-            { stage: 'Stage 3: QuickSpecs NotebookLM RAG Grounding', time: '~110ms', pct: '20%' },
-            { stage: 'Stage 4: Gemini LLM Workload Intent Verification', time: '~160ms', pct: '25%' },
-            { stage: 'Stage 5: 5-Tier Strategic Resolution Matrix', time: '~95ms', pct: '15%' }
-          ].map((st, idx) => (
+          {stages.map((st, idx) => (
             <div key={idx} className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
               <div>
                 <strong className="text-slate-800 text-[11.5px] block">{st.stage}</strong>

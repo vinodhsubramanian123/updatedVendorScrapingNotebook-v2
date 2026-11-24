@@ -250,15 +250,25 @@ function tallySynergyStorage(tally, desc) {
   if (desc.includes('synergy') && desc.includes('sas') && desc.includes('connection module')) tally.hasSasConnectionModule = true;
 }
 
-function tallyStoreEverTapeStorage(tally, desc, sku, qty) {
-  if (desc.includes('tape drive') || desc.includes('ultrium 30750') || desc.includes('lto-8') || desc.includes('lto-9')) {
-    if (desc.includes('sas') && !desc.includes('mini sas') && !desc.includes('cable') && !desc.includes('cartridge')) tally.ltoSasDriveCount += qty;
-    if ((desc.includes('fc') || desc.includes('fibre channel')) && !desc.includes('transceiver') && !desc.includes('cartridge')) tally.ltoFcDriveCount += qty;
+function _tallyTapeDrives(tally, desc, qty) {
+  const isDrive = desc.includes('tape drive') || desc.includes('ultrium 30750') || desc.includes('lto-8') || desc.includes('lto-9');
+  if (!isDrive) return;
+  if (desc.includes('sas') && !desc.includes('mini sas') && !desc.includes('cable') && !desc.includes('cartridge')) {
+    tally.ltoSasDriveCount += qty;
   }
+  if ((desc.includes('fc') || desc.includes('fibre channel')) && !desc.includes('transceiver') && !desc.includes('cartridge')) {
+    tally.ltoFcDriveCount += qty;
+  }
+}
+
+function tallyStoreEverTapeStorage(tally, desc, sku, qty) {
+  _tallyTapeDrives(tally, desc, qty);
   if (desc.includes('mini sas high density') || desc.includes('mini-sas hd') || desc.includes('mini sas hd')) tally.miniSasHdCableCount += qty;
-  if ((desc.includes('short wave') && desc.includes('transceiver')) || (desc.includes('fibre channel') && desc.includes('transceiver'))) tally.fcTransceiverCount += qty;
-  if ((desc.includes('msl3040') || desc.includes('tape library')) && desc.includes('base module')) tally.msl3040BaseModuleCount += qty;
-  if ((desc.includes('msl3040') || desc.includes('tape library')) && desc.includes('expansion module')) tally.msl3040ExpansionModuleCount += qty;
+  if ((desc.includes('short wave') || desc.includes('fibre channel')) && desc.includes('transceiver')) tally.fcTransceiverCount += qty;
+  if (desc.includes('msl3040') || desc.includes('tape library')) {
+    if (desc.includes('base module')) tally.msl3040BaseModuleCount += qty;
+    if (desc.includes('expansion module')) tally.msl3040ExpansionModuleCount += qty;
+  }
   if ((desc.includes('lto-') || desc.includes('ultrium')) && (desc.includes('data cartridge') || desc.includes('rw data'))) tally.dataCartridgeCount += qty;
 }
 

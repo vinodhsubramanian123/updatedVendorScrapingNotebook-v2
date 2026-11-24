@@ -3,6 +3,14 @@ import { ShieldCheck, BarChart2, Clock } from 'lucide-react';
 import { allocateRoundedPercentages } from '../../../utils/formatters';
 
 function getAccuracyTier(score) {
+  if (score === null || score === undefined || !Number.isFinite(Number(score))) {
+    return {
+      label: 'Unmeasured',
+      badgeClass: 'bg-slate-800 text-slate-300 border-slate-700',
+      barClass: 'bg-slate-600',
+      iconClass: 'text-slate-400'
+    };
+  }
   if (score >= 85) {
     return {
       label: 'High Precision',
@@ -34,12 +42,14 @@ export default function AccuracyProfilerPanel({
   onOpenDomain,
   onOpenProfiler
 }) {
-  const numericAccuracy = Number.isFinite(Number(telemetry.evalAccuracyScore))
+  const numericAccuracy = telemetry.evalAccuracyScore != null && Number.isFinite(Number(telemetry.evalAccuracyScore))
     ? Number(telemetry.evalAccuracyScore)
-    : 98.5;
-  const accuracyScore = `${numericAccuracy}%`;
+    : null;
+  const accuracyScore = numericAccuracy !== null ? `${numericAccuracy}%` : '—';
   const accuracyTier = getAccuracyTier(numericAccuracy);
-  const adversarialCatch = telemetry.adversarial?.catchRate ? `${telemetry.adversarial.catchRate}%` : '100%';
+  const rawCatchRate = telemetry.adversarial?.catchRate;
+  const numericCatchRate = rawCatchRate != null && Number.isFinite(Number(rawCatchRate)) ? Number(rawCatchRate) : null;
+  const adversarialCatch = numericCatchRate !== null ? `${numericCatchRate}%` : '—';
 
   const domainTotals = {
     THERMAL: 0,
@@ -67,13 +77,13 @@ export default function AccuracyProfilerPanel({
     domainTotals.POWER_REDUNDANCY
   ];
   const grandTotal = rawCounts.reduce((a, b) => a + b, 0);
-  const allocatedPcts = grandTotal > 0 ? allocateRoundedPercentages(rawCounts) : [35, 25, 20, 12, 8];
+  const allocatedPcts = grandTotal > 0 ? allocateRoundedPercentages(rawCounts) : null;
   const domainItems = [
-    { domain: 'Thermal TDP Fans', color: 'bg-rose-500', pct: allocatedPcts[0] },
-    { domain: 'Telco -48VDC Lug Kits', color: 'bg-amber-500', pct: allocatedPcts[1] },
-    { domain: 'Storage Cache Battery', color: 'bg-blue-500', pct: allocatedPcts[2] },
-    { domain: 'Memory Channel Symmetry', color: 'bg-purple-500', pct: allocatedPcts[3] },
-    { domain: 'PSU Redundancy', color: 'bg-emerald-500', pct: allocatedPcts[4] }
+    { domain: 'Thermal TDP Fans', color: 'bg-rose-500', pct: allocatedPcts ? `${allocatedPcts[0]}%` : '—' },
+    { domain: 'Telco -48VDC Lug Kits', color: 'bg-amber-500', pct: allocatedPcts ? `${allocatedPcts[1]}%` : '—' },
+    { domain: 'Storage Cache Battery', color: 'bg-blue-500', pct: allocatedPcts ? `${allocatedPcts[2]}%` : '—' },
+    { domain: 'Memory Channel Symmetry', color: 'bg-purple-500', pct: allocatedPcts ? `${allocatedPcts[3]}%` : '—' },
+    { domain: 'PSU Redundancy', color: 'bg-emerald-500', pct: allocatedPcts ? `${allocatedPcts[4]}%` : '—' }
   ];
 
   return (
@@ -100,7 +110,7 @@ export default function AccuracyProfilerPanel({
           <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-2">
             <div
               className={`${accuracyTier.barClass} h-full rounded-full transition-all duration-500`}
-              style={{ width: `${Math.min(100, Math.max(0, numericAccuracy))}%` }}
+              style={{ width: `${numericAccuracy !== null ? Math.min(100, Math.max(0, numericAccuracy)) : 0}%` }}
             />
           </div>
           <p className="text-[11px] text-slate-400 leading-relaxed flex items-center justify-between gap-2">
@@ -132,7 +142,7 @@ export default function AccuracyProfilerPanel({
           <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden mb-2">
             <div
               className="bg-slate-800 h-full rounded-full transition-all duration-500"
-              style={{ width: `${telemetry.adversarial?.catchRate || 100}%` }}
+              style={{ width: `${numericCatchRate !== null ? Math.min(100, Math.max(0, numericCatchRate)) : 0}%` }}
             />
           </div>
           <p className="text-[11px] text-slate-500 leading-relaxed flex items-center justify-between gap-2">
@@ -160,7 +170,7 @@ export default function AccuracyProfilerPanel({
                 <span className={`w-2 h-2 rounded-full ${item.color}`}></span>
                 <span className="font-medium text-slate-700 text-[11px]">{item.domain}</span>
               </div>
-              <span className="font-mono text-[11px] font-bold text-slate-800">{item.pct}%</span>
+              <span className="font-mono text-[11px] font-bold text-slate-800">{item.pct}</span>
             </div>
           ))}
         </div>
@@ -177,38 +187,37 @@ export default function AccuracyProfilerPanel({
           </span>
           <span className="text-[10px] text-indigo-600 font-bold whitespace-nowrap shrink-0">Profile &rarr;</span>
         </div>
-        <div className="space-y-1 text-[11px]">
-          <div className="flex justify-between text-slate-600">
-            <span>Stage 1: Parsing & CTO Multiplier</span>
-            <span className="font-mono font-bold text-slate-800">
-              {telemetry.history?.[0]?.stageBreakdown?.stage1ParsingMs ? `${telemetry.history[0].stageBreakdown.stage1ParsingMs}ms` : '~85ms'}
-            </span>
-          </div>
-          <div className="flex justify-between text-slate-600">
-            <span>Stage 2: Aspect Math Engine</span>
-            <span className="font-mono font-bold text-slate-800">
-              {telemetry.history?.[0]?.stageBreakdown?.stage2AspectMathMs ? `${telemetry.history[0].stageBreakdown.stage2AspectMathMs}ms` : '~140ms'}
-            </span>
-          </div>
-          <div className="flex justify-between text-slate-600">
-            <span>Stage 3: NotebookLM Grounding</span>
-            <span className="font-mono font-bold text-slate-800">
-              {telemetry.history?.[0]?.stageBreakdown?.stage3RAGConsultationMs ? `${(telemetry.history[0].stageBreakdown.stage3RAGConsultationMs / 1000).toFixed(1)}s` : '~110ms'}
-            </span>
-          </div>
-          <div className="flex justify-between text-slate-600">
-            <span>Stage 4: Gemini Workload Verify</span>
-            <span className="font-mono font-bold text-slate-800">
-              {telemetry.history?.[0]?.stageBreakdown?.stage4GeminiVerificationMs ? `${(telemetry.history[0].stageBreakdown.stage4GeminiVerificationMs / 1000).toFixed(1)}s` : '~160ms'}
-            </span>
-          </div>
-          <div className="flex justify-between text-slate-600">
-            <span>Stage 5: 5-Tier Matrix Synthesis</span>
-            <span className="font-mono font-bold text-slate-800">
-              {telemetry.history?.[0]?.stageBreakdown?.stage5ResolutionMatrixMs ? `${telemetry.history[0].stageBreakdown.stage5ResolutionMatrixMs}ms` : '~95ms'}
-            </span>
-          </div>
-        </div>
+        {(() => {
+          const latest = telemetry.history?.[0];
+          const measured = latest?.stageTimingsMeasured !== false ? latest?.stageBreakdown : null;
+          const formatStageMs = (ms, inSeconds = false) => (typeof ms === 'number' && Number.isFinite(ms))
+            ? (inSeconds ? `${(ms / 1000).toFixed(1)}s` : `${ms}ms`)
+            : '—';
+          return (
+            <div className="space-y-1 text-[11px]">
+              <div className="flex justify-between text-slate-600">
+                <span>Stage 1: Parsing & CTO Multiplier</span>
+                <span className="font-mono font-bold text-slate-800">{formatStageMs(measured?.stage1ParsingMs)}</span>
+              </div>
+              <div className="flex justify-between text-slate-600">
+                <span>Stage 2: Aspect Math Engine</span>
+                <span className="font-mono font-bold text-slate-800">{formatStageMs(measured?.stage2AspectMathMs)}</span>
+              </div>
+              <div className="flex justify-between text-slate-600">
+                <span>Stage 3: NotebookLM Grounding</span>
+                <span className="font-mono font-bold text-slate-800">{formatStageMs(measured?.stage3RAGConsultationMs, true)}</span>
+              </div>
+              <div className="flex justify-between text-slate-600">
+                <span>Stage 4: Gemini Workload Verify</span>
+                <span className="font-mono font-bold text-slate-800">{formatStageMs(measured?.stage4GeminiVerificationMs, true)}</span>
+              </div>
+              <div className="flex justify-between text-slate-600">
+                <span>Stage 5: 5-Tier Matrix Synthesis</span>
+                <span className="font-mono font-bold text-slate-800">{formatStageMs(measured?.stage5ResolutionMatrixMs)}</span>
+              </div>
+            </div>
+          );
+        })()}
       </div>
     </div>
   );
