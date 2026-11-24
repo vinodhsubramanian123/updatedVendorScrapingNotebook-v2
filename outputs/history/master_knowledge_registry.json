@@ -1,10 +1,10 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-11-23T14:09:08.603Z",
-  "lastUpdated": "2026-11-23T14:09:08.603Z",
-  "totalLearnedRules": 190,
-  "totalDeduplicatedRules": 190,
+  "generatedAt": "2026-11-24T15:09:45.872Z",
+  "lastUpdated": "2026-11-24T15:09:45.872Z",
+  "totalLearnedRules": 194,
+  "totalDeduplicatedRules": 194,
   "productFamiliesSynced": [
     "Alletra",
     "DL380a",
@@ -13,9 +13,9 @@
     "Synergy"
   ],
   "counts": {
-    "universal": 22,
+    "universal": 23,
     "familyGen": 0,
-    "chassisSpecific": 168
+    "chassisSpecific": 171
   },
   "universalRules": [
     {
@@ -398,6 +398,30 @@
       "hardwareCompatibilityCertified": false,
       "ruleUpdate": "Universal portfolio intelligence, support governance & multi-vendor attribute mapping rules (INV-242, INV-243): (1) Index companion *_Services.json entries non-destructively onto catalogData via non-enumerable _servicesEntries (preserving catalogData.entries and snapshotFingerprint), normalize -2/-1 max-qty sentinels to null, and recover or flag SHIFTED_COLUMN_CORRUPTION rows where SKU/badge tokens leak into Unit Price columns. (2) Enforce per-node quantity parity (Qty >= serverCount) for COM, iLO, and child support SKUs, flag COM-vs-hardware term mismatches and discontinued iLO licenses, fail Gate B14 as ACTION_REQUIRED when multi-node Gen11/Gen12 servers have qualifyingComQty < chassisQty without an approved SmartForm override, and separate Gate B19 PORTAL_VALIDATED_WITH_PC_OVERRIDE from unresolved P+ Process Control blocks. (3) Keep cross-solution price/lead-time backfill scoped strictly to same-generation matches while preserving nullable unpriced SKUs. (4) Map competitor Dell/Huawei/Cisco/Lenovo BOM lines using canonical attribute vectors without silent write-endurance or InfiniBand-to-Ethernet downgrades, and keep deadcode/orphan and scope-aware delta deduplication gates green.",
       "rawMessage": "Universal INV-242 & INV-243 lessons: index sibling Services JSON non-destructively, detect/recover shifted-column pricing, enforce per-node COM/iLO/support quantity parity & Process Control P+ SmartForm governance, restrict price/lead-time backfill to same generation, and map multi-vendor BOMs via canonical attribute vectors without protocol or endurance downgrades."
+    },
+    {
+      "deltaId": "LEARN_UNIVERSAL_OCA_UPLOAD_CONFIG_NAME_AND_DIVISIBILITY_20261124",
+      "timestamp": "2026-11-24T15:01:41.316Z",
+      "chassis": "GLOBAL",
+      "productId": "GLOBAL",
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "",
+      "generation": "",
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "vendorWideVerified": true,
+      "scopeEvidence": "Verified across live HPE OCA 2-frame (UCID 5158592304-01) and 3-frame (UCID 5158590124-02) Synergy Gen12 BOM imports and enforced via validateOcaContainerDivisibility() in scripts/lib/boq/synergy_composite_evaluator.js.",
+      "errorType": "OCA_UPLOAD_CONTAINER_AND_DIVISIBILITY",
+      "ruleType": "WORKFLOW_OCA_UPLOAD_CONFIG_CONTAINER_CONTRACT",
+      "affectedSku": null,
+      "requiredDependencySku": null,
+      "governanceStatus": "ACTIVE",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "evidenceType": "WORKFLOW_REVIEW",
+      "solutionType": "HPE OCA 4-Column BOM Upload Contract & Container Divisibility Gate",
+      "hardwareCompatibilityCertified": false,
+      "ruleUpdate": "4-column HPE OCA BOM upload workbooks (Product #, Product Description, Qty, Config Name starting at A1 with zero trailing blank rows and preserved HPE modifier whitespace) must satisfy: (1) Use exact built-in keyword Ad-Hoc #1 in pre-upload Excel sheets for loose non-0D1 cables and transceivers — NEVER post-import display labels like AdHoc - SFP + Cables or AdHoc - Cables + Trans (verified in UCID 5158592304-01 vs UCID 5158590124-02: uploading AdHoc - SFP + Cables caused OCA to absorb K2Q47A x6, QK729A x6, and R6B12A x16 into 32Gb/20 4SFP+ FC #2 and scatter the remaining 7 loose cables across separate Ad-Hoc buckets, whereas Ad-Hoc #1 imports all 10 into one container that can be renamed in the UI afterward); (2) Parent-child integer divisibility (childQty % parentQty === 0) inside every non-AdHoc CTO Config Name, because OCA builds one template per Config Name scaled by parentQty and ejects non-divisible children (e.g. 1x 453154-B21 under 2x 876852-B21 = 0.5/unit) into extra Ad-Hoc containers; (3) Keep factory-integrated 0D1 transceivers inside parent modules only when divisible, and place indivisible loose parts in Ad-Hoc #1 without 0D1; (4) Number frame and FLM Config Names sequentially (#1, #2, #3), never role-named #1 duplicates or skipped indices, and anchor aggregated HU4B2A3* services to each owning product class #1 Config Name.",
+      "rawMessage": "HPE OCA 4-column upload MUST use Ad-Hoc #1 (not post-import labels like AdHoc - SFP + Cables, which cause OCA to absorb K2Q47A/QK729A/R6B12A into 32Gb/20 4SFP+ FC #2 and scatter other loose cables per UCID 5158592304-01), enforce childQty % parentQty === 0 in non-AdHoc Config Names, keep sequential #1/#2/#3 naming, retain divisible 0D1 in parents, and anchor HU4B2A3* services to #1."
     },
     {
       "deltaId": "OWNER_STANDARD_3Y_BASIC",
@@ -3895,6 +3919,32 @@
       "solutionType": "SY480_Gen12 CTO Server"
     },
     {
+      "deltaId": "LEARN_SY480_GEN12_MULTIFRAME_OCA_UPLOAD_AND_CLIC_20261124",
+      "ruleId": "LEARN_SY480_GEN12_MULTIFRAME_OCA_UPLOAD_AND_CLIC_20261124",
+      "productId": "SY480_Gen12",
+      "vendor": "HPE",
+      "family": "Synergy",
+      "generation": "Gen12",
+      "pillar": "SERVER",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "affectedSku": "P80318-B21",
+      "requiredDependencySku": "P68340-B21",
+      "ruleType": "MULTIFRAME_OCA_UPLOAD_ADVISORY",
+      "errorType": "SY480_GEN12_CLIC_AND_FABRIC_BASELINE",
+      "governanceStatus": "ACTIVE",
+      "status": "VERIFIED",
+      "evidenceType": "TIER_3_LIVE_PORTAL_RECEIPT",
+      "provenanceSources": [
+        "UCID 5158590124-02 (3-Frame Synergy Gen12 OCA BOM, ,239,327.00)",
+        "UCID 5158592304-01 (2-Frame Synergy Gen12 OCA BOM, ,861,784.00)"
+      ],
+      "ruleUpdate": "Verified 2-frame (24-node, UCID 5158592304-01, ,861,784.00) & 3-frame (36-node, UCID 5158590124-02, ,239,327.00) SY480 Gen12 single-solution OCA upload layout: (1) Per-frame Synergy 480 Gen12 #i containers with 12x P68217-B21, P68340-B21 NS204i-d v2 + 24x P80318-B21 480GB M.2 SSD; (2) 0D1 882251-B21 transceivers inside 100Gb Virtual #i up to OCA max 8 per 867796-B21, while all loose non-0D1 cables/transceivers MUST upload under Config Name Ad-Hoc #1 (renameable after import; using AdHoc - SFP + Cables caused OCA in UCID 5158592304-01 to absorb K2Q47A x6, QK729A x6, and R6B12A x16 into 32Gb/20 4SFP+ FC #2 and scatter other loose cables) and HU4B2A3* 3Y Tech Care Basic services anchor to #1 containers; (3) P68131-B21 (64Gb FC HBA) negotiates backward cleanly with Q2E57A (Brocade 32Gb/20 FC switch) in OCA; (4) Live CLIC baseline shows Error on P80318-B21 and Warning on P51174-B21 / 867793-B21 when interconnect cables reside in Ad-Hoc.",
+      "rawMessage": "SY480 Gen12 2f/3f single-solution OCA upload baseline (UCID 5158592304-01 & 5158590124-02): upload loose connectivity under Ad-Hoc #1 (not post-import labels like AdHoc - SFP + Cables, which attach K2Q47A/QK729A/R6B12A to 32Gb/20 4SFP+ FC #2); P68131-B21 (64G FC HBA) negotiates backward to Q2E57A (32G FC ICM); 0D1 882251-B21 stays in F32 (max 8/module); P80318-B21 flags CLIC Error and P51174-B21/867793-B21 flag Warning.",
+      "timestamp": "2026-11-24T15:01:41.614Z",
+      "chassis": "SY480_Gen12",
+      "solutionType": "SY480_Gen12 CTO Server"
+    },
+    {
       "deltaId": "LEARN_SY100GB_F32_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029",
       "ruleType": "WORKFLOW_DUAL_PUBLICATION_ADVISORY",
       "rawMessage": "Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.",
@@ -4026,6 +4076,32 @@
       "solutionType": "Synergy_12000_Frame CTO Server"
     },
     {
+      "deltaId": "LEARN_SYNERGY_12000_DUAL_SLOT_PSU_ADAPTER_12PSU_20261124",
+      "ruleId": "LEARN_SYNERGY_12000_DUAL_SLOT_PSU_ADAPTER_12PSU_20261124",
+      "productId": "Synergy_12000_Frame",
+      "vendor": "HPE",
+      "family": "Synergy",
+      "generation": "General",
+      "pillar": "COMPOSITE",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "affectedSku": "P44074-B21",
+      "requiredDependencySku": "P44712-B21",
+      "ruleType": "POWER_ENVELOPE_ARCHITECTURE",
+      "errorType": "SYNERGY_FRAME_PSU_CAPACITY",
+      "governanceStatus": "ACTIVE",
+      "status": "VERIFIED",
+      "evidenceType": "TIER_3_LIVE_PORTAL_RECEIPT",
+      "provenanceSources": [
+        "UCID 5158590124-02 (3-Frame Synergy Gen12 OCA BOM, ,239,327.00)",
+        "UCID 5158592304-01 (2-Frame Synergy Gen12 OCA BOM, ,861,784.00)"
+      ],
+      "ruleUpdate": "6x HPE Synergy Dual Slot Power Supply Adapters (P44074-B21) expand a Synergy 12000 Frame (P51174-B21) from 6 physical PSU bays to 12x HPE 1800W-2200W Flex Slot Titanium PSUs (P44712-B21) per frame (verified across 2-frame 24-PSU UCID 5158592304-01 and 3-frame 36-PSU UCID 5158590124-02 OCA builds). Multi-frame roles are encoded inside sequential frames Synergy 12000 Frame #1/#2/#3 via 859493-B21 (Master1 FIO + Composer2 872957-B21), 859494-B22 (Master2 FIO + Composer2), and Satellite frames (no Master FIO / no Composer2).",
+      "rawMessage": "6x P44074-B21 Dual Slot PSU Adapters expand Synergy 12000 Frame capacity from 6 to 12x P44712-B21 Titanium PSUs/frame (UCID 5158592304-01 & 5158590124-02); use sequential Synergy 12000 Frame #1/#2/#3 Config Names for Master1/Master2/Satellite frames.",
+      "timestamp": "2026-11-24T15:01:41.451Z",
+      "chassis": "Synergy_12000_Frame",
+      "solutionType": "Synergy_12000_Frame CTO Server"
+    },
+    {
       "deltaId": "LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029",
       "ruleType": "WORKFLOW_DUAL_PUBLICATION_ADVISORY",
       "rawMessage": "Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.",
@@ -4076,6 +4152,32 @@
       "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
       "hardwareCompatibilityCertified": false,
       "timestamp": "2026-11-12T07:18:28.673Z",
+      "chassis": "Synergy_4Port_Frame_Link_Module",
+      "solutionType": "Synergy_4Port_Frame_Link_Module CTO Server"
+    },
+    {
+      "deltaId": "LEARN_SYNERGY_FLM_453154_DIVISIBILITY_ADHOC_20261124",
+      "ruleId": "LEARN_SYNERGY_FLM_453154_DIVISIBILITY_ADHOC_20261124",
+      "productId": "Synergy_4Port_Frame_Link_Module",
+      "vendor": "HPE",
+      "family": "Synergy",
+      "generation": "General",
+      "pillar": "NETWORKING",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "affectedSku": "453154-B21",
+      "requiredDependencySku": "876852-B21",
+      "ruleType": "OCA_IMPORT_DIVISIBILITY_RULE",
+      "errorType": "OCA_NON_DIVISIBLE_CHILD_SPLIT",
+      "governanceStatus": "ACTIVE",
+      "status": "VERIFIED",
+      "evidenceType": "TIER_3_LIVE_PORTAL_RECEIPT",
+      "provenanceSources": [
+        "UCID 5158590124-02 (3-Frame Synergy Gen12 OCA BOM, ,239,327.00)",
+        "UCID 5158592304-01 (2-Frame Synergy Gen12 OCA BOM, ,861,784.00)"
+      ],
+      "ruleUpdate": "453154-B21 (1G SFP RJ45 Transceiver, 0D1) placed inside 4-port Frame Link Module #i (876852-B21 Qty 2) requires qty(453154-B21) % qty(876852-B21) === 0 during OCA BOM import. In 3-frame UCID 5158590124-02, Frame #2 had 2x 453154-B21 under 2x 876852-B21 (ratio 1.0) and stayed factory-integrated; in 2-frame UCID 5158592304-01, 1x 453154-B21 under 2x 876852-B21 (ratio 0.5) per frame caused OCA to eject 453154-B21 into 2 extra Ad-Hoc containers (final export stripped both 453154-B21 0D1 rows and merged 1+1 -> 2 in Ad-Hoc). For 2 total 453154-B21 across 2 frames, consolidate 2x under one FLM container or place 2x 453154-B21 (without 0D1) directly in Ad-Hoc #1 for upload. Always number FLM Config Names sequentially (#1, #2, #3).",
+      "rawMessage": "453154-B21 inside 2x 876852-B21 FLM requires integer ratio (2/2=1); 1/2=0.5 splits into extra Ad-Hoc containers (UCID 5158592304-01 stripped 0D1 and merged 1+1 -> 2 in Ad-Hoc). Consolidate 2x under one FLM or move non-0D1 to Ad-Hoc #1 for upload; keep FLM numbering sequential (#1, #2, #3).",
+      "timestamp": "2026-11-24T15:01:41.540Z",
       "chassis": "Synergy_4Port_Frame_Link_Module",
       "solutionType": "Synergy_4Port_Frame_Link_Module CTO Server"
     },

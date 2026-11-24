@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-11-22T08:32:21.648Z",
+  "verifiedAt": "2026-11-24T13:41:39.962Z",
   "productId": "DL385_Gen11",
   "family": "ProLiant",
   "generation": "Gen11",
@@ -61,11 +61,12 @@
     },
     "cloudSyncState": "CLOUD_VERIFIED",
     "notebookId": "52364fcf-acc3-442f-b4ff-f911053d45d2",
-    "verifiedSourceId": "ad3b05b6-3eff-4f2e-be26-c696d9e41ea9",
+    "verifiedSourceId": "b586884d-0afe-46f3-96f7-54e8a9465b83",
     "verifiedSourceName": "DL385_Gen11_OCA_Catalog_2026-11-22",
-    "payloadSha256": "f16c860373ba298511a97573a6876e82db3f1bd094e81b4e6b59bb448d97c257",
-    "cloudVerifiedAt": "2026-11-22T08:32:21.648Z",
+    "payloadSha256": "c568393f252368b04969b6eb82729a29c496e6c9b4f2e344e82cabaa80ae3c13",
+    "cloudVerifiedAt": "2026-11-24T13:41:39.962Z",
     "readbackVerified": true,
     "canaryVerified": true
-  }
+  },
+  "overallPass": true
 }

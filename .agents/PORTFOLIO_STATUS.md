@@ -35,7 +35,7 @@ This document is dynamically generated from on-disk catalog metadata and `script
 
 ### 🧠 Learned KnowledgeDeltas
 
-- Total Closed-Loop Knowledge Deltas on Disk: **178**
+- Total Closed-Loop Knowledge Deltas on Disk: **182**
 
 ### 🚀 Quick Commands
 

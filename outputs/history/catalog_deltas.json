@@ -399,5 +399,29 @@
     "hardwareCompatibilityCertified": false,
     "ruleUpdate": "Universal portfolio intelligence, support governance & multi-vendor attribute mapping rules (INV-242, INV-243): (1) Index companion *_Services.json entries non-destructively onto catalogData via non-enumerable _servicesEntries (preserving catalogData.entries and snapshotFingerprint), normalize -2/-1 max-qty sentinels to null, and recover or flag SHIFTED_COLUMN_CORRUPTION rows where SKU/badge tokens leak into Unit Price columns. (2) Enforce per-node quantity parity (Qty >= serverCount) for COM, iLO, and child support SKUs, flag COM-vs-hardware term mismatches and discontinued iLO licenses, fail Gate B14 as ACTION_REQUIRED when multi-node Gen11/Gen12 servers have qualifyingComQty < chassisQty without an approved SmartForm override, and separate Gate B19 PORTAL_VALIDATED_WITH_PC_OVERRIDE from unresolved P+ Process Control blocks. (3) Keep cross-solution price/lead-time backfill scoped strictly to same-generation matches while preserving nullable unpriced SKUs. (4) Map competitor Dell/Huawei/Cisco/Lenovo BOM lines using canonical attribute vectors without silent write-endurance or InfiniBand-to-Ethernet downgrades, and keep deadcode/orphan and scope-aware delta deduplication gates green.",
     "rawMessage": "Universal INV-242 & INV-243 lessons: index sibling Services JSON non-destructively, detect/recover shifted-column pricing, enforce per-node COM/iLO/support quantity parity & Process Control P+ SmartForm governance, restrict price/lead-time backfill to same generation, and map multi-vendor BOMs via canonical attribute vectors without protocol or endurance downgrades."
+  },
+  {
+    "deltaId": "LEARN_UNIVERSAL_OCA_UPLOAD_CONFIG_NAME_AND_DIVISIBILITY_20261124",
+    "timestamp": "2026-11-24T15:01:41.316Z",
+    "chassis": "GLOBAL",
+    "productId": "GLOBAL",
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "",
+    "generation": "",
+    "scopeTaxonomy": "UNIVERSAL_VENDOR",
+    "vendorWideVerified": true,
+    "scopeEvidence": "Verified across live HPE OCA 2-frame (UCID 5158592304-01) and 3-frame (UCID 5158590124-02) Synergy Gen12 BOM imports and enforced via validateOcaContainerDivisibility() in scripts/lib/boq/synergy_composite_evaluator.js.",
+    "errorType": "OCA_UPLOAD_CONTAINER_AND_DIVISIBILITY",
+    "ruleType": "WORKFLOW_OCA_UPLOAD_CONFIG_CONTAINER_CONTRACT",
+    "affectedSku": null,
+    "requiredDependencySku": null,
+    "governanceStatus": "ACTIVE",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "solutionType": "HPE OCA 4-Column BOM Upload Contract & Container Divisibility Gate",
+    "hardwareCompatibilityCertified": false,
+    "ruleUpdate": "4-column HPE OCA BOM upload workbooks (Product #, Product Description, Qty, Config Name starting at A1 with zero trailing blank rows and preserved HPE modifier whitespace) must satisfy: (1) Use exact built-in keyword Ad-Hoc #1 in pre-upload Excel sheets for loose non-0D1 cables and transceivers — NEVER post-import display labels like AdHoc - SFP + Cables or AdHoc - Cables + Trans (verified in UCID 5158592304-01 vs UCID 5158590124-02: uploading AdHoc - SFP + Cables caused OCA to absorb K2Q47A x6, QK729A x6, and R6B12A x16 into 32Gb/20 4SFP+ FC #2 and scatter the remaining 7 loose cables across separate Ad-Hoc buckets, whereas Ad-Hoc #1 imports all 10 into one container that can be renamed in the UI afterward); (2) Parent-child integer divisibility (childQty % parentQty === 0) inside every non-AdHoc CTO Config Name, because OCA builds one template per Config Name scaled by parentQty and ejects non-divisible children (e.g. 1x 453154-B21 under 2x 876852-B21 = 0.5/unit) into extra Ad-Hoc containers; (3) Keep factory-integrated 0D1 transceivers inside parent modules only when divisible, and place indivisible loose parts in Ad-Hoc #1 without 0D1; (4) Number frame and FLM Config Names sequentially (#1, #2, #3), never role-named #1 duplicates or skipped indices, and anchor aggregated HU4B2A3* services to each owning product class #1 Config Name.",
+    "rawMessage": "HPE OCA 4-column upload MUST use Ad-Hoc #1 (not post-import labels like AdHoc - SFP + Cables, which cause OCA to absorb K2Q47A/QK729A/R6B12A into 32Gb/20 4SFP+ FC #2 and scatter other loose cables per UCID 5158592304-01), enforce childQty % parentQty === 0 in non-AdHoc Config Names, keep sequential #1/#2/#3 naming, retain divisible 0D1 in parents, and anchor HU4B2A3* services to #1."
   }
 ]

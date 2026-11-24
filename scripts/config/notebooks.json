@@ -45,8 +45,8 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:10:11.776Z",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:03:21.306Z",
       "lastSyncAttemptAt": "2026-11-22T08:45:29.911Z",
       "lastSyncError": null,
       "cloudSyncState": "VERIFIED",
@@ -120,8 +120,8 @@
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1G6SKC2YlGIJZuRKXZkM_HYjggVn0c3FDVPEh2UQOy6s/edit",
       "lastSyncedSourceId": "43c58a7a-a270-41dc-9ad2-875ff0dfd27c",
       "runningKnowledgeSourceId": "1f109b65-6665-4e73-b56b-b6a908facfd5",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:09:27.690Z",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:03:04.656Z",
       "lastSyncAttemptAt": "2026-11-20T08:55:04.574Z"
     },
     "DL360_Gen11": {
@@ -182,8 +182,8 @@
         "combined": "dd761a6a58b3f1780eada5cb1e4bcaa758954762a7eebc1086e3c7e2a61d4bca"
       },
       "lastSyncAttemptAt": "2026-11-20T17:22:46.739Z",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:10:33.076Z",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:03:40.834Z",
       "lastSyncAttemptStatus": "VERIFIED"
     },
     "DL380_Gen11": {
@@ -239,8 +239,8 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:10:31.781Z",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:03:40.870Z",
       "lastCatalogSha256": "6d60d670cfa74fafced455f9c55eb13977e3e19d3078194e3cec943e2877ce80",
       "lastArtifactHashes": {
         "Catalog.json": "6d60d670cfa74fafced455f9c55eb13977e3e19d3078194e3cec943e2877ce80",
@@ -364,8 +364,8 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "d0b76b30-f540-4119-9f56-0283184fc9fe",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:10:47.129Z",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:04:00.588Z",
       "lastCatalogSha256": "e0f6eb2fc48f673b1f1b5a9bd970b99a6e0bac38d5e470c9e8a1921e76b5ad77",
       "lastArtifactHashes": {
         "Catalog.json": "e0f6eb2fc48f673b1f1b5a9bd970b99a6e0bac38d5e470c9e8a1921e76b5ad77",
@@ -445,15 +445,14 @@
       "canonicalDriveEnabled": false,
       "publishDriveWorkbook": true,
       "isolationLevel": "CHASSIS_SPECIFIC",
-      "lastSyncedAt": "2026-11-22T09:08:51.351Z",
-      "lastSyncDeltaCount": 25,
+      "lastSyncedAt": "2026-11-24T15:09:27.947Z",
+      "lastSyncDeltaCount": 27,
       "cloudSyncState": "VERIFIED",
       "lastSyncError": null,
       "lastSyncedSourceName": "Synergy_12000_Frame_OCA_Catalog_2026-11-12",
       "trustedSourceIds": [
         "bd5e5672-ab9a-431a-b90a-ae3e05675a3b",
-        "d481d346-5bb1-48e3-97d6-5b4491059ad7",
-        "e81109a0-bfc5-4051-b460-eba68e3542c2"
+        "4966ee18-871b-4d2e-9ded-48f77ce16490"
       ],
       "lastCatalogSha256": "433d90b963bff368b137b06a329be2bf4ea498465384b5f1417584e440befbb5",
       "lastArtifactHashes": {
@@ -463,23 +462,22 @@
         "OCA_Catalog.xlsx": "a44258da277e6306f141a4dfbbfd07f81bd8a5c8383a77ec864d081546092424"
       },
       "canonicalKnowledgeSourceIds": [
-        "d481d346-5bb1-48e3-97d6-5b4491059ad7",
-        "e81109a0-bfc5-4051-b460-eba68e3542c2"
+        "4966ee18-871b-4d2e-9ded-48f77ce16490"
       ],
       "certifiedCatalogSourceIds": [
-        "d481d346-5bb1-48e3-97d6-5b4491059ad7"
+        "4966ee18-871b-4d2e-9ded-48f77ce16490"
       ],
-      "lastPayloadChecksum": "dfe4ed5c5c1e7558dee15e705c6a41569498e257c5ab4485d76f06c1a12a6621",
+      "lastPayloadChecksum": "dcc14e20a91fd514934e3f81b68decbbc9beafd770528ef1e8e7afdb6d994d49",
       "driveSheetId": "1doBW-ZROwmEUoSnW3xYMklPEdM5xGp6C3vW72XAo5xI",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1doBW-ZROwmEUoSnW3xYMklPEdM5xGp6C3vW72XAo5xI/edit",
-      "lastSyncedSourceId": "d481d346-5bb1-48e3-97d6-5b4491059ad7",
+      "lastSyncedSourceId": "4966ee18-871b-4d2e-9ded-48f77ce16490",
       "officialSourceIds": [
         "bd5e5672-ab9a-431a-b90a-ae3e05675a3b"
       ],
       "runningKnowledgeSourceId": "e81109a0-bfc5-4051-b460-eba68e3542c2",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:10:47.420Z",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:04:00.585Z",
       "lastSyncAttemptStatus": "VERIFIED"
     },
     "Synergy_4Port_Frame_Link_Module": {
@@ -502,11 +500,10 @@
       ],
       "trustedSourceIds": [
         "8f670b65-ce42-4e4e-a03b-6325589e5d08",
-        "7c74c639-0104-4882-8025-048a92ce92d2",
-        "9ebcfb6d-f258-402f-9232-55f666895f49"
+        "c58b416a-f5a9-4bd3-80fe-f2767fea4c6b"
       ],
-      "lastSyncedAt": "2026-11-22T09:11:31.503Z",
-      "lastSyncDeltaCount": 25,
+      "lastSyncedAt": "2026-11-24T15:10:49.609Z",
+      "lastSyncDeltaCount": 27,
       "isolationLevel": "CHASSIS_SPECIFIC",
       "lastSyncedSourceName": "Synergy_4Port_Frame_Link_Module_OCA_Catalog_2026-11-12",
       "lastCatalogSha256": "3ee468ac648526fee3ca4100b62ab4e34317231360bf076b7304dff388cfa2fe",
@@ -517,20 +514,19 @@
         "OCA_Catalog.xlsx": "811be8836672f1a43c921ad0ab143329f8bf3faacb73de02caaae51433c2504d"
       },
       "canonicalKnowledgeSourceIds": [
-        "7c74c639-0104-4882-8025-048a92ce92d2",
-        "9ebcfb6d-f258-402f-9232-55f666895f49"
+        "c58b416a-f5a9-4bd3-80fe-f2767fea4c6b"
       ],
       "certifiedCatalogSourceIds": [
-        "7c74c639-0104-4882-8025-048a92ce92d2"
+        "c58b416a-f5a9-4bd3-80fe-f2767fea4c6b"
       ],
-      "lastPayloadChecksum": "164871ee1489eff91d3bbb51ddc2b53aa2c96a5e349d0820d12fa536c95ab39c",
+      "lastPayloadChecksum": "2dac16b4487cf76098e46324f9c6c81ae974284d0b9f3599282cc057681551b7",
       "driveSheetId": "1eUD72j0GX55M3yz9qx1okH6l3bYk2kZQSgcuOk-gJRs",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1eUD72j0GX55M3yz9qx1okH6l3bYk2kZQSgcuOk-gJRs/edit",
-      "lastSyncedSourceId": "7c74c639-0104-4882-8025-048a92ce92d2",
+      "lastSyncedSourceId": "c58b416a-f5a9-4bd3-80fe-f2767fea4c6b",
       "runningKnowledgeSourceId": "9ebcfb6d-f258-402f-9232-55f666895f49",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:11:15.137Z",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:04:20.432Z",
       "lastSyncAttemptStatus": "VERIFIED"
     },
     "Synergy_Brocade_64Gb_FC_Module": {
@@ -580,8 +576,8 @@
       "lastSyncedSourceId": "e96cc0ef-ac96-475a-a8ca-7d86f49681ad",
       "runningKnowledgeSourceId": "2f2f939c-0111-4623-aca6-07ce3fa9a075",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:11:15.123Z",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:04:20.355Z",
       "lastSyncAttemptStatus": "VERIFIED"
     },
     "SY100Gb_F32_Module": {
@@ -623,8 +619,8 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "e442c3f2-dfc9-4b16-997f-867dc4d05448",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:11:32.165Z",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:04:33.215Z",
       "publishDriveWorkbook": true,
       "lastSyncAttemptAt": "2026-11-11T18:49:39.050Z",
       "lastSyncError": null,
@@ -666,8 +662,7 @@
         "bed0c191-6268-41b9-9a98-371bc2c9960d",
         "db629ae1-e911-4ae1-b903-72b11051ae83",
         "360db92c-82ce-455d-924b-48a6d468ddb5",
-        "5c0255b6-2802-4914-ae71-eda19b7cd07d",
-        "197c1910-d257-46e9-ba13-784dfaaae008"
+        "0da6b66b-7e7a-4607-8974-fff6b27759b8"
       ],
       "officialSourceIds": [
         "72a1fc27-f62b-441f-a95d-b7b8a0a1e862",
@@ -676,11 +671,10 @@
         "db629ae1-e911-4ae1-b903-72b11051ae83"
       ],
       "certifiedCatalogSourceIds": [
-        "5c0255b6-2802-4914-ae71-eda19b7cd07d"
+        "0da6b66b-7e7a-4607-8974-fff6b27759b8"
       ],
       "canonicalKnowledgeSourceIds": [
-        "5c0255b6-2802-4914-ae71-eda19b7cd07d",
-        "197c1910-d257-46e9-ba13-784dfaaae008"
+        "0da6b66b-7e7a-4607-8974-fff6b27759b8"
       ],
       "verifiedLearningSourceIds": [
         "360db92c-82ce-455d-924b-48a6d468ddb5"
@@ -691,12 +685,12 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "197c1910-d257-46e9-ba13-784dfaaae008",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "lastSyncedAt": "2026-11-22T09:21:09.161Z",
-      "lastSyncDeltaCount": 32,
+      "lastSyncedAt": "2026-11-24T15:07:43.836Z",
+      "lastSyncDeltaCount": 34,
       "cloudSyncState": "VERIFIED",
       "lastSyncError": null,
       "lastSyncedSourceName": "SY480_Gen12_OCA_Catalog_2026-11-12",
-      "lastPayloadChecksum": "bf7d49c98204fd7b7b849ad6a9c0aae0fc9197cfec89d9a7d39536c5063189c6",
+      "lastPayloadChecksum": "e9795bbf99f1e4e7bc99fa8e15781764c4107409f84096890543860a10d8aaf0",
       "lastContentFingerprints": {
         "catalog": "24748d8a21c20b50fda492ebcc170df754270cc2fe6d5d8aa5318abdfe3f92bf",
         "learnings": "a31082b2906090fe84a24c68e14d8b924a3a2069f135d8e2655754424aa9b151",
@@ -707,9 +701,9 @@
       "driveSheetId": "1ukT4-pUQukZ9FUnzl5KJI-BVSk5zPye_1yvvS4nK3iY",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1ukT4-pUQukZ9FUnzl5KJI-BVSk5zPye_1yvvS4nK3iY/edit",
       "driveSourceId": "fbef4c8a-9ee6-48a4-99e3-b0e1af4f5fe6",
-      "lastSyncedSourceId": "5c0255b6-2802-4914-ae71-eda19b7cd07d",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:11:32.127Z",
+      "lastSyncedSourceId": "0da6b66b-7e7a-4607-8974-fff6b27759b8",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:04:33.647Z",
       "publishDriveWorkbook": true,
       "lastCatalogSha256": "70312bcb18be5161cd23037cd438aa3220cc65cd48c1026169c6a7bde505cabf",
       "lastArtifactHashes": {
@@ -766,8 +760,8 @@
       "runningKnowledgeSourceId": "3c75e029-2864-4833-b7b1-f992f0d20232",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
       "cloudSyncState": "VERIFIED",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:11:47.982Z",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:04:45.025Z",
       "lastCatalogSha256": "ded4628642ed3f35b07b95801f0ced1d8e67abf03f805862076ea34dabdaad72",
       "lastArtifactHashes": {
         "Catalog.json": "ded4628642ed3f35b07b95801f0ced1d8e67abf03f805862076ea34dabdaad72",
@@ -829,8 +823,8 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "dbd6ab4a-9793-49f7-8756-9a35f5919c2e",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:11:46.346Z",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:04:46.062Z",
       "lastCatalogSha256": "b8cc41c5a81441af185e1fea8d2757efbdc60acb8920f7a33f033ed1420d3d26",
       "lastArtifactHashes": {
         "Catalog.json": "b8cc41c5a81441af185e1fea8d2757efbdc60acb8920f7a33f033ed1420d3d26",
@@ -893,8 +887,8 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "5113e36d-0364-4b00-bc94-02521ab224e0",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:12:01.007Z",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:04:59.359Z",
       "lastCatalogSha256": "0ba18818bde097624010e5fdec8d38ffbb48939859b01424def24937ec4c47ca",
       "lastArtifactHashes": {
         "Catalog.json": "0ba18818bde097624010e5fdec8d38ffbb48939859b01424def24937ec4c47ca",
@@ -941,8 +935,8 @@
       "lastSyncedSourceId": "9496c748-a8d8-4fcc-8c36-f1966fd3bb30",
       "runningKnowledgeSourceId": "0de1f8f6-396b-4da5-95d9-f4f01a82cd15",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:12:01.011Z",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:04:59.352Z",
       "lastSyncAttemptAt": "2026-11-21T13:09:07.545Z",
       "lastCatalogSha256": "8a93cf10ab413a228765cffd3527f209048eabdc7d3ce0d7e07b1b200f77a992",
       "lastArtifactHashes": {
@@ -977,13 +971,13 @@
       "queryEnabled": true,
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "lastSyncedAt": "2026-11-22T08:29:24.468Z",
-      "lastSyncDeltaCount": 28,
+      "lastSyncedAt": "2026-11-24T13:41:39.935Z",
+      "lastSyncDeltaCount": 30,
       "cloudSyncState": "VERIFIED",
       "lastSyncedSourceName": "DL385_Gen11_OCA_Catalog_2026-11-22",
       "trustedSourceIds": [
         "f17bd176-b643-43bc-b517-cb59934491b6",
-        "ad3b05b6-3eff-4f2e-be26-c696d9e41ea9",
+        "b586884d-0afe-46f3-96f7-54e8a9465b83",
         "7ab0fa77-e619-4956-9a39-deff777e34d0"
       ],
       "officialSourceIds": [
@@ -1000,17 +994,17 @@
         "OCA_Catalog.xlsx": "416db2f300fa9a8945dfe54a9246a20d2a5ef5ec1188a786bf8742afa21b37a2"
       },
       "canonicalKnowledgeSourceIds": [
-        "ad3b05b6-3eff-4f2e-be26-c696d9e41ea9",
+        "b586884d-0afe-46f3-96f7-54e8a9465b83",
         "7ab0fa77-e619-4956-9a39-deff777e34d0"
       ],
       "certifiedCatalogSourceIds": [
-        "ad3b05b6-3eff-4f2e-be26-c696d9e41ea9"
+        "b586884d-0afe-46f3-96f7-54e8a9465b83"
       ],
-      "lastPayloadChecksum": "eb4de4c96fb65dd5bd1c0c12f8f4675ba849cb0a2bb75dbc632d264b5475e6e0",
-      "lastSyncedSourceId": "ad3b05b6-3eff-4f2e-be26-c696d9e41ea9",
+      "lastPayloadChecksum": "80744844aef469fd650e78ac712f77894dae6ca6e1b93fe417bd0be18517633e",
+      "lastSyncedSourceId": "b586884d-0afe-46f3-96f7-54e8a9465b83",
       "runningKnowledgeSourceId": "7ab0fa77-e619-4956-9a39-deff777e34d0",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:12:19.273Z",
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:05:13.892Z",
       "lastContentFingerprints": {
         "catalog": "bf24c26e69c9e4dd6c6f2acd288176ed262b4b334a17739db548d4c72f636feb",
         "learnings": "22babd782fc5080b92cde20a5084610947f7b97c5848de432ade02d161563281",
@@ -1069,8 +1063,8 @@
       "lastSyncedSourceId": "eb3226ec-1b9e-45f8-8da9-87ce4cbdc08a",
       "runningKnowledgeSourceId": "cc8228ae-abb0-4c5c-9f3c-878ec8c1ddea",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:12:19.503Z"
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:05:14.148Z"
     },
     "Alletra_MP_X10000": {
       "notebookId": "c5eb1d0b-1410-4cfc-bb7d-0e33cd15cf7e",
@@ -1119,8 +1113,8 @@
       "lastSyncedSourceId": "037c814c-adb5-4214-a44f-fcc7b9ff862f",
       "runningKnowledgeSourceId": "60cda6f9-e4ac-4de9-bab9-8e14aa10b936",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
-      "runningKnowledgeVerifiedRevision": "093355010412f85fc7858563503f59b75effba04c1ddac4952c5f86177f7e4d0",
-      "runningKnowledgeVerifiedAt": "2026-11-23T14:12:44.995Z"
+      "runningKnowledgeVerifiedRevision": "c852db21cd7313b0811ba52f334c99dd5b9bc37972caf956c96e8492c5939fd0",
+      "runningKnowledgeVerifiedAt": "2026-11-24T15:05:26.234Z"
     }
   },
   "runningKnowledgeDoc": {
@@ -1128,9 +1122,9 @@
     "documentUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
     "title": "HPE AI Studio — Master Running Knowledge & Learnings Charter",
     "folderId": "1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-",
-    "lastSyncedAt": "2026-11-23T14:09:13.457Z",
-    "totalDeduplicatedRules": 190,
-    "universalRuleCount": 22,
-    "chassisRuleCount": 168
+    "lastSyncedAt": "2026-11-24T15:02:42.392Z",
+    "totalDeduplicatedRules": 194,
+    "universalRuleCount": 23,
+    "chassisRuleCount": 171
   }
 }

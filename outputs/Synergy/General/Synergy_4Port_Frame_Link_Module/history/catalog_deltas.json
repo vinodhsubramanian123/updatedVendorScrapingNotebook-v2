@@ -49,5 +49,30 @@
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-11-12T07:18:28.673Z",
     "chassis": "Synergy_4Port_Frame_Link_Module"
+  },
+  {
+    "deltaId": "LEARN_SYNERGY_FLM_453154_DIVISIBILITY_ADHOC_20261124",
+    "ruleId": "LEARN_SYNERGY_FLM_453154_DIVISIBILITY_ADHOC_20261124",
+    "productId": "Synergy_4Port_Frame_Link_Module",
+    "vendor": "HPE",
+    "family": "Synergy",
+    "generation": "General",
+    "pillar": "NETWORKING",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "affectedSku": "453154-B21",
+    "requiredDependencySku": "876852-B21",
+    "ruleType": "OCA_IMPORT_DIVISIBILITY_RULE",
+    "errorType": "OCA_NON_DIVISIBLE_CHILD_SPLIT",
+    "governanceStatus": "ACTIVE",
+    "status": "VERIFIED",
+    "evidenceType": "TIER_3_LIVE_PORTAL_RECEIPT",
+    "provenanceSources": [
+      "UCID 5158590124-02 (3-Frame Synergy Gen12 OCA BOM, ,239,327.00)",
+      "UCID 5158592304-01 (2-Frame Synergy Gen12 OCA BOM, ,861,784.00)"
+    ],
+    "ruleUpdate": "453154-B21 (1G SFP RJ45 Transceiver, 0D1) placed inside 4-port Frame Link Module #i (876852-B21 Qty 2) requires qty(453154-B21) % qty(876852-B21) === 0 during OCA BOM import. In 3-frame UCID 5158590124-02, Frame #2 had 2x 453154-B21 under 2x 876852-B21 (ratio 1.0) and stayed factory-integrated; in 2-frame UCID 5158592304-01, 1x 453154-B21 under 2x 876852-B21 (ratio 0.5) per frame caused OCA to eject 453154-B21 into 2 extra Ad-Hoc containers (final export stripped both 453154-B21 0D1 rows and merged 1+1 -> 2 in Ad-Hoc). For 2 total 453154-B21 across 2 frames, consolidate 2x under one FLM container or place 2x 453154-B21 (without 0D1) directly in Ad-Hoc #1 for upload. Always number FLM Config Names sequentially (#1, #2, #3).",
+    "rawMessage": "453154-B21 inside 2x 876852-B21 FLM requires integer ratio (2/2=1); 1/2=0.5 splits into extra Ad-Hoc containers (UCID 5158592304-01 stripped 0D1 and merged 1+1 -> 2 in Ad-Hoc). Consolidate 2x under one FLM or move non-0D1 to Ad-Hoc #1 for upload; keep FLM numbering sequential (#1, #2, #3).",
+    "timestamp": "2026-11-24T15:01:41.540Z",
+    "chassis": "Synergy_4Port_Frame_Link_Module"
   }
 ]

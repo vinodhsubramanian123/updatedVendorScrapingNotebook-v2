@@ -52,12 +52,12 @@
       "UNCHANGED": 228
     },
     "cloudSyncState": "CLOUD_VERIFIED",
-    "verifiedSourceId": "d481d346-5bb1-48e3-97d6-5b4491059ad7",
-    "cloudVerifiedAt": "2026-11-22T09:08:51.395Z",
+    "verifiedSourceId": "4966ee18-871b-4d2e-9ded-48f77ce16490",
+    "cloudVerifiedAt": "2026-11-24T15:09:27.966Z",
     "readbackVerified": true,
     "canaryVerified": true,
     "notebookId": "5b9ddeda-0d03-44ee-80c8-766f494ea34c",
     "verifiedSourceName": "Synergy_12000_Frame_OCA_Catalog_2026-11-12",
-    "payloadSha256": "ebcc7c52112fd56a4d32dff5dfdedb0d32415898d75fc5e7750a2a5b1dcace0a"
+    "payloadSha256": "acf3d5b842ff82d278bba154662c45cb277b38bfc8a0becedc5ebb6c9d395061"
   }
 }

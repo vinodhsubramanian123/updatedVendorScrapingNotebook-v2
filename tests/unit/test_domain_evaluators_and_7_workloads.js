@@ -29,7 +29,8 @@ const {
 
 const {
   isCompleteSynergyComposite,
-  evaluateSynergyComposite
+  evaluateSynergyComposite,
+  validateOcaContainerDivisibility
 } = require('../../scripts/lib/boq/synergy_composite_evaluator.js');
 
 const {
@@ -556,4 +557,85 @@ test('Phase 3B [4/4]: MSL3040 Tape evaluates cleanly in boq_evaluator.js and asp
   assert.equal(aspectSynergy.capability.status, 'PRODUCTION_SUPPORTED');
   assert.equal(aspectSynergy.hasFailures, true);
   assert.ok(aspectSynergy.errors.some(e => e.includes('Compute Bay Overflow')));
+});
+
+test('Phase 3B [5/5]: Synergy Dual-Slot PSU Adapter (12 PSUs/frame), 64Gb->32Gb FC Negotiation & OCA Container Divisibility', () => {
+  // Positive 2-frame Gen12 Synergy BOM (12x P44074-B21 adapters + 24x P44712-B21 PSUs + P68131-B21 64Gb FC HBA -> Q2E57A 32Gb FC ICM)
+  const synergyDualSlot = [
+    { sku: 'P51174-B21', description: 'HPE Synergy 12000 Configure-to-order Frame', quantity: 2 },
+    { sku: 'P68217-B21', description: 'HPE Synergy 480 Gen12 Configure-to-order Compute Module', quantity: 24 },
+    { sku: '867796-B21', description: 'HPE Virtual Connect SE 100Gb F32 Module for Synergy', quantity: 2 },
+    { sku: '867793-B21', description: 'HPE Synergy 50Gb Interconnect Link Module', quantity: 2 },
+    { sku: 'Q2E57A', description: 'Brocade 32Gb/20 4SFP+ Power Pack+ Fibre Channel SAN Switch Module for HPE Synergy', quantity: 4 },
+    { sku: 'P64724-B21', description: 'HPE Synergy 6310C 25/50Gb Ethernet Adapter', quantity: 24 },
+    { sku: 'P68131-B21', description: 'HPE Synergy 7330C 64Gb Fibre Channel Host Bus Adapter', quantity: 24 },
+    { sku: '876852-B21', description: 'HPE Synergy 4-port Frame Link Module', quantity: 4 },
+    { sku: 'P44074-B21', description: 'HPE Synergy Dual Slot Power Supply Adapter', quantity: 12 },
+    { sku: 'P44712-B21', description: 'HPE 1800W-2200W Flex Slot Titanium Hot Plug Power Supply Kit', quantity: 24 },
+    { sku: '882251-B21', description: 'HPE Synergy 100GbE/4x25GbE/4x32GbFC QSFP28 Transceiver', quantity: 12 },
+    { sku: 'HU4B2A3     WJN', description: 'HPE Synergy 1200 Frame Supp', quantity: 2 },
+    { sku: 'HU4B2A30BT7', description: 'HPE SY480 Gen12 Support', quantity: 24 },
+    { sku: 'HU4B2A3     Z1R', description: 'HPE Synergy VC SE 100Gb F32 Module Supp', quantity: 2 }
+  ];
+  const resDualOk = evaluateSynergyComposite(synergyDualSlot);
+  assert.equal(resDualOk.isMathClean, true);
+  assert.equal(resDualOk.evalSummary.psuCount, 24);
+  const powerCheck = resDualOk.aspectChecks.find(c => c.id === 'SYNERGY_SHARED_FRAME_POWER');
+  assert.equal(powerCheck.status, 'PASS');
+  assert.ok(powerCheck.detail.includes('24/24'));
+  const fcCheck = resDualOk.aspectChecks.find(c => c.id === 'SYNERGY_MEZZ_FABRIC_ALIGNMENT');
+  assert.equal(fcCheck.status, 'WARN');
+  assert.ok(fcCheck.warnings.some(w => w.includes('negotiates backward to 32Gb FC ICM')));
+
+  // Negative PSU boundaries
+  const over12WithAdapters = [
+    { sku: 'P51174-B21', description: 'HPE Synergy 12000 Configure-to-order Frame', quantity: 1 },
+    { sku: 'P44074-B21', description: 'HPE Synergy Dual Slot Power Supply Adapter', quantity: 6 },
+    { sku: 'P44712-B21', description: 'HPE 1800W-2200W Flex Slot Titanium Hot Plug Power Supply Kit', quantity: 13 }
+  ];
+  assert.ok(evaluateSynergyComposite(over12WithAdapters).errors.some(e => e.includes('PSU Bay Overflow')));
+
+  const over6WithoutAdapters = [
+    { sku: 'P51174-B21', description: 'HPE Synergy 12000 Configure-to-order Frame', quantity: 1 },
+    { sku: 'P44712-B21', description: 'HPE 1800W-2200W Flex Slot Titanium Hot Plug Power Supply Kit', quantity: 8 }
+  ];
+  assert.ok(evaluateSynergyComposite(over6WithoutAdapters).errors.some(e => e.includes('PSU Bay Overflow')));
+
+  const adapterOverflow = [
+    { sku: 'P51174-B21', description: 'HPE Synergy 12000 Configure-to-order Frame', quantity: 1 },
+    { sku: 'P44074-B21', description: 'HPE Synergy Dual Slot Power Supply Adapter', quantity: 7 },
+    { sku: 'P44712-B21', description: 'HPE 1800W-2200W Flex Slot Titanium Hot Plug Power Supply Kit', quantity: 12 }
+  ];
+  assert.ok(evaluateSynergyComposite(adapterOverflow).errors.some(e => e.includes('Dual-Slot PSU Adapter Overflow')));
+
+  // OCA Container Divisibility Positive Control (2/2 = 1 + loose in AdHoc)
+  const divOk = validateOcaContainerDivisibility([
+    { sku: '876852-B21', description: 'HPE Synergy 4-port Frame Link Module', qty: 2, cfg: '4-port Frame Link Module #2' },
+    { sku: '876852-B21  0D1', description: 'Factory Integrated', qty: 2, cfg: '4-port Frame Link Module #2' },
+    { sku: '453154-B21', description: 'HPE BladeSystem CClass Virtual Connect 1G SFP RJ45 Transceiver', qty: 2, cfg: '4-port Frame Link Module #2' },
+    { sku: '453154-B21  0D1', description: 'Factory Integrated', qty: 2, cfg: '4-port Frame Link Module #2' },
+    { sku: 'QK734A', description: 'HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable', qty: 24, cfg: 'Ad-Hoc #1' }
+  ]);
+  assert.equal(divOk.valid, true);
+  assert.equal(divOk.violations.length, 0);
+  assert.equal(divOk.adHocNamingWarnings.length, 0);
+
+  // OCA Container Divisibility & Ad-Hoc Naming Negative Control (1/2 = 0.5 under FLM #1/#2 + non-standard AdHoc label)
+  const divBad = validateOcaContainerDivisibility([
+    { sku: '876852-B21', description: 'HPE Synergy 4-port Frame Link Module', qty: 2, cfg: '4-port Frame Link Module #1' },
+    { sku: '876852-B21  0D1', description: 'Factory Integrated', qty: 2, cfg: '4-port Frame Link Module #1' },
+    { sku: '453154-B21', description: 'HPE BladeSystem CClass Virtual Connect 1G SFP RJ45 Transceiver', qty: 1, cfg: '4-port Frame Link Module #1' },
+    { sku: '453154-B21  0D1', description: 'Factory Integrated', qty: 1, cfg: '4-port Frame Link Module #1' },
+    { sku: '876852-B21', description: 'HPE Synergy 4-port Frame Link Module', qty: 2, cfg: '4-port Frame Link Module #2' },
+    { sku: '453154-B21', description: 'HPE BladeSystem CClass Virtual Connect 1G SFP RJ45 Transceiver', qty: 1, cfg: '4-port Frame Link Module #2' },
+    { sku: 'QK734A', description: 'HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable', qty: 24, cfg: 'AdHoc - SFP + Cables' }
+  ]);
+  assert.equal(divBad.valid, false);
+  assert.equal(divBad.violations.length, 2);
+  assert.equal(divBad.violations[0].childSku, '453154-B21');
+  assert.equal(divBad.violations[0].perParent, 0.5);
+  assert.equal(divBad.violations[1].childSku, '453154-B21');
+  assert.equal(divBad.violations[1].perParent, 0.5);
+  assert.equal(divBad.adHocNamingWarnings.length, 1);
+  assert.ok(divBad.adHocNamingWarnings[0].reason.includes('Ad-Hoc #1'));
 });

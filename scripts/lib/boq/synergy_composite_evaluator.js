@@ -29,7 +29,8 @@ const FC_16G_ICM_SKUS = new Set(['K2Q83A', 'K2Q83B', 'K2Q84A', 'K2Q84B', 'K2Q86A
 const FLM_4PORT_SKUS = new Set(['876852-B21']);
 const FLM_2PORT_SKUS = new Set(['804942-B21']);
 const PSU_6PACK_SKUS = new Set(['798096-B21', 'P27750-B21', '798100-B21']);
-const PSU_SINGLE_SKUS = new Set(['798095-B21', 'P27749-B21', '876929-B21', '798099-B21']);
+const PSU_SINGLE_SKUS = new Set(['798095-B21', 'P27749-B21', '876929-B21', '798099-B21', 'P44712-B21']);
+const DUAL_SLOT_PSU_ADAPTER_SKUS = new Set(['P44074-B21']);
 const FC_64G_MEZZ_SKUS = new Set(['P68131-B21']);
 const FC_32G_MEZZ_SKUS = new Set(['P76653-B21']);
 const ETH_MEZZ_SKUS = new Set(['P64724-B21']);
@@ -164,6 +165,10 @@ function _tallyMezzanineAdapters(sku, desc, qty, tally) {
 }
 
 function _tallyFramePsus(sku, desc, qty, tally) {
+  if (DUAL_SLOT_PSU_ADAPTER_SKUS.has(sku) || /\b(?:dual\s+slot\s+)?power\s+supply\s+adapter\b/i.test(desc)) {
+    tally.dualSlotPsuAdapterCount += qty;
+    return true;
+  }
   if (!PSU_6PACK_SKUS.has(sku) && !PSU_SINGLE_SKUS.has(sku) && !(/\bpower\s+supply\b/i.test(desc) && !/cord|cable/i.test(desc))) {
     return false;
   }
@@ -214,6 +219,7 @@ function _tallySynergyItems(items) {
     fcMezzCount: 0,
     fcMezzMaxSpeedGb: 0,
     psuCount: 0,
+    dualSlotPsuAdapterCount: 0,
     acPsuCount: 0,
     dcPsuCount: 0,
     titaniumPsuCount: 0,
@@ -299,7 +305,11 @@ function _checkMezzanineFabricAlignment(tally) {
     if (tally.fcIcmCount === 0) {
       errors.push(`Synergy FC Mezzanine-to-Fabric Mismatch: ${tally.fcMezzCount} Fibre Channel HBA mezzanine(s) (${tally.fcMezzMaxSpeedGb}Gb) configured without a Synergy Brocade FC Interconnect Module (e.g., P77653-B21 64Gb FC Module).`);
     } else if (tally.fcMezzMaxSpeedGb > tally.fcIcmMaxSpeedGb) {
-      errors.push(`Synergy FC Speed Mismatch: ${tally.fcMezzMaxSpeedGb}Gb FC HBA mezzanine exceeds installed Synergy FC ICM speed (${tally.fcIcmMaxSpeedGb}Gb).`);
+      if (tally.fcMezzMaxSpeedGb === 64 && tally.fcIcmMaxSpeedGb === 32) {
+        warnings.push('Synergy FC Speed Negotiation Advisory: 64Gb FC HBA mezzanine (P68131-B21) negotiates backward to 32Gb FC ICM (verified in OCA UCID 5158590124-02).');
+      } else {
+        errors.push(`Synergy FC Speed Mismatch: ${tally.fcMezzMaxSpeedGb}Gb FC HBA mezzanine exceeds installed Synergy FC ICM speed (${tally.fcIcmMaxSpeedGb}Gb).`);
+      }
     }
   }
   if ((tally.ethIcmCount + tally.fcIcmCount) > 0 && tally.opticCount === 0) {
@@ -342,7 +352,9 @@ function _checkFlmHaRing(tally) {
 function _checkSharedFramePower(tally) {
   const errors = [];
   const warnings = [];
-  const requiredPsus = tally.frameCount * 6;
+  const baseBays = tally.frameCount * 6;
+  const requiredPsus = baseBays;
+  const maxPsus = baseBays + Math.min(tally.dualSlotPsuAdapterCount, baseBays);
 
   if (tally.acPsuCount > 0 && tally.dcPsuCount > 0) {
     errors.push(`Synergy Frame Power Conflict: Cannot mix AC PSUs (${tally.acPsuCount}) and -48VDC PSUs (${tally.dcPsuCount}) in the same Synergy 12000 Frame.`);
@@ -351,21 +363,25 @@ function _checkSharedFramePower(tally) {
     errors.push('Synergy Frame Power Efficiency Conflict: Cannot mix Titanium and Platinum power supplies in the same Synergy 12000 Frame.');
   }
   if (tally.psuWattages.size > 1) {
-    errors.push(`Synergy Frame PSU Wattage Mismatch: Mixed PSU wattages detected (${[...tally.psuWattages].join('W, ')}W); all 6 frame PSUs must match.`);
+    errors.push(`Synergy Frame PSU Wattage Mismatch: Mixed PSU wattages detected (${[...tally.psuWattages].join('W, ')}W); all frame PSUs must match.`);
+  }
+  if (tally.dualSlotPsuAdapterCount > baseBays) {
+    errors.push(`Synergy Dual-Slot PSU Adapter Overflow: ${tally.dualSlotPsuAdapterCount} adapter(s) exceed ${baseBays} physical PSU bay(s) across ${tally.frameCount} frame(s).`);
   }
   if (tally.psuCount < requiredPsus) {
     errors.push(`Synergy Shared Frame Power Deficit: Synergy 12000 Frame requires minimum 6x matching Titanium PSUs per frame for N+N redundancy (${requiredPsus} required for ${tally.frameCount} frame(s), found ${tally.psuCount}).`);
-  } else if (tally.psuCount > requiredPsus) {
-    errors.push(`Synergy Frame PSU Bay Overflow: ${tally.psuCount} PSUs exceed physical 6-bay PSU capacity across ${tally.frameCount} frame(s).`);
+  } else if (tally.psuCount > maxPsus) {
+    errors.push(`Synergy Frame PSU Bay Overflow: ${tally.psuCount} PSUs exceed physical ${maxPsus}-slot PSU capacity across ${tally.frameCount} frame(s).`);
   }
 
+  const denom = tally.dualSlotPsuAdapterCount > 0 ? maxPsus : requiredPsus;
   return {
     id: 'SYNERGY_SHARED_FRAME_POWER',
     name: 'Synergy 12000 Shared Frame N+N Power Envelope',
     status: errors.length ? 'FAIL' : (warnings.length ? 'WARN' : 'PASS'),
     errors,
     warnings,
-    detail: errors[0] || `Verified ${tally.psuCount}/${requiredPsus} matching frame PSU(s) for N+N shared power redundancy.`
+    detail: errors[0] || `Verified ${tally.psuCount}/${denom} matching frame PSU(s) for N+N shared power redundancy.`
   };
 }
 
@@ -517,7 +533,76 @@ function evaluateSynergyComposite(items = [], catalogData = null, _targetDir = '
   };
 }
 
+function _isModifierOrServiceRow(sku, desc) {
+  return /\s+(?:0D1|B19|OD1)$/i.test(String(sku || ''))
+    || _isSupportServiceRow(cleanBaseSKU(sku), String(desc || ''));
+}
+
+function _groupRowsByOcaConfigName(rows = []) {
+  const groups = new Map();
+  for (const row of rows) {
+    const cfg = String(row.configName ?? row.cfg ?? row['Config Name'] ?? '').trim();
+    if (!cfg || /^ad[-\s]*hoc/i.test(cfg)) continue;
+    if (!groups.has(cfg)) groups.set(cfg, []);
+    groups.get(cfg).push(row);
+  }
+  return groups;
+}
+
+function _collectAdHocNamingWarnings(rows = []) {
+  const seen = new Set();
+  const warnings = [];
+  for (const row of rows) {
+    const cfg = String(row.configName ?? row.cfg ?? row['Config Name'] ?? '').trim();
+    if (!cfg || seen.has(cfg) || !/^ad[-\s]*hoc/i.test(cfg)) continue;
+    seen.add(cfg);
+    if (!/^Ad-Hoc #\d+$/.test(cfg)) {
+      warnings.push({
+        configName: cfg,
+        reason: `Ad-Hoc upload Config Name "${cfg}" does not match exact HPE OCA syntax "Ad-Hoc #1". Custom post-import labels cause OCA Excel import to absorb compatible cables/SFPs into switch modules (e.g. 32Gb/20 4SFP+ FC #2) and scatter loose parts.`
+      });
+    }
+  }
+  return warnings;
+}
+
+/**
+ * Validate parent-child integer divisibility within every non-AdHoc OCA Config Name container.
+ * HPE OCA imports build one template per Config Name multiplied by parentQty, so fractional
+ * child ratios (e.g. 1x 453154-B21 under 2x 876852-B21 = 0.5) eject rows into extra Ad-Hoc buckets.
+ */
+function validateOcaContainerDivisibility(rows = []) {
+  const inputRows = Array.isArray(rows) ? rows : [];
+  const groups = _groupRowsByOcaConfigName(inputRows);
+  const violations = [];
+  for (const [configName, list] of groups.entries()) {
+    const parent = list.find(r => !_isModifierOrServiceRow(r.sku, r.description));
+    if (!parent) continue;
+    const parentQty = Number(parent.qty ?? parent.quantity ?? 0);
+    if (!Number.isFinite(parentQty) || parentQty <= 0) continue;
+    const parentSku = String(parent.sku || '').trim();
+    for (const child of list) {
+      if (child === parent || _isModifierOrServiceRow(child.sku, child.description)) continue;
+      const childQty = Number(child.qty ?? child.quantity ?? 0);
+      if (!Number.isFinite(childQty) || childQty <= 0 || childQty % parentQty === 0) continue;
+      const perParent = Number((childQty / parentQty).toFixed(4));
+      violations.push({
+        configName,
+        parentSku,
+        parentQty,
+        childSku: String(child.sku || '').trim(),
+        childQty,
+        perParent,
+        reason: `Child ${String(child.sku || '').trim()} qty ${childQty} is not divisible by parent ${parentSku} qty ${parentQty} (${perParent}/unit); move loose items to Ad-Hoc #1 or consolidate.`
+      });
+    }
+  }
+  const adHocNamingWarnings = _collectAdHocNamingWarnings(inputRows);
+  return { valid: violations.length === 0, violations, checkedContainers: groups.size, adHocNamingWarnings };
+}
+
 module.exports = {
   isCompleteSynergyComposite,
-  evaluateSynergyComposite
+  evaluateSynergyComposite,
+  validateOcaContainerDivisibility
 };

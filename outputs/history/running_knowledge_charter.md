@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-11-23T14:09:08.642Z<br>
-**Total Deduplicated Learned Rules:** 190<br>
+**Last Synchronized:** 2026-11-24T15:02:36.930Z<br>
+**Total Deduplicated Learned Rules:** 194<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -168,7 +168,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **190**.
+Total verified rules indexed in this build: **194**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -188,6 +188,7 @@ Total verified rules indexed in this build: **190**.
 | 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_TOPOLOGY_CATEGORY_AND_CABLE_ENFORCEMENT` | `null` | `—` | Physical validation must distinguish backplane-to-controller storage signal cables, CPU-to-slot OCP enablement cables, a | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_FAST_SHIP_TOPOLOGY_AND_CLIC_CARRYFORWARD` | `null` | `—` | Fast-ship candidate synthesis must resolve coupled cabling and enablement paths and pass full multi-aspect physical reva | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_BLINDSPOT_SUPPORT_PARITY_AND_MULTIVENDOR_BOM` | `null` | `—` | Universal portfolio intelligence, support governance & multi-vendor attribute mapping rules (INV-242, INV-243): (1) Inde | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_OCA_UPLOAD_CONFIG_CONTAINER_CONTRACT` | `null` | `—` | 4-column HPE OCA BOM upload workbooks (Product #, Product Description, Qty, Config Name starting at A1 with zero trailin | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SUPPORT_POLICY` | `undefined` | `—` | Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified o | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `undefined` | `—` | Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to- | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `undefined` | `—` | When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Q | 1x |
@@ -349,6 +350,7 @@ Total verified rules indexed in this build: **190**.
 | 📦 CHASSIS | `SY480_Gen12` | `CLIC_ERROR_RESOLUTION_CERTIFIED` | `P69730-F21` | `P51174-B21` | CRITICAL BUILDABILITY BREAKTHROUGH: HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 Smart FIO Memory Kit (P69730 | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `SUPPORT_PRICING_UPDATE` | `HU4B2A30BT7` | `—` | SY480 Gen12 Compute Node 3Y Tech Care Basic Support (HU4B2A30BT7) updated to $3,497.00 (+$167.00/node). | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `LEAD_TIME_AND_VALIDATION` | `P80321-B21` | `—` | HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days). | 1x |
+| 📦 CHASSIS | `SY480_Gen12` | `MULTIFRAME_OCA_UPLOAD_ADVISORY` | `P80318-B21` | `P68340-B21` | Verified 2-frame (24-node, UCID 5158592304-01, ,861,784.00) & 3-frame (36-node, UCID 5158590124-02, ,239,327.00) SY480 G | 1x |
 | 📦 CHASSIS | `SY100Gb_F32_Module` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
 | 📦 CHASSIS | `SY100Gb_F32_Module` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
 | 📦 CHASSIS | `SY100Gb_F32_Module` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
@@ -356,9 +358,11 @@ Total verified rules indexed in this build: **190**.
 | 📦 CHASSIS | `Synergy_12000_Frame` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
 | 📦 CHASSIS | `Synergy_12000_Frame` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
 | 📦 CHASSIS | `Synergy_12000_Frame` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
+| 📦 CHASSIS | `Synergy_12000_Frame` | `POWER_ENVELOPE_ARCHITECTURE` | `P44074-B21` | `P44712-B21` | 6x HPE Synergy Dual Slot Power Supply Adapters (P44074-B21) expand a Synergy 12000 Frame (P51174-B21) from 6 physical PS | 1x |
 | 📦 CHASSIS | `Synergy_4Port_Frame_Link_Module` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
 | 📦 CHASSIS | `Synergy_4Port_Frame_Link_Module` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
 | 📦 CHASSIS | `Synergy_4Port_Frame_Link_Module` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
+| 📦 CHASSIS | `Synergy_4Port_Frame_Link_Module` | `OCA_IMPORT_DIVISIBILITY_RULE` | `453154-B21` | `876852-B21` | 453154-B21 (1G SFP RJ45 Transceiver, 0D1) placed inside 4-port Frame Link Module #i (876852-B21 Qty 2) requires qty(4531 | 1x |
 | 📦 CHASSIS | `Synergy_Brocade_64Gb_FC_Module` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
 | 📦 CHASSIS | `Synergy_Brocade_64Gb_FC_Module` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
 | 📦 CHASSIS | `Synergy_Brocade_64Gb_FC_Module` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |

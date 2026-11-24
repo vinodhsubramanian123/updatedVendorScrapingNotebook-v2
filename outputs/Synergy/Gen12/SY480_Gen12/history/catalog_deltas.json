@@ -228,5 +228,30 @@
     "generation": "Gen12",
     "pillar": "SERVER",
     "ruleUpdate": "HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days)."
+  },
+  {
+    "deltaId": "LEARN_SY480_GEN12_MULTIFRAME_OCA_UPLOAD_AND_CLIC_20261124",
+    "ruleId": "LEARN_SY480_GEN12_MULTIFRAME_OCA_UPLOAD_AND_CLIC_20261124",
+    "productId": "SY480_Gen12",
+    "vendor": "HPE",
+    "family": "Synergy",
+    "generation": "Gen12",
+    "pillar": "SERVER",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "affectedSku": "P80318-B21",
+    "requiredDependencySku": "P68340-B21",
+    "ruleType": "MULTIFRAME_OCA_UPLOAD_ADVISORY",
+    "errorType": "SY480_GEN12_CLIC_AND_FABRIC_BASELINE",
+    "governanceStatus": "ACTIVE",
+    "status": "VERIFIED",
+    "evidenceType": "TIER_3_LIVE_PORTAL_RECEIPT",
+    "provenanceSources": [
+      "UCID 5158590124-02 (3-Frame Synergy Gen12 OCA BOM, ,239,327.00)",
+      "UCID 5158592304-01 (2-Frame Synergy Gen12 OCA BOM, ,861,784.00)"
+    ],
+    "ruleUpdate": "Verified 2-frame (24-node, UCID 5158592304-01, ,861,784.00) & 3-frame (36-node, UCID 5158590124-02, ,239,327.00) SY480 Gen12 single-solution OCA upload layout: (1) Per-frame Synergy 480 Gen12 #i containers with 12x P68217-B21, P68340-B21 NS204i-d v2 + 24x P80318-B21 480GB M.2 SSD; (2) 0D1 882251-B21 transceivers inside 100Gb Virtual #i up to OCA max 8 per 867796-B21, while all loose non-0D1 cables/transceivers MUST upload under Config Name Ad-Hoc #1 (renameable after import; using AdHoc - SFP + Cables caused OCA in UCID 5158592304-01 to absorb K2Q47A x6, QK729A x6, and R6B12A x16 into 32Gb/20 4SFP+ FC #2 and scatter other loose cables) and HU4B2A3* 3Y Tech Care Basic services anchor to #1 containers; (3) P68131-B21 (64Gb FC HBA) negotiates backward cleanly with Q2E57A (Brocade 32Gb/20 FC switch) in OCA; (4) Live CLIC baseline shows Error on P80318-B21 and Warning on P51174-B21 / 867793-B21 when interconnect cables reside in Ad-Hoc.",
+    "rawMessage": "SY480 Gen12 2f/3f single-solution OCA upload baseline (UCID 5158592304-01 & 5158590124-02): upload loose connectivity under Ad-Hoc #1 (not post-import labels like AdHoc - SFP + Cables, which attach K2Q47A/QK729A/R6B12A to 32Gb/20 4SFP+ FC #2); P68131-B21 (64G FC HBA) negotiates backward to Q2E57A (32G FC ICM); 0D1 882251-B21 stays in F32 (max 8/module); P80318-B21 flags CLIC Error and P51174-B21/867793-B21 flag Warning.",
+    "timestamp": "2026-11-24T15:01:41.614Z",
+    "chassis": "SY480_Gen12"
   }
 ]

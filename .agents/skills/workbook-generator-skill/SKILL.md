@@ -97,6 +97,16 @@ Generated automatically on every evaluation for direct executive review and Part
 - **Formula Subtotal**: `=SUM(H4:H{n})` with cached CapEx sum.
 - **Companion Token-Dense CSV (`generateMultiRankSolutionCsv`)**: Flattened multi-rank representation optimized for NotebookLM ephemeral source ingestion without prompt character limits.
 
+### 4. Standardized 4-Column Multi-Frame HPE OCA BOM Upload Schema
+Required when importing multi-frame composite configurations (such as HPE Synergy 12000 solutions) directly into HPE OCA without collapsing frames or scattering loose connectivity across spurious Ad-Hoc buckets:
+- **Columns (starting at `A1`, zero trailing blank rows)**: `['Product #', 'Product Description', 'Qty', 'Config Name']` with numeric `Qty` cells (`t: 'n'`) and exact HPE whitespace-padded modifier strings preserved (`0D1`, `B19`, `HU4B2A3     TE1`).
+- **Sequential `Config Name` Numbering**: Name frame and module containers strictly sequentially (`Synergy 12000 Frame #1..#N`, `4-port Frame Link Module #1..#N`, `Synergy 480 Gen12 #1..#N`, `50Gb Interconnect #1..#N`, `100Gb Virtual #1..#N`, `32Gb/20 4SFP+ FC #1..#N`). Never duplicate `#1` across role names (`Master 1 #1` / `Master 2 #1`) or skip indices (`#1/#3/#5`). Multi-frame Master1, Master2, and Satellite frame FIO role lines belong inside the sequential frame containers.
+- **Mandatory Parent-Child Integer Divisibility (`validateOcaContainerDivisibility()`)**: Every non-AdHoc CTO `Config Name` compiles as one template multiplied by `parentQty`. Every non-service child row MUST satisfy `childQty % parentQty === 0` (for example, `1× 453154-B21` under `2× 876852-B21` FLM = `0.5`/unit triggers OCA ejection into extra Ad-Hoc containers, whereas `2/2 = 1.0` stays inside the FLM). Consolidate indivisible sub-items under one container or place them directly in **`Ad-Hoc #1`** without `0D1`.
+- **Segregated Connectivity & Services Layout**:
+  - Keep factory-integrated (`0D1`) transceivers inside parent modules when divisible (`882251-B21` up to `max 8` in `100Gb Virtual #i`).
+  - Place aggregated `HU4B2A3*` 3Y Tech Care Basic lines after the last frame's hardware, anchored to each owning product class's `#1` container.
+  - Consolidate 100% of loose (non-`0D1`) cables and transceivers into **`Ad-Hoc #1`** at the bottom for Excel upload so they import cleanly as one logistically separate bucket (never put post-import display names like `AdHoc - SFP + Cables` or `AdHoc - Cables + Trans` in the upload Excel sheet — OCA fails to recognize custom names as Ad-Hoc, causing compatible SKUs such as `K2Q47A`, `QK729A`, and `R6B12A` to attach inside `32Gb/20 4SFP+ FC #2` while scattering remaining cables; rename the Ad-Hoc folder in the OCA UI only after import).
+
 ---
 
 ## 🎨 Premium Styling & Cross-Platform Invariants (`INV-16`)

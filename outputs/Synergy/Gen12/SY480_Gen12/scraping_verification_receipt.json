@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-11-22T09:21:09.211Z",
+  "verifiedAt": "2026-11-24T15:07:43.859Z",
   "productId": "SY480_Gen12",
   "family": "Synergy",
   "generation": "Gen12",
@@ -50,10 +50,10 @@
     "diffSummaryPresent": true,
     "cloudSyncState": "CLOUD_VERIFIED",
     "notebookId": "49a3c69e-115f-4332-9454-c5d4f2941327",
-    "verifiedSourceId": "5c0255b6-2802-4914-ae71-eda19b7cd07d",
+    "verifiedSourceId": "0da6b66b-7e7a-4607-8974-fff6b27759b8",
     "verifiedSourceName": "SY480_Gen12_OCA_Catalog_2026-11-12",
-    "payloadSha256": "c792264e0fef10cc33aae469712a5963d95f787c23f3adb722352e2197183b8a",
-    "cloudVerifiedAt": "2026-11-22T09:21:09.211Z",
+    "payloadSha256": "ade119df5a4bc6807d61cf4916c5a6b621f20250705c9f9354519c69af0fc3cb",
+    "cloudVerifiedAt": "2026-11-24T15:07:43.859Z",
     "readbackVerified": true,
     "canaryVerified": true
   },

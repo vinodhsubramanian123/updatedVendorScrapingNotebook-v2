@@ -49,5 +49,30 @@
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-11-12T07:18:28.557Z",
     "chassis": "Synergy_12000_Frame"
+  },
+  {
+    "deltaId": "LEARN_SYNERGY_12000_DUAL_SLOT_PSU_ADAPTER_12PSU_20261124",
+    "ruleId": "LEARN_SYNERGY_12000_DUAL_SLOT_PSU_ADAPTER_12PSU_20261124",
+    "productId": "Synergy_12000_Frame",
+    "vendor": "HPE",
+    "family": "Synergy",
+    "generation": "General",
+    "pillar": "COMPOSITE",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "affectedSku": "P44074-B21",
+    "requiredDependencySku": "P44712-B21",
+    "ruleType": "POWER_ENVELOPE_ARCHITECTURE",
+    "errorType": "SYNERGY_FRAME_PSU_CAPACITY",
+    "governanceStatus": "ACTIVE",
+    "status": "VERIFIED",
+    "evidenceType": "TIER_3_LIVE_PORTAL_RECEIPT",
+    "provenanceSources": [
+      "UCID 5158590124-02 (3-Frame Synergy Gen12 OCA BOM, ,239,327.00)",
+      "UCID 5158592304-01 (2-Frame Synergy Gen12 OCA BOM, ,861,784.00)"
+    ],
+    "ruleUpdate": "6x HPE Synergy Dual Slot Power Supply Adapters (P44074-B21) expand a Synergy 12000 Frame (P51174-B21) from 6 physical PSU bays to 12x HPE 1800W-2200W Flex Slot Titanium PSUs (P44712-B21) per frame (verified across 2-frame 24-PSU UCID 5158592304-01 and 3-frame 36-PSU UCID 5158590124-02 OCA builds). Multi-frame roles are encoded inside sequential frames Synergy 12000 Frame #1/#2/#3 via 859493-B21 (Master1 FIO + Composer2 872957-B21), 859494-B22 (Master2 FIO + Composer2), and Satellite frames (no Master FIO / no Composer2).",
+    "rawMessage": "6x P44074-B21 Dual Slot PSU Adapters expand Synergy 12000 Frame capacity from 6 to 12x P44712-B21 Titanium PSUs/frame (UCID 5158592304-01 & 5158590124-02); use sequential Synergy 12000 Frame #1/#2/#3 Config Names for Master1/Master2/Satellite frames.",
+    "timestamp": "2026-11-24T15:01:41.451Z",
+    "chassis": "Synergy_12000_Frame"
   }
 ]

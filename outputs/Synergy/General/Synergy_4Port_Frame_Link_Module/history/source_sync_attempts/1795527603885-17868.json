@@ -1,0 +1,18 @@
+{
+  "product": "Synergy_4Port_Frame_Link_Module",
+  "notebookId": "4734668c-e278-4404-8343-b2a99853b58d",
+  "replacementSourceId": "ae9fa759-b13d-40ab-ae2a-51c517565f1d",
+  "verifiedAt": "2026-11-24T13:40:03.885Z",
+  "contentFingerprints": null,
+  "legacyFingerprint": "570d6bd8e4025aa91a710c58f4ad0420c9ddd74137649b0cb5809faee7c69540",
+  "retirementRequested": true,
+  "plannedRetirementIds": [
+    "7c74c639-0104-4882-8025-048a92ce92d2"
+  ],
+  "status": "CONSOLIDATED",
+  "retiredSourceIds": [
+    "7c74c639-0104-4882-8025-048a92ce92d2"
+  ],
+  "remainingSourceIds": [],
+  "retirementErrors": []
+}
