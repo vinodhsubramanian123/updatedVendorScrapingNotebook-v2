@@ -49,7 +49,16 @@ Notes:
 - A cable-management arm SKU is not documented in INV-228 and no CMA SKU was verified; do not add one from this skill.
 - Which rail kit applies to which chassis variant, and any PDU cord requirement, are not stated in INV-228. Resolve them from the exact product catalog and the portal; leave `NOT_EVALUATED` otherwise.
 
-## 3. Related
+## 3. Synergy 12000 6-Plane Cabling & Port-Budget Completeness
+HPE OCA validates module bays and per-module port caps but **does not flag missing inter-frame rings, stacking links, PDU cord mismatches, or Brocade fiber cables**. Composite Synergy evaluations enforce all six physical planes via [Synergy 6-Plane Cabling Auditor](../../../scripts/lib/boq/synergy_cabling_auditor.js):
+- **Plane 1 (Midplane)**: Compute mezzanines and Composer2 modules communicate internally over the frame midplane (zero external cables).
+- **Plane 2 (Frame Power)**: Flex Slot Titanium PSUs ship with C13-C14 cords and require C20-C13 jumper cords when connecting to C20 rack PDUs or unlocking full high-line wattage.
+- **Plane 3 (FLM Ring & Management)**: Four-port Frame Link Modules ship with zero optics/cables; inter-frame HA LINK rings require `0` (1-frame), `2` (2-frame), or `3` (3-frame) 10GbE SFP+ DAC/optical links (legacy CAT6A requires 10GBase-T SFP+ adapters) plus always `2` redundant MGMT uplinks per ring.
+- **Plane 4 (Ethernet 300Gb ICL & F32 Stacking)**: Satellite 50Gb interconnect link modules require `2` 300Gb ICL cables each (`L1`/`L2`) for full 50Gb speed (`0 / 4 / 8` for 1/2/3 frames) without mixing LSZH and Plenum jackets. Master Virtual Connect F32 pairs require `2` horizontal 100Gb QSFP28 stacking links (`Q7`/`Q8`) per pair; BiDi transceivers are prohibited in clustering ports.
+- **Plane 5 (Ethernet Northbound Uplinks)**: Total QSFP28 stacking endpoints (`Q7`/`Q8`) plus northbound uplinks (`Q1`-`Q6`) must not exceed `8` physical QSFP28 cages per F32 master module.
+- **Plane 6 (Brocade FC SAN)**: Embedded Brocade FC modules never stack across frames; each ships with four short-wave SFP optics and zero fiber patch cables, requiring matching OM4 LC/LC or MPO breakout cables for all included and expansion transceivers.
+
+## 4. Related
 - [BOM Verifier & Pre-Presentation Gate](../../../scripts/lib/boq/bom_verifier.js) via `verifyPrePresentationAcceptance()`
 - [boq-eval-skill](../boq-eval-skill/SKILL.md) for the 18-point gate.
 - [multi-cluster-tender-skill](../multi-cluster-tender-skill/SKILL.md) for rack and power totals.

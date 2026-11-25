@@ -124,6 +124,10 @@ This rule document governs all AI agents (Antigravity, Codex, Claude, subagents,
 - **The Mistake**: Matching aspect checks by stripping IDs or checking `rawId.startsWith('STORAGE')`. A generic check named `STORAGE_STATUS` satisfies `STORAGE_CONTROLLER_PAIR`, or a numeric check `1` satisfies `COMPUTE_THERMAL`.
 - **The Invariant (`INV-194`, `INV-199`)**: Aspect validation must match exact canonical IDs or explicit 1:1 alias mappings. Duplicate tokens cannot satisfy distinct required checks, and non-server appliances (SAN switches, tape libraries) must be governed by typed domain profiles.
 
+### Anti-Pattern 23: The "OCA Silence Equals Cabling Completeness" Trap
+- **The Mistake**: Treating a clean HPE OCA/CLIC module/bay configuration check as proof that physical cabling and transceivers are complete. Configurator engines validate bay presence and per-module option maximums, so they silently pass multi-frame BOMs missing C20–C13 PDU jumpers (`AF590A`), inter-frame FLM `LINK` rings, external `MGMT` optics, 300Gb ICL cables (`L1`/`L2`), mandatory F32 `Q7`/`Q8` horizontal stacking links, northbound QSFP28 cage-budget violations across multiple F32 switches, or OM4 fiber cables for included-in-box Brocade FC optics.
+- **The Invariant (`INV-280`)**: Never equate configurator module validation with end-to-end physical connectivity. Composite evaluations and LLM reasoning must audit all six physical planes explicitly (internal midplane vs. external, PDU receptacle cords, OOB `LINK` ring vs. `MGMT` uplinks, inter-frame ICL fabric links, master horizontal stacking/BiDi exclusions vs. northbound cage budget, and dedicated SAN fiber coverage), clearly separating included-in-the-box hardware from separately ordered SKUs.
+
 ---
 
 ## 3. Mandatory Protocols for Autonomous Execution

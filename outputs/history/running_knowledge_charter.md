@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-11-24T15:02:36.930Z<br>
-**Total Deduplicated Learned Rules:** 194<br>
+**Last Synchronized:** 2026-11-25T08:12:27.991Z<br>
+**Total Deduplicated Learned Rules:** 198<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -168,7 +168,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **194**.
+Total verified rules indexed in this build: **198**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -355,17 +355,21 @@ Total verified rules indexed in this build: **194**.
 | 📦 CHASSIS | `SY100Gb_F32_Module` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
 | 📦 CHASSIS | `SY100Gb_F32_Module` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
 | 📦 CHASSIS | `SY100Gb_F32_Module` | `SUPPORT_PRICING_UPDATE` | `HU4B2A3 Z1R` | `—` | HPE Virtual Connect SE 100Gb F32 Module for Synergy Support (HU4B2A3 Z1R, under HU4B2A3 3Y Tech Care Basic) list price u | 1x |
+| 📦 CHASSIS | `SY100Gb_F32_Module` | `FABRIC_INTERCONNECT_CABLING_RULE` | `867796-B21` | `845406-B21` | HPE VC SE 100Gb F32 Module (867796-B21) ships with 0 cables/optics and exposes 4x 300Gb CXP28 ICL ports (L1-L4) + 8x 100 | 1x |
 | 📦 CHASSIS | `Synergy_12000_Frame` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
 | 📦 CHASSIS | `Synergy_12000_Frame` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
 | 📦 CHASSIS | `Synergy_12000_Frame` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
 | 📦 CHASSIS | `Synergy_12000_Frame` | `POWER_ENVELOPE_ARCHITECTURE` | `P44074-B21` | `P44712-B21` | 6x HPE Synergy Dual Slot Power Supply Adapters (P44074-B21) expand a Synergy 12000 Frame (P51174-B21) from 6 physical PS | 1x |
+| 📦 CHASSIS | `Synergy_12000_Frame` | `COMPOSITE_CABLING_COMPLETENESS` | `867796-B21` | `845406-B21` | HPE OCA does not validate Synergy inter-frame or northbound cabling. Enforce 6-plane completeness via synergy_cabling_au | 1x |
 | 📦 CHASSIS | `Synergy_4Port_Frame_Link_Module` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
 | 📦 CHASSIS | `Synergy_4Port_Frame_Link_Module` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
 | 📦 CHASSIS | `Synergy_4Port_Frame_Link_Module` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
 | 📦 CHASSIS | `Synergy_4Port_Frame_Link_Module` | `OCA_IMPORT_DIVISIBILITY_RULE` | `453154-B21` | `876852-B21` | 453154-B21 (1G SFP RJ45 Transceiver, 0D1) placed inside 4-port Frame Link Module #i (876852-B21 Qty 2) requires qty(4531 | 1x |
+| 📦 CHASSIS | `Synergy_4Port_Frame_Link_Module` | `MANAGEMENT_RING_CABLING_RULE` | `876852-B21` | `487655-B21` | HPE Synergy 4-Port Frame Link Module (876852-B21) exposes 4 SFP+ cages (1x LINK, 1x MGMT, 2x reserved) and ships with 0  | 1x |
 | 📦 CHASSIS | `Synergy_Brocade_64Gb_FC_Module` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
 | 📦 CHASSIS | `Synergy_Brocade_64Gb_FC_Module` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
 | 📦 CHASSIS | `Synergy_Brocade_64Gb_FC_Module` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
+| 📦 CHASSIS | `Synergy_Brocade_64Gb_FC_Module` | `SAN_OPTIC_FIBER_PARITY_RULE` | `P77653-B21` | `QK734A` | HPE Synergy Brocade FC switch modules never use inter-frame stacking cables across frames; every switch connects strictl | 1x |
 
 ---
 *End of Master Running Knowledge & Learnings Charter. Auto-generated and synchronized by Antigravity AI.*

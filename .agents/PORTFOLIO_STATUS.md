@@ -1,4 +1,4 @@
-# Portfolio State of Health (Auto-Generated: 2026-11-24)
+# Portfolio State of Health (Auto-Generated: 2026-11-25)
 
 This document is dynamically generated from on-disk catalog metadata and `scripts/config/catalog_coverage_profiles.json` by `scripts/maintenance/generate_portfolio_status.js`.
 
@@ -35,7 +35,7 @@ This document is dynamically generated from on-disk catalog metadata and `script
 
 ### 🧠 Learned KnowledgeDeltas
 
-- Total Closed-Loop Knowledge Deltas on Disk: **182**
+- Total Closed-Loop Knowledge Deltas on Disk: **186**
 
 ### 🚀 Quick Commands
 

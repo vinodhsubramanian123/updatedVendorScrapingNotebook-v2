@@ -74,5 +74,31 @@
     "rawMessage": "6x P44074-B21 Dual Slot PSU Adapters expand Synergy 12000 Frame capacity from 6 to 12x P44712-B21 Titanium PSUs/frame (UCID 5158592304-01 & 5158590124-02); use sequential Synergy 12000 Frame #1/#2/#3 Config Names for Master1/Master2/Satellite frames.",
     "timestamp": "2026-11-24T15:01:41.451Z",
     "chassis": "Synergy_12000_Frame"
+  },
+  {
+    "deltaId": "LEARN_SYNERGY_6PLANE_CABLING_AND_PORT_BUDGET_20261125",
+    "ruleId": "LEARN_SYNERGY_6PLANE_CABLING_AND_PORT_BUDGET_20261125",
+    "productId": "Synergy_12000_Frame",
+    "vendor": "HPE",
+    "family": "Synergy",
+    "generation": "General",
+    "pillar": "COMPOSITE",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "affectedSku": "867796-B21",
+    "requiredDependencySku": "845406-B21",
+    "ruleType": "COMPOSITE_CABLING_COMPLETENESS",
+    "errorType": "SYNERGY_CABLING_AND_PORT_BUDGET",
+    "governanceStatus": "ACTIVE",
+    "status": "VERIFIED",
+    "evidenceType": "TIER_2_QUICKSPECS_AND_TIER_3_BOM_AUDIT",
+    "provenanceSources": [
+      "HPE Virtual Connect SE 100Gb F32 Module QuickSpecs (a00067745enw V17)",
+      "HPE Synergy 4-Port Frame Link Module & Brocade 32Gb/64Gb FC QuickSpecs",
+      "UCID 5158592304-01 & UCID 5158590124-02 Synergy Gen12 BOM Audits"
+    ],
+    "ruleUpdate": "HPE OCA does not validate Synergy inter-frame or northbound cabling. Enforce 6-plane completeness via synergy_cabling_auditor.js: (1) Internal midplane (blades & Composer2 = 0 cables); (2) Frame power jumpers (P44712-B21 ships with C13-C14 cords and requires AF590A C20-C13 jumpers for C20 PDUs); (3) FLM 876852-B21 HA ring needs 0/2/3 10GbE SFP+ LINK DACs or optics for 1/2/3 frames plus 2x MGMT uplinks (e.g. 453154-B21) per ring, and never raw CAT6A without 813874-B21; (4) Ethernet 300Gb ICL needs 2x CXP28 cables per 50Gb ILM (867793-B21) for full 50Gb (0/4/8 for 1/2/3 frames) with zero LSZH/Plenum mixing; (5) Master F32 Q7/Q8 horizontal stacking requires 2x 100Gb QSFP28 cables per pair (BiDi optics forbidden in Q7/Q8), and total stacking + uplink QSFP28 endpoints must fit within 8 cages per F32; (6) Brocade FC Q2E57A/P77653-B21 ship with 4x SW optics and 0 fiber cables, requiring OM4 LC/LC or MPO breakout cables.",
+    "rawMessage": "Enforce Synergy 6-Plane Cabling & Port-Budget Audit across 1/2/3-frame builds: AF590A PDU jumper check, 0/2/3 FLM LINK ring + 2x MGMT uplinks, 2x 300Gb ICL per 50Gb ILM (no LSZH/Plenum mix), mandatory Q7/Q8 F32 stacking (no BiDi) within 8 QSFP28 cages/F32, and Brocade FC OM4 fiber coverage for included + extra optics.",
+    "timestamp": "2026-11-25T07:35:00.000Z",
+    "chassis": "Synergy_12000_Frame"
   }
 ]

@@ -1,10 +1,10 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-11-24T15:09:45.872Z",
-  "lastUpdated": "2026-11-24T15:09:45.872Z",
-  "totalLearnedRules": 194,
-  "totalDeduplicatedRules": 194,
+  "generatedAt": "2026-11-25T08:21:00.340Z",
+  "lastUpdated": "2026-11-25T08:21:00.340Z",
+  "totalLearnedRules": 198,
+  "totalDeduplicatedRules": 198,
   "productFamiliesSynced": [
     "Alletra",
     "DL380a",
@@ -15,7 +15,7 @@
   "counts": {
     "universal": 23,
     "familyGen": 0,
-    "chassisSpecific": 171
+    "chassisSpecific": 175
   },
   "universalRules": [
     {
@@ -4022,6 +4022,32 @@
       "solutionType": "SY100Gb_F32_Module CTO Server"
     },
     {
+      "deltaId": "LEARN_SY100GB_F32_ICL_STACKING_AND_CAGE_BUDGET_20261125",
+      "ruleId": "LEARN_SY100GB_F32_ICL_STACKING_AND_CAGE_BUDGET_20261125",
+      "productId": "SY100Gb_F32_Module",
+      "vendor": "HPE",
+      "family": "Synergy",
+      "generation": "General",
+      "pillar": "NETWORKING",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "affectedSku": "867796-B21",
+      "requiredDependencySku": "845406-B21",
+      "ruleType": "FABRIC_INTERCONNECT_CABLING_RULE",
+      "errorType": "SYNERGY_F32_STACKING_AND_ICL",
+      "governanceStatus": "ACTIVE",
+      "status": "VERIFIED",
+      "evidenceType": "TIER_2_QUICKSPECS_AND_TIER_3_BOM_AUDIT",
+      "provenanceSources": [
+        "HPE Virtual Connect SE 100Gb F32 Module QuickSpecs (a00067745enw V17)",
+        "UCID 5158592304-01 & UCID 5158590124-02 Synergy Gen12 BOM Audits"
+      ],
+      "ruleUpdate": "HPE VC SE 100Gb F32 Module (867796-B21) ships with 0 cables/optics and exposes 4x 300Gb CXP28 ICL ports (L1-L4) + 8x 100Gb QSFP28 ports (Q1-Q6 uplinks, Q7-Q8 stacking). Full 50Gb operation requires 2x 300Gb ICL cables per 50Gb satellite ILM (867793-B21, populated L1 then L2; 1x/ILM degrades to 25Gb); never mix LSZH (876680/876689/876692/876698-B21) and Plenum (P64635/P64638/P64641-B21) ICL jackets in one Logical Enclosure. Each redundant F32 master pair mandates 2x external 100Gb QSFP28 stacking links (Q7-Q7, Q8-Q8 via 845406-B21/845408-B21/845410-B21/845414-B21 or SR4+MPO) across 1-, 2-, and 3-frame builds; BiDi optics (845972-B21/P90358-B21/841716-B21) are prohibited in Q7/Q8. Total QSFP28 stacking + uplink endpoints must not exceed 8 cages per F32.",
+      "rawMessage": "867796-B21 F32 requires 2x 300Gb ICL per 867793-B21 ILM for 50Gb (1x=25Gb; never mix LSZH/Plenum), mandatory 2x external Q7/Q8 QSFP28 stacking cables per F32 pair across 1/2/3 frames (BiDi forbidden in Q7/Q8), and <=8 QSFP28 endpoints per F32 across Q1-Q8.",
+      "timestamp": "2026-11-25T08:10:00.000Z",
+      "chassis": "SY100Gb_F32_Module",
+      "solutionType": "SY100Gb_F32_Module CTO Server"
+    },
+    {
       "deltaId": "LEARN_SYNERGY_12000_FRAME_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029",
       "ruleType": "WORKFLOW_DUAL_PUBLICATION_ADVISORY",
       "rawMessage": "Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.",
@@ -4098,6 +4124,33 @@
       "ruleUpdate": "6x HPE Synergy Dual Slot Power Supply Adapters (P44074-B21) expand a Synergy 12000 Frame (P51174-B21) from 6 physical PSU bays to 12x HPE 1800W-2200W Flex Slot Titanium PSUs (P44712-B21) per frame (verified across 2-frame 24-PSU UCID 5158592304-01 and 3-frame 36-PSU UCID 5158590124-02 OCA builds). Multi-frame roles are encoded inside sequential frames Synergy 12000 Frame #1/#2/#3 via 859493-B21 (Master1 FIO + Composer2 872957-B21), 859494-B22 (Master2 FIO + Composer2), and Satellite frames (no Master FIO / no Composer2).",
       "rawMessage": "6x P44074-B21 Dual Slot PSU Adapters expand Synergy 12000 Frame capacity from 6 to 12x P44712-B21 Titanium PSUs/frame (UCID 5158592304-01 & 5158590124-02); use sequential Synergy 12000 Frame #1/#2/#3 Config Names for Master1/Master2/Satellite frames.",
       "timestamp": "2026-11-24T15:01:41.451Z",
+      "chassis": "Synergy_12000_Frame",
+      "solutionType": "Synergy_12000_Frame CTO Server"
+    },
+    {
+      "deltaId": "LEARN_SYNERGY_6PLANE_CABLING_AND_PORT_BUDGET_20261125",
+      "ruleId": "LEARN_SYNERGY_6PLANE_CABLING_AND_PORT_BUDGET_20261125",
+      "productId": "Synergy_12000_Frame",
+      "vendor": "HPE",
+      "family": "Synergy",
+      "generation": "General",
+      "pillar": "COMPOSITE",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "affectedSku": "867796-B21",
+      "requiredDependencySku": "845406-B21",
+      "ruleType": "COMPOSITE_CABLING_COMPLETENESS",
+      "errorType": "SYNERGY_CABLING_AND_PORT_BUDGET",
+      "governanceStatus": "ACTIVE",
+      "status": "VERIFIED",
+      "evidenceType": "TIER_2_QUICKSPECS_AND_TIER_3_BOM_AUDIT",
+      "provenanceSources": [
+        "HPE Virtual Connect SE 100Gb F32 Module QuickSpecs (a00067745enw V17)",
+        "HPE Synergy 4-Port Frame Link Module & Brocade 32Gb/64Gb FC QuickSpecs",
+        "UCID 5158592304-01 & UCID 5158590124-02 Synergy Gen12 BOM Audits"
+      ],
+      "ruleUpdate": "HPE OCA does not validate Synergy inter-frame or northbound cabling. Enforce 6-plane completeness via synergy_cabling_auditor.js: (1) Internal midplane (blades & Composer2 = 0 cables); (2) Frame power jumpers (P44712-B21 ships with C13-C14 cords and requires AF590A C20-C13 jumpers for C20 PDUs); (3) FLM 876852-B21 HA ring needs 0/2/3 10GbE SFP+ LINK DACs or optics for 1/2/3 frames plus 2x MGMT uplinks (e.g. 453154-B21) per ring, and never raw CAT6A without 813874-B21; (4) Ethernet 300Gb ICL needs 2x CXP28 cables per 50Gb ILM (867793-B21) for full 50Gb (0/4/8 for 1/2/3 frames) with zero LSZH/Plenum mixing; (5) Master F32 Q7/Q8 horizontal stacking requires 2x 100Gb QSFP28 cables per pair (BiDi optics forbidden in Q7/Q8), and total stacking + uplink QSFP28 endpoints must fit within 8 cages per F32; (6) Brocade FC Q2E57A/P77653-B21 ship with 4x SW optics and 0 fiber cables, requiring OM4 LC/LC or MPO breakout cables.",
+      "rawMessage": "Enforce Synergy 6-Plane Cabling & Port-Budget Audit across 1/2/3-frame builds: AF590A PDU jumper check, 0/2/3 FLM LINK ring + 2x MGMT uplinks, 2x 300Gb ICL per 50Gb ILM (no LSZH/Plenum mix), mandatory Q7/Q8 F32 stacking (no BiDi) within 8 QSFP28 cages/F32, and Brocade FC OM4 fiber coverage for included + extra optics.",
+      "timestamp": "2026-11-25T07:35:00.000Z",
       "chassis": "Synergy_12000_Frame",
       "solutionType": "Synergy_12000_Frame CTO Server"
     },
@@ -4182,6 +4235,32 @@
       "solutionType": "Synergy_4Port_Frame_Link_Module CTO Server"
     },
     {
+      "deltaId": "LEARN_SYNERGY_4PORT_FLM_RING_AND_MGMT_CABLING_20261125",
+      "ruleId": "LEARN_SYNERGY_4PORT_FLM_RING_AND_MGMT_CABLING_20261125",
+      "productId": "Synergy_4Port_Frame_Link_Module",
+      "vendor": "HPE",
+      "family": "Synergy",
+      "generation": "General",
+      "pillar": "NETWORKING",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "affectedSku": "876852-B21",
+      "requiredDependencySku": "487655-B21",
+      "ruleType": "MANAGEMENT_RING_CABLING_RULE",
+      "errorType": "SYNERGY_FLM_RING_AND_MGMT",
+      "governanceStatus": "ACTIVE",
+      "status": "VERIFIED",
+      "evidenceType": "TIER_2_QUICKSPECS_AND_TIER_3_BOM_AUDIT",
+      "provenanceSources": [
+        "HPE Synergy 4-Port Frame Link Module QuickSpecs",
+        "UCID 5158592304-01 & UCID 5158590124-02 Synergy Gen12 BOM Audits"
+      ],
+      "ruleUpdate": "HPE Synergy 4-Port Frame Link Module (876852-B21) exposes 4 SFP+ cages (1x LINK, 1x MGMT, 2x reserved) and ships with 0 cables or transceivers. Inter-frame HA management ring requires 0 (1-frame, internal midplane), 2 (2-frame), or 3 (3-frame) 10GbE SFP+ LINK cables (e.g. 487655-B21 3m DAC / 537963-B21 5m DAC or 455883-B21 SR + OM4). Legacy CAT6A FLM cables (861412-B21 / 861413-B21) cannot terminate directly in 876852-B21 SFP+ cages without 2x 813874-B21 10GBase-T SFP+ adapters per cable. External MGMT LAN uplinks are always 2 per entire management ring regardless of frame count (e.g. 2x 453154-B21 1G SFP RJ45, valid on MGMT ports only).",
+      "rawMessage": "876852-B21 FLM ships with 0 optics/cables: requires 0/2/3 10GbE SFP+ LINK cables for 1/2/3 frames (CAT6A 861412/861413-B21 require 2x 813874-B21), plus always 2x external MGMT uplinks (e.g. 453154-B21) per management ring.",
+      "timestamp": "2026-11-25T08:10:00.000Z",
+      "chassis": "Synergy_4Port_Frame_Link_Module",
+      "solutionType": "Synergy_4Port_Frame_Link_Module CTO Server"
+    },
+    {
       "deltaId": "LEARN_SYNERGY_BROCADE_64GB_FC_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029",
       "ruleType": "WORKFLOW_DUAL_PUBLICATION_ADVISORY",
       "rawMessage": "Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.",
@@ -4232,6 +4311,32 @@
       "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
       "hardwareCompatibilityCertified": false,
       "timestamp": "2026-11-12T07:18:28.837Z",
+      "chassis": "Synergy_Brocade_64Gb_FC_Module",
+      "solutionType": "Synergy_Brocade_64Gb_FC_Module CTO Server"
+    },
+    {
+      "deltaId": "LEARN_SYNERGY_BROCADE_FC_NO_STACKING_AND_FIBER_PARITY_20261125",
+      "ruleId": "LEARN_SYNERGY_BROCADE_FC_NO_STACKING_AND_FIBER_PARITY_20261125",
+      "productId": "Synergy_Brocade_64Gb_FC_Module",
+      "vendor": "HPE",
+      "family": "Synergy",
+      "generation": "General",
+      "pillar": "NETWORKING",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "affectedSku": "P77653-B21",
+      "requiredDependencySku": "QK734A",
+      "ruleType": "SAN_OPTIC_FIBER_PARITY_RULE",
+      "errorType": "SYNERGY_FC_FIBER_MISSING",
+      "governanceStatus": "ACTIVE",
+      "status": "VERIFIED",
+      "evidenceType": "TIER_2_QUICKSPECS_AND_TIER_3_BOM_AUDIT",
+      "provenanceSources": [
+        "HPE Synergy Brocade 64Gb FC & 32Gb FC Switch Module QuickSpecs",
+        "UCID 5158592304-01 & UCID 5158590124-02 Synergy Gen12 BOM Audits"
+      ],
+      "ruleUpdate": "HPE Synergy Brocade FC switch modules never use inter-frame stacking cables across frames; every switch connects strictly northbound to SAN Fabric A/B via Access Gateway or Switch mode. Both P77653-B21 (64Gb, 12 internal + 12 external SFP56, 0 QSFP) and Q2E57A (32Gb/20, 12 internal + 8 external SFP28 + 2 QSFP) include 4x SW SFP transceivers in-box (R7M15A for 64Gb) and 0 fiber cables. Every active FC switch requires matching 1:1 OM4 LC/LC fiber cables (e.g. QK732A-QK737A) or MPO breakout cables (K2Q46A/K2Q47A on QSFP) covering both the 4 included-in-box optics and any added R7M15A/R7M16A or R6B12A/R6W26A expansion optics.",
+      "rawMessage": "Synergy Brocade FC modules use zero inter-frame stacking cables; P77653-B21 (12 ext SFP56) and Q2E57A (8 ext SFP28 + 2 QSFP) include 4x SW optics in-box and 0 fiber cables, requiring OM4 LC/LC (QK734A) or MPO breakout cables covering all included + expansion optics.",
+      "timestamp": "2026-11-25T08:10:00.000Z",
       "chassis": "Synergy_Brocade_64Gb_FC_Module",
       "solutionType": "Synergy_Brocade_64Gb_FC_Module CTO Server"
     }

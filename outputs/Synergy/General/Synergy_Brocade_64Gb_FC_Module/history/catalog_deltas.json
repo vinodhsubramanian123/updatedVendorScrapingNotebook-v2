@@ -49,5 +49,30 @@
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-11-12T07:18:28.837Z",
     "chassis": "Synergy_Brocade_64Gb_FC_Module"
+  },
+  {
+    "deltaId": "LEARN_SYNERGY_BROCADE_FC_NO_STACKING_AND_FIBER_PARITY_20261125",
+    "ruleId": "LEARN_SYNERGY_BROCADE_FC_NO_STACKING_AND_FIBER_PARITY_20261125",
+    "productId": "Synergy_Brocade_64Gb_FC_Module",
+    "vendor": "HPE",
+    "family": "Synergy",
+    "generation": "General",
+    "pillar": "NETWORKING",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "affectedSku": "P77653-B21",
+    "requiredDependencySku": "QK734A",
+    "ruleType": "SAN_OPTIC_FIBER_PARITY_RULE",
+    "errorType": "SYNERGY_FC_FIBER_MISSING",
+    "governanceStatus": "ACTIVE",
+    "status": "VERIFIED",
+    "evidenceType": "TIER_2_QUICKSPECS_AND_TIER_3_BOM_AUDIT",
+    "provenanceSources": [
+      "HPE Synergy Brocade 64Gb FC & 32Gb FC Switch Module QuickSpecs",
+      "UCID 5158592304-01 & UCID 5158590124-02 Synergy Gen12 BOM Audits"
+    ],
+    "ruleUpdate": "HPE Synergy Brocade FC switch modules never use inter-frame stacking cables across frames; every switch connects strictly northbound to SAN Fabric A/B via Access Gateway or Switch mode. Both P77653-B21 (64Gb, 12 internal + 12 external SFP56, 0 QSFP) and Q2E57A (32Gb/20, 12 internal + 8 external SFP28 + 2 QSFP) include 4x SW SFP transceivers in-box (R7M15A for 64Gb) and 0 fiber cables. Every active FC switch requires matching 1:1 OM4 LC/LC fiber cables (e.g. QK732A-QK737A) or MPO breakout cables (K2Q46A/K2Q47A on QSFP) covering both the 4 included-in-box optics and any added R7M15A/R7M16A or R6B12A/R6W26A expansion optics.",
+    "rawMessage": "Synergy Brocade FC modules use zero inter-frame stacking cables; P77653-B21 (12 ext SFP56) and Q2E57A (8 ext SFP28 + 2 QSFP) include 4x SW optics in-box and 0 fiber cables, requiring OM4 LC/LC (QK734A) or MPO breakout cables covering all included + expansion optics.",
+    "timestamp": "2026-11-25T08:10:00.000Z",
+    "chassis": "Synergy_Brocade_64Gb_FC_Module"
   }
 ]

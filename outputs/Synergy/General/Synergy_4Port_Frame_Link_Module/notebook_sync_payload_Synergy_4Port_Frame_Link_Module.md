@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/NETWORKING/Synergy/General/Synergy_4Port_Frame_Link_Module`
 
-**Sync Timestamp**: 2026-11-24T15:09:46.076Z
+**Sync Timestamp**: 2026-11-25T08:19:44.505Z
 
 **Total Verified SKUs**: `62` (`62` Hardware + `0` Services)
 
-**Total Synced KnowledgeDeltas**: `27`
+**Total Synced KnowledgeDeltas**: `28`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -76,6 +76,10 @@ Service scope: OWNER_ABSENT_IN_OBSERVED_SERVICE_TREE. Unexecuted: alternative se
 4. **[LEARN_SYNERGY_FLM_453154_DIVISIBILITY_ADHOC_20261124] Synergy_4Port_Frame_Link_Module** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `Synergy_4Port_Frame_Link_Module CTO Server`):
    - **Rule**: 453154-B21 (1G SFP RJ45 Transceiver, 0D1) placed inside 4-port Frame Link Module #i (876852-B21 Qty 2) requires qty(453154-B21) % qty(876852-B21) === 0 during OCA BOM import. In 3-frame UCID 5158590124-02, Frame #2 had 2x 453154-B21 under 2x 876852-B21 (ratio 1.0) and stayed factory-integrated; in 2-frame UCID 5158592304-01, 1x 453154-B21 under 2x 876852-B21 (ratio 0.5) per frame caused OCA to eject 453154-B21 into 2 extra Ad-Hoc containers (final export stripped both 453154-B21 0D1 rows and merged 1+1 -> 2 in Ad-Hoc). For 2 total 453154-B21 across 2 frames, consolidate 2x under one FLM container or place 2x 453154-B21 (without 0D1) directly in Ad-Hoc #1 for upload. Always number FLM Config Names sequentially (#1, #2, #3).
    - **Affected SKU**: `453154-B21` | **Required Dependency**: `876852-B21`
+
+5. **[LEARN_SYNERGY_4PORT_FLM_RING_AND_MGMT_CABLING_20261125] Synergy_4Port_Frame_Link_Module** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `Synergy_4Port_Frame_Link_Module CTO Server`):
+   - **Rule**: HPE Synergy 4-Port Frame Link Module (876852-B21) exposes 4 SFP+ cages (1x LINK, 1x MGMT, 2x reserved) and ships with 0 cables or transceivers. Inter-frame HA management ring requires 0 (1-frame, internal midplane), 2 (2-frame), or 3 (3-frame) 10GbE SFP+ LINK cables (e.g. 487655-B21 3m DAC / 537963-B21 5m DAC or 455883-B21 SR + OM4). Legacy CAT6A FLM cables (861412-B21 / 861413-B21) cannot terminate directly in 876852-B21 SFP+ cages without 2x 813874-B21 10GBase-T SFP+ adapters per cable. External MGMT LAN uplinks are always 2 per entire management ring regardless of frame count (e.g. 2x 453154-B21 1G SFP RJ45, valid on MGMT ports only).
+   - **Affected SKU**: `876852-B21` | **Required Dependency**: `487655-B21`
 
 
 ## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
@@ -185,7 +189,7 @@ Service scope: OWNER_ABSENT_IN_OBSERVED_SERVICE_TREE. Unexecuted: alternative se
 
 
 <!-- MANAGED_FULL_CATALOG -->
-Content fingerprint: 75acd263285313f4c37f115dd1099234013a0e81bfe7a1240dab9dbc38a0c359
+Content fingerprint: 04b8208b47dcb58cdcf5112ab346359fc691d91474419c8faa022c06441ecdb4
 
 ## Complete workbook text projection
 

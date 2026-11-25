@@ -30,7 +30,8 @@ const {
 const {
   isCompleteSynergyComposite,
   evaluateSynergyComposite,
-  validateOcaContainerDivisibility
+  validateOcaContainerDivisibility,
+  auditSynergyCabling
 } = require('../../scripts/lib/boq/synergy_composite_evaluator.js');
 
 const {
@@ -430,7 +431,11 @@ test('Phase 3B [3/4]: Synergy 12000 Composite validates bays, ICM pairing, mezz-
     { sku: 'P68131-B21', description: 'HPE Synergy 7330C 64Gb Fibre Channel Host Bus Adapter', quantity: 4 },
     { sku: '876852-B21', description: 'HPE Synergy 4-port Frame Link Module', quantity: 2 },
     { sku: 'P27750-B21', description: 'HPE 6x 3000W Titanium Hot Plug FIO Power Supply Kit', quantity: 1 },
+    { sku: '453154-B21', description: 'HPE BladeSystem CClass Virtual Connect 1G SFP RJ45 Transceiver', quantity: 2 },
+    { sku: '845406-B21', description: 'HPE Synergy 100GbE/4x25GbE/4x32GbFC QSFP28 to QSFP28 3m DAC', quantity: 2 },
     { sku: '882251-B21', description: 'HPE Synergy 100GbE/4x25GbE/4x32GbFC QSFP28 Transceiver', quantity: 4 },
+    { sku: 'QK729A', description: 'HPE Premier Flex MPO12/MPO12 Multi-mode OM4 10m Fiber Cable', quantity: 4 },
+    { sku: 'QK734A', description: 'HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable', quantity: 8 },
     { sku: 'HU4B2A3#FRM', description: 'HPE 3Y Tech Care Basic Synergy 12000 Frame Service', quantity: 1 },
     { sku: 'HU4B2A3#CMP', description: 'HPE 3Y Tech Care Basic SY480 Gen12 Compute Service', quantity: 4 },
     { sku: 'HU4B2A3#ICM', description: 'HPE 3Y Tech Care Basic Virtual Connect F32 Interconnect Service', quantity: 4 }
@@ -442,7 +447,7 @@ test('Phase 3B [3/4]: Synergy 12000 Composite validates bays, ICM pairing, mezz-
   assert.equal(resOk.solutionTopology.domain, 'synergy_composite');
   assert.equal(resOk.isMathClean, true);
   assert.equal(resOk.portalValidationStatus, 'PENDING');
-  assert.equal(resOk.aspectChecks.length, 6);
+  assert.equal(resOk.aspectChecks.length, 7);
   assert.equal(resOk.aspectChecks.every(c => c.status === 'PASS'), true);
 
   // Negative 1: Compute bay overflow (13 half-height blades in 1 frame > 12 bays)
@@ -511,7 +516,7 @@ test('Phase 3B [4/4]: MSL3040 Tape evaluates cleanly in boq_evaluator.js and asp
   assert.equal(DOMAIN_CAPABILITY_MATRIX.archive.status, 'NOT_EVALUATED');
 
   assert.equal(getRegisteredAspectsForDomain('alletra_mp').length, 6);
-  assert.equal(getRegisteredAspectsForDomain('synergy_composite').length, 6);
+  assert.equal(getRegisteredAspectsForDomain('synergy_composite').length, 7);
 
   // Positive MSL3040 Tape via evaluatePhysicalMath
   const validTape = [
@@ -572,7 +577,14 @@ test('Phase 3B [5/5]: Synergy Dual-Slot PSU Adapter (12 PSUs/frame), 64Gb->32Gb 
     { sku: '876852-B21', description: 'HPE Synergy 4-port Frame Link Module', quantity: 4 },
     { sku: 'P44074-B21', description: 'HPE Synergy Dual Slot Power Supply Adapter', quantity: 12 },
     { sku: 'P44712-B21', description: 'HPE 1800W-2200W Flex Slot Titanium Hot Plug Power Supply Kit', quantity: 24 },
+    { sku: 'AF590A', description: 'HPE C20 - C13 WW 250V 15Amp 2.0m Jumper Cord', quantity: 24 },
+    { sku: '487655-B21', description: 'HPE BLc 10Gb SFP+ SFP+ 3m Direct Attach Copper Cable', quantity: 2 },
+    { sku: '453154-B21', description: 'HPE BladeSystem CClass Virtual Connect 1G SFP RJ45 Transceiver', quantity: 2 },
+    { sku: '876689-B21', description: 'HPE Synergy 300Gb Interconnect Link 3m Active Optical Cable', quantity: 4 },
+    { sku: '845406-B21', description: 'HPE Synergy 100GbE/4x25GbE/4x32GbFC QSFP28 to QSFP28 3m DAC', quantity: 2 },
     { sku: '882251-B21', description: 'HPE Synergy 100GbE/4x25GbE/4x32GbFC QSFP28 Transceiver', quantity: 12 },
+    { sku: 'QK729A', description: 'HPE Premier Flex MPO12/MPO12 Multi-mode OM4 10m Fiber Cable', quantity: 12 },
+    { sku: 'QK734A', description: 'HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable', quantity: 16 },
     { sku: 'HU4B2A3     WJN', description: 'HPE Synergy 1200 Frame Supp', quantity: 2 },
     { sku: 'HU4B2A30BT7', description: 'HPE SY480 Gen12 Support', quantity: 24 },
     { sku: 'HU4B2A3     Z1R', description: 'HPE Synergy VC SE 100Gb F32 Module Supp', quantity: 2 }
@@ -638,4 +650,143 @@ test('Phase 3B [5/5]: Synergy Dual-Slot PSU Adapter (12 PSUs/frame), 64Gb->32Gb 
   assert.equal(divBad.violations[1].perParent, 0.5);
   assert.equal(divBad.adHocNamingWarnings.length, 1);
   assert.ok(divBad.adHocNamingWarnings[0].reason.includes('Ad-Hoc #1'));
+});
+
+test('Phase 3B [6/6]: Synergy 6-Plane Cabling, Transceiver & Port-Budget Audit across 1-frame, 2-frame, and 3-frame builds', () => {
+  // 1) Clean 3-frame Synergy topology -> PASS
+  const valid3Frame = [
+    { sku: 'P51174-B21', description: 'HPE Synergy 12000 Configure-to-order Frame', quantity: 3 },
+    { sku: 'P68217-B21', description: 'HPE Synergy 480 Gen12 Configure-to-order Compute Module', quantity: 24 },
+    { sku: 'P64724-B21', description: 'HPE Synergy 6310C 25/50Gb Ethernet Adapter', quantity: 24 },
+    { sku: 'P68131-B21', description: 'HPE Synergy 7330C 64Gb Fibre Channel Host Bus Adapter', quantity: 24 },
+    { sku: '876852-B21', description: 'HPE Synergy 4-port Frame Link Module', quantity: 6 },
+    { sku: '487655-B21', description: 'HPE BLc 10Gb SFP+ SFP+ 3m Direct Attach Copper Cable', quantity: 3 },
+    { sku: '453154-B21', description: 'HPE BladeSystem CClass Virtual Connect 1G SFP RJ45 Transceiver', quantity: 2 },
+    { sku: '867796-B21', description: 'HPE Virtual Connect SE 100Gb F32 Module for Synergy', quantity: 2 },
+    { sku: '867793-B21', description: 'HPE Synergy 50Gb Interconnect Link Module', quantity: 4 },
+    { sku: '876689-B21', description: 'HPE Synergy 300Gb Interconnect Link 3m Active Optical Cable', quantity: 8 },
+    { sku: '845406-B21', description: 'HPE Synergy 100GbE QSFP28 3m DAC', quantity: 2 },
+    { sku: '882251-B21', description: 'HPE Synergy 100GbE/4x25GbE QSFP28 Transceiver', quantity: 8 },
+    { sku: 'QK729A', description: 'HPE Premier Flex MPO12/MPO12 Multi-mode OM4 10m Fiber Cable', quantity: 8 },
+    { sku: 'P77653-B21', description: 'Brocade 64Gb Fibre Channel Module for HPE Synergy', quantity: 6 },
+    { sku: 'QK734A', description: 'HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable', quantity: 24 },
+    { sku: 'P27750-B21', description: 'HPE 6x 3000W Titanium Hot Plug FIO Power Supply Kit', quantity: 3 },
+    { sku: 'HU4B2A3#FRM', description: 'HPE 3Y Tech Care Basic Synergy 12000 Frame Service', quantity: 3 },
+    { sku: 'HU4B2A3#CMP', description: 'HPE 3Y Tech Care Basic SY480 Gen12 Compute Service', quantity: 24 },
+    { sku: 'HU4B2A3#ICM', description: 'HPE 3Y Tech Care Basic Virtual Connect F32 Interconnect Service', quantity: 12 }
+  ];
+  const res3Frame = evaluateSynergyComposite(valid3Frame);
+  assert.equal(res3Frame.isMathClean, true);
+  const cabling3f = res3Frame.aspectChecks.find(c => c.id === 'SYNERGY_CABLING_AND_PORT_BUDGET');
+  assert.equal(cabling3f.status, 'PASS');
+  assert.equal(res3Frame.missingDependencies.length, 0);
+
+  // 2) Plane 2: P44712-B21 without AF590A -> WARN; partial AF590A -> FAIL
+  const noJumper = valid3Frame.filter(i => i.sku !== 'P27750-B21').concat([
+    { sku: 'P44074-B21', description: 'HPE Synergy Dual Slot Power Supply Adapter', quantity: 12 },
+    { sku: 'P44712-B21', description: 'HPE 1800W-2200W Flex Slot Titanium Hot Plug Power Supply Kit', quantity: 24 }
+  ]);
+  const resNoJumper = evaluateSynergyComposite(noJumper);
+  assert.equal(resNoJumper.isMathClean, true);
+  assert.ok(resNoJumper.warnings.some(w => w.includes('AF590A')));
+
+  const partialJumper = [...noJumper, { sku: 'AF590A', description: 'HPE C20-C13 Jumper', quantity: 10 }];
+  const resPartialJumper = evaluateSynergyComposite(partialJumper);
+  assert.equal(resPartialJumper.isMathClean, false);
+  assert.ok(resPartialJumper.errors.some(e => e.includes('Partial C20-C13 power jumper coverage (10x AF590A')));
+
+  // 3) Plane 3A/3B: 2-frame & 3-frame missing FLM ring DACs, legacy CAT6A on 4-port FLM, missing MGMT optics
+  const flmMissingRing2f = evaluateSynergyComposite([
+    { sku: 'P51174-B21', description: 'HPE Synergy 12000 Frame', quantity: 2 },
+    { sku: '876852-B21', description: 'HPE Synergy 4-port Frame Link Module', quantity: 4 },
+    { sku: 'P27750-B21', description: 'HPE 6x 3000W Titanium PSU Kit', quantity: 2 }
+  ]);
+  assert.equal(flmMissingRing2f.isMathClean, false);
+  assert.ok(flmMissingRing2f.errors.some(e => e.includes('SYNERGY_FLM_RING_CABLE_DEFICIT')));
+  assert.ok(flmMissingRing2f.missingDependencies.some(d => d.sku === '487655-B21' && d.quantity === 2));
+  assert.ok(flmMissingRing2f.warnings.some(w => w.includes('SYNERGY_FLM_MGMT_UPLINK_MISSING')));
+
+  const flmShort3f = evaluateSynergyComposite(valid3Frame.map(i => i.sku === '487655-B21' ? { ...i, quantity: 2 } : i));
+  assert.equal(flmShort3f.isMathClean, false);
+  assert.ok(flmShort3f.errors.some(e => e.includes('3-frame FLM management ring requires 3x 10GbE SFP+ LINK cables (found 2)')));
+
+  const legacyCat6aFlm = evaluateSynergyComposite([
+    ...valid3Frame.filter(i => i.sku !== '487655-B21'),
+    { sku: '861412-B21', description: 'HPE Synergy Frame Link Module CAT6A Cable', quantity: 3 }
+  ]);
+  assert.equal(legacyCat6aFlm.isMathClean, false);
+  assert.ok(legacyCat6aFlm.errors.some(e => e.includes('Plane 3A FLM Media Violation') && e.includes('813874-B21')));
+
+  // 4) Plane 4A: 2-frame 0 ICL -> FAIL; 2-frame half ICL -> WARN 25Gb-degraded; LSZH + Plenum mix -> FAIL
+  const noIcl2f = evaluateSynergyComposite(valid3Frame.filter(i => i.sku !== '876689-B21'));
+  assert.equal(noIcl2f.isMathClean, false);
+  assert.ok(noIcl2f.errors.some(e => e.includes('SYNERGY_ICL_CABLE_DEFICIT')));
+  assert.ok(noIcl2f.missingDependencies.some(d => d.sku === '876689-B21' && d.quantity === 8));
+
+  const halfIcl3f = evaluateSynergyComposite(valid3Frame.map(i => i.sku === '876689-B21' ? { ...i, quantity: 4 } : i));
+  assert.equal(halfIcl3f.isMathClean, true);
+  assert.ok(halfIcl3f.warnings.some(w => w.includes('25Gb-Degraded ICL Cabling')));
+
+  const mixedIcl = evaluateSynergyComposite([
+    ...valid3Frame.map(i => i.sku === '876689-B21' ? { ...i, quantity: 4 } : i),
+    { sku: 'P64635-B21', description: 'HPE Synergy 300Gb Interconnect Link 3m Plenum AOC', quantity: 4 }
+  ]);
+  assert.equal(mixedIcl.isMathClean, false);
+  assert.ok(mixedIcl.errors.some(e => e.includes('SYNERGY_ICL_LSZH_PLENUM_MIX')));
+
+  // 5) Plane 4B/5: Missing Q7/Q8 in 1-frame -> FAIL; BiDi in Q7/Q8 -> FAIL; UCID 5158592304-01 real-world oversubscription
+  const missingStack1f = evaluateSynergyComposite([
+    { sku: 'P51174-B21', description: 'HPE Synergy 12000 Frame', quantity: 1 },
+    { sku: '876852-B21', description: 'HPE Synergy 4-port Frame Link Module', quantity: 2 },
+    { sku: '453154-B21', description: 'HPE 1G SFP RJ45 Transceiver', quantity: 2 },
+    { sku: '867796-B21', description: 'HPE VC SE 100Gb F32 Module', quantity: 2 },
+    { sku: '845420-B21', description: 'HPE Synergy 100Gb QSFP28 to 4x25Gb SFP28 7m AOC', quantity: 4 },
+    { sku: 'P27750-B21', description: 'HPE 6x 3000W PSU Kit', quantity: 1 }
+  ]);
+  assert.equal(missingStack1f.isMathClean, false);
+  assert.ok(missingStack1f.errors.some(e => e.includes('SYNERGY_F32_STACKING_MISSING')));
+
+  const bidiStackViolation = evaluateSynergyComposite([
+    ...valid3Frame
+      .filter(i => i.sku !== '845406-B21' && i.sku !== '882251-B21')
+      .concat([{ sku: '845420-B21', description: 'HPE Synergy 100Gb QSFP28 to 4x25Gb SFP28 7m AOC', quantity: 4 }]),
+    { sku: '845972-B21', description: 'HPE Synergy 100Gb QSFP28 Bidirectional Transceiver', quantity: 4 }
+  ]);
+  assert.equal(bidiStackViolation.isMathClean, false);
+  assert.ok(bidiStackViolation.errors.some(e => e.includes('SYNERGY_BIDI_STACKING_VIOLATION')));
+
+  // Real-world UCID 5158592304-01 regression check: catches 40 endpoints > 16 cages, over-provisioned ICL/FLM, missing AF590A, FC fiber shortage
+  const ucid5158592304Audit = auditSynergyCabling([
+    { sku: 'P44712-B21', quantity: 24 },
+    { sku: '487655-B21', quantity: 4 },
+    { sku: '537963-B21', quantity: 2 },
+    { sku: '453154-B21', quantity: 2 },
+    { sku: '876689-B21', quantity: 4 },
+    { sku: '876692-B21', quantity: 4 },
+    { sku: '845406-B21', quantity: 2 },
+    { sku: '882251-B21', quantity: 12 },
+    { sku: '845420-B21', quantity: 24 },
+    { sku: 'QK729A', quantity: 12 },
+    { sku: 'R6B12A', quantity: 16 },
+    { sku: 'QK734A', quantity: 24 }
+  ], { frameCount: 2, flm4PortCount: 4, f32MasterCount: 2, ilm50gCount: 2, fcIcmCount: 4, fc64gIcmCount: 0, ethMezzMaxSpeedGb: 50 });
+  assert.equal(ucid5158592304Audit.aspectCheck.status, 'FAIL');
+  assert.ok(ucid5158592304Audit.aspectCheck.errors.some(e => e.includes('SYNERGY_F32_QSFP28_CAGE_OVERFLOW') && e.includes('40 QSFP28 endpoints')));
+  assert.ok(ucid5158592304Audit.aspectCheck.warnings.some(w => w.includes('AF590A')));
+  assert.ok(ucid5158592304Audit.aspectCheck.warnings.some(w => w.includes('Over-Provisioned ICL Cables')));
+  assert.ok(ucid5158592304Audit.aspectCheck.warnings.some(w => w.includes('FLM Over-Provisioned')));
+  assert.ok(ucid5158592304Audit.aspectCheck.warnings.some(w => w.includes('SYNERGY_FC_FIBER_UNDERPROVISIONED')));
+
+  // 6) Plane 6: Brocade FC modules with 0 fiber cables -> FAIL + missing QK734A; partial FC fiber -> WARN
+  const fcNoFiber = evaluateSynergyComposite(valid3Frame.filter(i => i.sku !== 'QK734A'));
+  assert.equal(fcNoFiber.isMathClean, false);
+  assert.ok(fcNoFiber.errors.some(e => e.includes('SYNERGY_FC_FIBER_MISSING')));
+  assert.ok(fcNoFiber.missingDependencies.some(d => d.sku === 'QK734A' && d.quantity === 24));
+
+  const fcShortFiber = evaluateSynergyComposite([
+    ...valid3Frame.map(i => i.sku === 'P77653-B21' ? { sku: 'Q2E57A', description: 'Brocade 32Gb FC Module', quantity: 4 } : i),
+    { sku: 'R6B12A', description: 'HPE B-series 32Gb SFP28 Short Wave Transceiver', quantity: 16 }
+  ]);
+  assert.equal(fcShortFiber.isMathClean, true);
+  assert.ok(fcShortFiber.warnings.some(w => w.includes('SYNERGY_FC_FIBER_UNDERPROVISIONED') && w.includes('32 total FC SFP optics')));
 });

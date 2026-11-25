@@ -74,5 +74,30 @@
     "rawMessage": "453154-B21 inside 2x 876852-B21 FLM requires integer ratio (2/2=1); 1/2=0.5 splits into extra Ad-Hoc containers (UCID 5158592304-01 stripped 0D1 and merged 1+1 -> 2 in Ad-Hoc). Consolidate 2x under one FLM or move non-0D1 to Ad-Hoc #1 for upload; keep FLM numbering sequential (#1, #2, #3).",
     "timestamp": "2026-11-24T15:01:41.540Z",
     "chassis": "Synergy_4Port_Frame_Link_Module"
+  },
+  {
+    "deltaId": "LEARN_SYNERGY_4PORT_FLM_RING_AND_MGMT_CABLING_20261125",
+    "ruleId": "LEARN_SYNERGY_4PORT_FLM_RING_AND_MGMT_CABLING_20261125",
+    "productId": "Synergy_4Port_Frame_Link_Module",
+    "vendor": "HPE",
+    "family": "Synergy",
+    "generation": "General",
+    "pillar": "NETWORKING",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "affectedSku": "876852-B21",
+    "requiredDependencySku": "487655-B21",
+    "ruleType": "MANAGEMENT_RING_CABLING_RULE",
+    "errorType": "SYNERGY_FLM_RING_AND_MGMT",
+    "governanceStatus": "ACTIVE",
+    "status": "VERIFIED",
+    "evidenceType": "TIER_2_QUICKSPECS_AND_TIER_3_BOM_AUDIT",
+    "provenanceSources": [
+      "HPE Synergy 4-Port Frame Link Module QuickSpecs",
+      "UCID 5158592304-01 & UCID 5158590124-02 Synergy Gen12 BOM Audits"
+    ],
+    "ruleUpdate": "HPE Synergy 4-Port Frame Link Module (876852-B21) exposes 4 SFP+ cages (1x LINK, 1x MGMT, 2x reserved) and ships with 0 cables or transceivers. Inter-frame HA management ring requires 0 (1-frame, internal midplane), 2 (2-frame), or 3 (3-frame) 10GbE SFP+ LINK cables (e.g. 487655-B21 3m DAC / 537963-B21 5m DAC or 455883-B21 SR + OM4). Legacy CAT6A FLM cables (861412-B21 / 861413-B21) cannot terminate directly in 876852-B21 SFP+ cages without 2x 813874-B21 10GBase-T SFP+ adapters per cable. External MGMT LAN uplinks are always 2 per entire management ring regardless of frame count (e.g. 2x 453154-B21 1G SFP RJ45, valid on MGMT ports only).",
+    "rawMessage": "876852-B21 FLM ships with 0 optics/cables: requires 0/2/3 10GbE SFP+ LINK cables for 1/2/3 frames (CAT6A 861412/861413-B21 require 2x 813874-B21), plus always 2x external MGMT uplinks (e.g. 453154-B21) per management ring.",
+    "timestamp": "2026-11-25T08:10:00.000Z",
+    "chassis": "Synergy_4Port_Frame_Link_Module"
   }
 ]

@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/COMPOSITE/Synergy/General/Synergy_12000_Frame`
 
-**Sync Timestamp**: 2026-11-24T15:08:05.879Z
+**Sync Timestamp**: 2026-11-25T08:15:49.197Z
 
 **Total Verified SKUs**: `447` (`257` Hardware + `190` Services)
 
-**Total Synced KnowledgeDeltas**: `27`
+**Total Synced KnowledgeDeltas**: `28`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -74,6 +74,10 @@ OBSERVED_CONFIGURED_CHILD_MENUS. Observed child base SKUs 876852-B21, 867796-B21
 4. **[LEARN_SYNERGY_12000_DUAL_SLOT_PSU_ADAPTER_12PSU_20261124] Synergy_12000_Frame** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `Synergy_12000_Frame CTO Server`):
    - **Rule**: 6x HPE Synergy Dual Slot Power Supply Adapters (P44074-B21) expand a Synergy 12000 Frame (P51174-B21) from 6 physical PSU bays to 12x HPE 1800W-2200W Flex Slot Titanium PSUs (P44712-B21) per frame (verified across 2-frame 24-PSU UCID 5158592304-01 and 3-frame 36-PSU UCID 5158590124-02 OCA builds). Multi-frame roles are encoded inside sequential frames Synergy 12000 Frame #1/#2/#3 via 859493-B21 (Master1 FIO + Composer2 872957-B21), 859494-B22 (Master2 FIO + Composer2), and Satellite frames (no Master FIO / no Composer2).
    - **Affected SKU**: `P44074-B21` | **Required Dependency**: `P44712-B21`
+
+5. **[LEARN_SYNERGY_6PLANE_CABLING_AND_PORT_BUDGET_20261125] Synergy_12000_Frame** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `Synergy_12000_Frame CTO Server`):
+   - **Rule**: HPE OCA does not validate Synergy inter-frame or northbound cabling. Enforce 6-plane completeness via synergy_cabling_auditor.js: (1) Internal midplane (blades & Composer2 = 0 cables); (2) Frame power jumpers (P44712-B21 ships with C13-C14 cords and requires AF590A C20-C13 jumpers for C20 PDUs); (3) FLM 876852-B21 HA ring needs 0/2/3 10GbE SFP+ LINK DACs or optics for 1/2/3 frames plus 2x MGMT uplinks (e.g. 453154-B21) per ring, and never raw CAT6A without 813874-B21; (4) Ethernet 300Gb ICL needs 2x CXP28 cables per 50Gb ILM (867793-B21) for full 50Gb (0/4/8 for 1/2/3 frames) with zero LSZH/Plenum mixing; (5) Master F32 Q7/Q8 horizontal stacking requires 2x 100Gb QSFP28 cables per pair (BiDi optics forbidden in Q7/Q8), and total stacking + uplink QSFP28 endpoints must fit within 8 cages per F32; (6) Brocade FC Q2E57A/P77653-B21 ship with 4x SW optics and 0 fiber cables, requiring OM4 LC/LC or MPO breakout cables.
+   - **Affected SKU**: `867796-B21` | **Required Dependency**: `845406-B21`
 
 
 ## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
@@ -375,7 +379,7 @@ OBSERVED_CONFIGURED_CHILD_MENUS. Observed child base SKUs 876852-B21, 867796-B21
 
 
 <!-- MANAGED_FULL_CATALOG -->
-Content fingerprint: 1228e7113287709ed214b9320b18cf587d9f3ff6596165781aa38170e7af4e2b
+Content fingerprint: f815957a446bc65f6865968f79857f8109d64993209e49089535bb08a3f0ac03
 
 ## Complete workbook text projection
 

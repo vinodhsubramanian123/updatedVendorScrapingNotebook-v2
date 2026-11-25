@@ -70,5 +70,30 @@
     "family": "Synergy",
     "generation": "General",
     "pillar": "NETWORKING"
+  },
+  {
+    "deltaId": "LEARN_SY100GB_F32_ICL_STACKING_AND_CAGE_BUDGET_20261125",
+    "ruleId": "LEARN_SY100GB_F32_ICL_STACKING_AND_CAGE_BUDGET_20261125",
+    "productId": "SY100Gb_F32_Module",
+    "vendor": "HPE",
+    "family": "Synergy",
+    "generation": "General",
+    "pillar": "NETWORKING",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "affectedSku": "867796-B21",
+    "requiredDependencySku": "845406-B21",
+    "ruleType": "FABRIC_INTERCONNECT_CABLING_RULE",
+    "errorType": "SYNERGY_F32_STACKING_AND_ICL",
+    "governanceStatus": "ACTIVE",
+    "status": "VERIFIED",
+    "evidenceType": "TIER_2_QUICKSPECS_AND_TIER_3_BOM_AUDIT",
+    "provenanceSources": [
+      "HPE Virtual Connect SE 100Gb F32 Module QuickSpecs (a00067745enw V17)",
+      "UCID 5158592304-01 & UCID 5158590124-02 Synergy Gen12 BOM Audits"
+    ],
+    "ruleUpdate": "HPE VC SE 100Gb F32 Module (867796-B21) ships with 0 cables/optics and exposes 4x 300Gb CXP28 ICL ports (L1-L4) + 8x 100Gb QSFP28 ports (Q1-Q6 uplinks, Q7-Q8 stacking). Full 50Gb operation requires 2x 300Gb ICL cables per 50Gb satellite ILM (867793-B21, populated L1 then L2; 1x/ILM degrades to 25Gb); never mix LSZH (876680/876689/876692/876698-B21) and Plenum (P64635/P64638/P64641-B21) ICL jackets in one Logical Enclosure. Each redundant F32 master pair mandates 2x external 100Gb QSFP28 stacking links (Q7-Q7, Q8-Q8 via 845406-B21/845408-B21/845410-B21/845414-B21 or SR4+MPO) across 1-, 2-, and 3-frame builds; BiDi optics (845972-B21/P90358-B21/841716-B21) are prohibited in Q7/Q8. Total QSFP28 stacking + uplink endpoints must not exceed 8 cages per F32.",
+    "rawMessage": "867796-B21 F32 requires 2x 300Gb ICL per 867793-B21 ILM for 50Gb (1x=25Gb; never mix LSZH/Plenum), mandatory 2x external Q7/Q8 QSFP28 stacking cables per F32 pair across 1/2/3 frames (BiDi forbidden in Q7/Q8), and <=8 QSFP28 endpoints per F32 across Q1-Q8.",
+    "timestamp": "2026-11-25T08:10:00.000Z",
+    "chassis": "SY100Gb_F32_Module"
   }
 ]

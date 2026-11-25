@@ -1,0 +1,18 @@
+{
+  "product": "Synergy_Brocade_64Gb_FC_Module",
+  "notebookId": "7b65f53f-ad1c-449d-b37f-9a5e7962e2af",
+  "replacementSourceId": "c93e538c-a2cf-4850-a31c-79fddd3581d4",
+  "verifiedAt": "2026-11-25T08:21:58.948Z",
+  "contentFingerprints": null,
+  "legacyFingerprint": "15d8ff6d85677e58281005e67751c2f2d37933067015e2f264239673f7bb6d56",
+  "retirementRequested": false,
+  "plannedRetirementIds": [
+    "e96cc0ef-ac96-475a-a8ca-7d86f49681ad"
+  ],
+  "status": "RETIREMENT_PENDING",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [
+    "e96cc0ef-ac96-475a-a8ca-7d86f49681ad"
+  ],
+  "retirementErrors": []
+}

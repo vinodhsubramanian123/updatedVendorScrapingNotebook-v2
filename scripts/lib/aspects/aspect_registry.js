@@ -531,7 +531,8 @@ const DOMAIN_REGISTRY = {
     { id: 'SYNERGY_MEZZ_FABRIC_ALIGNMENT', name: 'Synergy Mezzanine-to-Fabric Speed & Protocol Alignment', checker: adapterSynergyCompositeAspect('SYNERGY_MEZZ_FABRIC_ALIGNMENT') },
     { id: 'SYNERGY_FLM_HA_RING', name: 'Synergy Frame Link Module HA Ring', checker: adapterSynergyCompositeAspect('SYNERGY_FLM_HA_RING') },
     { id: 'SYNERGY_SHARED_FRAME_POWER', name: 'Synergy 12000 Shared Frame N+N Power Envelope', checker: adapterSynergyCompositeAspect('SYNERGY_SHARED_FRAME_POWER') },
-    { id: 'SYNERGY_PER_ICON_SUPPORT', name: 'Synergy Per-Icon Independent Support Ownership', checker: adapterSynergyCompositeAspect('SYNERGY_PER_ICON_SUPPORT') }
+    { id: 'SYNERGY_PER_ICON_SUPPORT', name: 'Synergy Per-Icon Independent Support Ownership', checker: adapterSynergyCompositeAspect('SYNERGY_PER_ICON_SUPPORT') },
+    { id: 'SYNERGY_CABLING_AND_PORT_BUDGET', name: 'Synergy 6-Plane Cabling, Transceiver & Port Budget Audit', checker: adapterSynergyCompositeAspect('SYNERGY_CABLING_AND_PORT_BUDGET') }
   ],
   alletra_mp: [
     { id: 'ALLETRA_MP_TOPOLOGY_SEPARATION', name: 'Alletra MP Switchless/Switched Topology & JBOF Separation', checker: adapterAlletraMpAspect('ALLETRA_MP_TOPOLOGY_SEPARATION') },

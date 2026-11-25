@@ -1,8 +1,8 @@
 # HPE Knowledge Registry — Local Audit Index
 
-**Document Version**: `2.0.0` | **Generated**: `2026-11-24T15:09:45.872Z`
+**Document Version**: `2.0.0` | **Generated**: `2026-11-25T08:21:00.340Z`
 **Scope**: Local governance index. This file is not a NotebookLM source; product notebooks receive independently scoped projections.
-**Total Verified Knowledge Deltas**: `194` (`23` Universal + `0` Family/Gen + `171` Chassis Specific)
+**Total Verified Knowledge Deltas**: `198` (`23` Universal + `0` Family/Gen + `175` Chassis Specific)
 
 ---
 
@@ -916,50 +916,74 @@
 - **Rule**: HPE Virtual Connect SE 100Gb F32 Module for Synergy Support (HU4B2A3 Z1R, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog from .00 to .00 USD (+.00 / +5.04% per module).
 - **Affected SKU**: `HU4B2A3 Z1R`
 
-#### C161. [LEARN_SYNERGY_12000_FRAME_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] Synergy_12000_Frame — WORKFLOW_DUAL_PUBLICATION_ADVISORY
+#### C161. [LEARN_SY100GB_F32_ICL_STACKING_AND_CAGE_BUDGET_20261125] SY100Gb_F32_Module — FABRIC_INTERCONNECT_CABLING_RULE
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: HPE VC SE 100Gb F32 Module (867796-B21) ships with 0 cables/optics and exposes 4x 300Gb CXP28 ICL ports (L1-L4) + 8x 100Gb QSFP28 ports (Q1-Q6 uplinks, Q7-Q8 stacking). Full 50Gb operation requires 2x 300Gb ICL cables per 50Gb satellite ILM (867793-B21, populated L1 then L2; 1x/ILM degrades to 25Gb); never mix LSZH (876680/876689/876692/876698-B21) and Plenum (P64635/P64638/P64641-B21) ICL jackets in one Logical Enclosure. Each redundant F32 master pair mandates 2x external 100Gb QSFP28 stacking links (Q7-Q7, Q8-Q8 via 845406-B21/845408-B21/845410-B21/845414-B21 or SR4+MPO) across 1-, 2-, and 3-frame builds; BiDi optics (845972-B21/P90358-B21/841716-B21) are prohibited in Q7/Q8. Total QSFP28 stacking + uplink endpoints must not exceed 8 cages per F32.
+- **Affected SKU**: `867796-B21`
+- **Required Dependency**: `845406-B21`
+
+#### C162. [LEARN_SYNERGY_12000_FRAME_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] Synergy_12000_Frame — WORKFLOW_DUAL_PUBLICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.
 
-#### C162. [LEARN_SYNERGY_12000_FRAME_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] Synergy_12000_Frame — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
+#### C163. [LEARN_SYNERGY_12000_FRAME_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] Synergy_12000_Frame — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.
 
-#### C163. [LEARN_SYNERGY_12000_FRAME_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] Synergy_12000_Frame — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
+#### C164. [LEARN_SYNERGY_12000_FRAME_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] Synergy_12000_Frame — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.
 
-#### C164. [LEARN_SYNERGY_12000_DUAL_SLOT_PSU_ADAPTER_12PSU_20261124] Synergy_12000_Frame — POWER_ENVELOPE_ARCHITECTURE
+#### C165. [LEARN_SYNERGY_12000_DUAL_SLOT_PSU_ADAPTER_12PSU_20261124] Synergy_12000_Frame — POWER_ENVELOPE_ARCHITECTURE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: 6x HPE Synergy Dual Slot Power Supply Adapters (P44074-B21) expand a Synergy 12000 Frame (P51174-B21) from 6 physical PSU bays to 12x HPE 1800W-2200W Flex Slot Titanium PSUs (P44712-B21) per frame (verified across 2-frame 24-PSU UCID 5158592304-01 and 3-frame 36-PSU UCID 5158590124-02 OCA builds). Multi-frame roles are encoded inside sequential frames Synergy 12000 Frame #1/#2/#3 via 859493-B21 (Master1 FIO + Composer2 872957-B21), 859494-B22 (Master2 FIO + Composer2), and Satellite frames (no Master FIO / no Composer2).
 - **Affected SKU**: `P44074-B21`
 - **Required Dependency**: `P44712-B21`
 
-#### C165. [LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] Synergy_4Port_Frame_Link_Module — WORKFLOW_DUAL_PUBLICATION_ADVISORY
+#### C166. [LEARN_SYNERGY_6PLANE_CABLING_AND_PORT_BUDGET_20261125] Synergy_12000_Frame — COMPOSITE_CABLING_COMPLETENESS
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: HPE OCA does not validate Synergy inter-frame or northbound cabling. Enforce 6-plane completeness via synergy_cabling_auditor.js: (1) Internal midplane (blades & Composer2 = 0 cables); (2) Frame power jumpers (P44712-B21 ships with C13-C14 cords and requires AF590A C20-C13 jumpers for C20 PDUs); (3) FLM 876852-B21 HA ring needs 0/2/3 10GbE SFP+ LINK DACs or optics for 1/2/3 frames plus 2x MGMT uplinks (e.g. 453154-B21) per ring, and never raw CAT6A without 813874-B21; (4) Ethernet 300Gb ICL needs 2x CXP28 cables per 50Gb ILM (867793-B21) for full 50Gb (0/4/8 for 1/2/3 frames) with zero LSZH/Plenum mixing; (5) Master F32 Q7/Q8 horizontal stacking requires 2x 100Gb QSFP28 cables per pair (BiDi optics forbidden in Q7/Q8), and total stacking + uplink QSFP28 endpoints must fit within 8 cages per F32; (6) Brocade FC Q2E57A/P77653-B21 ship with 4x SW optics and 0 fiber cables, requiring OM4 LC/LC or MPO breakout cables.
+- **Affected SKU**: `867796-B21`
+- **Required Dependency**: `845406-B21`
+
+#### C167. [LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] Synergy_4Port_Frame_Link_Module — WORKFLOW_DUAL_PUBLICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.
 
-#### C166. [LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] Synergy_4Port_Frame_Link_Module — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
+#### C168. [LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] Synergy_4Port_Frame_Link_Module — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.
 
-#### C167. [LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] Synergy_4Port_Frame_Link_Module — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
+#### C169. [LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] Synergy_4Port_Frame_Link_Module — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.
 
-#### C168. [LEARN_SYNERGY_FLM_453154_DIVISIBILITY_ADHOC_20261124] Synergy_4Port_Frame_Link_Module — OCA_IMPORT_DIVISIBILITY_RULE
+#### C170. [LEARN_SYNERGY_FLM_453154_DIVISIBILITY_ADHOC_20261124] Synergy_4Port_Frame_Link_Module — OCA_IMPORT_DIVISIBILITY_RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: 453154-B21 (1G SFP RJ45 Transceiver, 0D1) placed inside 4-port Frame Link Module #i (876852-B21 Qty 2) requires qty(453154-B21) % qty(876852-B21) === 0 during OCA BOM import. In 3-frame UCID 5158590124-02, Frame #2 had 2x 453154-B21 under 2x 876852-B21 (ratio 1.0) and stayed factory-integrated; in 2-frame UCID 5158592304-01, 1x 453154-B21 under 2x 876852-B21 (ratio 0.5) per frame caused OCA to eject 453154-B21 into 2 extra Ad-Hoc containers (final export stripped both 453154-B21 0D1 rows and merged 1+1 -> 2 in Ad-Hoc). For 2 total 453154-B21 across 2 frames, consolidate 2x under one FLM container or place 2x 453154-B21 (without 0D1) directly in Ad-Hoc #1 for upload. Always number FLM Config Names sequentially (#1, #2, #3).
 - **Affected SKU**: `453154-B21`
 - **Required Dependency**: `876852-B21`
 
-#### C169. [LEARN_SYNERGY_BROCADE_64GB_FC_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] Synergy_Brocade_64Gb_FC_Module — WORKFLOW_DUAL_PUBLICATION_ADVISORY
+#### C171. [LEARN_SYNERGY_4PORT_FLM_RING_AND_MGMT_CABLING_20261125] Synergy_4Port_Frame_Link_Module — MANAGEMENT_RING_CABLING_RULE
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: HPE Synergy 4-Port Frame Link Module (876852-B21) exposes 4 SFP+ cages (1x LINK, 1x MGMT, 2x reserved) and ships with 0 cables or transceivers. Inter-frame HA management ring requires 0 (1-frame, internal midplane), 2 (2-frame), or 3 (3-frame) 10GbE SFP+ LINK cables (e.g. 487655-B21 3m DAC / 537963-B21 5m DAC or 455883-B21 SR + OM4). Legacy CAT6A FLM cables (861412-B21 / 861413-B21) cannot terminate directly in 876852-B21 SFP+ cages without 2x 813874-B21 10GBase-T SFP+ adapters per cable. External MGMT LAN uplinks are always 2 per entire management ring regardless of frame count (e.g. 2x 453154-B21 1G SFP RJ45, valid on MGMT ports only).
+- **Affected SKU**: `876852-B21`
+- **Required Dependency**: `487655-B21`
+
+#### C172. [LEARN_SYNERGY_BROCADE_64GB_FC_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] Synergy_Brocade_64Gb_FC_Module — WORKFLOW_DUAL_PUBLICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.
 
-#### C170. [LEARN_SYNERGY_BROCADE_64GB_FC_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] Synergy_Brocade_64Gb_FC_Module — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
+#### C173. [LEARN_SYNERGY_BROCADE_64GB_FC_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] Synergy_Brocade_64Gb_FC_Module — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.
 
-#### C171. [LEARN_SYNERGY_BROCADE_64GB_FC_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] Synergy_Brocade_64Gb_FC_Module — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
+#### C174. [LEARN_SYNERGY_BROCADE_64GB_FC_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] Synergy_Brocade_64Gb_FC_Module — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.
+
+#### C175. [LEARN_SYNERGY_BROCADE_FC_NO_STACKING_AND_FIBER_PARITY_20261125] Synergy_Brocade_64Gb_FC_Module — SAN_OPTIC_FIBER_PARITY_RULE
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: HPE Synergy Brocade FC switch modules never use inter-frame stacking cables across frames; every switch connects strictly northbound to SAN Fabric A/B via Access Gateway or Switch mode. Both P77653-B21 (64Gb, 12 internal + 12 external SFP56, 0 QSFP) and Q2E57A (32Gb/20, 12 internal + 8 external SFP28 + 2 QSFP) include 4x SW SFP transceivers in-box (R7M15A for 64Gb) and 0 fiber cables. Every active FC switch requires matching 1:1 OM4 LC/LC fiber cables (e.g. QK732A-QK737A) or MPO breakout cables (K2Q46A/K2Q47A on QSFP) covering both the 4 included-in-box optics and any added R7M15A/R7M16A or R6B12A/R6W26A expansion optics.
+- **Affected SKU**: `P77653-B21`
+- **Required Dependency**: `QK734A`

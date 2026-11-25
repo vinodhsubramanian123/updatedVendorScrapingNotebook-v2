@@ -52,12 +52,12 @@
       "UNCHANGED": 24
     },
     "cloudSyncState": "CLOUD_VERIFIED",
-    "verifiedSourceId": "e96cc0ef-ac96-475a-a8ca-7d86f49681ad",
-    "cloudVerifiedAt": "2026-11-22T09:13:44.785Z",
+    "verifiedSourceId": "c93e538c-a2cf-4850-a31c-79fddd3581d4",
+    "cloudVerifiedAt": "2026-11-25T08:21:54.511Z",
     "readbackVerified": true,
     "canaryVerified": true,
     "notebookId": "7b65f53f-ad1c-449d-b37f-9a5e7962e2af",
     "verifiedSourceName": "Synergy_Brocade_64Gb_FC_Module_OCA_Catalog_2026-11-12",
-    "payloadSha256": "8587e78924643e559dd41acc3dd429ac1e10ff7178ed96e6a99537407b5581ea"
+    "payloadSha256": "29f66ff4df0c4644f3db71bff69ccf294c2f27ec1ec650039a992f992819b735"
   }
 }

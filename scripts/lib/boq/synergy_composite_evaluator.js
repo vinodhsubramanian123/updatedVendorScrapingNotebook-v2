@@ -17,6 +17,7 @@
  */
 
 const { cleanBaseSKU } = require('../catalog/sku.js');
+const { auditSynergyCabling } = require('./synergy_cabling_auditor.js');
 
 const FRAME_SKUS = new Set(['P51174-B21', '797740-B21']);
 const HALF_HEIGHT_BLADE_SKUS = new Set(['P68217-B21', '871940-B21', '871941-B21', 'P83805-B21', 'R1R47A']);
@@ -110,7 +111,11 @@ function _tallyFlmModules(sku, desc, qty, tally) {
 function _tallyEthernetIcms(sku, desc, qty, tally) {
   if (ETH_F32_ICM_SKUS.has(sku) || (/\b(?:virtual\s*connect|interconnect)\b/i.test(desc) && /\b(?:100gb|f32|50gb)\b/i.test(desc))) {
     tally.ethIcmCount += qty;
-    tally.ethIcmMaxSpeedGb = Math.max(tally.ethIcmMaxSpeedGb, /100gb|f32/i.test(desc) || sku === '867796-B21' ? 100 : 50);
+    const isF32Master = sku === '867796-B21' || /\b(?:100gb|f32)\b/i.test(desc);
+    const is50gIlm = sku === '867793-B21' || sku === '867793-B22' || /\b50gb\s+interconnect\s+link\b/i.test(desc);
+    if (isF32Master) tally.f32MasterCount += qty;
+    else if (is50gIlm) tally.ilm50gCount += qty;
+    tally.ethIcmMaxSpeedGb = Math.max(tally.ethIcmMaxSpeedGb, isF32Master ? 100 : 50);
     return true;
   }
   if (ETH_LEGACY_ICM_SKUS.has(sku) || (/\bsynergy\b/i.test(desc) && /\b(?:40gb\s*f8|10gb\s*interconnect|20gb\s*interconnect)\b/i.test(desc))) {
@@ -125,11 +130,13 @@ function _tallyFcIcms(sku, desc, qty, tally) {
   const isBrocadeFcMod = /\bbrocade\b/i.test(desc) && /\b(?:fc|fibre\s*channel)\b/i.test(desc) && /\bmodule\b/i.test(desc);
   if (FC_64G_ICM_SKUS.has(sku) || (isBrocadeFcMod && /\b64gb\b/i.test(desc))) {
     tally.fcIcmCount += qty;
+    tally.fc64gIcmCount += qty;
     tally.fcIcmMaxSpeedGb = Math.max(tally.fcIcmMaxSpeedGb, 64);
     return true;
   }
   if (FC_32G_ICM_SKUS.has(sku) || (isBrocadeFcMod && /\b32gb\b/i.test(desc))) {
     tally.fcIcmCount += qty;
+    tally.fc32gIcmCount += qty;
     tally.fcIcmMaxSpeedGb = Math.max(tally.fcIcmMaxSpeedGb, 32);
     return true;
   }
@@ -209,8 +216,12 @@ function _tallySynergyItems(items) {
     fullHeightBladeCount: 0,
     usedComputeBays: 0,
     ethIcmCount: 0,
+    f32MasterCount: 0,
+    ilm50gCount: 0,
     ethIcmMaxSpeedGb: 0,
     fcIcmCount: 0,
+    fc64gIcmCount: 0,
+    fc32gIcmCount: 0,
     fcIcmMaxSpeedGb: 0,
     flm4PortCount: 0,
     flm2PortCount: 0,
@@ -452,13 +463,15 @@ function _buildSynergyPartsWithNullablePrices(items, catalogData) {
  */
 function evaluateSynergyComposite(items = [], catalogData = null, _targetDir = '', chassisInfo = {}, options = {}) {
   const tally = _tallySynergyItems(items);
+  const cablingAudit = auditSynergyCabling(items, tally);
   const aspectChecks = [
     _checkComputeBayContainment(tally),
     _checkIcmBayPairing(tally),
     _checkMezzanineFabricAlignment(tally),
     _checkFlmHaRing(tally),
     _checkSharedFramePower(tally),
-    _checkPerIconSupport(tally)
+    _checkPerIconSupport(tally),
+    cablingAudit.aspectCheck
   ];
 
   const errors = aspectChecks.flatMap(c => c.errors || []);
@@ -497,7 +510,7 @@ function evaluateSynergyComposite(items = [], catalogData = null, _targetDir = '
     criticalViolationsCount: errors.length,
     errors,
     warnings,
-    missingDependencies: [],
+    missingDependencies: cablingAudit.missingDependencies,
     mathDeductions: [...errors],
     aspectChecks,
     evalSummary: {
@@ -508,7 +521,8 @@ function evaluateSynergyComposite(items = [], catalogData = null, _targetDir = '
       psuCount: tally.psuCount,
       errors,
       warnings,
-      missingDependencies: [],
+      missingDependencies: cablingAudit.missingDependencies,
+      cablingAudit: cablingAudit.summary,
       aspectChecks
     },
     confidence: {
@@ -604,5 +618,6 @@ function validateOcaContainerDivisibility(rows = []) {
 module.exports = {
   isCompleteSynergyComposite,
   evaluateSynergyComposite,
-  validateOcaContainerDivisibility
+  validateOcaContainerDivisibility,
+  auditSynergyCabling
 };

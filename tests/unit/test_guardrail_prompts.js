@@ -29,6 +29,12 @@ test('Guardrail Prompt Factory & Query Sanitizer Unit Tests', async (t) => {
         buildGuardrailSystemPrompt('DL380_Gen12_SFF', 'v99');
       }, /Unknown guardrail prompt version: 'v99'/);
     });
+
+    await t2.test('buildGuardrailSystemPrompt v3 enforces Composite Cabling & Port-Budget Completeness', () => {
+      const prompt = buildGuardrailSystemPrompt('Synergy_12000_Frame');
+      assert.ok(prompt.includes('Composite Cabling & Port-Budget Completeness'));
+      assert.ok(prompt.includes('six physical planes'));
+    });
   });
 
   await t.test('2. NLP query sanitization edge cases', async (t2) => {
