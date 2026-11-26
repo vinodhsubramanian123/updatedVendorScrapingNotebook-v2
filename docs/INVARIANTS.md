@@ -1535,3 +1535,15 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - Monolithic comparison and conflict orchestrators (`solution_comparator.js`, `conflict_graph.js`, `resource_arbitrator.js`, `least_delta_combinator.js`) remain `< 800` LOC re-export facades delegating to pure helper modules (`comparator_bom_assembler.js`, `conflict_graph_rules.js`, `resource_arbitrator_remediation.js`, `least_delta/*`), enforcing `0` circular dependencies (`test:circular`), `0` dead code orphans (`test:deadcode`), `0` oxlint warnings (`lint:all`), and `CC <= 30` across all functions (`lint:complexity`).
 
 See [Catalog evidence, replay, and learning](CATALOG_EVIDENCE_AND_LEARNING.md) for verification paths.
+
+---
+
+## 19. Dashboard Modernization & Agentic Studio (`2026-11-26`)
+
+- <a id="inv-287"></a>**INV-287 · 3D Maintainability Ratchet (`CC <= 20`, `LOC <= 80`, `maxNesting <= 4`) (`2026-11-26`):**
+  - `scripts/maintenance/analyze_complexity.js --fail-on-breach --max-cc=20 --max-loc=80 --max-nesting=4 --ratchet` gates all new or edited functions on three dimensions. Legacy functions above the ceiling are frozen in `scripts/config/complexity_ratchet_baseline.json`; they may shrink, never grow (`--prune-baseline` removes improved entries).
+  - Dashboard hotspots were decomposed (`useBoqUploader.js`, `RagResultCard.jsx`, `MultiNotebookPanel.jsx`, `HardwareEnvelopeView.jsx`) instead of raising the ceiling.
+
+- <a id="inv-288"></a>**INV-288 · 3-Tier Autonomous Presales Runtime with Strict `OFFLINE_MODE` Lock (`2026-11-26`):**
+  - `dashboard/routes/agent.cjs` (`POST /api/agent/query`) routes `DETERMINISTIC` -> `GEMINI_AGENT` (`scripts/lib/rag/presales_copilot_agent.js`, six read-only tools, `reasoning_deep` tier) -> `AGY_DEEP` (`scripts/lib/rag/agy_escalation_bridge.js`, `agy --print --mode plan`) when confidence is below `0.80`.
+  - `OFFLINE_MODE` / local-only blocks every Gemini and `agy` call. Provider synthesis is displayed separately from document citations and never upgrades `PORTAL VALIDATION PENDING`.

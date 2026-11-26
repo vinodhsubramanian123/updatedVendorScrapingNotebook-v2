@@ -1125,7 +1125,14 @@ router.post('/query/route', async (req, res) => {
   let code = 1;
   try {
     const { executeRoutedQuery } = require('../../scripts/evaluators/route_query.js');
-    const result = await executeRoutedQuery(effectiveQuery, { ...context, signal: abortController.signal, runId });
+    const onProgress = ({ percent, stage, action }) => broadcastSSE({
+      type: 'PROGRESS', task: 'PRESALES_QUERY', runId, percent, currentStep: stage, stage, action
+    });
+    const onLog = (text) => broadcastSSE({
+      type: 'LOG', task: 'PRESALES_QUERY', runId, text: `🧭 [ROUTER] ${text}`, stream: 'stdout'
+    });
+    const result = await executeRoutedQuery(effectiveQuery, { ...context, signal: abortController.signal, runId, onProgress, onLog });
+    onProgress({ percent: 100, stage: 'ROUTED_COMPLETE', action: 'Presales query routing complete' });
     const cancelled = Boolean(abortController.signal.aborted || isCancellationRequested(runId) || result?.result?.status === 'CANCELLED');
     result.runId = runId;
     result.effectivePolicy = context.effectivePolicy;
@@ -1190,3 +1197,5 @@ router.post('/query/classify', (req, res) => {
 });
 
 module.exports = router;
+module.exports.resolveQueryContext = resolveQueryContext;
+module.exports._resolveRequestedRunId = _resolveRequestedRunId;

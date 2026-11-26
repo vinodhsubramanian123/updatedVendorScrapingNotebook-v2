@@ -52,6 +52,8 @@ const catalogsRouter = require('./routes/catalogs.cjs');
 const tasksRouter = require('./routes/tasks.cjs');
 const evaluationRouter = require('./routes/evaluation.cjs');
 const notebookRouter = require('./routes/notebook.cjs');
+const intelligenceRouter = require('./routes/intelligence.cjs');
+const agentRouter = require('./routes/agent.cjs');
 
 // ── GAP-2: Invalidate catalog cache cleanly via lifecycle listener ───────────
 const { invalidateCatalogCache } = catalogsRouter;
@@ -94,6 +96,8 @@ app.use('/api', catalogsRouter);
 app.use('/api', tasksRouter);
 app.use('/api', evaluationRouter);
 app.use('/api', notebookRouter);
+app.use('/api', intelligenceRouter);
+app.use('/api', agentRouter);
 
 
 // ── Health Check Endpoint ─────────────────────────────────────────────────────

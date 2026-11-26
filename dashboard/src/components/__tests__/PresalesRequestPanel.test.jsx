@@ -46,8 +46,9 @@ describe('PresalesRequestPanel presales handoff & scope preservation', () => {
 
     render(<PresalesRequestPanel localOnly={true} />);
     fireEvent.click(screen.getByRole('button', { name: 'Catalog Price Drifts' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Identify workflow' }));
-    fireEvent.click(await screen.findByRole('button', { name: 'Run workflow' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Preview route' }));
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Run query' })).toBeEnabled());
+    fireEvent.click(screen.getByRole('button', { name: 'Run query' }));
     const sku = await screen.findByText('P69727-B21');
     expect(sku.closest('tr')).toHaveTextContent('DL360_Gen12');
     expect(sku.closest('tr')).toHaveTextContent('DL380_Gen12');
@@ -55,8 +56,8 @@ describe('PresalesRequestPanel presales handoff & scope preservation', () => {
     expect(sku.closest('tr')).toHaveTextContent('$120');
     const firstRunId = api.postJson.mock.calls[1][1].runId;
     fireEvent.change(screen.getByLabelText('Requirements or presales question'), { target: { value: 'Last 3 price drifts of above' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Identify workflow' }));
-    await screen.findByRole('button', { name: 'Run workflow' });
+    fireEvent.click(screen.getByRole('button', { name: 'Preview route' }));
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Run query' })).toBeEnabled());
     expect(api.postJson.mock.calls[2][1].context.priorPriceDriftRunId).toBe(firstRunId);
   });
 
@@ -101,15 +102,15 @@ describe('PresalesRequestPanel presales handoff & scope preservation', () => {
     );
 
     fireEvent.click(screen.getByRole('button', { name: /Sizing \(4x DL380\)/i }));
-    fireEvent.click(screen.getByRole('button', { name: /Identify workflow/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Preview route/i }));
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Run workflow/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Run query/i })).toBeEnabled();
     });
 
     // Switch header product before executing — snapshotted plan product must remain intact
     rerender(<PresalesRequestPanel product={dl360} localOnly={true} onEvaluateBoq={onEvaluateBoq} />);
-    const executeBtn = screen.getByRole('button', { name: /Run workflow/i });
+    const executeBtn = screen.getByRole('button', { name: /Run query/i });
     fireEvent.click(executeBtn);
 
     await waitFor(() => {
@@ -162,9 +163,9 @@ describe('PresalesRequestPanel presales handoff & scope preservation', () => {
 
     render(<PresalesRequestPanel product={{ id: 'DL380_Gen12', chassisDir: 'outputs/ProLiant/Gen12/DL380_Gen12' }} localOnly={true} onEvaluateBoq={onEvaluateBoq} />);
     fireEvent.change(screen.getByPlaceholderText(/Size 4 nodes/i), { target: { value: 'Size 2 unknown servers with Xeon CPU' } });
-    fireEvent.click(screen.getByRole('button', { name: /Identify workflow/i }));
-    await waitFor(() => expect(screen.getByRole('button', { name: /Run workflow/i })).toBeInTheDocument());
-    fireEvent.click(screen.getByRole('button', { name: /Run workflow/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Preview route/i }));
+    await waitFor(() => expect(screen.getByRole('button', { name: /Run query/i })).toBeEnabled());
+    fireEvent.click(screen.getByRole('button', { name: /Run query/i }));
 
     await waitFor(() => expect(screen.getByRole('alert')).toBeInTheDocument());
     expect(screen.getByRole('alert')).toHaveTextContent(/Memory, Target Product Catalog/i);
@@ -215,8 +216,9 @@ describe('PresalesRequestPanel presales handoff & scope preservation', () => {
     fireEvent.change(screen.getByLabelText('Requirements or presales question'), {
       target: { value: 'List all 64 GB DDR5 DIMMs for DL360 Gen12 and sort by lead time' }
     });
-    fireEvent.click(screen.getByRole('button', { name: 'Identify workflow' }));
-    fireEvent.click(await screen.findByRole('button', { name: 'Run workflow' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Preview route' }));
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Run query' })).toBeEnabled());
+    fireEvent.click(screen.getByRole('button', { name: 'Run query' }));
 
     const view = await screen.findByTestId('catalog-search-view');
     expect(view).toHaveTextContent('P64707-B21');
@@ -224,5 +226,32 @@ describe('PresalesRequestPanel presales handoff & scope preservation', () => {
     expect(view).toHaveTextContent('1 week');
     expect(view).toHaveTextContent('Excluded unverified fields: 1');
     expect(view).toHaveTextContent('P99999-B21');
+  });
+
+  it('submits once from the keyboard and locks the execution mode to deterministic offline', async () => {
+    const classification = { intent: 'CATALOG_INTELLIGENCE' };
+    api.postJson.mockResolvedValueOnce(classification).mockResolvedValueOnce({ classification, result: { status: 'SUCCESS', message: 'Evidence returned' } });
+    render(<PresalesRequestPanel serverOffline={true} />);
+    const field = screen.getByLabelText('Requirements or presales question');
+    fireEvent.change(field, { target: { value: 'Search for P73282-B21' } });
+    fireEvent.keyDown(field, { key: 'Enter', shiftKey: true });
+    expect(api.postJson).not.toHaveBeenCalled();
+    fireEvent.keyDown(field, { key: 'Enter', ctrlKey: true });
+    fireEvent.keyDown(field, { key: 'Enter', ctrlKey: true });
+    expect(await screen.findByText('Evidence returned')).toBeInTheDocument();
+    expect(api.postJson).toHaveBeenCalledTimes(2);
+    expect(api.postJson.mock.calls[1][0]).toBe('/api/agent/query');
+    expect(api.postJson.mock.calls[1][1]).toMatchObject({ mode: 'DETERMINISTIC', context: { offline: true } });
+    expect(screen.getByLabelText('Execution mode')).toBeDisabled();
+  });
+
+  it('previews an omnibox request without executing and blocks conflicting scopes', async () => {
+    api.postJson.mockResolvedValueOnce({ intent: 'SOLUTION_COMPARISON', scope: { conflict: 'Pinned product conflicts with request' } });
+    const request = { id: 'omnibox-1', query: 'Compare servers', preview: true };
+    const { rerender } = render(<PresalesRequestPanel omniboxRequest={request} />);
+    expect(await screen.findByRole('alert')).toHaveTextContent('Pinned product conflicts');
+    rerender(<PresalesRequestPanel omniboxRequest={request} />);
+    expect(api.postJson).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole('button', { name: 'Run query' })).toBeDisabled();
   });
 });

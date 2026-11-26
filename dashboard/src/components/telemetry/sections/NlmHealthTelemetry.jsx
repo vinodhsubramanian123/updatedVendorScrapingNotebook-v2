@@ -6,9 +6,15 @@ export default function NlmHealthTelemetry({ nlmHealth, nlmMetrics }) {
 
   return (
     <div className="mb-6 p-4 rounded-xl border border-slate-200 bg-white shadow-sm">
-      <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
-        <Server className="w-4 h-4 text-blue-600" /> NotebookLM RAG Observability & Telemetry
-      </h3>
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+          <Server className="w-4 h-4 text-blue-600" /> NotebookLM RAG Observability & Telemetry
+        </h3>
+        <div className="flex items-center gap-1.5 text-[10px]">
+          <span className="badge badge-indigo">Guardrail Prompt v4</span>
+          <span className="badge badge-emerald">Multi-Notebook Coordinator</span>
+        </div>
+      </div>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
         <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-100">
           <span className="text-[10px] text-slate-400 font-semibold uppercase block">MCP CLI Health</span>

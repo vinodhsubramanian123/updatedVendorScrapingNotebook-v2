@@ -737,4 +737,6 @@ router.get('/cross-solution-sku-compare', (req, res) => {
 
 module.exports = router;
 module.exports.invalidateCatalogCache = invalidateCatalogCache;
+module.exports.getCachedCatalogs = getCachedCatalogs;
+module.exports.loadAndNormalizeCatalog = loadAndNormalizeCatalog;
 

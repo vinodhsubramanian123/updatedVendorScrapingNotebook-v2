@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShieldCheck, AlertTriangle, CheckCircle2, XCircle, X, Zap, Cpu, HardDrive, Power, Award, Layers } from 'lucide-react';
 import RuleLogicVisualizer from './RuleLogicVisualizer';
+import ClosureStatusStrip from './matrix/ClosureStatusStrip.jsx';
 
 const ASPECT_ICONS = { Cpu, HardDrive, Zap, Power, Award, Layers, ShieldCheck };
 
@@ -137,11 +138,8 @@ export default function ConflictGraphInspector({ evalResults, chassisName, selec
         </div>
       </div>
 
-      <RuleLogicVisualizer
-        selectedChassis={selectedChassis || 'Unknown Chassis'}
-        evalResults={evalResults}
-        chassisName={chassisName}
-      />
+      <ClosureStatusStrip evalResults={evalResults} />
+      <RuleLogicVisualizer selectedChassis={selectedChassis || 'Unknown Chassis'} evalResults={evalResults} chassisName={chassisName} />
 
       {showClicModal && (
         <div

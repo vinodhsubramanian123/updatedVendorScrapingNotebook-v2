@@ -59,23 +59,23 @@ const UPDATED_SKILLS = [
   'workbook-generator-skill'
 ];
 
-test('SI-09 (a): validate_skills_integrity passes across all 39 skills via module and CLI', () => {
+test('SI-09 (a): validate_skills_integrity passes across all 40 skills via module and CLI', () => {
   const report = runValidation({ strictWarnings: true, quiet: true });
-  assert.equal(report.total, 39);
+  assert.equal(report.total, 40);
   assert.equal(report.failed, 0, JSON.stringify(report.results.filter(r => r.issues.length || r.warnings.length)));
   assert.equal(report.ok, true);
 
   const scriptPath = path.join(ROOT, 'scripts/maintenance/validate_skills_integrity.js');
   const cli = spawnSync(process.execPath, [scriptPath], { cwd: ROOT, encoding: 'utf8', timeout: 20000 });
   assert.equal(cli.status, 0, cli.stderr || cli.stdout);
-  assert.match(cli.stdout, /Skills:\s*39\s*\|\s*Passed:\s*39\s*\|\s*Failed:\s*0/);
+  assert.match(cli.stdout, /Skills:\s*40\s*\|\s*Passed:\s*40\s*\|\s*Failed:\s*0/);
 });
 
-test('SI-09 (b): registry validates cleanly with 39 capabilities, zero cycles, and activation UNUSED', () => {
+test('SI-09 (b): registry validates cleanly with 40 capabilities, zero cycles, and activation UNUSED', () => {
   const validation = validateRegistry(ROOT);
   assert.equal(validation.valid, true, JSON.stringify(validation.issues));
-  assert.equal(validation.summary.capabilities, 39);
-  assert.equal(validation.summary.skillDeclarations, 39);
+  assert.equal(validation.summary.capabilities, 40);
+  assert.equal(validation.summary.skillDeclarations, 40);
   assert.equal(validation.summary.activation, 'UNUSED');
   assert.equal(registry.activation, 'UNUSED');
   assert.deepEqual(findCycles(registry.capabilities), []);

@@ -1,17 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useModalFocus } from '../hooks/useModalFocus.js';
+import React, { useState } from 'react';
 import { MessageSquare, X, Send } from 'lucide-react';
 
 export default function FeedbackModal({ isOpen, onClose, resolutionCard }) {
   const [feedback, setFeedback] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && isOpen) onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  const dialogRef = useModalFocus(isOpen, onClose);
 
   if (!isOpen || !resolutionCard) return null;
 
@@ -40,7 +35,7 @@ export default function FeedbackModal({ isOpen, onClose, resolutionCard }) {
       className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
       onClick={e => e.target === e.currentTarget && onClose()}
     >
-      <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl border border-slate-200">
+      <div ref={dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Log Vendor Portal Feedback" className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl border border-slate-200">
         <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
           <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
             <MessageSquare className="w-5 h-5 text-blue-600" />

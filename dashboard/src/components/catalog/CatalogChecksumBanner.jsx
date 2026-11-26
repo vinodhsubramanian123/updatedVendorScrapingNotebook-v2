@@ -17,7 +17,7 @@ export default function CatalogChecksumBanner({ showOnlyChanges, incrStats = {},
           <span className="text-xs font-extrabold uppercase tracking-wider text-amber-900">
             Incremental Hash-Based Checksum Comparison
           </span>
-          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+          <span className="badge badge-emerald text-[10px] font-bold">
             Active Differential Pipeline
           </span>
         </div>

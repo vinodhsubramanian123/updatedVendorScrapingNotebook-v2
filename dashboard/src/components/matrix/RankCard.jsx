@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Award, Check, Info, MessageSquare, Download, Loader, Sparkles, ShieldCheck, Copy, CheckCircle, Zap, Brain, GitFork, ChevronDown, ChevronUp, XCircle } from 'lucide-react';
 import { getCategoryStyle } from '../../utils/categoryStyles';
+import ClosureStatusStrip from './ClosureStatusStrip.jsx';
 import { formatPrice, extendedPrice } from '../../services/pricing.js';
 import { humanizeEnum } from '../../utils/formatters.js';
 import MarkdownText from '../MarkdownText.jsx';
@@ -375,16 +376,9 @@ export default function RankCard({
         </div>
 
         <AutomatedFixesList swaps={tier.swaps} />
-
+        <ClosureStatusStrip tier={tier} compact={true} />
         <RankAvailability tier={tier} />
-
-        <RankSkuPartsSection
-          tier={tier}
-          isExpanded={isExpanded}
-          onToggleExpand={onToggleExpand}
-          onCopyBom={onCopyBom}
-          isCopied={isCopied}
-        />
+        <RankSkuPartsSection tier={tier} isExpanded={isExpanded} onToggleExpand={onToggleExpand} onCopyBom={onCopyBom} isCopied={isCopied} />
 
         <div className="mt-4 pt-3 border-t border-slate-100">
           <p className="text-xs text-slate-500 leading-relaxed italic">

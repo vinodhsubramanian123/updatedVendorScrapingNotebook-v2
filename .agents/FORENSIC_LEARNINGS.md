@@ -60,3 +60,13 @@ Hard-won architectural lessons observed directly in this codebase. Consult along
 - **Circular Repair Graph Avoidance (`buildable_graph_solver.js`):** Constraint-graph closure helpers remain DAG-pure using built-in `crypto` digests and local delta application rather than importing interactive repair/ledger coordinators.
 - **Multi-Cluster Homogeneous CPU Partitioning (`compute_thermal.js`):** `_hasMixedCpuModels` distinguishes valid homogeneous multi-cluster BOQs (`qty % socketsPerNode === 0`) from invalid single-node mixed CPU populations.
 - **Negation-Guarded RAG & Cache Determinism (`eval_boq_rag_stage.js`, `notebook_query_utils.js`):** Discrepancy extraction checks claim polarity via `extractRagClaimsWithNegationGuard`, and RAG cache keys (`trusted_query_v3:...`) omit millisecond timestamps.
+
+---
+
+## 12. Dashboard Modernization Traps (`2026-11-26`)
+- **`.badge` overrides Tailwind `.hidden`:** `.badge` sets `display:inline-flex`, so `hidden xl:inline-flex` on the same element does not hide it. Put visibility utilities on a wrapper span (`Header.jsx`).
+- **`getCachedCatalogs()` `jsonPath`:** Starts with `/artifacts/...` (URL path). Resolve to `outputs/<rel>` via `_resolveCatalogFsPath` before filesystem reads.
+- **Envelope schema:** `computeCategoryBounds` emits `subCategory`/`parentCategory`, not `category`. UI must read the solver schema.
+- **Customer export gate:** `_filterCleanCandidates` needs `physicalMathClean: true` on `rank1`; E2E fixtures must set it.
+- **Graphify skill grounding:** `SKILL.md` links to code via backtick-quoted symbol calls, not markdown file links.
+- **Dark mode:** legacy Tailwind amber/rose/purple/blue/emerald tint surfaces need explicit `:root[data-theme="dark"]` overrides, including `input[type=file]::file-selector-button`.

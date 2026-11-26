@@ -1,3 +1,4 @@
+import { useModalFocus } from '../hooks/useModalFocus.js';
 import React, { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { MessageSquare, X, Send, CheckCircle2 } from 'lucide-react';
@@ -68,13 +69,7 @@ export default function UserFeedbackDrawer({ isOpen, onClose }) {
     if (isOpen) fetchQueue();
   }, [isOpen]);
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && isOpen) onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  const dialogRef = useModalFocus(isOpen, onClose);
 
   const deduplicatedQueue = useMemo(() => deduplicateFeedbackItems(queueItems), [queueItems]);
 
@@ -111,6 +106,8 @@ export default function UserFeedbackDrawer({ isOpen, onClose }) {
 
       {/* Drawer */}
       <div
+        ref={dialogRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby="feedback-drawer-title"

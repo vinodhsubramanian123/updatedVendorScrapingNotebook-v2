@@ -240,18 +240,15 @@ function validateSynergyFabrics(synergyInterconnects, synergyMezzCards) {
   return { hasSynergyFabricMismatch, synergyFabricErrors };
 }
 
-function evalNetworkingOcp(items, catalogData = null, mandatorySkus = {}, serverCount = 1) {
+function _resolveMaxOcpSlots(catalogData, mandatorySkus) {
   let maxOcpSlots = 2;
   const chassisId = String(catalogData?.metadata?.productId || catalogData?.metadata?.chassis || mandatorySkus?._chassisId || '').toLowerCase();
-  if (chassisId.includes('synergy')) {
-    maxOcpSlots = 0;
-  } else if (chassisId.includes('dl145')) {
-    maxOcpSlots = 1;
-  } else if (chassisId.includes('dl325') || chassisId.includes('dl345')) {
-    maxOcpSlots = 1;
-  }
-  if (catalogData && catalogData.entries) {
-    const ocpEntry = catalogData.entries.find(e => {
+  if (chassisId.includes('synergy')) maxOcpSlots = 0;
+  else if (chassisId.includes('dl145') || chassisId.includes('dl325') || chassisId.includes('dl345')) maxOcpSlots = 1;
+
+  const entries = catalogData?.entries;
+  if (entries) {
+    const ocpEntry = entries.find(e => {
       const sub = (e.subCategory || '').toLowerCase();
       const cat = (e.parentCategory || '').toLowerCase();
       return (sub.includes('ocp') && !cat.includes('storage')) || (!sub && cat.includes('network'));
@@ -260,10 +257,12 @@ function evalNetworkingOcp(items, catalogData = null, mandatorySkus = {}, server
       maxOcpSlots = ocpEntry.maxQty;
     }
   }
-  if (catalogData?.metadata?.ocpSlots && Number(catalogData.metadata.ocpSlots) > 0) {
-    maxOcpSlots = Number(catalogData.metadata.ocpSlots);
-  }
+  const metaSlots = Number(catalogData?.metadata?.ocpSlots);
+  return metaSlots > 0 ? metaSlots : maxOcpSlots;
+}
 
+function evalNetworkingOcp(items, catalogData = null, mandatorySkus = {}, serverCount = 1) {
+  const maxOcpSlots = _resolveMaxOcpSlots(catalogData, mandatorySkus);
   const skuCategoryMap = buildSkuCategoryMap(catalogData);
   const t = tallyNetworkingItems(items, skuCategoryMap, mandatorySkus);
 

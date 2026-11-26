@@ -1,3 +1,4 @@
+import { useModalFocus } from '../hooks/useModalFocus.js';
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { ShieldAlert, X, Check, Trash2, RefreshCw, AlertTriangle, ShieldCheck, CheckCircle2 } from 'lucide-react';
@@ -89,13 +90,7 @@ export default function QuarantineManagementDrawer({ isOpen, onClose }) {
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && isOpen) onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  const dialogRef = useModalFocus(isOpen, onClose);
 
   const handlePromote = async (delta) => {
     const ruleId = delta.id || delta.deltaId;
@@ -152,6 +147,8 @@ export default function QuarantineManagementDrawer({ isOpen, onClose }) {
       <div className="flex-1 bg-slate-900/40 backdrop-blur-sm" onClick={onClose} />
 
       <div
+        ref={dialogRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby="quarantine-drawer-title"

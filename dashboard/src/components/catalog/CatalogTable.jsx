@@ -19,7 +19,7 @@ function StatusBadgeCell({ sku, status }) {
   }
   if (sku.lifecycleStatus === 'REINSTATED') {
     return (
-      <span className="badge bg-blue-100 text-blue-700 font-bold text-[10px]" title={`Reinstated on ${sku.reinstatedDate || 'recent date'}`}>
+      <span className="badge badge-blue font-bold text-[10px]" title={`Reinstated on ${sku.reinstatedDate || 'recent date'}`}>
         Reinstated
       </span>
     );

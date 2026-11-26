@@ -304,7 +304,18 @@ const registry = {
         'tests/unit/test_si09_skills_and_registry.js',
         'tests/unit/test_si10_quality_evaluation.js',
         'tests/unit/test_skill_workflow_registry_contracts.js'
-      ] })
+      ] }),
+    capability({ capabilityId: 'enterprise-dashboard-ux-skill', kind: 'ENGINEERING', intents: [],
+      triggers: ['Building or modernizing the React dashboard shell, semantic Light/Dark tokens, omnibox, or Wave B-F agentic UI views'],
+      applicability: ['Linear + Stripe enterprise dashboard UX craft, WCAG 2.2 AA contrast, and CC <= 15 modular React decomposition; excluded from backend customer routing'],
+      vendorScope: ['NOT_APPLICABLE'], domainScope: ['ENGINEERING'], executionMode: 'LOCAL',
+      entrypoints: [
+        entry('dashboard/src/services/evalNormalizer.js', 'normalizeEvalResult'),
+        entry('dashboard/src/services/executionTimeline.js', 'reduceTimeline')
+      ],
+      completionEvidence: ['Vitest unit/component pass, Vite production build, 0 oxlint warnings, and 4-viewport Light/Dark browser verification'],
+      coverageLimits: ['Frontend UX and observability craft skill only; backend physics and Tier-3 vendor portal acceptance remain governed by evaluator contracts.'],
+      tests: ['tests/unit/test_si09_skills_and_registry.js'] })
   ],
   internalEngineeringObservations: [{
     ownerCapabilityId: 'presales-query-router', checkpoint: 'CP7b', activation: 'DEFAULT_DISABLED_PROPOSAL',

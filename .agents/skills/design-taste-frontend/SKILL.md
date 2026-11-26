@@ -5,7 +5,8 @@ description: Anti-slop frontend skill for landing pages, portfolios, and redesig
 
 # tasteskill: Anti-Slop Frontend Skill
 
-> Landing pages, portfolios, and redesigns. Not dashboards, not data tables, not multi-step product UI.
+> 💡 **For Dashboards, Data Tables, and Multi-Step Product UI:** Use [`enterprise-dashboard-ux-skill`](../enterprise-dashboard-ux-skill/SKILL.md).
+> **Workspace Routing Notice**: Landing pages, portfolios, and marketing redesigns belong here. For `dashboard/` SaaS consoles, dense data tables, Light/Dark design tokens, or multi-step agentic workflows, MUST load [`enterprise-dashboard-ux-skill`](../enterprise-dashboard-ux-skill/SKILL.md) instead.
 > Every rule below is **contextual**. None of it fires automatically. First read the brief, then pull only what fits.
 
 ## 🧭 Quick Navigation (Token-Efficient Modular Loading)

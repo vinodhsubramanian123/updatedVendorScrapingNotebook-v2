@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ClosureStatusStrip from './matrix/ClosureStatusStrip.jsx';
 import {
   GitBranch, ShieldCheck, AlertTriangle, Layers,
   Search, ChevronRight, ChevronDown, CheckCircle2,
@@ -154,10 +155,9 @@ export default function RuleLogicVisualizer({ selectedChassis, evalResults, chas
         <div>
           <div className="flex items-center gap-2">
             <GitBranch className="w-5 h-5 text-indigo-700 stroke-[2.25px]" />
-            <h2 className="text-lg font-extrabold text-slate-900 tracking-tight">
-              Scraped Catalog Rule Logic Visualizer (5-Level Hierarchy Tree)
-            </h2>
+            <h2 className="text-lg font-extrabold text-slate-900 tracking-tight">Scraped Catalog Rule Logic Visualizer (5-Level Hierarchy Tree)</h2>
           </div>
+          <ClosureStatusStrip evalResults={evalResults} compact={true} />
           <p className="text-xs text-slate-600 mt-0.5">
             Real-time tree visualization of Vendor, Chassis, Category, Subcategory, and SKU constraint rules for <span className="font-bold text-slate-800">{chassisName || selectedChassis || 'Selected Platform'}</span>
           </p>

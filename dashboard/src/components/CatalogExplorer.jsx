@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FileSpreadsheet } from 'lucide-react';
 import { catalogIndexer } from '../utils/nlpSearch';
 import PriceAnalyticsCard from './PriceAnalyticsCard';
+import CatalogEnvelopePanel from './catalog/CatalogEnvelopePanel.jsx';
 import GlobalLoadingState from './GlobalLoadingState';
 import RulesConfiguration from './RulesConfiguration';
 import { parsePrice, formatPrice } from '../services/pricing.js';
@@ -162,23 +163,19 @@ function CatalogMainView({
   catalogData,
   chassisDir,
   chassisName,
+  selectedChassis,
   displayedSkus,
   formatPrice,
   onOpenSkuAudit,
   onOpenTrend
 }) {
-  if (viewMode === 'rules') {
-    return <RulesConfiguration catalogData={catalogData} chassisDir={chassisDir} chassisName={chassisName} />;
-  }
-  if (viewMode === 'analytics') {
-    return <PriceAnalyticsCard selectedChassis={chassisName} chassisDir={chassisDir} />;
-  }
+  if (viewMode === 'envelope') return <CatalogEnvelopePanel platformId={selectedChassis || chassisDir} />;
+  if (viewMode === 'rules') return <RulesConfiguration catalogData={catalogData} chassisDir={chassisDir} chassisName={chassisName} />;
+  if (viewMode === 'analytics') return <PriceAnalyticsCard selectedChassis={chassisName} chassisDir={chassisDir} />;
   return (
     <CatalogTable
-      displayedSkus={displayedSkus}
-      formatPrice={formatPrice}
-      onOpenSkuAudit={onOpenSkuAudit}
-      onOpenTrend={onOpenTrend}
+      displayedSkus={displayedSkus} formatPrice={formatPrice}
+      onOpenSkuAudit={onOpenSkuAudit} onOpenTrend={onOpenTrend}
     />
   );
 }
@@ -398,14 +395,9 @@ export default function CatalogExplorer({
 
       <div ref={tableContainerRef} className="scroll-mt-28">
         <CatalogMainView
-          viewMode={viewMode}
-          catalogData={catalogData}
-          chassisDir={chassisDir}
-          chassisName={chassisName}
-          displayedSkus={displayedSkus}
-          formatPrice={formatCatalogPrice}
-          onOpenSkuAudit={handleOpenSkuAudit}
-          onOpenTrend={handleOpenTrend}
+          viewMode={viewMode} catalogData={catalogData} chassisDir={chassisDir} chassisName={chassisName}
+          selectedChassis={selectedChassis} displayedSkus={displayedSkus} formatPrice={formatCatalogPrice}
+          onOpenSkuAudit={handleOpenSkuAudit} onOpenTrend={handleOpenTrend}
         />
       </div>
 

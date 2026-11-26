@@ -1,6 +1,15 @@
 import React from 'react';
 import { FileSpreadsheet, GitCompare, Search, X } from 'lucide-react';
 
+const VIEW_MODE_TABS = [
+  { id: 'table', label: 'SKU Table View', activeCls: 'bg-white text-slate-800 shadow-sm' },
+  { id: 'envelope', label: 'Hardware Envelope', activeCls: 'bg-emerald-600 text-white shadow-sm' },
+  { id: 'analytics', label: 'Price Variance & History', activeCls: 'bg-blue-600 text-white shadow-sm' },
+  { id: 'services', label: 'Services & Support', activeCls: 'bg-amber-500 text-white shadow-sm' },
+  { id: 'obsolete', label: 'Lifecycle & Obsolete', activeCls: 'bg-rose-600 text-white shadow-sm' },
+  { id: 'rules', label: 'Rules Configuration', activeCls: 'bg-purple-600 text-white shadow-sm' }
+];
+
 export default function CatalogFilterBar({
   chassisName,
   allSkusCount,
@@ -36,46 +45,18 @@ export default function CatalogFilterBar({
 
         {/* View Mode Toggle */}
         <div className="flex flex-wrap items-center p-1 bg-slate-100 rounded-lg border border-slate-200 gap-0.5 self-start lg:self-auto">
-          <button
-            onClick={() => setViewMode('table')}
-            className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all cursor-pointer whitespace-nowrap ${
-              viewMode === 'table' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            SKU Table View
-          </button>
-          <button
-            onClick={() => setViewMode('analytics')}
-            className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all cursor-pointer whitespace-nowrap ${
-              viewMode === 'analytics' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            Price Variance & History
-          </button>
-          <button
-            onClick={() => setViewMode('services')}
-            className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all cursor-pointer whitespace-nowrap ${
-              viewMode === 'services' ? 'bg-amber-500 text-white shadow-sm' : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            Services & Support
-          </button>
-          <button
-            onClick={() => setViewMode('obsolete')}
-            className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all cursor-pointer whitespace-nowrap ${
-              viewMode === 'obsolete' ? 'bg-rose-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            Lifecycle & Obsolete
-          </button>
-          <button
-            onClick={() => setViewMode('rules')}
-            className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all cursor-pointer whitespace-nowrap ${
-              viewMode === 'rules' ? 'bg-purple-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            Rules Configuration
-          </button>
+          {VIEW_MODE_TABS.map(tab => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setViewMode(tab.id)}
+              className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all cursor-pointer whitespace-nowrap ${
+                viewMode === tab.id ? tab.activeCls : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
       </div>
 

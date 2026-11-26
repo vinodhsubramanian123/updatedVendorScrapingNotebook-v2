@@ -1,202 +1,143 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Cpu } from 'lucide-react';
+import React from 'react';
+import {
+  Menu, BookOpen, MessageSquare, ShieldAlert, Settings, Sun, Moon, WifiOff, RefreshCw
+} from 'lucide-react';
+import CommandOmnibox from './CommandOmnibox';
 import CdpHealthBadge from './CdpHealthBadge';
-import NotebookLmHealthBadge from './NotebookLmHealthBadge';
-import SmartSearchInput from './header/SmartSearchInput';
-import NavigationTabs from './header/NavigationTabs';
-import { formatPrice } from '../services/pricing.js';
 
-const QUESTION_WORDS = ['why', 'how', 'does', 'can', 'what', 'should', 'is', 'where', 'notebook', 'rag', 'compat', 'rule', 'explain'];
-
-function resolveSkuId(sku) {
-  return sku['Product #'] || sku.sku || sku.partNumber || sku.id || '';
-}
-
-function resolveSkuDescription(sku) {
-  return sku.Description || sku.description || sku.name || 'HPE Component';
-}
-
-function resolveSkuPrice(sku) {
-  return formatPrice(sku['Unit Price (USD)'] ?? sku['Price (USD)'] ?? sku['List Price'] ?? sku.listPriceFormatted ?? sku.listPrice);
-}
-
-function scoreCatalogSkuMatch(sku, entry, query) {
-  const skuId = resolveSkuId(sku).toLowerCase();
-  const desc = resolveSkuDescription(sku).toLowerCase();
-  const category = (entry.parentCategory || '').toLowerCase();
-  const rulesText = (entry.rules || []).join(' ').toLowerCase();
-
-  if (skuId && skuId === query) return 100;
-  if (skuId && skuId.includes(query)) return 90;
-  if (desc.includes(query)) return 80;
-  if (category.includes(query) || rulesText.includes(query)) return 70;
-  return 0;
-}
-
-function computeLocalSearchResults(searchQuery, catalogData) {
-  const query = searchQuery.trim().toLowerCase();
-  if (!query) return { skus: [], confidence: 0, isQuestion: false };
-
-  const isQuestion = query.split(/\W+/).some(word => QUESTION_WORDS.includes(word));
-  const matches = [];
-
-  if (catalogData?.entries) {
-    catalogData.entries.forEach(entry => {
-      entry.skus?.forEach(sku => {
-        const matchScore = scoreCatalogSkuMatch(sku, entry, query);
-        if (matchScore > 0) {
-          matches.push({
-            sku: resolveSkuId(sku),
-            description: resolveSkuDescription(sku),
-            price: resolveSkuPrice(sku),
-            optionType: sku.optionType || sku['Option Type'] || 'CTO Option',
-            parentCategory: entry.parentCategory || 'General',
-            matchScore
-          });
-        }
-      });
-    });
-  }
-
-  matches.sort((a, b) => b.matchScore - a.matchScore);
-  const topMatches = matches.slice(0, 5);
-  let confidence = 10;
-  if (topMatches.length > 0) {
-    confidence = isQuestion ? 45 : topMatches[0].matchScore;
-  }
-
-  return {
-    skus: topMatches,
-    totalCount: matches.length,
-    confidence,
-    isQuestion
-  };
+function HeaderUtilityButtons({
+  theme,
+  onToggleTheme,
+  localOnly,
+  onOpenRag,
+  onOpenFeedbackDrawer,
+  onOpenQuarantineDrawer,
+  onOpenSettings
+}) {
+  return (
+    <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+      {localOnly && (
+        <span className="hidden lg:inline-flex shrink-0">
+          <span className="badge badge-amber" title="Local-only execution policy active">
+            <WifiOff className="w-3 h-3" /> Local Only
+          </span>
+        </span>
+      )}
+      <div className="hidden sm:block">
+        <CdpHealthBadge />
+      </div>
+      <button
+        type="button"
+        onClick={onToggleTheme}
+        aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+        title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+        className="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 cursor-pointer"
+      >
+        {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
+      </button>
+      <button
+        type="button"
+        onClick={() => onOpenRag?.()}
+        aria-label="Open NotebookLM RAG Studio"
+        title="NotebookLM RAG Studio"
+        className="inline-flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 cursor-pointer"
+      >
+        <BookOpen className="w-3.5 h-3.5 text-blue-600" />
+        <span className="hidden sm:inline">RAG Studio</span>
+      </button>
+      <button
+        type="button"
+        onClick={onOpenFeedbackDrawer}
+        aria-label="Feedback queue"
+        title="Feedback Queue"
+        className="hidden sm:inline-flex p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 cursor-pointer"
+      >
+        <MessageSquare className="w-4 h-4" />
+      </button>
+      <button
+        type="button"
+        onClick={onOpenQuarantineDrawer}
+        aria-label="Quarantined knowledge deltas"
+        title="Quarantined Deltas"
+        className="hidden sm:inline-flex p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 cursor-pointer"
+      >
+        <ShieldAlert className="w-4 h-4" />
+      </button>
+      <button
+        type="button"
+        onClick={onOpenSettings}
+        aria-label="Settings"
+        title="Settings & Model Routing"
+        className="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 cursor-pointer"
+      >
+        <Settings className="w-4 h-4" />
+      </button>
+    </div>
+  );
 }
 
 export default function Header({
-  catalogData,
-  activeTab,
+  catalogs = [],
+  selectedChassis,
+  onSelectChassis,
+  onSelectSku,
   setActiveTab,
-  onSmartSearch,
-  onSearchLocal,
   onOpenRag,
   onOpenFeedbackDrawer,
   onOpenQuarantineDrawer,
   onOpenSettings,
   isTaskRunning,
-  isCatalogLoading = false
+  isCatalogLoading = false,
+  theme = 'light',
+  onToggleTheme,
+  onOpenMobileMenu,
+  onRunPresalesQuery,
+  onPreviewPresalesQuery,
+  localOnly = false
 }) {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const searchContainerRef = useRef(null);
-  const searchInputRef = useRef(null);
-  const slashShortcutAtRef = useRef(0);
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        setIsSearchOpen(false);
-        return;
-      }
-      if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        const tag = document.activeElement?.tagName;
-        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || document.activeElement?.isContentEditable) return;
-        e.preventDefault();
-        e.stopPropagation();
-        slashShortcutAtRef.current = Date.now();
-        searchInputRef.current?.focus();
-      }
-    };
-    const handleClickOutside = (event) => {
-      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
-        setIsSearchOpen(false);
-      }
-    };
-    document.addEventListener('keydown', handleKeyDown, true);
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown, true);
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  const localSearchResults = useMemo(
-    () => computeLocalSearchResults(searchQuery, catalogData),
-    [searchQuery, catalogData]
-  );
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    const q = searchQuery.trim();
-    if (!q) return;
-    setIsSearchOpen(false);
-    if (onSearchLocal && !localSearchResults.isQuestion && localSearchResults.skus.length > 0) {
-      onSearchLocal(q);
-    } else if (onSmartSearch) {
-      onSmartSearch(q);
-    } else if (onOpenRag) {
-      onOpenRag(q);
-    }
-  };
-
   return (
-    <header className="relative md:sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3 sm:px-5 py-2 shadow-xs space-y-1.5">
-      <div className="flex flex-wrap md:flex-nowrap items-center justify-between gap-2.5">
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-xl bg-emerald-500 text-white shadow-sm shadow-emerald-500/20 shrink-0">
-              <Cpu className="w-4 h-4" />
-            </div>
-            <div>
-              <h1 className="font-extrabold text-xs sm:text-sm text-slate-900 tracking-tight whitespace-nowrap leading-none">
-                HPE ProLiant AI Studio
-              </h1>
-            </div>
-          </div>
+    <header className="h-14 sticky top-0 z-40 surface-panel border-b border-slate-200 px-3 sm:px-5 flex items-center justify-between gap-3">
+      <div className="flex items-center gap-2 min-w-0">
+        <button
+          type="button"
+          onClick={onOpenMobileMenu}
+          aria-label="Open navigation menu"
+          className="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 cursor-pointer"
+        >
+          <Menu className="w-4 h-4" />
+        </button>
 
-        </div>
-
-        <div className="flex-1 min-w-[160px] basis-full md:basis-0 md:max-w-md order-3 md:order-2">
-          <SmartSearchInput
-            searchQuery={searchQuery}
-            setSearchQuery={(val) => {
-              if (val === '/' && Date.now() - slashShortcutAtRef.current < 250) {
-                slashShortcutAtRef.current = 0;
-                return;
-              }
-              setSearchQuery(val);
-            }}
-            isSearchOpen={isSearchOpen}
-            setIsSearchOpen={setIsSearchOpen}
-            hasCatalog={Boolean(catalogData)}
-            localSearchResults={localSearchResults}
-            onSubmitSearch={handleSearchSubmit}
-            onSelectSku={sku => {
-              setIsSearchOpen(false);
-              onSearchLocal?.(sku);
-            }}
-            onOpenRag={(q) => {
-              setIsSearchOpen(false);
-              if (onSmartSearch) {
-                onSmartSearch(q);
-              } else if (onOpenRag) {
-                onOpenRag(q);
-              }
-            }}
-            searchContainerRef={searchContainerRef}
-            searchInputRef={searchInputRef}
-          />
-        </div>
-
-        <div className="flex items-center gap-1.5 order-2 md:order-3 shrink-0">
-          <CdpHealthBadge />
-          <NotebookLmHealthBadge onOpenRag={onOpenRag} />
-        </div>
+        {selectedChassis && (
+          <span className="hidden xl:inline-flex shrink-0">
+            <span className="badge badge-emerald">
+              <span className="font-mono">{selectedChassis.replace(/_/g, ' ')}</span>
+            </span>
+          </span>
+        )}
+        {(isTaskRunning || isCatalogLoading) && (
+          <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-medium text-blue-600 shrink-0">
+            <RefreshCw className="w-3 h-3 animate-spin" />
+            <span>{isTaskRunning ? 'Running' : 'Loading'}</span>
+          </span>
+        )}
       </div>
 
-      <NavigationTabs
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
+      <CommandOmnibox
+        catalogs={catalogs}
+        selectedChassis={selectedChassis}
+        onSelectChassis={onSelectChassis}
+        onSelectSku={onSelectSku}
+        onOpenRag={onOpenRag}
+        onRunPresalesQuery={onRunPresalesQuery}
+        onPreviewPresalesQuery={onPreviewPresalesQuery}
+        onSelectTab={setActiveTab}
+      />
+
+      <HeaderUtilityButtons
+        theme={theme}
+        onToggleTheme={onToggleTheme}
+        localOnly={localOnly}
+        onOpenRag={onOpenRag}
         onOpenFeedbackDrawer={onOpenFeedbackDrawer}
         onOpenQuarantineDrawer={onOpenQuarantineDrawer}
         onOpenSettings={onOpenSettings}

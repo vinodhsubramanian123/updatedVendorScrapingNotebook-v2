@@ -316,19 +316,19 @@ async function identifySizingWorkflow(page) {
     response => response.url().endsWith('/api/query/classify') && response.request().method() === 'POST',
     { timeout: 35000 }
   );
-  await page.getByRole('button', { name: /Identify workflow/i }).click();
+  await page.getByRole('button', { name: /Preview route/i }).click();
   const classification = await classificationPending;
   const payload = await classification.json();
   assert.strictEqual(classification.status(), 200, payload.error?.message || 'Workflow classification failed');
-  await page.getByRole('button', { name: /Run workflow/i }).waitFor({ timeout: 10000 });
+  await page.getByRole('button', { name: /Run query/i }).waitFor({ timeout: 10000 });
 }
 
 async function runSizingWorkflow(page) {
   const responsePending = page.waitForResponse(
-    res => res.url().endsWith('/api/query/route') && res.request().method() === 'POST',
+    res => res.url().endsWith('/api/agent/query') && res.request().method() === 'POST',
     { timeout: 90000 }
   );
-  await page.getByRole('button', { name: /Run workflow/i }).click();
+  await page.getByRole('button', { name: /Run query/i }).click();
   const response = await responsePending;
   const result = await response.json();
   assert.strictEqual(response.status(), 200, result.error?.message || 'Sizing request failed');
@@ -401,9 +401,8 @@ function seedAuthorizedMultiNodeRun(runsDir, authSecret) {
       { sku: 'HU4B2A3', description: 'HPE 3Y Tech Care Basic Service', category: 'Services', quantity: 1, configurationMultiplier: 1, totalQuantity: 1, unitPriceUsd: 1200, quantityScope: 'global' }
     ];
     const rank1 = {
-      rank: 1,
+      rank: 1, score: 0.96, physicalMathClean: true,
       name: 'Rank 1: Intent-Preserving Solution',
-      score: 0.96,
       estimatedCostUsd: 35200,
       knownOrderSubtotalUsd: 35200,
       totalOrderCostUsd: 35200,

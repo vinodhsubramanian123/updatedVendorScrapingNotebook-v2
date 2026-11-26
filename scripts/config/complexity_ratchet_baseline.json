@@ -1,0 +1,2181 @@
+{
+  "schemaVersion": "1.0.0",
+  "thresholds": {
+    "maxCc": 20,
+    "maxLoc": 80,
+    "maxNesting": 4
+  },
+  "legacyRatchetCount": 434,
+  "entries": {
+    "scripts/lib/boq/evaluators/power_memory_support_rules.js::_evaluateItemAgainstChassisDefaults": {
+      "cc": 30,
+      "loc": 20,
+      "nesting": 1
+    },
+    "scripts/lib/boq/solution_comparator.js::_inferPlatformMeta": {
+      "cc": 30,
+      "loc": 22,
+      "nesting": 0
+    },
+    "scripts/lib/conflict/least_delta/lifecycle_replacement_engine.js::_scoreCpuAndMemoryParity": {
+      "cc": 30,
+      "loc": 28,
+      "nesting": 2
+    },
+    "scripts/lib/scraper/vendor_scraper_adapter.js::constructor#7": {
+      "cc": 30,
+      "loc": 35,
+      "nesting": 0
+    },
+    "scripts/lib/boq/boq_parser.js::extractStructuredSkuRow": {
+      "cc": 29,
+      "loc": 52,
+      "nesting": 0
+    },
+    "scripts/lib/catalog/catalog_query_engine.js::_loadSearchableRowsForCatalog": {
+      "cc": 29,
+      "loc": 61,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/classification_diagnostics.js::finalize": {
+      "cc": 29,
+      "loc": 61,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/conditional_discovery.js::_createSelectorDiscoveredRow": {
+      "cc": 29,
+      "loc": 69,
+      "nesting": 0
+    },
+    "scripts/lib/catalog/diff_catalog.js::_normalizeComparisonSku": {
+      "cc": 29,
+      "loc": 24,
+      "nesting": 0
+    },
+    "scripts/lib/conflict/least_delta/lifecycle_replacement_engine.js::_scoreGpuNetworkPsuParity": {
+      "cc": 29,
+      "loc": 32,
+      "nesting": 2
+    },
+    "scripts/lib/scraper/navigate_oca.js::_sortAndFilterEligibleCandidates": {
+      "cc": 29,
+      "loc": 31,
+      "nesting": 0
+    },
+    "scripts/lib/system/fs_compat.js::promoteStagingDirectory": {
+      "cc": 29,
+      "loc": 62,
+      "nesting": 3
+    },
+    "scripts/scrapers/scrape_oca_solution.js::resolveBaseSkuForProduct": {
+      "cc": 29,
+      "loc": 35,
+      "nesting": 4
+    },
+    "scripts/scrapers/scrape_oca_solution.js::extractPageDomPayload": {
+      "cc": 29,
+      "loc": 140,
+      "nesting": 4
+    },
+    "scripts/lib/aspects/power_environment.js::tallyChassisFormFactor": {
+      "cc": 28,
+      "loc": 36,
+      "nesting": 2
+    },
+    "scripts/lib/boq/attribute_equivalence_mapper.js::_scoreSpecialtyHardwareMatch": {
+      "cc": 28,
+      "loc": 21,
+      "nesting": 2
+    },
+    "scripts/lib/boq/evaluators/compute_storage_rules.js::_checkControllerCablesAndBatteries": {
+      "cc": 28,
+      "loc": 39,
+      "nesting": 1
+    },
+    "scripts/lib/boq/gates/portal_receipt_gates.js::_normalizeClicEvidence": {
+      "cc": 28,
+      "loc": 23,
+      "nesting": 0
+    },
+    "scripts/lib/boq/heterogeneous_tender_modernizer.js::categorizeTenderItems": {
+      "cc": 28,
+      "loc": 37,
+      "nesting": 1
+    },
+    "scripts/lib/boq/requirement_intent_resolver.js::_buildFlattenedCandidate": {
+      "cc": 28,
+      "loc": 29,
+      "nesting": 0
+    },
+    "scripts/lib/catalog/builder/table_sku_parser.js::parseSingleTableRow": {
+      "cc": 28,
+      "loc": 70,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/capture_query_replay.js::_inspectRowPricingAndLeadTime": {
+      "cc": 28,
+      "loc": 32,
+      "nesting": 4
+    },
+    "scripts/lib/catalog/cross_solution_pricing.js::compareSkuAcrossSolutions": {
+      "cc": 28,
+      "loc": 60,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/sku_versioning.js::generatePresalesLifecycleAdvisories": {
+      "cc": 28,
+      "loc": 80,
+      "nesting": 6
+    },
+    "scripts/lib/conflict/tradeoff_explainer.js::computeCandidateRunwayAndTradeOffs": {
+      "cc": 28,
+      "loc": 62,
+      "nesting": 1
+    },
+    "scripts/scrapers/parse_clic_modal.js::classifyClicRowSeverity": {
+      "cc": 28,
+      "loc": 53,
+      "nesting": 0
+    },
+    "dashboard/src/components/ArtifactInspector.jsx::ArtifactInspector": {
+      "cc": 28,
+      "loc": 203,
+      "nesting": 2
+    },
+    "dashboard/src/components/CdpHealthBadge.jsx::CdpHealthBadge": {
+      "cc": 28,
+      "loc": 137,
+      "nesting": 1
+    },
+    "dashboard/src/components/matrix/RankCard.jsx::RankCard": {
+      "cc": 28,
+      "loc": 203,
+      "nesting": 0
+    },
+    "dashboard/src/components/matrix/ValueEngineeringPanel.jsx::ValueEngineeringPanel": {
+      "cc": 28,
+      "loc": 122,
+      "nesting": 1
+    },
+    "dashboard/src/services/topologyGraphBuilder.js::detectProductFamily": {
+      "cc": 28,
+      "loc": 26,
+      "nesting": 1
+    },
+    "scripts/evaluators/eval_multi_boq.js::evaluateTargets": {
+      "cc": 27,
+      "loc": 76,
+      "nesting": 2
+    },
+    "scripts/lib/aspects/aspect_registry.js::_tallyTapeCablesAndCartridges": {
+      "cc": 27,
+      "loc": 18,
+      "nesting": 1
+    },
+    "scripts/lib/aspects/aspect_registry.js::normalizeAspectResult": {
+      "cc": 27,
+      "loc": 71,
+      "nesting": 2
+    },
+    "scripts/lib/aspects/networking_ocp.js::tallyNetworkAdaptersAndInterconnects": {
+      "cc": 27,
+      "loc": 25,
+      "nesting": 2
+    },
+    "scripts/lib/boq/bom_verifier.js::validateRfpSizingCriteria": {
+      "cc": 27,
+      "loc": 45,
+      "nesting": 1
+    },
+    "scripts/lib/boq/boq_evaluator.js::validatePowerRules": {
+      "cc": 27,
+      "loc": 44,
+      "nesting": 2
+    },
+    "scripts/lib/boq/boq_evaluator.js::evaluatePhysicalMath": {
+      "cc": 27,
+      "loc": 80,
+      "nesting": 1
+    },
+    "scripts/lib/boq/cross_vendor_transformer.js::_evaluateGpuParity": {
+      "cc": 27,
+      "loc": 62,
+      "nesting": 2
+    },
+    "scripts/lib/boq/cross_vendor_transformer.js::_evaluatePowerSupplyParity": {
+      "cc": 27,
+      "loc": 50,
+      "nesting": 2
+    },
+    "scripts/lib/boq/deal_optimizer.js::_checkHeatsinkLeadTimeRightSizing": {
+      "cc": 27,
+      "loc": 57,
+      "nesting": 3
+    },
+    "scripts/lib/boq/evaluators/aspect_summary_builders.js::_buildAspect1Compute": {
+      "cc": 27,
+      "loc": 31,
+      "nesting": 0
+    },
+    "scripts/lib/boq/evaluators/compute_storage_rules.js::validateNetworkingRules": {
+      "cc": 27,
+      "loc": 75,
+      "nesting": 1
+    },
+    "scripts/lib/boq/gates/boq_core_gates.js::_detectTargetDomain": {
+      "cc": 27,
+      "loc": 15,
+      "nesting": 0
+    },
+    "scripts/lib/boq/generate_boq_xlsx.js::_formatSummaryRow": {
+      "cc": 27,
+      "loc": 39,
+      "nesting": 2
+    },
+    "scripts/lib/boq/multi_cluster_splitter.js::isSharedInfrastructureItem": {
+      "cc": 27,
+      "loc": 17,
+      "nesting": 0
+    },
+    "scripts/lib/boq/pipeline/eval_boq_rag_stage.js::executeGroundedRagValidation": {
+      "cc": 27,
+      "loc": 82,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/builder/table_sku_parser.js::_selfHealUnclassifiedEntries": {
+      "cc": 27,
+      "loc": 39,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/builder/variant_reconciler.js::buildDiscoveredVariantRecord": {
+      "cc": 27,
+      "loc": 41,
+      "nesting": 0
+    },
+    "scripts/lib/catalog/product_metadata_manager.js::commitSuccessfulResyncMetadata": {
+      "cc": 27,
+      "loc": 84,
+      "nesting": 4
+    },
+    "scripts/lib/conflict/buildable_graph_solver.js::solveBuildableConfiguration": {
+      "cc": 27,
+      "loc": 75,
+      "nesting": 2
+    },
+    "scripts/lib/conflict/conflict_graph_rules.js::_validatePsuCategoryRules": {
+      "cc": 27,
+      "loc": 44,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/least_delta/lifecycle_replacement_engine.js::_findDirectSuccessorSku": {
+      "cc": 27,
+      "loc": 31,
+      "nesting": 4
+    },
+    "scripts/lib/conflict/ranks/supply_and_pricing.js::computeBaseParts": {
+      "cc": 27,
+      "loc": 34,
+      "nesting": 0
+    },
+    "scripts/lib/conflict/sizing/scaling_interpolator.js::_lookupX10000MediaEnvelope": {
+      "cc": 27,
+      "loc": 37,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/workload_dna.js::validateNumaMemoryTopology": {
+      "cc": 27,
+      "loc": 42,
+      "nesting": 1
+    },
+    "scripts/lib/feedback/quarantined_deltas.js::_evaluateConfidenceAndEvidence": {
+      "cc": 27,
+      "loc": 43,
+      "nesting": 2
+    },
+    "scripts/lib/scraper/dom_unavailable_rules.js::classifyDomRuleReason": {
+      "cc": 27,
+      "loc": 26,
+      "nesting": 1
+    },
+    "scripts/lib/scraper/vendor_portal_router.js::_buildCustomVendorSelectorsAndHooks": {
+      "cc": 27,
+      "loc": 29,
+      "nesting": 0
+    },
+    "scripts/lib/taxonomy/sku_resolver.js::resolveComponentByRole": {
+      "cc": 27,
+      "loc": 105,
+      "nesting": 3
+    },
+    "dashboard/src/components/CatalogExplorer.jsx::normalizeExplorerSkuItem": {
+      "cc": 27,
+      "loc": 27,
+      "nesting": 0
+    },
+    "dashboard/src/components/header/ChassisSelector.jsx::ChassisSelector": {
+      "cc": 27,
+      "loc": 101,
+      "nesting": 0
+    },
+    "dashboard/src/components/topology/BoqTopologyNodeInspector.jsx::BoqTopologyNodeInspector": {
+      "cc": 27,
+      "loc": 165,
+      "nesting": 0
+    },
+    "dashboard/src/components/VendorBomVerificationModal.jsx::VendorBomVerificationModal": {
+      "cc": 27,
+      "loc": 219,
+      "nesting": 2
+    },
+    "dashboard/src/utils/nlpSearch.js::_buildIndexedSkuDoc": {
+      "cc": 27,
+      "loc": 29,
+      "nesting": 0
+    },
+    "dashboard/services/runState.cjs::_captureEvalEvent": {
+      "cc": 27,
+      "loc": 35,
+      "nesting": 1
+    },
+    "scripts/catalogs/sync_all_registered_catalogs.js::syncAllProducts": {
+      "cc": 26,
+      "loc": 103,
+      "nesting": 5
+    },
+    "scripts/lib/adapters/hpe_adapter.js::resolveRole": {
+      "cc": 26,
+      "loc": 36,
+      "nesting": 3
+    },
+    "scripts/lib/aspects/storage_tri_mode.js::_tallyChassisBays": {
+      "cc": 26,
+      "loc": 17,
+      "nesting": 1
+    },
+    "scripts/lib/boq/bom_verifier.js::validateUniversalCriteria": {
+      "cc": 26,
+      "loc": 42,
+      "nesting": 0
+    },
+    "scripts/lib/boq/bom_verifier.js::validateBomReconciliationCriteria": {
+      "cc": 26,
+      "loc": 36,
+      "nesting": 1
+    },
+    "scripts/lib/boq/boq_evaluator.js::_resolvePortalValidationState": {
+      "cc": 26,
+      "loc": 13,
+      "nesting": 1
+    },
+    "scripts/lib/boq/boq_parser.js::_assignColumnRole": {
+      "cc": 26,
+      "loc": 37,
+      "nesting": 1
+    },
+    "scripts/lib/boq/composite_solution_validator.js::_checkTransceiverOpticalCompatibility": {
+      "cc": 26,
+      "loc": 35,
+      "nesting": 4
+    },
+    "scripts/lib/boq/cross_vendor_transformer.js::_evaluateStorageControllerParity": {
+      "cc": 26,
+      "loc": 52,
+      "nesting": 3
+    },
+    "scripts/lib/boq/cross_vendor_transformer.js::_evaluateNetworkingFabricParity": {
+      "cc": 26,
+      "loc": 41,
+      "nesting": 1
+    },
+    "scripts/lib/boq/multi_child_evaluation.js::_setupChildStreamsAndEvents": {
+      "cc": 26,
+      "loc": 54,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/builder/table_header_classifier.js::_resolveTaxonomyClassification": {
+      "cc": 26,
+      "loc": 45,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/catalog_query_engine.js::_evaluateRowCandidate": {
+      "cc": 26,
+      "loc": 57,
+      "nesting": 0
+    },
+    "scripts/lib/catalog/diff_catalog.js::_createTombstoneSku": {
+      "cc": 26,
+      "loc": 35,
+      "nesting": 0
+    },
+    "scripts/lib/catalog/diff_catalog.js::processCatalogDiff": {
+      "cc": 26,
+      "loc": 120,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/field_parsers.js::buildAvailabilityContract": {
+      "cc": 26,
+      "loc": 25,
+      "nesting": 0
+    },
+    "scripts/lib/catalog/product_scope.js::resolveProductIdentity": {
+      "cc": 26,
+      "loc": 51,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/sku.js::isValidHpeSKU": {
+      "cc": 26,
+      "loc": 52,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/cascading_impact_analyzer.js::analyzeCascadingImpact": {
+      "cc": 26,
+      "loc": 89,
+      "nesting": 3
+    },
+    "scripts/lib/conflict/catalog_rule_evaluator.js::_evaluateQuantityAndFormFactor": {
+      "cc": 26,
+      "loc": 33,
+      "nesting": 3
+    },
+    "scripts/lib/conflict/least_delta/lifecycle_replacement_engine.js::_scoreFcHbaParity": {
+      "cc": 26,
+      "loc": 15,
+      "nesting": 0
+    },
+    "scripts/lib/conflict/least_delta/lifecycle_replacement_engine.js::_collectActiveReplacementCandidates": {
+      "cc": 26,
+      "loc": 29,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/sizing/workload_profiles.js::_evalAiChecks": {
+      "cc": 26,
+      "loc": 56,
+      "nesting": 2
+    },
+    "scripts/lib/feedback/continuous_learning_verifier.js::verifyKnowledgeRuleReachability": {
+      "cc": 26,
+      "loc": 59,
+      "nesting": 2
+    },
+    "scripts/lib/lifecycle/lifecycle_engine.js::completePhase": {
+      "cc": 26,
+      "loc": 22,
+      "nesting": 1
+    },
+    "scripts/lib/notebook/knowledge_extractor.js::extractAndPersistLearnedDeltas": {
+      "cc": 26,
+      "loc": 89,
+      "nesting": 2
+    },
+    "scripts/lib/rag/agentic_guardrail.js::runAgenticGuardrail": {
+      "cc": 26,
+      "loc": 131,
+      "nesting": 2
+    },
+    "scripts/lib/router/catalog_and_clearance_handlers.js::_handleCatalogIntelligence": {
+      "cc": 26,
+      "loc": 111,
+      "nesting": 3
+    },
+    "scripts/lib/rules/hardware_envelope_solver.js::computeCategoryBounds": {
+      "cc": 26,
+      "loc": 37,
+      "nesting": 1
+    },
+    "scripts/lib/rules/hardware_envelope_solver.js::solveMemoryEnvelope": {
+      "cc": 26,
+      "loc": 43,
+      "nesting": 0
+    },
+    "scripts/lib/scraper/vendor_scraper_adapter.js::_collectEntryRules": {
+      "cc": 26,
+      "loc": 29,
+      "nesting": 3
+    },
+    "scripts/lib/sync/nlm_sync_client.js::syncToNotebookLMWithinLease": {
+      "cc": 26,
+      "loc": 162,
+      "nesting": 3
+    },
+    "scripts/lib/sync/sync_payload_builder.js::generateNotebookSyncPayload": {
+      "cc": 26,
+      "loc": 79,
+      "nesting": 3
+    },
+    "scripts/lib/system/gemini_rotator.js::executeWithSmartRotation": {
+      "cc": 26,
+      "loc": 82,
+      "nesting": 4
+    },
+    "scripts/maintenance/audit_dashboard_browser_flows.js::auditHeaderAndOrchestratorFlows": {
+      "cc": 26,
+      "loc": 143,
+      "nesting": 2
+    },
+    "scripts/maintenance/capture_skill_workflow_goldens.js::captureGoldens": {
+      "cc": 26,
+      "loc": 41,
+      "nesting": 2
+    },
+    "scripts/maintenance/restore_env.js::configureMcpServers": {
+      "cc": 26,
+      "loc": 117,
+      "nesting": 4
+    },
+    "dashboard/src/components/PresalesRequestPanel.jsx::usePresalesSnapshot": {
+      "cc": 26,
+      "loc": 68,
+      "nesting": 2
+    },
+    "dashboard/src/components/telemetry/sections/AccuracyProfilerPanel.jsx::AccuracyProfilerPanel": {
+      "cc": 26,
+      "loc": 187,
+      "nesting": 1
+    },
+    "scripts/catalogs/xlsx_to_catalog.js::_buildSkuFromRow": {
+      "cc": 25,
+      "loc": 51,
+      "nesting": 0
+    },
+    "scripts/lib/aspects/aspect_registry.js::_tallyTransceiversAndCables": {
+      "cc": 25,
+      "loc": 22,
+      "nesting": 2
+    },
+    "scripts/lib/aspects/compute_thermal.js::_extractComputeMetrics": {
+      "cc": 25,
+      "loc": 44,
+      "nesting": 3
+    },
+    "scripts/lib/aspects/compute_thermal.js::evalComputeThermal": {
+      "cc": 25,
+      "loc": 67,
+      "nesting": 0
+    },
+    "scripts/lib/aspects/networking_ocp.js::tallyTransceiversAndSanSwitches": {
+      "cc": 25,
+      "loc": 20,
+      "nesting": 2
+    },
+    "scripts/lib/aspects/storage_tri_mode.js::_isHardwareStorageController": {
+      "cc": 25,
+      "loc": 21,
+      "nesting": 0
+    },
+    "scripts/lib/boq/alletra_mp_evaluator.js::_tallyBaseAndNodes": {
+      "cc": 25,
+      "loc": 31,
+      "nesting": 1
+    },
+    "scripts/lib/boq/boq_parser.js::_processParsedLine": {
+      "cc": 25,
+      "loc": 49,
+      "nesting": 2
+    },
+    "scripts/lib/boq/budget_optimizer.js::_processItemPricing": {
+      "cc": 25,
+      "loc": 56,
+      "nesting": 2
+    },
+    "scripts/lib/boq/eval_output_serializer.js::_buildHeaderSection": {
+      "cc": 25,
+      "loc": 53,
+      "nesting": 3
+    },
+    "scripts/lib/boq/heterogeneous_tender_modernizer.js::synthesizeCarrierFleet": {
+      "cc": 25,
+      "loc": 41,
+      "nesting": 2
+    },
+    "scripts/lib/boq/multi_child_evaluation.js::_executeChildTerminationAsync": {
+      "cc": 25,
+      "loc": 61,
+      "nesting": 3
+    },
+    "scripts/lib/boq/multi_cluster_splitter.js::populateClusterCommonItem": {
+      "cc": 25,
+      "loc": 70,
+      "nesting": 1
+    },
+    "scripts/lib/boq/multi_cluster_splitter.js::analyzeAndPartitionClusters": {
+      "cc": 25,
+      "loc": 72,
+      "nesting": 1
+    },
+    "scripts/lib/boq/portal_receipt.js::verifyCurrentPortalReceipt": {
+      "cc": 25,
+      "loc": 23,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/builder/table_sku_parser.js::_extractSkusFromTable": {
+      "cc": 25,
+      "loc": 45,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/builder/variant_reconciler.js::_reconcileVariantMatrixFromCatalog": {
+      "cc": 25,
+      "loc": 19,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/conditional_discovery.js::applyConditionalDiscovery": {
+      "cc": 25,
+      "loc": 40,
+      "nesting": 4
+    },
+    "scripts/lib/catalog/portfolio_blindspots.js::_auditActiveZeroPriceSkus": {
+      "cc": 25,
+      "loc": 42,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/sku_versioning.js::compareBoqPricingAcrossTimeline": {
+      "cc": 25,
+      "loc": 78,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/conflict_graph.js::_evaluateLearnedQuantityCeiling": {
+      "cc": 25,
+      "loc": 39,
+      "nesting": 2
+    },
+    "scripts/lib/conflict/ranks/availability_and_budget_candidates.js::_resolveStrategyPortalStatus": {
+      "cc": 25,
+      "loc": 12,
+      "nesting": 0
+    },
+    "scripts/lib/conflict/sizing/scaling_interpolator.js::_parseDimmRowCandidate": {
+      "cc": 25,
+      "loc": 32,
+      "nesting": 0
+    },
+    "scripts/lib/notebook/notebook_query_utils.js::getNotebookConfigEntry": {
+      "cc": 25,
+      "loc": 42,
+      "nesting": 3
+    },
+    "scripts/lib/rag/agentic_guardrail.js::buildToolRegistry": {
+      "cc": 25,
+      "loc": 230,
+      "nesting": 2
+    },
+    "scripts/lib/rag/local_rag_search.js::searchProcessorSkusInEntry": {
+      "cc": 25,
+      "loc": 28,
+      "nesting": 4
+    },
+    "scripts/lib/scraper/navigate_oca.js::navigateToOCAChassis": {
+      "cc": 25,
+      "loc": 73,
+      "nesting": 4
+    },
+    "scripts/lib/sync/knowledge_sync.js::_resolveEnrichedDeltaScope": {
+      "cc": 25,
+      "loc": 27,
+      "nesting": 0
+    },
+    "scripts/lib/system/observed_child_process.js::spawnObservedChild": {
+      "cc": 25,
+      "loc": 101,
+      "nesting": 2
+    },
+    "scripts/maintenance/open_deliverables.js::findNewestDeliverable": {
+      "cc": 25,
+      "loc": 53,
+      "nesting": 4
+    },
+    "scripts/services/running_knowledge_sync.js::deduplicateRules": {
+      "cc": 25,
+      "loc": 40,
+      "nesting": 3
+    },
+    "dashboard/src/components/QuarantineManagementDrawer.jsx::QuarantineManagementDrawer": {
+      "cc": 25,
+      "loc": 178,
+      "nesting": 2
+    },
+    "dashboard/src/components/ResolutionMatrix.jsx::mapSolutionToTier": {
+      "cc": 25,
+      "loc": 35,
+      "nesting": 0
+    },
+    "dashboard/src/components/summary/ChassisPortfolioTable.jsx::ChassisPortfolioTable": {
+      "cc": 25,
+      "loc": 184,
+      "nesting": 0
+    },
+    "dashboard/src/components/topology/BoqTopologyCanvas.jsx::TopologyNodeGraphic": {
+      "cc": 25,
+      "loc": 134,
+      "nesting": 1
+    },
+    "scripts/lib/aspects/memory_channel.js::_buildMemoryMetrics": {
+      "cc": 24,
+      "loc": 58,
+      "nesting": 0
+    },
+    "scripts/lib/aspects/networking_ocp.js::auditOpticalLinkEndpoints": {
+      "cc": 24,
+      "loc": 60,
+      "nesting": 3
+    },
+    "scripts/lib/aspects/support_manufacturing.js::isCtoServerItem": {
+      "cc": 24,
+      "loc": 25,
+      "nesting": 2
+    },
+    "scripts/lib/boq/bom_verifier.js::_checkU1NonEmpty": {
+      "cc": 24,
+      "loc": 22,
+      "nesting": 0
+    },
+    "scripts/lib/boq/boq_evaluator.js::formatNotebookQueryPayload": {
+      "cc": 24,
+      "loc": 26,
+      "nesting": 1
+    },
+    "scripts/lib/boq/cross_vendor_transformer.js::_parseNetworkSpec": {
+      "cc": 24,
+      "loc": 25,
+      "nesting": 1
+    },
+    "scripts/lib/boq/eval_output_serializer.js::handleGoogleDriveUpload": {
+      "cc": 24,
+      "loc": 50,
+      "nesting": 3
+    },
+    "scripts/lib/boq/gates/boq_core_gates.js::_checkNotebookGrounding": {
+      "cc": 24,
+      "loc": 33,
+      "nesting": 1
+    },
+    "scripts/lib/boq/gates/portal_receipt_gates.js::_validateReceiptContent": {
+      "cc": 24,
+      "loc": 47,
+      "nesting": 2
+    },
+    "scripts/lib/boq/gates/portal_receipt_gates.js::_checkPortalReceiptIntegrity": {
+      "cc": 24,
+      "loc": 73,
+      "nesting": 2
+    },
+    "scripts/lib/boq/generate_boq_xlsx.js::_formatPortalCell": {
+      "cc": 24,
+      "loc": 23,
+      "nesting": 1
+    },
+    "scripts/lib/boq/generate_boq_xlsx.js::_buildRankItemRow": {
+      "cc": 24,
+      "loc": 27,
+      "nesting": 0
+    },
+    "scripts/lib/boq/multi_cluster_splitter.js::_detectChassisAndHardwareEnvironment": {
+      "cc": 24,
+      "loc": 45,
+      "nesting": 0
+    },
+    "scripts/lib/boq/pipeline/eval_boq_stages.js::_sortAndSyncRecommendations": {
+      "cc": 24,
+      "loc": 31,
+      "nesting": 0
+    },
+    "scripts/lib/boq/solution_evidence.js::canonicalReviewEnvelope": {
+      "cc": 24,
+      "loc": 41,
+      "nesting": 0
+    },
+    "scripts/lib/catalog/builder/catalog_exporter.js::reconcilePriceAndLifecycleHistory": {
+      "cc": 24,
+      "loc": 101,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/builder/table_header_classifier.js::classifySampleCellHeader": {
+      "cc": 24,
+      "loc": 33,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/builder/table_sku_parser.js::_extractSmartChassisCombinations": {
+      "cc": 24,
+      "loc": 39,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/builder/variant_reconciler.js::extractBaseChassisEvidence": {
+      "cc": 24,
+      "loc": 48,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/catalog_discovery.js::detectChassisVariant": {
+      "cc": 24,
+      "loc": 66,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/catalog_portfolio.js::getCatalogPortfolioCoverage": {
+      "cc": 24,
+      "loc": 46,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/checksum_diff.js::computeIncrementalDifferential": {
+      "cc": 24,
+      "loc": 128,
+      "nesting": 4
+    },
+    "scripts/lib/catalog/field_parsers.js::classifyRowType": {
+      "cc": 24,
+      "loc": 28,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/least_delta_combinator.js::_checkStorageExpanderCascade": {
+      "cc": 24,
+      "loc": 35,
+      "nesting": 0
+    },
+    "scripts/lib/conflict/ranks/availability_and_budget_candidates.js::_applyFastShipTopologyTransitions": {
+      "cc": 24,
+      "loc": 53,
+      "nesting": 2
+    },
+    "scripts/lib/conflict/ranks/candidate_revalidator.js::_applyDependencyMutationToParts": {
+      "cc": 24,
+      "loc": 38,
+      "nesting": 2
+    },
+    "scripts/lib/conflict/ranks/downgrade_and_delta_scoring.js::_checkGpuDowngrade": {
+      "cc": 24,
+      "loc": 14,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/sizing/workload_profiles.js::_evalSqlOltpChecks": {
+      "cc": 24,
+      "loc": 41,
+      "nesting": 1
+    },
+    "scripts/lib/feedback/feedback_loop.js::calculateConfidenceScore": {
+      "cc": 24,
+      "loc": 82,
+      "nesting": 2
+    },
+    "scripts/lib/feedback/quarantined_deltas.js::verifyAuthenticEvidence": {
+      "cc": 24,
+      "loc": 50,
+      "nesting": 1
+    },
+    "scripts/lib/rag/guardrail_transport.js::sendGuardrailMessage": {
+      "cc": 24,
+      "loc": 62,
+      "nesting": 4
+    },
+    "scripts/lib/router/catalog_and_clearance_handlers.js::_handleFreeformQa": {
+      "cc": 24,
+      "loc": 69,
+      "nesting": 4
+    },
+    "scripts/lib/scraper/bom_base_price.js::applyBomPricesToChassisDiscovery": {
+      "cc": 24,
+      "loc": 29,
+      "nesting": 2
+    },
+    "scripts/lib/scraper/dom_unavailable_rules.js::_parseUnavailableTableRow": {
+      "cc": 24,
+      "loc": 51,
+      "nesting": 1
+    },
+    "scripts/lib/sync/knowledge_sync.js::main": {
+      "cc": 24,
+      "loc": 77,
+      "nesting": 2
+    },
+    "scripts/lib/sync/sync_payload_builder.js::_renderRecommendedHardwareOptions": {
+      "cc": 24,
+      "loc": 33,
+      "nesting": 3
+    },
+    "scripts/lib/system/counterfactual_repair.js::generateCounterfactualRepairProofs": {
+      "cc": 24,
+      "loc": 20,
+      "nesting": 1
+    },
+    "scripts/lib/system/fs_compat.js::recoverPromotionUnderLease": {
+      "cc": 24,
+      "loc": 36,
+      "nesting": 3
+    },
+    "scripts/lib/system/telemetry_measurement.js::outcomeMeasurement": {
+      "cc": 24,
+      "loc": 17,
+      "nesting": 1
+    },
+    "scripts/maintenance/audit_dashboard_browser_flows.js::auditCatalogPipelineAndReconciliationFlows": {
+      "cc": 24,
+      "loc": 164,
+      "nesting": 3
+    },
+    "scripts/maintenance/run_test_matrix.js::discoverTests": {
+      "cc": 24,
+      "loc": 55,
+      "nesting": 2
+    },
+    "scripts/maintenance/skill_workflow/source.js::collectAstNode": {
+      "cc": 24,
+      "loc": 25,
+      "nesting": 2
+    },
+    "dashboard/src/components/AutonomousWorkflowSimulator.jsx::AutonomousWorkflowSimulator": {
+      "cc": 24,
+      "loc": 277,
+      "nesting": 1
+    },
+    "dashboard/src/components/topology/BoqTopologyModal.jsx::BoqTopologyModal": {
+      "cc": 24,
+      "loc": 227,
+      "nesting": 0
+    },
+    "dashboard/src/services/evalNormalizer.js::_detectProductDomain": {
+      "cc": 24,
+      "loc": 22,
+      "nesting": 1
+    },
+    "dashboard/src/services/evalNormalizer.js::_handleAbnormalPayload": {
+      "cc": 24,
+      "loc": 43,
+      "nesting": 1
+    },
+    "scripts/catalogs/generate_xlsx.js::_parseExcelNumericCell": {
+      "cc": 23,
+      "loc": 19,
+      "nesting": 2
+    },
+    "scripts/evaluators/route_query.js::_parseCliRouteArgs": {
+      "cc": 23,
+      "loc": 22,
+      "nesting": 2
+    },
+    "scripts/lib/aspects/aspect_registry.js::adapterSupportManufacturing": {
+      "cc": 23,
+      "loc": 20,
+      "nesting": 4
+    },
+    "scripts/lib/aspects/pcie_riser.js::calculatePcieSlots": {
+      "cc": 23,
+      "loc": 47,
+      "nesting": 0
+    },
+    "scripts/lib/aspects/storage_tri_mode.js::_tallyCageKits": {
+      "cc": 23,
+      "loc": 24,
+      "nesting": 1
+    },
+    "scripts/lib/boq/alletra_mp_evaluator.js::_checkTopologySeparation": {
+      "cc": 23,
+      "loc": 48,
+      "nesting": 2
+    },
+    "scripts/lib/boq/comparator_bom_assembler.js::extractActiveCpus": {
+      "cc": 23,
+      "loc": 22,
+      "nesting": 2
+    },
+    "scripts/lib/boq/composite_solution_validator.js::_checkRackPowerEnvelope": {
+      "cc": 23,
+      "loc": 53,
+      "nesting": 2
+    },
+    "scripts/lib/boq/evaluators/aspect_summary_builders.js::_buildAspect2Memory": {
+      "cc": 23,
+      "loc": 29,
+      "nesting": 0
+    },
+    "scripts/lib/boq/evaluators/aspect_summary_builders.js::_buildArchiveTapeEvalResult": {
+      "cc": 23,
+      "loc": 21,
+      "nesting": 0
+    },
+    "scripts/lib/boq/gates/boq_core_gates.js::_checkMandatoryComPolicy": {
+      "cc": 23,
+      "loc": 36,
+      "nesting": 1
+    },
+    "scripts/lib/boq/gates/boq_core_gates.js::_checkQuantityConservation": {
+      "cc": 23,
+      "loc": 26,
+      "nesting": 2
+    },
+    "scripts/lib/boq/multi_cluster_splitter.js::_updateHeaderColumnIndex": {
+      "cc": 23,
+      "loc": 22,
+      "nesting": 1
+    },
+    "scripts/lib/boq/multi_cluster_splitter.js::applyClusterManagementAndSupportPolicy": {
+      "cc": 23,
+      "loc": 58,
+      "nesting": 1
+    },
+    "scripts/lib/boq/pipeline/eval_boq_intake.js::parseEvaluationArguments": {
+      "cc": 23,
+      "loc": 61,
+      "nesting": 1
+    },
+    "scripts/lib/boq/quantity_conservation.js::normalizeAllocatedClusters": {
+      "cc": 23,
+      "loc": 45,
+      "nesting": 3
+    },
+    "scripts/lib/boq/runtime_discovery_plan.js::_inspectRowProbesAndGates": {
+      "cc": 23,
+      "loc": 26,
+      "nesting": 1
+    },
+    "scripts/lib/boq/runtime_discovery_plan.js::buildRuntimeDiscoveryPlan": {
+      "cc": 23,
+      "loc": 45,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/catalog_capture_receipt.js::createCaptureReceipt": {
+      "cc": 23,
+      "loc": 90,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/catalog_portfolio.js::inspectCapture": {
+      "cc": 23,
+      "loc": 31,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/catalog_query_engine.js::resolveCatalogQueryScope": {
+      "cc": 23,
+      "loc": 29,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/catalog_query_engine.js::_sortSearchResults": {
+      "cc": 23,
+      "loc": 23,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/catalog_query_engine.js::_matchDisposition": {
+      "cc": 23,
+      "loc": 21,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/catalog_rules.js::_normalizeSingleRuleEntry": {
+      "cc": 23,
+      "loc": 25,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/portfolio_blindspots.js::_auditAttributeAndCategoryFidelity": {
+      "cc": 23,
+      "loc": 56,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/product_meta.js::_classifyAccessoryOrInterconnectRole": {
+      "cc": 23,
+      "loc": 17,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/registry.js::updateScrapedRegistry": {
+      "cc": 23,
+      "loc": 84,
+      "nesting": 3
+    },
+    "scripts/lib/conflict/least_delta/catalog_alternative_finder.js::isSkuVisibleAtDefaultAmbient": {
+      "cc": 23,
+      "loc": 47,
+      "nesting": 4
+    },
+    "scripts/lib/conflict/least_delta/lifecycle_replacement_engine.js::_extractComputeAndMemoryAttrs": {
+      "cc": 23,
+      "loc": 34,
+      "nesting": 0
+    },
+    "scripts/lib/conflict/least_delta/lifecycle_replacement_engine.js::scoreActiveReplacementCandidate": {
+      "cc": 23,
+      "loc": 34,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/least_delta/lifecycle_replacement_engine.js::isActiveLifecycleCandidate": {
+      "cc": 23,
+      "loc": 15,
+      "nesting": 0
+    },
+    "scripts/lib/conflict/least_delta_combinator.js::_checkRuleGraphCascadingTroublemakers": {
+      "cc": 23,
+      "loc": 43,
+      "nesting": 3
+    },
+    "scripts/lib/conflict/ranks/availability_and_budget_candidates.js::_tryBudgetMemorySubstitution": {
+      "cc": 23,
+      "loc": 20,
+      "nesting": 3
+    },
+    "scripts/lib/conflict/ranks/downgrade_and_delta_scoring.js::_checkCpuDowngrade": {
+      "cc": 23,
+      "loc": 26,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/ranks/downgrade_and_delta_scoring.js::_scoreCandidateMetrics": {
+      "cc": 23,
+      "loc": 32,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/sizing/scaling_interpolator.js::interpolateMemoryTopology": {
+      "cc": 23,
+      "loc": 91,
+      "nesting": 2
+    },
+    "scripts/lib/conflict/strategy_synthesizer.js::synthesize5TierRankedSolutions": {
+      "cc": 23,
+      "loc": 81,
+      "nesting": 1
+    },
+    "scripts/lib/feedback/quarantined_deltas.js::_inferQuickSpecsSection": {
+      "cc": 23,
+      "loc": 35,
+      "nesting": 2
+    },
+    "scripts/lib/feedback/quarantined_deltas.js::validateKnowledgeDelta": {
+      "cc": 23,
+      "loc": 75,
+      "nesting": 1
+    },
+    "scripts/lib/notebook/query_diagnostics.js::validateGroundingCitations": {
+      "cc": 23,
+      "loc": 54,
+      "nesting": 1
+    },
+    "scripts/lib/preprocessor/variation_clusterer.js::buildConfigDiffMatrix": {
+      "cc": 23,
+      "loc": 77,
+      "nesting": 1
+    },
+    "scripts/lib/router/rfp_and_reconciliation_handlers.js::_recordRfpSizingLedger": {
+      "cc": 23,
+      "loc": 77,
+      "nesting": 2
+    },
+    "scripts/lib/router/rfp_and_reconciliation_handlers.js::_handleHeterogeneousTenderModernization": {
+      "cc": 23,
+      "loc": 72,
+      "nesting": 3
+    },
+    "scripts/lib/system/counterfactual_repair.js::catalogScope": {
+      "cc": 23,
+      "loc": 19,
+      "nesting": 2
+    },
+    "scripts/lib/system/evidence_ledger.js::getHealth": {
+      "cc": 23,
+      "loc": 25,
+      "nesting": 2
+    },
+    "scripts/lib/system/telemetry_measurement.js::validateTelemetryMeasurement": {
+      "cc": 23,
+      "loc": 16,
+      "nesting": 1
+    },
+    "scripts/maintenance/audit_dashboard_browser_flows.js::auditBoqMatrixAndTopologyFlows": {
+      "cc": 23,
+      "loc": 130,
+      "nesting": 4
+    },
+    "scripts/maintenance/run_test_matrix.js::main": {
+      "cc": 23,
+      "loc": 153,
+      "nesting": 3
+    },
+    "scripts/maintenance/sync_scraping_workflow_learnings.js::syncScrapingWorkflowLearnings": {
+      "cc": 23,
+      "loc": 60,
+      "nesting": 1
+    },
+    "dashboard/src/services/topologyGraphBuilder.js::detectTopologyBaselineGaps": {
+      "cc": 23,
+      "loc": 124,
+      "nesting": 1
+    },
+    "dashboard/src/services/workflowEvidence.js::deriveEvidenceMetrics": {
+      "cc": 23,
+      "loc": 20,
+      "nesting": 1
+    },
+    "dashboard/services/runState.cjs::captureEvent": {
+      "cc": 23,
+      "loc": 39,
+      "nesting": 3
+    },
+    "scripts/evaluators/adversarial_agent.js::evaluateAdversarialInjection": {
+      "cc": 22,
+      "loc": 36,
+      "nesting": 1
+    },
+    "scripts/evaluators/route_query.js::_dispatchIntentHandler": {
+      "cc": 22,
+      "loc": 71,
+      "nesting": 1
+    },
+    "scripts/lib/aspects/aspect_registry.js::evalArchiveColdStorage": {
+      "cc": 22,
+      "loc": 48,
+      "nesting": 1
+    },
+    "scripts/lib/aspects/power_environment.js::estimateSystemPowerWatts": {
+      "cc": 22,
+      "loc": 23,
+      "nesting": 1
+    },
+    "scripts/lib/boq/attribute_equivalence_mapper.js::_scorePowerOrServiceMatch": {
+      "cc": 22,
+      "loc": 23,
+      "nesting": 3
+    },
+    "scripts/lib/boq/attribute_equivalence_mapper.js::_mapSingleSourceItem": {
+      "cc": 22,
+      "loc": 51,
+      "nesting": 2
+    },
+    "scripts/lib/boq/comparator_bom_assembler.js::selectPsuItem": {
+      "cc": 22,
+      "loc": 21,
+      "nesting": 2
+    },
+    "scripts/lib/boq/cross_vendor_transformer.js::transformCompetitorQuote": {
+      "cc": 22,
+      "loc": 34,
+      "nesting": 2
+    },
+    "scripts/lib/boq/deal_optimizer.js::analyzeDealValueEngineering": {
+      "cc": 22,
+      "loc": 78,
+      "nesting": 3
+    },
+    "scripts/lib/boq/eval_output_serializer.js::_buildWorkloadSection": {
+      "cc": 22,
+      "loc": 38,
+      "nesting": 1
+    },
+    "scripts/lib/boq/eval_output_serializer.js::_buildProvenanceTrace": {
+      "cc": 22,
+      "loc": 44,
+      "nesting": 0
+    },
+    "scripts/lib/boq/multi_cluster_splitter.js::applyClusterEnablementKits": {
+      "cc": 22,
+      "loc": 41,
+      "nesting": 1
+    },
+    "scripts/lib/boq/pipeline/eval_boq_intake.js::ingestAndConsolidateBoq": {
+      "cc": 22,
+      "loc": 43,
+      "nesting": 1
+    },
+    "scripts/lib/boq/pipeline/eval_boq_stages.js::_revalidateAndRankCandidates": {
+      "cc": 22,
+      "loc": 54,
+      "nesting": 3
+    },
+    "scripts/lib/boq/vendor_bom_verifier.js::verifyVendorBOM": {
+      "cc": 22,
+      "loc": 88,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/builder/table_header_classifier.js::matchSubcategoryForTable": {
+      "cc": 22,
+      "loc": 47,
+      "nesting": 4
+    },
+    "scripts/lib/catalog/builder/table_header_classifier.js::_detectTableHeadersAndRules": {
+      "cc": 22,
+      "loc": 45,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/builder/table_sku_parser.js::extractDeliveryAndSupport": {
+      "cc": 22,
+      "loc": 40,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/capture_query_replay.js::_inspectDiagnosticsAndMatrixParity": {
+      "cc": 22,
+      "loc": 20,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/catalog_freshness_guard.js::_validateSkuPrice": {
+      "cc": 22,
+      "loc": 33,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/catalog_freshness_guard.js::_checkEssentialSubsystems": {
+      "cc": 22,
+      "loc": 33,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/catalog_query_engine.js::_matchesComputeAndPowerSpecs": {
+      "cc": 22,
+      "loc": 24,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/category_dependencies.js::_classifyCageItem": {
+      "cc": 22,
+      "loc": 13,
+      "nesting": 0
+    },
+    "scripts/lib/catalog/diff_catalog.js::_diffExistingSku": {
+      "cc": 22,
+      "loc": 24,
+      "nesting": 0
+    },
+    "scripts/lib/catalog/product_meta.js::parseModelAndGeneration": {
+      "cc": 22,
+      "loc": 42,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/sku.js::classifyLifecycleState": {
+      "cc": 22,
+      "loc": 32,
+      "nesting": 0
+    },
+    "scripts/lib/conflict/conflict_graph.js::_evaluateVendorBtoCtoRules": {
+      "cc": 22,
+      "loc": 62,
+      "nesting": 2
+    },
+    "scripts/lib/conflict/ranks/availability_and_budget_candidates.js::_tryBudgetStorageSubstitution": {
+      "cc": 22,
+      "loc": 27,
+      "nesting": 2
+    },
+    "scripts/lib/conflict/ranks/candidate_revalidator.js::_injectFanKitIfMissing": {
+      "cc": 22,
+      "loc": 35,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/resource_arbitrator.js::_arbitrateMemoryAspect": {
+      "cc": 22,
+      "loc": 75,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/resource_arbitrator_remediation.js::categorizeOcpAndPcieItems": {
+      "cc": 22,
+      "loc": 30,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/sizing/scaling_interpolator.js::_parseDriveRowCandidate": {
+      "cc": 22,
+      "loc": 31,
+      "nesting": 0
+    },
+    "scripts/lib/conflict/sizing/scaling_interpolator.js::computeHaClusterScalingCurve": {
+      "cc": 22,
+      "loc": 58,
+      "nesting": 1
+    },
+    "scripts/lib/contracts/workflow_contract.js::verifyDeliveryAuthorization": {
+      "cc": 22,
+      "loc": 48,
+      "nesting": 1
+    },
+    "scripts/lib/feedback/instruction_promoter.js::promoteLearnedInstructions": {
+      "cc": 22,
+      "loc": 94,
+      "nesting": 3
+    },
+    "scripts/lib/feedback/quarantined_deltas.js::verifyOcaSessionReceipt": {
+      "cc": 22,
+      "loc": 81,
+      "nesting": 1
+    },
+    "scripts/lib/scraper/ambient_row_probe.js::probeAmbientRows": {
+      "cc": 22,
+      "loc": 69,
+      "nesting": 3
+    },
+    "scripts/lib/scraper/cdp.js::getOCATarget": {
+      "cc": 22,
+      "loc": 50,
+      "nesting": 2
+    },
+    "scripts/lib/scraper/navigate_oca.js::waitForAuthenticatedPartnerTarget": {
+      "cc": 22,
+      "loc": 61,
+      "nesting": 3
+    },
+    "scripts/lib/scraper/scraping_preflight_gate.js::_buildDiffMarkdownHeaderLines": {
+      "cc": 22,
+      "loc": 22,
+      "nesting": 0
+    },
+    "scripts/lib/sync/nlm_solution_source_validator.js::resolveProductNotebookId": {
+      "cc": 22,
+      "loc": 47,
+      "nesting": 4
+    },
+    "scripts/lib/sync/nlm_solution_source_validator.js::getProductNotebookResolution": {
+      "cc": 22,
+      "loc": 46,
+      "nesting": 4
+    },
+    "scripts/lib/sync/nlm_sync_client.js::retireStaleNotebookSources": {
+      "cc": 22,
+      "loc": 77,
+      "nesting": 2
+    },
+    "scripts/lib/sync/quickspecs_sync.js::verifyNotebookQuickSpecs": {
+      "cc": 22,
+      "loc": 74,
+      "nesting": 2
+    },
+    "scripts/lib/sync/semantic_workbook_projection.js::projectWorkbookToMarkdown": {
+      "cc": 22,
+      "loc": 56,
+      "nesting": 2
+    },
+    "scripts/lib/sync/sync_payload_builder.js::_inspectSkuLeadTime": {
+      "cc": 22,
+      "loc": 23,
+      "nesting": 2
+    },
+    "scripts/maintenance/check_nlm_auth.js::checkAuthHealth": {
+      "cc": 22,
+      "loc": 79,
+      "nesting": 4
+    },
+    "scripts/maintenance/create_migration_bundle.js::main": {
+      "cc": 22,
+      "loc": 150,
+      "nesting": 4
+    },
+    "scripts/maintenance/skill_workflow/markdown.js::resolveLink": {
+      "cc": 22,
+      "loc": 29,
+      "nesting": 2
+    },
+    "scripts/services/google_sheets_service.js::createGoogleSheet": {
+      "cc": 22,
+      "loc": 101,
+      "nesting": 3
+    },
+    "scripts/services/mcp_server.js::_summarizePriceHistoryFile": {
+      "cc": 22,
+      "loc": 30,
+      "nesting": 2
+    },
+    "scripts/services/running_knowledge_sync.js::inferRuleType": {
+      "cc": 22,
+      "loc": 11,
+      "nesting": 0
+    },
+    "dashboard/src/utils/categoryStyles.js::getCategoryStyle": {
+      "cc": 22,
+      "loc": 10,
+      "nesting": 0
+    },
+    "scripts/evaluators/eval_boq.js::_assignDeliverablesScope": {
+      "cc": 21,
+      "loc": 13,
+      "nesting": 0
+    },
+    "scripts/lib/aspects/memory_channel.js::_processMemoryLine": {
+      "cc": 21,
+      "loc": 42,
+      "nesting": 1
+    },
+    "scripts/lib/aspects/pcie_riser.js::tallyPcieCablesAndGpus": {
+      "cc": 21,
+      "loc": 27,
+      "nesting": 1
+    },
+    "scripts/lib/aspects/storage_tri_mode.js::tallyAlletraStorage": {
+      "cc": 21,
+      "loc": 10,
+      "nesting": 0
+    },
+    "scripts/lib/boq/alletra_mp_evaluator.js::_checkDriveMediaEnvelope": {
+      "cc": 21,
+      "loc": 53,
+      "nesting": 2
+    },
+    "scripts/lib/boq/alletra_mp_evaluator.js::_buildAlletraPartsWithNullablePrices": {
+      "cc": 21,
+      "loc": 27,
+      "nesting": 2
+    },
+    "scripts/lib/boq/bundle_composition.js::evaluateBundleComposition": {
+      "cc": 21,
+      "loc": 39,
+      "nesting": 3
+    },
+    "scripts/lib/boq/cross_vendor_transformer.js::audit12PointPhysicalParity": {
+      "cc": 21,
+      "loc": 58,
+      "nesting": 1
+    },
+    "scripts/lib/boq/deal_optimizer.js::_checkGeneralAvailabilityLeadTimeOpportunities": {
+      "cc": 21,
+      "loc": 41,
+      "nesting": 1
+    },
+    "scripts/lib/boq/evaluators/power_memory_support_rules.js::validateBaseChassisRules": {
+      "cc": 21,
+      "loc": 16,
+      "nesting": 1
+    },
+    "scripts/lib/boq/eval_output_serializer.js::_buildValueEngineeringSection": {
+      "cc": 21,
+      "loc": 25,
+      "nesting": 1
+    },
+    "scripts/lib/boq/eval_output_serializer.js::_completeLedgerPhase9": {
+      "cc": 21,
+      "loc": 26,
+      "nesting": 1
+    },
+    "scripts/lib/boq/multi_cluster_splitter.js::solveDiophantineMultiCluster": {
+      "cc": 21,
+      "loc": 45,
+      "nesting": 2
+    },
+    "scripts/lib/boq/pipeline/eval_boq_rag_stage.js::_evaluateGuardrailIteration": {
+      "cc": 21,
+      "loc": 37,
+      "nesting": 1
+    },
+    "scripts/lib/boq/pipeline/eval_boq_rag_stage.js::runBoqRagGroundingPhase": {
+      "cc": 21,
+      "loc": 69,
+      "nesting": 1
+    },
+    "scripts/lib/boq/pipeline/eval_boq_recompute.js::_resolveRecomputeScopeFields": {
+      "cc": 21,
+      "loc": 15,
+      "nesting": 0
+    },
+    "scripts/lib/boq/synergy_composite_evaluator.js::_buildSynergyPartsWithNullablePrices": {
+      "cc": 21,
+      "loc": 26,
+      "nesting": 2
+    },
+    "scripts/lib/boq/vendor_bom_verifier.js::_parseCliArgs": {
+      "cc": 21,
+      "loc": 33,
+      "nesting": 2
+    },
+    "scripts/lib/boq/vendor_bom_verifier.js::_handleNonHpeVendorFlow": {
+      "cc": 21,
+      "loc": 44,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/builder/taxonomy_and_intake.js::lookupChassisMapBaseSku": {
+      "cc": 21,
+      "loc": 31,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/builder/taxonomy_and_intake.js::detectChassisFormFactor": {
+      "cc": 21,
+      "loc": 16,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/builder/taxonomy_and_intake.js::extractSubcategoriesAndParents": {
+      "cc": 21,
+      "loc": 75,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/builder/variant_reconciler.js::buildCatalogObject": {
+      "cc": 21,
+      "loc": 42,
+      "nesting": 0
+    },
+    "scripts/lib/catalog/catalog_discovery.js::_ingestConfiguredChassisSections": {
+      "cc": 21,
+      "loc": 34,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/catalog_price_drifts.js::componentCategory": {
+      "cc": 21,
+      "loc": 26,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/conditional_discovery.js::_createConditionalRow": {
+      "cc": 21,
+      "loc": 57,
+      "nesting": 0
+    },
+    "scripts/lib/catalog/diff_catalog.js::buildTrailString": {
+      "cc": 21,
+      "loc": 30,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/diff_catalog.js::recordAttributeDeltas": {
+      "cc": 21,
+      "loc": 33,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/field_parsers.js::parseLeadTimeOrEta": {
+      "cc": 21,
+      "loc": 44,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/product_scope.js::isVerifiedSharedAccessoryRule": {
+      "cc": 21,
+      "loc": 18,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/product_scope.js::ruleAppliesToProduct": {
+      "cc": 21,
+      "loc": 23,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/conflict_graph_rules.js::_validateSupportCategoryRules": {
+      "cc": 21,
+      "loc": 45,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/least_delta/lifecycle_replacement_engine.js::findActiveLifecycleReplacement": {
+      "cc": 21,
+      "loc": 25,
+      "nesting": 1
+    },
+    "scripts/lib/conflict/sizing/scaling_interpolator.js::computeNormalizedEfficiencyMetrics": {
+      "cc": 21,
+      "loc": 22,
+      "nesting": 0
+    },
+    "scripts/lib/feedback/feedback_loop.js::processPortalFeedback": {
+      "cc": 21,
+      "loc": 52,
+      "nesting": 1
+    },
+    "scripts/lib/notebook/notebook_query_utils.js::_dispatchQueryChild": {
+      "cc": 21,
+      "loc": 48,
+      "nesting": 2
+    },
+    "scripts/lib/rules/hardware_envelope_solver.js::_buildPcieSlotScenarios": {
+      "cc": 21,
+      "loc": 94,
+      "nesting": 1
+    },
+    "scripts/lib/scraper/vendor_portal_router.js::resolvePortalSessionPolicy": {
+      "cc": 21,
+      "loc": 39,
+      "nesting": 2
+    },
+    "scripts/lib/sync/knowledge_sync.js::_mergeSingleDelta": {
+      "cc": 21,
+      "loc": 29,
+      "nesting": 2
+    },
+    "scripts/lib/sync/nlm_sync_client.js::isTargetDriveSourceFresh": {
+      "cc": 21,
+      "loc": 34,
+      "nesting": 4
+    },
+    "scripts/lib/system/profile_loader.js::loadProfile": {
+      "cc": 21,
+      "loc": 68,
+      "nesting": 4
+    },
+    "scripts/lib/system/telemetry.js::getTelemetrySummary": {
+      "cc": 21,
+      "loc": 27,
+      "nesting": 0
+    },
+    "scripts/lib/taxonomy/sku_resolver.js::_computeCandidateScore": {
+      "cc": 21,
+      "loc": 24,
+      "nesting": 2
+    },
+    "scripts/maintenance/create_skill_workflow_isolation.js::executeSnapshot": {
+      "cc": 21,
+      "loc": 45,
+      "nesting": 1
+    },
+    "scripts/maintenance/skill_workflow/golden_current_execution.js::validateRfpDecisionHistory": {
+      "cc": 21,
+      "loc": 21,
+      "nesting": 0
+    },
+    "scripts/maintenance/skill_workflow/golden_current_execution.js::quarantineProjection": {
+      "cc": 21,
+      "loc": 32,
+      "nesting": 1
+    },
+    "dashboard/src/components/MacroOrchestratorFlow.jsx::MacroOrchestratorFlow": {
+      "cc": 21,
+      "loc": 131,
+      "nesting": 1
+    },
+    "dashboard/src/services/topologyGraphBuilder.js::buildTopologyGraph": {
+      "cc": 21,
+      "loc": 108,
+      "nesting": 1
+    },
+    "dashboard/src/services/workflowEvidence.js::finalStageStatus": {
+      "cc": 21,
+      "loc": 18,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/builder/variant_reconciler.js::loadHistoricalChassisEvidence": {
+      "cc": 20,
+      "loc": 26,
+      "nesting": 5
+    },
+    "scripts/lib/catalog/product_metadata_manager.js::getProductGenerationMetadata": {
+      "cc": 20,
+      "loc": 87,
+      "nesting": 2
+    },
+    "scripts/lib/ocr/ocr_service.js::performGeminiOcr": {
+      "cc": 20,
+      "loc": 141,
+      "nesting": 1
+    },
+    "scripts/services/google_sheets_service.js::checkGoogleAuth": {
+      "cc": 20,
+      "loc": 98,
+      "nesting": 6
+    },
+    "dashboard/src/components/CatalogOverviewCard.jsx::CatalogOverviewCard": {
+      "cc": 20,
+      "loc": 146,
+      "nesting": 2
+    },
+    "dashboard/src/components/matrix/MatrixComparisonTable.jsx::MatrixComparisonTable": {
+      "cc": 20,
+      "loc": 113,
+      "nesting": 0
+    },
+    "dashboard/src/components/uploader/BoqInputZone.jsx::BoqInputZone": {
+      "cc": 20,
+      "loc": 148,
+      "nesting": 1
+    },
+    "scripts/lib/boq/pricing_presence.js::summarizeCandidatePricing": {
+      "cc": 19,
+      "loc": 50,
+      "nesting": 5
+    },
+    "scripts/lib/catalog/builder/catalog_exporter.js::resolveConditionalRawData": {
+      "cc": 19,
+      "loc": 23,
+      "nesting": 5
+    },
+    "scripts/lib/sync/nlm_sync_client.js::_commitCandidateActivation": {
+      "cc": 19,
+      "loc": 90,
+      "nesting": 3
+    },
+    "scripts/lib/system/child_termination.js::_createTerminationRunner": {
+      "cc": 19,
+      "loc": 102,
+      "nesting": 2
+    },
+    "scripts/maintenance/verify_graph_integrity.js::verifyGraphIntegrity": {
+      "cc": 19,
+      "loc": 86,
+      "nesting": 2
+    },
+    "scripts/services/autonomous_oauth_flow.js::startOAuthFlow": {
+      "cc": 19,
+      "loc": 114,
+      "nesting": 3
+    },
+    "dashboard/routes/catalogs.cjs::loadAndNormalizeCatalog": {
+      "cc": 19,
+      "loc": 55,
+      "nesting": 6
+    },
+    "scripts/lib/boq/eval_output_serializer.js::serializeAndExportResults": {
+      "cc": 18,
+      "loc": 81,
+      "nesting": 1
+    },
+    "dashboard/src/components/ChassisSyncSummaryView.jsx::ChassisSyncSummaryView": {
+      "cc": 18,
+      "loc": 106,
+      "nesting": 2
+    },
+    "dashboard/src/components/RuleLogicVisualizer.jsx::RuleLogicVisualizer": {
+      "cc": 18,
+      "loc": 178,
+      "nesting": 1
+    },
+    "dashboard/src/components/ScraperTriggerCard.jsx::LiveScrapeControlCard": {
+      "cc": 18,
+      "loc": 95,
+      "nesting": 1
+    },
+    "dashboard/src/components/WorkloadDnaCard.jsx::WorkloadDnaCard": {
+      "cc": 18,
+      "loc": 91,
+      "nesting": 1
+    },
+    "scripts/lib/aspects/networking_ocp.js::validateSynergyFabrics": {
+      "cc": 17,
+      "loc": 33,
+      "nesting": 5
+    },
+    "scripts/lib/boq/multi_child_evaluation.js::executeGroupChild": {
+      "cc": 17,
+      "loc": 100,
+      "nesting": 3
+    },
+    "scripts/maintenance/guardrail_health_check.js::runHealthHeartbeat": {
+      "cc": 17,
+      "loc": 92,
+      "nesting": 2
+    },
+    "scripts/scrapers/scrape_oca_solution.js::auditAndPromoteStaging": {
+      "cc": 17,
+      "loc": 132,
+      "nesting": 1
+    },
+    "dashboard/src/components/PartnerReconciliationView.jsx::ReconciliationReportPanel": {
+      "cc": 17,
+      "loc": 152,
+      "nesting": 1
+    },
+    "dashboard/src/components/PartnerReconciliationView.jsx::PartnerReconciliationView": {
+      "cc": 17,
+      "loc": 170,
+      "nesting": 2
+    },
+    "dashboard/src/components/VendorScraperProgress.jsx::VendorScraperProgress": {
+      "cc": 17,
+      "loc": 118,
+      "nesting": 1
+    },
+    "scripts/evaluators/eval_boq.js::executeContinuousLearningReflection": {
+      "cc": 16,
+      "loc": 49,
+      "nesting": 5
+    },
+    "scripts/lib/catalog/builder/catalog_exporter.js::exportCatalogArtifacts": {
+      "cc": 16,
+      "loc": 113,
+      "nesting": 1
+    },
+    "scripts/lib/catalog/builder/table_sku_parser.js::synthesizeCatalogEntries": {
+      "cc": 16,
+      "loc": 100,
+      "nesting": 2
+    },
+    "scripts/lib/catalog/builder/taxonomy_and_intake.js::loadPortfolioPriceBackfill": {
+      "cc": 16,
+      "loc": 32,
+      "nesting": 6
+    },
+    "scripts/lib/catalog/diff_catalog.js::resolvePreviousCatalogAndSkus": {
+      "cc": 16,
+      "loc": 46,
+      "nesting": 5
+    },
+    "scripts/lib/sync/post_flow_sync.js::triggerPostFlowSync": {
+      "cc": 16,
+      "loc": 84,
+      "nesting": 3
+    },
+    "scripts/services/jules_task_manager.js::autoUnblockSessions": {
+      "cc": 16,
+      "loc": 39,
+      "nesting": 5
+    },
+    "dashboard/src/components/ResolutionMatrix.jsx::ResolutionMatrix": {
+      "cc": 16,
+      "loc": 178,
+      "nesting": 2
+    },
+    "dashboard/src/hooks/useWorkspaceRuns.js::useProgressStream": {
+      "cc": 16,
+      "loc": 111,
+      "nesting": 1
+    },
+    "scripts/lib/boq/eval_output_serializer.js::_exportStagedDeliverables": {
+      "cc": 15,
+      "loc": 83,
+      "nesting": 4
+    },
+    "scripts/lib/conflict/resource_arbitrator.js::_arbitratePcieAspect": {
+      "cc": 15,
+      "loc": 92,
+      "nesting": 1
+    },
+    "dashboard/src/components/ConflictGraphInspector.jsx::ConflictGraphInspector": {
+      "cc": 15,
+      "loc": 101,
+      "nesting": 1
+    },
+    "scripts/catalogs/reconcile_quickspecs_oca.js::reconcileProductCatalog": {
+      "cc": 14,
+      "loc": 98,
+      "nesting": 2
+    },
+    "scripts/lib/boq/boq_preprocessor.js::_resolveNotebookDegradedMode": {
+      "cc": 14,
+      "loc": 30,
+      "nesting": 5
+    },
+    "scripts/lib/catalog/catalog_discovery.js::collectKnowledgeDeltas": {
+      "cc": 14,
+      "loc": 31,
+      "nesting": 6
+    },
+    "scripts/lib/conflict/conflict_graph.js::validateConflictGraph": {
+      "cc": 14,
+      "loc": 123,
+      "nesting": 2
+    },
+    "scripts/maintenance/test_dashboard_browser_e2e.js::verifyOrder2Exports": {
+      "cc": 14,
+      "loc": 111,
+      "nesting": 1
+    },
+    "dashboard/src/components/AmbiguityInbox.jsx::AmbiguityDecisionForm": {
+      "cc": 14,
+      "loc": 152,
+      "nesting": 1
+    },
+    "dashboard/src/components/AutonomousWorkflowSimulator.jsx::SimulatorPlaybackControls": {
+      "cc": 14,
+      "loc": 107,
+      "nesting": 0
+    },
+    "dashboard/src/components/RulesConfiguration.jsx::RulesConfiguration": {
+      "cc": 14,
+      "loc": 232,
+      "nesting": 1
+    },
+    "scripts/lib/boq/heterogeneous_tender_modernizer.js::_buildStorageEnablementItems": {
+      "cc": 13,
+      "loc": 102,
+      "nesting": 1
+    },
+    "scripts/lib/boq/heterogeneous_tender_modernizer.js::_allocateStoragePools": {
+      "cc": 13,
+      "loc": 95,
+      "nesting": 2
+    },
+    "scripts/scrapers/scrape_oca_solution.js::setupStagingAndPersistRawData": {
+      "cc": 13,
+      "loc": 83,
+      "nesting": 1
+    },
+    "scripts/scrapers/scrape_oca_solution.js::main": {
+      "cc": 13,
+      "loc": 116,
+      "nesting": 3
+    },
+    "dashboard/src/components/reconciliation/ReconciliationActionPanel.jsx::ReconciliationActionPanel": {
+      "cc": 13,
+      "loc": 92,
+      "nesting": 1
+    },
+    "dashboard/src/components/reconciliation/VendorMatchTable.jsx::VendorMatchTable": {
+      "cc": 13,
+      "loc": 105,
+      "nesting": 0
+    },
+    "scripts/lib/boq/alletra_mp_evaluator.js::evaluateAlletraMp": {
+      "cc": 12,
+      "loc": 92,
+      "nesting": 0
+    },
+    "dashboard/src/components/catalog/SkuAuditModal.jsx::SkuAuditModal": {
+      "cc": 12,
+      "loc": 116,
+      "nesting": 1
+    },
+    "dashboard/src/components/PriceAnalyticsCard.jsx::CrossSolutionSkuPanel": {
+      "cc": 12,
+      "loc": 91,
+      "nesting": 1
+    },
+    "dashboard/src/components/UserFeedbackDrawer.jsx::UserFeedbackDrawer": {
+      "cc": 12,
+      "loc": 155,
+      "nesting": 1
+    },
+    "dashboard/services/runState.cjs::listPersistedRuns": {
+      "cc": 12,
+      "loc": 20,
+      "nesting": 5
+    },
+    "scripts/lib/catalog/catalog_discovery.js::autoDetectChassisDetailed": {
+      "cc": 11,
+      "loc": 87,
+      "nesting": 3
+    },
+    "scripts/lib/catalog/sku_versioning.js::resolveChassisDirectory": {
+      "cc": 11,
+      "loc": 28,
+      "nesting": 5
+    },
+    "scripts/lib/conflict/sizing/workload_demand.js::evaluateWorkloadSizingWithProfiles": {
+      "cc": 11,
+      "loc": 104,
+      "nesting": 1
+    },
+    "scripts/lib/system/reasoning_post_analyzer.js::performReasoningPostAnalysis": {
+      "cc": 11,
+      "loc": 111,
+      "nesting": 1
+    },
+    "scripts/scrapers/visual_clic_inspector.js::main": {
+      "cc": 11,
+      "loc": 123,
+      "nesting": 1
+    },
+    "scripts/services/jules_daemon.js::pollOnce": {
+      "cc": 11,
+      "loc": 45,
+      "nesting": 5
+    },
+    "scripts/services/running_knowledge_sync.js::generateRunningKnowledgeCharterMarkdown": {
+      "cc": 11,
+      "loc": 194,
+      "nesting": 1
+    },
+    "scripts/services/running_knowledge_sync.js::syncRunningKnowledge": {
+      "cc": 11,
+      "loc": 95,
+      "nesting": 3
+    },
+    "dashboard/src/components/topology/BoqTopologyCanvas.jsx::BoqTopologyCanvas": {
+      "cc": 11,
+      "loc": 165,
+      "nesting": 0
+    },
+    "dashboard/src/components/TraceabilityInspector.jsx::TraceabilityInspector": {
+      "cc": 11,
+      "loc": 119,
+      "nesting": 1
+    },
+    "scripts/catalogs/xlsx_to_catalog.js::convertXlsxToCatalog": {
+      "cc": 10,
+      "loc": 82,
+      "nesting": 2
+    },
+    "scripts/lib/aspects/storage_tri_mode.js::evalStorageTriMode": {
+      "cc": 10,
+      "loc": 91,
+      "nesting": 0
+    },
+    "scripts/lib/boq/synergy_composite_evaluator.js::evaluateSynergyComposite": {
+      "cc": 10,
+      "loc": 85,
+      "nesting": 0
+    },
+    "scripts/lib/catalog/builder/taxonomy_and_intake.js::loadHistoricalPriceMap": {
+      "cc": 10,
+      "loc": 32,
+      "nesting": 7
+    },
+    "scripts/scrapers/scrape_oca_storage_solution.js::main": {
+      "cc": 10,
+      "loc": 182,
+      "nesting": 3
+    },
+    "dashboard/src/components/matrix/RankCard.jsx::RankSkuPartsSection": {
+      "cc": 10,
+      "loc": 81,
+      "nesting": 0
+    },
+    "dashboard/src/components/stepper/StepLogViewer.jsx::StepLogViewer": {
+      "cc": 10,
+      "loc": 99,
+      "nesting": 0
+    },
+    "dashboard/src/components/telemetry/sections/KpiMetricsGrid.jsx::KpiMetricsGrid": {
+      "cc": 10,
+      "loc": 112,
+      "nesting": 0
+    },
+    "dashboard/src/components/uploader/MultiConfigSplitModal.jsx::MultiConfigSplitModal": {
+      "cc": 10,
+      "loc": 99,
+      "nesting": 0
+    },
+    "dashboard/src/components/uploader/PreflightPipelineAudit.jsx::PreflightPipelineAudit": {
+      "cc": 10,
+      "loc": 94,
+      "nesting": 0
+    },
+    "dashboard/src/components/catalog/CatalogFilterBar.jsx::CatalogFilterBar": {
+      "cc": 9,
+      "loc": 119,
+      "nesting": 0
+    },
+    "dashboard/src/components/matrix/MatrixToolbar.jsx::MatrixToolbar": {
+      "cc": 9,
+      "loc": 87,
+      "nesting": 0
+    },
+    "dashboard/src/components/ScrapingHistorySection.jsx::ScrapingHistorySection": {
+      "cc": 9,
+      "loc": 94,
+      "nesting": 1
+    },
+    "dashboard/src/components/TelemetryCard.jsx::TelemetryCard": {
+      "cc": 9,
+      "loc": 135,
+      "nesting": 1
+    },
+    "dashboard/src/components/uploader/EvaluationNarrativeCard.jsx::EvaluationNarrativeCard": {
+      "cc": 9,
+      "loc": 99,
+      "nesting": 0
+    },
+    "scripts/catalogs/csv_to_catalog.js::convertCSVToCatalogJSON": {
+      "cc": 8,
+      "loc": 84,
+      "nesting": 1
+    },
+    "dashboard/src/components/matrix/RejectionModal.jsx::RejectionModal": {
+      "cc": 8,
+      "loc": 109,
+      "nesting": 1
+    },
+    "dashboard/src/components/ArtifactInspector.jsx::ArtifactFilesGrid": {
+      "cc": 7,
+      "loc": 99,
+      "nesting": 1
+    },
+    "dashboard/src/components/header/SmartSearchInput.jsx::SmartSearchInput": {
+      "cc": 7,
+      "loc": 105,
+      "nesting": 0
+    },
+    "dashboard/src/components/summary/ChassisActiveModelCard.jsx::ChassisActiveModelCard": {
+      "cc": 7,
+      "loc": 91,
+      "nesting": 0
+    },
+    "scripts/scrapers/expand_and_rescrape.js::main": {
+      "cc": 5,
+      "loc": 97,
+      "nesting": 3
+    },
+    "dashboard/src/components/WorkflowStepper.jsx::WorkflowStepper": {
+      "cc": 5,
+      "loc": 135,
+      "nesting": 1
+    },
+    "scripts/lib/boq/decision_projection.js::_unwrapEvaluation": {
+      "cc": 4,
+      "loc": 95,
+      "nesting": 1
+    },
+    "scripts/maintenance/test_dashboard_browser_e2e.js::verifyOrder3LifecycleAndRestart": {
+      "cc": 4,
+      "loc": 109,
+      "nesting": 2
+    },
+    "scripts/demos/demo_qs_vs_menu_cdp.js::main": {
+      "cc": 2,
+      "loc": 87,
+      "nesting": 2
+    },
+    "scripts/demos/live_visual_demo_cdp.js::main": {
+      "cc": 2,
+      "loc": 158,
+      "nesting": 2
+    },
+    "scripts/maintenance/test_dashboard_browser_e2e.js::seedAuthorizedMultiNodeRun": {
+      "cc": 2,
+      "loc": 84,
+      "nesting": 1
+    }
+  }
+}

@@ -218,10 +218,17 @@ function extractConflictAndStrategy(data, inner) {
     recommendedSolutions: finalRecommended
   };
 
+  const closureVerified = _pick(conflictGraph.closureVerified, _pick(inner.closureVerified, data.closureVerified, null), null);
+  const closureStatus = _pick(conflictGraph.closureStatus, _pick(inner.closureStatus, data.closureStatus, null), null);
+
   return {
     conflictGraph: mergedConflictGraph,
     rankedSolutions: finalRanked,
     recommendedSolutions: finalRecommended,
+    closureVerified,
+    closureStatus,
+    closurePlanDigest: _pick(conflictGraph.planDigest, _pick(inner.planDigest, data.planDigest, null), null),
+    ruleIrDiagnostics: _pick(conflictGraph.ruleIrDiagnostics, _pick(inner.ruleIrDiagnostics, data.ruleIrDiagnostics, []), []),
     workloadDna: _pick(conflictGraph.workloadDna, data.workloadDna, undefined),
     arbitrationResults: _pick(conflictGraph.arbitrationResults, _pick(inner.arbitrationResults, data.arbitrationResults, null), null),
     clusterSizing: _pick(data.clusterSizing, inner.clusterSizing, null),
@@ -255,12 +262,36 @@ function extractProvenanceAndTrace(data, inner) {
   };
 }
 
-export function deriveDualBrainBadges(data = {}, inner = {}) {
-  const isMathClean = inner.isMathClean ?? data.isMathClean;
-  const isCloudGrounded = inner.isCloudGrounded ?? data.isCloudGrounded ?? inner.ragResult?.isCloudGrounded ?? data.ragResult?.isCloudGrounded;
-  const isDegraded = data.cloudSyncState === 'FAILED' || inner.cloudSyncState === 'FAILED' || Boolean(data.staleCatalogWarning || inner.staleCatalogWarning);
+function _appendClosureAndPortalBadges(badges, data = {}, inner = {}) {
+  const cg = inner.conflictGraph || data.conflictGraph || {};
+  const closureVerified = cg.closureVerified ?? inner.closureVerified ?? data.closureVerified;
+  if (closureVerified === true) {
+    badges.push({
+      id: 'CLOSURE_VERIFIED',
+      label: 'Closure: VERIFIED',
+      variant: 'emerald',
+      tooltip: 'Buildable SKU constraint graph & 5-level rule closure passed deterministically.'
+    });
+  } else if (closureVerified === false) {
+    badges.push({
+      id: 'CLOSURE_BLOCKED',
+      label: 'Closure: BLOCKED',
+      variant: 'rose',
+      tooltip: 'Buildable SKU constraint graph reported unmet prerequisites or rule blockers.'
+    });
+  }
+  const portalStatus = inner.portalValidationStatus ?? data.portalValidationStatus;
+  if (portalStatus === 'PENDING') {
+    badges.push({
+      id: 'PORTAL_VALIDATION_PENDING',
+      label: 'Portal Validation: PENDING',
+      variant: 'amber',
+      tooltip: 'Requires live authenticated HPE OCA / CLIC portal receipt for Tier-3 acceptance.'
+    });
+  }
+}
 
-  const badges = [];
+function _appendMathBadge(badges, isMathClean) {
   if (isMathClean === true) {
     badges.push({
       id: 'LOCAL_DETERMINISTIC_PASS',
@@ -276,7 +307,11 @@ export function deriveDualBrainBadges(data = {}, inner = {}) {
       tooltip: 'Physical constraint checkers caught mathematical or component violations.'
     });
   }
+}
 
+function _appendCloudBadge(badges, data, inner) {
+  const isCloudGrounded = inner.isCloudGrounded ?? data.isCloudGrounded ?? inner.ragResult?.isCloudGrounded ?? data.ragResult?.isCloudGrounded;
+  const isDegraded = data.cloudSyncState === 'FAILED' || inner.cloudSyncState === 'FAILED' || Boolean(data.staleCatalogWarning || inner.staleCatalogWarning);
   if (isCloudGrounded === true) {
     badges.push({
       id: 'CLOUD_GROUNDED_VERIFIED',
@@ -284,15 +319,20 @@ export function deriveDualBrainBadges(data = {}, inner = {}) {
       variant: 'indigo',
       tooltip: 'Verified word-for-word against official vendor QuickSpecs and master catalog in Gemini NotebookLM.'
     });
-  } else if (inner.notebookLmStatus?.isFallback || data.notebookLmStatus?.isFallback) {
+    return;
+  }
+  const nlmStatus = inner.notebookLmStatus ?? data.notebookLmStatus;
+  if (nlmStatus?.isFallback) {
     const offline = (inner.effectivePolicy ?? data.effectivePolicy)?.offline ?? inner.offlineMode ?? data.offlineMode;
     badges.push({
       id: offline ? 'LOCAL_ONLY' : 'LOCAL_RAG_FALLBACK',
       label: offline ? 'Local-only evaluation' : 'Local RAG fallback',
       variant: offline ? 'blue' : 'amber',
-      tooltip: (inner.notebookLmStatus ?? data.notebookLmStatus)?.fallbackReason || 'Cloud grounding unavailable.'
+      tooltip: nlmStatus.fallbackReason || 'Cloud grounding unavailable.'
     });
-  } else if (isDegraded) {
+    return;
+  }
+  if (isDegraded) {
     badges.push({
       id: 'DEGRADED_UNGROUNDED',
       label: 'Degraded Mode: UNGROUNDED',
@@ -300,6 +340,13 @@ export function deriveDualBrainBadges(data = {}, inner = {}) {
       tooltip: 'Operating in local offline/degraded mode. Cloud grounding channel is unavailable.'
     });
   }
+}
+
+export function deriveDualBrainBadges(data = {}, inner = {}) {
+  const badges = [];
+  _appendMathBadge(badges, inner.isMathClean ?? data.isMathClean);
+  _appendCloudBadge(badges, data, inner);
+  _appendClosureAndPortalBadges(badges, data, inner);
   return badges;
 }
 
@@ -388,6 +435,7 @@ function _hoistEvaluationFields(data, inner) {
     customerDisposition: _pick(inner.customerDisposition, data.customerDisposition, null),
     deliveryAuthorization: _pick(inner.deliveryAuthorization, data.deliveryAuthorization, null),
     evaluationNarrative: _pick(inner.evaluationNarrative, data.evaluationNarrative, null),
+    guardrailMeta: _pick(inner.guardrailMeta, data.guardrailMeta, null),
     offlineMode: _pick(inner.offlineMode, data.offlineMode, null),
     effectivePolicy: _pick(data.effectivePolicy, inner.effectivePolicy, null),
     candidateReference: _pick(data.candidateReference, inner.candidateReference, null),

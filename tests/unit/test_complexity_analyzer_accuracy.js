@@ -57,3 +57,40 @@ test('runAnalysis populates totalFiles, totalFunctions, violations, and topCompl
     process.argv = origArgv;
   }
 });
+
+test('3D ratchet measures maxNesting accurately and flags unbaselined CC/LOC/nesting breaches', () => {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cc-ratchet-'));
+  const file = path.join(tmpDir, 'nested.js');
+  const baselinePath = path.join(tmpDir, 'baseline.json');
+  fs.writeFileSync(file, [
+    'function deepFn(a, b, c, d, e) {',
+    '  const cfg = { ok: true };',
+    '  if (a) {',
+    '    for (const x of b) {',
+    '      while (c) {',
+    '        try {',
+    '          if (d && e) { return cfg; }',
+    '        } catch (err) { return null; }',
+    '      }',
+    '    }',
+    '  }',
+    '  return cfg;',
+    '}'
+  ].join('\n'));
+  fs.writeFileSync(baselinePath, JSON.stringify({ entries: {} }));
+
+  const origArgv = process.argv;
+  try {
+    const res = analyzeFile(file);
+    assert.equal(res.functions[0].maxNesting, 5, 'Expected control-flow nesting depth 5 (ignoring object literal)');
+    process.argv = [process.execPath, 'analyze_complexity.js', '--ratchet', `--baseline=${baselinePath}`, '--max-cc=20', '--max-loc=80', '--max-nesting=4'];
+    const emptyOut = runAnalysis();
+    assert.ok(emptyOut.violations.length > 0, 'Empty baseline must flag legacy functions exceeding 3D caps');
+    process.argv = [process.execPath, 'analyze_complexity.js', '--ratchet', '--max-cc=20', '--max-loc=80', '--max-nesting=4'];
+    const repoOut = runAnalysis();
+    assert.equal(repoOut.violations.length, 0, 'Repo baseline checks must have 0 unbaselined breaches');
+  } finally {
+    process.argv = origArgv;
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+});

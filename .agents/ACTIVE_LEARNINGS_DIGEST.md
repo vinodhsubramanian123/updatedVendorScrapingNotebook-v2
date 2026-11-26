@@ -9,5 +9,4 @@
 ## Reflection Queue Status
 - **Pending Proposals**: 0 (0 ready for promotion)
 - **Promoted Instructions / Rules**: 0
-- **Active Architectural Contracts**: `INV-281`–`INV-286` (physical min/max capability envelopes via `hardware_envelope_solver.js`, 5-level rule IR + buildable constraint-graph closure via `buildable_graph_solver.js`, Prompt `v4` + negation-guarded RAG, 17 schema-validated product manifests via `_mergeSubSection`, dynamic vendor adapters, `< 800` LOC facades).
-- **Last Updated**: 2026-11-26T10:30:00.000Z
+- **Last Updated**: 2026-11-26T17:05:48.060Z

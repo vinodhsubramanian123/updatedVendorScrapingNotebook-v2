@@ -1,8 +1,8 @@
-# AGENTS.md — Master Operating Charter & Dynamic Skill Router
+﻿# AGENTS.md — Master Operating Charter & Dynamic Skill Router
 
 **Agent Identity:** Lead Solution Execution Architect — HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.  
-**Active Portfolio & Qualification Scope (`2026-11-26`):** **17 active live-scraped HPE product lines** + **2 quarantined legacy stubs** (`Alletra_Storage_System`, `GX5000_General_RACK`), all `17/17` staging-floor and cloud-sync verified (`CLOUD_VERIFIED`), declaratively schema-backed via `scripts/config/products/*.json`. Offline certification covers `SI-00`–`SI-10` (`INV-244`–`INV-252`), `INV-265`–`INV-286`, **39/39** skills, `< 800` LOC decomposed orchestrator facades, `CC <= 30` across all production functions, `0` oxlint warnings, `0` circular dependencies, and `0` orphaned files. Per-customer HPE OCA (`CLIC`) portal acceptance remains **`PORTAL VALIDATION PENDING`** until a current manifest-bound Tier 3 receipt is recorded.  
-**Latest Closures:** [`2026-11-26 Intelligence, Graph & Extensibility Closure`](file:///docs/audits/2026-11-26-end-to-end-intelligence-graph-and-extensibility-closure.md) | [`2026-11-24 Intelligence & Hygiene Closure`](file:///docs/audits/2026-11-24-intelligence-elevation-and-hygiene-closure.md) | [`2026-11-22 Catalog & Intelligence Closure`](file:///docs/audits/2026-11-22-catalog-perfection-and-intelligence-closure.md) | [`Historical Milestones Index`](file:///docs/audits/HISTORICAL_MILESTONES_INDEX.md).
+**Active Portfolio & Qualification Scope (`2026-11-26`):** **17 active live-scraped HPE product lines** + **2 quarantined legacy stubs** (`Alletra_Storage_System`, `GX5000_General_RACK`), all `17/17` staging-floor and cloud-sync verified (`CLOUD_VERIFIED`), declaratively schema-backed via `scripts/config/products/*.json`. Offline certification covers `SI-00`–`SI-10` (`INV-244`–`INV-252`), `INV-265`–`INV-288`, **40/40** skills, `< 800` LOC decomposed orchestrator facades, the 3D ratchet (`CC <= 20`, `LOC <= 80`, `nesting <= 4` on new/edited functions; frozen legacy baseline, `INV-287`), `0` oxlint warnings, `0` circular dependencies, and `0` orphaned files. Per-customer HPE OCA (`CLIC`) portal acceptance remains **`PORTAL VALIDATION PENDING`** until a current manifest-bound Tier 3 receipt is recorded.  
+**Latest Closures:** [`2026-11-26 Dashboard Modernization & Agentic Studio Closure`](file:///docs/audits/2026-11-26-dashboard-modernization-and-agentic-studio-closure.md) | [`2026-11-26 Intelligence, Graph & Extensibility Closure`](file:///docs/audits/2026-11-26-end-to-end-intelligence-graph-and-extensibility-closure.md) | [`2026-11-24 Intelligence & Hygiene Closure`](file:///docs/audits/2026-11-24-intelligence-elevation-and-hygiene-closure.md) | [`2026-11-22 Catalog & Intelligence Closure`](file:///docs/audits/2026-11-22-catalog-perfection-and-intelligence-closure.md) | [`Historical Milestones Index`](file:///docs/audits/HISTORICAL_MILESTONES_INDEX.md).
 
 ---
 
@@ -14,7 +14,7 @@
 
 ## 1. Mandatory First Step: Graphify & Indexed Knowledge Lookup (`INV-276`)
 - **Query Graph First**: Start codebase discovery with `graphify query "<question>"` (or inspect `graphify-out/wiki/index.md`) instead of brute-force reads. Run `npm run update:graph` after code edits.
-- **Fast Invariant & Learnings Lookup**: Query `docs/INVARIANTS.md` (`INV-0`–`INV-286`) via `npm run docs:lookup -- INV-<n>` and check [`.agents/ACTIVE_LEARNINGS_DIGEST.md`](file:///.agents/ACTIVE_LEARNINGS_DIGEST.md) + [`.agents/FORENSIC_LEARNINGS.md`](file:///.agents/FORENSIC_LEARNINGS.md) before modifying core subsystems.
+- **Fast Invariant & Learnings Lookup**: Query `docs/INVARIANTS.md` (`INV-0`–`INV-288`) via `npm run docs:lookup -- INV-<n>` and check [`.agents/ACTIVE_LEARNINGS_DIGEST.md`](file:///.agents/ACTIVE_LEARNINGS_DIGEST.md) + [`.agents/FORENSIC_LEARNINGS.md`](file:///.agents/FORENSIC_LEARNINGS.md) before modifying core subsystems.
 
 ---
 
@@ -31,7 +31,7 @@
 
 ---
 
-## 3. Dynamic Skill Dispatch Matrix (39 Skills)
+## 3. Dynamic Skill Dispatch Matrix (40 Skills)
 Load the corresponding `SKILL.md` from [`.agents/skills/`](file:///.agents/skills/) for specialized tasks:
 
 | Intent / Capability | Skill | Primary Entrypoint |
@@ -63,7 +63,7 @@ Load the corresponding `SKILL.md` from [`.agents/skills/`](file:///.agents/skill
 | **Live CLIC Receipt Binding** | [`clic-portal-validation-skill`](file:///.agents/skills/clic-portal-validation-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
 | **Conditional SKU Discovery** | [`conditional-sku-discovery-skill`](file:///.agents/skills/conditional-sku-discovery-skill/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` |
 | **Popperian Epistemic Audit** | [`epistemic-verification-skill`](file:///.agents/skills/epistemic-verification-skill/SKILL.md) | `scripts/lib/system/evidence_ledger.js` |
-| **Code Quality & CC <= 30 Gate** | [`code-quality-gate-skill`](file:///.agents/skills/code-quality-gate-skill/SKILL.md) | `scripts/maintenance/analyze_complexity.js` |
+| **Code Quality & 3D Ratchet Gate** | [`code-quality-gate-skill`](file:///.agents/skills/code-quality-gate-skill/SKILL.md) | `scripts/maintenance/analyze_complexity.js` |
 | **Counterfactual Backtracking** | [`self-correction-counterfactual-skill`](file:///.agents/skills/self-correction-counterfactual-skill/SKILL.md) | `scripts/lib/system/counterfactual_repair.js` |
 | **Turnkey Racking, RAID & Cabling** | [`turnkey-racking-cabling-skill`](file:///.agents/skills/turnkey-racking-cabling-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
 | **Requirement Clause Accounting** | [`requirements-accounting-skill`](file:///.agents/skills/requirements-accounting-skill/SKILL.md) | `scripts/lib/boq/requirements/requirement_records.js` |
@@ -72,6 +72,7 @@ Load the corresponding `SKILL.md` from [`.agents/skills/`](file:///.agents/skill
 | **Sizing Uncertainty & Pareto Rank** | [`decision-uncertainty-skill`](file:///.agents/skills/decision-uncertainty-skill/SKILL.md) | `scripts/lib/conflict/sizing/workload_demand.js` |
 | **Benchmark & Post-Analysis Audit** | [`solution-quality-evaluation-skill`](file:///.agents/skills/solution-quality-evaluation-skill/SKILL.md) | `scripts/lib/system/reasoning_post_analyzer.js` |
 | **Dashboard Anti-Slop UI** | [`design-taste-frontend`](file:///.agents/skills/design-taste-frontend/SKILL.md) | `dashboard/src/` |
+| **Enterprise Dashboard UX** | [`enterprise-dashboard-ux-skill`](file:///.agents/skills/enterprise-dashboard-ux-skill/SKILL.md) | `dashboard/src/` |
 | **Codex Static Review (`INV-72` ex.)** | [`codex-peer-review-skill`](file:///.agents/skills/codex-peer-review-skill/SKILL.md) | `codex review` / `codex exec` |
 | **Jules CI/CD (`INV-72` excluded)** | [`jules-autonomous-protocol`](file:///.agents/skills/jules-autonomous-protocol/SKILL.md) | `scripts/services/jules_task_manager.js` |
 | **Macro Lifecycle & MCP Server** | [`orchestrator-workflow-skill`](file:///.agents/skills/orchestrator-workflow-skill/SKILL.md) | `scripts/services/mcp_server.js` |

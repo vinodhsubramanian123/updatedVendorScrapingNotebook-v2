@@ -10,6 +10,7 @@
  *   });
  */
 import { useEffect, useRef } from 'react';
+import { receiveTimelineEvent } from '../services/executionTimeline.js';
 import { normalizeEvalResult } from '../services/evalNormalizer.js';
 
 /**
@@ -42,6 +43,7 @@ export function useSSEStream({
         return;
       }
 
+      receiveTimelineEvent(payload);
       switch (payload.type) {
         case 'RUN_SNAPSHOT': {
           if (payload.activeTask) handlers.current.onTaskStarted?.({ ...payload.activeTask, recovered: true });

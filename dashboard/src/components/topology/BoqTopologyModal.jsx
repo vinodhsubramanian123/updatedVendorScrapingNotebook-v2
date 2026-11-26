@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { AlertTriangle, Sparkles, Filter, CheckCircle2 } from 'lucide-react';
 import { buildTopologyGraph, SUBSYSTEM_DEFS } from '../../services/topologyGraphBuilder';
 import BoqTopologyCanvas from './BoqTopologyCanvas';
+import ClosureStatusStrip from '../matrix/ClosureStatusStrip.jsx';
 import BoqTopologyNodeInspector from './BoqTopologyNodeInspector';
 
 export default function BoqTopologyModal({
@@ -198,7 +199,7 @@ export default function BoqTopologyModal({
         )}
       </div>
 
-      {/* Diagnostic & Telemetry Footer */}
+      <ClosureStatusStrip evalResults={evalResults} compact={true} />
       <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 bg-slate-900 text-slate-300 rounded-xl text-[11px] font-mono border border-slate-800">
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1 text-slate-400">

@@ -421,6 +421,13 @@ function _routedEnvelopeScope(classification, context, responseData, chassisInfo
   return { resolvedPlatform, confidence, isAmbiguous };
 }
 
+function _emitRouteMilestone(context, percent, stage, action) {
+  try {
+    context?.onProgress?.({ percent, stage, action });
+    context?.onLog?.(action);
+  } catch (_) {}
+}
+
 async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
   const resolvedPolicy = _resolveContextPolicy(context, { defaultOffline: false });
   context = {
@@ -432,19 +439,23 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
   };
   context.catalogSearchRequest = context.filePath || context.file ? null : _compileCatalogSearch(queryText, context);
   const classification = classifyQueryIntent(queryText, context, context.catalogSearchRequest);
+  _emitRouteMilestone(context, 15, 'INTENT_CLASSIFIED', `Intent: ${classification.intent} (conf ${classification.confidence ?? 'n/a'})`);
   const startTime = Date.now();
   const { platformSelectionMemory, updatedContext, chassisInfoForConf, unresolvedAmbiguity } =
     _resolveRoutedPlatform(queryText, context, classification);
   context = updatedContext;
   let traceId = context.traceId || resolveEntryTraceId(() => `TRC-${Date.now()}-${require('crypto').randomBytes(3).toString('hex').toUpperCase()}`);
   context.traceId = traceId;
+  _emitRouteMilestone(context, 35, 'PLATFORM_RESOLVED', `Platform: ${chassisInfoForConf?.product || chassisInfoForConf?.chassisDir || 'GLOBAL'}`);
 
   const dispatched = await _executeClassifiedOrAbortDispatch(classification, queryText, context, chassisInfoForConf, unresolvedAmbiguity, traceId);
   const responseData = dispatched.responseData;
   traceId = responseData?.traceId || traceId;
   if (responseData && typeof responseData === 'object' && !responseData.traceId) responseData.traceId = traceId;
+  _emitRouteMilestone(context, 65, 'HANDLER_EXECUTED', `Handler complete for ${classification.intent}`);
 
   _attachAcceptanceGate(responseData, classification, context, chassisInfoForConf);
+  _emitRouteMilestone(context, 85, 'ACCEPTANCE_GATED', 'Acceptance gate & reasoning ledger attached');
   const executionTimeMs = Date.now() - startTime;
   const reasoningAnalysis = _performReasoningSafe(queryText, context, classification, responseData, traceId, executionTimeMs);
 

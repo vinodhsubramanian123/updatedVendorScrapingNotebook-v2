@@ -102,6 +102,13 @@ async function run() {
     assert.strictEqual(resultObj.envelope.ocp.maxSlots, 2);
   });
 
+  await check('Unresolved platform cannot inherit a server hardware envelope', async () => {
+    const res = await executeRoutedQuery('What are the maximum PCIe slots?', { offline: true });
+    const result = res.result || res;
+    assert.strictEqual(result.requiresHumanClarification, true);
+    assert.strictEqual(result.envelope, undefined);
+  });
+
   await check('Guardrail tool registry includes query_hardware_envelope', async () => {
     const registry = buildToolRegistry({ chassisId: 'DL380a_Gen12', catalogData: null, items: [] });
     assert.ok(registry.has('query_hardware_envelope'));

@@ -344,7 +344,7 @@ async function _handleSolutionComparison(queryText, context) {
         productKey,
         query: `${queryText || 'Verify configuration and component compatibility rules'} for ${productKey}`
       })),
-      { queryOptions: { strictCloud: Boolean(context.strictCloud) } }
+      { queryOptions: { strictCloud: Boolean(context.strictCloud), offline: _resolveContextPolicy(context, { includeRagOnly: true }).offline } }
     );
   }
   return comparison;
@@ -357,15 +357,17 @@ async function _handleHardwareEnvelopeAnalytics(queryText, context) {
     solveMaxGpuTopology,
     solveMemoryEnvelope
   } = require('../rules/hardware_envelope_solver.js');
-  const scope = context.platformId
-    ? { chassisKey: context.platformId, catalogData: context.catalogData || null }
-    : (() => {
-        try { return getChassisCatalog(queryText, context); }
-        catch { return { chassisKey: context.chassisName || 'DL380_Gen12', catalogData: null }; }
-      })();
-  const platformId = scope.chassisKey && !['AMBIGUOUS_QUERY', 'AMBIGUOUS_PRODUCT', 'GENERATION_MISMATCH', 'GENERIC'].includes(scope.chassisKey)
-    ? scope.chassisKey
-    : (context.platformId || 'DL380_Gen12');
+  const { resolveManifestForKey } = require('../rules/product_manifest_loader.js');
+  const scope = getChassisCatalog(queryText, { ...context, chassisName: context.platformId || context.chassisName });
+  const platformId = scope.chassisKey;
+  if (scope.isAmbiguous || !resolveManifestForKey(platformId)) {
+    return {
+      intent: 'HARDWARE_ENVELOPE_ANALYTICS', status: 'REQUIRES_HUMAN_CLARIFICATION',
+      code: 'PLATFORM_CLARIFICATION_REQUIRED', requiresHumanClarification: true,
+      missingRequirements: ['Target product and generation'],
+      message: scope.error || 'Choose a product with a current capability manifest.'
+    };
+  }
   const opts = {
     cpuCount: context.cpuCount,
     gpuModel: context.gpuModel,

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ManifestSummaryBanner from './portfolio/ManifestSummaryBanner.jsx';
 import {
   ShieldCheck, AlertTriangle, Layers,
   Search, Sliders, Sparkles, CheckCircle, Database,
@@ -248,7 +249,7 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
           )}
         </div>
       </div>
-
+      <ManifestSummaryBanner chassisDir={chassisDir} chassisName={chassisName} />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="glass-card p-4 flex items-center gap-4">
           <div className="p-3 rounded-xl bg-purple-50 text-purple-600">

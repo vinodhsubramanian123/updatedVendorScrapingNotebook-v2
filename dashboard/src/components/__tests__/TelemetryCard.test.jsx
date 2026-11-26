@@ -6,6 +6,18 @@ import TelemetryCard from '../TelemetryCard';
 global.fetch = vi.fn(() => Promise.resolve({ ok: true, json: () => Promise.resolve({}) }));
 
 describe('TelemetryCard', () => {
+  it('aborts in-flight telemetry when the view closes', () => {
+    let signal;
+    global.fetch.mockImplementationOnce((_url, options) => {
+      signal = options.signal;
+      return new Promise((_resolve, reject) => signal.addEventListener('abort', () => reject(signal.reason), { once: true }));
+    });
+    const view = render(<TelemetryCard />);
+    expect(signal?.aborted).toBe(false);
+    view.unmount();
+    expect(signal?.aborted).toBe(true);
+  });
+
   it('renders correctly with telemetry data', async () => {
     const mockTelemetry = {
       evaluationsCount: 42,

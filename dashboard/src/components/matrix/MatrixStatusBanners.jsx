@@ -1,5 +1,6 @@
 import React from 'react';
 import ValueEngineeringPanel from './ValueEngineeringPanel';
+import ClosureStatusStrip from './ClosureStatusStrip.jsx';
 import { deriveEvidenceStates } from '../../services/exportEligibility.js';
 import { humanizeEnum } from '../../utils/formatters.js';
 
@@ -162,8 +163,8 @@ export default function MatrixStatusBanners({ evalResults }) {
 
   return (
     <>
+      {evalResults && <ClosureStatusStrip evalResults={evalResults} />}
       {evalResults && <DeliveryAuthBanner authState={authState} />}
-
       {evalResults?.isProvisional ? (
         <div className="p-3 rounded-xl border border-amber-300 bg-amber-50/90 text-amber-950 text-xs flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-2">
