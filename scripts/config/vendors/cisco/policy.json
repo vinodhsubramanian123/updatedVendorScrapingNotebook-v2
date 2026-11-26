@@ -1,0 +1,20 @@
+{
+  "vendorId": "CISCO",
+  "vendorName": "Cisco Systems",
+  "defaultSupportPolicy": {
+    "tier": "SNTC_8X5XNBD",
+    "durationYears": 3,
+    "description": "Cisco Smart Net Total Care 8x5xNBD (3-Year Baseline)"
+  },
+  "terminology": {
+    "ctoTerm": "Build-to-Order (BTO/PID)",
+    "smartCto": "UCS Base Chassis",
+    "portalName": "Cisco Commerce Workspace (CCW)",
+    "rulesEngine": "UCS Hardware Compatibility List (HCL)"
+  },
+  "domains": ["server", "networking", "storage"],
+  "evidenceLimits": [
+    "Cisco UCS data sheets provide specification baselines, not live CCW configurator validation.",
+    "Live CCW PID validation is required for final ordering acceptance."
+  ]
+}

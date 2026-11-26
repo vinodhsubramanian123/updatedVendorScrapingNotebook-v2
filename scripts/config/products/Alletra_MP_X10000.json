@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "Alletra_MP_X10000",
+  "vendor": "HPE",
+  "domain": "storage",
+  "family": "Alletra Storage MP Object",
+  "formFactor": "2U+ Scale-Out Disaggregated",
+  "maxPsuBays": 2,
+  "defaultSupportPolicy": { "tier": "TECH_CARE_BASIC", "durationYears": 3 },
+  "skuAliases": ["Alletra_MP_X10000", "Alletra MP X10000", "HPE_ALLETRA_MP_X10000"]
+}

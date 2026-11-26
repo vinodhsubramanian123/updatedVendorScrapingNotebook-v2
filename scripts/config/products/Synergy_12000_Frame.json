@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "Synergy_12000_Frame",
+  "vendor": "HPE",
+  "domain": "composable",
+  "family": "Synergy",
+  "generation": "12000",
+  "formFactor": "10U Blade Frame",
+  "ocpSlots": 0,
+  "basePcieSlots": 0,
+  "maxPsuBays": 12,
+  "maxComputeBays": 12,
+  "interconnectBays": 6,
+  "validPsuCounts": [6, 12],
+  "psuSku": "P44074-B21",
+  "defaultSupportPolicy": { "tier": "TECH_CARE_BASIC", "durationYears": 3 },
+  "skuAliases": ["Synergy_12000_Frame", "Synergy 12000 Frame", "HPE_SYNERGY_12000_FRAME"]
+}

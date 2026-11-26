@@ -147,3 +147,9 @@ On dual-generation platforms (such as HPE ProLiant DL380 Gen11 supporting both 4
      - 64GB: `P43331-B21` $\rightarrow$ `P64707-F21` (HPE 64GB 2Rx4 DDR5-5600 Smart FIO Kit).
      - 128GB: `P43334-B21` $\rightarrow$ `P69976-F21` (HPE 128GB 4Rx4 DDR5-5600 Smart FIO Kit).
    - **Cascading Pruning**: Automatically prunes DDR5-4800 BTO-to-FIO aspect fixes (`P43328-F21`, `P43334-F21`) since the 5600 MT/s DIMMs are already factory-integrated Smart Memory.
+
+---
+
+## Modular Facade & Constraint-Graph Closure (`INV-282`, `INV-286`)
+- `scripts/lib/conflict/least_delta_combinator.js` is a `< 800` LOC facade backed by `scripts/lib/conflict/least_delta/catalog_alternative_finder.js` and `scripts/lib/conflict/least_delta/lifecycle_replacement_engine.js`.
+- Minimum-delta alternatives execute full buildability closure through `scripts/lib/conflict/catalog_rule_evaluator.js` and `scripts/lib/conflict/buildable_graph_solver.js` (`solveBuildableCandidate`), logging structured `logger.warn(...)` telemetry on lookup recovery failures.

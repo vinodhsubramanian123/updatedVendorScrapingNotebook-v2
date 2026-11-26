@@ -460,6 +460,37 @@ const SkillWorkflowRegistrySchema = z.object({
   }).strict()
 }).strict();
 
+const ProductCapabilityManifestSchema = z.object({
+  schemaVersion: z.string().min(1).default('1.0.0'),
+  productId: z.string().min(1),
+  vendor: z.string().min(1),
+  domain: z.enum(['server', 'storage', 'networking', 'composable', 'archive']),
+  family: z.string().min(1),
+  generation: z.string().min(1).optional(),
+  formFactor: z.string().min(1),
+  maxSockets: z.number().int().min(0).optional(),
+  ocpSlots: z.number().int().min(0).optional(),
+  basePcieSlots: z.number().int().min(0).optional(),
+  maxPsuBays: z.number().int().min(0).optional(),
+  memoryArchitecture: z.object({
+    generation: z.string().min(1),
+    channelsPerSocket: z.number().int().min(1),
+    dimmsPerChannel: z.number().int().min(1),
+    maxDimmsPerSocket: z.number().int().min(1),
+    maxDimmsPerChassis: z.number().int().min(1),
+    validBalancedCountsPerSocket: z.array(z.number().int().min(1)).optional()
+  }).passthrough().optional(),
+  riserSlots: z.object({
+    primary: z.record(z.string(), z.any()).optional(),
+    secondary: z.record(z.string(), z.any()).optional(),
+    tertiary: z.record(z.string(), z.any()).optional()
+  }).passthrough().optional(),
+  storageBays: z.record(z.string(), z.any()).optional(),
+  variants: z.record(z.string(), z.any()).optional(),
+  defaultSupportPolicy: z.record(z.string(), z.any()).optional(),
+  skuAliases: z.array(z.string()).optional()
+}).passthrough();
+
 module.exports = {
   // CP4 declarations are opt-in; existing callers continue using prior exports.
   WorkflowScopeSchema,
@@ -469,6 +500,7 @@ module.exports = {
   InternalEngineeringObservationSchema,
   SkillWorkflowRegistrySchema,
   VendorAdapterDescriptorSchema,
+  ProductCapabilityManifestSchema,
   // Regex & Primitives
   HpeSkuRegex,
   CoercedNumber,

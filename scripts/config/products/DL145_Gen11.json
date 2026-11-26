@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "DL145_Gen11",
+  "vendor": "HPE",
+  "domain": "server",
+  "family": "ProLiant DL",
+  "generation": "Gen11",
+  "formFactor": "2U Edge Rack (Short Depth)",
+  "maxSockets": 1,
+  "ocpSlots": 1,
+  "basePcieSlots": 1,
+  "maxPsuBays": 2,
+  "memoryArchitecture": {
+    "generation": "DDR5",
+    "channelsPerSocket": 6,
+    "dimmsPerChannel": 1,
+    "maxDimmsPerSocket": 6,
+    "maxDimmsPerChassis": 6,
+    "validBalancedCountsPerSocket": [1, 2, 4, 6]
+  },
+  "storageBays": { "maxFrontSffBays": 6, "maxEdsffBays": 6 },
+  "defaultSupportPolicy": { "tier": "TECH_CARE_BASIC", "durationYears": 3 },
+  "skuAliases": ["DL145_Gen11", "DL145 Gen11", "HPE_PROLIANT_DL145_GEN11"]
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "SN3600B_FC",
+  "vendor": "HPE / Brocade",
+  "domain": "networking",
+  "subDomain": "san_fabric",
+  "family": "StoreFabric B-Series",
+  "formFactor": "1U Rack",
+  "protocol": "32Gb Fibre Channel",
+  "basePortsActive": 8,
+  "maxPorts": 24,
+  "upgradePackSku": "R7M09A",
+  "portsPerUpgradePack": 8,
+  "powerSupplies": 1,
+  "jumperCordSku": "R1C65A",
+  "defaultSupportPolicy": {
+    "tier": "TECH_CARE_BASIC",
+    "durationYears": 3,
+    "hardwareSupportSku": "HU4B4A3",
+    "hardwareSupportChildSku": "HU4B4A3ZTL"
+  },
+  "skuAliases": ["SN3600B_FC", "SN3600B FC", "HPE_STOREFABRIC_SN3600B"]
+}

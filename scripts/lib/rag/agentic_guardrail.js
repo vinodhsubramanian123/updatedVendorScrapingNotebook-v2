@@ -24,7 +24,8 @@ const { createChat, sendGuardrailMessage } = require('./guardrail_transport');
 
 require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 
-const MODEL_NAME = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
+const GUARDRAIL_ROUTING = geminiRotator.resolveModelForTask('guardrail_fast');
+const MODEL_NAME = GUARDRAIL_ROUTING.model;
 const GUARDRAIL_NLM_MAX_CALLS = 3; // Maximum queries per agentic guardrail session
 const DEFAULT_NLM_CALL_TIMEOUT_MS = parseInt(process.env.RAG_TIMEOUT_MS || '600000', 10);
 const GUARDRAIL_OVERALL_TIMEOUT_MS = parseInt(
@@ -281,6 +282,33 @@ function buildToolRegistry(ctx) {
           return queryLocalGraphifyNeighborhood(args.concept || '');
         }
       }
+    ],
+    [
+      'query_hardware_envelope',
+      {
+        schema: {
+          name: 'query_hardware_envelope',
+          description:
+            'Computes exact deterministic hardware capability min/max bounds for a platform (max OCP slots, PCIe risers and x16 lanes, GPUs, 1DPC/2DPC memory DIMMs, storage bays, and PSUs).',
+          parameters: {
+            type: Type.OBJECT,
+            properties: {
+              chassis_id: { type: Type.STRING, description: "Target chassis ID, e.g., 'DL380_Gen12' or 'DL380a_Gen12'" },
+              cpu_count: { type: Type.NUMBER, description: 'Optional socket count (1, 2, or 4) to evaluate CPU-dependent slot/DIMM limits.' },
+              category_key: { type: Type.STRING, description: 'Optional category keyword (e.g., "pcie", "gpu", "memory", "storage").' }
+            },
+            required: ['chassis_id']
+          }
+        },
+        execute: async (args) => {
+          assertSessionScope(args, ctx);
+          const { computeFullPlatformEnvelope } = require('../rules/hardware_envelope_solver.js');
+          return computeFullPlatformEnvelope(args.chassis_id || ctx.chassisId, ctx.catalogData || null, {
+            cpuCount: args.cpu_count,
+            categoryKey: args.category_key
+          });
+        }
+      }
     ]
   ]);
 }
@@ -387,11 +415,12 @@ function _initGuardrailContext(items, chassisDir, activeKeyInfo, options = {}) {
   const promptContext = _extractGuardrailPromptContext(options, initialEval);
   const systemInstruction = buildGuardrailSystemPrompt(chassisId, undefined, promptContext);
 
+  const envFallbacks = (process.env.GUARDRAIL_FALLBACK_MODELS || '').split(',').map(v => v.trim()).filter(Boolean);
   const rotationState = {
     currentApiKey: activeKeyInfo.apiKey,
     activeKeyInfo,
-    model: MODEL_NAME,
-    models: [...new Set([MODEL_NAME, ...(process.env.GUARDRAIL_FALLBACK_MODELS ?? 'gemini-3.8-flash,gemini-3.7-flash,gemini-3.5-flash-lite').split(',').map(value => value.trim()).filter(Boolean)])],
+    model: GUARDRAIL_ROUTING.model,
+    models: [...new Set([GUARDRAIL_ROUTING.model, ...envFallbacks, ...GUARDRAIL_ROUTING.fallbackModels])],
     apiTimeoutMs: API_TIMEOUT_MS,
     recoveryEvents: [],
     requiredTool: 'simulate_build',
@@ -577,6 +606,7 @@ async function runAgenticGuardrail(items, chassisDir, options = {}) {
 }
 
 module.exports = {
+  buildToolRegistry,
   runAgenticGuardrail,
   submitGuardrailCandidates,
   _initGuardrailContext,

@@ -288,14 +288,27 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
 
   const validator = (options && typeof options.validateMath === 'function') ? options.validateMath : _physicalMathValidator;
   const { isClean, aspectErrors } = _runPhysicalAspectsValidationLoop(updatedParts, partSkus, catalogData, targetDir, validator, getPrice, injectedFixes);
+  const { solveBuildableConfiguration } = require('../buildable_graph_solver.js');
+  const graphClosure = solveBuildableConfiguration(updatedParts, {
+    catalogData,
+    chassisInfo,
+    targetDir,
+    initialAspectResult: { isMathClean: isClean, errors: aspectErrors, missingDependencies: [] },
+    isRevalidationPass: true,
+    skipRepairs: true
+  });
+  const finalClean = isClean && graphClosure.isBuildable;
+  const mergedErrors = [...new Set([...aspectErrors, ...(graphClosure.remainingErrors || [])])];
   const newTotalCost = updatedParts.reduce((sum, p) => sum + (p.extendedPriceUsd || (p.unitPriceUsd * (p.quantity || 1))), 0);
 
   return {
     parts: updatedParts,
     injectedFixes,
     totalCost: newTotalCost,
-    physicalMathClean: isClean,
-    aspectErrors
+    physicalMathClean: finalClean,
+    aspectErrors: mergedErrors,
+    lifecycleBlockers: graphClosure.lifecycleBlockers || [],
+    ruleAuditSummary: graphClosure.ruleAuditSummary || null
   };
 }
 

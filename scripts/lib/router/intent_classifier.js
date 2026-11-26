@@ -31,7 +31,8 @@ function _classifyExplicitTrack(text, context, filePath) {
     SELF_CORRECTION_COUNTERFACTUAL: 'self-correction-counterfactual-skill',
     PRESALES_CLEARANCE_STRATEGY: 'presales-clearance-strategy-skill',
     TURNKEY_RACKING_CABLING: 'turnkey-racking-cabling-skill',
-    SOLUTION_COMPARISON: 'presales-query-router'
+    SOLUTION_COMPARISON: 'presales-query-router',
+    HARDWARE_ENVELOPE_ANALYTICS: 'catalog-intelligence-skill'
   };
   if (context.intent && explicitTracks[context.intent]) {
     return {
@@ -450,6 +451,17 @@ function classifyQueryIntent(queryText = '', context = {}, searchRequest = undef
   if (comparisonIntent) return comparisonIntent;
 
   const detectedPath = filePath || (text.match(/[\w\-./\\]+\.(?:png|jpg|jpeg|webp|tiff|bmp|pdf|xlsx|xls|csv|tsv)/i)?.[0] || '');
+  const isHardwareEnvelopeQuery =
+    /\b(?:max(?:imum)?|min(?:imum)?|bounds?|limits?|envelope|how\s+many)\b.*\b(?:pcie|ocp|risers?|gpus?|cpus?|sockets?|dimms?|channels?|drives?|bays?|slots?|psus?)\b/i.test(text) &&
+    !/\b(?:size\s+(?:a|an|for)|quote\s+me|evaluate\s+(?:this\s+)?boq|validate\s+(?:this\s+)?boq)\b/i.test(text);
+  if (!detectedPath && (isHardwareEnvelopeQuery || context.intent === 'HARDWARE_ENVELOPE_ANALYTICS')) {
+    return {
+      intent: 'HARDWARE_ENVELOPE_ANALYTICS',
+      confidence: 0.96,
+      skillTarget: 'catalog-intelligence-skill',
+      rationale: 'Query asks for deterministic min/max hardware capability bounds, riser/OCP/PCIe slot combinations, or expansion limits.'
+    };
+  }
   const plannedSearch = searchRequest === undefined && !detectedPath ? _compileCatalogSearch(queryText, context) : searchRequest;
   if (!detectedPath && (parsePriceDriftQuery(text, context.previousPriceDriftScope) || plannedSearch)) {
     return {

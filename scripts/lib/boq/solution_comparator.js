@@ -13,16 +13,10 @@
  *   unpriced base/option SKU) and explicit `CATALOG_COVERAGE_GAP` surfacing.
  */
 
-const fs = require('fs');
 const { listAllCatalogs, getChassisMap, matchAlletraMpProducts } = require('../catalog/catalog_discovery.js');
 const { resolveCatalogQueryScope } = require('../catalog/catalog_query_engine.js');
-const { cleanBaseSKU, attachCompanionServices, classifyLifecycleState } = require('../catalog/sku.js');
-const { parseStrictPrice, parseLeadTimeOrEta } = require('../catalog/field_parsers.js');
-const { extractCanonicalAttributes } = require('../catalog/attribute_vectors.js');
 const { evaluateBOQMultiAspect } = require('./boq_evaluator.js');
 const {
-  interpolateMemoryTopology,
-  interpolateStorageTopology,
   computeHaClusterScalingCurve,
   interpolateAlletraMpEnvelope,
   computeNormalizedEfficiencyMetrics,
@@ -31,6 +25,12 @@ const {
 } = require('../conflict/sizing/scaling_interpolator.js');
 const { computeParetoFrontier } = require('../conflict/sizing/pareto_ranker.js');
 const { computeCandidateRunwayAndTradeOffs } = require('../conflict/tradeoff_explainer.js');
+const {
+  roundMetric: _round,
+  loadPlatformCatalogData: _loadPlatformCatalogData,
+  aggregateBomPricingAndLeadTime: _aggregateBomPricingAndLeadTime,
+  assembleServerBom: _assembleServerBom
+} = require('./comparator_bom_assembler.js');
 
 const ALLETRA_MP_IDS = new Set(['Alletra_MP_B10000', 'Alletra_MP_X10000']);
 const FLAGSHIP_SERVER_ORDER = Object.freeze([
@@ -39,45 +39,8 @@ const FLAGSHIP_SERVER_ORDER = Object.freeze([
 
 const EXPLICIT_MODEL_TOKEN_RE = /\b((?:dl|ml|bl|rl|sy|sn|gx|msl)\s*\d{2,5}[a-z]?|synergy\s*\d{3,5}|alletra(?:\s+storage)?(?:\s+mp)?\s*(?:[bx]\d{4,5}[a-z]?|10k|\d{4})|[bx]10\d{3}|[a-z][a-z0-9-]{2,}\s+gen\s*\d{1,2})\b(?:\s*(?:gen\s*|g)(\d{1,2}))?/gi;
 
-function _round(value, decimals = 2) {
-  if (!Number.isFinite(value)) return null;
-  const factor = 10 ** decimals;
-  return Math.round(value * factor) / factor;
-}
-
 function _normalizeKey(str) {
   return String(str || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
-}
-
-function _parseRowPrice(skuRow, desc) {
-  const fields = [
-    skuRow?.['List Price (USD)'],
-    skuRow?.['Unit Price (USD)'],
-    skuRow?.['Price (USD)'],
-    skuRow?.listPrice,
-    skuRow?.unitPriceUsd
-  ];
-  for (const raw of fields) {
-    if (raw === undefined || raw === null || String(raw).trim() === '') continue;
-    const parsed = parseStrictPrice(raw, { row: skuRow, description: desc });
-    if (parsed.priceState === 'PRICED' && Number.isFinite(parsed.priceUsd)) {
-      return { priceUsd: parsed.priceUsd, priceState: 'PRICED' };
-    }
-    return { priceUsd: null, priceState: parsed.priceState || 'UNPRICED' };
-  }
-  return { priceUsd: null, priceState: 'UNPRICED' };
-}
-
-function _isActiveRow(skuRow, sku, desc) {
-  if (/^\[REMOVED\s+SKU\]/i.test(String(desc || '').trim())) return false;
-  const lc = classifyLifecycleState(
-    skuRow?.['Lifecycle Status'] || skuRow?.lifecycleStatus || skuRow?.Status,
-    skuRow?.['Diff Status'] || skuRow?.diffStatus,
-    sku,
-    desc,
-    skuRow?.vendorSupplyStatus
-  );
-  return !lc.isBlockedForProduction && !lc.isConstrainedSupply;
 }
 
 function _inferPillarFromId(catId, idLower) {
@@ -94,8 +57,8 @@ function _inferPlatformMeta(cat, chassisMap) {
   const pillar = _inferPillarFromId(cat.id, idLower);
   const genMatch = String(entry.gen || cat.gen || cat.id || '').match(/Gen\s*(\d+)/i);
   const generation = genMatch ? `Gen${genMatch[1]}` : (entry.gen || cat.gen || null);
-  const defaultU = idLower.includes('dl360') ? 1 : (idLower.includes('dl580') ? 4 : 2);
-  const defaultSockets = /dl145|dl325/i.test(cat.id) ? 1 : (/dl580/i.test(cat.id) ? 4 : 2);
+  const defaultU = idLower.includes('dl380a') ? 4 : (idLower.includes('dl360') || idLower.includes('dl325') || idLower.includes('dl145') ? 1 : (idLower.includes('dl580') || idLower.includes('dl560') ? 4 : (idLower.includes('synergy') ? 10 : 2)));
+  const defaultSockets = /dl145|dl325|dl345/i.test(cat.id) ? 1 : (/dl580/i.test(cat.id) ? 4 : 2);
   const defaultBays = /dl360/i.test(cat.id) ? 10 : (/dl145/i.test(cat.id) ? 6 : 24);
   return {
     platform: cat.id,
@@ -105,7 +68,7 @@ function _inferPlatformMeta(cat, chassisMap) {
     pillar,
     uHeight: Number.isFinite(entry.uHeight) ? entry.uHeight : defaultU,
     baseSku: entry.baseSku || cat.baseSku || null,
-    channelsPerSocket: /dl385|dl325|dl345|dl145/i.test(cat.id) ? 12 : 8,
+    channelsPerSocket: /dl145/i.test(cat.id) ? 6 : (/dl385|dl325|dl345/i.test(cat.id) ? 12 : 8),
     maxSockets: defaultSockets,
     maxBays: defaultBays
   };
@@ -135,6 +98,9 @@ function _extractSpecFromQueryText(rawText) {
   const raidMatch = text.match(/\b(RAID\s*6[\s-]*ADG|RAID\s*(?:10|0|1|5|6)|vSAN(?:[\s_-]*RAID[56])?)\b/i);
   const protoMatch = text.match(/\b(NVMe|SAS|SATA)\b/i);
   const haMatch = text.match(/\b(2N|N\+1)\b/i);
+  const gpuMatch = text.match(/\b(\d+)\s*x?\s*(?:nvidia|gpu|h100|h200|l40s?|l4|a100|b200)\b/i);
+  const gpuModelMatch = text.match(/\b(H100\s*NVL|H100|H200|L40S|L40|L4|A100|B200|RTX\s*Pro\s*6000)\b/i);
+  const ambientMatch = text.match(/\b(\d{2})\s*°?\s*C\b/i);
   return {
     queryText: text,
     platforms: [],
@@ -145,6 +111,11 @@ function _extractSpecFromQueryText(rawText) {
     hotSpares: matchNum(/\b(\d+)\s*hot\s*spares?\b/i) ?? 0,
     driveProtocol: protoMatch ? protoMatch[1].toUpperCase() : null,
     nicSpeedGbps: matchNum(/\b(\d{1,3})\s*GbE\b/i),
+    fcPorts: matchNum(/\b(\d+)\s*(?:fc|fibre\s*channel)\s*ports?\b/i),
+    gpuCount: gpuMatch ? Number(gpuMatch[1]) : 0,
+    gpuModel: gpuModelMatch ? gpuModelMatch[1] : null,
+    ambientTempC: ambientMatch ? Number(ambientMatch[1]) : null,
+    workloadTier: /\b(?:sap\s*hana|ai|llm|inference|hft|oltp|vdi|vmware)\b/i.test(text) ? text.match(/\b(?:sap\s*hana|ai|llm|inference|hft|oltp|vdi|vmware)\b/i)[0].toUpperCase() : null,
     nodeCount: Math.max(1, matchNum(/\b(\d+)\s*(?:nodes?|servers?)\b/i) ?? 1),
     haPolicy: haMatch ? haMatch[1].toUpperCase() : 'N+1',
     pillar: /\balletra|storage\s+array|san\b/i.test(text) ? 'Storage' : 'Server',
@@ -181,6 +152,13 @@ function extractComparisonSpec(specOrQuery) {
     hotSpares: _mergeSpecField(specOrQuery.hotSpares, null, base.hotSpares, 0),
     driveProtocol: _mergeSpecField(specOrQuery.driveProtocol, null, base.driveProtocol, null),
     nicSpeedGbps: _mergeSpecField(specOrQuery.nicSpeedGbps, null, base.nicSpeedGbps, null),
+    fcPorts: _mergeSpecField(specOrQuery.fcPorts, null, base.fcPorts, null),
+    gpuCount: _mergeSpecField(specOrQuery.gpuCount, null, base.gpuCount, 0),
+    gpuModel: _mergeSpecField(specOrQuery.gpuModel, null, base.gpuModel, null),
+    ambientTempC: _mergeSpecField(specOrQuery.ambientTempC, null, base.ambientTempC, null),
+    workloadTier: _mergeSpecField(specOrQuery.workloadTier, null, base.workloadTier, null),
+    powerRateUsdPerKwh: _mergeSpecField(specOrQuery.powerRateUsdPerKwh, null, null, null),
+    targetVendor: _mergeSpecField(specOrQuery.targetVendor, null, null, 'HPE'),
     nodeCount: _mergeSpecField(specOrQuery.nodeCount, specOrQuery.nodes, base.nodeCount, 1),
     haPolicy: _mergeSpecField(specOrQuery.haPolicy, null, base.haPolicy, 'N+1'),
     pillar: _mergeSpecField(specOrQuery.pillar, null, base.pillar, 'Server'),
@@ -308,222 +286,6 @@ function resolveComparisonPlatforms(spec, catalogs, options = {}) {
   };
 }
 
-function _loadPlatformCatalogData(cat, options = {}) {
-  if (options.catalogDataById && Object.hasOwn(options.catalogDataById, cat.id)) {
-    return options.catalogDataById[cat.id];
-  }
-  if (!cat?.catalogJsonPath || !fs.existsSync(cat.catalogJsonPath)) return null;
-  try {
-    const parsed = JSON.parse(fs.readFileSync(cat.catalogJsonPath, 'utf8'));
-    return attachCompanionServices(parsed, cat.catalogJsonPath);
-  } catch {
-    return null;
-  }
-}
-
-function _findCatalogRowBySku(catalogData, targetSku) {
-  const clean = cleanBaseSKU(targetSku);
-  if (!clean || !Array.isArray(catalogData?.entries)) return null;
-  for (const entry of catalogData.entries) {
-    for (const skuRow of entry?.skus || []) {
-      if (cleanBaseSKU(skuRow['Product #'] || skuRow.sku) === clean) {
-        return { skuRow, entry };
-      }
-    }
-  }
-  return null;
-}
-
-function _buildBomItemFromRow(skuRow, role, quantity) {
-  const sku = cleanBaseSKU(skuRow['Product #'] || skuRow.sku);
-  const desc = String(skuRow.Description || skuRow.description || '').trim();
-  const { priceUsd, priceState } = _parseRowPrice(skuRow, desc);
-  const lead = parseLeadTimeOrEta(skuRow['Lead Time'] || skuRow.leadTime, skuRow.leadTimeDays);
-  return { sku, description: desc, quantity, role, unitPriceUsd: priceUsd, priceState, leadTimeDays: lead.days };
-}
-
-function _selectBaseChassisItem(catalogData, meta) {
-  if (meta.baseSku) {
-    const found = _findCatalogRowBySku(catalogData, meta.baseSku);
-    if (found) return _buildBomItemFromRow(found.skuRow, 'Base Chassis', 1);
-  }
-  for (const entry of catalogData?.entries || []) {
-    if (!/chassis/i.test(entry.parentCategory || '')) continue;
-    for (const skuRow of entry?.skus || []) {
-      const sku = cleanBaseSKU(skuRow['Product #'] || skuRow.sku);
-      const desc = String(skuRow.Description || skuRow.description || '').trim();
-      if (sku && /\bcto\b/i.test(desc) && _isActiveRow(skuRow, sku, desc)) {
-        return _buildBomItemFromRow(skuRow, 'Base Chassis', 1);
-      }
-    }
-  }
-  return null;
-}
-
-function _extractActiveCpus(catalogData) {
-  const cpus = [];
-  const seen = new Set();
-  for (const entry of catalogData?.entries || []) {
-    for (const skuRow of entry?.skus || []) {
-      const sku = cleanBaseSKU(skuRow['Product #'] || skuRow.sku);
-      const desc = String(skuRow.Description || skuRow.description || '').trim();
-      if (!sku || seen.has(sku) || !/\b(?:xeon|epyc|processor)\b/i.test(desc)) continue;
-      if (/\b(?:heat\s*sink|heatsink|blank|kit\s+enablement|fan|cable|cage)\b/i.test(desc)) continue;
-      if (!_isActiveRow(skuRow, sku, desc)) continue;
-      const canonical = extractCanonicalAttributes({ sku, description: desc, category: entry.parentCategory || '' }, entry);
-      const cores = canonical.attributes?.cores || Number((desc.match(/\b(\d{1,3})[\s-]*core\b/i) || [])[1] || 0);
-      if (!Number.isFinite(cores) || cores < 4) continue;
-      const tdpWatts = canonical.attributes?.tdpWatts || Number((desc.match(/\b(\d{2,3})\s*W\b/i) || [])[1] || 185);
-      const { priceUsd, priceState } = _parseRowPrice(skuRow, desc);
-      const lead = parseLeadTimeOrEta(skuRow['Lead Time'] || skuRow.leadTime, skuRow.leadTimeDays);
-      seen.add(sku);
-      cpus.push({ sku, description: desc, cores, tdpWatts, unitPriceUsd: priceUsd, priceState, leadTimeDays: lead.days });
-    }
-  }
-  return cpus;
-}
-
-function _selectCpuConfiguration(catalogData, targetCores, meta) {
-  const cpus = _extractActiveCpus(catalogData);
-  if (!cpus.length) return { item: null, socketCount: 0, totalCores: 0, maxTdpWatts: 0, coverageGap: true };
-
-  const desiredCores = Number.isFinite(targetCores) && targetCores > 0 ? targetCores : 32;
-  const socketOptions = meta.maxSockets >= 2 ? [2, 1] : [1];
-  const candidates = [];
-  for (const cpu of cpus) {
-    for (const sockets of socketOptions) {
-      candidates.push({
-        cpu,
-        sockets,
-        totalCores: cpu.cores * sockets,
-        meetsTarget: cpu.cores * sockets >= desiredCores,
-        totalCost: cpu.unitPriceUsd !== null ? cpu.unitPriceUsd * sockets : null
-      });
-    }
-  }
-  candidates.sort((a, b) => {
-    if (a.meetsTarget !== b.meetsTarget) return a.meetsTarget ? -1 : 1;
-    if (a.totalCores !== b.totalCores) return a.meetsTarget ? (a.totalCores - b.totalCores) : (b.totalCores - a.totalCores);
-    if (a.sockets !== b.sockets) return b.sockets - a.sockets;
-    return (a.totalCost ?? Number.POSITIVE_INFINITY) - (b.totalCost ?? Number.POSITIVE_INFINITY) || a.cpu.sku.localeCompare(b.cpu.sku);
-  });
-
-  const best = candidates[0];
-  return {
-    item: {
-      sku: best.cpu.sku,
-      description: best.cpu.description,
-      quantity: best.sockets,
-      role: 'Processor',
-      unitPriceUsd: best.cpu.unitPriceUsd,
-      priceState: best.cpu.priceState,
-      leadTimeDays: best.cpu.leadTimeDays
-    },
-    socketCount: best.sockets,
-    totalCores: best.totalCores,
-    maxTdpWatts: best.cpu.tdpWatts,
-    meetsTarget: best.meetsTarget,
-    coverageGap: false
-  };
-}
-
-function _selectFirstMatchingCatalogOption(catalogData, role, quantity, matchFn, preferPriced = true) {
-  const hits = [];
-  for (const entry of catalogData?.entries || []) {
-    for (const skuRow of entry?.skus || []) {
-      const sku = cleanBaseSKU(skuRow['Product #'] || skuRow.sku);
-      const desc = String(skuRow.Description || skuRow.description || '').trim();
-      if (!sku || !desc || !_isActiveRow(skuRow, sku, desc)) continue;
-      if (!matchFn(sku, desc, entry)) continue;
-      hits.push(_buildBomItemFromRow(skuRow, role, quantity));
-    }
-  }
-  if (!hits.length) return null;
-  hits.sort((a, b) => {
-    if (preferPriced && (a.unitPriceUsd !== null) !== (b.unitPriceUsd !== null)) {
-      return a.unitPriceUsd !== null ? -1 : 1;
-    }
-    return (a.unitPriceUsd ?? Number.POSITIVE_INFINITY) - (b.unitPriceUsd ?? Number.POSITIVE_INFINITY) || a.sku.localeCompare(b.sku);
-  });
-  return hits[0];
-}
-
-function _selectPsuItem(catalogData, estimatedWatts) {
-  const psus = [];
-  for (const entry of catalogData?.entries || []) {
-    for (const skuRow of entry?.skus || []) {
-      const sku = cleanBaseSKU(skuRow['Product #'] || skuRow.sku);
-      const desc = String(skuRow.Description || skuRow.description || '').trim();
-      if (!sku || !/\b(?:power\s*supply|flex\s*slot)\b/i.test(desc) || /\b(?:cord|cable|enablement|blank|-48\s*vdc|dc\s+power)\b/i.test(desc)) continue;
-      if (!_isActiveRow(skuRow, sku, desc)) continue;
-      const watts = Number((desc.match(/\b(\d{3,4})\s*W\b/i) || [])[1] || 800);
-      psus.push({ ..._buildBomItemFromRow(skuRow, 'Power Supply', 2), watts });
-    }
-  }
-  if (!psus.length) return null;
-  const minWatts = Math.max(800, Math.ceil(estimatedWatts * 1.25));
-  psus.sort((a, b) => {
-    const fitDiff = (a.watts >= minWatts ? 0 : 1) - (b.watts >= minWatts ? 0 : 1);
-    return fitDiff || (a.watts - b.watts) || ((a.unitPriceUsd ?? Number.POSITIVE_INFINITY) - (b.unitPriceUsd ?? Number.POSITIVE_INFINITY)) || a.sku.localeCompare(b.sku);
-  });
-  const { watts: _w, ...chosen } = psus[0];
-  return chosen;
-}
-
-function _appendThermalAndMgmtEnablement(bomItems, catalogData, cpuRes) {
-  const sockets = cpuRes.socketCount || 2;
-  const highPerfHeatSink = cpuRes.maxTdpWatts > 205
-    ? _selectFirstMatchingCatalogOption(catalogData, 'Cooling / Thermal', sockets, (_s, d) => /high\s*performance.*heat\s*sink/i.test(d) && !/liquid|dlc|direct/i.test(d))
-    : null;
-  const heatSink = highPerfHeatSink || _selectFirstMatchingCatalogOption(
-    catalogData, 'Cooling / Thermal', sockets, (_s, d) => /heat\s*sink/i.test(d) && !/liquid|dlc|blank|enablement/i.test(d)
-  );
-  if (heatSink) bomItems.push(heatSink);
-
-  if (cpuRes.maxTdpWatts > 185) {
-    const fanKit = _selectFirstMatchingCatalogOption(
-      catalogData, 'Cooling / Thermal', 1, (_s, d) => /high\s*performance\s*fan/i.test(d) && !/blank/i.test(d)
-    );
-    if (fanKit) bomItems.push(fanKit);
-  }
-
-  const mgmt = _selectFirstMatchingCatalogOption(
-    catalogData, 'Software', 1, (s, d) => s === 'R7A11AAE' || s === 'E5Y43A' || /compute\s+ops\s+management.*3-?y/i.test(d)
-  );
-  if (mgmt) bomItems.push(mgmt);
-}
-
-function _aggregateBomPricingAndLeadTime(bomItems, nodeCount) {
-  const unpricedSkus = [];
-  let perNodeCostUsd = 0;
-  let maxLeadTimeDays = null;
-  let unknownLeadTimeCount = 0;
-
-  for (const item of bomItems) {
-    if (item.unitPriceUsd === null || !Number.isFinite(item.unitPriceUsd) || item.priceState !== 'PRICED') {
-      unpricedSkus.push(item.sku);
-    } else {
-      perNodeCostUsd += item.unitPriceUsd * item.quantity;
-    }
-    if (Number.isFinite(item.leadTimeDays)) {
-      maxLeadTimeDays = maxLeadTimeDays === null ? item.leadTimeDays : Math.max(maxLeadTimeDays, item.leadTimeDays);
-    } else {
-      unknownLeadTimeCount += 1;
-    }
-  }
-
-  const pricingComplete = bomItems.length > 0 && unpricedSkus.length === 0;
-  return {
-    perNodeCostUsd: pricingComplete ? _round(perNodeCostUsd, 2) : null,
-    capexListUsd: pricingComplete ? _round(perNodeCostUsd * nodeCount, 2) : null,
-    pricingComplete,
-    unpricedSkus,
-    maxLeadTimeDays: unknownLeadTimeCount === 0 ? maxLeadTimeDays : null,
-    observedMaxLeadTimeDays: maxLeadTimeDays,
-    unknownLeadTimeCount
-  };
-}
-
 function _buildAlletraPlatformComparisonRow(cat, meta, spec, options) {
   const envelope = interpolateAlletraMpEnvelope({
     product: cat.id,
@@ -580,66 +342,6 @@ function _collectPlatformDisqualifications(cpuRes, memInterp, storageInterp, spe
   return reasons;
 }
 
-function _assembleServerBom(cat, meta, catalogData, spec) {
-  const bomItems = [];
-  const coverageGaps = [];
-
-  const baseItem = _selectBaseChassisItem(catalogData, meta);
-  if (baseItem) bomItems.push(baseItem);
-  else coverageGaps.push({ code: 'CATALOG_COVERAGE_GAP', category: 'Base Chassis', detail: `No active CTO base chassis SKU found in ${cat.id} catalog.` });
-
-  const cpuRes = _selectCpuConfiguration(catalogData, spec.cores, meta);
-  if (cpuRes.coverageGap || !cpuRes.item) {
-    coverageGaps.push({ code: 'CATALOG_COVERAGE_GAP', category: 'Processor', detail: `No active Processor SKUs found in ${cat.id} catalog.` });
-  } else {
-    bomItems.push(cpuRes.item);
-    _appendThermalAndMgmtEnablement(bomItems, catalogData, cpuRes);
-  }
-
-  const targetRamGb = spec.ramGb || 256;
-  const memInterp = interpolateMemoryTopology({
-    targetRamGb,
-    socketCount: cpuRes.socketCount || Math.min(2, meta.maxSockets),
-    channelsPerSocket: meta.channelsPerSocket,
-    preferFio: true,
-    catalogData
-  });
-  if (memInterp.coverageGap === 'CATALOG_COVERAGE_GAP' || !memInterp.bestBalanced) {
-    coverageGaps.push({ code: 'CATALOG_COVERAGE_GAP', category: 'Memory', detail: `No active Memory DIMM SKUs found in ${cat.id} catalog.` });
-  } else {
-    const dimm = memInterp.bestBalanced;
-    bomItems.push({ sku: dimm.sku, description: dimm.description, quantity: dimm.totalDimms, role: 'Memory', unitPriceUsd: dimm.unitPriceUsd, priceState: dimm.pricingComplete ? 'PRICED' : 'UNPRICED', leadTimeDays: dimm.leadTimeDays });
-  }
-
-  let storageInterp = null;
-  if (Number.isFinite(spec.usableTb) && spec.usableTb > 0) {
-    storageInterp = interpolateStorageTopology({
-      targetUsableTb: spec.usableTb, raidLevel: spec.raidLevel, hotSpares: spec.hotSpares,
-      driveProtocol: spec.driveProtocol, maxBays: meta.maxBays, catalogData
-    });
-    if (storageInterp.coverageGap === 'CATALOG_COVERAGE_GAP') {
-      coverageGaps.push({ code: 'CATALOG_COVERAGE_GAP', category: 'Drive Cage / Drive', detail: `No active physical Drive SKUs found in ${cat.id} catalog to satisfy ${spec.usableTb}TB usable.` });
-    } else if (storageInterp.recommended) {
-      const drv = storageInterp.recommended;
-      bomItems.push({ sku: drv.sku, description: drv.description, quantity: drv.totalDrives, role: 'Drive Cage / Drive', unitPriceUsd: drv.unitPriceUsd, priceState: drv.pricingComplete ? 'PRICED' : 'UNPRICED', leadTimeDays: drv.leadTimeDays });
-    }
-  }
-
-  if (Number.isFinite(spec.nicSpeedGbps) && spec.nicSpeedGbps > 0) {
-    const nicItem = _selectFirstMatchingCatalogOption(
-      catalogData, 'Network Adapter', 1,
-      (_s, d) => /\b(?:adapter|ethernet|nic|ocp)\b/i.test(d) && !/\b(?:transceiver|cable|sfp|qsfp|dac|aoc)\b/i.test(d) && new RegExp(`\\b${spec.nicSpeedGbps}\\s*Gb`, 'i').test(d)
-    );
-    if (nicItem) bomItems.push(nicItem);
-  }
-
-  const estimatedBaseWatts = (cpuRes.maxTdpWatts * (cpuRes.socketCount || 2)) + ((memInterp.bestBalanced?.totalDimms || 8) * 10) + ((storageInterp?.recommended?.totalDrives || 0) * 14) + 120;
-  const psuItem = _selectPsuItem(catalogData, estimatedBaseWatts);
-  if (psuItem) bomItems.push(psuItem);
-
-  return { bomItems, coverageGaps, cpuRes, memInterp, storageInterp, targetRamGb, estimatedBaseWatts };
-}
-
 function _computeServerHeadroomAndSpecs(cpuRes, memInterp, storageInterp, spec) {
   const ramPerNode = memInterp.bestBalanced?.totalCapacityGb || 0;
   const usablePerNode = storageInterp?.recommended?.usableTb || null;
@@ -681,6 +383,39 @@ function _runSafeServerEvaluation(bomItems, cat, catalogData, nodeCount) {
   }
 }
 
+function _computePlatformAnalyticsExtension(meta, catalogData, bomItems, evalRes, pricing, peakWatts, spec, options) {
+  const { computeFullPlatformEnvelope } = require('../rules/hardware_envelope_solver.js');
+  const { solveBuildableConfiguration } = require('../conflict/buildable_graph_solver.js');
+  const envelope = computeFullPlatformEnvelope(meta.platform, catalogData, { gpuModel: spec.gpuModel });
+  const buildClosure = solveBuildableConfiguration(bomItems, {
+    catalogData,
+    chassisInfo: { model: meta.model, formFactor: meta.formFactor },
+    initialAspectResult: evalRes,
+    ruleOptions: { serverCount: spec.nodeCount, ambientTempC: spec.ambientTempC ?? 25 },
+    skipRepairs: false
+  });
+  const gpuLimit = /single/i.test(String(spec.gpuModel || '')) ? envelope.gpu.maxSingleWideGpus : envelope.gpu.maxDoubleWideGpus;
+  const requiredNodesForGpu = (spec.gpuCount > 0 && gpuLimit > 0) ? Math.ceil(spec.gpuCount / gpuLimit) : 1;
+  const rate = Number(spec.powerRateUsdPerKwh ?? options.powerRateUsdPerKwh);
+  const canComputeTco = pricing.pricingComplete === true && Number.isFinite(pricing.capexListUsd) && Number.isFinite(rate) && rate > 0 && Number.isFinite(peakWatts);
+  const annualPowerUsd = canComputeTco ? Number(((peakWatts / 1000) * 8760 * rate).toFixed(2)) : null;
+  const tco3YearUsd = annualPowerUsd !== null ? Number((pricing.capexListUsd + (annualPowerUsd * 3)).toFixed(2)) : null;
+  const tco5YearUsd = annualPowerUsd !== null ? Number((pricing.capexListUsd + (annualPowerUsd * 5)).toFixed(2)) : null;
+
+  return {
+    envelopeSummary: { maxSockets: envelope.cpu.maxSockets, maxOcpSlots: envelope.ocp.maxSlots, maxActivePcieSlots: envelope.pcie.maxElectricallyActiveSlots, maxDoubleWideGpus: envelope.gpu.maxDoubleWideGpus },
+    rightSizedNodesMin: Math.max(spec.nodeCount, requiredNodesForGpu),
+    isBuildable: Boolean(evalRes?.isMathClean && buildClosure.isBuildable),
+    buildabilityStatus: buildClosure.status,
+    buildabilityRepairsCount: buildClosure.repairsApplied.length,
+    buildabilityErrors: buildClosure.remainingErrors,
+    day2Runway: { maxDimmsChassis: envelope.memory.maxDimmsChassis, maxActivePcieSlots: envelope.pcie.maxElectricallyActiveSlots, maxDoubleWideGpus: envelope.gpu.maxDoubleWideGpus, maxSffDrives: envelope.storage.maxSffDrives },
+    annualPowerUsd,
+    tco3YearUsd,
+    tco5YearUsd
+  };
+}
+
 function _evaluateSingleServerPlatform(cat, meta, catalogData, spec, options) {
   const assembled = _assembleServerBom(cat, meta, catalogData, spec);
   const { bomItems, coverageGaps, cpuRes, memInterp, storageInterp, targetRamGb, estimatedBaseWatts } = assembled;
@@ -689,7 +424,7 @@ function _evaluateSingleServerPlatform(cat, meta, catalogData, spec, options) {
   const { achievedCores, achievedRamGb, achievedUsableTb, headroom, achievedSpecs } =
     _computeServerHeadroomAndSpecs(cpuRes, memInterp, storageInterp, spec);
 
-  const evalWatts = evalRes?.aspects?.power?.estimatedNodeWattage;
+  const evalWatts = evalRes?.evalSummary?.power?.estimatedNodeWattage ?? evalRes?.aspects?.power?.estimatedNodeWattage;
   const perNodeWatts = Number.isFinite(evalWatts) && evalWatts > 0 ? evalWatts : Math.round(estimatedBaseWatts);
   const peakWatts = perNodeWatts * spec.nodeCount;
   const rackUnits = meta.uHeight * spec.nodeCount;
@@ -711,6 +446,8 @@ function _evaluateSingleServerPlatform(cat, meta, catalogData, spec, options) {
     ? { cpu: analyzePriceTrendAnalytics(null, { catalogDir: cat.catalogDir, sku: cpuRes.item.sku }) }
     : null;
 
+  const extAnalytics = _computePlatformAnalyticsExtension(meta, catalogData, bomItems, evalRes, pricing, peakWatts, spec, options);
+
   return {
     platform: meta.platform, model: meta.model, generation: meta.generation, family: meta.family, pillar: meta.pillar,
     capexListUsd: pricing.capexListUsd, perNodeCostUsd: pricing.perNodeCostUsd, pricingComplete: pricing.pricingComplete, unpricedSkus: pricing.unpricedSkus,
@@ -719,6 +456,14 @@ function _evaluateSingleServerPlatform(cat, meta, catalogData, spec, options) {
     maxLeadTimeDays: pricing.maxLeadTimeDays, observedMaxLeadTimeDays: pricing.observedMaxLeadTimeDays, unknownLeadTimeCount: pricing.unknownLeadTimeCount,
     headroom,
     achievedSpecs,
+    isBuildable: extAnalytics.isBuildable,
+    buildabilityStatus: extAnalytics.buildabilityStatus,
+    rightSizedNodesMin: extAnalytics.rightSizedNodesMin,
+    envelopeSummary: extAnalytics.envelopeSummary,
+    day2Runway: extAnalytics.day2Runway,
+    annualPowerUsd: extAnalytics.annualPowerUsd,
+    tco3YearUsd: extAnalytics.tco3YearUsd,
+    tco5YearUsd: extAnalytics.tco5YearUsd,
     qualified: disqualifiedReasons.length === 0,
     disqualifiedReasons,
     catalogCoverageGaps: coverageGaps,
@@ -726,7 +471,8 @@ function _evaluateSingleServerPlatform(cat, meta, catalogData, spec, options) {
     evaluationSummary: {
       isMathClean: Boolean(evalRes?.isMathClean),
       aspectErrorsCount: Array.isArray(evalRes?.errors) ? evalRes.errors.length : 0,
-      missingDependenciesCount: Array.isArray(evalRes?.missingDependencies) ? evalRes.missingDependencies.length : 0
+      missingDependenciesCount: Array.isArray(evalRes?.missingDependencies) ? evalRes.missingDependencies.length : 0,
+      buildabilityRepairsCount: extAnalytics.buildabilityRepairsCount
     },
     memoryInterpolation: memInterp,
     storageInterpolation: storageInterp,

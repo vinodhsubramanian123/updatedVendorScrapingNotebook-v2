@@ -12,7 +12,7 @@
 
 ## 1. Executive Summary & Review Disposition
 
-Following comprehensive analysis by three specialized research subagents (Guardrail & Grounding, Routing & Pipeline, Scraping & Knowledge Sync) and subsequent Codex peer review codified in [`PLAN.md`](file:///PLAN.md), the codebase underwent a structured, seven-milestone architectural hardening program (Milestones M0 through M6).
+Following comprehensive analysis by three specialized research subagents (Guardrail & Grounding, Routing & Pipeline, Scraping & Knowledge Sync) and subsequent Codex peer review codified in the M0–M6 remediation specification (`PLAN.md`, superseded by [`docs/INVARIANTS.md`](../INVARIANTS.md)), the codebase underwent a structured, seven-milestone architectural hardening program (Milestones M0 through M6).
 
 This remediation eliminated critical false-positive failure modes, closed query-scope leakage in NotebookLM integrations, enforced clean-room staging isolation, added cryptographic pre-upload artifact integrity checks, aligned the lifecycle engine to canonical 9-phase DAG execution, and introduced append-only candidate resolution trails.
 

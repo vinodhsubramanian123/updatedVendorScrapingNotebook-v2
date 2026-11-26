@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "defaultTier": "guardrail_fast",
+  "tiers": {
+    "ocr_vision": {
+      "model": "gemini-3.6-flash",
+      "fallbackModels": ["gemini-3.7-flash", "gemini-3.5-flash-lite"],
+      "temperature": 0.1,
+      "purpose": "Multimodal PDF/image tender and BOM line extraction"
+    },
+    "guardrail_fast": {
+      "model": "gemini-3.6-flash",
+      "fallbackModels": ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-3.5-flash-lite"],
+      "temperature": 0.2,
+      "purpose": "Tool-calling Dual-Brain guardrail loop over deterministic aspect checks"
+    },
+    "reasoning_deep": {
+      "model": "gemini-3.7-flash",
+      "fallbackModels": ["gemini-3.6-flash", "gemini-3.8-flash"],
+      "temperature": 0.15,
+      "purpose": "Multi-constraint topology arbitration and counterfactual root-cause diagnosis"
+    },
+    "synthesis_structured": {
+      "model": "gemini-3.6-flash",
+      "fallbackModels": ["gemini-3.7-flash", "gemini-3.5-flash-lite"],
+      "temperature": 0.15,
+      "purpose": "Grounded Q&A synthesis over verified QuickSpecs and catalog evidence"
+    },
+    "adversarial_audit": {
+      "model": "gemini-3.7-flash",
+      "fallbackModels": ["gemini-3.6-flash", "gemini-3.5-flash-lite"],
+      "temperature": 0.1,
+      "purpose": "Red-team stress testing and adversarial counterexample generation"
+    }
+  }
+}

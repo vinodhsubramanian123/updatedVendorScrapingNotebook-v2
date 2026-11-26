@@ -144,7 +144,9 @@ function tallyNetworkAdaptersAndInterconnects(tally, it, desc, sku, qty, role) {
   // Standard Network Adapters
   const isAdapter = role === 'Network Adapter' || desc.includes('adapter') || desc.includes('ethernet') || desc.includes('nic') || desc.includes('sfp28') || desc.includes('baset') || desc.includes('flr');
   if (isAdapter && !desc.includes('interconnect') && !desc.includes('switch') && !desc.includes('transceiver') && !desc.includes('cable') && !desc.includes('mezzanine') && !desc.includes('enablement')) {
-    if (desc.includes('ocp') || desc.includes('flr') || desc.includes('standup')) {
+    const isStandupPcie = desc.includes('standup') || (desc.includes('pcie') && !desc.includes('ocp'));
+    const isOcpFormFactor = !isStandupPcie && (desc.includes('ocp') || desc.includes('flexiblelom') || desc.includes('flexlom') || /\bflr\b/.test(desc));
+    if (isOcpFormFactor) {
       tally.hasOcpAdapter = true;
       tally.ocpAdapterCount += qty;
     }
@@ -240,11 +242,26 @@ function validateSynergyFabrics(synergyInterconnects, synergyMezzCards) {
 
 function evalNetworkingOcp(items, catalogData = null, mandatorySkus = {}, serverCount = 1) {
   let maxOcpSlots = 2;
+  const chassisId = String(catalogData?.metadata?.productId || catalogData?.metadata?.chassis || mandatorySkus?._chassisId || '').toLowerCase();
+  if (chassisId.includes('synergy')) {
+    maxOcpSlots = 0;
+  } else if (chassisId.includes('dl145')) {
+    maxOcpSlots = 1;
+  } else if (chassisId.includes('dl325') || chassisId.includes('dl345')) {
+    maxOcpSlots = 1;
+  }
   if (catalogData && catalogData.entries) {
-    const ocpEntry = catalogData.entries.find(e => (e.parentCategory || '').toLowerCase().includes('network') || (e.subCategory || '').toLowerCase().includes('ocp'));
+    const ocpEntry = catalogData.entries.find(e => {
+      const sub = (e.subCategory || '').toLowerCase();
+      const cat = (e.parentCategory || '').toLowerCase();
+      return (sub.includes('ocp') && !cat.includes('storage')) || (!sub && cat.includes('network'));
+    });
     if (ocpEntry && typeof ocpEntry.maxQty === 'number' && ocpEntry.maxQty > 0) {
       maxOcpSlots = ocpEntry.maxQty;
     }
+  }
+  if (catalogData?.metadata?.ocpSlots && Number(catalogData.metadata.ocpSlots) > 0) {
+    maxOcpSlots = Number(catalogData.metadata.ocpSlots);
   }
 
   const skuCategoryMap = buildSkuCategoryMap(catalogData);

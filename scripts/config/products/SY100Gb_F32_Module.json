@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "SY100Gb_F32_Module",
+  "vendor": "HPE",
+  "domain": "networking",
+  "subDomain": "synergy_vc_fabric",
+  "family": "Synergy Virtual Connect",
+  "formFactor": "Synergy Interconnect Bay",
+  "protocol": "100GbE / 25GbE",
+  "maxPsuBays": 0,
+  "defaultSupportPolicy": { "tier": "TECH_CARE_BASIC", "durationYears": 3 },
+  "skuAliases": ["SY100Gb_F32_Module", "SY100Gb F32 Module"]
+}

@@ -330,13 +330,59 @@ async function _handleMultiClusterTender(queryText, context) {
 
 async function _handleSolutionComparison(queryText, context) {
   const { compareSolutionsAcrossPlatforms } = require('../boq/solution_comparator.js');
+  const { coordinateMultiNotebookQueries } = require('../notebook/multi_notebook_coordinator.js');
   const specOrQuery = context.comparisonSpec || queryText;
-  return compareSolutionsAcrossPlatforms(specOrQuery, {
+  const comparison = compareSolutionsAcrossPlatforms(specOrQuery, {
     catalogs: context.availableCatalogs,
     catalogDataById: context.catalogDataById,
     maxPlatforms: context.maxPlatforms,
     includePriceTrends: Boolean(context.includePriceTrends)
   });
+  if (context.includeMultiNotebookGrounding === true && Array.isArray(comparison.comparedPlatforms) && comparison.comparedPlatforms.length > 0) {
+    comparison.multiNotebookGrounding = await coordinateMultiNotebookQueries(
+      comparison.comparedPlatforms.map(productKey => ({
+        productKey,
+        query: `${queryText || 'Verify configuration and component compatibility rules'} for ${productKey}`
+      })),
+      { queryOptions: { strictCloud: Boolean(context.strictCloud) } }
+    );
+  }
+  return comparison;
+}
+
+async function _handleHardwareEnvelopeAnalytics(queryText, context) {
+  const {
+    computeFullPlatformEnvelope,
+    solveMaxPcieAndOcpTopology,
+    solveMaxGpuTopology,
+    solveMemoryEnvelope
+  } = require('../rules/hardware_envelope_solver.js');
+  const scope = context.platformId
+    ? { chassisKey: context.platformId, catalogData: context.catalogData || null }
+    : (() => {
+        try { return getChassisCatalog(queryText, context); }
+        catch { return { chassisKey: context.chassisName || 'DL380_Gen12', catalogData: null }; }
+      })();
+  const platformId = scope.chassisKey && !['AMBIGUOUS_QUERY', 'AMBIGUOUS_PRODUCT', 'GENERATION_MISMATCH', 'GENERIC'].includes(scope.chassisKey)
+    ? scope.chassisKey
+    : (context.platformId || 'DL380_Gen12');
+  const opts = {
+    cpuCount: context.cpuCount,
+    gpuModel: context.gpuModel,
+    gpuWidth: context.gpuWidth,
+    categoryKey: context.categoryKey
+  };
+  const envelope = computeFullPlatformEnvelope(platformId, scope.catalogData || context.catalogData || null, opts);
+  return {
+    intent: 'HARDWARE_ENVELOPE_ANALYTICS',
+    status: 'COMPUTED',
+    platformId,
+    envelope,
+    pcieAndOcp: solveMaxPcieAndOcpTopology(platformId, scope.catalogData || null, opts),
+    gpuTopology: solveMaxGpuTopology(platformId, scope.catalogData || null, opts),
+    memoryEnvelope: solveMemoryEnvelope(platformId, scope.catalogData || null, opts),
+    message: `Computed hardware capability envelope for ${platformId}: max ${envelope.cpu.maxSockets} sockets, ${envelope.pcie.maxElectricallyActiveSlots} active PCIe slots, ${envelope.ocp.maxSlots} OCP 3.0 slots, ${envelope.gpu.maxDoubleWideGpus} DW / ${envelope.gpu.maxSingleWideGpus} SW GPUs.`
+  };
 }
 
 module.exports = {
@@ -349,5 +395,6 @@ module.exports = {
   _handleWorkbookGeneration,
   _handleRemarksReconciliation,
   _handleMultiClusterTender,
-  _handleSolutionComparison
+  _handleSolutionComparison,
+  _handleHardwareEnvelopeAnalytics
 };

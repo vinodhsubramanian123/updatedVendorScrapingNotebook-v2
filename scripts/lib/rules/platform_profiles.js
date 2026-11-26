@@ -167,9 +167,9 @@ const PLATFORM_PROFILES = {
     vendor: 'HPE',
     family: 'ProLiant DL',
     generation: 'Gen12',
-    formFactor: '2U Rack',
+    formFactor: '4U Rack',
     maxSockets: 2,
-    baseChassis: { sku: 'P74700-B21', description: 'HPE ProLiant DL380a Gen12 4EDSFF CTO Server' },
+    baseChassis: { sku: 'P74700-B21', description: 'HPE ProLiant Compute DL380a Gen12 4SFF CTO Server' },
     baseChassisGpu: { sku: 'P76706-B21', description: 'HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server' },
     detection: GENERIC_DETECTION_PATTERNS,
     memoryArchitecture: {
@@ -199,10 +199,10 @@ const PLATFORM_PROFILES = {
     },
     storageArchitecture: {
       sff: {
-        baseBays: 8,
-        baysPerCage: 8,
-        maxCages: 3,
-        maxFrontBays: 24,
+        baseBays: 4,
+        baysPerCage: 4,
+        maxCages: 2,
+        maxFrontBays: 8,
         cageSku: 'P74710-B21',
         cageDesc: 'HPE ProLiant DL380a Gen12 4SFF Front Drive Cage Kit'
       },
@@ -416,23 +416,141 @@ const PLATFORM_PROFILES = {
       hardwareSupportSku: 'HU4B2A3',
       hardwareSupportChildSku: 'HU4B2A3YJR'
     }
+  },
+  'HPE_PROLIANT_DL145_GEN11': {
+    domain: 'server',
+    vendor: 'HPE',
+    family: 'ProLiant DL',
+    generation: 'Gen11',
+    formFactor: '2U Edge Rack (Short Depth)',
+    maxSockets: 1,
+    ocpSlots: 1,
+    basePcieSlots: 1,
+    memoryArchitecture: { generation: 'DDR5', channelsPerSocket: 6, dimmsPerChannel: 1, maxDimmsPerSocket: 6, maxDimmsPerChassis: 6, validBalancedCountsPerSocket: [1, 2, 4, 6] }
+  },
+  'HPE_PROLIANT_DL325_GEN11': {
+    domain: 'server',
+    vendor: 'HPE',
+    family: 'ProLiant DL',
+    generation: 'Gen11',
+    formFactor: '1U Rack',
+    maxSockets: 1,
+    ocpSlots: 1,
+    basePcieSlots: 2,
+    memoryArchitecture: { generation: 'DDR5', channelsPerSocket: 12, dimmsPerChannel: 1, maxDimmsPerSocket: 12, maxDimmsPerChassis: 12, validBalancedCountsPerSocket: [1, 2, 4, 6, 8, 10, 12] }
+  },
+  'HPE_PROLIANT_DL345_GEN11': {
+    domain: 'server',
+    vendor: 'HPE',
+    family: 'ProLiant DL',
+    generation: 'Gen11',
+    formFactor: '2U Rack',
+    maxSockets: 1,
+    ocpSlots: 1,
+    basePcieSlots: 3,
+    memoryArchitecture: { generation: 'DDR5', channelsPerSocket: 12, dimmsPerChannel: 1, maxDimmsPerSocket: 12, maxDimmsPerChassis: 12, validBalancedCountsPerSocket: [1, 2, 4, 6, 8, 10, 12] }
+  },
+  'HPE_PROLIANT_DL360_GEN12': {
+    domain: 'server',
+    vendor: 'HPE',
+    family: 'ProLiant Compute DL',
+    generation: 'Gen12',
+    formFactor: '1U Rack',
+    maxSockets: 2,
+    ocpSlots: 2,
+    basePcieSlots: 2,
+    memoryArchitecture: { generation: 'DDR5', channelsPerSocket: 8, dimmsPerChannel: 2, maxDimmsPerSocket: 16, maxDimmsPerChassis: 32, validBalancedCountsPerSocket: [1, 2, 4, 6, 8, 12, 16] }
+  },
+  'HPE_PROLIANT_DL385_GEN11': {
+    domain: 'server',
+    vendor: 'HPE',
+    family: 'ProLiant DL',
+    generation: 'Gen11',
+    formFactor: '2U Rack',
+    maxSockets: 2,
+    ocpSlots: 2,
+    basePcieSlots: 3,
+    memoryArchitecture: { generation: 'DDR5', channelsPerSocket: 12, dimmsPerChannel: 1, maxDimmsPerSocket: 12, maxDimmsPerChassis: 24, validBalancedCountsPerSocket: [1, 2, 4, 6, 8, 10, 12] }
+  },
+  'HPE_PROLIANT_DL580_GEN12': {
+    domain: 'server',
+    vendor: 'HPE',
+    family: 'ProLiant Compute DL',
+    generation: 'Gen12',
+    formFactor: '4U Rack',
+    maxSockets: 4,
+    ocpSlots: 2,
+    basePcieSlots: 8,
+    memoryArchitecture: { generation: 'DDR5', channelsPerSocket: 8, dimmsPerChannel: 2, maxDimmsPerSocket: 16, maxDimmsPerChassis: 64, validBalancedCountsPerSocket: [1, 2, 4, 6, 8, 12, 16] }
+  },
+  'HPE_SYNERGY_12000_FRAME': {
+    domain: 'composable',
+    vendor: 'HPE',
+    family: 'Synergy',
+    generation: '12000',
+    formFactor: '10U Blade Frame',
+    maxComputeBays: 12,
+    interconnectBays: 6,
+    validPsuCounts: [6, 12],
+    psuSku: 'P44074-B21'
+  },
+  'HPE_ALLETRA_MP_B10000': {
+    domain: 'storage',
+    vendor: 'HPE',
+    family: 'Alletra Storage MP',
+    formFactor: '2U+ Multi-Node',
+    variants: {
+      B10100: { chassisSku: 'S0B84A', switchless: true, maxInternalDrives: 24, minJbofs: 0, maxJbofs: 3 },
+      B10200: { chassisSku: 'S1R06A', switchless: false, maxInternalDrives: 0, minJbofs: 1, maxJbofs: 8, requiresNvmeOfSwitches: true }
+    }
+  },
+  'HPE_STOREFABRIC_SN6700B': {
+    domain: 'networking',
+    subDomain: 'san_fabric',
+    vendor: 'HPE / Brocade',
+    family: 'StoreFabric B-Series',
+    formFactor: '1U Rack',
+    protocol: '64Gb Fibre Channel',
+    basePortsActive: 24,
+    maxPorts: 64
   }
 };
 
+function _mergeSubSection(manifestSection, staticSection) {
+  if (!manifestSection) return staticSection;
+  if (!staticSection) return manifestSection;
+  return { ...manifestSection, ...staticSection };
+}
+
+function _mergeProfileWithManifest(manifest, staticProfile) {
+  if (!manifest) return staticProfile;
+  if (!staticProfile) return manifest;
+  return {
+    ...staticProfile,
+    ...manifest,
+    memoryArchitecture: _mergeSubSection(manifest.memoryArchitecture, staticProfile.memoryArchitecture),
+    slots: _mergeSubSection(manifest.slots, staticProfile.slots),
+    defaultSupportPolicy: _mergeSubSection(manifest.defaultSupportPolicy, staticProfile.defaultSupportPolicy)
+  };
+}
+
 /**
- * Retrieve an exact profile or an unambiguous model suffix. Broad family names
- * and generation-free server names never select a default platform.
+ * Retrieve an exact profile or an unambiguous model suffix. Checks declarative
+ * ProductCapabilityManifest JSON files first, merging/falling back to PLATFORM_PROFILES.
  * @param {string} platformKey
  * @returns {object|null}
  */
 function getPlatformProfile(platformKey = '') {
   if (!platformKey) return null;
   const cleanKey = String(platformKey).trim().toUpperCase().replace(/[-\s]+/g, '_');
-  if (PLATFORM_PROFILES[cleanKey]) return PLATFORM_PROFILES[cleanKey];
-
-  if (!/\d/.test(cleanKey)) return null;
-  const matches = Object.entries(PLATFORM_PROFILES).filter(([key]) => key.endsWith(`_${cleanKey}`));
-  return matches.length === 1 ? matches[0][1] : null;
+  let staticProfile = PLATFORM_PROFILES[cleanKey] || null;
+  if (!staticProfile && /\d/.test(cleanKey)) {
+    const matches = Object.entries(PLATFORM_PROFILES).filter(([key]) => key.endsWith(`_${cleanKey}`));
+    if (matches.length === 1) staticProfile = matches[0][1];
+  }
+  const { resolveManifestForKey } = require('./product_manifest_loader.js');
+  const manifest = resolveManifestForKey(platformKey);
+  return _mergeProfileWithManifest(manifest, staticProfile);
 }
 
 module.exports = {

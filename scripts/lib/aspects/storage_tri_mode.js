@@ -78,28 +78,35 @@ function _tallyCageKits(tally, desc, sku, qty, mandatorySkus = {}, roleSets = ge
       (mandatorySkus?.PREMIUM_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.PREMIUM_CAGE.sku)));
 
   _recordCageRoutingType(tally, desc, isGenericCage || isPremium);
+  const cageBayMatch = desc.match(/(\d+)\s*(?:sff|lff|edsff|e3\.?s|nvme|bay)/i);
+  const parsedCageBays = cageBayMatch ? parseInt(cageBayMatch[1], 10) : 8;
   if (isGenericCage && !desc.includes('premium') && !desc.includes('u.3 prem')) {
     tally.hasDriveCage = true;
-    tally.cageCapacity = (tally.cageCapacity || 0) + (8 * qty);
+    tally.cageCapacity = (tally.cageCapacity || 0) + (parsedCageBays * qty);
   }
   if (isPremium) {
     tally.hasDriveCage = true;
     tally.hasPremiumCage = true;
-    tally.cageCapacity = (tally.cageCapacity || 0) + (8 * qty);
+    tally.cageCapacity = (tally.cageCapacity || 0) + (parsedCageBays * qty);
   }
   _tallyDl380aCageKits(tally, desc, sku, qty, mandatorySkus);
 }
 
 function _tallyChassisBays(tally, desc, qty, role) {
-  if (desc.includes('12lff') || desc.includes('4lff') || desc.includes('8lff') || (role === 'Chassis' && desc.includes('lff'))) {
+  const isAccessoryKit = desc.includes('cage') || desc.includes('kit') || desc.includes('backplane') || desc.includes('cable');
+  if (!isAccessoryKit && (desc.includes('12lff') || desc.includes('4lff') || desc.includes('8lff') || (role === 'Chassis' && desc.includes('lff')))) {
     tally.isLffChassis = true;
     tally.hasDriveCage = true;
     const lffBays = desc.includes('12lff') ? 12 : (desc.includes('8lff') ? 8 : 4);
     tally.cageCapacity = (tally.cageCapacity || 0) + (lffBays * qty);
   }
-  if ((role === 'Chassis' || desc.includes('cto server') || desc.includes('base system') || desc.includes('chassis')) && desc.includes('8sff')) {
+  const isChassisLine = !isAccessoryKit && (role === 'Chassis' || desc.includes('cto server') || desc.includes('configure-to-order') || desc.includes('base system') || desc.includes('chassis'));
+  const sffChassisMatch = isChassisLine ? desc.match(/(\d+)\s*sff/i) : null;
+  if (isChassisLine && sffChassisMatch && !/\bnc\b/i.test(desc)) {
+    const rawChassisBays = parseInt(sffChassisMatch[1], 10);
+    const chassisSffBays = (rawChassisBays === 10 && (desc.includes('hyb') || desc.includes('dl360'))) ? 8 : rawChassisBays;
     tally.hasDriveCage = true;
-    tally.cageCapacity = (tally.cageCapacity || 0) + (8 * qty);
+    tally.cageCapacity = (tally.cageCapacity || 0) + (chassisSffBays * qty);
   }
 }
 
@@ -137,6 +144,13 @@ function _isHardwareStorageController(desc, sku, tally, roleSets = getStorageRol
   return ((desc.includes('controller') || /\b(mr|sr)\d{3}i/i.test(desc) || desc.includes('smart array')) &&
     !isBootController &&
     !isVroc &&
+    !desc.includes('cable') &&
+    !desc.includes('cbl') &&
+    !desc.includes('enablement') &&
+    !desc.includes('battery') &&
+    !desc.includes('capacitor') &&
+    !desc.includes('cage') &&
+    !desc.includes('backplane') &&
     !desc.includes('node controller') &&
     !desc.includes('controller node') &&
     !desc.includes('node pair') &&
@@ -145,13 +159,18 @@ function _isHardwareStorageController(desc, sku, tally, roleSets = getStorageRol
     !desc.includes('ethernet controller'));
 }
 
-function _tallyHardwareStorageController(tally, desc, sku, roleSets = getStorageRoleSets()) {
+function _tallyHardwareStorageController(tally, desc, sku, roleSets = getStorageRoleSets(), qty = 1) {
   if (!_isHardwareStorageController(desc, sku, tally, roleSets)) return;
 
   tally.hasStorageController = true;
-  if (desc.includes('416i') || desc.includes('216i') || desc.includes('932i') || 
-      desc.includes('16-port') || desc.includes('16 port') || desc.includes('32-port')) {
+  if (desc.includes('932i') || desc.includes('32-port') || desc.includes('32 port')) {
     tally.has16PortController = true;
+    tally.controllerPortCapacity = (tally.controllerPortCapacity || 0) + (32 * qty);
+  } else if (desc.includes('416i') || desc.includes('216i') || desc.includes('16-port') || desc.includes('16 port')) {
+    tally.has16PortController = true;
+    tally.controllerPortCapacity = (tally.controllerPortCapacity || 0) + (16 * qty);
+  } else {
+    tally.controllerPortCapacity = (tally.controllerPortCapacity || 0) + (8 * qty);
   }
   if (desc.includes('-o') || desc.includes('ocp') || /\b(mr|sr)\d{3}i-o\b/i.test(desc)) {
     tally.hasOcpController = true;
@@ -164,9 +183,9 @@ function _tallyHardwareStorageController(tally, desc, sku, roleSets = getStorage
   }
 }
 
-function tallyRaidControllers(tally, desc, sku, roleSets = getStorageRoleSets()) {
+function tallyRaidControllers(tally, desc, sku, roleSets = getStorageRoleSets(), qty = 1) {
   _tallyRaidFioSettings(tally, desc, sku, roleSets);
-  _tallyHardwareStorageController(tally, desc, sku, roleSets);
+  _tallyHardwareStorageController(tally, desc, sku, roleSets, qty);
 }
 
 function _isSidebandEnablementCable(desc, sku, mandatorySkus = {}, roleSets = getStorageRoleSets(mandatorySkus)) {
@@ -273,7 +292,8 @@ function tallyStoreEverTapeStorage(tally, desc, sku, qty) {
 }
 
 function tallyControllersAndCables(tally, it, desc, sku, role, batterySku, noDriveSku, mandatorySkus = {}, roleSets = getStorageRoleSets(mandatorySkus)) {
-  tallyRaidControllers(tally, desc, sku, roleSets);
+  const qty = it?.quantity || 1;
+  tallyRaidControllers(tally, desc, sku, roleSets, qty);
   tallyStorageCablingAndBatteries(tally, it, desc, sku, role, batterySku, noDriveSku, mandatorySkus, roleSets);
 }
 
@@ -388,6 +408,9 @@ function calculateBackplaneCapacity(t, serverCount = 1) {
   if (t.isAlletraArray) {
     return (24 + (t.expansionShelfCount * 24)) * nodes;
   }
+  if (t.hasDriveCage && t.cageCapacity > 0) {
+    return t.cageCapacity;
+  }
   if (t.has4SffCage || t.has4EdsffCage) {
     return 4 * nodes;
   }
@@ -450,7 +473,9 @@ function _computeCablingRequirements(t, isServerChassis, perNodeDrives, controll
 function validateStorageCablingAndBackplane(t, serverCount = 1) {
   const nodes = Math.max(1, serverCount || 1);
   const perNodeDrives = t.driveCount / nodes;
-  const controllerDirectCapacity = t.hasStorageController ? (t.has16PortController ? 16 : 8) : 0;
+  const controllerDirectCapacity = t.hasStorageController
+    ? (t.controllerPortCapacity > 0 ? t.controllerPortCapacity : (t.has16PortController ? 16 : 8))
+    : 0;
   const isServerChassis = !t.isAlletraArray && !t.ltoSasDriveCount && !t.ltoFcDriveCount && !t.msl3040BaseModuleCount;
   const backplaneCapacity = calculateBackplaneCapacity(t, nodes);
   const perNodeBackplaneCapacity = backplaneCapacity / nodes;

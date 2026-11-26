@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "Synergy_Brocade_64Gb_FC_Module",
+  "vendor": "HPE / Brocade",
+  "domain": "networking",
+  "subDomain": "synergy_fc_fabric",
+  "family": "Synergy Interconnect Module",
+  "formFactor": "Synergy Interconnect Bay",
+  "protocol": "64Gb Fibre Channel",
+  "maxPsuBays": 0,
+  "defaultSupportPolicy": { "tier": "TECH_CARE_BASIC", "durationYears": 3 },
+  "skuAliases": ["Synergy_Brocade_64Gb_FC_Module", "Synergy Brocade 64Gb FC Module"]
+}

@@ -438,6 +438,15 @@ flowchart TD
 - **Exact Domain Aspect Identity Verification (`INV-194`, `INV-199`)**: Gate B1 resolves canonical aspect IDs registered in `aspect_registry.js` across 7 platform domains (`server`, `san_switch`, `synergy_compute`, `archive_tape`, `storage`, `networking`, `ai_cluster`). First-word and loose prefix matches are strictly eliminated.
 - **Cross-Process Mutexes & Revocation Governance (`INV-197`, `INV-198`)**: Learning ledger mutations are protected by `withFileLock` exclusive leases. `active_knowledge_router.js` filters out revoked deltas recorded in `knowledge_decisions.json`, and `notebook_query_utils.js` provides targeted RAG cache eviction (`evictCachedRagResult`, `invalidateRagCache`).
 
+---
+
+## 16. Capability Bounds, Constraint-Graph Closure & Extensible Architecture (INV-281 to INV-286)
+
+- **Physical Min/Max Envelope Solver (`INV-281`)**: `scripts/lib/rules/hardware_envelope_solver.js` computes exact category `min`/`max` envelopes (OCP/PCIe ports across riser trees, CPUs, GPUs, Flex Slot `N+1` PSU bays capped via `_resolveMaxPsuBaysPerNode`, DIMMs, drive bays) from `platform_profiles.js` and declarative manifests; `compute_thermal.js` permits homogeneous cluster CPU splits only on integer socket multiples (`qty % socketsPerNode === 0`).
+- **5-Level Catalog Rule IR & Buildable Constraint Graph (`INV-282`, `INV-283`)**: `catalog_rule_evaluator.js` evaluates structured IR rules (`min_max_select`, `requires`, `mutually_exclusive`, `dependency_gate`, `portal_conditional`), and `buildable_graph_solver.js` (`solveBuildableCandidate`) enforces constraint closure across `solution_comparator.js` and `cross_vendor_transformer.js` without emitting silent `PASS` fallbacks.
+- **Tiered Gemini Routing & Negation-Guarded RAG (`INV-284`)**: `scripts/config/model_routing.json` + `resolveModelForTask` route LLM calls by task complexity (`ocr_vision`, `guardrail_fast`, `reasoning_deep`, `synthesis_structured`, `adversarial_audit`); Prompt `v4` (`guardrail_prompt.js`), `extractRagClaimsWithNegationGuard` (`eval_boq_rag_stage.js`), deterministic `trusted_query_v3` cache keys, and `multi_notebook_coordinator.js` harden cloud RAG grounding.
+- **Declarative Manifests, Adapter Registry & Facade Decomposition (`INV-285`, `INV-286`)**: `product_manifest_loader.js` deep-merges 17 schema-verified `scripts/config/products/*.json` manifests via `_mergeSubSection`, `adapter_registry.js` dispatches `hpe`/`dell`/`huawei`/`cisco`/`lenovo` adapters, `onboard_product.js` automates catalog onboarding, and four decomposed `< 800` LOC facades (`solution_comparator.js`, `conflict_graph.js`, `resource_arbitrator.js`, `least_delta_combinator.js`) maintain `CC <= 30`, `0` cycles, and `0` orphans.
+
 
 
 

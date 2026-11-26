@@ -693,9 +693,10 @@ Instructions:
 2. Maintain clean markdown formatting with bolding for SKUs, bullet points, core counts, and prices.
 3. Keep the citations accurate and professional.`;
 
+    const routedModel = geminiRotator.resolveModelForTask('synthesis_structured').model;
     const response = await geminiRotator.executeWithSmartRotation(async ({ ai }) => {
       return await ai.models.generateContent({
-        model: process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash',
+        model: routedModel,
         contents: prompt
       });
     });

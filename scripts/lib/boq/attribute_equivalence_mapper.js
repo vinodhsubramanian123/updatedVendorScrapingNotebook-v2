@@ -8,20 +8,10 @@
 
 const { extractCanonicalAttributes } = require('../catalog/attribute_vectors.js');
 const { normalizeLifecycleLabel } = require('../catalog/portfolio_blindspots.js');
-const { createHpeAdapter } = require('../adapters/hpe_adapter.js');
-const { createDellAdapter } = require('../adapters/dell_adapter.js');
-const { createHuaweiAdapter } = require('../adapters/huawei_adapter.js');
-
-const VENDOR_ADAPTER_FACTORIES = Object.freeze({
-  HPE: createHpeAdapter,
-  DELL: createDellAdapter,
-  HUAWEI: createHuaweiAdapter
-});
+const { getVendorAdapter } = require('../adapters/adapter_registry.js');
 
 function getVendorAdapterInstance(vendor = 'HPE') {
-  const key = String(vendor || 'HPE').trim().toUpperCase();
-  const factory = VENDOR_ADAPTER_FACTORIES[key];
-  return factory ? factory() : null;
+  return getVendorAdapter(vendor);
 }
 
 function _parseCatalogPrice(skuRow) {
@@ -151,8 +141,32 @@ function _scorePowerOrServiceMatch(category, srcA, tgtA, gaps) {
   return { score, gaps };
 }
 
+function _scoreSpecialtyHardwareMatch(category, srcA, tgtA, gaps) {
+  let score = 20;
+  if (category === 'GPU / Accelerator') {
+    if (srcA.model && tgtA.model && srcA.model === tgtA.model) score += 60;
+    else if (srcA.vramGb && tgtA.vramGb && tgtA.vramGb >= srcA.vramGb) score += 35;
+    else if (srcA.vramGb && tgtA.vramGb && tgtA.vramGb < srcA.vramGb) return { score: -1, gaps: [`VRAM deficit: ${srcA.vramGb}GB -> ${tgtA.vramGb}GB`] };
+    return { score, gaps };
+  }
+  if (category === 'Storage Controller') {
+    if (srcA.formFactor && tgtA.formFactor && srcA.formFactor === tgtA.formFactor) score += 25;
+    if (srcA.cacheGb && tgtA.cacheGb && tgtA.cacheGb >= srcA.cacheGb) score += 25;
+    if (srcA.portCount && tgtA.portCount && tgtA.portCount >= srcA.portCount) score += 25;
+    return { score, gaps };
+  }
+  if (category === 'Chassis') {
+    if (srcA.uHeight && tgtA.uHeight && srcA.uHeight !== tgtA.uHeight) return { score: -1, gaps: [] };
+    if (srcA.bayFormFactor && tgtA.bayFormFactor && srcA.bayFormFactor === tgtA.bayFormFactor) score += 30;
+    return { score, gaps };
+  }
+  return { score, gaps };
+}
+
 function _scoreCandidateEquivalence(src, tgt) {
-  if (src.category !== tgt.canonical.category) return { score: -1, gaps: [] };
+  if (!src || !tgt || !tgt.canonical) return { score: -1, gaps: [] };
+  const tgtCat = tgt.canonical.category;
+  if (src.category && tgtCat && src.category !== tgtCat) return { score: -1, gaps: [] };
   const gaps = [];
   const srcA = src.attributes || {};
   const tgtA = tgt.canonical.attributes || {};
@@ -164,16 +178,8 @@ function _scoreCandidateEquivalence(src, tgt) {
     case 'Power Supply':
     case 'Software / Support / Services':
       return _scorePowerOrServiceMatch(src.category, srcA, tgtA, gaps);
-    default: {
-      let score = 20;
-      if (src.category === 'Chassis' && srcA.uHeight && tgtA.uHeight && srcA.uHeight !== tgtA.uHeight) {
-        return { score: -1, gaps: [] };
-      }
-      if (src.category === 'Chassis' && srcA.bayFormFactor && tgtA.bayFormFactor && srcA.bayFormFactor === tgtA.bayFormFactor) {
-        score += 30;
-      }
-      return { score, gaps };
-    }
+    default:
+      return _scoreSpecialtyHardwareMatch(src.category, srcA, tgtA, gaps);
   }
 }
 
@@ -187,6 +193,58 @@ function _classifyMatchTier(bestScore, gaps) {
   return 'FUNCTIONAL_EQUIVALENT';
 }
 
+function _mapSingleSourceItem(rawItem, sourceVendor, sourceAdapter, indexedTarget) {
+  const qty = Number(rawItem.quantity ?? rawItem.qty ?? 1) || 1;
+  const srcAttrs = extractCanonicalAttributes({ ...rawItem, vendor: rawItem.vendor || sourceVendor });
+  const adapterClass = sourceAdapter ? sourceAdapter.classifyComponent(rawItem) : null;
+
+  let bestTarget = null;
+  let bestScore = -1;
+  let bestGaps = [];
+  for (const candidate of indexedTarget) {
+    const scored = _scoreCandidateEquivalence(srcAttrs, candidate);
+    if (scored.score > bestScore) {
+      bestScore = scored.score;
+      bestTarget = candidate;
+      bestGaps = scored.gaps;
+    }
+  }
+
+  const matchStatus = bestTarget ? _classifyMatchTier(bestScore, bestGaps) : 'UNRESOLVED';
+  const mapping = {
+    sourceSku: srcAttrs.rawSku || null,
+    sourceDescription: srcAttrs.description,
+    sourceVendor: srcAttrs.vendor,
+    canonicalCategory: srcAttrs.category,
+    sourceAttributes: srcAttrs.attributes,
+    adapterDomain: adapterClass?.domain || null,
+    targetSku: bestTarget ? bestTarget.sku : null,
+    targetDescription: bestTarget ? bestTarget.description : null,
+    targetAttributes: bestTarget ? bestTarget.canonical.attributes : null,
+    quantity: qty,
+    unitPriceUsd: bestTarget ? bestTarget.unitPriceUsd : null,
+    matchStatus,
+    score: bestScore,
+    attributeDeltas: bestGaps
+  };
+  const bomLine = bestTarget ? {
+    sku: bestTarget.sku,
+    description: bestTarget.description,
+    quantity: qty,
+    unitPriceUsd: bestTarget.unitPriceUsd,
+    category: bestTarget.parentCategory || srcAttrs.category,
+    equivalenceStatus: matchStatus,
+    mappedFromSku: srcAttrs.rawSku || null
+  } : null;
+  const gap = (matchStatus === 'UNRESOLVED' || bestGaps.length > 0) ? {
+    sourceSku: srcAttrs.rawSku || srcAttrs.description,
+    canonicalCategory: srcAttrs.category,
+    status: matchStatus,
+    details: bestGaps.length ? bestGaps : [`No active equivalent SKU found in target catalog for ${srcAttrs.category}.`]
+  } : null;
+  return { mapping, bomLine, gap };
+}
+
 function mapSourceBomToTargetCatalog(sourceItems = [], targetCatalogData = null, options = {}) {
   const sourceVendor = options.sourceVendor || 'Generic';
   const sourceAdapter = getVendorAdapterInstance(sourceVendor);
@@ -198,71 +256,32 @@ function mapSourceBomToTargetCatalog(sourceItems = [], targetCatalogData = null,
   const parityGaps = [];
 
   for (const rawItem of (sourceItems || [])) {
-    const qty = Number(rawItem.quantity ?? rawItem.qty ?? 1) || 1;
-    const srcAttrs = extractCanonicalAttributes({ ...rawItem, vendor: rawItem.vendor || sourceVendor });
-    const adapterClass = sourceAdapter ? sourceAdapter.classifyComponent(rawItem) : null;
+    const { mapping, bomLine, gap } = _mapSingleSourceItem(rawItem, sourceVendor, sourceAdapter, indexedTarget);
+    mappings.push(mapping);
+    if (bomLine) recommendedBom.push(bomLine);
+    if (gap) parityGaps.push(gap);
+  }
 
-    let bestTarget = null;
-    let bestScore = -1;
-    let bestGaps = [];
-
-    for (const candidate of indexedTarget) {
-      const scored = _scoreCandidateEquivalence(srcAttrs, candidate);
-      if (scored.score > bestScore) {
-        bestScore = scored.score;
-        bestTarget = candidate;
-        bestGaps = scored.gaps;
-      }
-    }
-
-    const matchStatus = bestTarget ? _classifyMatchTier(bestScore, bestGaps) : 'UNRESOLVED';
-    mappings.push({
-      sourceSku: srcAttrs.rawSku || null,
-      sourceDescription: srcAttrs.description,
-      sourceVendor: srcAttrs.vendor,
-      canonicalCategory: srcAttrs.category,
-      sourceAttributes: srcAttrs.attributes,
-      adapterDomain: adapterClass?.domain || null,
-      targetSku: bestTarget ? bestTarget.sku : null,
-      targetDescription: bestTarget ? bestTarget.description : null,
-      targetAttributes: bestTarget ? bestTarget.canonical.attributes : null,
-      quantity: qty,
-      unitPriceUsd: bestTarget ? bestTarget.unitPriceUsd : null,
-      matchStatus,
-      score: bestScore,
-      attributeDeltas: bestGaps
+  let buildabilityClosure = null;
+  if (options.runBuildabilityClosure !== false && recommendedBom.length > 0) {
+    const { solveBuildableConfiguration } = require('../conflict/buildable_graph_solver.js');
+    buildabilityClosure = solveBuildableConfiguration(recommendedBom, {
+      catalogData: targetCatalogData,
+      chassisInfo: options.chassisInfo || {},
+      skipRepairs: Boolean(options.skipRepairs)
     });
-
-    if (bestTarget) {
-      recommendedBom.push({
-        sku: bestTarget.sku,
-        description: bestTarget.description,
-        quantity: qty,
-        unitPriceUsd: bestTarget.unitPriceUsd,
-        category: bestTarget.parentCategory || srcAttrs.category,
-        equivalenceStatus: matchStatus,
-        mappedFromSku: srcAttrs.rawSku || null
-      });
-    }
-    if (matchStatus === 'UNRESOLVED' || bestGaps.length > 0) {
-      parityGaps.push({
-        sourceSku: srcAttrs.rawSku || srcAttrs.description,
-        canonicalCategory: srcAttrs.category,
-        status: matchStatus,
-        details: bestGaps.length ? bestGaps : [`No active equivalent SKU found in target catalog for ${srcAttrs.category}.`]
-      });
-    }
   }
 
   return {
     sourceVendor,
-    targetVendor: targetAdapter?.descriptor?.vendorId || 'HPE',
+    targetVendor: targetAdapter?.descriptor?.vendorId || options.targetVendor || 'HPE',
     totalSourceLines: mappings.length,
     matchedLinesCount: mappings.filter(m => m.targetSku !== null).length,
     unresolvedLinesCount: mappings.filter(m => m.targetSku === null).length,
     mappings,
     recommendedBom,
-    parityGaps
+    parityGaps,
+    buildabilityClosure
   };
 }
 

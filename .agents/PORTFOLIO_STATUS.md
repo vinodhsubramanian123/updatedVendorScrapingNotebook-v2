@@ -1,4 +1,4 @@
-# Portfolio State of Health (Auto-Generated: 2026-11-25)
+# Portfolio State of Health (Auto-Generated: 2026-11-26)
 
 This document is dynamically generated from on-disk catalog metadata and `scripts/config/catalog_coverage_profiles.json` by `scripts/maintenance/generate_portfolio_status.js`.
 

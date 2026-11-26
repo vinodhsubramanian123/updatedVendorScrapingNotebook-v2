@@ -8,7 +8,7 @@
 **Status:** POST-IMPLEMENTATION PEER REVIEW — important boundary fixes applied; combined Gemini validation and remaining implementation work pending<br>
 **Ownership:** Codex reviews and fixes important implementation gaps under the user's latest instruction. Antigravity/Gemini owns runtime tests, builds, fault injection and live verification. Codex has run static checks only.
 
-**Current corrective record:** [2026-10-03 post-hardening peer review](docs/audits/2026-10-03-post-hardening-peer-review.md). The earlier finding descriptions below are the original review baseline; they are not a fresh statement that every defect still exists. The corrective record supersedes the blanket completion claim added by Antigravity. Do not mark a criterion complete from a source-string assertion or a helper that is not connected to the production workflow.
+**Current corrective record:** [2026-10-03 post-hardening peer review](../2026-10-03-post-hardening-peer-review.md). The earlier finding descriptions below are the original review baseline; they are not a fresh statement that every defect still exists. The corrective record supersedes the blanket completion claim added by Antigravity. Do not mark a criterion complete from a source-string assertion or a helper that is not connected to the production workflow.
 
 ## 1. Objective, scope and evidence boundaries
 

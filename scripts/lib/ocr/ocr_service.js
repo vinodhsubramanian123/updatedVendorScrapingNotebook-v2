@@ -100,7 +100,7 @@ async function performGeminiOcr(filePath, options = {}) {
   try {
     const fileBuffer = fs.readFileSync(filePath);
     const base64Data = fileBuffer.toString('base64');
-    const modelUsed = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
+    const modelUsed = geminiRotator.resolveModelForTask('ocr_vision').model;
 
     log(`Reading ${Math.round(fileBuffer.length / 1024)} KB image payload for multimodal model analysis...`);
 

@@ -33,6 +33,45 @@ class ApiQuotaExhaustedError extends Error {
 // Standard recommended models per GEMINI.md directives
 const DEFAULT_MODEL = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
 const REASONING_MODEL = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
+const MODEL_ROUTING_CONFIG_PATH = path.join(PROJECT_ROOT, 'scripts', 'config', 'model_routing.json');
+
+function _loadModelRoutingConfig() {
+  try {
+    if (fs.existsSync(MODEL_ROUTING_CONFIG_PATH)) {
+      return JSON.parse(fs.readFileSync(MODEL_ROUTING_CONFIG_PATH, 'utf8'));
+    }
+  } catch (err) {
+    logger.warn('GEMINI_ROTATOR', `Unable to read model_routing.json: ${err.message}`);
+  }
+  return { defaultTier: 'guardrail_fast', tiers: {} };
+}
+
+/**
+ * Resolve Gemini model configuration for a specific workload tier.
+ * Priority: explicit override -> tier env var -> GEMINI_MODEL_NAME -> model_routing.json -> DEFAULT_MODEL.
+ * @param {string} [tier]
+ * @param {object} [overrides]
+ * @returns {{ tier: string, model: string, fallbackModels: string[], temperature: number|null }}
+ */
+function resolveModelForTask(tier = 'guardrail_fast', overrides = {}) {
+  const config = _loadModelRoutingConfig();
+  const normalizedTier = String(tier || config.defaultTier || 'guardrail_fast').trim();
+  const tierCfg = config.tiers?.[normalizedTier] || config.tiers?.[config.defaultTier] || {};
+  const tierEnvKey = `GEMINI_MODEL_${normalizedTier.toUpperCase()}`;
+  const model = overrides.model || process.env[tierEnvKey] || process.env.GEMINI_MODEL_NAME || tierCfg.model || DEFAULT_MODEL;
+  const rawFallbacks = Array.isArray(overrides.fallbackModels)
+    ? overrides.fallbackModels
+    : (Array.isArray(tierCfg.fallbackModels) ? tierCfg.fallbackModels : []);
+  const fallbackModels = [...new Set([model, ...rawFallbacks].filter(Boolean))];
+  return {
+    tier: normalizedTier,
+    model,
+    fallbackModels,
+    temperature: Number.isFinite(Number(overrides.temperature ?? tierCfg.temperature))
+      ? Number(overrides.temperature ?? tierCfg.temperature)
+      : null
+  };
+}
 
 /**
  * Mask API key for logs and audit reports.
@@ -524,6 +563,7 @@ module.exports = {
   globalRotator,
   DEFAULT_MODEL,
   REASONING_MODEL,
+  resolveModelForTask,
   maskKey,
   ApiQuotaExhaustedError,
   getActiveKey: () => globalRotator.getActiveKey(),

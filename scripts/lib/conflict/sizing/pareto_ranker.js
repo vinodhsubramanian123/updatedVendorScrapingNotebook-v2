@@ -397,8 +397,8 @@ function _compareQualifiedCandidates(a, b) {
   if (Boolean(a.qualifiedForRecommendation) !== Boolean(b.qualifiedForRecommendation)) {
     return a.qualifiedForRecommendation ? -1 : 1;
   }
-  const mathA = _pickDefined([a.physicalMathClean], true);
-  const mathB = _pickDefined([b.physicalMathClean], true);
+  const mathA = _pickDefined([a.physicalMathClean], false);
+  const mathB = _pickDefined([b.physicalMathClean], false);
   if (Boolean(mathA) !== Boolean(mathB)) return mathA ? -1 : 1;
 
   const primaryDiff = _compareAsc(a.capabilityDowngradePenalty, b.capabilityDowngradePenalty) ||

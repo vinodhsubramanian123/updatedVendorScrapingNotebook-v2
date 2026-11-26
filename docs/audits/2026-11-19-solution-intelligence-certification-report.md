@@ -4,7 +4,7 @@
 **Certification Scope:** Offline deterministic certification across Milestones `M1`–`M6` (`SI-00`–`SI-10`), Invariants `INV-244`–`INV-252`, `39` skills, dashboard/workbook/MCP parity, and continuous workflow learning reachability.  
 **Certification Status:** `CERTIFIED_OFFLINE_COMPLETE` (`NOT_RUN_OFFLINE_CERTIFICATION_ONLY`)  
 **Live Qualification Scope:** Live HPE OCA (`CLIC`) portal acceptance, live NotebookLM source sync, and Google Drive/Sheets publication remain separate qualification stages (`PORTAL VALIDATION PENDING` without a current Tier 3 receipt).  
-**SI-00 Baseline Commit:** `329ec34ee32a350a1134b57c8faa270695974d07` ([`si00-baseline`](docs/audits/2026-11-19-si00-baseline-and-ownership-register.md), `si00BaselineSha256: fea50047d4b4933037efc27ced4d59efa5652fce1c55b1f1d993092778f206fa`)
+**SI-00 Baseline Commit:** `329ec34ee32a350a1134b57c8faa270695974d07` ([`si00-baseline`](2026-11-19-si00-baseline-and-ownership-register.md), `si00BaselineSha256: fea50047d4b4933037efc27ced4d59efa5652fce1c55b1f1d993092778f206fa`)
 
 ---
 
@@ -74,7 +74,7 @@
 - **Graphify Network (`npm.cmd run verify:graph`):** `15,286` nodes, `29,822` links, `39/39` skills connected, `0` isolated skills, `0` ad-hoc scripts
 
 ### 3.3 Continuous Workflow Learnings & Protected Assets
-- `node scripts/maintenance/record_solution_intelligence_learnings.js` persisted `6` `WORKFLOW_REVIEW` advisories (`hardwareCompatibilityCertified: false`) and verified `allReachable: true` for `DL380_Gen12` ([`DL380_Gen12 reachability`](outputs/ProLiant/Gen12/DL380_Gen12/evidence/2026-11-19-solution-intelligence-reachability.json)) and `DL380a_Gen12` ([`DL380a_Gen12 reachability`](outputs/ProLiant/Gen12/DL380a_Gen12/evidence/2026-11-19-solution-intelligence-reachability.json)).
+- `node scripts/maintenance/record_solution_intelligence_learnings.js` persisted `6` `WORKFLOW_REVIEW` advisories (`hardwareCompatibilityCertified: false`) and verified `allReachable: true` for `DL380_Gen12` ([`DL380_Gen12 reachability`](../../outputs/ProLiant/Gen12/DL380_Gen12/evidence/2026-11-19-solution-intelligence-reachability.json)) and `DL380a_Gen12` ([`DL380a_Gen12 reachability`](../../outputs/ProLiant/Gen12/DL380a_Gen12/evidence/2026-11-19-solution-intelligence-reachability.json)).
 - Protected baseline files verified unmodified: `scripts/config/notebooks.json` and tracked `tests/fixtures/BENCH-*.csv`.
 
 ---

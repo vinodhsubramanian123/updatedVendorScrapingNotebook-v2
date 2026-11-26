@@ -557,7 +557,7 @@ function _getWorkbookStyles() {
 function _filterCleanCandidates(list, allowUnbuildable = false) {
   if (!Array.isArray(list)) return [];
   if (allowUnbuildable) return list;
-  return list.filter(s => s && s.physicalMathClean !== false && s.isUniqueBom !== false && s.isParetoOptimal !== false);
+  return list.filter(s => s && s.physicalMathClean === true && s.isUniqueBom !== false && s.isParetoOptimal !== false);
 }
 
 function _extractCandidateArray(evalResults, options = {}) {

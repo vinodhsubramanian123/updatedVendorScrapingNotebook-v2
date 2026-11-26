@@ -51,3 +51,12 @@ Hard-won architectural lessons observed directly in this codebase. Consult along
   - **Planes 4B & 5 (F32 `Q7/Q8` Stacking & `Q1–Q6` Cage Budget):** Every redundant `867796-B21` F32 pair mandates `2×` external 100Gb QSFP28 stacking links (`845406-B21` DAC/AOC or SR4+MPO across `Q7–Q7` & `Q8–Q8`) even in 1-frame builds; BiDi (`845972-B21`/`P90358-B21`/`841716-B21`) are forbidden in clustering; total stacking ends + northbound uplinks must fit `8` QSFP28 cages per F32 (`16` across 2× F32).
   - **Plane 6 (Brocade FC SAN Fiber Parity):** Zero inter-frame stacking cables; both `Q2E57A` and `P77653-B21` ship with `4×` SW optics in-box and `0` fiber cables, requiring 1:1 OM4 LC/LC (`QK732A`–`QK737A`) or MPO breakout fiber paths for all included + extra optics.
 - **Real-World `UCID 5158592304-01` Audit Catches:** Auditing the live 2-frame BOM surfaced missing `AF590A` verification, `40` QSFP28 endpoints exceeding `16` physical cages on `2×` F32, `8` ICL cables for `2` ILMs (`4` needed), `6` FLM DACs (`2` needed for 2f ring), and `32` total 32Gb FC optics vs. `24` `QK734A` LC/LC cables.
+
+---
+
+## 11. Waves A–G Capability Math, Graph Closure & Deep-Merge Guardrails (`2026-11-26`)
+- **Nested Manifest Merge Hazard (`platform_profiles.js`):** Shallow `{ ...staticProfile, ...manifest }` spreads overwrite nested sub-objects (`memoryArchitecture.skus`, `slots`, `defaultSupportPolicy`). Always merge section objects through `_mergeSubSection` inside `_mergeProfileWithManifest`.
+- **Flex Slot `N+1` Redundancy Cap (`power_environment.js`):** Global power envelopes must never bypass node PSU bay limits; `_resolveMaxPsuBaysPerNode` caps 2-bay Flex Slot chassis `N+1` redundancy at `2` bays.
+- **Circular Repair Graph Avoidance (`buildable_graph_solver.js`):** Constraint-graph closure helpers remain DAG-pure using built-in `crypto` digests and local delta application rather than importing interactive repair/ledger coordinators.
+- **Multi-Cluster Homogeneous CPU Partitioning (`compute_thermal.js`):** `_hasMixedCpuModels` distinguishes valid homogeneous multi-cluster BOQs (`qty % socketsPerNode === 0`) from invalid single-node mixed CPU populations.
+- **Negation-Guarded RAG & Cache Determinism (`eval_boq_rag_stage.js`, `notebook_query_utils.js`):** Discrepancy extraction checks claim polarity via `extractRagClaimsWithNegationGuard`, and RAG cache keys (`trusted_query_v3:...`) omit millisecond timestamps.

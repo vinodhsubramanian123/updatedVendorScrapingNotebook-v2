@@ -1,0 +1,20 @@
+{
+  "vendorId": "LENOVO",
+  "vendorName": "Lenovo Infrastructure Solutions Group",
+  "defaultSupportPolicy": {
+    "tier": "PREMIER_ESSENTIAL_NBD",
+    "durationYears": 3,
+    "description": "Lenovo Premier Essential 3-Year Support (Baseline)"
+  },
+  "terminology": {
+    "ctoTerm": "CTO (Feature Code / Option)",
+    "smartCto": "ThinkSystem Base Model",
+    "portalName": "Lenovo Data Center Solution Configurator (DCSC)",
+    "rulesEngine": "ServerProven / DCSC Rules"
+  },
+  "domains": ["server", "storage", "networking"],
+  "evidenceLimits": [
+    "Lenovo Press / DCSC specs provide engineering baselines, not live quote lock receipts.",
+    "Live DCSC validation is required for final Lenovo configurator acceptance."
+  ]
+}

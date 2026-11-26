@@ -34,10 +34,9 @@ Based on cross-layer analysis (Docs vs. Diagrams vs. Code), here are the critica
 - **The Reality**: These ranks currently rely entirely on a static config file (`strategy_addons.json`). If this file is missing, the ranks collapse into identical duplicates of Rank 1.
 - **Recommendation**: Implement dynamic Rank 3/4 addon synthesis driven by Workload DNA (e.g., injecting GPU risers if `VDI_AI_GRAPHICS` is detected), using the JSON config only as a fallback.
 
-### 2.4 Hardcoded Model Dependencies (Low Severity)
-- **The Design**: Documentation suggests flexibility between `gemini-3.5-flash`, `gemini-2.5-flash-lite`, and `gemini-3.7-flash`.
-- **The Reality**: `MODEL_NAME = 'gemini-3.5-flash'` is strictly hardcoded in `agentic_guardrail.js`, `adversarial_agent.js`, and `ocr_service.js`.
-- **Recommendation**: Extract model selection to a `GEMINI_MODEL_NAME` environment variable in `.env` to ensure future-proofing.
+### 2.4 Task-Tiered Model Routing (Remediated 2026-11-26)
+- **The Design**: Task-tiered Gemini model routing across `ocr_vision`, `guardrail_fast`, `reasoning_deep`, `synthesis_structured`, and `adversarial_audit` defined in `scripts/config/model_routing.json`.
+- **Implementation**: `scripts/lib/system/gemini_rotator.js:resolveModelForTask()` resolves task-specific defaults (`gemini-3.6-flash` / `gemini-3.7-flash`) with `GEMINI_MODEL_<TIER>` and `GEMINI_MODEL_NAME` overrides across `agentic_guardrail.js`, `adversarial_agent.js`, `ocr_service.js`, and `local_rag_search.js`.
 
 ---
 

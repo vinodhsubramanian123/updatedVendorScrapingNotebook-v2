@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "DL385_Gen11",
+  "vendor": "HPE",
+  "domain": "server",
+  "family": "ProLiant DL",
+  "generation": "Gen11",
+  "formFactor": "2U Rack",
+  "maxSockets": 2,
+  "ocpSlots": 2,
+  "basePcieSlots": 3,
+  "maxPsuBays": 2,
+  "memoryArchitecture": {
+    "generation": "DDR5",
+    "channelsPerSocket": 12,
+    "dimmsPerChannel": 1,
+    "maxDimmsPerSocket": 12,
+    "maxDimmsPerChassis": 24,
+    "validBalancedCountsPerSocket": [1, 2, 4, 6, 8, 10, 12]
+  },
+  "riserSlots": {
+    "primary": { "slots": 3, "requireCpu": 1, "sku": null },
+    "secondary": { "slots": 3, "requireCpu": 2, "sku": null },
+    "tertiary": { "slots": 2, "requireCpu": 2, "sku": null }
+  },
+  "storageBays": { "maxFrontSffBays": 24 },
+  "defaultSupportPolicy": { "tier": "TECH_CARE_BASIC", "durationYears": 3 },
+  "skuAliases": ["DL385_Gen11", "DL385 Gen11", "HPE_PROLIANT_DL385_GEN11"]
+}

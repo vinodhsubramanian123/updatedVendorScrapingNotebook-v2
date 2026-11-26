@@ -31,6 +31,9 @@ const GPU_TDP_TABLE = [
  * @returns {number}
  */
 function _estimateGpuTdpW(desc) {
+  const { lookupGpuQuickSpecs } = require('../catalog/gpu_specs_lookup.js');
+  const spec = lookupGpuQuickSpecs(desc);
+  if (spec && Number.isFinite(spec.tdpWatts) && spec.tdpWatts > 0) return spec.tdpWatts;
   for (const entry of GPU_TDP_TABLE) {
     if (entry.keywords.some(kw => desc.includes(kw))) return entry.tdpW;
   }
@@ -102,6 +105,9 @@ function tallyChassisFormFactor(tally, it, desc, sku, role, skuIndex = null) {
   }
   if (fullDesc.includes('dl145')) {
     tally.isDl145EdgeChassis = true;
+  }
+  if (fullDesc.includes('dl560') || fullDesc.includes('dl580')) {
+    tally.isFourSocketChassis = true;
   }
 }
 
@@ -260,6 +266,13 @@ function _checkPsuDerating(tally, estimatedNodeWattage, options = {}) {
   };
 }
 
+function _resolveMaxPsuBaysPerNode(tally) {
+  if (tally.isSynergy12000Frame) return 12;
+  if (tally.isDl380aGpuChassis) return 8;
+  if (tally.isFourSocketChassis) return 4;
+  return 2;
+}
+
 function _buildPowerEvaluationResult(tally, items, effectiveServerCount, totalHardwareWatts, options = {}) {
   if (tally.psuCount > 0 && tally.maxPsuWattage === 0) {
     tally.maxPsuWattage = 800;
@@ -268,12 +281,16 @@ function _buildPowerEvaluationResult(tally, items, effectiveServerCount, totalHa
   const estimatedHardwareWattsPerNode = Math.round(totalHardwareWatts / effectiveServerCount);
   const estimatedNodeWattage = estimatedHardwareWattsPerNode + 150;
   const requiredWattageWithHeadroom = Math.ceil(estimatedNodeWattage * 1.20);
-  const derating = _checkPsuDerating(tally, estimatedNodeWattage, options);
-  const hasPsuHeadroomDeficit = tally.psuCount > 0 && tally.maxPsuWattage < requiredWattageWithHeadroom;
-  const hasPsuWattageDeficit = (tally.psuCount > 0 && tally.maxPsuWattage < estimatedNodeWattage) || derating.hasDeratedDeficit;
+  const rawPsusPerNode = Math.max(1, Math.floor(tally.psuCount / effectiveServerCount));
+  const psusPerNode = Math.min(rawPsusPerNode, _resolveMaxPsuBaysPerNode(tally));
+  const redundantActivePsus = psusPerNode >= 2 ? (psusPerNode - 1) : 1;
+  const effectiveNodePsuCapacityW = tally.maxPsuWattage * redundantActivePsus;
+  const derating = _checkPsuDerating(tally, estimatedNodeWattage, { ...options, redundantActivePsus });
+  const hasPsuHeadroomDeficit = tally.psuCount > 0 && effectiveNodePsuCapacityW < requiredWattageWithHeadroom;
+  const hasPsuWattageDeficit = (tally.psuCount > 0 && effectiveNodePsuCapacityW < estimatedNodeWattage) || derating.hasDeratedDeficit;
   const needsHighLine220v = (estimatedNodeWattage > 800 && tally.maxPsuWattage >= 1600) || derating.hasDeratedDeficit;
   const needsCeRemovalKit = checkLot9CeRemovalNeeds(tally, estimatedNodeWattage);
-  const hasSynergyRedundantPowerError = tally.isSynergy12000Frame && tally.synergyTitanium2650wCount !== 6;
+  const hasSynergyRedundantPowerError = tally.isSynergy12000Frame && ![6, 12].includes(tally.synergyTitanium2650wCount);
   const dl380aPsu = checkDl380aPsuCompliance(tally);
 
   const hasIntegratedPower = Boolean(tally.isAlletraStorage || tally.isStoreEverTape || tally.isNetworkSwitch);

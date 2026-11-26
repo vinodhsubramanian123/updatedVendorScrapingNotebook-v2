@@ -132,18 +132,22 @@ function calculateSupplyMetrics(parts, resolveSupply) {
   };
 }
 
-function createPriceResolver(targetDir) {
+function createPriceResolver(targetDir, loadedCatalog = null) {
   const resolved = new Map();
+  const catalogIndex = loadedCatalog ? buildCatalogSkuIndex(loadedCatalog) : null;
   const getPrice = (sku) => {
     const clean = cleanBaseSKU(sku);
     if (!clean) return 0;
     if (!resolved.has(clean)) {
+      const catItem = catalogIndex?.get(clean);
+      const inlinePrice = Number(catItem?.skuData?.['GPL ($)'] ?? catItem?.skuData?.listPrice ?? catItem?.unitPriceUsd ?? catItem?.listPrice);
       const historical = getHistoricalSkuPrice(clean, targetDir);
-      const price = Number(historical?.priceUsd);
+      const histPrice = Number(historical?.priceUsd);
+      const price = (Number.isFinite(histPrice) && histPrice > 0) ? histPrice : (Number.isFinite(inlinePrice) && inlinePrice > 0 ? inlinePrice : 0);
       resolved.set(clean, {
-        price: Number.isFinite(price) && price > 0 ? price : 0,
-        status: historical?.status || 'NO_PRICE_RECORDED',
-        isResolved: historical?.isResolved === true
+        price,
+        status: historical?.status || (price > 0 ? 'CATALOG_PRICE' : 'NO_PRICE_RECORDED'),
+        isResolved: historical?.isResolved === true || price > 0
       });
     }
     return resolved.get(clean).price;

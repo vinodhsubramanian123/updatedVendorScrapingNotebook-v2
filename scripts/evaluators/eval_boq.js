@@ -420,7 +420,12 @@ async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTi
     stage5MatrixMs: ctx.stage5MatrixMs
   }));
 
-  const exportOk = Boolean(ctx.evalResults.multiRankWorkbookPath && !ctx.evalResults.deliveryError);
+  const exportOk = Boolean(
+    ctx.evalResults.multiRankWorkbookPath &&
+    ctx.evalResults.multiRankCsvPath &&
+    ctx.evalResults.portalWorkbookPath &&
+    !ctx.evalResults.deliveryError
+  );
   return terminalOwner.phase8Outcome(ctx, {
     status: exportOk ? 'PASSED' : 'ACTION_REQUIRED',
     summary: { multiRankWorkbookPath: ctx.evalResults.multiRankWorkbookPath, deliveryError: ctx.evalResults.deliveryError || null },
@@ -528,10 +533,10 @@ function _createOwnedPhaseHandlers(options, evidenceLedger, startTime) {
     STRATEGY_SYNTHESIS: ctx => _handleBoqStrategySynthesisPhase(ctx, options, evidenceLedger),
     RAG_GROUNDING: ctx => _handleBoqRagGroundingPhase(ctx, options, evidenceLedger),
     DELIVERABLES_FINALIZATION: ctx => _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTime),
-    REFLECTION_LEARNING: ctx => terminalOwner.runReflection(ctx,
-      () => {
-        const learnedCount = executeContinuousLearningReflection(evidenceLedger, ctx.ingestCtx, ctx.evalResults, options);
-        try {
+    REFLECTION_LEARNING: async ctx => {
+      const res = await terminalOwner.runReflection(ctx,
+        () => {
+          const learnedCount = executeContinuousLearningReflection(evidenceLedger, ctx.ingestCtx, ctx.evalResults, options);
           const { performReasoningPostAnalysis } = require('../lib/system/reasoning_post_analyzer.js');
           ctx.evalResults.reasoningAnalysis = performReasoningPostAnalysis({
             queryText: ctx.options.inputFile || ctx.options.BOQ_FILE || 'BOQ_EVALUATION',
@@ -542,12 +547,14 @@ function _createOwnedPhaseHandlers(options, evidenceLedger, startTime) {
             executionTimeMs: Date.now() - ctx.startTime,
             evidenceLedger
           });
-        } catch (err) {
-          ctx.evalResults.reflectionError = err.message;
-        }
-        return learnedCount;
-      },
-      () => _promoteTerminalPriceDrift(ctx, options))
+          return learnedCount;
+        },
+        () => _promoteTerminalPriceDrift(ctx, options));
+      if (res?.status === 'ACTION_REQUIRED' || ctx.evalResults.reflectionError) {
+        return { ...res, status: 'ACTION_REQUIRED' };
+      }
+      return res;
+    }
   };
 }
 

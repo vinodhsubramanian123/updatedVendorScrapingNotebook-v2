@@ -245,6 +245,7 @@ test('Core Contracts — Pre-Presentation Acceptance blocks all 4 public present
       {
         rank: 1,
         name: 'Rank 1: Preserved Intent',
+        physicalMathClean: true,
         skuPartsList: [{ sku: 'P74573-B21', quantity: 2, unitPriceUsd: 1200 }]
       }
     ]

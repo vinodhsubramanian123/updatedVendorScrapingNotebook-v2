@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "DL580_Gen12",
+  "vendor": "HPE",
+  "domain": "server",
+  "family": "ProLiant Compute DL",
+  "generation": "Gen12",
+  "formFactor": "4U Rack",
+  "maxSockets": 4,
+  "ocpSlots": 2,
+  "basePcieSlots": 8,
+  "maxPsuBays": 4,
+  "memoryArchitecture": {
+    "generation": "DDR5",
+    "channelsPerSocket": 8,
+    "dimmsPerChannel": 2,
+    "maxDimmsPerSocket": 16,
+    "maxDimmsPerChassis": 64,
+    "validBalancedCountsPerSocket": [1, 2, 4, 6, 8, 12, 16]
+  },
+  "storageBays": { "maxFrontSffBays": 24 },
+  "defaultSupportPolicy": { "tier": "TECH_CARE_BASIC", "durationYears": 3 },
+  "skuAliases": ["DL580_Gen12", "DL580 Gen12", "HPE_PROLIANT_DL580_GEN12"]
+}

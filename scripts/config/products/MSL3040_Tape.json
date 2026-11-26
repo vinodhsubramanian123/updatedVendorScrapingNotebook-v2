@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "MSL3040_Tape",
+  "vendor": "HPE",
+  "domain": "archive",
+  "family": "StoreEver Tape Library",
+  "formFactor": "3U Base Module (Scalable to 42U)",
+  "baseModuleSku": "Q6Q62C",
+  "baseSlots": 40,
+  "expansionModuleSku": "Q6Q63A",
+  "expansionSlotsPerModule": 40,
+  "maxDrivesPerModule": 3,
+  "defaultLto9FcDriveSku": "R6Q74A",
+  "defaultSupportPolicy": {
+    "tier": "TECH_CARE_BASIC",
+    "durationYears": 3,
+    "hardwareSupportSku": "HU4B2A3",
+    "hardwareSupportChildSku": "HU4B2A3YJR"
+  },
+  "skuAliases": ["MSL3040_Tape", "MSL3040 Tape", "HPE_STOREEVER_MSL3040", "Q6Q62C"]
+}

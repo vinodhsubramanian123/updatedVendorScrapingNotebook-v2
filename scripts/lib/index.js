@@ -46,6 +46,8 @@ module.exports = {
     preprocessor: require('./boq/boq_preprocessor.js'),
     parser: require('./boq/boq_parser.js'),
     conflictGraph: require('./conflict/conflict_graph.js'),
+    catalogRuleEvaluator: require('./conflict/catalog_rule_evaluator.js'),
+    buildableGraphSolver: require('./conflict/buildable_graph_solver.js'),
     workloadDna: require('./conflict/workload_dna.js'),
     resourceArbitrator: require('./conflict/resource_arbitrator.js'),
     strategySynthesizer: require('./conflict/strategy_synthesizer.js'),
@@ -94,6 +96,7 @@ module.exports = {
     googleSheetsWriter: require('./sync/google_sheets_writer.js'),
     quickspecsSync: require('./sync/quickspecs_sync.js'),
     notebookQuery: require('./notebook/notebook_query_utils.js'),
+    multiNotebookCoordinator: require('./notebook/multi_notebook_coordinator.js'),
     jobManager: require('./notebook/job_manager.js'),
     persistentJobStore: require('./notebook/persistent_job_store.js'),
     queryDiagnostics: require('./notebook/query_diagnostics.js'),
@@ -144,5 +147,17 @@ module.exports = {
   taxonomy: {
     schema: require('./taxonomy/vendor_agnostic_schema.js'),
     resolver: require('./taxonomy/sku_resolver.js')
+  },
+
+  // Vendor Adapter Registry
+  adapters: {
+    registry: require('./adapters/adapter_registry.js')
+  },
+
+  // Hardware Capability Rules & Envelope Math
+  rules: {
+    platformProfiles: require('./rules/platform_profiles.js'),
+    productManifestLoader: require('./rules/product_manifest_loader.js'),
+    hardwareEnvelopeSolver: require('./rules/hardware_envelope_solver.js')
   }
 };

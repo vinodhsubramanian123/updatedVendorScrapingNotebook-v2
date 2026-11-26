@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "Alletra_MP_B10000",
+  "vendor": "HPE",
+  "domain": "storage",
+  "family": "Alletra Storage MP",
+  "formFactor": "2U+ Multi-Node",
+  "maxPsuBays": 2,
+  "variants": {
+    "B10100": { "chassisSku": "S0B84A", "switchless": true, "maxInternalDrives": 24, "minJbofs": 0, "maxJbofs": 3 },
+    "B10200": { "chassisSku": "S1R06A", "switchless": false, "maxInternalDrives": 0, "minJbofs": 1, "maxJbofs": 8, "requiresNvmeOfSwitches": true }
+  },
+  "defaultSupportPolicy": { "tier": "TECH_CARE_BASIC", "durationYears": 3 },
+  "skuAliases": ["Alletra_MP_B10000", "Alletra MP B10000", "HPE_ALLETRA_MP_B10000", "S0B84A", "S1R06A"]
+}

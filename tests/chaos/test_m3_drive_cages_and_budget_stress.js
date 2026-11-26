@@ -26,8 +26,22 @@
 
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
+require('../../scripts/lib/boq/boq_evaluator.js');
 
 const { HeterogeneousTenderModernizer } = require('../../scripts/lib/boq/heterogeneous_tender_modernizer.js');
+
+const MOCK_BUDGET_CATALOG = {
+  entries: [
+    {
+      parentCategory: 'Hard Drives',
+      subCategory: 'NVMe SSD',
+      skus: [
+        { 'Product #': 'P40542-B21', Description: 'HPE 960GB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', 'GPL ($)': 360, Availability: 'Available' },
+        { 'Product #': 'P40544-B21', Description: 'HPE 3.84TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', 'GPL ($)': 980, Availability: 'Available' }
+      ]
+    }
+  ]
+};
 const {
   _tryBudgetStorageSubstitution,
   synthesize5TierRankedSolutions,
@@ -335,12 +349,13 @@ describe('Milestone 3 Empirical Challenger Stress Suite (Features 11 & 12)', () 
       const items = [
         { sku: 'P52534-B21', description: 'HPE ProLiant DL380 Gen11 8SFF NC CTO Server', quantity: 1, unitPriceUsd: 1650 },
         { sku: 'P49610-B21', description: 'Intel Xeon-Gold 6430 2.1GHz 32-core Processor', quantity: 2, unitPriceUsd: 2200 },
-        { sku: 'P43328-B21', description: 'HPE 32GB 2Rx8 DDR5-4800 Registered Smart Memory Kit', quantity: 16, unitPriceUsd: 180 },
+        { sku: 'P48818-B21', description: 'HPE ProLiant DL380 Gen11 High Performance Heat Sink Kit', quantity: 2, unitPriceUsd: 150 },
+        { sku: 'P43328-F21', description: 'HPE 32GB 2Rx8 DDR5-4800 Registered Smart Memory Kit FIO', quantity: 16, unitPriceUsd: 180 },
         { sku: 'P40546-B21', description: 'HPE 800GB NVMe Gen4 Mixed Use SFF BC SSD', quantity: 4, unitPriceUsd: 490 },
-        { sku: 'P48803-B21', description: 'HPE 800W Flex Slot Platinum Power Supply', quantity: 2, unitPriceUsd: 280 }
+        { sku: 'P38997-B21', description: 'HPE 1600W Flex Slot Platinum Power Supply', quantity: 2, unitPriceUsd: 420 }
       ];
 
-      const tiers = synthesize5TierRankedSolutions(items, {}, {}, { model: 'DL380 Gen11' });
+      const tiers = synthesize5TierRankedSolutions(items, {}, {}, { model: 'DL380 Gen11' }, '', { loadedCatalog: MOCK_BUDGET_CATALOG });
       const budget = tiers.find(r => r.strategyId === 'STRATEGY_BUDGET');
       assert.ok(budget, 'Budget strategy candidate must be generated');
 
@@ -356,12 +371,13 @@ describe('Milestone 3 Empirical Challenger Stress Suite (Features 11 & 12)', () 
       const items = [
         { sku: 'P52534-B21', description: 'HPE ProLiant DL380 Gen11 8SFF NC CTO Server', quantity: 1, unitPriceUsd: 1650 },
         { sku: 'P49610-B21', description: 'Intel Xeon-Gold 6430 2.1GHz 32-core Processor', quantity: 2, unitPriceUsd: 2200 },
-        { sku: 'P43328-B21', description: 'HPE 32GB 2Rx8 DDR5-4800 Registered Smart Memory Kit', quantity: 16, unitPriceUsd: 180 },
+        { sku: 'P48818-B21', description: 'HPE ProLiant DL380 Gen11 High Performance Heat Sink Kit', quantity: 2, unitPriceUsd: 150 },
+        { sku: 'P43328-F21', description: 'HPE 32GB 2Rx8 DDR5-4800 Registered Smart Memory Kit FIO', quantity: 16, unitPriceUsd: 180 },
         { sku: 'P40550-B21', description: 'HPE 3.84TB NVMe Gen4 Mixed Use SFF BC SSD', quantity: 8, unitPriceUsd: 1250 },
-        { sku: 'P48803-B21', description: 'HPE 800W Flex Slot Platinum Power Supply', quantity: 2, unitPriceUsd: 280 }
+        { sku: 'P38997-B21', description: 'HPE 1600W Flex Slot Platinum Power Supply', quantity: 2, unitPriceUsd: 420 }
       ];
 
-      const tiers = synthesize5TierRankedSolutions(items, {}, {}, { model: 'DL380 Gen11' });
+      const tiers = synthesize5TierRankedSolutions(items, {}, {}, { model: 'DL380 Gen11' }, '', { loadedCatalog: MOCK_BUDGET_CATALOG });
       const budget = tiers.find(r => r.strategyId === 'STRATEGY_BUDGET');
       const replacedDrives = budget.skuPartsList.filter(p => p.sku === 'P40544-B21');
       assert.equal(replacedDrives.length, 1);

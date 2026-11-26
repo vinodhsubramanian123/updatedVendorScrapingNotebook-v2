@@ -41,7 +41,7 @@ function _readJsonSafe(filePath) {
 
 function _auditSkippedAndTableDecisions(diag, findings) {
   const skipped = Array.isArray(diag?.skippedTables) ? diag.skippedTables : [];
-  const nonEmptySkipped = skipped.filter(t => !/rows\s*<\s*2|empty/i.test(String(t?.reason || '')));
+  const nonEmptySkipped = skipped.filter(t => !/rows\s*<\s*2|empty|layout_chrome/i.test(String(t?.reason || '')));
   if (nonEmptySkipped.length > 0) {
     findings.push({
       code: 'SKIPPED_NON_EMPTY_TABLES',

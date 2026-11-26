@@ -241,7 +241,7 @@ function _checkUnsolicitedServices(output, context = {}) {
       p.customerRequested ||
       (!p.isFixInjected && !p.isStrategyAddon && (requestedSkus.has(sku) || requestedSkus.has(shortSku)))
     );
-    return isService && !isOriginCustomerItem && p.isFixInjected !== true && !context.customerRequestedServices;
+    return isService && !isOriginCustomerItem && !context.customerRequestedServices;
   });
   return unsolicited.length === 0
     ? makeCheck('B8', 'No Unsolicited Services in Rank 1 (INV-32)', 'BLOCK', 'PASSED', 'Rank 1 maintains pure hardware intent without unrequested services.')
@@ -465,7 +465,12 @@ function _checkUnresolvedRequirements(output, context = {}) {
 function _checkQuantityConservation(output, context = {}) {
   const qc = output?.quantityConservation || context?.quantityConservation || null;
   if (!qc) {
-    return makeCheck('B18', 'Tender Quantity Conservation (INV-192)', 'BLOCK', 'PASSED',
+    const isMultiNodeCluster = Number(output?.serverCount || 1) > 1 || Boolean(output?.isMultiCluster);
+    if (isMultiNodeCluster) {
+      return makeCheck('B18', 'Tender Quantity Conservation (INV-192)', 'BLOCK', 'FAILED',
+        'Multi-node / cluster tender is missing mandatory quantity conservation ledger (INV-192).', { evaluated: false });
+    }
+    return makeCheck('B18', 'Tender Quantity Conservation (INV-192)', 'BLOCK', 'NOT_APPLICABLE',
       'Quantity conservation check not applicable to single-item or non-partitioned evaluations.', { evaluated: false });
   }
   if (qc.error) {

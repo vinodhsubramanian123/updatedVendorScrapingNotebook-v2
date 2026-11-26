@@ -9,7 +9,8 @@ const geminiRotator = require('../lib/system/gemini_rotator.js');
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const TELEMETRY_FILE = path.join(PROJECT_ROOT, 'outputs', 'history', 'pipeline_telemetry.json');
 
-const MODEL_NAME = process.env.GEMINI_MODEL_NAME || 'gemini-3.6-flash';
+const { resolveModelForTask } = require('../lib/system/gemini_rotator.js');
+const MODEL_NAME = resolveModelForTask('adversarial_audit').model;
 
 const REPRODUCIBLE_ADVERSARIAL_SUITES = [
   {

@@ -147,8 +147,8 @@ function createLiveRagGrounding(chassisInfo) {
 function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResults = {}, chassisInfo = {}, targetDir = '', options = {}) {
   if (chassisInfo.family === 'SAN') return evalResults.conflictGraph?.rankedSolutions || [];
   const dna = extractWorkloadDna(items);
-  const { loadedCatalog } = loadCatalogAndPrices(targetDir);
-  const getPrice = createPriceResolver(targetDir);
+  const loadedCatalog = options?.loadedCatalog || evalResults?.catalogData || loadCatalogAndPrices(targetDir).loadedCatalog;
+  const getPrice = createPriceResolver(targetDir, loadedCatalog);
   const resolveSupply = createSupplyAttributeResolver(loadedCatalog);
 
   const baseCost = items.reduce((acc, it) => acc + ((getPrice(it.sku) || it.unitPriceUsd || it.priceUsd || 0) * (it.quantity || 1)), 0);

@@ -94,15 +94,21 @@ function _buildRank3PartsAndMetadata({ arbitrationBranches, tierConfig, dynamicD
   const pcieStorageBranch = arbitrationBranches.find(b => b.branchId === 'branch_pcie_storage_ocp_nic');
   if (pcieStorageBranch) {
     const pcieRes = buildRank3PcieStorageBranchParts({ pcieStorageBranch, baseParts, fixParts, getPrice, loadedCatalog, chassisInfo, items, rank1Cost });
+    const retainedOcpSkus = (items || [])
+      .filter(it => /ocp/i.test(String(it.description || '')) && !/storage|controller|mr\d+|sr\d+/i.test(String(it.description || '')))
+      .map(it => cleanBaseSKU(it.sku))
+      .filter(Boolean);
+    const pivotSku = pcieStorageBranch.substitutions?.[0]?.toSku || 'PCIe Storage Controller';
+    const retainedSummary = retainedOcpSkus.length > 0 ? retainedOcpSkus.join(', ') : 'customer OCP adapter';
     return {
       rank3Parts: pcieRes.rank3Parts,
       rank3AddonCost: pcieRes.rank3AddonCost,
       rank3Addons: [],
       rank3Name: 'Rank 3: High-IOPS & Contested Form-Factor Optimized (PCIe Storage + OCP NIC Retention)',
-      rank3Reasoning: 'Pivoted storage controller to PCIe (MR416i-p 8GB Cache) to free OCP Slot 1 for customer\'s P10115-B21 10/25Gb OCP3 adapter, validating original P48832-B21 cable choice.',
-      rank3IntentAlignment: '100% Exact Part Number Match (Fulfills P10115-B21 & P48832-B21)',
+      rank3Reasoning: `Pivoted storage controller to PCIe (${pivotSku}) to free OCP Slot 1 for ${retainedSummary}.`,
+      rank3IntentAlignment: retainedOcpSkus.length > 0 ? `Exact Part Number Retention (${retainedSummary})` : '100% Customer OCP Intent Preserved',
       rank3CascadingImpact: pcieRes.rank3CascadingImpact,
-      pcieStorageBranch
+      pcieStorageBranch: { ...pcieStorageBranch, retainedOcpSkus }
     };
   }
   const rank3RawList = (tierConfig.rank3 || []).length > 0 ? tierConfig.rank3 : dynamicDiscoveredAddons.rank3Addons;
@@ -200,7 +206,10 @@ function _buildRank1Candidate({ rank1Name, rank1Reasoning, leastDeltaCandidate, 
       fastShipAlternativeAvailable: Boolean(fastShipAlternative),
       deliveryDaysSaved: fastShipAlternative?.deliveryDaysSaved ?? null
     },
-    ragSecondOpinion: getLiveRagGrounding('Intent Preserved', fixes.map(f => f.sku).concat(['chassis', 'processor', 'memory']), '✅ Local Rule Engine Validated: Direct translation of customer requirements with mandatory buildability fixes.'),
+    ragSecondOpinion: getLiveRagGrounding('Intent Preserved', fixes.map(f => f.sku).concat(['chassis', 'processor', 'memory']),
+      v1.physicalMathClean === true
+        ? '✅ Local Rule Engine Validated: Direct translation of customer requirements with mandatory buildability fixes.'
+        : '⚠️ Candidate has unresolved physical constraint/math errors; inspect errors before portal validation.'),
     reasoning: rank1Reasoning,
     decisionTrace: decisionLedger.getDecisions()
   };
@@ -272,7 +281,9 @@ function _buildRank2Candidate(ctx) {
     ragSecondOpinion: getLiveRagGrounding(
       rank2LeastDelta ? 'Least-Delta Alternative' : 'Standardized CTO Baseline',
       (rank2LeastDelta?.cascadingSkusEliminated || []).concat(['cable', 'rail', 'chassis']),
-      rank2LeastDelta ? `✅ Local Rule Engine Validated: ${rank2LeastDelta.presalesValuePitch}` : `✅ Local Rule Engine Validated: CTO factory standardized baseline (${tierConfig.rank2?.[0]?.description || 'Factory Cable/Rail Kit'}) and routing verified.`
+      v2.physicalMathClean === true
+        ? (rank2LeastDelta ? `✅ Local Rule Engine Validated: ${rank2LeastDelta.presalesValuePitch}` : `✅ Local Rule Engine Validated: CTO factory standardized baseline (${tierConfig.rank2?.[0]?.description || 'Factory Cable/Rail Kit'}) and routing verified.`)
+        : '⚠️ Candidate has unresolved physical constraint/math errors; portal review required.'
     ),
     reasoning: rank2Reasoning,
     decisionTrace: decisionLedger.getDecisions()
@@ -298,8 +309,10 @@ function _buildRank3Candidate({ rank3Name, rank3Reasoning, rank3AddonCost, rank3
     injectedCascadingFixes: v3.injectedFixes,
     cascadingImpact: rank3CascadingImpact,
     tradeoffMetrics: { intentAlignment: rank3IntentAlignment, skuModifications: `${fixes.length + (pcieStorageBranch ? pcieStorageBranch.substitutions.length : rank3Addons.length) + v3.injectedFixes.length} modifications`, costDeltaUsd: `+$${(fixCost + rank3AddonCost).toLocaleString()}`, capacityExpansion: pcieStorageBranch ? '2x Write Cache (8GB) + OCP Retention' : 'High Drive Controller Throughput' },
-    ragSecondOpinion: getLiveRagGrounding('High-IOPS Storage Performance', (pcieStorageBranch ? ['MR416i-p', 'P10115-B21', 'P48832-B21'] : rank3Addons.map(a => a.sku)).concat(['battery', 'cache', 'storage']),
-      pcieStorageBranch ? '✅ Local Rule Engine Validated: PCIe standup controller (x16 bus, 8GB cache) frees OCP Slot 1 for customer OCP adapter.' : `✅ Local Rule Engine Validated: Write-back cache acceleration & ${dna.storageWorkload || 'high-throughput controller'} IOPS optimization verified.`),
+    ragSecondOpinion: getLiveRagGrounding('High-IOPS Storage Performance', (pcieStorageBranch ? [pcieStorageBranch.substitutions?.[0]?.toSku || 'storage', ...(pcieStorageBranch.retainedOcpSkus || [])] : rank3Addons.map(a => a.sku)).concat(['battery', 'cache', 'storage']),
+      v3.physicalMathClean === true
+        ? (pcieStorageBranch ? '✅ Local Rule Engine Validated: PCIe standup controller (x16 bus, 8GB cache) frees OCP Slot 1 for customer OCP adapter.' : `✅ Local Rule Engine Validated: Write-back cache acceleration & ${dna.storageWorkload || 'high-throughput controller'} IOPS optimization verified.`)
+        : '⚠️ Candidate has unresolved physical constraint/math errors; portal review required.'),
     reasoning: rank3Reasoning
   };
 }
@@ -322,7 +335,10 @@ function _buildRank4Candidate({ rank4Name, rank4AddonCost, rank4Addons, fixes, v
     aspectErrors: v4.aspectErrors || [],
     injectedCascadingFixes: v4.injectedFixes,
     tradeoffMetrics: { intentAlignment: `${Math.max(70, 85 - fixes.length * 3)}% (Scalability Focused)`, skuModifications: `${fixes.length + rank4Addons.length + v4.injectedFixes.length} modifications`, costDeltaUsd: `+$${(fixCost + rank4AddonCost).toLocaleString()}`, capacityExpansion: '100% Slot & Thermal Headroom' },
-    ragSecondOpinion: getLiveRagGrounding('Future Scalability Expansion', rank4Addons.map(a => a.sku).concat(['riser', 'fan', 'pcie']), '✅ Local Rule Engine Validated: Secondary & tertiary riser lane allocation and cooling envelope verified.'),
+    ragSecondOpinion: getLiveRagGrounding('Future Scalability Expansion', rank4Addons.map(a => a.sku).concat(['riser', 'fan', 'pcie']),
+      v4.physicalMathClean === true
+        ? '✅ Local Rule Engine Validated: Secondary & tertiary riser lane allocation and cooling envelope verified.'
+        : '⚠️ Candidate has unresolved physical constraint/math errors; portal review required.'),
     reasoning: 'Populates full secondary PCIe riser slots and high-performance fan kits to support future GPU accelerator and 2nd CPU socket expansions.'
   };
 }
@@ -353,7 +369,9 @@ function _buildRank5Candidate({ v5, fixes, baseCost, fixCost, getLiveRagGroundin
       capacityExpansion: 'Baseline Only'
     },
     ragSecondOpinion: getLiveRagGrounding(isAvailable ? 'Budget CapEx Down-Tiering' : 'Minimal CapEx Baseline', ['minimal', 'baseline', 'chassis'],
-      isAvailable ? `✅ Local Rule Engine Validated: Certified budget alternative down-tiering over-provisioned components (-$${v5.deltaUsd.toLocaleString()}).` : `✅ Local Rule Engine Validated: 100% buildable certified baseline without unrequested add-ons (${v5.parts.length} essential parts).`),
+      v5.physicalMathClean === true
+        ? (isAvailable ? `✅ Local Rule Engine Validated: Certified budget alternative down-tiering over-provisioned components (-$${v5.deltaUsd.toLocaleString()}).` : `✅ Local Rule Engine Validated: 100% buildable certified baseline without unrequested add-ons (${v5.parts.length} essential parts).`)
+        : '⚠️ Candidate has unresolved physical constraint/math errors; portal review required.'),
     reasoning: isAvailable
       ? 'Certified budget alternative down-tiering over-provisioned components to deliver lower CapEx while remaining 100% physically buildable.'
       : 'Strict baseline buildable tier eliminating all optional add-ons to minimize total CapEx expenditure while remaining 100% buildable. Rank 1 already represents the minimal certified spend; no further component down-tiering is safely applicable without violating physical constraints.'

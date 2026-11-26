@@ -133,8 +133,16 @@ function _buildMemoryMetrics(ctx, cpuCount, chWidth) {
   const { memoryCount, totalMemoryGb, hasDdr4Memory, hasDdr5Memory, hasRdimm, hasLrdimm, hasMrdimm, btoMemoryViolations, memoryItems, speedsMts, ranks } = ctx;
 
   const dimmsPerCpu = cpuCount > 0 ? (memoryCount / cpuCount) : 0;
-  const isSupportedPopulation = cpuCount > 0 && memoryCount > 0 && (memoryCount % cpuCount === 0) && [1, 2, 4, 6, 8, 12, 16].includes(dimmsPerCpu);
-  const isBalancedChannel = cpuCount > 0 && memoryCount > 0 && (memoryCount % cpuCount === 0) && ((memoryCount / cpuCount) % chWidth === 0);
+  const maxDimmsPerCpu = chWidth * 2;
+  const validPopulationsByChannel = {
+    6: [1, 2, 4, 6, 12],
+    8: [1, 2, 4, 6, 8, 12, 16],
+    12: [1, 2, 4, 6, 8, 10, 12, 24]
+  };
+  const validPopulations = validPopulationsByChannel[chWidth] || [1, 2, 4, 6, 8, 12, 16];
+  const exceedsMaxDimms = cpuCount > 0 && dimmsPerCpu > maxDimmsPerCpu;
+  const isSupportedPopulation = cpuCount > 0 && memoryCount > 0 && (memoryCount % cpuCount === 0) && validPopulations.includes(dimmsPerCpu) && !exceedsMaxDimms;
+  const isBalancedChannel = cpuCount > 0 && memoryCount > 0 && (memoryCount % cpuCount === 0) && ((memoryCount / cpuCount) % chWidth === 0) && !exceedsMaxDimms;
   const hasMixedDdrGeneration = hasDdr4Memory && hasDdr5Memory;
   const hasMixedMemoryTypes = (hasRdimm && (hasLrdimm || hasMrdimm)) || (hasLrdimm && hasMrdimm);
   const hasMixedSpeeds = speedsMts.size > 1;
@@ -180,11 +188,15 @@ function _buildMemoryMetrics(ctx, cpuCount, chWidth) {
   };
 }
 
-function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoChassis = false, channelWidth = 8) {
-  const chWidth = Math.max(1, parseInt(channelWidth, 10) || 8);
+function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoChassis = false, channelWidth = null) {
   const hasExplicitCpuCount = (typeof passedCpuCount === 'number' && passedCpuCount > 0);
   let cpuCount = hasExplicitCpuCount ? passedCpuCount : 0;
   const activeCatalog = (typeof passedCpuCount === 'object' && passedCpuCount !== null) ? passedCpuCount : catalogData;
+  const prodId = String(activeCatalog?.metadata?.productId || activeCatalog?.metadata?.chassis || '');
+  const inferredWidth = /dl145/i.test(prodId)
+    ? 6
+    : (/dl385|dl325|dl345/i.test(prodId) ? 12 : 8);
+  const chWidth = Math.max(1, parseInt(channelWidth ?? activeCatalog?.metadata?.channelsPerSocket ?? inferredWidth, 10) || 8);
   const skuIndex = buildCatalogSkuIndex(activeCatalog);
   const isCto = _isCtoChassis(items, isCtoChassis);
 

@@ -46,7 +46,12 @@ PROMPT_VERSIONS.v3 = chassisId => `${PROMPT_VERSIONS.v2(chassisId)}
 - Mixed-Domain Solutions: When reviewing composite or heterogeneous tenders, verify that each domain (server, storage, networking) satisfies its specific aspect checks and that cross-domain containment (bay limits, fabric link speed matching, shared power budget) is evaluated.
 - Composite Cabling & Port-Budget Completeness: Never assume a clean OCA/CLIC module check implies physical cabling is complete—OCA does not flag missing inter-frame rings, stacking links, PDU cord mismatches, or SAN fiber cables. Always reason across all six physical planes (internal midplane vs. external, PDU cord receptacles, OOB management ring vs. MGMT uplinks, inter-frame ICL fabric links, horizontal master stacking/MLAG ports vs. northbound uplink cage budget, and dedicated SAN fiber coverage for both included-in-box and expansion optics) and explicitly separate in-the-box items from separately ordered SKUs.`;
 
-const ACTIVE_VERSION = 'v3';
+/** v4 — Adds deterministic capability envelope querying and negated-claim contradiction discipline. */
+PROMPT_VERSIONS.v4 = chassisId => `${PROMPT_VERSIONS.v3(chassisId)}
+- Hardware Capability Envelope Bounds: For any question or substitution involving maximum or minimum ports, OCP slots, risers, CPUs, GPUs, memory channels, drive bays, or PSU watts, invoke \`query_hardware_envelope\` before recommending changes.
+- Negated-Claim & Contradiction Discipline: Separate unnegated violations from negated reassurance phrases (for example "no incompatible parts detected"). When deterministic aspect checks contradict cloud commentary, preserve [OPINION_DISCREPANCY_FLAG] and treat physical math checks as binding.`;
+
+const ACTIVE_VERSION = 'v4';
 
 function _formatSingleHardRequirement(req) {
   const id = req.id || req.requirementId || 'REQ';

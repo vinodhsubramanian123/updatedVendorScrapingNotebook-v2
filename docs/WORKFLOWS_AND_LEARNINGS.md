@@ -2,7 +2,7 @@
 
 ## Session lessons — 2026-09-10 (read before resuming)
 
-Engineering knowledge from checkpoint `15f283a` and handoff `9544722`. These are process findings, not verified vendor compatibility rules. The current implementation still has defects: see [continuation evidence](CONTINUATION_CHECKPOINT.md) and [ordered remediation plan](../GEMINI_REMAINING_WORK_PLAN.md). Do not ingest this engineering retrospective into product NotebookLM sources or automatically turn its hypotheses into executable hardware rules.
+Engineering knowledge from checkpoint `15f283a` and handoff `9544722`. These are process findings, not verified vendor compatibility rules. The current implementation still has defects: see [continuation evidence](CONTINUATION_CHECKPOINT.md) and [ordered remediation plan](audits/archive/GEMINI_REMAINING_WORK_PLAN.md). Do not ingest this engineering retrospective into product NotebookLM sources or automatically turn its hypotheses into executable hardware rules.
 
 | Observed mistake or limitation | Durable lesson and current disposition |
 | --- | --- |
@@ -255,7 +255,7 @@ When a BOQ evaluation results in low confidence or physical constraint violation
   - *Cross-Generation Riser Mismatch*: Identified Gen11 risers (`P48803-B21` / `P51083-B21`) on Gen12 PCIe Gen5 motherboards. Added generation boundary checks to prevent PCIe bus mismatch.
 - **Dual-Brain Query Payload Integrity (Sanitizer Object Handling)**: Passing structured query objects (`{ chassis, query, context }`) from `formatNotebookQueryPayload()` directly into `executeNotebookQuery()` previously caused `sanitizeNotebookQuery()` to treat non-string inputs as empty. Enhanced `sanitizeNotebookQuery()` in `scripts/lib/notebook/query_sanitizer.js` to natively parse structured query objects, extract the full SKU array from `context.skus` and `context.items`, and format an explicit, grounded prompt for NotebookLM.
 - **Cloud RAG Timeout Synchronization (120s Extended Window)**: Live Cloud NotebookLM queries on large multi-source notebooks (16+ sources) require 45–75 seconds to synthesize cross-document citations. Standardized timeout to `120000ms` (120s) across `notebook_query_utils.js`, matching `nlm`'s native CLI default.
-- **Gemini Model Modernization (`gemini-3.6-flash`)**: Standardized all agentic loops (`agentic_guardrail.js`, `ocr_service.js`) from deprecated `gemini-2.5-flash` to `gemini-3.6-flash` (or `gemini-3.7-flash`), preserving seamless Autonomous MCP Guardrail execution without API 404 errors.
+- **Gemini Model Modernization (`scripts/config/model_routing.json`)**: Standardized agentic and OCR pipelines (`agentic_guardrail.js`, `ocr_service.js`, `local_rag_search.js`, `adversarial_agent.js`) from legacy Gemini 2.x models onto task-tiered Gemini 3.x routing (`gemini-3.6-flash` / `gemini-3.7-flash` via `resolveModelForTask()`), preserving autonomous MCP Guardrail execution without API 404 errors.
 
 ---
 

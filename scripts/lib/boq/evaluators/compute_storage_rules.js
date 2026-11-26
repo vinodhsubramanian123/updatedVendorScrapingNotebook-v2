@@ -160,9 +160,10 @@ function _validateStorageThermalAirflow(ctx, fanQtyPerServer) {
 
 function _validateCpuAndGpuThermalEnvelope(ctx, fanQtyPerServer) {
   const { compute, pcie, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, HIGH_TDP_THRESHOLD_WATTS } = ctx;
-  if ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans) {
-    const reason = pcie.gpuCount > 0
-      ? `Thermal Math: GPU Accelerator (${pcie.gpuCount} GPU(s)) mandates High-Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}) for adequate cooling envelope.`
+  const gpuCount = pcie?.gpuCount || 0;
+  if ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans) {
+    const reason = gpuCount > 0
+      ? `Thermal Math: GPU Accelerator (${gpuCount} GPU(s)) mandates High-Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}) for adequate cooling envelope.`
       : `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.`;
     if (compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS) errors.push(reason);
     else warnings.push(reason);
@@ -207,6 +208,16 @@ function validateThermalRules(ctx) {
   const { items, compute, storage, errors, mathDeductions } = ctx;
   if (compute.hasMixedCpuModels) {
     const reason = `Processor Architecture Conflict: Multi-socket server configurations require identical processor models (same core count, stepping, and frequency). Detected distinct CPU SKUs: ${(compute.uniqueCpuSkus || []).join(', ')}.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+  if (compute.hasUnevenCpuPerNode) {
+    const reason = `Processor Cluster Symmetry Conflict: ${compute.cpuCount} processor(s) cannot be evenly distributed across ${ctx.serverCount || 1} server nodes.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+  if (compute.exceedsMaxSockets) {
+    const reason = `Processor Socket Limit Exceeded: ${compute.cpusPerServer || compute.cpuCount} CPUs per node exceeds platform maxSockets (${compute.maxSockets}).`;
     errors.push(reason);
     mathDeductions.push(reason);
   }

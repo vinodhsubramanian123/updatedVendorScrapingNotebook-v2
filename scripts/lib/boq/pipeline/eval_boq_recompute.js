@@ -18,7 +18,10 @@ function _resolveRecomputeContext(baseData, chassisDirOverride) {
   const catalogPath = path.join(targetDir, `${chassisPrefix}_Catalog.json`);
   let catalogData = baseData.catalogData || null;
   if (!catalogData && fs.existsSync(catalogPath)) {
-    try { catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8')); } catch {}
+    try { catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8')); } catch (err) {
+      const logger = require('../../system/pipeline_logger.js');
+      logger.warn('EVAL_BOQ_RECOMPUTE', `Failed parsing catalog JSON at ${catalogPath}: ${err.message}`);
+    }
   }
   return { items, targetDir, chassisPrefix, catalogData };
 }

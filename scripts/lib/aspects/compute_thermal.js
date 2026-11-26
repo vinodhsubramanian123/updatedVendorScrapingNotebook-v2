@@ -44,6 +44,7 @@ function _extractComputeMetrics(items, skuIndex, mandatorySkus) {
   let maxCpuTdpWatts = 0;
   let fanKitCount = 0;
   const uniqueCpuSkus = new Set();
+  const cpuSkuCounts = new Map();
   const fanKitSku = cleanBaseSKU(mandatorySkus.HIGH_PERF_FAN_KIT?.sku || '');
 
   for (const it of items) {
@@ -61,8 +62,12 @@ function _extractComputeMetrics(items, skuIndex, mandatorySkus) {
     const isCpuCandidate = role === 'Processor' || isCpuToken || /^p\d{5}-b21$/i.test(it.sku);
 
     if (isCpuCandidate && (role === 'Processor' || isCpuToken)) {
-      cpuCount += (it.quantity || 1);
-      if (sku) uniqueCpuSkus.add(sku);
+      const qty = it.quantity || 1;
+      cpuCount += qty;
+      if (sku) {
+        uniqueCpuSkus.add(sku);
+        cpuSkuCounts.set(sku, (cpuSkuCounts.get(sku) || 0) + qty);
+      }
       const tdpMatch = desc.match(/(\d{2,3})\s*w/i);
       if (tdpMatch) {
         const tdp = parseInt(tdpMatch[1], 10);
@@ -76,7 +81,7 @@ function _extractComputeMetrics(items, skuIndex, mandatorySkus) {
     }
   }
 
-  return { cpuCount, maxCpuTdpWatts, fanKitCount, uniqueCpuSkus };
+  return { cpuCount, maxCpuTdpWatts, fanKitCount, uniqueCpuSkus, cpuSkuCounts };
 }
 
 function _detectGen11Platform(items, skuIndex, options = {}) {
@@ -145,15 +150,46 @@ function _evaluateThermalCoolingEnvelope(options = {}, maxCpuTdpWatts = 0, hasHi
   return { ambientTemp, isElevatedAmbient, needsHighPerfCooling, thermalEquationFormula };
 }
 
+function _resolveMaxSockets(catalogData) {
+  if (Number.isFinite(Number(catalogData?.metadata?.maxSockets)) && Number(catalogData.metadata.maxSockets) > 0) {
+    return Number(catalogData.metadata.maxSockets);
+  }
+  const prodId = String(catalogData?.metadata?.productId || '');
+  if (/dl145|dl325/i.test(prodId)) return 1;
+  if (/dl580/i.test(prodId)) return 4;
+  return 2;
+}
+
+function _hasMixedCpuModels(uniqueCpuSkus, serverCount, options, cpuSkuCounts, totalCpus) {
+  if (uniqueCpuSkus.size <= 1) return false;
+  if (!serverCount || serverCount === 1) return true;
+  if (options?.allowHeterogeneousClusters) return false;
+  const socketsPerNode = totalCpus > 0 ? Math.max(1, Math.round(totalCpus / serverCount)) : 1;
+  const isCleanClusterPartition = uniqueCpuSkus.size <= serverCount &&
+    totalCpus % socketsPerNode === 0 &&
+    Array.from(cpuSkuCounts.values()).every(qty => qty >= socketsPerNode && qty % socketsPerNode === 0);
+  return !isCleanClusterPartition;
+}
+
+function _detectDl380aAccelerator(items, skuIndex) {
+  return items.some(it => {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) return false;
+    const d = (it.description || '').toLowerCase();
+    if (d.includes('dl380a')) return true;
+    const catItem = skuIndex.get(cleanBaseSKU(it.sku));
+    return (catItem?.skuData?.Description || '').toLowerCase().includes('dl380a');
+  });
+}
+
 function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serverCount = 1, options = {}) {
   const skuIndex = buildCatalogSkuIndex(catalogData);
-  const { cpuCount, maxCpuTdpWatts, fanKitCount, uniqueCpuSkus } = _extractComputeMetrics(items, skuIndex, mandatorySkus);
+  const { cpuCount, maxCpuTdpWatts, fanKitCount, uniqueCpuSkus, cpuSkuCounts } = _extractComputeMetrics(items, skuIndex, mandatorySkus);
 
   const isGen11 = _detectGen11Platform(items, skuIndex, options);
   const highPerfFanSku = mandatorySkus.HIGH_PERF_FAN_KIT?.sku || '';
   const highPerfHeatsinkSku = mandatorySkus.HIGH_PERF_HEATSINK?.sku || '';
 
-  const hasHighPerfFans = fanKitCount > 0 || (highPerfFanSku ? items.some(it => !isOcaModifierTrackingRow(it.sku, it.description) && cleanBaseSKU(it.sku) === cleanBaseSKU(highPerfFanSku)) : false);
+  const hasHighPerfFans = fanKitCount > 0 || Boolean(highPerfFanSku && items.some(it => !isOcaModifierTrackingRow(it.sku, it.description) && cleanBaseSKU(it.sku) === cleanBaseSKU(highPerfFanSku)));
   const hasDirectLiquidCooling = items.some(isDirectLiquidCoolingItem) || Boolean(options?.hasDirectLiquidCooling);
   const hasHeatsinks = items.some(it => isHeatsinkItem(it, skuIndex, highPerfHeatsinkSku));
   const needsHeatsink = cpuCount > 0 && !hasHeatsinks && !hasDirectLiquidCooling;
@@ -164,20 +200,16 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
   const { hasMaxPerfHeatsink, hasOverprovisionedMaxHeatsink, recommendedHeatsinkSku } = _evaluateHeatsinkTiering(items, maxCpuTdpWatts);
 
   const isModularFan = _detectModularFanPackaging(items, options, mandatorySkus);
+  const maxSockets = _resolveMaxSockets(catalogData);
+  const hasUnevenCpuPerNode = serverCount > 1 && cpuCount > 0 && (cpuCount % serverCount !== 0);
   const cpusPerServer = (serverCount > 0 && cpuCount > 0) ? Math.max(1, Math.round(cpuCount / serverCount)) : (cpuCount || 2);
+  const exceedsMaxSockets = cpuCount > 0 && (cpuCount / Math.max(1, serverCount)) > maxSockets;
   const fanKitsPerServer = serverCount > 0 ? Math.floor(fanKitCount / serverCount) : fanKitCount;
   const maxFanKitsAllowed = isModularFan ? (cpusPerServer === 1 ? 4 : 6) : 1;
   const minFanKitsRequired = isModularFan ? (cpusPerServer === 1 ? 4 : 6) : 1;
   const fanKitExceedsMax = fanKitsPerServer > maxFanKitsAllowed;
   const fanKitUnderPopulated = isModularFan && fanKitCount > 0 && fanKitsPerServer < minFanKitsRequired;
-
-  const isDl380aAccelerator = items.some(it => {
-    if (isOcaModifierTrackingRow(it.sku, it.description)) return false;
-    const d = (it.description || '').toLowerCase();
-    if (d.includes('dl380a')) return true;
-    const catItem = skuIndex.get(cleanBaseSKU(it.sku));
-    return (catItem?.skuData?.Description || '').toLowerCase().includes('dl380a');
-  });
+  const isDl380aAccelerator = _detectDl380aAccelerator(items, skuIndex);
 
   const { ambientTemp, isElevatedAmbient, needsHighPerfCooling, thermalEquationFormula } = _evaluateThermalCoolingEnvelope(options, maxCpuTdpWatts, hasHighPerfFans);
 
@@ -206,7 +238,10 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
     isAmdEpyc8004: items.some(it => (it.description || '').toLowerCase().includes('epyc 8')),
     isDl380aAccelerator,
     uniqueCpuSkus: Array.from(uniqueCpuSkus),
-    hasMixedCpuModels: (serverCount === 1 || !serverCount) && uniqueCpuSkus.size > 1,
+    hasMixedCpuModels: _hasMixedCpuModels(uniqueCpuSkus, serverCount, options, cpuSkuCounts, cpuCount),
+    hasUnevenCpuPerNode,
+    exceedsMaxSockets,
+    maxSockets,
     isElevatedAmbient,
     ambientTemp,
     needsHighPerfCooling,

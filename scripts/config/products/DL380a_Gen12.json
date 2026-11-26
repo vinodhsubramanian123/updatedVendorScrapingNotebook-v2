@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "DL380a_Gen12",
+  "vendor": "HPE",
+  "domain": "server",
+  "family": "ProLiant DL",
+  "generation": "Gen12",
+  "formFactor": "4U Rack",
+  "maxSockets": 2,
+  "ocpSlots": 2,
+  "basePcieSlots": 4,
+  "maxPsuBays": 8,
+  "memoryArchitecture": {
+    "generation": "DDR5",
+    "channelsPerSocket": 8,
+    "dimmsPerChannel": 2,
+    "maxDimmsPerSocket": 16,
+    "maxDimmsPerChassis": 32,
+    "validBalancedCountsPerSocket": [1, 2, 4, 6, 8, 12, 16]
+  },
+  "riserSlots": {
+    "primary": { "slots": 4, "requireCpu": 1, "sku": null }
+  },
+  "storageBays": { "baseSffBays": 4, "maxFrontSffBays": 8, "maxFrontLffBays": 12, "maxFrontEdsffBays": 8 },
+  "defaultSupportPolicy": {
+    "tier": "TECH_CARE_BASIC",
+    "durationYears": 3,
+    "hardwareSupportSku": "HU4B2A30C4V"
+  },
+  "skuAliases": ["DL380a_Gen12", "DL380a Gen12", "HPE_PROLIANT_DL380A_GEN12", "P74700-B21", "P76706-B21"]
+}

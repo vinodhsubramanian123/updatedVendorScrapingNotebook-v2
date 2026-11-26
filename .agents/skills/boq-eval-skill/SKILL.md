@@ -109,6 +109,6 @@ node scripts/lib/boq/multi_cluster_splitter.js --file path/to/tender.xlsx
 - [Shared Runtime Conditional Discovery Contract](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md)
 - [Master System Invariants Directory](../../../docs/INVARIANTS.md)
 
-### Revision-bound delivery
+### Revision-bound & constraint-graph delivery
 
-Follow [the catalog evidence contract](../../../docs/CATALOG_EVIDENCE_AND_LEARNING.md) for production lifecycle and delivery. A supply-constrained part requires confirmation or an applicable replacement. Re-evaluate when the bound catalog, services, or rules revision changes before exporting.
+Enforce deterministic 5-level rule IR (`scripts/lib/conflict/catalog_rule_evaluator.js`), buildable SKU constraint-graph closure (`scripts/lib/conflict/buildable_graph_solver.js` -> `solveBuildableCandidate`), and exact category capability bounds (`scripts/lib/rules/hardware_envelope_solver.js`) before finalizing candidate topologies. Follow [the catalog evidence contract](../../../docs/CATALOG_EVIDENCE_AND_LEARNING.md) for production lifecycle and delivery. A supply-constrained part requires confirmation or an applicable replacement. Re-evaluate when the bound catalog, services, or rules revision changes before exporting.

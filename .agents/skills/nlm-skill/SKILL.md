@@ -90,6 +90,10 @@ npm run auth:nlm:heal
 4. Extracted rules and citations are saved to persistent `KnowledgeDelta` records.
 5. The temporary source is **immediately detached** via `detachSolutionSource()` (`source_delete`), strictly preventing baseline QuickSpecs contamination.
 
+### E. Multi-Notebook Fan-Out, Tiered Routing & Negation Guard (`INV-284`)
+- Cross-solution and multi-generation queries fan out through `scripts/lib/notebook/multi_notebook_coordinator.js` using deterministic timestamp-free cache keys (`trusted_query_v3:...` in `scripts/lib/notebook/notebook_query_utils.js`).
+- Guardrail Prompt `v4` (`ACTIVE_VERSION = 'v4'` in `scripts/lib/prompts/guardrail_prompt.js`), `scripts/config/model_routing.json` (`resolveModelForTask` in `scripts/lib/system/gemini_rotator.js`), and `extractRagClaimsWithNegationGuard` (`scripts/lib/boq/pipeline/eval_boq_rag_stage.js`) prevent negated-claim misattribution and stale fallback prompts.
+
 ---
 
 ## 4. References & CLI Reference

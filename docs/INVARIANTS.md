@@ -1506,4 +1506,32 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - `scripts/lib/conflict/tradeoff_explainer.js` (`computeCandidateRunwayAndTradeOffs`) attaches nullable `day2Runway` headroom percentages and marginal `tradeOffVsBaseline` comparisons (`capExDeltaUsd: null` when pricing is incomplete) across `strategy_synthesizer.js` and `solution_comparator.js`.
   - `scripts/lib/conflict/sizing/voi_clarification_ranker.js` (`rankClarificationsByValueOfInformation`, `collectScopedIntakeTrapAdvisories`) ranks missing sizing inputs by CapEx/topology swing and surfaces certified product-scoped intake pitfalls without mutating customer requirements.
 
+---
+
+## 18. End-to-End Capability Math, Constraint Graph Solving & Modular Extensibility (`2026-11-26`)
+
+- <a id="inv-281"></a>**INV-281 · Single Source of Truth for Physical Bounds, Fail-Closed Thermal/PSU Envelopes & Homogeneous Multi-Cluster Partitioning (`2026-11-26`):**
+  - `scripts/lib/rules/hardware_envelope_solver.js` (`solveCategoryBounds`, `summarizeProductCapabilities`) computes exact integer `min`/`max` envelopes per hardware category (OCP/PCIe ports across riser topologies, CPUs, GPUs, Flex Slot `N+1` PSU bays, DIMMs, drive bays, interconnect fabrics) backed by `scripts/lib/rules/platform_profiles.js` and `scripts/config/products/*.json`.
+  - `scripts/lib/aspects/power_environment.js` caps 2-bay Flex Slot chassis `N+1` redundancy at `2` bays (`_resolveMaxPsuBaysPerNode`), never substituting global power envelope assumptions for missing chassis limits; `scripts/lib/aspects/compute_thermal.js` permits homogeneous cluster CPU splits only when each SKU quantity is an integer multiple of node socket count (`qty % socketsPerNode === 0`) while blocking single-node mixed CPUs.
+  - `scripts/lib/boq/pipeline/eval_boq_recompute.js`, `scripts/lib/boq/evaluators/power_memory_support_rules.js`, and facade helpers log explicit structured `logger.warn(...)` telemetry on caught recovery errors instead of silent empty catches.
+
+- <a id="inv-282"></a>**INV-282 · Executable 5-Level Catalog Rule IR & Deterministic Buildable SKU Constraint Graph (`2026-11-26`):**
+  - `scripts/lib/conflict/catalog_rule_evaluator.js` compiles and evaluates the 5-level rule taxonomy (`min_max_select`, `requires`, `mutually_exclusive`, `dependency_gate`, `portal_conditional`) cleanly in pure topological helpers without circular dependencies.
+  - `scripts/lib/conflict/buildable_graph_solver.js` (`solveBuildableCandidate`) verifies candidate BOMs as constraint satisfaction graphs across physical slots, TDP/ambient gates, power/thermal limits, and catalog IR rules, returning deterministic `UNKNOWN` or bounded counterexample blockers (`closureVerified`, SHA-256 plan digests) instead of coerced `PASS`.
+
+- <a id="inv-283"></a>**INV-283 · Closed-Loop Cross-Solution & Cross-Vendor Comparison Buildability (`2026-11-26`):**
+  - `scripts/lib/boq/solution_comparator.js` (with `comparator_bom_assembler.js`) enforces full buildability closure on every compared HPE generation/platform candidate and attaches deterministic `TradeOffRecord` deltas without masking unbuildable baselines.
+  - `scripts/lib/boq/cross_vendor_transformer.js` and `scripts/lib/boq/attribute_equivalence_mapper.js` preserve source requirement lineage, map multi-vendor BOMs through `adapter_registry.js`, and retain explicit parity gaps (`NOT_EVALUATED` / `UNMAPPED`) rather than silent drops.
+
+- <a id="inv-284"></a>**INV-284 · Task-Tiered Model Routing, Negation-Guarded RAG Adjudication & Multi-Notebook Coordination (`2026-11-26`):**
+  - `scripts/config/model_routing.json` + `resolveModelForTask(tier, overrides)` in `scripts/lib/system/gemini_rotator.js` route `ocr_vision`, `guardrail_fast`, `reasoning_deep`, `synthesis_structured`, and `adversarial_audit` across verified Gemini models.
+  - `extractRagClaimsWithNegationGuard` (`scripts/lib/boq/pipeline/eval_boq_rag_stage.js`) rejects polarity-inverted RAG claims when adjudicating discrepancies; `scripts/lib/prompts/guardrail_prompt.js` pins `ACTIVE_VERSION = 'v4'` (preserving `v3` Synergy sections); `scripts/lib/notebook/notebook_query_utils.js` computes timestamp-free `trusted_query_v3:...` cache keys; and `scripts/lib/notebook/multi_notebook_coordinator.js` fans out cross-solution queries across authoritative QuickSpecs notebooks.
+
+- <a id="inv-285"></a>**INV-285 · Declarative Product Manifests, Dynamic Vendor Adapters & Schema-Gated Onboarding (`2026-11-26`):**
+  - `scripts/config/products/*.json` (17 product lines validated by `ProductCapabilityManifestSchema` in `scripts/lib/system/schemas.js`) load via `scripts/lib/rules/product_manifest_loader.js` and deep-merge with `platform_profiles.js` via `_mergeSubSection` (`_mergeProfileWithManifest`), preserving nested `memoryArchitecture.skus`, `slots`, and `defaultSupportPolicy`.
+  - `scripts/lib/adapters/adapter_registry.js` validates and dispatches dynamic vendor adapters (`hpe`, `dell`, `huawei`, `cisco`, `lenovo`, backed by `scripts/config/vendors/*/policy.json`); `npm run onboard:product` (`scripts/maintenance/onboard_product.js`) automates capability inference and manifest scaffolding.
+
+- <a id="inv-286"></a>**INV-286 · Facade Decomposition Ceiling, Clean Dependency DAG & Zero Orphaned Modules (`2026-11-26`):**
+  - Monolithic comparison and conflict orchestrators (`solution_comparator.js`, `conflict_graph.js`, `resource_arbitrator.js`, `least_delta_combinator.js`) remain `< 800` LOC re-export facades delegating to pure helper modules (`comparator_bom_assembler.js`, `conflict_graph_rules.js`, `resource_arbitrator_remediation.js`, `least_delta/*`), enforcing `0` circular dependencies (`test:circular`), `0` dead code orphans (`test:deadcode`), `0` oxlint warnings (`lint:all`), and `CC <= 30` across all functions (`lint:complexity`).
+
 See [Catalog evidence, replay, and learning](CATALOG_EVIDENCE_AND_LEARNING.md) for verification paths.

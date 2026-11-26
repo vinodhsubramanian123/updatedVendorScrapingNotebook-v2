@@ -654,7 +654,9 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
   if (scopeResolution.earlyResult) return scopeResolution.earlyResult;
 
   const { configuredEntry, authoritativeSourceIds, combinedSourceIds } = scopeResolution;
-  const cacheKey = `trusted_query_v2:${targetNotebookId}:${sanitizedQuery.trim()}:${JSON.stringify(configuredEntry)}:${JSON.stringify(combinedSourceIds)}`;
+  const catalogVersionKey = configuredEntry?.lastCatalogSha256 || configuredEntry?.catalogSha256 || configuredEntry?.productKey || 'uncataloged';
+  const sortedSourceKey = Array.isArray(combinedSourceIds) ? [...combinedSourceIds].sort().join(',') : '';
+  const cacheKey = `trusted_query_v3:${targetNotebookId}:${sanitizedQuery.trim()}:${catalogVersionKey}:${sortedSourceKey}`;
   
   const earlyFallback = _checkCacheOrOfflineFallback(cacheKey, sanitizedQuery, rawQuery, options, authoritativeSourceIds, queryLocalKnowledgeBase, logger);
   if (earlyFallback) return earlyFallback;

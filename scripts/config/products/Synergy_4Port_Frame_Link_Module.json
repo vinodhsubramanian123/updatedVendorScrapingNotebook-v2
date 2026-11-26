@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "Synergy_4Port_Frame_Link_Module",
+  "vendor": "HPE",
+  "domain": "composable",
+  "family": "Synergy Management Module",
+  "formFactor": "Synergy Frame Link Module Bay",
+  "maxPsuBays": 0,
+  "defaultSupportPolicy": { "tier": "TECH_CARE_BASIC", "durationYears": 3 },
+  "skuAliases": ["Synergy_4Port_Frame_Link_Module", "Synergy 4Port Frame Link Module"]
+}

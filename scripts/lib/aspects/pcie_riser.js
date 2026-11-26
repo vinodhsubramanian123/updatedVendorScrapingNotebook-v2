@@ -140,10 +140,11 @@ function _isInternalOrOcp(desc) {
 }
 
 function _isX16PcieCard(role, desc) {
-  return role === 'GPU / Accelerator' || desc.includes('gpu') || 
-         desc.includes('200gb') || desc.includes('400gb') || 
-         desc.includes('infiniband') || desc.includes('mellanox') || 
-         desc.includes('nvidia');
+  return role === 'GPU / Accelerator' || desc.includes('gpu') ||
+         desc.includes('x16') || desc.includes('100gb') ||
+         desc.includes('200gb') || desc.includes('400gb') ||
+         desc.includes('infiniband') || desc.includes('mellanox') ||
+         desc.includes('nvidia') || /\b(h100|h200|l40|l4|a100|rtx|b200|mi300|gaudi)\b/i.test(desc);
 }
 
 function tallyPcieCardDemand(tally, desc, qty, role, isDl380a = false) {
@@ -268,20 +269,20 @@ function calculatePcieSlots(t, serverCount = 1) {
   const { isDl380a, activePrimarySlots, activeSecondarySlots, activeTertiarySlots, activeSlotsAvailable } =
     _resolveActiveSlotEnvelope(t, perNodePrimaryRiser, perNodeSecondaryRiser, perNodeTertiaryRiser);
 
+  const baseMechanicalSlots = Number.isFinite(t.platformBaseMechanicalSlots) ? t.platformBaseMechanicalSlots : 3;
   const installedRiserSlots = t.riserEvidence.reduce((sum, riser) => sum + (riser.slotsPerRiser * (riser.quantity / nodes)), 0);
-  const totalPhysicalSlots = 3 + installedRiserSlots;
+  const totalPhysicalSlots = baseMechanicalSlots + installedRiserSlots;
 
   const isExceedingTotalSlots = perNodeCards > totalPhysicalSlots && totalPhysicalSlots > 0;
-  const isExceedingActiveSlots = (perNodePrimaryRiser > 0 && perNodeSecondaryRiser > 0)
-    ? (perNodeCards > (activePrimarySlots + activeSecondarySlots))
-    : (perNodeCards > activeSlotsAvailable);
+  const isExceedingActiveSlots = perNodeCards > activeSlotsAvailable;
 
   const needsPrimaryRiser = !isDl380a && perNodeCards > 0 && perNodePrimaryRiser === 0;
   const needsPrimaryCableKit = !isDl380a && perNodePrimaryRiser > 0 && !t.hasPrimaryCableKit &&
     (perNodeCards >= 5 || perNodeCards > (2 + activeSecondarySlots + activeTertiarySlots));
   const needsSecondaryCableKit = perNodeSecondaryRiser > 0 && !t.hasSecondaryCableKit &&
     (perNodeCards >= 5 || perNodeCards > (activePrimarySlots + 2 + activeTertiarySlots) || perNodeCards > 4);
-  const needsSecondaryRiser = perNodeCards > (3 + (perNodePrimaryRiser * 3)) && perNodeSecondaryRiser === 0;
+  const needsSecondaryRiser = perNodeCards > (baseMechanicalSlots + (perNodePrimaryRiser * 3)) && perNodeSecondaryRiser === 0;
+  const needsTertiaryRiser = !isDl380a && perNodeCards > (baseMechanicalSlots + (perNodePrimaryRiser * 3) + (perNodeSecondaryRiser * 3)) && perNodeTertiaryRiser === 0;
   const needsGpuPowerCableKit = (t.gpuCount / nodes) > (t.gpuPowerCableKitCount / nodes);
 
   const x16LanesAvailable = (perNodePrimaryRiser > 0 ? (t.hasPrimaryCableKit ? 2 : 1) : (isDl380a ? 1 : 0)) +
@@ -289,6 +290,7 @@ function calculatePcieSlots(t, serverCount = 1) {
                             (perNodeTertiaryRiser > 0 ? 1 : 0);
 
   return {
+    baseMechanicalSlots,
     totalPhysicalSlots,
     activeSlotsAvailable,
     isExceedingTotalSlots,
@@ -297,6 +299,7 @@ function calculatePcieSlots(t, serverCount = 1) {
     needsPrimaryCableKit,
     needsSecondaryCableKit,
     needsSecondaryRiser,
+    needsTertiaryRiser,
     needsGpuPowerCableKit,
     x16LanesAvailable,
     laneBifurcationConstraint: (t.x16RequiredCount / nodes) > x16LanesAvailable,
@@ -306,6 +309,10 @@ function calculatePcieSlots(t, serverCount = 1) {
 
 function evalPcieRiserSlots(items, catalogData = null, mandatorySkus = {}, serverCount = 1) {
   const t = tallyPcieItems(items, catalogData, mandatorySkus);
+  const chassisId = String(catalogData?.metadata?.productId || catalogData?.metadata?.chassis || mandatorySkus?._chassisId || '').toLowerCase();
+  if (chassisId.includes('dl145')) t.platformBaseMechanicalSlots = 1;
+  else if (chassisId.includes('dl360')) t.platformBaseMechanicalSlots = 2;
+  else if (Number.isFinite(catalogData?.metadata?.basePcieSlots)) t.platformBaseMechanicalSlots = Number(catalogData.metadata.basePcieSlots);
   const s = calculatePcieSlots(t, serverCount);
 
   return {
@@ -331,9 +338,10 @@ function evalPcieRiserSlots(items, catalogData = null, mandatorySkus = {}, serve
     isExceedingTotalSlots: s.isExceedingTotalSlots,
     needsPrimaryRiser: s.needsPrimaryRiser,
     needsSecondaryRiser: s.needsSecondaryRiser,
+    needsTertiaryRiser: s.needsTertiaryRiser,
     slotLayout: {
       scope: 'PER_NODE',
-      platformBaseMechanicalSlots: 3,
+      platformBaseMechanicalSlots: s.baseMechanicalSlots,
       installedRiserMechanicalSlots: s.installedRiserSlots,
       totalMechanicalSlots: s.totalPhysicalSlots,
       electricallyActiveSlots: s.activeSlotsAvailable,

@@ -13,23 +13,39 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
+require('../../scripts/lib/boq/boq_evaluator.js');
 const {
   synthesize5TierRankedSolutions,
   _tryBudgetStorageSubstitution,
   CERTIFIED_STORAGE_DOWNTIER_MAP
 } = require('../../scripts/lib/conflict/strategy_synthesizer.js');
 
+const MOCK_STORAGE_CATALOG = {
+  entries: [
+    {
+      parentCategory: 'Hard Drives',
+      subCategory: 'NVMe SSD',
+      skus: [
+        { 'Product #': 'P40543-B21', Description: 'HPE 1.92TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', 'GPL ($)': 630, Availability: 'Available' },
+        { 'Product #': 'P40542-B21', Description: 'HPE 960GB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', 'GPL ($)': 360, Availability: 'Available' },
+        { 'Product #': 'P40544-B21', Description: 'HPE 3.84TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', 'GPL ($)': 980, Availability: 'Available' }
+      ]
+    }
+  ]
+};
+
 test('Feature 12: Rank 5 Value-Engineering NVMe Down-Tiering', async (t) => {
   await t.test('1. Down-tiers Mixed Use NVMe SSD to Read Intensive NVMe SSD in non-write-intensive workload', () => {
     const items = [
       { sku: 'P52534-B21', description: 'HPE ProLiant DL380 Gen11 8SFF NC CTO Server', quantity: 1, unitPriceUsd: 1650 },
       { sku: 'P49610-B21', description: 'Intel Xeon-Gold 6430 2.1GHz 32-core 270W Processor', quantity: 2, unitPriceUsd: 2200 },
-      { sku: 'P43328-B21', description: 'HPE 32GB 2Rx8 DDR5-4800 Registered Smart Memory Kit', quantity: 16, unitPriceUsd: 180 },
+      { sku: 'P48818-B21', description: 'HPE ProLiant DL380 Gen11 High Performance Heat Sink Kit', quantity: 2, unitPriceUsd: 150 },
+      { sku: 'P43328-F21', description: 'HPE 32GB 2Rx8 DDR5-4800 Registered Smart Memory Kit FIO', quantity: 16, unitPriceUsd: 180 },
       { sku: 'P40548-B21', description: 'HPE 1.92TB NVMe Gen4 High Performance Mixed Use SFF BC U.3 SSD', quantity: 4, unitPriceUsd: 750 },
-      { sku: 'P48803-B21', description: 'HPE 800W Flex Slot Platinum Power Supply', quantity: 2, unitPriceUsd: 280 }
+      { sku: 'P38997-B21', description: 'HPE 1600W Flex Slot Platinum Power Supply', quantity: 2, unitPriceUsd: 420 }
     ];
 
-    const tiers = synthesize5TierRankedSolutions(items, {}, {}, { model: 'DL380 Gen11' });
+    const tiers = synthesize5TierRankedSolutions(items, {}, {}, { model: 'DL380 Gen11' }, '', { loadedCatalog: MOCK_STORAGE_CATALOG });
     const rank5 = tiers.find(r => r.strategyId === 'STRATEGY_BUDGET');
     assert.ok(rank5, 'Must generate Budget Strategy solution');
 
@@ -64,11 +80,13 @@ test('Feature 12: Rank 5 Value-Engineering NVMe Down-Tiering', async (t) => {
     const items = [
       { sku: 'P52534-B21', description: 'HPE ProLiant DL380 Gen11 8SFF NC CTO Server', quantity: 1, unitPriceUsd: 1650 },
       { sku: 'P49610-B21', description: 'Intel Xeon-Gold 6430 2.1GHz 32-core Processor', quantity: 2, unitPriceUsd: 2200 },
-      { sku: 'P43328-B21', description: 'HPE 32GB 2Rx8 DDR5-4800 Registered Smart Memory Kit', quantity: 16, unitPriceUsd: 180 },
-      { sku: 'P40546-B21', description: 'HPE 800GB NVMe Gen4 Mixed Use SFF BC SSD', quantity: 2, unitPriceUsd: 490 }
+      { sku: 'P48818-B21', description: 'HPE ProLiant DL380 Gen11 High Performance Heat Sink Kit', quantity: 2, unitPriceUsd: 150 },
+      { sku: 'P43328-F21', description: 'HPE 32GB 2Rx8 DDR5-4800 Registered Smart Memory Kit FIO', quantity: 16, unitPriceUsd: 180 },
+      { sku: 'P40546-B21', description: 'HPE 800GB NVMe Gen4 Mixed Use SFF BC SSD', quantity: 2, unitPriceUsd: 490 },
+      { sku: 'P38997-B21', description: 'HPE 1600W Flex Slot Platinum Power Supply', quantity: 2, unitPriceUsd: 420 }
     ];
 
-    const tiers = synthesize5TierRankedSolutions(items, {}, {}, { model: 'DL380 Gen11' });
+    const tiers = synthesize5TierRankedSolutions(items, {}, {}, { model: 'DL380 Gen11' }, '', { loadedCatalog: MOCK_STORAGE_CATALOG });
     const rank5 = tiers.find(r => r.strategyId === 'STRATEGY_BUDGET');
     const r5Drives = rank5.skuPartsList.filter(p => p.sku === 'P40542-B21');
     assert.equal(r5Drives.length, 1);

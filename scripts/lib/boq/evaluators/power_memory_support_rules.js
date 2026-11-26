@@ -220,7 +220,17 @@ function validateMemoryRules(ctx) {
       missingDependencies.push({ key: `FIO_MEMORY_${v.fioSku}`, rule: 'CLIC Option Type Constraint: FIO Memory Required in CTO Base Model', sku: v.fioSku, description: `HPE Factory Integrated Option (FIO) Replacement for ${v.btoSku}`, quantity: v.quantity, reason: v.reason, reasoning: v.reason });
     });
   }
-  if (memory.memoryCount > 0 && !memory.isSupportedPopulation) {
+  if (memory.hasMixedDimmCapacities) {
+    const r = `Memory Symmetry Warning: Mixed DIMM capacities detected (${(memory.distinctDimmCapacitiesGb || []).join('GB, ')}GB). Standard HPE population rules mandate uniform DIMM capacity per channel.`;
+    warnings.push(r);
+    mathDeductions.push(r);
+  }
+  const maxDimmsPerCpu = (memory.channelsPerCpu || 8) * 2;
+  if (memory.memoryCount > 0 && memory.dimmsPerCpu > maxDimmsPerCpu) {
+    const r = `Memory Slot Limit Exceeded: ${memory.dimmsPerCpu} DIMMs/CPU (${memory.memoryCount} total) exceeds maximum ${maxDimmsPerCpu} DIMMs/CPU for ${memory.channelsPerCpu || 8}-channel 2DPC topology.`;
+    errors.push(r);
+    mathDeductions.push(r);
+  } else if (memory.memoryCount > 0 && !memory.isSupportedPopulation) {
     const reason = `Memory Math Failed: ${memory.memoryCount} DIMMs across ${compute.cpuCount || 2} CPUs is an unsupported asymmetric count.`;
     warnings.push(reason);
     mathDeductions.push(reason);
@@ -266,7 +276,10 @@ function collectChassisDefaultAdvisories(items, chassisInfo, warnings, skipGraph
     if (chassisDefaults.length > 0) {
       for (const item of items) _evaluateItemAgainstChassisDefaults(item, chassisDefaults, baseKey, warnings, redundantDefaults);
     }
-  } catch (_) {}
+  } catch (err) {
+    const logger = require('../../system/pipeline_logger.js');
+    logger.warn('ASPECT_SUPPORT_RULES', `Failed inspecting chassis defaults for ${chassisInfo?.sku || chassisInfo?.model || 'unknown'}: ${err.message}`);
+  }
   return { chassisDefaults, redundantDefaults };
 }
 

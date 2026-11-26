@@ -14,19 +14,72 @@ const { recomputeStrategyMatrixWithRag } = require('./eval_boq_recompute.js');
 const { _revalidateAndRankCandidates } = require('./eval_boq_stages.js');
 const logger = require('../../system/pipeline_logger.js');
 
+const COMPLIANCE_PHRASES = ['fully compatible', 'no issues detected', '100% buildable'];
+const VIOLATION_PHRASES = [
+  'incompatible', 'not supported', 'conflict detected', 'violation', 'cannot be used',
+  'not compatible', 'requires', 'missing mandatory', 'will not work', 'mismatch', 'conflicts'
+];
+const NEGATION_PREFIX_RE = /\b(?:no|not|never|zero|none|without|hardly|unlikely|isn't|aren't)\b/i;
+
+function _hasUnnegatedPhrase(clause, phrases) {
+  for (const phrase of phrases) {
+    let idx = clause.indexOf(phrase);
+    while (idx !== -1) {
+      const lookback = clause.slice(Math.max(0, idx - 24), idx);
+      const isComplianceNegated = NEGATION_PREFIX_RE.test(lookback) && !phrase.startsWith('no ');
+      const isViolationDoubleNeg = phrases === VIOLATION_PHRASES && !phrase.startsWith('not ') && !phrase.startsWith('cannot ') && NEGATION_PREFIX_RE.test(lookback);
+      const isNegated = phrases === COMPLIANCE_PHRASES ? isComplianceNegated : isViolationDoubleNeg;
+      if (!isNegated) return phrase;
+      idx = clause.indexOf(phrase, idx + phrase.length);
+    }
+  }
+  return null;
+}
+
+/**
+ * Extract grounded compatibility & violation claims from RAG commentary while guarding against negated clauses.
+ * @param {string} answerText
+ * @returns {{ claimsFullyCompliant: boolean, flagsViolation: boolean, positiveMatches: string[], violationMatches: string[], clausesAnalyzed: number }}
+ */
+function extractRagClaimsWithNegationGuard(answerText) {
+  const rawClauses = String(answerText || '')
+    .toLowerCase()
+    .split(/[\n.;!?]+/)
+    .map(c => c.trim())
+    .filter(Boolean);
+  const positiveMatches = [];
+  const violationMatches = [];
+
+  for (const clause of rawClauses) {
+    const pos = _hasUnnegatedPhrase(clause, COMPLIANCE_PHRASES);
+    if (pos) positiveMatches.push(pos);
+    const viol = _hasUnnegatedPhrase(clause, VIOLATION_PHRASES);
+    if (viol) violationMatches.push(viol);
+  }
+  const hasExplicitDisqualifier = rawClauses.some(c => /\b(?:not compatible|not 100% buildable|not fully compatible)\b/i.test(c));
+  return {
+    claimsFullyCompliant: positiveMatches.length > 0 && violationMatches.length === 0 && !hasExplicitDisqualifier,
+    flagsViolation: violationMatches.length > 0,
+    positiveMatches: [...new Set(positiveMatches)],
+    violationMatches: [...new Set(violationMatches)],
+    clausesAnalyzed: rawClauses.length
+  };
+}
+
 function _detectOpinionDiscrepancy(evalResults, ragResult) {
   evalResults.opinionDiscrepancies = evalResults.opinionDiscrepancies || [];
   const localHasConflicts = (evalResults.errors || []).length > 0;
-  const ragAnswerLower = (ragResult.answer || '').toLowerCase();
-  const ragClaimsFullyCompliant = ragAnswerLower.includes('fully compatible') || ragAnswerLower.includes('no issues detected') || ragAnswerLower.includes('100% buildable');
+  const claims = extractRagClaimsWithNegationGuard(ragResult?.answer || '');
+  evalResults.ragClaimAdjudication = claims;
 
-  if (localHasConflicts && ragClaimsFullyCompliant) {
+  if (localHasConflicts && claims.claimsFullyCompliant) {
     const discrepancy = {
       type: 'LOCAL_RULE_OVERRIDE',
       severity: 'WARNING',
       message: 'Local rule engine flagged physical/thermal conflicts, but cloud commentary reported full compatibility. Deterministic aspect checks prevail.',
       localConflicts: evalResults.errors,
-      cloudAnswerSnippet: (ragResult.answer || '').slice(0, 200)
+      cloudAnswerSnippet: (ragResult.answer || '').slice(0, 200),
+      adjudication: claims
     };
     evalResults.opinionDiscrepancies.push(discrepancy);
     logger.warn('EVAL_BOQ', 'Discrepancy detected: Deterministic local aspect rules prevail over cloud RAG commentary.');
@@ -37,16 +90,13 @@ function _evaluateRagGroundingAndViolations(evalResults, ragResult) {
   evalResults.ragVerified = false;
   evalResults.ragViolationDetected = null;
 
-  const isCloudGroundedWithCitations = evalResults.notebookLmStatus.isCloudGrounded &&
+  const isCloudGroundedWithCitations = evalResults.notebookLmStatus?.isCloudGrounded &&
     (evalResults.notebookLmStatus.citationsCount > 0);
 
   if (isCloudGroundedWithCitations) {
-    const answerLc = (ragResult.answer || '').toLowerCase();
-    const violationSignals = [
-      'incompatible', 'not supported', 'conflict detected', 'violation', 'cannot be used',
-      'not compatible', 'requires', 'missing mandatory', 'will not work', 'mismatch'
-    ];
-    const ragFlagsViolation = violationSignals.some(sig => answerLc.includes(sig));
+    const claims = evalResults.ragClaimAdjudication || extractRagClaimsWithNegationGuard(ragResult?.answer || '');
+    evalResults.ragClaimAdjudication = claims;
+    const ragFlagsViolation = claims.flagsViolation;
     const hasLocalOverrideDiscrepancy = (evalResults.opinionDiscrepancies || [])
       .some(d => d.type === 'LOCAL_RULE_OVERRIDE');
 
@@ -57,7 +107,7 @@ function _evaluateRagGroundingAndViolations(evalResults, ragResult) {
     } else if (ragFlagsViolation && (evalResults.errors || []).length === 0) {
       const snippet = (ragResult.answer || '').slice(0, 300).replace(/\n/g, ' ');
       evalResults.ragViolationDetected =
-        `NotebookLM flagged a potential violation not caught by local rules: "${snippet}..."`;
+        `NotebookLM flagged a potential violation not caught by local rules (${claims.violationMatches.join(', ')}): "${snippet}..."`;
     } else if (!ragFlagsViolation) {
       evalResults.ragVerified = true;
     }
@@ -166,6 +216,44 @@ function _applyGuardrailRetryResults(evalResults, retryResults) {
   evalResults.aspectChecks = retryResults.aspectChecks;
 }
 
+function _evaluateGuardrailIteration(state, guardrailResult, retryNumber, maxRetries, ctx) {
+  const { evalResults, inputFile, catalogData, chassisDir, JSON_MODE } = ctx;
+  const hasSubstitutions = Array.isArray(guardrailResult.proposedSubstitutions) && guardrailResult.proposedSubstitutions.length > 0;
+  if (!guardrailResult.activatedDeltaCount && !hasSubstitutions) return 'BREAK';
+
+  const candidateItems = hasSubstitutions ? _applyProposedSubstitutions(state.workingItems, guardrailResult) : state.workingItems;
+  const nextFp = _buildWorkingBomFingerprint(candidateItems);
+  if (hasSubstitutions && state.seenStates.has(nextFp) && guardrailResult.activatedDeltaCount === 0) {
+    state.convergenceStatus = 'CYCLE_PREVENTED';
+    return 'BREAK';
+  }
+
+  const prevErrorCount = (evalResults.errors || []).length;
+  const prevMissingCount = (evalResults.missingDependencies || []).length;
+  state.seenStates.add(nextFp);
+  state.workingItems = candidateItems;
+  evalResults.guardrailRetries = retryNumber;
+  if (hasSubstitutions) evalResults.guardrailSubstitutionsApplied = guardrailResult.proposedSubstitutions;
+
+  if (!JSON_MODE) console.log(`\n🔄 Auto-retrying physical evaluation (attempt ${retryNumber}/${maxRetries})...`);
+  const retryResults = evaluateBOQMultiAspect(candidateItems, { filePath: inputFile || '', catalogData, targetDir: chassisDir });
+  const nextErrorCount = (retryResults.errors || []).length;
+  const nextMissingCount = (retryResults.missingDependencies || []).length;
+  if (nextErrorCount > prevErrorCount || (nextErrorCount === prevErrorCount && nextMissingCount > prevMissingCount)) {
+    state.convergenceStatus = 'RETRY_REGRESSION_ROLLED_BACK';
+    evalResults.warnings = evalResults.warnings || [];
+    evalResults.warnings.push(`Guardrail retry ${retryNumber} rolled back: proposed substitution increased errors/gaps (${prevErrorCount}->${nextErrorCount}, missing ${prevMissingCount}->${nextMissingCount}).`);
+    return 'BREAK';
+  }
+  _applyGuardrailRetryResults(evalResults, retryResults);
+  if (!nextErrorCount && !nextMissingCount) {
+    state.convergenceStatus = 'CONVERGED';
+    return 'BREAK';
+  }
+  state.convergenceStatus = 'RETRY_PARTIAL';
+  return 'CONTINUE';
+}
+
 async function _executeAgenticGuardrailReview(items, chassisDir, inputFile, evalResults, OFFLINE_MODE, JSON_MODE, catalogData) {
   const needsGuardrail = Boolean(
     !OFFLINE_MODE && (
@@ -180,49 +268,29 @@ async function _executeAgenticGuardrailReview(items, chassisDir, inputFile, eval
   if (!JSON_MODE) console.log('\n🤖 Triggering Agentic Guardrail Loop for resolution...');
 
   const MAX_GUARDRAIL_RETRIES = 2;
-  let guardrailRetries = 0;
-  let workingItems = (items || []).map(it => ({ ...it }));
-  const seenStates = new Set([_buildWorkingBomFingerprint(workingItems)]);
-  let convergenceStatus = 'ADVISORY_ONLY';
+  const state = {
+    workingItems: (items || []).map(it => ({ ...it })),
+    seenStates: new Set([_buildWorkingBomFingerprint(items || [])]),
+    convergenceStatus: 'ADVISORY_ONLY'
+  };
   let latestGuardrail = null;
 
-  while (guardrailRetries < MAX_GUARDRAIL_RETRIES) {
-    const guardrailResult = await runAgenticGuardrail(workingItems, chassisDir, {
+  for (let retry = 1; retry <= MAX_GUARDRAIL_RETRIES; retry++) {
+    const guardrailResult = await runAgenticGuardrail(state.workingItems, chassisDir, {
       offline: OFFLINE_MODE,
       offlineMode: OFFLINE_MODE,
       effectivePolicy: evalResults.effectivePolicy || null
     });
     latestGuardrail = guardrailResult;
     _recordGuardrailResultMetadata(evalResults, guardrailResult, tGuardrailStart, JSON_MODE);
-
-    const hasSubstitutions = Array.isArray(guardrailResult.proposedSubstitutions) && guardrailResult.proposedSubstitutions.length > 0;
-    if (!guardrailResult.activatedDeltaCount && !hasSubstitutions) break;
-
-    const candidateItems = hasSubstitutions ? _applyProposedSubstitutions(workingItems, guardrailResult) : workingItems;
-    const nextFp = _buildWorkingBomFingerprint(candidateItems);
-    if (hasSubstitutions && seenStates.has(nextFp) && guardrailResult.activatedDeltaCount === 0) {
-      convergenceStatus = 'CYCLE_PREVENTED';
-      break;
-    }
-    seenStates.add(nextFp);
-    workingItems = candidateItems;
-    guardrailRetries++;
-    evalResults.guardrailRetries = guardrailRetries;
-    if (hasSubstitutions) evalResults.guardrailSubstitutionsApplied = guardrailResult.proposedSubstitutions;
-
-    if (!JSON_MODE) console.log(`\n🔄 Auto-retrying physical evaluation (attempt ${guardrailRetries}/${MAX_GUARDRAIL_RETRIES})...`);
-    const retryResults = evaluateBOQMultiAspect(workingItems, { filePath: inputFile || '', catalogData, targetDir: chassisDir });
-    _applyGuardrailRetryResults(evalResults, retryResults);
-
-    if (!retryResults.errors?.length && !retryResults.missingDependencies?.length) {
-      convergenceStatus = 'CONVERGED';
-      break;
-    }
-    convergenceStatus = 'RETRY_PARTIAL';
+    const outcome = _evaluateGuardrailIteration(state, guardrailResult, retry, MAX_GUARDRAIL_RETRIES, {
+      evalResults, inputFile, catalogData, chassisDir, JSON_MODE
+    });
+    if (outcome === 'BREAK') break;
   }
 
-  evalResults.guardrailConvergenceStatus = convergenceStatus;
-  if (latestGuardrail && !JSON_MODE) console.log(`✅ Guardrail Loop Complete (${convergenceStatus}). Score: ${evalResults.confidence?.score}`);
+  evalResults.guardrailConvergenceStatus = state.convergenceStatus;
+  if (latestGuardrail && !JSON_MODE) console.log(`✅ Guardrail Loop Complete (${state.convergenceStatus}). Score: ${evalResults.confidence?.score}`);
   return Math.max(Date.now() - tGuardrailStart, 1);
 }
 
@@ -484,6 +552,9 @@ async function runBoqRagGroundingPhase(ctx, options, evidenceLedger, executeEphe
 }
 
 module.exports = {
+  extractRagClaimsWithNegationGuard,
+  _detectOpinionDiscrepancy,
+  _evaluateRagGroundingAndViolations,
   executeGroundedRagValidation,
   applyLearnedRAGDeltasIfPresent,
   runBoqRagGroundingPhase

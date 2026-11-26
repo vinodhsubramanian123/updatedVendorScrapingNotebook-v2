@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "SY480_Gen12",
+  "vendor": "HPE",
+  "domain": "composable",
+  "family": "Synergy Compute Module",
+  "generation": "Gen12",
+  "formFactor": "Half-Height Compute Module",
+  "maxSockets": 2,
+  "ocpSlots": 0,
+  "basePcieSlots": 0,
+  "mezzanineSlots": 3,
+  "memoryArchitecture": {
+    "generation": "DDR5",
+    "channelsPerSocket": 8,
+    "dimmsPerChannel": 2,
+    "maxDimmsPerSocket": 16,
+    "maxDimmsPerChassis": 32,
+    "validBalancedCountsPerSocket": [1, 2, 4, 6, 8, 12, 16]
+  },
+  "defaultSupportPolicy": { "tier": "TECH_CARE_BASIC", "durationYears": 3 },
+  "skuAliases": ["SY480_Gen12", "SY480 Gen12", "HPE_SYNERGY_480_GEN12"]
+}

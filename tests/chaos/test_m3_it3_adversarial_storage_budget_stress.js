@@ -20,12 +20,25 @@
 
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
+require('../../scripts/lib/boq/boq_evaluator.js');
 
 const {
   _tryBudgetStorageSubstitution,
   synthesize5TierRankedSolutions,
   CERTIFIED_STORAGE_DOWNTIER_MAP
 } = require('../../scripts/lib/conflict/strategy_synthesizer.js');
+
+const MOCK_BUDGET_CATALOG = {
+  entries: [
+    {
+      parentCategory: 'Hard Drives',
+      subCategory: 'NVMe SSD',
+      skus: [
+        { 'Product #': 'P40543-B21', Description: 'HPE 1.92TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', 'GPL ($)': 630, Availability: 'Available' }
+      ]
+    }
+  ]
+};
 
 describe('Adversarial Challenger M3_It3_2: Storage Budget Down-Tiering Protections', () => {
 
@@ -255,16 +268,17 @@ describe('Adversarial Challenger M3_It3_2: Storage Budget Down-Tiering Protectio
       const baseItems = [
         { sku: 'P52534-B21', description: 'HPE ProLiant DL380 Gen11 8SFF NC CTO Server', quantity: 1, unitPriceUsd: 1650 },
         { sku: 'P49610-B21', description: 'Intel Xeon-Gold 6430 2.1GHz 32-core Processor', quantity: 2, unitPriceUsd: 2200 },
-        { sku: 'P43328-B21', description: 'HPE 32GB 2Rx8 DDR5-4800 Registered Smart Memory Kit', quantity: 16, unitPriceUsd: 180 },
+        { sku: 'P48818-B21', description: 'HPE ProLiant DL380 Gen11 High Performance Heat Sink Kit', quantity: 2, unitPriceUsd: 150 },
+        { sku: 'P43328-F21', description: 'HPE 32GB 2Rx8 DDR5-4800 Registered Smart Memory Kit FIO', quantity: 16, unitPriceUsd: 180 },
         { sku: 'P40548-B21', description: 'HPE 1.92TB NVMe Gen4 Mixed Use SFF BC SSD', quantity: 4, unitPriceUsd: 750 },
-        { sku: 'P48803-B21', description: 'HPE 800W Flex Slot Platinum Power Supply', quantity: 2, unitPriceUsd: 280 }
+        { sku: 'P38997-B21', description: 'HPE 1600W Flex Slot Platinum Power Supply', quantity: 2, unitPriceUsd: 420 }
       ];
 
       const evalResults = {
         workloadDna: { primaryWorkload: 'WEB_SERVER', workloadDescription: 'Standard Web Application Cluster' }
       };
 
-      const tiers = synthesize5TierRankedSolutions(baseItems, evalResults, {}, { model: 'DL380 Gen11' });
+      const tiers = synthesize5TierRankedSolutions(baseItems, evalResults, {}, { model: 'DL380 Gen11' }, '', { loadedCatalog: MOCK_BUDGET_CATALOG });
       const budget = tiers.find(r => r.strategyId === 'STRATEGY_BUDGET');
       assert.ok(budget, 'Rank 5 budget strategy must exist');
 

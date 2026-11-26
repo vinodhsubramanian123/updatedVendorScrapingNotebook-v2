@@ -52,7 +52,7 @@ HALT-CV3: If target chassis catalog is missing from outputs/{Family}/{Gen}/{Mode
 
 ## 💻 Implementation Engine & Direct Execution
 
-The implementation spans `scripts/lib/boq/cross_vendor_transformer.js`, `scripts/lib/boq/attribute_equivalence_mapper.js`, `scripts/lib/catalog/attribute_vectors.js`, and vendor adapters (`dell_adapter.js`, `huawei_adapter.js`):
+The implementation spans `scripts/lib/boq/cross_vendor_transformer.js`, `scripts/lib/boq/attribute_equivalence_mapper.js`, `scripts/lib/catalog/attribute_vectors.js`, dynamic vendor policy/adapters via `scripts/lib/adapters/adapter_registry.js` (`dell_adapter.js`, `huawei_adapter.js`, `cisco_adapter.js`, `lenovo_adapter.js`), and buildability closure via `scripts/lib/conflict/buildable_graph_solver.js`:
 - `transformCompetitorQuote` transforms competitor hardware tenders into equivalent HPE ProLiant configurations.
 - `mapSourceBomToTargetCatalog` and `mapSourceItemToTargetSku` perform attribute-vector BOM-to-BOM mapping without endurance or protocol downgrades (`INV-243`).
 - `extractCanonicalAttributes` normalizes component specifications across CPU, RAM, storage, GPU, networking, and services.
@@ -69,7 +69,8 @@ Presales query dispatch executes via `scripts/evaluators/route_query.js` (`execu
 - [`cross_vendor_transformer.js`](../../../scripts/lib/boq/cross_vendor_transformer.js) via `parseCompetitorSpecification()` and `transformCompetitorQuote()`
 - [`attribute_equivalence_mapper.js`](../../../scripts/lib/boq/attribute_equivalence_mapper.js) via `mapSourceBomToTargetCatalog()` and `mapSourceItemToTargetSku()`
 - [`attribute_vectors.js`](../../../scripts/lib/catalog/attribute_vectors.js) via `extractCanonicalAttributes()` and `getCanonicalCategorySchema()`
-- [`dell_adapter.js`](../../../scripts/lib/adapters/dell_adapter.js) and [`huawei_adapter.js`](../../../scripts/lib/adapters/huawei_adapter.js)
+- [`adapter_registry.js`](../../../scripts/lib/adapters/adapter_registry.js), [`dell_adapter.js`](../../../scripts/lib/adapters/dell_adapter.js), [`huawei_adapter.js`](../../../scripts/lib/adapters/huawei_adapter.js), [`cisco_adapter.js`](../../../scripts/lib/adapters/cisco_adapter.js), and [`lenovo_adapter.js`](../../../scripts/lib/adapters/lenovo_adapter.js)
+- [`buildable_graph_solver.js`](../../../scripts/lib/conflict/buildable_graph_solver.js) (`solveBuildableCandidate` buildability closure) and [`hardware_envelope_solver.js`](../../../scripts/lib/rules/hardware_envelope_solver.js)
 - [Heterogeneous Tender Modernizer](../heterogeneous-tender-modernizer/SKILL.md)
 - [RFP Sizing Synthesizer](../rfp-sizing-synthesizer/SKILL.md)
 - [Master System Invariants Directory (INV-190, INV-216, INV-228, INV-243)](../../../docs/INVARIANTS.md)

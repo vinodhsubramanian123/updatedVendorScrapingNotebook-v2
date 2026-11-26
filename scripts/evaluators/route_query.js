@@ -49,7 +49,8 @@ let {
   _handleWorkbookGeneration,
   _handleRemarksReconciliation,
   _handleMultiClusterTender,
-  _handleSolutionComparison
+  _handleSolutionComparison,
+  _handleHardwareEnvelopeAnalytics
 } = require('../lib/router/specialty_track_handlers.js');
 
 // Retained verbatim slice for tests/unit/test_ingress_cancellation.js (BOQ -> OCR boundary).
@@ -192,6 +193,9 @@ async function _dispatchIntentHandler(classification, queryText, context, chassi
     case 'PRESALES_CLEARANCE_STRATEGY':
       return await observeActualInvocation('_handlePresalesClearanceStrategy', __filename, () => _handlePresalesClearanceStrategy(queryText, context));
 
+    case 'HARDWARE_ENVELOPE_ANALYTICS':
+      return await observeActualInvocation('_handleHardwareEnvelopeAnalytics', __filename, () => _handleHardwareEnvelopeAnalytics(queryText, context));
+
     default:
       return {
         intent: classification.intent,
@@ -242,7 +246,9 @@ function _resolvePlatformSelectionMemory(queryText, initialPlatform, context) {
 }
 
 function _resolveRoutedPlatform(queryText, context, classification) {
-  const isCatalogMultiQuery = classification.intent === 'CATALOG_INTELLIGENCE' || classification.intent === 'SOLUTION_COMPARISON';
+  const isCatalogMultiQuery = classification.intent === 'CATALOG_INTELLIGENCE' ||
+    classification.intent === 'SOLUTION_COMPARISON' ||
+    classification.intent === 'HARDWARE_ENVELOPE_ANALYTICS';
   const platformContext = classification.intent === 'RFP_SIZING_TO_BOM' ? { ...context, preferNamedProduct: true } : context;
   const initial = isCatalogMultiQuery ? {} : getChassisCatalog(queryText, platformContext);
   const { platformSelectionMemory, updatedContext } = _resolvePlatformSelectionMemory(queryText, initial, platformContext);

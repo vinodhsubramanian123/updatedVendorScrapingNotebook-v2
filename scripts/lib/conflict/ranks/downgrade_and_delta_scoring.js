@@ -245,8 +245,8 @@ function _compareNumAsc(a, b) {
 }
 
 function _compareCandidateRanks(a, b) {
-  const qualA = a.qualifiedForRecommendation !== false;
-  const qualB = b.qualifiedForRecommendation !== false;
+  const qualA = a.qualifiedForRecommendation !== false && a.physicalMathClean === true;
+  const qualB = b.qualifiedForRecommendation !== false && b.physicalMathClean === true;
   if (qualA !== qualB) return qualA ? -1 : 1;
   if (Boolean(a.physicalMathClean) !== Boolean(b.physicalMathClean)) return a.physicalMathClean ? -1 : 1;
   const primary = _compareNumAsc(a.capabilityDowngradePenalty, b.capabilityDowngradePenalty) ||
@@ -262,7 +262,7 @@ function _annotatePreRankingQualification(rawCandidates, items, options = {}) {
     const rankedSingle = rankQualifiedCandidatesDeterministically([cand], {
       ...options,
       baselineItems: items,
-      enforcePhysicalMath: options.enforcePhysicalMath === true
+      enforcePhysicalMath: options.enforcePhysicalMath !== false
     });
     const evaluated = rankedSingle.allCandidatesOrdered[0];
     cand.qualifiedForRecommendation = evaluated ? evaluated.qualifiedForRecommendation : true;
@@ -274,7 +274,7 @@ function _annotatePreRankingQualification(rawCandidates, items, options = {}) {
 
 function _promoteFastShipToRank2IfEligible(rawCandidates) {
   const fsIdx = rawCandidates.findIndex(
-    (c, idx) => idx > 0 && c.isFastShipRank2 && c.physicalMathClean && c.qualifiedForRecommendation !== false
+    (c, idx) => idx > 0 && c.isFastShipRank2 && c.physicalMathClean === true && c.qualifiedForRecommendation !== false
   );
   if (fsIdx > 1 && rawCandidates[0]?.qualifiedForRecommendation !== false) {
     const [fsCand] = rawCandidates.splice(fsIdx, 1);
@@ -295,7 +295,7 @@ function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ l
 
 function includeAvailabilityRecommendations(closest, ranked) {
   const availability = ['CLOSEST_MATCH', 'FASTEST'].map(preference => ranked.find(candidate =>
-    candidate.availabilityPreference === preference && candidate.physicalMathClean && candidate.isUniqueBom !== false
+    candidate.availabilityPreference === preference && candidate.physicalMathClean === true && candidate.isUniqueBom !== false
   )).filter(Boolean);
   return [...new Set([...closest.slice(0, 1), ...availability, ...closest.slice(1)])].slice(0, 3);
 }
@@ -435,7 +435,7 @@ function normalizeCandidates(rawCandidates, requestedSkuSet, baselineCost, optio
   });
 
   _applyParetoDominance(normalized);
-  const frontierReport = computeParetoFrontier(normalized, { ...options, enforcePhysicalMath: options.enforcePhysicalMath === true });
+  const frontierReport = computeParetoFrontier(normalized, { ...options, enforcePhysicalMath: options.enforcePhysicalMath !== false });
   normalized.paretoFrontier = frontierReport;
   normalized.disqualifiedCandidates = frontierReport.disqualifiedCandidates;
   normalized.evaluatedCandidateSet = frontierReport.evaluatedCandidateSet;

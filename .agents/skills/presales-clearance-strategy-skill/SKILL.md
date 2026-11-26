@@ -41,7 +41,8 @@ Present options side by side using `scripts/lib/boq/commercial_remarks.js`:
 A rigid rejection of a 90-Day-EOL SKU is counter-productive when stock can be committed immediately. Equally, a clearance SKU MUST NOT replace the production baseline unless the customer asked for it.
 
 ## 3. Engine touchpoints (from the audit, section 4)
-- `least_delta_combinator.js:auditDiscontinuedTroublesomeSkus` checks customer inputs against `discontinued_skus.json`.
+- [`lifecycle_replacement_engine.js`](../../../scripts/lib/conflict/least_delta/lifecycle_replacement_engine.js) (`auditDiscontinuedTroublesomeSkus` and `_scoreActiveReplacementCandidate`, re-exported via [`least_delta_combinator.js`](../../../scripts/lib/conflict/least_delta_combinator.js)) checks customer inputs against `discontinued_skus.json`.
+- [`catalog_and_clearance_handlers.js`](../../../scripts/lib/router/catalog_and_clearance_handlers.js) (`_handlePresalesClearanceStrategy`) routes dual-track clearance vs. active baseline inquiries, formatting remarks via [`commercial_remarks.js`](../../../scripts/lib/boq/commercial_remarks.js) (`formatDualTrackClearanceRemarks`).
 - `_scoreActiveReplacementCandidate` matches on capacity, interface, workload, form factor and historical budget anchor.
 - Rank 2 `MODERNIZED_ACTIVE_BASELINE` carries the active alternative.
 - Missing lead times stay `leadTimeDays: null` / `Unpublished by OCA`.

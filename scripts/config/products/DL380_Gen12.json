@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "DL380_Gen12",
+  "vendor": "HPE",
+  "domain": "server",
+  "family": "ProLiant DL",
+  "generation": "Gen12",
+  "formFactor": "2U Rack",
+  "maxSockets": 2,
+  "ocpSlots": 2,
+  "basePcieSlots": 3,
+  "maxPsuBays": 2,
+  "memoryArchitecture": {
+    "generation": "DDR5",
+    "channelsPerSocket": 8,
+    "dimmsPerChannel": 2,
+    "maxDimmsPerSocket": 16,
+    "maxDimmsPerChassis": 32,
+    "validBalancedCountsPerSocket": [1, 2, 4, 6, 8, 12, 16]
+  },
+  "riserSlots": {
+    "primary": { "slots": 3, "requireCpu": 1, "sku": null },
+    "secondary": { "slots": 3, "requireCpu": 2, "sku": "P76453-B21" },
+    "tertiary": { "slots": 2, "requireCpu": 2, "sku": null }
+  },
+  "storageBays": { "maxFrontSffBays": 24, "baseSffBays": 8 },
+  "defaultSupportPolicy": {
+    "tier": "TECH_CARE_BASIC",
+    "durationYears": 3,
+    "hardwareSupportSku": "HU4B2A30C4V"
+  },
+  "skuAliases": ["DL380_Gen12", "DL380 Gen12", "HPE_PROLIANT_DL380_GEN12", "P73282-B21", "P73283-B21"]
+}

@@ -315,6 +315,15 @@ function _isInvalidHeaderCandidateRow(row) {
   );
 }
 
+function _isPortalLayoutChromeTable(table) {
+  if (!Array.isArray(table?.rows) || table.rows.length === 0 || table.rows.length > 5) return false;
+  const flatText = table.rows.flat().map(c => String(c || '').trim()).filter(Boolean).join(' ');
+  if (!flatText || flatText.includes('$')) return false;
+  const hasSkuToken = table.rows.some(r => Array.isArray(r) && r.some(c => isValidHpeSKU(cleanBaseSKU(String(c || '').trim()))));
+  if (hasSkuToken) return false;
+  return !/\b(?:product\s*#|part\s*number|unit\s*price|list\s*price)\b/i.test(flatText);
+}
+
 function _detectTableHeadersAndRules(table, ti, diagnostics) {
   let headerIdx  = -1;
   let headers    = [];
@@ -348,8 +357,11 @@ function _detectTableHeadersAndRules(table, ti, diagnostics) {
       headers = synthesizeHeaderFromSampleRow(skuRow);
       headerIdx = -1;
     } else {
-      diagnostics?.recordSkippedTable?.(ti, 'No valid SKU or headers detected');
-      diagnostics?.recordRejectedRow?.({ tableIndex: ti, reason: 'NO_VALID_HEADER_OR_SKU', sampleCells: (table.rows[0] || []).slice(0, 8) });
+      const reason = _isPortalLayoutChromeTable(table)
+        ? 'LAYOUT_CHROME: Portal navigation/layout table without catalog rows'
+        : 'No valid SKU or headers detected';
+      diagnostics?.recordSkippedTable?.(ti, reason);
+      diagnostics?.recordRejectedRow?.({ tableIndex: ti, reason: _isPortalLayoutChromeTable(table) ? 'LAYOUT_CHROME' : 'NO_VALID_HEADER_OR_SKU', sampleCells: (table.rows[0] || []).slice(0, 8) });
       return null;
     }
   }

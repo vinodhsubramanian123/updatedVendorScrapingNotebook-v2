@@ -76,7 +76,6 @@ function _logConflictGraphAndDiagnostics(evalResults, graph) {
     console.log(`  Cascading Fixes    : ${graph.resolvedFixes.length} fix(es) validated without downstream conflicts.`);
   }
   console.log(`\n  📊 Quantitative Confidence Score: ${evalResults.confidence.score} / 1.00`);
-  console.log(JSON.stringify(evalResults, null, 2));
   console.log(`  ${evalResults.confidence.summary}`);
 
   if (evalResults.errors.length > 0) {
@@ -216,7 +215,8 @@ function _sortAndSyncRecommendations(evalResults, ingestCtx) {
   if (!evalResults.conflictGraph?.recommendedSolutions) return;
   const ranked = evalResults.conflictGraph.rankedSolutions || [];
   const validCandidates = ranked
-    .filter(c => c.physicalMathClean && c.isUniqueBom !== false && c.isParetoOptimal !== false);
+    .filter(c => c && c.physicalMathClean === true && c.isUniqueBom === true && c.isParetoOptimal !== false);
+  if (validCandidates.length === 0) return;
   const closestUnits = Math.min(...validCandidates.map(c => c.customerDistance.changedUnits));
   const distanceWindow = Math.max(1, Math.ceil(ingestCtx.items.filter(it => it.quantityScope !== 'global').length * 0.15));
   const sortedValid = validCandidates
@@ -432,8 +432,9 @@ async function runBoqStrategySynthesisPhase(ctx, options, evidenceLedger) {
   ctx.evalResults.budgetOptimization = budgetOpt;
   ctx.budgetOpt = budgetOpt;
   ctx.stage5MatrixMs = Math.max(Date.now() - tMatrixStart, 1);
-  const confidenceScore = ctx.evalResults.confidence?.score ?? 1.0;
-  const isLowConfidence = confidenceScore < 0.55 || Boolean(ctx.evalResults.confidence?.isHitlTriggered);
+  const rawScore = ctx.evalResults.confidence?.score;
+  const confidenceScore = Number.isFinite(rawScore) ? rawScore : null;
+  const isLowConfidence = confidenceScore === null || confidenceScore < 0.55 || Boolean(ctx.evalResults.confidence?.isHitlTriggered);
   if (isLowConfidence) {
     for (const candidate of ctx.evalResults.conflictGraph?.rankedSolutions || []) {
       candidate.advisoryStatus = 'LOW_CONFIDENCE_ADVISORY';

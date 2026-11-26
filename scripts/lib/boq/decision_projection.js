@@ -346,7 +346,7 @@ function _buildCandidateCoverageSummary(cand, records) {
 
 function _resolveSelectedCandidate(candidates) {
   if (!Array.isArray(candidates) || candidates.length === 0) return null;
-  return candidates.find(c => c && c.qualifiedForRecommendation !== false && c.physicalMathClean !== false) || candidates[0];
+  return candidates.find(c => c && c.qualifiedForRecommendation !== false && c.physicalMathClean === true) || candidates[0];
 }
 
 function _buildClauseProjectionRow(rec, dispMap) {
@@ -558,7 +558,7 @@ function _deriveAlternatives(ctx, hasData) {
     const { leadTimeDays, leadTimeStatus } = _resolveCandidateLeadTimeState(cand);
     const qualifiedForRecommendation = Boolean(
       cand.qualifiedForRecommendation !== false &&
-      cand.physicalMathClean !== false &&
+      cand.physicalMathClean === true &&
       cand.requirementCoverage?.blocksPositiveRecommendation !== true &&
       !(Array.isArray(cand.disqualificationReasons) && cand.disqualificationReasons.length > 0)
     );

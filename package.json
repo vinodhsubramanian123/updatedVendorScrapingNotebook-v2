@@ -72,6 +72,7 @@
     "sync:running-knowledge": "node scripts/services/running_knowledge_sync.js",
     "audit:notebooks": "node scripts/maintenance/notebook_health_audit.js",
     "status": "node scripts/maintenance/observability_status.js",
+    "onboard:product": "node scripts/maintenance/onboard_product.js",
     "inspect:session": "node scripts/scrapers/inspect_oca_session.js",
     "oca:session": "node scripts/lib/scraper/navigate_oca.js",
     "inspect:clic": "node scripts/scrapers/visual_clic_inspector.js",

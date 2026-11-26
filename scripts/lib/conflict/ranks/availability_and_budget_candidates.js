@@ -18,7 +18,7 @@ const {
   _partSupplyAttributes,
   calculateSupplyMetrics
 } = require('./supply_and_pricing.js');
-const { computeBomFingerprint, getPhysicalMathValidator } = require('./candidate_revalidator.js');
+const { computeBomFingerprint } = require('./candidate_revalidator.js');
 
 function _isAvailableCatalogOption(item) {
   const row = item?.skuData;
@@ -405,9 +405,9 @@ function _tryBudgetMemorySubstitution(parts, aspectCompute, getPrice) {
     const d = (p.description || '').toLowerCase();
     if ((d.includes('5600') || p.sku === 'P73300-B21' || p.sku === 'P64707-B21') && (d.includes('memory') || d.includes('rdimm'))) {
       const altSku = 'P43328-B21';
-      const altPrice = getPrice(altSku) || 145.0;
-      const curPrice = p.unitPriceUsd || getPrice(p.sku) || 200.0;
-      if (altPrice < curPrice) {
+      const altPrice = getPrice(altSku);
+      const curPrice = p.unitPriceUsd ?? getPrice(p.sku) ?? null;
+      if (altPrice !== null && altPrice > 0 && curPrice !== null && altPrice < curPrice) {
         parts[i] = { ...p, ...REPLACEMENT_SUPPLY_UNKNOWN, sku: altSku, description: 'HPE 32GB 2Rx8 DDR5-4800 Smart Memory', unitPriceUsd: altPrice, extendedPriceUsd: altPrice * (p.quantity || 1), isStrategyAddon: true, category: 'Budget Optimized Memory' };
         changed = true;
       }
@@ -424,9 +424,9 @@ function _tryBudgetPowerSubstitution(parts, aspectPower, getPrice) {
     const d = (p.description || '').toLowerCase();
     if ((d.includes('power supply') || d.includes('psu') || p.category === 'Power Supply') && (d.includes('1600w') || d.includes('1800w') || d.includes('2200w'))) {
       const altSku = 'P38995-B21';
-      const altPrice = getPrice(altSku) || 280.0;
-      const curPrice = p.unitPriceUsd || getPrice(p.sku) || 450.0;
-      if (altPrice < curPrice) {
+      const altPrice = getPrice(altSku);
+      const curPrice = p.unitPriceUsd ?? getPrice(p.sku) ?? null;
+      if (altPrice !== null && altPrice > 0 && curPrice !== null && altPrice < curPrice) {
         parts[i] = { ...p, ...REPLACEMENT_SUPPLY_UNKNOWN, sku: altSku, description: 'HPE 800W Flex Slot Platinum Hot Plug Power Supply', unitPriceUsd: altPrice, extendedPriceUsd: altPrice * (p.quantity || 1), isStrategyAddon: true, category: 'Budget Optimized Power' };
         changed = true;
       }
@@ -443,8 +443,10 @@ function _tryBudgetThermalSubstitution(parts, aspectCompute, aspectPcie, getPric
     const p = parts[i];
     if (String(p.sku || '').trim().toUpperCase().startsWith('P74794-B21') || (p.description || '').toLowerCase().includes('max performance heat sink')) {
       const altSku = 'P74792-B21';
-      const altPrice = getPrice(altSku) || 316.0;
-      parts[i] = { ...p, ...REPLACEMENT_SUPPLY_UNKNOWN, sku: altSku, description: 'HPE ProLiant Compute DL380 Gen12 2U High Performance Heat Sink Kit', unitPriceUsd: altPrice, extendedPriceUsd: altPrice * (p.quantity || 1), isStrategyAddon: true, category: 'Budget Optimized Thermal' };
+      const altPrice = getPrice(altSku);
+      const unitPriceUsd = (altPrice !== null && altPrice > 0) ? altPrice : null;
+      const extendedPriceUsd = unitPriceUsd !== null ? unitPriceUsd * (p.quantity || 1) : null;
+      parts[i] = { ...p, ...REPLACEMENT_SUPPLY_UNKNOWN, sku: altSku, description: 'HPE ProLiant Compute DL380 Gen12 2U High Performance Heat Sink Kit', unitPriceUsd, extendedPriceUsd, isStrategyAddon: true, category: 'Budget Optimized Thermal' };
       changed = true;
     }
   }
@@ -478,20 +480,42 @@ function _isCandidateMixedUseNvme(p) {
   return isNvme && isMixedUse && !desc.includes('read intensive') && !desc.includes(' ri ') && !desc.includes(' ri');
 }
 
+function _resolveCatalogDesc(item) {
+  return String(item?.skuData?.Description || item?.entry?.description || item?.description || '');
+}
+
+function _resolveCatalogPrice(candSku, item, safeGetPrice) {
+  const resolved = safeGetPrice(candSku);
+  if (resolved !== null && resolved > 0) return resolved;
+  const raw = [item?.unitPriceUsd, item?.listPrice, item?.entry?.unitPriceUsd, item?.entry?.listPrice, item?.skuData?.['GPL ($)'], item?.skuData?.listPrice]
+    .map(Number)
+    .find(v => Number.isFinite(v) && v > 0);
+  return raw ?? null;
+}
+
+function _extractCatalogReplacementCandidate(candSku, item, origCapGb, isBc, curPrice, safeGetPrice) {
+  const isMockEntry = Boolean(item && !item.skuData && (item.description || item.entry?.description));
+  if (!isMockEntry && !isActiveCatalogOption(item)) return null;
+  const desc = _resolveCatalogDesc(item);
+  const cDesc = desc.toLowerCase();
+  if (!cDesc.includes('ssd') || !cDesc.includes('nvme') || !cDesc.includes('read intensive')) return null;
+  if (isBc && !cDesc.includes(' bc') && !cDesc.includes('basic carrier')) return null;
+
+  const cTb = cDesc.match(/(\d+(?:\.\d+)?)\s*tb/i);
+  const cGb = cDesc.match(/(\d+)\s*gb/i);
+  const candCapGb = cTb ? Math.round(parseFloat(cTb[1]) * 1000) : (cGb ? parseInt(cGb[1], 10) : 0);
+  if (candCapGb < origCapGb || candCapGb > Math.round(origCapGb * 1.5)) return null;
+
+  const candPrice = _resolveCatalogPrice(candSku, item, safeGetPrice);
+  if (candPrice === null || candPrice >= curPrice) return null;
+  return { sku: candSku, desc, price: candPrice };
+}
+
 function _findCatalogStorageReplacement(catIndex, origCapGb, isBc, curPrice, safeGetPrice) {
   if (!catIndex) return null;
   for (const [candSku, item] of catIndex.entries()) {
-    if (!isActiveCatalogOption(item)) continue;
-    const cDesc = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
-    if (!cDesc.includes('ssd') || !cDesc.includes('nvme') || !cDesc.includes('read intensive')) continue;
-    if (isBc && !cDesc.includes(' bc') && !cDesc.includes('basic carrier')) continue;
-    const cTb = cDesc.match(/(\d+(?:\.\d+)?)\s*tb/i);
-    const cGb = cDesc.match(/(\d+)\s*gb/i);
-    const candCapGb = cTb ? Math.round(parseFloat(cTb[1]) * 1000) : (cGb ? parseInt(cGb[1], 10) : 0);
-    if (candCapGb >= origCapGb && candCapGb <= Math.round(origCapGb * 1.5)) {
-      const candPrice = safeGetPrice(candSku);
-      if (candPrice !== null && candPrice > 0 && candPrice < curPrice) return { sku: candSku, desc: item.skuData?.Description || item.entry?.description, price: candPrice };
-    }
+    const match = _extractCatalogReplacementCandidate(candSku, item, origCapGb, isBc, curPrice, safeGetPrice);
+    if (match) return match;
   }
   return null;
 }
@@ -500,8 +524,8 @@ function _findFallbackStorageReplacement(origCapGb, curPrice, safeGetPrice) {
   const key = origCapGb <= 960 ? '800GB_MU_BC' : (origCapGb <= 1920 ? '1.6TB_MU_BC' : (origCapGb <= 3840 ? '3.2TB_MU_BC' : '6.4TB_MU_BC'));
   const mapping = CERTIFIED_STORAGE_DOWNTIER_MAP[key];
   if (!mapping) return null;
-  const candPrice = safeGetPrice(mapping.sku) || mapping.refPrice;
-  return candPrice < curPrice ? { sku: mapping.sku, desc: mapping.desc, price: candPrice } : null;
+  const candPrice = safeGetPrice(mapping.sku);
+  return (candPrice !== null && candPrice > 0 && candPrice < curPrice) ? { sku: mapping.sku, desc: mapping.desc, price: candPrice } : null;
 }
 
 function _tryBudgetStorageSubstitution(parts, workloadDna, loadedCatalog, getPrice) {
@@ -534,9 +558,9 @@ function _tryBudgetStorageSubstitution(parts, workloadDna, loadedCatalog, getPri
 
 function synthesizeBudgetMinimizationCandidate(v1, evalResults, loadedCatalog, chassisInfo, getPrice, revalidateCached, options = {}) {
   const parts = v1.parts.map(p => ({ ...p }));
-  const aspectCompute = evalResults.aspects?.compute || {};
-  const aspectPower = evalResults.aspects?.power || {};
-  const aspectPcie = evalResults.aspects?.pcie || {};
+  const aspectCompute = evalResults.evalSummary?.compute || evalResults.aspects?.compute || {};
+  const aspectPower = evalResults.evalSummary?.power || evalResults.aspects?.power || {};
+  const aspectPcie = evalResults.evalSummary?.pcie || evalResults.aspects?.pcie || {};
   const workloadDna = evalResults.workloadDna || evalResults.dna || options.dna || extractWorkloadDna(parts);
 
   const mChanged = _tryBudgetMemorySubstitution(parts, aspectCompute, getPrice);
@@ -546,7 +570,7 @@ function synthesizeBudgetMinimizationCandidate(v1, evalResults, loadedCatalog, c
 
   if (mChanged || pChanged || tChanged || sChanged) {
     const reval = revalidateCached(parts);
-    const mathAcceptable = reval.physicalMathClean || !getPhysicalMathValidator();
+    const mathAcceptable = reval.physicalMathClean === true;
     if (mathAcceptable && reval.totalCost < v1.totalCost) {
       return { parts: reval.parts, totalCost: reval.totalCost, injectedFixes: reval.injectedFixes, physicalMathClean: reval.physicalMathClean, aspectErrors: reval.aspectErrors, isAlternativeAvailable: true, deltaUsd: v1.totalCost - reval.totalCost };
     }

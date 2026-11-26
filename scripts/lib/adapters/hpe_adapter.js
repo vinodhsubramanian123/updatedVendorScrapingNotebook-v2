@@ -2,6 +2,7 @@
 const hpePolicy = require('../../config/vendors/hpe/policy.json');
 const { cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
 const { topologyRole } = require('../boq/solution_topology.js');
+const { resolveComponentByRole } = require('../taxonomy/sku_resolver.js');
 
 const descriptor = Object.freeze({
   vendorId: 'HPE',
@@ -38,11 +39,39 @@ class HpeVendorAdapter {
   }
 
   resolveRole(role, scope = {}) {
+    if (!scope?.catalogData) {
+      return { role, scope, candidates: [], status: 'SCOPED_CATALOG_REQUIRED' };
+    }
+    const primary = resolveComponentByRole(scope.catalogData, {
+      role,
+      keywords: Array.isArray(scope.keywords) ? scope.keywords : [],
+      specs: scope.specs || {},
+      preferredSku: scope.preferredSku || null
+    });
+    const candidates = [];
+    if (primary?.sku) {
+      candidates.push({ sku: primary.sku, description: primary.description || role, source: primary.source || 'catalog_resolver' });
+    }
+    const targetLower = String(role || '').toLowerCase();
+    for (const entry of (scope.catalogData.entries || [])) {
+      const catMatch = String(entry.parentCategory || '').toLowerCase().includes(targetLower);
+      for (const skuRow of (entry.skus || [])) {
+        const sku = skuRow['Product #'] || skuRow.sku;
+        const desc = String(skuRow.Description || skuRow.description || '');
+        if (!sku || candidates.some(c => c.sku === sku)) continue;
+        if (catMatch || desc.toLowerCase().includes(targetLower)) {
+          candidates.push({ sku, description: desc, source: 'catalog_scan' });
+        }
+        if (candidates.length >= 10) break;
+      }
+      if (candidates.length >= 10) break;
+    }
     return {
       role,
-      scope,
-      candidates: [],
-      status: 'RESOLVED_OR_SCOPED'
+      scope: { productId: scope.productId || null },
+      resolved: primary?.sku ? primary : null,
+      candidates,
+      status: candidates.length > 0 ? 'RESOLVED' : 'UNRESOLVED'
     };
   }
 
