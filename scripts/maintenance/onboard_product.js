@@ -33,7 +33,7 @@ function parseCliArgs(argv) {
 
 function _applyChassisDescriptionHints(desc, sku, state) {
   if (sku) state.skuAliases.push(sku);
-  if (desc.includes('1u')) state.formFactor = '1U Rack';
+  if (desc.includes('1u') || /(?:^|[^a-z0-9])dl(?:145|325|360|365)(?![a-z0-9])/i.test(desc)) state.formFactor = '1U Rack';
   else if (desc.includes('4u') || desc.includes('dl380a')) state.formFactor = '4U Rack';
   if (desc.includes('1p') || desc.includes('dl145') || desc.includes('dl325') || desc.includes('dl345')) {
     state.maxSockets = 1;
@@ -67,7 +67,7 @@ function _scanCatalogChassisHints(entries, initialState) {
 function inferManifestFromCatalog(catalogData, opts) {
   const meta = catalogData?.metadata || {};
   const entries = Array.isArray(catalogData?.entries) ? catalogData.entries : [];
-  const state = _scanCatalogChassisHints(entries, {
+  const state = {
     maxSockets: 2,
     ocpSlots: 2,
     basePcieSlots: 3,
@@ -75,9 +75,16 @@ function inferManifestFromCatalog(catalogData, opts) {
     generation: opts.generation || meta.generation || 'Gen12',
     formFactor: opts.formFactor || meta.formFactor || '2U Rack',
     skuAliases: []
-  });
+  };
+  const pidLower = String(opts.productId || '').toLowerCase();
+  _applyChassisDescriptionHints(pidLower, null, state);
+  _scanCatalogChassisHints(entries, state);
+  if (opts.formFactor) state.formFactor = opts.formFactor;
+  if (opts.generation) state.generation = opts.generation;
 
-  const channelsPerSocket = state.maxSockets === 1 && opts.productId.includes('DL145') ? 6 : 8;
+  const channelsPerSocket = pidLower.includes('dl145')
+    ? 6
+    : (/(?:^|[^a-z0-9])dl(?:325|345|365|385)(?![a-z0-9])/.test(pidLower) ? 12 : 8);
   return {
     schemaVersion: '1.0.0',
     productId: opts.productId,

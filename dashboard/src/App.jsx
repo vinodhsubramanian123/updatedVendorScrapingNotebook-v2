@@ -96,7 +96,7 @@ export default function App() {
   const boqLocalOnly = serverOffline === true || localOnlyPreference;
   const currentCatObj = catalogs.find(c => c.id === selectedChassis);
 
-  const triggers = usePipelineTriggers({ selectedChassis: opsProduct, setActionError: ui.setActionError, setActiveTab: ui.setActiveTab, activeRunRef, runActivityRef });
+  const triggers = usePipelineTriggers({ selectedChassis: opsProduct || selectedChassis, setActionError: ui.setActionError, setActiveTab: ui.setActiveTab, activeRunRef, runActivityRef });
   const handlers = useAppHandlers({
     catalogs, currentCatObj, selectedChassis, boqLocalOnly, evalResults, selectedChassisRef,
     activeRunRef, evaluationRunRef, evalRef, inputRef, evaluationEpoch, searchEpoch,

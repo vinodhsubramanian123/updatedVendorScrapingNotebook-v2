@@ -4,6 +4,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useTheme } from '../../hooks/useTheme.js';
 import HardwareEnvelopeView from '../presales/HardwareEnvelopeView.jsx';
 import SolutionComparisonView from '../presales/SolutionComparisonView.jsx';
+import AgentConversationThread from '../presales/AgentConversationThread.jsx';
+import ClarificationPromptCard from '../presales/ClarificationPromptCard.jsx';
 import MultiNotebookPanel from '../rag/MultiNotebookPanel.jsx';
 import Sidebar from '../layout/Sidebar.jsx';
 import CommandOmnibox from '../CommandOmnibox.jsx';
@@ -161,5 +163,45 @@ describe('Wave B-F Modernization UI & Hooks', () => {
     expect(normalized.closurePlanDigest).toBe('sha256-abc123');
     expect(normalized.guardrailMeta.promptVersion).toBe('v4');
     expect(normalized.dualBrainBadges.map(b => b.id)).toContain('CLOSURE_BLOCKED');
+  });
+
+  it('renders BUILDABLE · PORTAL PENDING distinctly and handles multi-turn clarification cards', () => {
+    render(
+      <div>
+        <SolutionComparisonView comparison={{
+          comparisonMatrix: [
+            {
+              platform: 'DL380_Gen12',
+              buildable: true,
+              buildabilityStatus: 'PORTAL_VALIDATION_PENDING',
+              capexListUsd: 131685
+            },
+            {
+              platform: 'DL360_Gen12',
+              isBuildable: true,
+              buildabilityStatus: 'BUILDABLE',
+              portalValidationStatus: 'PORTAL_VALIDATION_PENDING',
+              capexListUsd: 131115
+            }
+          ]
+        }} />
+        <AgentConversationThread turns={[
+          { id: 't1', query: 'Turn 1', modeUsed: 'DETERMINISTIC' },
+          { id: 't2', query: 'Turn 2', modeUsed: 'GEMINI_AGENT', summary: 'Checked OCP rules.' }
+        ]} />
+      </div>
+    );
+    expect(screen.getAllByText('BUILDABLE · PORTAL PENDING')).toHaveLength(2);
+    expect(screen.getByText('Autonomous Execution Summary (2)')).toBeInTheDocument();
+
+    const onRespond = vi.fn();
+    render(
+      <ClarificationPromptCard
+        prompt={{ question: 'Confirm target platform:', options: ['DL380 Gen12', 'DL360 Gen12'] }}
+        onRespond={onRespond}
+      />
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'DL380 Gen12' }));
+    expect(onRespond).toHaveBeenCalledWith('DL380 Gen12');
   });
 });

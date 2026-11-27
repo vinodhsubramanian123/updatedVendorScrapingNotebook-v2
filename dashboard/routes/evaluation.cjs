@@ -1173,8 +1173,9 @@ router.post('/query/classify', (req, res) => {
     const named = resolveCatalogQueryScope(query, catalogs);
     const pinned = context?.chassisName;
     const resolved = resolveCatalogQueryScope(query, catalogs, pinned);
+    const isCrossVendor = classification.intent === 'CROSS_VENDOR_TRANSFORMATION';
     const conflicts = pinned && (
-      named.unresolvedProducts.length > 0 ||
+      (!isCrossVendor && named.unresolvedProducts.length > 0) ||
       resolved.products.some(id => id !== pinned) ||
       (resolved.products.length === 0 && /\b(?:across\s+(?:all\s+)?(?:catalogs|products|solutions)|portfolio[ -]wide|entire\s+portfolio)\b/i.test(query))
     );

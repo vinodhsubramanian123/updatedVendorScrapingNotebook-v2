@@ -19,6 +19,7 @@ const { listVendorAdapters } = require('../adapters/adapter_registry.js');
 const { queryLocalKnowledgeBase } = require('./local_rag_search.js');
 const { compareSkuAcrossSolutions } = require('../catalog/cross_solution_pricing.js');
 const { resolveChassisDirectory } = require('../catalog/sku_versioning.js');
+const { executeNotebookQuery, getNotebookConfigEntry } = require('../notebook/notebook_query_utils.js');
 
 const COPILOT_TOOL_DECLARATIONS = [
   {
@@ -76,6 +77,18 @@ const COPILOT_TOOL_DECLARATIONS = [
       properties: { sku: { type: 'STRING', description: 'HPE SKU such as P73282-B21' } },
       required: ['sku']
     }
+  },
+  {
+    name: 'query_notebooklm_quickspecs',
+    description: 'Query official vendor QuickSpecs documentation via NotebookLM for a product line (falls back to local index when offline).',
+    parameters: {
+      type: 'OBJECT',
+      properties: {
+        product: { type: 'STRING', description: 'Product ID such as DL360_Gen12 or DL380_Gen12' },
+        query: { type: 'STRING', description: 'Technical QuickSpecs compatibility question' }
+      },
+      required: ['query']
+    }
   }
 ];
 
@@ -95,6 +108,24 @@ function _runEnvelopeTool(args = {}) {
   });
 }
 
+async function _runQuickSpecsTool(args = {}, context = {}) {
+  const product = String(args.product || context.chassisName || '').trim();
+  const question = String(args.query || '').trim();
+  if (!question) return { error: 'query is required' };
+  const offline = isServerOffline() || context?.offline === true || context?.effectivePolicy?.offline === true;
+  const entry = product ? getNotebookConfigEntry(product) : null;
+  if (!offline && entry?.notebookId) {
+    try {
+      return await executeNotebookQuery(entry.notebookId, question, {
+        context: { chassis: product },
+        offline: false,
+        effectivePolicy: context.effectivePolicy
+      });
+    } catch (_) { /* fall through to local knowledge base */ }
+  }
+  return queryLocalKnowledgeBase(question, product);
+}
+
 async function _executeCopilotTool(name, args = {}, context = {}) {
   if (name === 'query_hardware_envelope') return _runEnvelopeTool(args);
   if (name === 'list_product_manifests') {
@@ -105,6 +136,7 @@ async function _executeCopilotTool(name, args = {}, context = {}) {
   if (name === 'list_vendor_adapters') return listVendorAdapters();
   if (name === 'search_local_knowledge') return queryLocalKnowledgeBase(args.query || '', args.product || context.chassisName || '');
   if (name === 'compare_sku_prices') return compareSkuAcrossSolutions(String(args.sku || '').trim());
+  if (name === 'query_notebooklm_quickspecs') return _runQuickSpecsTool(args, context);
   if (name === 'run_routed_query') {
     return executeRoutedQuery(String(args.query || ''), {
       ...context,
@@ -116,7 +148,15 @@ async function _executeCopilotTool(name, args = {}, context = {}) {
   return { error: `Unknown tool: ${name}` };
 }
 
-function _buildCopilotSystemPrompt(deterministicResult) {
+function _formatPriorTurnsPrompt(priorTurns = []) {
+  if (!Array.isArray(priorTurns) || priorTurns.length === 0) return '';
+  const summaryLines = priorTurns.slice(-3).map((t, idx) => (
+    `Turn ${idx + 1} Q: ${String(t.query || '').slice(0, 180)}\nTurn ${idx + 1} A: ${String(t.summary || t.answer || '').slice(0, 260)}`
+  ));
+  return `\nConversation History:\n${summaryLines.join('\n')}`;
+}
+
+function _buildCopilotSystemPrompt(deterministicResult, priorTurns = []) {
   const detJson = deterministicResult ? JSON.stringify({
     intent: deterministicResult.classification?.intent,
     status: deterministicResult.result?.status,
@@ -128,9 +168,9 @@ function _buildCopilotSystemPrompt(deterministicResult) {
     'You are the HPE ProLiant AI Studio Presales Copilot (Tier-2 Gemini Agent).',
     'Never fabricate SKUs, prices, lead times, or OCA CLIC acceptance.',
     'Keep Tier-3 vendor acceptance status explicitly PORTAL VALIDATION PENDING when no live receipt exists.',
-    'Always inspect deterministic tools before concluding bounds, pricing, or cross-vendor parity.',
-    'If deterministic rules or evidence are incomplete, state gaps transparently.',
-    `Initial Tier-1 Deterministic Context: ${detJson}`
+    'Always inspect deterministic tools and/or QuickSpecs before concluding bounds, pricing, cable kits, or cross-vendor parity.',
+    'If user confirmation is needed before finalizing a configuration, include a short "Confirmation Needed:" section with bulleted options.',
+    `Initial Tier-1 Deterministic Context: ${detJson}${_formatPriorTurnsPrompt(priorTurns)}`
   ].join('\n');
 }
 
@@ -196,6 +236,7 @@ async function runPresalesCopilot({
   query,
   context = {},
   deterministicResult = null,
+  priorTurns = [],
   onProgress = null,
   onLog = null,
   onEvent = null,
@@ -206,15 +247,17 @@ async function runPresalesCopilot({
     return { status: 'BLOCKED_OFFLINE', answer: null, confidence: 0, needsDeepEscalation: false, toolCallsUsed: [] };
   }
 
-  const activeKey = rotator.getActiveKey();
-  if (!activeKey && typeof _chatRunner !== 'function') {
+  const keyInfo = rotator.getActiveKey();
+  const activeApiKey = typeof keyInfo === 'string' ? keyInfo : keyInfo?.apiKey;
+  const keysExhausted = Boolean(keyInfo && typeof keyInfo === 'object' && keyInfo.allExhausted);
+  if ((!activeApiKey || keysExhausted) && typeof _chatRunner !== 'function') {
     const fallbackEval = evaluateCopilotEscalation({ deterministicResult, answer: '', toolCallsUsed: [] });
     return {
       status: 'UNAVAILABLE',
       answer: null,
       ...fallbackEval,
       toolCallsUsed: [],
-      error: 'No active Gemini API key available'
+      error: keysExhausted ? 'All Gemini API keys are currently exhausted or cooling down' : 'No active Gemini API key available'
     };
   }
 
@@ -224,7 +267,7 @@ async function runPresalesCopilot({
 
   try {
     if (typeof _chatRunner === 'function') {
-      const custom = await _chatRunner({ query, context, deterministicResult, model: routing.model });
+      const custom = await _chatRunner({ query, context, deterministicResult, model: routing.model, priorTurns });
       const ev = evaluateCopilotEscalation({
         deterministicResult,
         answer: custom?.answer || '',
@@ -233,12 +276,17 @@ async function runPresalesCopilot({
       return { status: 'SUCCESS', model: routing.model, ...ev, ...custom };
     }
 
+    const models = Array.isArray(routing.fallbackModels) && routing.fallbackModels.length > 0
+      ? routing.fallbackModels
+      : [routing.model];
     const state = {
       model: routing.model,
-      fallbackModels: routing.fallbackModels,
+      models,
+      fallbackModels: models,
       apiTimeoutMs: 45000,
-      currentApiKey: activeKey,
-      systemInstruction: _buildCopilotSystemPrompt(deterministicResult),
+      currentApiKey: activeApiKey,
+      activeKeyInfo: typeof keyInfo === 'object' ? keyInfo : null,
+      systemInstruction: _buildCopilotSystemPrompt(deterministicResult, priorTurns),
       toolDeclarations: COPILOT_TOOL_DECLARATIONS
     };
     createChat(state, [], cfg => new GoogleGenAI(cfg));

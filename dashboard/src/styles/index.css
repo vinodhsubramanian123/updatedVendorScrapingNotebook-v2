@@ -233,7 +233,8 @@
   color: #93c5fd;
 }
 
-:root[data-theme="dark"] .bg-emerald-50 {
+:root[data-theme="dark"] .bg-emerald-50,
+:root[data-theme="dark"] .bg-emerald-50\/70 {
   background-color: rgba(16, 185, 129, 0.15);
 }
 :root[data-theme="dark"] .text-emerald-900,
@@ -585,6 +586,18 @@
   background: var(--color-purple-light);
   color: var(--color-purple);
   border: 1px solid rgba(124, 58, 237, 0.35);
+}
+
+.badge-indigo {
+  background: var(--color-electric-blue-light);
+  color: #4338ca;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+}
+
+:root[data-theme="dark"] .badge-indigo {
+  background: rgba(99, 102, 241, 0.22);
+  color: #c7d2fe;
+  border: 1px solid rgba(129, 140, 248, 0.4);
 }
 
 .badge-slate {

@@ -25,11 +25,14 @@ const {
 } = require('../services/taskManager.cjs');
 const { isValidRunId, getRunById } = require('../services/runState.cjs');
 const { invalidateChassisMapCache } = require('../../scripts/lib/conflict/conflict_graph.js');
+const { invalidateCatalogCache } = require('./catalogs.cjs');
+const { runOnboarding } = require('../../scripts/maintenance/onboard_product.js');
 const { sendErrorResponse } = require('../services/errorHandler.cjs');
 const { requestChildTermination } = require('../../scripts/lib/system/child_termination.js');
 const { spawnObservedChild } = require('../../scripts/lib/system/observed_child_process.js');
 const { assertSafePath } = require('../services/pathGuard.cjs');
 const { resolveChassisDirectory } = require('../../scripts/lib/catalog/sku_versioning.js');
+const { DASHBOARD_SCRAPE_PIPELINE_PATH } = require('../../scripts/lib/scraper/dashboard_scrape_pipeline.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
@@ -55,6 +58,66 @@ router.post('/scrape', (req, res) => {
     spawn('node', args, { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1', ...extraEnv } })
   );
   startTask(`SCRAPE_${(mode || 'solution').toUpperCase()}`, proc, res, OUTPUTS_DIR, targetChassis ? String(targetChassis).trim() : null);
+  proc.on('close', () => { invalidateChassisMapCache(); invalidateCatalogCache(); });
+});
+
+// ── 1-Click E2E Scrape + Staging Audit + Manifest Onboarding ──────────────────
+router.post('/scrape-e2e', (req, res) => {
+  if (isTaskRunning()) return sendErrorResponse(res, 409, 'Another task is currently running', { source: 'TASKS_ROUTER', context: { task: getActiveTask()?.type } });
+
+  const { mode, chassis, query, recover, syncKnowledge, skipNavigate } = req.body || {};
+  const targetChassis = String(chassis || query || '').trim();
+  if (!targetChassis) return sendErrorResponse(res, 400, 'Specify a product name or OCA query before starting E2E scrape', { source: 'TASKS_ROUTER' });
+
+  const args = [DASHBOARD_SCRAPE_PIPELINE_PATH, '--chassis', targetChassis, '--mode', mode === 'storage' ? 'storage' : 'solution'];
+  if (recover) args.push('--recover');
+  if (syncKnowledge) args.push('--sync-knowledge');
+  if (skipNavigate) args.push('--skip-navigate');
+
+  const proc = spawnObservedChild('scrape_e2e', __filename, (extraEnv) =>
+    spawn('node', args, { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1', ...extraEnv } })
+  );
+  startTask('SCRAPE_E2E', proc, res, OUTPUTS_DIR, targetChassis);
+  proc.on('close', () => { invalidateChassisMapCache(); invalidateCatalogCache(); });
+});
+
+// ── Product Manifest Onboarding ───────────────────────────────────────────────
+function _resolveCatalogPathForOnboarding(productId, explicitCatalogPath) {
+  if (explicitCatalogPath) return assertSafePath(explicitCatalogPath);
+  const dir = resolveChassisDirectory(productId);
+  if (!dir || !fs.existsSync(dir)) return null;
+  const catFile = fs.readdirSync(dir).find(f => /Catalog\.json$/i.test(f));
+  return catFile ? path.join(dir, catFile) : null;
+}
+
+router.post('/onboard-product', (req, res) => {
+  const { productId, catalogPath, vendor, domain, family, generation, formFactor, dryRun } = req.body || {};
+  const cleanId = String(productId || '').trim().replace(/\s+/g, '_');
+  if (!cleanId) return sendErrorResponse(res, 400, 'productId is required', { source: 'TASKS_ROUTER' });
+
+  try {
+    const resolvedCat = _resolveCatalogPathForOnboarding(cleanId, catalogPath);
+    if (!resolvedCat && !dryRun) {
+      return sendErrorResponse(res, 422, `No scraped Catalog.json found for ${cleanId}. Run 1-Click E2E Scrape & Onboard first (or pass dryRun: true to preview).`, { source: 'TASKS_ROUTER' });
+    }
+    const argv = ['--product-id', cleanId];
+    if (resolvedCat) argv.push('--catalog-path', resolvedCat);
+    if (vendor) argv.push('--vendor', String(vendor));
+    if (domain) argv.push('--domain', String(domain));
+    if (family) argv.push('--family', String(family));
+    if (generation) argv.push('--generation', String(generation));
+    if (formFactor) argv.push('--form-factor', String(formFactor));
+    if (dryRun) argv.push('--dry-run');
+
+    const result = runOnboarding(argv);
+    if (!result.dryRun) {
+      invalidateChassisMapCache();
+      invalidateCatalogCache();
+    }
+    res.json({ status: 'SUCCESS', ...result });
+  } catch (err) {
+    sendErrorResponse(res, 422, err, { source: 'TASKS_ROUTER' });
+  }
 });
 
 // ── Rebuild All ───────────────────────────────────────────────────────────────
@@ -69,8 +132,7 @@ router.post('/rebuild', (req, res) => {
     return spawn('node', [scriptPath], spawnOpts);
   });
   startTask('REBUILD_ALL', proc, res, OUTPUTS_DIR);
-  // Invalidate chassis map cache after rebuild completes
-  proc.on('close', () => invalidateChassisMapCache());
+  proc.on('close', () => { invalidateChassisMapCache(); invalidateCatalogCache(); });
 });
 
 // ── Navigate OCA ──────────────────────────────────────────────────────────────

@@ -162,5 +162,25 @@ describe('topologyGraphBuilder', () => {
       expect(unknownDefaultGraph.rootNode.sku).toBe('UNKNOWN_BASE_SKU');
       expect(unknownDefaultGraph.rootNode.label).not.toContain('DL380');
     });
+
+    it('classifies Care Pack SKUs under SERVICES and omits 0-DIMM memory balance gaps', () => {
+      expect(getSubsystemForSku({ sku: 'HU4B2A3', description: '' })).toBe('SERVICES');
+      expect(getSubsystemForSku({ sku: 'P73282-B21', description: '' })).toBe('COMPUTE');
+      const zeroDimmGraph = buildTopologyGraph({
+        chassis: 'DL380 Gen12',
+        memoryCount: 0,
+        isBalancedChannel: false,
+        items: [{ sku: 'P73282-B21', description: 'DL380 Gen12 8SFF CTO', quantity: 1 }],
+        missingDependencies: [
+          { sku: '873763-B21', description: 'HPE No Drive FIO Kit', reasoning: 'Zero drives configured in CTO server' }
+        ]
+      }, 'BASELINE');
+      expect(zeroDimmGraph.gaps.some(g => g.id === 'gap-memory-balance')).toBe(false);
+      const depGap = zeroDimmGraph.gaps.find(g => g.sku === '873763-B21');
+      expect(depGap).toBeDefined();
+      expect(depGap.label).toBe('HPE No Drive FIO Kit');
+      expect(depGap.label).not.toContain('[object Object]');
+      expect(depGap.subsystem).toBe('STORAGE');
+    });
   });
 });

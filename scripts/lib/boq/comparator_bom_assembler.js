@@ -192,6 +192,12 @@ function selectFirstMatchingCatalogOption(catalogData, role, quantity, matchFn, 
   return hits[0];
 }
 
+function _comparePsuCandidates(a, b, minWatts) {
+  const fitDiff = (a.watts >= minWatts ? 0 : 1) - (b.watts >= minWatts ? 0 : 1);
+  const titDiff = (/titanium|96%/i.test(a.description) ? 0 : 1) - (/titanium|96%/i.test(b.description) ? 0 : 1);
+  return fitDiff || titDiff || (a.watts - b.watts) || ((a.unitPriceUsd ?? Number.POSITIVE_INFINITY) - (b.unitPriceUsd ?? Number.POSITIVE_INFINITY)) || a.sku.localeCompare(b.sku);
+}
+
 function selectPsuItem(catalogData, estimatedWatts) {
   const psus = [];
   for (const entry of catalogData?.entries || []) {
@@ -206,10 +212,7 @@ function selectPsuItem(catalogData, estimatedWatts) {
   }
   if (!psus.length) return null;
   const minWatts = Math.max(800, Math.ceil(estimatedWatts * 1.25));
-  psus.sort((a, b) => {
-    const fitDiff = (a.watts >= minWatts ? 0 : 1) - (b.watts >= minWatts ? 0 : 1);
-    return fitDiff || (a.watts - b.watts) || ((a.unitPriceUsd ?? Number.POSITIVE_INFINITY) - (b.unitPriceUsd ?? Number.POSITIVE_INFINITY)) || a.sku.localeCompare(b.sku);
-  });
+  psus.sort((a, b) => _comparePsuCandidates(a, b, minWatts));
   const { watts: _w, ...chosen } = psus[0];
   return chosen;
 }
@@ -294,6 +297,44 @@ function appendWorkloadSpecialtyHardware(bomItems, coverageGaps, catId, catalogD
   }
 }
 
+function _appendMemoryAndStorageBom(bomItems, coverageGaps, cat, meta, catalogData, spec, cpuRes, baseItem) {
+  const targetRamGb = spec.ramGb || 256;
+  const memInterp = interpolateMemoryTopology({
+    targetRamGb,
+    socketCount: cpuRes.socketCount || Math.min(2, meta.maxSockets),
+    channelsPerSocket: meta.channelsPerSocket,
+    preferFio: true,
+    catalogData
+  });
+  if (memInterp.coverageGap === 'CATALOG_COVERAGE_GAP' || !memInterp.bestBalanced) {
+    coverageGaps.push({ code: 'CATALOG_COVERAGE_GAP', category: 'Memory', detail: `No active Memory DIMM SKUs found in ${cat.id} catalog.` });
+  } else {
+    const dimm = memInterp.bestBalanced;
+    const fioDesc = baseItem && !/\bfio\b|factory integrated/i.test(dimm.description)
+      ? `${dimm.description} (Factory Integrated #0D1)`
+      : dimm.description;
+    bomItems.push({ sku: dimm.sku, description: fioDesc, quantity: dimm.totalDimms, role: 'Memory', unitPriceUsd: dimm.unitPriceUsd, priceState: dimm.pricingComplete ? 'PRICED' : 'UNPRICED', leadTimeDays: dimm.leadTimeDays });
+  }
+
+  let storageInterp = null;
+  if (Number.isFinite(spec.usableTb) && spec.usableTb > 0) {
+    storageInterp = interpolateStorageTopology({
+      targetUsableTb: spec.usableTb, raidLevel: spec.raidLevel, hotSpares: spec.hotSpares,
+      driveProtocol: spec.driveProtocol, maxBays: meta.maxBays, catalogData
+    });
+    if (storageInterp.coverageGap === 'CATALOG_COVERAGE_GAP') {
+      coverageGaps.push({ code: 'CATALOG_COVERAGE_GAP', category: 'Drive Cage / Drive', detail: `No active physical Drive SKUs found in ${cat.id} catalog to satisfy ${spec.usableTb}TB usable.` });
+    } else if (storageInterp.recommended) {
+      const drv = storageInterp.recommended;
+      bomItems.push({ sku: drv.sku, description: drv.description, quantity: drv.totalDrives, role: 'Drive Cage / Drive', unitPriceUsd: drv.unitPriceUsd, priceState: drv.pricingComplete ? 'PRICED' : 'UNPRICED', leadTimeDays: drv.leadTimeDays });
+    }
+  } else {
+    const noDriveKit = selectFirstMatchingCatalogOption(catalogData, 'Enablement', 1, s => s === '873763-B21');
+    if (noDriveKit) bomItems.push(noDriveKit);
+  }
+  return { targetRamGb, memInterp, storageInterp };
+}
+
 function assembleServerBom(cat, meta, catalogData, spec) {
   const bomItems = [];
   const coverageGaps = [];
@@ -310,35 +351,7 @@ function assembleServerBom(cat, meta, catalogData, spec) {
     appendThermalAndMgmtEnablement(bomItems, catalogData, cpuRes);
   }
 
-  const targetRamGb = spec.ramGb || 256;
-  const memInterp = interpolateMemoryTopology({
-    targetRamGb,
-    socketCount: cpuRes.socketCount || Math.min(2, meta.maxSockets),
-    channelsPerSocket: meta.channelsPerSocket,
-    preferFio: true,
-    catalogData
-  });
-  if (memInterp.coverageGap === 'CATALOG_COVERAGE_GAP' || !memInterp.bestBalanced) {
-    coverageGaps.push({ code: 'CATALOG_COVERAGE_GAP', category: 'Memory', detail: `No active Memory DIMM SKUs found in ${cat.id} catalog.` });
-  } else {
-    const dimm = memInterp.bestBalanced;
-    bomItems.push({ sku: dimm.sku, description: dimm.description, quantity: dimm.totalDimms, role: 'Memory', unitPriceUsd: dimm.unitPriceUsd, priceState: dimm.pricingComplete ? 'PRICED' : 'UNPRICED', leadTimeDays: dimm.leadTimeDays });
-  }
-
-  let storageInterp = null;
-  if (Number.isFinite(spec.usableTb) && spec.usableTb > 0) {
-    storageInterp = interpolateStorageTopology({
-      targetUsableTb: spec.usableTb, raidLevel: spec.raidLevel, hotSpares: spec.hotSpares,
-      driveProtocol: spec.driveProtocol, maxBays: meta.maxBays, catalogData
-    });
-    if (storageInterp.coverageGap === 'CATALOG_COVERAGE_GAP') {
-      coverageGaps.push({ code: 'CATALOG_COVERAGE_GAP', category: 'Drive Cage / Drive', detail: `No active physical Drive SKUs found in ${cat.id} catalog to satisfy ${spec.usableTb}TB usable.` });
-    } else if (storageInterp.recommended) {
-      const drv = storageInterp.recommended;
-      bomItems.push({ sku: drv.sku, description: drv.description, quantity: drv.totalDrives, role: 'Drive Cage / Drive', unitPriceUsd: drv.unitPriceUsd, priceState: drv.pricingComplete ? 'PRICED' : 'UNPRICED', leadTimeDays: drv.leadTimeDays });
-    }
-  }
-
+  const { targetRamGb, memInterp, storageInterp } = _appendMemoryAndStorageBom(bomItems, coverageGaps, cat, meta, catalogData, spec, cpuRes, baseItem);
   appendWorkloadSpecialtyHardware(bomItems, coverageGaps, cat.id, catalogData, spec);
 
   const estimatedBaseWatts = (cpuRes.maxTdpWatts * (cpuRes.socketCount || 2)) + ((memInterp.bestBalanced?.totalDimms || 8) * 10) + ((storageInterp?.recommended?.totalDrives || 0) * 14) + 120;

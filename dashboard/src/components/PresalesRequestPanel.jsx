@@ -23,6 +23,8 @@ async function prepareRequest(query, product, primary, secondary, localOnly, pri
 }
 
 const SESSION_PRESALES_RUN_KEY = 'presales.ownedRunId';
+const SESSION_PRESALES_TURNS_KEY = 'presales.turns';
+const SESSION_PRESALES_AGY_CONV_KEY = 'presales.agyConversationId';
 
 function readSessionValue(key) {
   try {
@@ -38,6 +40,27 @@ function writeSessionValue(key, val) {
     if (!val) window.sessionStorage.removeItem(key);
     else window.sessionStorage.setItem(key, val);
   } catch {}
+}
+
+function readSessionJson(key, fallback) {
+  try {
+    const raw = readSessionValue(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function _buildTurnEntry(envelope, queryText) {
+  const modeUsed = envelope?.modeUsed || 'DETERMINISTIC';
+  return {
+    id: envelope?.runId || `turn_${Date.now()}`,
+    query: envelope?.query || queryText || 'Autonomous Presales Query',
+    summary: typeof envelope?.agentAnswer === 'string' ? envelope.agentAnswer : null,
+    modeUsed,
+    tierTrail: envelope?.tierTrail || [modeUsed],
+    runId: envelope?.runId || null
+  };
 }
 
 async function runClassification({ query, product, primary, secondary, localOnly, activeRunIdRef, revision, setBusy, setError, setPlan, setResult }) {
@@ -58,30 +81,52 @@ async function runClassification({ query, product, primary, secondary, localOnly
   }
 }
 
-async function runExecution({ plan, mode, sessionId, revision, primary, query, localOnly, onEvaluateBoq, setBusy, setError, setResult, setActiveRunId, activeRunIdRef }) {
+function _recordAgentTurnResult(envelope, queryText, params) {
+  const { setResult, agyConvIdRef, setAgyConvId, turnsRef, setTurns } = params;
+  setResult(envelope);
+  if (envelope?.agyConversationId) {
+    agyConvIdRef.current = envelope.agyConversationId;
+    setAgyConvId(envelope.agyConversationId);
+    writeSessionValue(SESSION_PRESALES_AGY_CONV_KEY, envelope.agyConversationId);
+  }
+  const entry = _buildTurnEntry(envelope, queryText);
+  const nextTurns = [...(turnsRef?.current || []).filter(t => t.id !== entry.id), entry].slice(-10);
+  turnsRef.current = nextTurns;
+  setTurns(nextTurns);
+  writeSessionValue(SESSION_PRESALES_TURNS_KEY, JSON.stringify(nextTurns));
+}
+
+async function _executeBoqEvaluationBranch({ plan, primary, query, localOnly, onEvaluateBoq }) {
+  const payload = primary ? { filepath: plan.input.context.filePath } : { rawText: query };
+  const resolvedProduct = plan.classification.scope?.products?.length === 1 ? plan.classification.scope.products[0] : null;
+  await onEvaluateBoq({
+    ...payload,
+    chassisDir: plan.input?.context?.chassisDir || plan.originProduct?.chassisDir,
+    chassisName: plan.input?.context?.chassisName || plan.originProduct?.id || resolvedProduct?.id,
+    ...(!plan.originProduct && !resolvedProduct ? { autoScope: true } : {}),
+    offline: plan.input?.context?.offline ?? localOnly
+  });
+}
+
+async function runExecution(params) {
+  const { plan, mode, sessionId, revision, primary, query, localOnly, onEvaluateBoq, setBusy, setError, setActiveRunId, activeRunIdRef, turnsRef } = params;
   if (!plan || plan.version !== revision.current || plan.classification.scope?.conflict) return;
   const version = revision.current;
   setBusy(true); setError(null);
   try {
     if (plan.classification.intent === 'BOQ_EVALUATION') {
-      const payload = primary ? { filepath: plan.input.context.filePath } : { rawText: query };
-      const products = plan.classification.scope?.products;
-      const resolvedProduct = products?.length === 1 ? products[0] : null;
-      await onEvaluateBoq({
-        ...payload,
-        chassisDir: plan.input?.context?.chassisDir || plan.originProduct?.chassisDir,
-        chassisName: plan.input?.context?.chassisName || plan.originProduct?.id || resolvedProduct?.id,
-        ...(!plan.originProduct && !resolvedProduct ? { autoScope: true } : {}),
-        offline: plan.input?.context?.offline ?? localOnly
-      });
-    } else {
-      const runId = `query_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
-      writeSessionValue(SESSION_PRESALES_RUN_KEY, runId);
-      if (activeRunIdRef) activeRunIdRef.current = runId;
-      if (setActiveRunId) setActiveRunId(runId);
-      const envelope = await postJson('/api/agent/query', { ...plan.input, runId, sessionId, mode: localOnly ? 'DETERMINISTIC' : mode }, { timeoutMs: 15 * 60 * 1000 });
-      if (version === revision.current) setResult(envelope);
+      await _executeBoqEvaluationBranch({ plan, primary, query, localOnly, onEvaluateBoq });
+      return;
     }
+    const runId = `query_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+    writeSessionValue(SESSION_PRESALES_RUN_KEY, runId);
+    if (activeRunIdRef) activeRunIdRef.current = runId;
+    if (setActiveRunId) setActiveRunId(runId);
+    const envelope = await postJson('/api/agent/query', {
+      ...plan.input, runId, sessionId, mode: localOnly ? 'DETERMINISTIC' : mode,
+      priorTurns: (turnsRef?.current || []).slice(-4), agyConversationId: params.agyConvIdRef?.current || undefined
+    }, { timeoutMs: 15 * 60 * 1000 });
+    if (version === revision.current) _recordAgentTurnResult(envelope, plan.input?.query || query, params);
   } catch (err) {
     if (version === revision.current) setError(err.message);
   } finally {
@@ -230,6 +275,10 @@ function usePresalesRunner(query, product, primary, secondary, localOnly, onEval
   const initialRunId = readSessionValue(SESSION_PRESALES_RUN_KEY);
   const [plan, setPlan] = useState(null);
   const [result, setResult] = useState(null);
+  const [turns, setTurns] = useState(() => readSessionJson(SESSION_PRESALES_TURNS_KEY, []));
+  const turnsRef = useRef(turns);
+  const [agyConvId, setAgyConvId] = useState(() => readSessionValue(SESSION_PRESALES_AGY_CONV_KEY));
+  const agyConvIdRef = useRef(agyConvId);
   const [activeRunId, setActiveRunId] = useState(initialRunId);
   const activeRunIdRef = useRef(initialRunId);
   const [busy, setBusy] = useState(false);
@@ -251,20 +300,40 @@ function usePresalesRunner(query, product, primary, secondary, localOnly, onEval
 
   usePresalesSnapshot(setResult, setError, activeRunId, setActiveRunId, activeRunIdRef);
 
-  const classify = () => runClassification({ query, product, primary, secondary, localOnly, activeRunIdRef, revision, setBusy, setError, setPlan, setResult });
-  const executePlan = next => runExecution({ plan: next, mode, sessionId, revision, primary, query, localOnly, onEvaluateBoq, setBusy, setError, setResult, setActiveRunId, activeRunIdRef });
-  const execute = async () => {
+  const classify = (overrideQuery) => {
+    const cleanOverride = typeof overrideQuery === 'string' ? overrideQuery : undefined;
+    return runClassification({ query: cleanOverride ?? query, product, primary, secondary, localOnly, activeRunIdRef, revision, setBusy, setError, setPlan, setResult });
+  };
+  const executePlan = (next, overrideQuery) => {
+    const cleanOverride = typeof overrideQuery === 'string' ? overrideQuery : undefined;
+    return runExecution({
+      plan: next, mode, sessionId, revision, primary, query: cleanOverride ?? query, localOnly, onEvaluateBoq,
+      setBusy, setError, setResult, setActiveRunId, activeRunIdRef, turnsRef, setTurns, agyConvIdRef, setAgyConvId
+    });
+  };
+  const execute = async (overrideQuery) => {
+    const cleanOverride = typeof overrideQuery === 'string' ? overrideQuery : undefined;
     if (submitting.current) return;
     submitting.current = true;
     try {
-      const next = plan || await classify();
-      if (next) await executePlan(next);
+      const next = (cleanOverride == null && plan) ? plan : await classify(cleanOverride);
+      if (next) await executePlan(next, cleanOverride);
     } finally { submitting.current = false; }
+  };
+  const resetSession = () => {
+    turnsRef.current = [];
+    setTurns([]);
+    agyConvIdRef.current = null;
+    setAgyConvId(null);
+    writeSessionValue(SESSION_PRESALES_TURNS_KEY, null);
+    writeSessionValue(SESSION_PRESALES_AGY_CONV_KEY, null);
+    setResult(null);
+    setPlan(null);
   };
   const exportExcel = () => runExportExcel(result, product, setError);
   const evaluateCandidateBom = () => runCandidateEvaluation(result, onEvaluateBoq, localOnly);
 
-  return { plan, result, busy, error, classify, execute, exportExcel, evaluateCandidateBom };
+  return { plan, result, turns, busy, error, classify, execute, resetSession, exportExcel, evaluateCandidateBom };
 }
 
 function PresalesInputControls({ query, setQuery, primary, setPrimary, secondary, setSecondary, localOnly, setLocalOnly, serverOffline, onKeyDown }) {
@@ -341,10 +410,10 @@ function PresalesActionToolbar({ busy, isTaskRunning, queryEmpty, classify, plan
   const friendlyIntent = plan ? (INTENT_FRIENDLY_NAMES[plan.classification.intent] || plan.classification.intent) : '';
   return (
     <div className="flex flex-wrap items-center gap-3 pt-1">
-      <button className="btn-primary text-xs" disabled={busy || isTaskRunning || queryEmpty || Boolean(plan?.classification.scope?.conflict)} onClick={execute}>
+      <button className="btn-primary text-xs" disabled={busy || isTaskRunning || queryEmpty || Boolean(plan?.classification.scope?.conflict)} onClick={() => execute()}>
         {busy ? 'Working…' : 'Run query'}
       </button>
-      <button className="btn-secondary text-xs" disabled={busy || isTaskRunning || queryEmpty} onClick={classify}>Preview route</button>
+      <button className="btn-secondary text-xs" disabled={busy || isTaskRunning || queryEmpty} onClick={() => classify()}>Preview route</button>
       {plan && (
         <div className="flex flex-wrap items-center gap-2">
           <span className="badge badge-emerald text-xs">{friendlyIntent}</span>
@@ -380,9 +449,18 @@ export default function PresalesRequestPanel({ product: initialProduct, catalogs
   const localOnly = Boolean(serverOffline || (localOnlyProp ?? localOnlyPreference));
   const setLocalOnly = onLocalOnlyChange || setLocalOnlyPreference;
 
-  const { plan, result, busy, error, classify, execute, exportExcel, evaluateCandidateBom } = usePresalesRunner(
+  const { plan, result, turns, busy, error, classify, execute, resetSession, exportExcel, evaluateCandidateBom } = usePresalesRunner(
     query, product, primary, secondary, localOnly, onEvaluateBoq, pinnedProductId, mode
   );
+
+  const handleFollowUp = async (replyText) => {
+    const needsPlatformAppend = result?.result?.code === 'PLATFORM_CLARIFICATION_REQUIRED' && result?.query;
+    const effective = needsPlatformAppend
+      ? `${result.query} (Target HPE Platform: ${replyText})`
+      : replyText;
+    setQuery(effective);
+    await execute(effective);
+  };
 
   useEffect(() => {
     if (!omniboxRequest?.id || accepted.current === omniboxRequest.id) return;
@@ -454,8 +532,8 @@ export default function PresalesRequestPanel({ product: initialProduct, catalogs
         classify={classify} plan={plan} execute={execute} primary={primary} secondary={secondary}
       />
       {error && <p role="alert" className="text-sm text-rose-800 bg-rose-50 p-2 rounded-lg border border-rose-200">{error}</p>}
-      <AgentConversationThread envelope={result} />
-      <RoutedOutcome envelope={result} onExportExcel={exportExcel} onEvaluateCandidateBom={evaluateCandidateBom} />
+      <AgentConversationThread turns={turns} envelope={result} onNewSession={resetSession} />
+      <RoutedOutcome envelope={result} onExportExcel={exportExcel} onEvaluateCandidateBom={evaluateCandidateBom} onFollowUp={handleFollowUp} busy={busy} />
     </section>
   );
 }

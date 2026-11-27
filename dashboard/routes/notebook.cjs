@@ -227,11 +227,15 @@ function validateEvaluationQueryContext(runId, query, chassis) {
   if (isServerOffline() || isRunOfflineLocked(runRecord, evalEvent)) {
     throw new Error('Local-only run: deferred cloud notebook query is prohibited.');
   }
-  if (!evalEvent || evalEvent.runId !== runId || evalEvent.data?.notebookPayload !== query) {
+  const expectedPayload = evalEvent?.data?.notebookPayload;
+  const expectedQuery = typeof expectedPayload === 'string' ? expectedPayload : expectedPayload?.query;
+  if (!evalEvent || evalEvent.runId !== runId || expectedQuery !== query) {
     throw new Error('Notebook query does not match the current evaluation payload');
   }
   const target = evalEvent.data?.chassisDir;
-  if (!target || !chassis || path.resolve(resolveChassisDirectory(target)) !== path.resolve(resolveChassisDirectory(chassis))) {
+  const resolvedTarget = target ? path.resolve(resolveChassisDirectory(target)) : '';
+  const resolvedChassis = chassis ? path.resolve(resolveChassisDirectory(chassis)) : '';
+  if (!target || !chassis || (resolvedTarget !== resolvedChassis && path.basename(resolvedTarget).toLowerCase() !== path.basename(resolvedChassis).toLowerCase())) {
     throw new Error('Notebook query product does not match the evaluated product');
   }
   return runRecord;
@@ -649,5 +653,48 @@ router.post('/portal-feedback', (req, res) => {
   const entry = feedbackQueue.appendFeedback(text, 'portal_feedback', { rank, title });
   res.json({ success: true, entry });
 });
+
+// ── Automated Run Reflection Queue & Promotion (INV-279) ─────────────────────
+router.get('/learning/proposals', (_req, res) => {
+  const { DEFAULT_IMPROVEMENT_QUEUE_PATH } = require('../../scripts/lib/feedback/post_run_reflection.js');
+  if (!fs.existsSync(DEFAULT_IMPROVEMENT_QUEUE_PATH)) {
+    return res.json({ version: '1.0.0', lastUpdated: null, entries: [], stats: { total: 0, pending: 0, readyForPromotion: 0, promoted: 0 } });
+  }
+  try {
+    const queue = JSON.parse(fs.readFileSync(DEFAULT_IMPROVEMENT_QUEUE_PATH, 'utf8'));
+    const entries = Array.isArray(queue.entries) ? queue.entries : [];
+    res.json({
+      version: queue.version || '1.0.0',
+      lastUpdated: queue.lastUpdated || null,
+      entries,
+      stats: {
+        total: entries.length,
+        pending: entries.filter(e => e.status === 'PENDING').length,
+        readyForPromotion: entries.filter(e => e.status === 'PENDING' && e.readyForPromotion).length,
+        promoted: entries.filter(e => e.status === 'PROMOTED').length
+      }
+    });
+  } catch (err) {
+    sendErrorResponse(res, 500, err, { source: 'NOTEBOOK_ROUTER' });
+  }
+});
+
+router.post('/learning/promote', asyncHandler(async (req, res) => {
+  const { apply = true } = req.body || {};
+  const { promoteLearnedInstructions } = require('../../scripts/maintenance/promote_learned_instructions.js');
+  const { runValidation } = require('../../scripts/maintenance/validate_skills_integrity.js');
+  const validatorFn = apply
+    ? async () => {
+      const skills = runValidation({ quiet: true });
+      return skills.ok ? { ok: true, skillsOk: true } : { ok: false, error: `Skills gate failed (${skills.failed})` };
+    }
+    : undefined;
+  const result = await promoteLearnedInstructions({ apply: Boolean(apply), validatorFn });
+  if (result.rolledBack) return res.status(422).json({ success: false, ...result });
+  if (result.promotedCount > 0) {
+    broadcastSSE({ type: 'LOG', text: `🎓 [LEARNING_PROMOTED] Promoted ${result.promotedCount} verified run-reflection rule(s).`, stream: 'stdout' });
+  }
+  res.json({ success: true, ...result });
+}));
 
 module.exports = router;

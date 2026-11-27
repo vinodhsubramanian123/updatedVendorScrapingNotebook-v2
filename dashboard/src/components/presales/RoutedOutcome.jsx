@@ -5,6 +5,8 @@ import { getCandidateExportEligibility } from '../../services/exportEligibility.
 import { humanizeEnum } from '../../utils/formatters.js';
 import HardwareEnvelopeView from './HardwareEnvelopeView';
 import SolutionComparisonView from './SolutionComparisonView';
+import ClarificationPromptCard from './ClarificationPromptCard';
+import InlineOutcomeFeedback from './InlineOutcomeFeedback';
 
 export const INTENT_FRIENDLY_NAMES = {
   RFP_SIZING_TO_BOM: 'Natural Language Sizing to Buildable BOM',
@@ -352,23 +354,14 @@ function CandidateReferenceSummary({ candidateRef }) {
   );
 }
 
-function ClarificationAlert({ missingReqs }) {
-  const missingList = Array.isArray(missingReqs) && missingReqs.length > 0 ? ` (Missing: ${missingReqs.join(', ')})` : '';
-  return (
-    <div role="alert" className="text-xs font-semibold text-amber-900 bg-amber-50 p-2.5 rounded-lg border border-amber-300">
-      ⚠️ <strong>Human Clarification Required:</strong> Sizing requirements are incomplete or ambiguous{missingList}. Confirm the missing requirements and product scope before evaluation.
-    </div>
-  );
-}
-
-export default function RoutedOutcome({ envelope, onExportExcel, onEvaluateCandidateBom }) {
+export default function RoutedOutcome({ envelope, onExportExcel, onEvaluateCandidateBom, onFollowUp, busy = false }) {
   if (!envelope) return null;
   const result = envelope.result || {};
   const items = result.items || result.candidateBOM || result.evalResults?.items || [];
   const preview = JSON.stringify(envelope, null, 2);
   const candidateRef = result.candidateReference || envelope.candidateReference;
   const requiresClarification = Boolean(
-    result.requiresHumanClarification || result.status === 'REQUIRES_HUMAN_CLARIFICATION' || envelope.hitlRequired || result.hitlRequired
+    result.requiresHumanClarification || result.status === 'REQUIRES_HUMAN_CLARIFICATION' || envelope.hitlRequired || result.hitlRequired || result.code === 'PLATFORM_CLARIFICATION_REQUIRED'
   );
   const exportEligibility = getCandidateExportEligibility(buildEvalPayloadForAuth(result, envelope));
   const missingReqs = result.missingRequirements || candidateRef?.missingRequirements;
@@ -384,6 +377,12 @@ export default function RoutedOutcome({ envelope, onExportExcel, onEvaluateCandi
         onEvaluateCandidateBom={showActions ? onEvaluateCandidateBom : null}
       />
 
+      {envelope.providerFallbackNotice && (
+        <p role="status" className="text-xs font-medium text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1.5">
+          {envelope.providerFallbackNotice}
+        </p>
+      )}
+
       {showActions && !exportEligibility.eligible && (
         <p className="text-[11px] text-amber-800 bg-amber-50/80 border border-amber-200 rounded-lg px-2.5 py-1.5">
           Customer export locked until evaluated & authorized: {exportEligibility.reason}
@@ -391,7 +390,15 @@ export default function RoutedOutcome({ envelope, onExportExcel, onEvaluateCandi
       )}
 
       <CandidateReferenceSummary candidateRef={candidateRef} />
-      {requiresClarification && result.code !== 'PRICE_DRIFT_SCOPE_REQUIRED' && <ClarificationAlert missingReqs={missingReqs} />}
+      {(envelope.clarificationPrompt || (requiresClarification && result.code !== 'PRICE_DRIFT_SCOPE_REQUIRED')) && (
+        <ClarificationPromptCard
+          prompt={envelope.clarificationPrompt}
+          requiresClarification={requiresClarification}
+          missingReqs={missingReqs}
+          onRespond={onFollowUp}
+          busy={busy}
+        />
+      )}
 
       {envelope.cancellationRequested && (
         <p role="alert" className="text-xs font-semibold text-amber-900 bg-amber-50 p-2 rounded-lg border border-amber-200">
@@ -400,7 +407,7 @@ export default function RoutedOutcome({ envelope, onExportExcel, onEvaluateCandi
       )}
 
       {result.envelope && <HardwareEnvelopeView envelope={result.envelope} />}
-      {(result.comparedPlatforms || result.crossVendorReport || (Array.isArray(result.parityGaps) && result.parityGaps.length > 0)) && (
+      {(result.comparedPlatforms?.length > 0 || result.comparisonMatrix?.length > 0 || result.crossVendorReport || (Array.isArray(result.parityGaps) && result.parityGaps.length > 0)) && (
         <SolutionComparisonView
           comparison={result}
           crossVendorReport={result.crossVendorReport}
@@ -439,6 +446,8 @@ export default function RoutedOutcome({ envelope, onExportExcel, onEvaluateCandi
       <ReconciliationSummaryView report={result.reconciliationReport || result.auditReport} />
       <RoutedBOMTable items={items} />
       <ReasoningNarrativeView reasoningAnalysis={envelope.reasoningAnalysis} rawNarrative={result.reasoningNarrative} />
+
+      <InlineOutcomeFeedback envelope={envelope} />
 
       <details>
         <summary className="text-xs text-slate-500 hover:text-slate-700 cursor-pointer">Structured outcome and evidence JSON</summary>

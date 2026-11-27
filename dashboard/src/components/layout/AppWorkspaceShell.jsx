@@ -18,7 +18,7 @@ function MainWorkspaceBody({
   setIntakeTopologyData, runActivity, opsProduct, setOpsProduct, selectedChassis,
   setSelectedChassis, logStream, catalogData, isCatalogLoading, globalSearchTerm,
   setGlobalSearchTerm, setActiveModal, setShowTraceabilityInspector, setSelectedCardForFeedback,
-  setIsRagOpen, handleSmartSearch, handleTriggerScrape, handleTriggerRebuild,
+  setIsRagOpen, handleSmartSearch, handleTriggerScrape, handleTriggerScrapeE2E, handleTriggerOnboard, handleTriggerRebuild,
   handleTriggerDownloadPdf, handleTriggerSyncKnowledge, handleTriggerNavigate, handleReopenRun
 }) {
   return (
@@ -60,7 +60,8 @@ function MainWorkspaceBody({
           setActiveModal={setActiveModal} setShowTraceabilityInspector={setShowTraceabilityInspector}
           setSelectedCardForFeedback={setSelectedCardForFeedback} setIsRagOpen={setIsRagOpen}
           handleSmartSearch={handleSmartSearch} handleEvaluateBoq={handleEvaluateBoq}
-          handleTriggerScrape={handleTriggerScrape} handleTriggerRebuild={handleTriggerRebuild}
+          handleTriggerScrape={handleTriggerScrape} handleTriggerScrapeE2E={handleTriggerScrapeE2E}
+          handleTriggerOnboard={handleTriggerOnboard} handleTriggerRebuild={handleTriggerRebuild}
           handleTriggerDownloadPdf={handleTriggerDownloadPdf} handleTriggerSyncKnowledge={handleTriggerSyncKnowledge}
           handleTriggerKillTask={handleTriggerKillTask} handleTriggerNavigate={handleTriggerNavigate}
           handleReopenRun={handleReopenRun}
@@ -83,12 +84,13 @@ export default function AppWorkspaceShell(props) {
   } = props;
 
   const isDesktop = useIsDesktop();
+  const activePortfolioCount = catalogs.filter(c => !c.isQuarantinedStub).length;
 
   return (
     <div className="min-h-screen flex bg-app-root">
       <Sidebar
         activeTab={activeTab} onTabChange={setActiveTab} mobileOpen={mobileNavOpen}
-        onCloseMobile={() => setMobileNavOpen(false)} badges={{ portfolio: catalogs.length || undefined }}
+        onCloseMobile={() => setMobileNavOpen(false)} badges={{ portfolio: activePortfolioCount || undefined }}
         isDesktop={isDesktop}
       />
       <div className="flex-1 min-w-0 flex flex-col pb-16">

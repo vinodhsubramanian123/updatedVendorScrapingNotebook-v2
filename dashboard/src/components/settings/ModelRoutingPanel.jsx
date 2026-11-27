@@ -41,7 +41,7 @@ function RuntimeTierRows({ tiers = {} }) {
             <span className="font-semibold text-slate-800 block">{tierName}</span>
             <span className="text-[10px] font-mono text-slate-500">{(cfg?.fallbackModels || []).join(' → ') || 'No fallback'}</span>
           </div>
-          <span className="badge badge-blue font-mono">{cfg?.model || 'default'}</span>
+          <span className="badge badge-blue font-mono whitespace-nowrap shrink-0">{cfg?.model || 'default'}</span>
         </div>
       ))}
     </div>

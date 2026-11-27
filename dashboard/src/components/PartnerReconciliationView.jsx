@@ -241,12 +241,12 @@ export default function PartnerReconciliationView({
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="glass-card p-6 bg-gradient-to-r from-indigo-900/90 via-slate-900 to-blue-950 text-white rounded-2xl border border-indigo-500/20 shadow-xl">
+      <div className="p-6 bg-gradient-to-r from-indigo-900 via-slate-900 to-blue-950 text-white rounded-2xl border border-indigo-500/20 shadow-xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-6 h-6 text-indigo-400" />
-              <h2 className="text-lg font-bold tracking-tight">HPE Partner Portal Quote Reconciliation & Learning Loop</h2>
+              <h2 className="text-lg font-bold tracking-tight text-white">HPE Partner Portal Quote Reconciliation & Learning Loop</h2>
             </div>
             <p className="text-xs text-indigo-200/80 max-w-2xl leading-relaxed">
               Upload or paste quotes directly exported from HPE OCA / CLIC Partner Portal. The engine performs bi-directional delta calculations and records discrepancies as product-scoped observations. Active rules and NotebookLM change only after evidence-backed review.

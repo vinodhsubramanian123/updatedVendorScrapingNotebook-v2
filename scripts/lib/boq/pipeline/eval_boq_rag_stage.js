@@ -330,6 +330,12 @@ function _buildNotebookLmStatus(ragResult, stage3RAGMs, ragDurationFormatted) {
   };
 }
 
+function _assignRagResult(evalResults, ragResult, ragPayload) {
+  const normalized = ragPayload?.query ? { ...ragResult, query: ragPayload.query } : ragResult;
+  evalResults.ragResult = normalized;
+  evalResults.ragAnswer = normalized.answer || '';
+}
+
 function _resolveRagChassisLabel(catalogData, chassisDetection, detectedChassisName) {
   return catalogData?.metadata?.chassis || chassisDetection?.detectedVariant?.model || detectedChassisName;
 }
@@ -405,8 +411,7 @@ async function executeGroundedRagValidation(ctx) {
     evalResults.warnings.push(fallbackWarning);
     if (!JSON_MODE) console.log(`\n${fallbackWarning}`);
   }
-  evalResults.ragResult = ragResult;
-  evalResults.ragAnswer = ragResult.answer || '';
+  _assignRagResult(evalResults, ragResult, ragPayload);
 
   _evaluateRagGroundingAndViolations(evalResults, ragResult);
   _extractVerifiedKnowledgeDeltas(evalResults, ragResult, chassisDir, catalogData);

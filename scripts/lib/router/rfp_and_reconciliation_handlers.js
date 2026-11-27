@@ -733,6 +733,40 @@ function _evaluateCrossVendorBomIfRequested(targetChassis, chassisInfo, transfor
   }
 }
 
+function _deriveCrossVendorParityGaps(transformResult, candidateBom, spec) {
+  const computed = _computeCompetitorParityGaps(spec, candidateBom);
+  const existingKeys = new Set(computed.map(g => g.subsystem));
+  const auditItems = Array.isArray(transformResult?.auditReport?.auditItems) ? transformResult.auditReport.auditItems : [];
+  for (const item of auditItems) {
+    if (['MATCHED', 'EXCEEDS'].includes(item.status) || existingKeys.has(item.subsystem)) continue;
+    computed.push({
+      id: item.subsystem,
+      subsystem: item.subsystem,
+      sourceItem: item.subsystem.replaceAll('_', ' '),
+      status: item.status === 'DEFICIT' ? 'GAP_IDENTIFIED' : (item.status || 'NOT_EVALUATED'),
+      reason: item.details || 'Requires scoped sizing & QuickSpecs verification'
+    });
+  }
+  return computed;
+}
+
+function _buildCrossVendorComparisonMatrix(targetChassis, status, candidateBom, evaluatedSolution, sourceVendor) {
+  if (!targetChassis) return [];
+  const capexListUsd = candidateBom.length > 0
+    ? candidateBom.reduce((sum, it) => sum + ((Number(it.unitPriceUsd) || 0) * (Number(it.quantity) || 1)), 0)
+    : null;
+  const pricingComplete = candidateBom.length > 0 && candidateBom.every(it => Number.isFinite(Number(it.unitPriceUsd)));
+  return [{
+    platform: targetChassis,
+    buildable: evaluatedSolution ? !evaluatedSolution.errors?.length : null,
+    buildabilityStatus: status,
+    capexListUsd,
+    pricingComplete,
+    day2Runway: 'Inspect HPE Hardware Envelope',
+    tradeOffVsBaseline: `${sourceVendor || 'Competitor'} -> ${targetChassis} parity audit`
+  }];
+}
+
 async function _handleCrossVendorTransformation(queryText, context) {
   const { transformCompetitorQuote } = require('../boq/cross_vendor_transformer.js');
   const targetChassis = context.targetHpeChassis || context.chassisName || null;
@@ -749,10 +783,13 @@ async function _handleCrossVendorTransformation(queryText, context) {
     targetCatalogData: chassisInfo?.catalogData || null
   });
 
-  const { parityGaps, evaluatedSolution } = _evaluateCrossVendorBomIfRequested(targetChassis, chassisInfo, transformResult, context);
+  const evalBundle = _evaluateCrossVendorBomIfRequested(targetChassis, chassisInfo, transformResult, context);
+  const evaluatedSolution = evalBundle.evaluatedSolution;
   const effectivePolicy = _resolveContextPolicy(context, { defaultOffline: false, includeRagOnly: false });
   const candidateBom = transformResult.candidateBom || [];
+  const parityGaps = _deriveCrossVendorParityGaps(transformResult, candidateBom, transformResult.competitorSpec);
   const refBundle = _buildCrossVendorCandidateRef(context, targetChassis, chassisInfo, nodeCount, candidateBom, effectivePolicy);
+  const status = _deriveCrossVendorStatus(targetChassis, candidateBom, evaluatedSolution);
 
   return {
     intent: 'CROSS_VENDOR_TRANSFORMATION',
@@ -768,11 +805,20 @@ async function _handleCrossVendorTransformation(queryText, context) {
     candidateReference: refBundle.candidateReference,
     items: candidateBom,
     candidateBOM: candidateBom,
-    status: _deriveCrossVendorStatus(targetChassis, transformResult.candidateBom, evaluatedSolution),
+    status,
     sourceVendor: fileIngest.sourceVendor,
     targetChassis,
     competitorSpec: transformResult.competitorSpec,
     auditReport: transformResult.auditReport,
+    crossVendorReport: {
+      sourceVendor: fileIngest.sourceVendor,
+      targetChassis,
+      parityGaps,
+      competitorSpec: transformResult.competitorSpec,
+      auditReport: transformResult.auditReport
+    },
+    comparedPlatforms: targetChassis ? [targetChassis] : [],
+    comparisonMatrix: _buildCrossVendorComparisonMatrix(targetChassis, status, candidateBom, evaluatedSolution, fileIngest.sourceVendor),
     parityGaps,
     evaluatedSolution,
     strategyMatrix: transformResult.strategyMatrix,

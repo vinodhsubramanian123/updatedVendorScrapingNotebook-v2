@@ -383,7 +383,7 @@ function _runSafeServerEvaluation(bomItems, cat, catalogData, nodeCount) {
   }
 }
 
-function _computePlatformAnalyticsExtension(meta, catalogData, bomItems, evalRes, pricing, peakWatts, spec, options) {
+function _computePlatformAnalyticsExtension(cat, meta, catalogData, bomItems, evalRes, pricing, peakWatts, spec, options) {
   const { computeFullPlatformEnvelope } = require('../rules/hardware_envelope_solver.js');
   const { solveBuildableConfiguration } = require('../conflict/buildable_graph_solver.js');
   const envelope = computeFullPlatformEnvelope(meta.platform, catalogData, { gpuModel: spec.gpuModel });
@@ -391,6 +391,7 @@ function _computePlatformAnalyticsExtension(meta, catalogData, bomItems, evalRes
     catalogData,
     chassisInfo: { model: meta.model, formFactor: meta.formFactor },
     initialAspectResult: evalRes,
+    validateFn: (parts, catData) => _runSafeServerEvaluation(parts, cat, catData, spec.nodeCount),
     ruleOptions: { serverCount: spec.nodeCount, ambientTempC: spec.ambientTempC ?? 25 },
     skipRepairs: false
   });
@@ -405,10 +406,11 @@ function _computePlatformAnalyticsExtension(meta, catalogData, bomItems, evalRes
   return {
     envelopeSummary: { maxSockets: envelope.cpu.maxSockets, maxOcpSlots: envelope.ocp.maxSlots, maxActivePcieSlots: envelope.pcie.maxElectricallyActiveSlots, maxDoubleWideGpus: envelope.gpu.maxDoubleWideGpus },
     rightSizedNodesMin: Math.max(spec.nodeCount, requiredNodesForGpu),
-    isBuildable: Boolean(evalRes?.isMathClean && buildClosure.isBuildable),
+    isBuildable: Boolean(buildClosure.isBuildable),
     buildabilityStatus: buildClosure.status,
     buildabilityRepairsCount: buildClosure.repairsApplied.length,
     buildabilityErrors: buildClosure.remainingErrors,
+    buildabilityRemainingMissingCount: buildClosure.remainingMissingDependencies?.length || 0,
     day2Runway: { maxDimmsChassis: envelope.memory.maxDimmsChassis, maxActivePcieSlots: envelope.pcie.maxElectricallyActiveSlots, maxDoubleWideGpus: envelope.gpu.maxDoubleWideGpus, maxSffDrives: envelope.storage.maxSffDrives },
     annualPowerUsd,
     tco3YearUsd,
@@ -441,12 +443,12 @@ function _evaluateSingleServerPlatform(cat, meta, catalogData, spec, options) {
     requiredRamGb: targetRamGb * spec.nodeCount, requiredUsableTb: (spec.usableTb || 0) * spec.nodeCount
   });
 
-  const disqualifiedReasons = _collectPlatformDisqualifications(cpuRes, memInterp, storageInterp, spec, coverageGaps, evalRes);
+  const extAnalytics = _computePlatformAnalyticsExtension(cat, meta, catalogData, bomItems, evalRes, pricing, peakWatts, spec, options);
+  const effectiveEval = extAnalytics.isBuildable ? { isMathClean: true, errors: [], missingDependencies: [] } : evalRes;
+  const disqualifiedReasons = _collectPlatformDisqualifications(cpuRes, memInterp, storageInterp, spec, coverageGaps, effectiveEval);
   const priceTrends = (options.includePriceTrends && cat.catalogDir && cpuRes.item)
     ? { cpu: analyzePriceTrendAnalytics(null, { catalogDir: cat.catalogDir, sku: cpuRes.item.sku }) }
     : null;
-
-  const extAnalytics = _computePlatformAnalyticsExtension(meta, catalogData, bomItems, evalRes, pricing, peakWatts, spec, options);
 
   return {
     platform: meta.platform, model: meta.model, generation: meta.generation, family: meta.family, pillar: meta.pillar,
@@ -469,9 +471,9 @@ function _evaluateSingleServerPlatform(cat, meta, catalogData, spec, options) {
     catalogCoverageGaps: coverageGaps,
     candidateBom: bomItems,
     evaluationSummary: {
-      isMathClean: Boolean(evalRes?.isMathClean),
-      aspectErrorsCount: Array.isArray(evalRes?.errors) ? evalRes.errors.length : 0,
-      missingDependenciesCount: Array.isArray(evalRes?.missingDependencies) ? evalRes.missingDependencies.length : 0,
+      isMathClean: Boolean(extAnalytics.isBuildable || evalRes?.isMathClean),
+      aspectErrorsCount: extAnalytics.buildabilityErrors.length,
+      missingDependenciesCount: extAnalytics.buildabilityRemainingMissingCount,
       buildabilityRepairsCount: extAnalytics.buildabilityRepairsCount
     },
     memoryInterpolation: memInterp,

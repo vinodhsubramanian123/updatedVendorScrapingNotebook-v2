@@ -436,6 +436,21 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   };
 }
 
+function _formatRankedOptionSummary(r) {
+  const rawLabel = r.tierTitle || r.name || 'Candidate';
+  const label = String(rawLabel).replace(/^Rank\s+\d+[A-Z]?:\s*/i, '').trim() || 'Candidate';
+  const rawCost = r.estimatedCostUsd ?? r.estimatedCapex;
+  const numCost = rawCost !== null && rawCost !== undefined && rawCost !== '' ? Number(rawCost) : NaN;
+  const costText = Number.isFinite(numCost) && numCost > 0 ? `$${numCost.toLocaleString('en-US')}` : 'UNPRICED';
+  return `Rank ${r.rank} (${label}): ${costText}`;
+}
+
+function _formatRequirementSummary(r) {
+  const role = r.expectedRole || r.suspectedSku || 'Unmapped item';
+  const skus = (r.candidates || []).map(c => c.sku).join(', ') || 'none';
+  return `${role}: ${r.status || 'PENDING'} (${skus})`;
+}
+
 function formatNotebookQueryPayload(items, evalResults, rankedSolutions = []) {
   const chassisInfo = evalResults.conflictGraph?.chassisInfo || detectChassisVariant(items);
   const issues = [...(evalResults.errors || []), ...(evalResults.conflictGraph?.conflicts || []).map(c => c.message)];
@@ -445,11 +460,11 @@ function formatNotebookQueryPayload(items, evalResults, rankedSolutions = []) {
   if (issues.length > 0) queryText += `\nDetected Physical Checks / Conflicts (${issues.length}): ${issues.join('; ')}.`;
   if (fixes.length > 0) queryText += `\nProposed Auxiliary Fixes: ${fixes.map(f => f.sku).join(', ')}.`;
   if (evalResults.bundleComposition?.length) queryText += `\nBundle accounting: ${JSON.stringify(evalResults.bundleComposition)}. Confirm exact base and upgrade inclusions from official sources; distinguish installed optics from spares or remote endpoints. Never add server components to a fixed SAN switch.`;
-  if (rankedSolutions && rankedSolutions.length > 0) queryText += `\nRanked Solution Options: ${rankedSolutions.slice(0, 3).map(r => `Rank ${r.rank} (${r.tierTitle}): $${r.estimatedCapex || 0}`).join(' | ')}.`;
+  if (rankedSolutions?.length > 0) queryText += `\nRanked Solution Options: ${rankedSolutions.slice(0, 3).map(_formatRankedOptionSummary).join(' | ')}.`;
   const requirementResolution = evalResults.requirementResolution || null;
   const pcieLayout = evalResults.evalSummary?.pcie?.slotLayout || null;
   if (requirementResolution?.resolutions?.length > 0) {
-    queryText += `\nRequirement-category resolution: ${requirementResolution.resolutions.map(r => `${r.expectedRole}: ${r.status} (${(r.candidates || []).map(c => c.sku).join(', ')})`).join('; ')}.`;
+    queryText += `\nRequirement-category resolution: ${requirementResolution.resolutions.map(_formatRequirementSummary).join('; ')}.`;
   }
   if (pcieLayout) queryText += `\nPCIe topology context: ${pcieLayout.totalMechanicalSlots} mechanical slots, ${pcieLayout.electricallyActiveSlots} active slots, ${pcieLayout.inputDemandPcieCards} PCIe cards required, base primary slots: ${pcieLayout.platformBaseMechanicalSlots}.`;
 

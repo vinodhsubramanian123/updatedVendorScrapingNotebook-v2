@@ -227,6 +227,8 @@ function getCachedCatalogs() {
         const pdfFile = fs.readdirSync(folderPath).find(f => f.endsWith('.pdf'));
         const xlsxFile = fs.readdirSync(folderPath).find(f => f.endsWith('.xlsx'));
 
+        const isQuarantinedStub = folderName === 'Alletra_Storage_System' || folderName === 'GX5000_General_RACK';
+
         catalogs.push({
           id: folderName,
           chassis: metadata.chassis || folderName,
@@ -237,7 +239,8 @@ function getCachedCatalogs() {
           xlsxPath: xlsxFile ? `/artifacts/${path.relative(OUTPUTS_DIR, path.join(folderPath, xlsxFile)).replace(/\\/g, '/')}` : null,
           pdfPath: pdfFile ? `/artifacts/${path.relative(OUTPUTS_DIR, path.join(folderPath, pdfFile)).replace(/\\/g, '/')}` : null,
           totalSKUs,
-          scrapeDate: metadata.scrapeDate || 'N/A'
+          scrapeDate: metadata.scrapeDate || 'N/A',
+          isQuarantinedStub
         });
       }
     }

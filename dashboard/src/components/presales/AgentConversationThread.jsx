@@ -30,15 +30,26 @@ function _normalizeTurns(turns, envelope) {
   return _buildSingleEnvelopeTurn(envelope);
 }
 
-export default function AgentConversationThread({ turns = [], envelope = null }) {
+export default function AgentConversationThread({ turns = [], envelope = null, onNewSession }) {
   const items = _normalizeTurns(turns, envelope);
   if (items.length === 0) return null;
 
   return (
     <div data-testid="agent-conversation-thread" className="space-y-2 border-t border-slate-200 pt-3">
-      <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-        <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-        <span>Autonomous Execution Summary ({items.length})</span>
+      <div className="flex items-center justify-between gap-2">
+        <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+          <span>Autonomous Execution Summary ({items.length})</span>
+        </div>
+        {onNewSession && (
+          <button
+            type="button"
+            onClick={onNewSession}
+            className="text-[11px] font-semibold text-slate-600 hover:text-slate-900 underline cursor-pointer"
+          >
+            New session
+          </button>
+        )}
       </div>
       <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
         {items.slice(-6).map((turn, idx) => {

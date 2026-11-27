@@ -64,8 +64,62 @@ function QuarantinedDeltaCard({ delta, idx, actionInProgress, onReject, onPromot
   );
 }
 
-export default function QuarantineManagementDrawer({ isOpen, onClose }) {
+function ReflectionProposalCard({ proposal }) {
+  return (
+    <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5 text-xs">
+      <div className="flex items-center justify-between gap-2">
+        <span className="font-mono font-bold text-slate-900">{proposal.proposalId} · {proposal.chassis}</span>
+        <span className={`badge ${proposal.readyForPromotion ? 'badge-emerald' : 'badge-amber'}`}>
+          {proposal.status} ({proposal.authoritativeObservationCount || 1}/3)
+        </span>
+      </div>
+      <p className="text-slate-700 font-medium">{proposal.ruleUpdate || proposal.summary}</p>
+      <div className="text-[10px] text-slate-500 flex items-center gap-2 font-mono">
+        <span>{proposal.category}</span>
+        {proposal.affectedSku && <span>SKU: {proposal.affectedSku}</span>}
+        {proposal.targetSku && <span>→ {proposal.targetSku}</span>}
+      </div>
+    </div>
+  );
+}
+
+function ReflectionQueuePanel({ proposals, promoting, onPromoteAll }) {
+  const readyCount = proposals.filter(p => p.status === 'PENDING' && p.readyForPromotion).length;
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+          Run Reflection Proposals ({proposals.length})
+        </span>
+        {readyCount > 0 && (
+          <button
+            type="button"
+            disabled={promoting}
+            onClick={onPromoteAll}
+            className="btn-primary text-xs px-3 py-1"
+          >
+            <Check className="w-3.5 h-3.5" />
+            {promoting ? 'Promoting...' : `Promote Ready (${readyCount})`}
+          </button>
+        )}
+      </div>
+      {proposals.length === 0 ? (
+        <div className="text-center py-10 bg-slate-50 rounded-2xl border border-slate-100 p-6 text-xs text-slate-500">
+          No automated run-reflection proposals recorded yet.
+        </div>
+      ) : (
+        <div className="space-y-2.5">
+          {proposals.slice(0, 30).map((p, idx) => <ReflectionProposalCard key={p.proposalId || idx} proposal={p} />)}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function useQuarantineAndReflectionState(isOpen, onClose) {
+  const [activeTab, setActiveTab] = useState('QUARANTINE');
   const [quarantinedDeltas, setQuarantinedDeltas] = useState([]);
+  const [reflectionProposals, setReflectionProposals] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [actionInProgress, setActionInProgress] = useState(null);
   const [statusMessage, setStatusMessage] = useState(null);
@@ -73,9 +127,12 @@ export default function QuarantineManagementDrawer({ isOpen, onClose }) {
   const fetchQuarantineList = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/notebook/quarantined-deltas');
-      const data = await res.json();
-      setQuarantinedDeltas(Array.isArray(data) ? data : (data.deltas || []));
+      const [qRes, rRes] = await Promise.all([
+        fetch('/api/notebook/quarantined-deltas').then(r => r.json()).catch(() => []),
+        fetch('/api/learning/proposals').then(r => r.json()).catch(() => ({ entries: [] }))
+      ]);
+      setQuarantinedDeltas(Array.isArray(qRes) ? qRes : (qRes.deltas || []));
+      setReflectionProposals(Array.isArray(rRes?.entries) ? rRes.entries : []);
     } catch (err) {
       console.error('Failed to load quarantined deltas:', err);
     } finally {
@@ -84,156 +141,137 @@ export default function QuarantineManagementDrawer({ isOpen, onClose }) {
   };
 
   useEffect(() => {
-    if (isOpen) {
-      fetchQuarantineList();
-      setStatusMessage(null);
-    }
+    if (!isOpen) return;
+    fetchQuarantineList();
+    setStatusMessage(null);
   }, [isOpen]);
 
   const dialogRef = useModalFocus(isOpen, onClose);
-
-  const handlePromote = async (delta) => {
-    const ruleId = delta.id || delta.deltaId;
-    setActionInProgress(ruleId);
-    setStatusMessage(null);
-    try {
-      const res = await fetch(`/api/quarantined-deltas/${encodeURIComponent(ruleId)}/promote`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ruleId,
-          delta,
-          approver: 'SINGLE_USER_LEAD_ARCHITECT',
-          humanReview: 'Promoted by human engineer via Quarantine Management UI'
-        })
-      });
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Failed to promote rule');
-      }
-      setStatusMessage({ type: 'success', text: `Rule ${ruleId} promoted to Master Knowledge Registry!` });
-      fetchQuarantineList();
-    } catch (err) {
-      setStatusMessage({ type: 'error', text: `Promotion failed: ${err.message}` });
-    } finally {
-      setActionInProgress(null);
-    }
+  return {
+    activeTab, setActiveTab, quarantinedDeltas, reflectionProposals,
+    isLoading, actionInProgress, setActionInProgress,
+    statusMessage, setStatusMessage, fetchQuarantineList, dialogRef
   };
+}
 
-  const handleReject = async (ruleId) => {
-    setActionInProgress(ruleId);
-    setStatusMessage(null);
-    try {
-      const res = await fetch(`/api/quarantined-deltas/${encodeURIComponent(ruleId)}`, {
-        method: 'DELETE'
-      });
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Failed to reject rule');
-      }
-      setStatusMessage({ type: 'success', text: `Rule ${ruleId} permanently rejected and pruned.` });
-      fetchQuarantineList();
-    } catch (err) {
-      setStatusMessage({ type: 'error', text: `Rejection failed: ${err.message}` });
-    } finally {
-      setActionInProgress(null);
-    }
-  };
+async function _runQuarantineMutation(url, method, body, successMsg, state) {
+  state.setStatusMessage(null);
+  try {
+    const res = await fetch(url, {
+      method,
+      ...(body ? { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {})
+    });
+    const data = await res.json();
+    if (!res.ok || data.success === false) throw new Error(data.error || 'Operation failed');
+    state.setStatusMessage({ type: 'success', text: typeof successMsg === 'function' ? successMsg(data) : successMsg });
+    state.fetchQuarantineList();
+  } catch (err) {
+    state.setStatusMessage({ type: 'error', text: err.message });
+  } finally {
+    state.setActionInProgress(null);
+  }
+}
 
+function QuarantineListSection({ isLoading, quarantinedDeltas, actionInProgress, onReject, onPromote }) {
+  if (isLoading && quarantinedDeltas.length === 0) {
+    return <div className="text-center py-12 text-slate-400 text-xs">Loading quarantined rules...</div>;
+  }
+  if (quarantinedDeltas.length === 0) {
+    return (
+      <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100 p-6 space-y-2">
+        <ShieldCheck className="w-8 h-8 text-emerald-600 mx-auto" />
+        <h4 className="font-bold text-slate-800 text-sm">Quarantine Vault is Empty</h4>
+        <p className="text-xs text-slate-500 max-w-sm mx-auto">
+          All extracted knowledge rules have either been certified into the Master Knowledge Registry or pruned.
+        </p>
+      </div>
+    );
+  }
+  return (
+    <div className="space-y-3">
+      {quarantinedDeltas.map((delta, idx) => (
+        <QuarantinedDeltaCard
+          key={delta.id || delta.deltaId || `RULE-${idx}`}
+          delta={delta}
+          idx={idx}
+          actionInProgress={actionInProgress}
+          onReject={onReject}
+          onPromote={onPromote}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default function QuarantineManagementDrawer({ isOpen, onClose }) {
+  const s = useQuarantineAndReflectionState(isOpen, onClose);
   if (!isOpen) return null;
+
+  const handlePromote = (delta) => {
+    const ruleId = delta.id || delta.deltaId;
+    s.setActionInProgress(ruleId);
+    return _runQuarantineMutation(
+      `/api/quarantined-deltas/${encodeURIComponent(ruleId)}/promote`,
+      'POST',
+      { ruleId, delta, approver: 'SINGLE_USER_LEAD_ARCHITECT', humanReview: 'Promoted by human engineer via Quarantine Management UI' },
+      `Rule ${ruleId} promoted to Master Knowledge Registry!`,
+      s
+    );
+  };
+  const handleReject = (ruleId) => {
+    s.setActionInProgress(ruleId);
+    return _runQuarantineMutation(`/api/quarantined-deltas/${encodeURIComponent(ruleId)}`, 'DELETE', null, `Rule ${ruleId} permanently rejected and pruned.`, s);
+  };
+  const handlePromoteProposals = () => {
+    s.setActionInProgress('REFLECTION');
+    return _runQuarantineMutation('/api/learning/promote', 'POST', { apply: true }, d => `Promoted ${d.promotedCount || 0} reflection rule(s). Status: ${d.status}`, s);
+  };
 
   const drawer = (
     <div className="fixed inset-0 z-[100] flex">
       <div className="flex-1 bg-slate-900/40 backdrop-blur-sm" onClick={onClose} />
-
-      <div
-        ref={dialogRef}
-        tabIndex={-1}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="quarantine-drawer-title"
-        className="w-full max-w-xl bg-white shadow-2xl border-l border-slate-200 flex flex-col h-full overflow-hidden"
-      >
+      <div ref={s.dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="quarantine-drawer-title" className="w-full max-w-xl bg-white shadow-2xl border-l border-slate-200 flex flex-col h-full overflow-hidden">
         <div className="p-6 border-b border-slate-100 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-amber-500 text-white shadow-md shadow-amber-500/20">
-              <ShieldAlert className="w-5 h-5" />
-            </div>
+            <div className="p-2 rounded-xl bg-amber-500 text-white shadow-md shadow-amber-500/20"><ShieldAlert className="w-5 h-5" /></div>
             <div>
-              <h3 id="quarantine-drawer-title" className="font-extrabold text-slate-900 text-base">
-                Knowledge Quarantine Management
-              </h3>
-              <p className="text-xs text-slate-500">
-                Single-User Mode: Inspect, promote, or reject AI-extracted rules before activation.
-              </p>
+              <h3 id="quarantine-drawer-title" className="font-extrabold text-slate-900 text-base">Knowledge Quarantine Management</h3>
+              <p className="text-xs text-slate-500">Inspect, promote, or reject AI-extracted rules and run-reflection proposals.</p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            aria-label="Close drawer"
-            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <button onClick={onClose} aria-label="Close drawer" className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100"><X className="w-5 h-5" /></button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-6 space-y-4">
-          {statusMessage && (
-            <div
-              className={`p-3 rounded-xl border text-xs font-medium flex items-center gap-2 ${
-                statusMessage.type === 'success'
-                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                  : 'bg-rose-50 text-rose-800 border-rose-200'
-              }`}
-            >
-              {statusMessage.type === 'success' ? (
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-              ) : (
-                <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
-              )}
-              <span>{statusMessage.text}</span>
+          {s.statusMessage && (
+            <div className={`p-3 rounded-xl border text-xs font-medium flex items-center gap-2 ${s.statusMessage.type === 'success' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-rose-50 text-rose-800 border-rose-200'}`}>
+              {s.statusMessage.type === 'success' ? <CheckCircle2 className="w-4 h-4 shrink-0" /> : <AlertTriangle className="w-4 h-4 shrink-0" />}
+              <span>{s.statusMessage.text}</span>
             </div>
           )}
 
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-              Quarantined Rules ({quarantinedDeltas.length})
-            </span>
-            <button
-              onClick={fetchQuarantineList}
-              disabled={isLoading}
-              className="text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-              Refresh
+          <div className="flex items-center gap-4 border-b border-slate-200 pb-2 text-xs font-bold">
+            <button type="button" onClick={() => s.setActiveTab('QUARANTINE')} className={`pb-1.5 border-b-2 cursor-pointer ${s.activeTab === 'QUARANTINE' ? 'border-amber-500 text-amber-700' : 'border-transparent text-slate-500'}`}>
+              Quarantined Rules ({s.quarantinedDeltas.length})
+            </button>
+            <button type="button" onClick={() => s.setActiveTab('REFLECTION')} className={`pb-1.5 border-b-2 cursor-pointer ${s.activeTab === 'REFLECTION' ? 'border-emerald-600 text-emerald-700' : 'border-transparent text-slate-500'}`}>
+              Auto-Reflection Queue ({s.reflectionProposals.length})
+            </button>
+            <button onClick={s.fetchQuarantineList} disabled={s.isLoading} className="ml-auto text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1">
+              <RefreshCw className={`w-3.5 h-3.5 ${s.isLoading ? 'animate-spin' : ''}`} /> Refresh
             </button>
           </div>
 
-          {isLoading && quarantinedDeltas.length === 0 ? (
-            <div className="text-center py-12 text-slate-400 text-xs">
-              Loading quarantined rules...
-            </div>
-          ) : quarantinedDeltas.length === 0 ? (
-            <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100 p-6 space-y-2">
-              <ShieldCheck className="w-8 h-8 text-emerald-600 mx-auto" />
-              <h4 className="font-bold text-slate-800 text-sm">Quarantine Vault is Empty</h4>
-              <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                All extracted knowledge rules have either been certified into the Master Knowledge Registry or pruned.
-              </p>
-            </div>
+          {s.activeTab === 'REFLECTION' ? (
+            <ReflectionQueuePanel proposals={s.reflectionProposals} promoting={s.actionInProgress === 'REFLECTION'} onPromoteAll={handlePromoteProposals} />
           ) : (
-            <div className="space-y-3">
-              {quarantinedDeltas.map((delta, idx) => (
-                <QuarantinedDeltaCard
-                  key={delta.id || delta.deltaId || `RULE-${idx}`}
-                  delta={delta}
-                  idx={idx}
-                  actionInProgress={actionInProgress}
-                  onReject={handleReject}
-                  onPromote={handlePromote}
-                />
-              ))}
-            </div>
+            <QuarantineListSection
+              isLoading={s.isLoading}
+              quarantinedDeltas={s.quarantinedDeltas}
+              actionInProgress={s.actionInProgress}
+              onReject={handleReject}
+              onPromote={handlePromote}
+            />
           )}
         </div>
       </div>

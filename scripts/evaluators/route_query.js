@@ -245,11 +245,26 @@ function _resolvePlatformSelectionMemory(queryText, initialPlatform, context) {
   return { platformSelectionMemory, updatedContext };
 }
 
+function _resolveCrossVendorTargetContext(queryText, context, classification) {
+  if (classification.intent !== 'CROSS_VENDOR_TRANSFORMATION' || context.chassisName || context.targetHpeChassis) {
+    return context;
+  }
+  try {
+    const { resolveCatalogQueryScope } = require('../lib/catalog/catalog_query_engine.js');
+    const scoped = resolveCatalogQueryScope(queryText, listAllCatalogs());
+    if (scoped?.products?.length === 1) {
+      return { ...context, chassisName: scoped.products[0], targetHpeChassis: scoped.products[0], preferNamedProduct: true };
+    }
+  } catch (_) {}
+  return { ...context, preferNamedProduct: true };
+}
+
 function _resolveRoutedPlatform(queryText, context, classification) {
   const isCatalogMultiQuery = classification.intent === 'CATALOG_INTELLIGENCE' ||
     classification.intent === 'SOLUTION_COMPARISON' ||
     classification.intent === 'HARDWARE_ENVELOPE_ANALYTICS';
-  const platformContext = classification.intent === 'RFP_SIZING_TO_BOM' ? { ...context, preferNamedProduct: true } : context;
+  const crossVendorCtx = _resolveCrossVendorTargetContext(queryText, context, classification);
+  const platformContext = classification.intent === 'RFP_SIZING_TO_BOM' ? { ...crossVendorCtx, preferNamedProduct: true } : crossVendorCtx;
   const initial = isCatalogMultiQuery ? {} : getChassisCatalog(queryText, platformContext);
   const { platformSelectionMemory, updatedContext } = _resolvePlatformSelectionMemory(queryText, initial, platformContext);
   let chassisInfoForConf = null;

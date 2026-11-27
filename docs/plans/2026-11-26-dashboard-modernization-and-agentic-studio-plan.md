@@ -20,6 +20,10 @@
 
 The walkthrough in [walkthrough.md](walkthrough.md) records browser findings, fixes, screenshots, and gate results for the current working tree. Use it as the latest checkpoint. The intake findings below were captured before the shell, routes, and Wave B–F views were implemented.
 
+- Browser verification through 27 November 2026 passed 84 checks in Light and Dark at four viewport sizes. The six requested commands, both offline browser suites, and the maintainability ratchet passed. The dashboard suite finished at 98 tests.
+- Corrected the platform comparison preset and canonical comparison renderer. Local NotebookLM fan-out now inherits the Studio’s local-only setting. Telemetry requests are cancelled when the view closes, and catalog status badges meet the contrast check.
+- For the next acceptance pass, start at live provider verification and cross-vendor result review. Use a synthetic quote to exercise a parity gap, an unavailable provider, a cancelled escalation, and a follow-up. Record which provider executed and which evidence supported the answer. Portal validation remains pending until a current manifest-bound receipt is recorded.
+
 - Fixed exact SKU search against nested catalog records and carried the selected part number into Catalog Explorer. Coverage includes `P73282-B21` and its captured list price.
 - Added keyboard focus containment and Escape handling to the mobile navigation, feedback, and quarantine dialogs. The omnibox shortcut yields to open dialogs.
 - Bound the timeline tier and tool activity to server events. Keep agent synthesis distinct from cited document evidence. Load Settings and NotebookLM panels on demand.

@@ -9,11 +9,14 @@ const path = require('node:path');
 const { EventEmitter } = require('node:events');
 const express = require('express');
 
-const { parseAgyNdjsonLine, runAgyEscalation } = require('../../scripts/lib/rag/agy_escalation_bridge.js');
+const { parseAgyNdjsonLine, _buildAgyArgs, runAgyEscalation } = require('../../scripts/lib/rag/agy_escalation_bridge.js');
 const { evaluateCopilotEscalation, runPresalesCopilot } = require('../../scripts/lib/rag/presales_copilot_agent.js');
+const { parsePipelineArgs } = require('../../scripts/lib/scraper/dashboard_scrape_pipeline.js');
 const { executeRoutedQuery } = require('../../scripts/evaluators/route_query.js');
 const intelligenceRouter = require('../../dashboard/routes/intelligence.cjs');
 const agentRouter = require('../../dashboard/routes/agent.cjs');
+const notebookRouter = require('../../dashboard/routes/notebook.cjs');
+const tasksRouter = require('../../dashboard/routes/tasks.cjs');
 const { getRunById } = require('../../dashboard/services/runState.cjs');
 
 function createMockProc(stdoutLines = [], exitCode = 0) {
@@ -33,6 +36,8 @@ async function withTestServer(fn) {
   app.use(express.json());
   app.use('/api', intelligenceRouter);
   app.use('/api', agentRouter);
+  app.use('/api', notebookRouter);
+  app.use('/api', tasksRouter);
   const server = http.createServer(app);
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const addr = server.address();
@@ -201,5 +206,75 @@ test('Intelligence & Agent routes expose Wave B-F metadata and force determinist
     const record = getRunById(agentRes.runId);
     assert.equal(record?.progress?.tier, 'DETERMINISTIC');
     assert.equal(record?.progress?.percent, 100);
+
+    // Cross-vendor Dell PowerEdge R760 -> DL380 Gen12 routes cleanly without CONTROLLER ambiguity
+    const cvRes = await fetch(`${baseUrl}/api/agent/query`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: 'Convert a Dell PowerEdge R760 quote with BOSS-N1 boot controller to HPE ProLiant DL380 Gen12 equivalent',
+        mode: 'SMART_AUTO',
+        context: { offline: true }
+      })
+    }).then(r => r.json());
+    assert.equal(cvRes.classification?.intent, 'CROSS_VENDOR_TRANSFORMATION');
+    assert.notEqual(cvRes.result?.code, 'PLATFORM_CLARIFICATION_REQUIRED');
+    assert.equal(cvRes.result?.targetChassis, 'DL380_Gen12');
+    assert.ok(cvRes.result?.crossVendorReport);
+    assert.ok(Array.isArray(cvRes.result?.comparisonMatrix) && cvRes.result.comparisonMatrix.length === 1);
+
+    // Run-reflection queue endpoint & dry-run product onboarding route
+    const proposalsRes = await fetch(`${baseUrl}/api/learning/proposals`).then(r => r.json());
+    assert.ok(Array.isArray(proposalsRes.entries));
+
+    // Strict onboarding guard rejects unscraped product without dryRun, and infers 1U/1P/12-channel for DL325_Gen12 dryRun
+    const blockedOnboard = await fetch(`${baseUrl}/api/onboard-product`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ productId: 'DL325_Gen12' })
+    });
+    assert.equal(blockedOnboard.status, 422);
+    assert.equal(fs.existsSync(path.join(process.cwd(), 'scripts', 'config', 'products', 'DL325_Gen12.json')), false);
+
+    const onboardRes = await fetch(`${baseUrl}/api/onboard-product`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ productId: 'DL325_Gen12', dryRun: true })
+    }).then(r => r.json());
+    assert.equal(onboardRes.status, 'SUCCESS');
+    assert.equal(onboardRes.manifest?.productId, 'DL325_Gen12');
+    assert.equal(onboardRes.manifest?.maxSockets, 1);
+    assert.equal(onboardRes.manifest?.memoryArchitecture?.channelsPerSocket, 12);
+
+    const parsedScrapeArgs = parsePipelineArgs(['--chassis', 'DL325 Gen12', '--recover', '--sync-knowledge']);
+    assert.equal(parsedScrapeArgs.chassis, 'DL325 Gen12');
+    assert.equal(parsedScrapeArgs.recover, true);
+    assert.equal(parsedScrapeArgs.syncKnowledge, true);
   });
+});
+
+test('parseAgyNdjsonLine handles live agy.exe stream-json init, step_update tool, and result events', () => {
+  const initEvt = parseAgyNdjsonLine(JSON.stringify({ event: 'init', conversation_id: 'live-conv-1' }));
+  assert.equal(initEvt.conversationId, 'live-conv-1');
+
+  const toolEvt = parseAgyNdjsonLine(JSON.stringify({
+    event: 'step_update',
+    step_update: { conversation_id: 'live-conv-1', step_type: 'tool', state: 'DONE', duration_seconds: 0.42, tool_info: { name: 'read_file' } }
+  }));
+  assert.equal(toolEvt.stepType, 'tool');
+  assert.equal(toolEvt.toolName, 'read_file');
+  assert.equal(toolEvt.durationMs, 420);
+
+  const resEvt = parseAgyNdjsonLine(JSON.stringify({
+    event: 'result',
+    result: { conversation_id: 'live-conv-1', status: 'SUCCESS', response: 'Max 32 DIMMs per DL380 Gen12.' }
+  }));
+  assert.equal(resEvt.isResult, true);
+  assert.equal(resEvt.text, 'Max 32 DIMMs per DL380 Gen12.');
+
+  const args = _buildAgyArgs({ prompt: 'Inspect DL380 Gen12', conversationId: 'conv-42', effort: 'low' });
+  assert.ok(!args.includes('--mode'), 'default agy invocation omits unsupported --mode auto');
+  assert.ok(args.includes('--effort') && args.includes('low'));
+  assert.ok(args.includes('--conversation') && args.includes('conv-42'));
+  assert.ok(args.includes('--print=Inspect DL380 Gen12'));
 });

@@ -58,7 +58,22 @@ function candidateLabel(candidate) {
 
 function candidateStatus(candidate) {
   if (candidate.buildable === false || candidate.isBuildable === false) return 'BLOCKED';
-  return candidate.buildabilityStatus || candidate.status || (candidate.buildable === true || candidate.isBuildable === true ? 'BUILDABLE' : 'NOT_EVALUATED');
+  const raw = String(candidate.buildabilityStatus || candidate.status || '');
+  const portalPending = /PENDING/i.test(String(candidate.portalValidationStatus || '')) || /PORTAL.*PENDING/i.test(raw);
+  if (candidate.buildable === true || candidate.isBuildable === true || raw === 'BUILDABLE') {
+    return portalPending ? 'BUILDABLE · PORTAL PENDING' : 'BUILDABLE';
+  }
+  if (portalPending || raw === 'NOT_EVALUATED') {
+    return raw === 'NOT_EVALUATED' ? 'NOT_EVALUATED' : 'BUILDABLE · PORTAL PENDING';
+  }
+  return raw || 'NOT_EVALUATED';
+}
+
+function candidateBadgeClass(status) {
+  if (status === 'BLOCKED') return 'badge-rose';
+  if (status.includes('PORTAL PENDING')) return 'badge-amber';
+  if (status === 'BUILDABLE' || status === 'CANDIDATE_EVALUATION_COMPLETE') return 'badge-emerald';
+  return 'badge-slate';
 }
 
 function CandidatesComparisonTable({ candidates = [] }) {
@@ -80,9 +95,10 @@ function CandidatesComparisonTable({ candidates = [] }) {
             <tr key={cand.platform || cand.platformId || cand.product || idx} className="hover:bg-slate-50/70">
               <td className="p-2 font-semibold text-slate-800">{candidateLabel(cand)}</td>
               <td className="p-2">
-                <span className={`badge ${candidateStatus(cand) === 'BLOCKED' ? 'badge-rose' : 'badge-slate'}`}>
-                  {candidateStatus(cand)}
-                </span>
+                {(() => {
+                  const st = candidateStatus(cand);
+                  return <span className={`badge ${candidateBadgeClass(st)}`}>{st}</span>;
+                })()}
               </td>
               <td className="p-2 font-mono tabular-nums text-slate-700">
                 {cand.pricingComplete === false ? 'Incomplete' : formatPrice(cand.totalPriceUsd ?? cand.capexListUsd)}

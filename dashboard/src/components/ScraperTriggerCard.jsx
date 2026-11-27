@@ -43,18 +43,57 @@ function CdpHandshakeBanner({ cdpState }) {
   );
 }
 
-function LiveScrapeControlCard({ targetRequired, canScrape, cdpState, scrapeMode, setScrapeMode, isTaskRunning, onTriggerScrape, onTriggerNavigate }) {
+function LiveScrapeActionButtons({ targetRequired, targetProduct, canScrape, cdpStatus, isTaskRunning, scrapeMode, onStartScrape, onTriggerScrapeE2E, onTriggerNavigate }) {
+  return (
+    <div className="space-y-1.5">
+      <button
+        onClick={onStartScrape}
+        disabled={isTaskRunning || targetRequired}
+        className={`w-full inline-flex items-center justify-center gap-2 text-xs ${canScrape ? 'btn-primary' : 'bg-slate-200 text-slate-600 hover:bg-slate-300 font-semibold py-2 px-4 rounded-lg cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed'}`}
+        title={canScrape ? `Start Scraping ${targetProduct || ''}` : 'Click for connection instructions'}
+      >
+        {isTaskRunning ? <RefreshCw className="w-3.5 h-3.5 animate-spin shrink-0" /> : <Play className="w-3.5 h-3.5 shrink-0" />}
+        <span>{targetRequired ? 'Choose or enter a product' : canScrape ? 'Start Scrape' : 'Live Scrape Disabled (CDP Offline)'}</span>
+      </button>
+
+      {onTriggerScrapeE2E && (
+        <button
+          type="button"
+          onClick={() => onTriggerScrapeE2E(scrapeMode)}
+          disabled={isTaskRunning || targetRequired}
+          className="w-full justify-center text-xs btn-secondary disabled:opacity-50"
+          title="Navigate OCA -> Scrape -> 7-Check Staging Audit -> Onboard Manifest"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+          <span>1-Click E2E Scrape &amp; Onboard</span>
+        </button>
+      )}
+
+      {!canScrape && cdpStatus !== 'DISCONNECTED' && (
+        <button onClick={onTriggerNavigate} disabled={isTaskRunning || targetRequired} className="w-full justify-center text-xs btn-secondary">
+          <Navigation className="w-3.5 h-3.5 text-blue-600" /> Auto-Navigate to OCA
+        </button>
+      )}
+    </div>
+  );
+}
+
+function LiveScrapeControlCard({ targetRequired, targetProduct, canScrape, cdpState, scrapeMode, setScrapeMode, isTaskRunning, onTriggerScrape, onTriggerScrapeE2E, onTriggerNavigate }) {
+  const [launchFeedback, setLaunchFeedback] = useState('');
   const handleLaunchBrowser = async () => {
+    setLaunchFeedback('Launching Chrome CDP session...');
     try {
-      await fetch('/api/launch-browser', { method: 'POST' });
+      const res = await fetch('/api/launch-browser', { method: 'POST' });
+      const data = await res.json();
+      setLaunchFeedback(res.ok ? (data.message || 'Browser launched on port 9222') : (data.error || 'Launch failed'));
     } catch (e) {
-      console.error('Failed to launch browser', e);
+      setLaunchFeedback(`Failed to launch browser: ${e.message}`);
     }
   };
 
   const handleStartScrapeClick = () => {
     if (!canScrape) {
-      alert("❌ Chrome CDP Port 9222 is not attached to the HPE OCA portal page.\n\nPlease ensure Chrome is started with --remote-debugging-port=9222 and navigated to the HPE OCA portal, or use 'Rebuild Catalogs Offline' below.");
+      setLaunchFeedback('Chrome CDP Port 9222 is not attached to the HPE OCA portal page yet. Launch browser or Auto-Navigate below.');
       return;
     }
     onTriggerScrape(scrapeMode);
@@ -68,73 +107,38 @@ function LiveScrapeControlCard({ targetRequired, canScrape, cdpState, scrapeMode
       <p className="text-[11px] text-slate-500 mb-3">Target active OCA browser session to extract full SKU catalog.</p>
 
       <div className="flex items-center gap-2 mb-3">
-        <label className="text-[11px] font-semibold text-slate-600 flex items-center gap-1 cursor-pointer">
-          <input
-            type="radio"
-            name="scrapeMode"
-            value="solution"
-            checked={scrapeMode === 'solution'}
-            onChange={() => setScrapeMode('solution')}
-            disabled={!canScrape}
-          />
-          Server E2E
-        </label>
-        <label className="text-[11px] font-semibold text-slate-600 flex items-center gap-1 cursor-pointer">
-          <input
-            type="radio"
-            name="scrapeMode"
-            value="storage"
-            checked={scrapeMode === 'storage'}
-            onChange={() => setScrapeMode('storage')}
-            disabled={!canScrape}
-          />
-          Storage Wizard
-        </label>
+        {['solution', 'storage'].map((modeVal) => (
+          <label key={modeVal} className="text-[11px] font-semibold text-slate-600 flex items-center gap-1 cursor-pointer">
+            <input type="radio" name="scrapeMode" value={modeVal} checked={scrapeMode === modeVal} onChange={() => setScrapeMode(modeVal)} disabled={!canScrape} />
+            {modeVal === 'solution' ? 'Server E2E' : 'Storage Wizard'}
+          </label>
+        ))}
       </div>
 
       {!canScrape && cdpState.status === 'DISCONNECTED' && (
         <div className="p-2.5 bg-rose-50 border border-rose-200 rounded-lg mb-2">
           <strong className="block text-rose-900 text-[11px] font-bold mb-1.5">Chrome CDP Port 9222 Offline</strong>
-          <button
-            onClick={handleLaunchBrowser}
-            className="w-full justify-center text-xs btn-primary bg-rose-600 hover:bg-rose-500 py-1.5 mb-1.5"
-          >
+          <button onClick={handleLaunchBrowser} className="w-full justify-center text-xs btn-primary bg-rose-600 hover:bg-rose-500 py-1.5 mb-1.5">
             <Server className="w-3.5 h-3.5 inline mr-1" /> Launch Scraper Browser
           </button>
-          <div className="text-[10px] text-rose-700 leading-tight">
-            Note: After launch, you must log in at partner.hpe.com and click the OCA Configurator link manually.
-          </div>
+          <div className="text-[10px] text-rose-700 leading-tight">Note: After launch, log in at partner.hpe.com and open OCA Configurator.</div>
         </div>
       )}
 
       {!canScrape && cdpState.status !== 'DISCONNECTED' && (
         <div className="p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-[11px] text-amber-800 mb-2 leading-relaxed">
           <strong className="block text-amber-900 font-bold mb-0.5">Browser is on a non-OCA page.</strong>
-          1. Ensure you have completed SSO login.<br/>
-          2. Click the 'OCA Configurator' link manually in the browser.<br/>
-          3. Wait for the OCA portal to fully load.
+          Complete SSO login and open OCA Configurator, or click Auto-Navigate below.
         </div>
       )}
 
-      <button
-        onClick={handleStartScrapeClick}
-        disabled={isTaskRunning || targetRequired}
-        className={`w-full inline-flex items-center justify-center gap-2 text-xs mb-2 ${canScrape ? 'btn-primary' : 'bg-slate-200 text-slate-600 hover:bg-slate-300 font-semibold py-2 px-4 rounded-lg cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed'}`}
-        title={canScrape ? "Start Scraping" : "Click for connection instructions"}
-      >
-        {isTaskRunning ? <RefreshCw className="w-3.5 h-3.5 animate-spin shrink-0" /> : <Play className="w-3.5 h-3.5 shrink-0" />}
-        <span>{targetRequired ? 'Choose a target product' : canScrape ? 'Start Scrape' : 'Live Scrape Disabled (CDP Port Unattached)'}</span>
-      </button>
+      {launchFeedback && <p role="status" className="text-[11px] text-slate-700 bg-slate-100 rounded-lg px-2 py-1 mb-2">{launchFeedback}</p>}
 
-      {!canScrape && cdpState.status !== 'DISCONNECTED' && (
-        <button
-          onClick={onTriggerNavigate}
-          disabled={isTaskRunning || targetRequired}
-          className="w-full justify-center text-xs btn-secondary"
-        >
-          <Navigation className="w-3.5 h-3.5 text-blue-600" /> Auto-Navigate to OCA
-        </button>
-      )}
+      <LiveScrapeActionButtons
+        targetRequired={targetRequired} targetProduct={targetProduct} canScrape={canScrape} cdpStatus={cdpState.status}
+        isTaskRunning={isTaskRunning} scrapeMode={scrapeMode} onStartScrape={handleStartScrapeClick}
+        onTriggerScrapeE2E={onTriggerScrapeE2E} onTriggerNavigate={onTriggerNavigate}
+      />
     </div>
   );
 }
@@ -235,11 +239,28 @@ function ScraperSseTerminalCard({ logStream, searchQuery, setSearchQuery, logFil
   );
 }
 
-export default function ScraperTriggerCard({ targetRequired = false, logStream, isTaskRunning, runActivity, onTriggerScrape, onTriggerRebuild, onTriggerDownloadPdf, onTriggerSyncKnowledge, onTriggerKillTask, onTriggerNavigate, onReopenRun }) {
+export default function ScraperTriggerCard({
+  targetRequired = false,
+  targetProduct = '',
+  recoverSession: _recoverSession = false,
+  logStream,
+  isTaskRunning,
+  runActivity,
+  onTriggerScrape,
+  onTriggerScrapeE2E,
+  onTriggerOnboard,
+  onTriggerRebuild,
+  onTriggerDownloadPdf,
+  onTriggerSyncKnowledge,
+  onTriggerKillTask,
+  onTriggerNavigate,
+  onReopenRun
+}) {
   const [scrapeMode, setScrapeMode] = useState('solution');
   const [cdpState, setCdpState] = useState({ status: 'CHECKING', message: 'Probing browser...' });
   const [logFilter, setLogFilter] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
+  const [manifestMsg, setManifestMsg] = useState('');
 
   useEffect(() => {
     let interval;
@@ -305,23 +326,27 @@ export default function ScraperTriggerCard({ targetRequired = false, logStream, 
           />
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <LiveScrapeControlCard
             targetRequired={targetRequired}
+            targetProduct={targetProduct}
             canScrape={canScrape && !targetRequired}
             cdpState={cdpState}
             scrapeMode={scrapeMode}
             setScrapeMode={setScrapeMode}
             isTaskRunning={isTaskRunning}
             onTriggerScrape={onTriggerScrape}
+            onTriggerScrapeE2E={onTriggerScrapeE2E}
             onTriggerNavigate={onTriggerNavigate}
           />
 
-          <div className="bg-slate-50/80 rounded-xl p-4 border border-slate-200/80">
-            <h4 className="font-bold text-slate-800 text-xs mb-1 flex items-center gap-1.5">
-              <RefreshCw className="w-4 h-4 text-blue-600" /> Rebuild Catalogs Offline
-            </h4>
-            <p className="text-[11px] text-slate-500 mb-4">Re-parse existing raw JSON extractions into fresh Excel catalogs.</p>
+          <div className="bg-slate-50/80 rounded-xl p-4 border border-slate-200/80 space-y-2">
+            <div>
+              <h4 className="font-bold text-slate-800 text-xs mb-1 flex items-center gap-1.5">
+                <RefreshCw className="w-4 h-4 text-blue-600" /> Rebuild &amp; Manifests
+              </h4>
+              <p className="text-[11px] text-slate-500 mb-3">Re-parse raw JSON catalogs or generate/refresh capability manifest JSON.</p>
+            </div>
 
             <button
               onClick={onTriggerRebuild}
@@ -331,6 +356,22 @@ export default function ScraperTriggerCard({ targetRequired = false, logStream, 
               {isTaskRunning ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5 text-blue-600" />}
               Rebuild All
             </button>
+
+            {onTriggerOnboard && (
+              <button
+                type="button"
+                disabled={isTaskRunning || targetRequired}
+                onClick={async () => {
+                  const res = await onTriggerOnboard();
+                  if (res?.manifest?.productId) setManifestMsg(`Manifest ready: ${res.manifest.productId}`);
+                }}
+                className="w-full btn-secondary justify-center text-xs disabled:opacity-50"
+              >
+                <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
+                Generate / Refresh Manifest
+              </button>
+            )}
+            {manifestMsg && <p role="status" className="text-[10px] text-emerald-700 font-medium">{manifestMsg}</p>}
           </div>
 
           <div className="bg-slate-50/80 rounded-xl p-4 border border-slate-200/80">

@@ -50,6 +50,10 @@ function _isOfflineEvaluationRequested(raw, normalised) {
   );
 }
 
+function _shouldDispatchBackgroundRag(raw, normalised, isOfflineRequested) {
+  return !isOfflineRequested && !raw.recovered && !raw.explicitReopen && !raw.error && !normalised.ragAnswer && Boolean(raw.data?.notebookPayload);
+}
+
 function receiveEvaluation(normalised, raw, state) {
   if (!_shouldAcceptIncomingRunId(raw, state)) return;
   normalised = { ...normalised, runId: raw.runId || normalised.runId };
@@ -65,8 +69,7 @@ function receiveEvaluation(normalised, raw, state) {
     state.startMatrixRagPoll(raw.ragJobId, { runId: raw.runId, epoch: state.evaluationEpoch.current });
     return;
   }
-  const needsRag = !isOfflineRequested && !raw.recovered && !raw.error && !normalised.ragAnswer && Boolean(raw.data?.notebookPayload);
-  if (!needsRag) return;
+  if (!_shouldDispatchBackgroundRag(raw, normalised, isOfflineRequested)) return;
   const context = { runId: raw.runId, epoch: state.evaluationEpoch.current };
   const product = normalised.chassisPrefix || raw.data.chassisPrefix || state.selectedChassisRef.current;
   dispatchBackgroundMatrixRagQuery(raw, product, context, state.completeMatrixRag, state.startMatrixRagPoll,
@@ -197,6 +200,10 @@ export function computeActiveBannerError(actionError, catalogError) {
   return null;
 }
 
+function _pickPipelineTarget(explicitTarget, fallbackChassis) {
+  return (typeof explicitTarget === 'string' && explicitTarget.trim()) ? explicitTarget.trim() : fallbackChassis;
+}
+
 export function usePipelineTriggers({ selectedChassis, setActionError, setActiveTab, activeRunRef, runActivityRef }) {
   const postScraperEndpoint = async (url, bodyObj) => {
     setActionError(null);
@@ -212,11 +219,35 @@ export function usePipelineTriggers({ selectedChassis, setActionError, setActive
   };
 
   return {
-    handleTriggerScrape: (mode) => selectedChassis && postScraperEndpoint('/api/scrape', { mode, chassis: selectedChassis }),
+    handleTriggerScrape: (mode, explicitTarget, opts = {}) => {
+      const target = _pickPipelineTarget(explicitTarget, selectedChassis);
+      return target && postScraperEndpoint('/api/scrape', { mode, chassis: target, ...opts });
+    },
+    handleTriggerScrapeE2E: (mode, explicitTarget, opts = {}) => {
+      const target = _pickPipelineTarget(explicitTarget, selectedChassis);
+      return target && postScraperEndpoint('/api/scrape-e2e', { mode, chassis: target, ...opts });
+    },
+    handleTriggerOnboard: async (explicitTarget) => {
+      const target = _pickPipelineTarget(explicitTarget, selectedChassis);
+      if (!target) return null;
+      setActionError(null);
+      try {
+        return await postJson('/api/onboard-product', { productId: target });
+      } catch (err) {
+        if (!isAbortCancellation(err)) setActionError(err.message);
+        return null;
+      }
+    },
     handleTriggerRebuild: () => postScraperEndpoint('/api/rebuild'),
     handleTriggerSyncKnowledge: () => postScraperEndpoint('/api/sync-knowledge'),
-    handleTriggerDownloadPdf: (product) => (typeof product === 'string' ? product : selectedChassis) && postScraperEndpoint('/api/download-pdf', { chassisId: typeof product === 'string' ? product : selectedChassis }),
-    handleTriggerNavigate: () => selectedChassis && postScraperEndpoint('/api/navigate-oca', { chassis: selectedChassis }),
+    handleTriggerDownloadPdf: (product) => {
+      const target = _pickPipelineTarget(product, selectedChassis);
+      return target && postScraperEndpoint('/api/download-pdf', { chassisId: target });
+    },
+    handleTriggerNavigate: (explicitTarget, opts = {}) => {
+      const target = _pickPipelineTarget(explicitTarget, selectedChassis);
+      return target && postScraperEndpoint('/api/navigate-oca', { chassis: target, ...opts });
+    },
     handleTriggerKillTask: async (explicitRunId) => {
       const targetRunId = (typeof explicitRunId === 'string' && explicitRunId)
         ? explicitRunId

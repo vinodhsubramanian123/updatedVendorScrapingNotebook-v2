@@ -39,33 +39,41 @@ function calculateChecksum(content) {
   return crypto.createHash('sha256').update(str).digest('hex');
 }
 
+const SKIP_CHASSIS_SCAN_DIRS = new Set(['history', 'runs', 'uploads', 'staging', 'backups', '_archive_scripts']);
+
+function _findChassisDirRecursive(current, targetLower, underscoreLower) {
+  let entries;
+  try {
+    entries = fs.readdirSync(current, { withFileTypes: true });
+  } catch (_) {
+    return null;
+  }
+  for (const ent of entries) {
+    if (!ent.isDirectory() || ent.name.startsWith('.') || SKIP_CHASSIS_SCAN_DIRS.has(ent.name)) continue;
+    const full = path.join(current, ent.name);
+    const nameLower = ent.name.toLowerCase();
+    if (nameLower === targetLower || nameLower === underscoreLower) return full;
+    const found = _findChassisDirRecursive(full, targetLower, underscoreLower);
+    if (found) return found;
+  }
+  return null;
+}
+
 /**
  * Resolve relative or model-name chassis directory to its path in outputs/
  */
 function resolveChassisDirectory(dir) {
   if (!dir) return '';
   if (fs.existsSync(dir)) return dir;
-  
+
   const outputsRoot = path.join(__dirname, '..', '..', '..', 'outputs');
   if (fs.existsSync(outputsRoot)) {
-    const cleanDir = path.basename(dir).trim();
-    function findDirRecursive(current) {
-      try {
-        const entries = fs.readdirSync(current, { withFileTypes: true });
-        for (const ent of entries) {
-          if (ent.isDirectory()) {
-            const full = path.join(current, ent.name);
-            if (ent.name === cleanDir || ent.name.toLowerCase() === cleanDir.toLowerCase()) {
-              return full;
-            }
-            const found = findDirRecursive(full);
-            if (found) return found;
-          }
-        }
-      } catch (_) {}
-      return null;
-    }
-    const match = findDirRecursive(outputsRoot);
+    const cleanDir = path.basename(String(dir)).trim();
+    const match = _findChassisDirRecursive(
+      outputsRoot,
+      cleanDir.toLowerCase(),
+      cleanDir.replace(/\s+/g, '_').toLowerCase()
+    );
     if (match) return match;
   }
   return dir;

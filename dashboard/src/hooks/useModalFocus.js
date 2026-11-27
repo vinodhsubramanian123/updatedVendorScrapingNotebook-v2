@@ -24,8 +24,8 @@ export function useModalFocus(isOpen, onClose) {
       if (event.shiftKey && (document.activeElement === first || document.activeElement === root)) { event.preventDefault(); last.focus(); }
       else if (!event.shiftKey && (document.activeElement === last || document.activeElement === root)) { event.preventDefault(); first.focus(); }
     };
-    document.addEventListener('keydown', handleKey);
-    return () => { document.removeEventListener('keydown', handleKey); if (previous?.isConnected) previous.focus(); };
+    document.addEventListener('keydown', handleKey, true);
+    return () => { document.removeEventListener('keydown', handleKey, true); if (previous?.isConnected) previous.focus(); };
   }, [isOpen]);
   return panel;
 }

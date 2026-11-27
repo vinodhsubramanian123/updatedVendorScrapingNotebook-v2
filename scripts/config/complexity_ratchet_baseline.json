@@ -5,7 +5,7 @@
     "maxLoc": 80,
     "maxNesting": 4
   },
-  "legacyRatchetCount": 434,
+  "legacyRatchetCount": 427,
   "entries": {
     "scripts/lib/boq/evaluators/power_memory_support_rules.js::_evaluateItemAgainstChassisDefaults": {
       "cc": 30,
@@ -237,11 +237,6 @@
       "loc": 17,
       "nesting": 0
     },
-    "scripts/lib/boq/pipeline/eval_boq_rag_stage.js::executeGroundedRagValidation": {
-      "cc": 27,
-      "loc": 82,
-      "nesting": 2
-    },
     "scripts/lib/catalog/builder/table_sku_parser.js::_selfHealUnclassifiedEntries": {
       "cc": 27,
       "loc": 39,
@@ -390,6 +385,11 @@
     "scripts/lib/boq/multi_child_evaluation.js::_setupChildStreamsAndEvents": {
       "cc": 26,
       "loc": 54,
+      "nesting": 2
+    },
+    "scripts/lib/boq/pipeline/eval_boq_rag_stage.js::executeGroundedRagValidation": {
+      "cc": 26,
+      "loc": 81,
       "nesting": 2
     },
     "scripts/lib/catalog/builder/table_header_classifier.js::_resolveTaxonomyClassification": {
@@ -687,11 +687,6 @@
       "loc": 40,
       "nesting": 3
     },
-    "dashboard/src/components/QuarantineManagementDrawer.jsx::QuarantineManagementDrawer": {
-      "cc": 25,
-      "loc": 178,
-      "nesting": 2
-    },
     "dashboard/src/components/ResolutionMatrix.jsx::mapSolutionToTier": {
       "cc": 25,
       "loc": 35,
@@ -701,11 +696,6 @@
       "cc": 25,
       "loc": 184,
       "nesting": 0
-    },
-    "dashboard/src/components/topology/BoqTopologyCanvas.jsx::TopologyNodeGraphic": {
-      "cc": 25,
-      "loc": 134,
-      "nesting": 1
     },
     "scripts/lib/aspects/memory_channel.js::_buildMemoryMetrics": {
       "cc": 24,
@@ -726,11 +716,6 @@
       "cc": 24,
       "loc": 22,
       "nesting": 0
-    },
-    "scripts/lib/boq/boq_evaluator.js::formatNotebookQueryPayload": {
-      "cc": 24,
-      "loc": 26,
-      "nesting": 1
     },
     "scripts/lib/boq/cross_vendor_transformer.js::_parseNetworkSpec": {
       "cc": 24,
@@ -920,6 +905,11 @@
     "dashboard/src/components/AutonomousWorkflowSimulator.jsx::AutonomousWorkflowSimulator": {
       "cc": 24,
       "loc": 277,
+      "nesting": 1
+    },
+    "dashboard/src/components/topology/BoqTopologyCanvas.jsx::TopologyNodeGraphic": {
+      "cc": 24,
+      "loc": 134,
       "nesting": 1
     },
     "dashboard/src/components/topology/BoqTopologyModal.jsx::BoqTopologyModal": {
@@ -1182,11 +1172,6 @@
       "loc": 60,
       "nesting": 1
     },
-    "dashboard/src/services/topologyGraphBuilder.js::detectTopologyBaselineGaps": {
-      "cc": 23,
-      "loc": 124,
-      "nesting": 1
-    },
     "dashboard/src/services/workflowEvidence.js::deriveEvidenceMetrics": {
       "cc": 23,
       "loc": 20,
@@ -1225,11 +1210,6 @@
     "scripts/lib/boq/attribute_equivalence_mapper.js::_mapSingleSourceItem": {
       "cc": 22,
       "loc": 51,
-      "nesting": 2
-    },
-    "scripts/lib/boq/comparator_bom_assembler.js::selectPsuItem": {
-      "cc": 22,
-      "loc": 21,
       "nesting": 2
     },
     "scripts/lib/boq/cross_vendor_transformer.js::transformCompetitorQuote": {
@@ -1491,6 +1471,11 @@
       "cc": 21,
       "loc": 27,
       "nesting": 2
+    },
+    "scripts/lib/boq/boq_evaluator.js::formatNotebookQueryPayload": {
+      "cc": 21,
+      "loc": 26,
+      "nesting": 1
     },
     "scripts/lib/boq/bundle_composition.js::evaluateBundleComposition": {
       "cc": 21,
@@ -1792,11 +1777,6 @@
       "loc": 178,
       "nesting": 1
     },
-    "dashboard/src/components/ScraperTriggerCard.jsx::LiveScrapeControlCard": {
-      "cc": 18,
-      "loc": 95,
-      "nesting": 1
-    },
     "dashboard/src/components/WorkloadDnaCard.jsx::WorkloadDnaCard": {
       "cc": 18,
       "loc": 91,
@@ -1874,7 +1854,7 @@
     },
     "dashboard/src/components/ResolutionMatrix.jsx::ResolutionMatrix": {
       "cc": 16,
-      "loc": 178,
+      "loc": 176,
       "nesting": 2
     },
     "dashboard/src/hooks/useWorkspaceRuns.js::useProgressStream": {
@@ -1967,6 +1947,11 @@
       "loc": 105,
       "nesting": 0
     },
+    "dashboard/src/services/topologyGraphBuilder.js::detectTopologyBaselineGaps": {
+      "cc": 13,
+      "loc": 102,
+      "nesting": 1
+    },
     "scripts/lib/boq/alletra_mp_evaluator.js::evaluateAlletraMp": {
       "cc": 12,
       "loc": 92,
@@ -1982,11 +1967,6 @@
       "loc": 91,
       "nesting": 1
     },
-    "dashboard/src/components/UserFeedbackDrawer.jsx::UserFeedbackDrawer": {
-      "cc": 12,
-      "loc": 155,
-      "nesting": 1
-    },
     "dashboard/services/runState.cjs::listPersistedRuns": {
       "cc": 12,
       "loc": 20,
@@ -1996,11 +1976,6 @@
       "cc": 11,
       "loc": 87,
       "nesting": 3
-    },
-    "scripts/lib/catalog/sku_versioning.js::resolveChassisDirectory": {
-      "cc": 11,
-      "loc": 28,
-      "nesting": 5
     },
     "scripts/lib/conflict/sizing/workload_demand.js::evaluateWorkloadSizingWithProfiles": {
       "cc": 11,
@@ -2077,11 +2052,6 @@
       "loc": 99,
       "nesting": 0
     },
-    "dashboard/src/components/telemetry/sections/KpiMetricsGrid.jsx::KpiMetricsGrid": {
-      "cc": 10,
-      "loc": 112,
-      "nesting": 0
-    },
     "dashboard/src/components/uploader/MultiConfigSplitModal.jsx::MultiConfigSplitModal": {
       "cc": 10,
       "loc": 99,
@@ -2095,11 +2065,6 @@
     "dashboard/src/components/catalog/CatalogFilterBar.jsx::CatalogFilterBar": {
       "cc": 9,
       "loc": 119,
-      "nesting": 0
-    },
-    "dashboard/src/components/matrix/MatrixToolbar.jsx::MatrixToolbar": {
-      "cc": 9,
-      "loc": 87,
       "nesting": 0
     },
     "dashboard/src/components/ScrapingHistorySection.jsx::ScrapingHistorySection": {

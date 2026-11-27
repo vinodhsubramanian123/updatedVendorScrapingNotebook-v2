@@ -94,7 +94,7 @@ export default function AccuracyProfilerPanel({
         title="Click to inspect Accuracy Index methodology and synthetic vs customer BOQ benchmarks"
       >
         <div>
-          <div className="flex items-center justify-between gap-2 mb-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 whitespace-nowrap">
               <ShieldCheck className={`w-4 h-4 ${accuracyTier.iconClass}`} /> Accuracy Index
             </span>

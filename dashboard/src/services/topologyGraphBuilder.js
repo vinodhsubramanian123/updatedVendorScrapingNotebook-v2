@@ -54,29 +54,35 @@ export function detectProductFamily(evalResults, items = []) {
 }
 
 const SUBSYSTEM_PATTERNS = [
-  { subsystem: 'COMPUTE', regex: /processor|cpu|xeon|epyc|heatsink/i },
+  { subsystem: 'SERVICES', regex: /service|support|care|tech care|complete care|installation|proactive|warranty|license/i },
+  { subsystem: 'COMPUTE', regex: /processor|cpu|xeon|epyc|heatsink|cto\s+server|configure[\s-]+to[\s-]+order|base\s+chassis|compute\s+module/i },
   { subsystem: 'MEMORY', regex: /memory|dimm|ddr5|ddr4|rdimm|lrdimm|mrdimm|pc4|pc5|smart memory/i },
   { subsystem: 'PCIE_NETWORK', regex: /network|pcie|adapter|riser|gpu|ocp|ethernet|fibre channel|accelerator|virtual connect|transceiver/i },
   { subsystem: 'STORAGE', regex: /storage|drive|controller|ssd|nvme|hdd|smart array|tri-mode|storage battery|drive cage|cage|tape/i },
-  { subsystem: 'POWER_THERMAL', regex: /power|psu|thermal|fan|power supply|lug kit|flex slot|cable|pdu|ambient|flm|power cord/i },
-  { subsystem: 'SERVICES', regex: /service|support|care|tech care|complete care|installation|proactive/i }
+  { subsystem: 'POWER_THERMAL', regex: /power|psu|thermal|fan|power supply|lug kit|flex slot|cable|pdu|ambient|flm|power cord/i }
 ];
+
+const CARE_PACK_SKU_RE = /^H[A-Z0-9]{4,}/i;
 
 /**
  * Categorize a SKU item into one of the 6 canonical subsystem buckets.
  */
 export function getSubsystemForSku(item) {
+  const sku = String(item?.sku || '').trim();
   const cat = String(item?.category || '').toLowerCase();
   const sub = String(item?.subCategory || '').toLowerCase();
   const desc = String(item?.description || '').toLowerCase();
   const combined = `${cat} ${sub} ${desc}`;
 
+  if (CARE_PACK_SKU_RE.test(sku) && !/hdd|ssd|nvme|cable|controller/i.test(combined)) {
+    return 'SERVICES';
+  }
   for (const entry of SUBSYSTEM_PATTERNS) {
     if (entry.regex.test(combined)) {
       return entry.subsystem;
     }
   }
-  return 'STORAGE';
+  return 'COMPUTE';
 }
 
 /**
@@ -256,6 +262,12 @@ function populateTopologySkuNodes(activeItems, evalResults, productFamily, nodes
   });
 }
 
+function _shouldFlagMemoryBalanceGap(evalResults, errors) {
+  const hasDimms = Number(evalResults.memoryCount || 0) > 0;
+  return (evalResults.isBalancedChannel === false && hasDimms)
+    || errors.some(e => typeof e === 'string' && (e.toLowerCase().includes('memory') || e.toLowerCase().includes('dimm')));
+}
+
 function detectTopologyBaselineGaps(evalResults, nodes, edges, gaps) {
   const errors = evalResults.errors || [];
   const missingDeps = evalResults.missingDependencies || [];
@@ -284,7 +296,7 @@ function detectTopologyBaselineGaps(evalResults, nodes, edges, gaps) {
     });
   }
 
-  if (evalResults.isBalancedChannel === false || errors.some(e => typeof e === 'string' && (e.toLowerCase().includes('memory') || e.toLowerCase().includes('dimm')))) {
+  if (_shouldFlagMemoryBalanceGap(evalResults, errors)) {
     const gapNode = {
       id: 'gap-memory-balance',
       type: 'GAP_MISSING',
@@ -356,17 +368,36 @@ function detectTopologyBaselineGaps(evalResults, nodes, edges, gaps) {
     });
   }
 
+  _appendMissingDependencyGaps(missingDeps, nodes, edges, gaps);
+}
+
+function _resolveGapLabel(dep) {
+  if (typeof dep === 'string') return dep;
+  if (dep && typeof dep === 'object') {
+    return dep.description || dep.name || dep.text || dep.rule || dep.message || dep.sku || 'Missing Mandatory Dependency';
+  }
+  return 'Missing Mandatory Dependency';
+}
+
+function _resolveGapReason(dep) {
+  if (!dep || typeof dep !== 'object') return 'Required companion SKU missing from customer quote.';
+  return dep.reasoning || dep.reason || dep.detail || 'Required companion SKU missing from customer quote.';
+}
+
+function _appendMissingDependencyGaps(missingDeps, nodes, edges, gaps) {
   missingDeps.forEach((dep, idx) => {
+    const label = _resolveGapLabel(dep);
+    const reason = _resolveGapReason(dep);
     const gapNode = {
       id: `gap-eval-dep-${idx}`,
       type: 'GAP_MISSING',
-      subsystem: getSubsystemForSku({ description: dep.name || dep.text || dep }),
-      sku: dep.sku || 'DEPENDENCY-GAP',
-      label: dep.name || dep.text || String(dep),
-      reason: dep.reason || 'Required companion SKU missing from customer quote.',
+      subsystem: getSubsystemForSku({ sku: dep?.sku, description: label, category: dep?.category || dep?.rule }),
+      sku: dep?.sku || 'DEPENDENCY-GAP',
+      label,
+      reason,
       severity: 'CRITICAL',
       status: 'GAP_MISSING',
-      suggestedFix: dep.suggestedSku || 'Auto-inject mandatory SKU',
+      suggestedFix: dep?.suggestedSku || dep?.sku || 'Auto-inject mandatory SKU',
       category: 'Aspect Rule Check'
     };
     nodes.push(gapNode);

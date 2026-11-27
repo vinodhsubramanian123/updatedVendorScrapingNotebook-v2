@@ -91,8 +91,8 @@ function SidebarNavContent({ activeTab, collapsed, badges = {}, onSelect, includ
 
 export function MobileNavStrip({ activeTab, onTabChange }) {
   return (
-    <nav aria-label="Mobile workspace navigation" className="flex items-center gap-2 px-3 py-2 border-b border-slate-200 surface-panel">
-      <div className="flex items-center gap-1 overflow-x-auto flex-1 min-w-0">
+    <nav aria-label="Mobile workspace navigation" className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2.5 px-3 py-2 border-b border-slate-200 surface-panel">
+      <div className="flex items-center gap-1 overflow-x-auto min-w-0">
         {FLAT_NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           const active = activeTab === item.id;
@@ -119,7 +119,7 @@ export function MobileNavStrip({ activeTab, onTabChange }) {
         aria-label="More dashboard views"
         value={activeTab}
         onChange={(e) => onTabChange?.(e.target.value)}
-        className="shrink-0 h-8 w-28 truncate whitespace-nowrap text-[11px] font-semibold rounded-lg border border-slate-300 surface-panel px-2 py-1 text-slate-700 cursor-pointer"
+        className="h-8 w-28 shrink-0 truncate whitespace-nowrap text-[11px] font-semibold rounded-lg border border-slate-300 surface-panel px-2 py-1 text-slate-700 cursor-pointer"
       >
         {FLAT_NAV_ITEMS.map((item) => (
           <option key={item.id} value={item.id} title={item.label}>{item.shortLabel}</option>

@@ -6,6 +6,7 @@ import MatrixComparisonTable from './matrix/MatrixComparisonTable';
 import MatrixToolbar from './matrix/MatrixToolbar';
 import RejectionModal from './matrix/RejectionModal';
 import MatrixStatusBanners from './matrix/MatrixStatusBanners';
+import ConflictGraphInspector from './ConflictGraphInspector';
 import { formatPrice, extendedPrice } from '../services/pricing.js';
 import { getCandidateExportEligibility } from '../services/exportEligibility.js';
 
@@ -213,6 +214,54 @@ function MatrixEmptyOrNoMatch({ evalResults, tiersCount, restoringEvaluation, ev
   );
 }
 
+function MatrixTiersBody({
+  tiers,
+  matrixViewMode,
+  expandedParts,
+  setExpandedParts,
+  handleCopyBomText,
+  copyStatus,
+  handleExportXlsx,
+  exportingRank,
+  exportedFiles,
+  evalResults,
+  setVendorVerificationModal,
+  setRejectionModal,
+  setRejectionText,
+  setRejectionConfirmed,
+  setRejectionError
+}) {
+  if (tiers.length === 0) return null;
+  if (matrixViewMode === 'vertical-matrix') {
+    return <MatrixComparisonTable tiers={tiers} standardCategories={STANDARD_CATEGORIES} />;
+  }
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {tiers.map((tier) => (
+        <RankCard
+          key={tier.rank}
+          tier={tier}
+          isExpanded={!!expandedParts[tier.rank]}
+          onToggleExpand={(rank) => setExpandedParts(prev => ({ ...prev, [rank]: !prev[rank] }))}
+          onCopyBom={handleCopyBomText}
+          isCopied={!!copyStatus[tier.rank]}
+          onExportXlsx={handleExportXlsx}
+          isExporting={exportingRank === tier.rank}
+          exportedFile={exportedFiles[tier.rank]}
+          exportEligibility={getCandidateExportEligibility(evalResults, tier)}
+          onOpenVendorVerification={(t) => setVendorVerificationModal(t)}
+          onOpenRejectionModal={(t) => {
+            setRejectionModal(t);
+            setRejectionText('');
+            setRejectionConfirmed(null);
+            setRejectionError(null);
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function ResolutionMatrix({
   restoringEvaluation = false,
   evaluationRunning = false,
@@ -236,6 +285,7 @@ export default function ResolutionMatrix({
   const [matrixViewMode, setMatrixViewMode] = useState('cards');
   const [expandedParts, setExpandedParts] = useState({});
   const [copyStatus, setCopyStatus] = useState({});
+  const [showConflictInspector, setShowConflictInspector] = useState(false);
 
   const clearRejectionModal = () => {
     setRejectionModal(null);
@@ -322,11 +372,21 @@ export default function ResolutionMatrix({
         exportError={exportError}
         onOpenTopology={onOpenTopology}
         onOpenUploader={onOpenUploader}
+        showConflictInspector={showConflictInspector}
+        onToggleConflictInspector={() => setShowConflictInspector(v => !v)}
       />
 
       <MatrixRunMetaHeader evalResults={evalResults} resolvedChassisId={resolvedChassisId} />
 
       <MatrixStatusBanners evalResults={evalResults} />
+
+      {showConflictInspector && evalResults && (
+        <ConflictGraphInspector
+          evalResults={evalResults}
+          chassisName={resolvedChassisId}
+          selectedChassis={resolvedChassisId}
+        />
+      )}
 
       <MatrixEmptyOrNoMatch
         evalResults={evalResults}
@@ -336,36 +396,23 @@ export default function ResolutionMatrix({
         onOpenUploader={onOpenUploader}
       />
 
-      {tiers.length > 0 && (matrixViewMode === 'vertical-matrix' ? (
-        <MatrixComparisonTable
-          tiers={tiers}
-          standardCategories={STANDARD_CATEGORIES}
-        />
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tiers.map((tier) => (
-            <RankCard
-              key={tier.rank}
-              tier={tier}
-              isExpanded={!!expandedParts[tier.rank]}
-              onToggleExpand={(rank) => setExpandedParts(prev => ({ ...prev, [rank]: !prev[rank] }))}
-              onCopyBom={handleCopyBomText}
-              isCopied={!!copyStatus[tier.rank]}
-              onExportXlsx={handleExportXlsx}
-              isExporting={exportingRank === tier.rank}
-              exportedFile={exportedFiles[tier.rank]}
-              exportEligibility={getCandidateExportEligibility(evalResults, tier)}
-              onOpenVendorVerification={(t) => setVendorVerificationModal(t)}
-              onOpenRejectionModal={(t) => {
-                setRejectionModal(t);
-                setRejectionText('');
-                setRejectionConfirmed(null);
-                setRejectionError(null);
-              }}
-            />
-          ))}
-        </div>
-      ))}
+      <MatrixTiersBody
+        tiers={tiers}
+        matrixViewMode={matrixViewMode}
+        expandedParts={expandedParts}
+        setExpandedParts={setExpandedParts}
+        handleCopyBomText={handleCopyBomText}
+        copyStatus={copyStatus}
+        handleExportXlsx={handleExportXlsx}
+        exportingRank={exportingRank}
+        exportedFiles={exportedFiles}
+        evalResults={evalResults}
+        setVendorVerificationModal={setVendorVerificationModal}
+        setRejectionModal={setRejectionModal}
+        setRejectionText={setRejectionText}
+        setRejectionConfirmed={setRejectionConfirmed}
+        setRejectionError={setRejectionError}
+      />
 
       <RejectionModal
         modalData={rejectionModal}

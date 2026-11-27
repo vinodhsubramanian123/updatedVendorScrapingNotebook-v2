@@ -106,6 +106,8 @@ export default function PortfolioManifestWorkspace({
   }, []);
 
   const families = Array.from(new Set(catalogs.map(c => c.family).filter(Boolean)));
+  const activeCatalogCount = catalogs.filter(c => !c.isQuarantinedStub).length;
+  const quarantinedStubCount = catalogs.filter(c => c.isQuarantinedStub).length;
   const chassisDir = currentCatObj?.chassisDir || currentCatObj?.id || selectedChassis;
 
   return (
@@ -117,14 +119,18 @@ export default function PortfolioManifestWorkspace({
             Portfolio, Capability Manifests & Multi-Vendor Registry
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            Active scraped catalogs paired with declarative product manifests and normalized cross-vendor translation adapters.
+            {activeCatalogCount} active product catalogs{quarantinedStubCount > 0 ? ` (${quarantinedStubCount} quarantined legacy stubs)` : ''} paired with declarative manifests and cross-vendor adapters.
           </p>
         </div>
-        {loading && (
-          <span className="text-xs text-slate-500 flex items-center gap-1.5">
-            <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Loading manifests...
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          <span className="badge badge-emerald">{activeCatalogCount} Active</span>
+          {quarantinedStubCount > 0 && <span className="badge badge-amber">{quarantinedStubCount} Quarantined Stubs</span>}
+          {loading && (
+            <span className="text-xs text-slate-500 flex items-center gap-1.5">
+              <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Loading manifests...
+            </span>
+          )}
+        </div>
       </div>
 
       <VendorAdaptersStrip adapters={adapters} />

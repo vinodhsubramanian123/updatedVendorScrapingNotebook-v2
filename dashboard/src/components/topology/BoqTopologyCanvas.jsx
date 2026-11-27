@@ -3,12 +3,12 @@ import { ZoomIn, ZoomOut, RotateCcw, Layers } from 'lucide-react';
 import { SUBSYSTEM_DEFS } from '../../services/topologyGraphBuilder';
 
 const HUB_POSITIONS = {
-  COMPUTE:       { angle: -140, radius: 260 },
-  MEMORY:        { angle: -40,  radius: 260 },
-  STORAGE:       { angle: -175, radius: 290 },
-  PCIE_NETWORK:  { angle: -5,   radius: 290 },
-  POWER_THERMAL: { angle: 135,  radius: 260 },
-  SERVICES:      { angle: 45,   radius: 260 }
+  COMPUTE:       { angle: -125, radius: 300 },
+  MEMORY:        { angle: -55,  radius: 300 },
+  STORAGE:       { angle: 180,  radius: 330 },
+  PCIE_NETWORK:  { angle: 0,    radius: 330 },
+  POWER_THERMAL: { angle: 125,  radius: 300 },
+  SERVICES:      { angle: 55,   radius: 300 }
 };
 
 function matchesTopologyFilter(node, subId, activeFilter) {
@@ -20,8 +20,8 @@ function matchesTopologyFilter(node, subId, activeFilter) {
 function computeTopologyLayout(graphData, activeFilter) {
   if (!graphData?.rootNode) return { nodeCoords: {}, paths: [] };
 
-  const width = 1400;
-  const height = 900;
+  const width = 1480;
+  const height = 1080;
   const centerX = width / 2;
   const centerY = height / 2;
 
@@ -31,7 +31,7 @@ function computeTopologyLayout(graphData, activeFilter) {
   coords[graphData.rootNode.id] = { x: centerX, y: centerY, node: graphData.rootNode };
 
   SUBSYSTEM_DEFS.forEach(sub => {
-    const hubConfig = HUB_POSITIONS[sub.id] || { angle: 0, radius: 260 };
+    const hubConfig = HUB_POSITIONS[sub.id] || { angle: 0, radius: 300 };
     const rad = (hubConfig.angle * Math.PI) / 180;
     const hubX = centerX + hubConfig.radius * Math.cos(rad);
     const hubY = centerY + hubConfig.radius * Math.sin(rad);
@@ -60,7 +60,7 @@ function computeTopologyLayout(graphData, activeFilter) {
     const startY = hubY - totalHeight / 2;
 
     children.forEach((child, cIdx) => {
-      const childX = isLeftSide ? hubX - 220 : hubX + 220;
+      const childX = isLeftSide ? hubX - 240 : hubX + 240;
       const childY = startY + cIdx * childSpacingY;
 
       coords[child.id] = { x: childX, y: childY, node: child };
@@ -113,6 +113,13 @@ function TopologyConnectorPath({ path }) {
       opacity={0.85}
     />
   );
+}
+
+function _formatTopologyNodeLabel(label, sku) {
+  const labelStr = typeof label === 'string'
+    ? label
+    : (label?.description || label?.message || sku || 'Component');
+  return labelStr.length > 24 ? labelStr.substring(0, 22) + '...' : labelStr;
 }
 
 function TopologyNodeGraphic({ item, selectedNode, onSelectNode }) {
@@ -199,7 +206,7 @@ function TopologyNodeGraphic({ item, selectedNode, onSelectNode }) {
     textColor = '#7dd3fc';
   }
 
-  const shortLabel = node.label.length > 24 ? node.label.substring(0, 22) + '...' : node.label;
+  const shortLabel = _formatTopologyNodeLabel(node.label, node.sku);
 
   return (
     <g
