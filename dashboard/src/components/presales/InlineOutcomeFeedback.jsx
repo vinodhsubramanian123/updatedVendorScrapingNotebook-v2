@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { ThumbsUp, Sparkles, Send, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { ThumbsUp, Sparkles, Send, CheckCircle2 } from 'lucide-react';
 import { postJson } from '../../services/api.js';
 
-export default function InlineOutcomeFeedback({ envelope }) {
+export default function InlineOutcomeFeedback({ envelope, localOnly }) {
   const [open, setOpen] = useState(false);
   const [helpfulSent, setHelpfulSent] = useState(false);
   const [feedbackText, setFeedbackText] = useState('');
@@ -13,17 +13,23 @@ export default function InlineOutcomeFeedback({ envelope }) {
 
   if (!envelope) return null;
   const chassis = envelope.result?.chassis || envelope.result?.targetChassis || envelope.classification?.scope?.products?.[0]?.id || '';
-  const offline = Boolean(envelope.effectivePolicy?.offline);
+  const offline = Boolean(localOnly || envelope.effectivePolicy?.offline);
 
   const sendHelpful = async () => {
+    setBusy(true);
+    setStatusMsg(null);
     try {
       await postJson('/api/feedback-submit', {
-        text: `[Positive Studio Verification] Query: ${envelope.query || 'Presales query'} · Tier: ${envelope.modeUsed || 'DETERMINISTIC'}`,
-        category: 'verified_outcome',
+        text: `[Helpful outcome] Query: ${envelope.query || 'Presales query'} · Tier: ${envelope.modeUsed || 'DETERMINISTIC'}`,
+        category: 'helpful_outcome',
         context: { runId: envelope.runId, chassis }
       });
       setHelpfulSent(true);
-    } catch (_) {}
+    } catch (err) {
+      setStatusMsg({ type: 'error', text: err.message });
+    } finally {
+      setBusy(false);
+    }
   };
 
   const analyzeWithAgent = async (confirmation) => {
@@ -32,7 +38,7 @@ export default function InlineOutcomeFeedback({ envelope }) {
     setStatusMsg(null);
     try {
       const res = await postJson('/api/feedback/analyze-with-agent', {
-        feedbackText,
+        feedbackText, offline,
         category: 'outcome_correction',
         chassis,
         queryText: envelope.query,
@@ -48,23 +54,26 @@ export default function InlineOutcomeFeedback({ envelope }) {
     }
   };
 
-  const queueRuleProposal = async () => {
-    const delta = analysis?.proposedDelta;
+  const submitFeedback = async (delta) => {
     setBusy(true);
+    setStatusMsg(null);
     try {
-      const targetChassis = delta?.chassis || chassis || 'DL380_Gen12';
-      await postJson('/api/simulate-error', {
-        chassis: targetChassis,
-        errorMessage: delta?.ruleUpdate || feedbackText
-      });
-      setStatusMsg({ type: 'success', text: `Rule delta queued for ${targetChassis}. Review or promote in Quarantined Deltas.` });
+      if (delta) {
+        await postJson('/api/feedback/rule-proposal', {
+          runId: envelope.runId, chassis: delta.chassis || chassis, ruleUpdate: delta.ruleUpdate,
+          affectedSku: delta.affectedSku, requiredDependencySku: delta.requiredDependencySku
+        });
+      } else {
+        await postJson('/api/feedback-submit', {
+          text: feedbackText, category: 'outcome_correction', context: { runId: envelope.runId, chassis }
+        });
+      }
+      setFeedbackText('');
+      setAnalysis(null);
+      setReplyText('');
+      setStatusMsg({ type: 'success', text: delta ? 'Rule proposal queued in Quarantined Deltas.' : 'Feedback saved for review.' });
     } catch (err) {
-      await postJson('/api/feedback-submit', {
-        text: feedbackText,
-        category: 'bug_report',
-        context: { runId: envelope.runId, chassis, proposedDelta: delta }
-      }).catch(() => {});
-      setStatusMsg({ type: 'success', text: `Queued to Feedback Vault (${err.message}).` });
+      setStatusMsg({ type: 'error', text: err.message });
     } finally {
       setBusy(false);
     }
@@ -78,11 +87,11 @@ export default function InlineOutcomeFeedback({ envelope }) {
           <button
             type="button"
             onClick={sendHelpful}
-            disabled={helpfulSent}
+            disabled={busy || helpfulSent}
             className="btn-secondary text-[11px] py-1 px-2.5 disabled:opacity-60"
           >
             <ThumbsUp className="w-3 h-3 text-emerald-600" />
-            <span>{helpfulSent ? 'Verified & Logged' : 'Helpful'}</span>
+            <span>{helpfulSent ? 'Feedback saved' : 'Helpful'}</span>
           </button>
           <button
             type="button"
@@ -95,12 +104,18 @@ export default function InlineOutcomeFeedback({ envelope }) {
         </div>
       </div>
 
+      {statusMsg && (
+        <p role={statusMsg.type === 'error' ? 'alert' : 'status'} className="text-xs">
+          {statusMsg.text}
+        </p>
+      )}
       {open && (
         <div className="surface-panel rounded-xl p-3 space-y-2.5">
           <textarea
             rows={2}
             value={feedbackText}
-            onChange={e => setFeedbackText(e.target.value)}
+            disabled={busy}
+            onChange={e => { setFeedbackText(e.target.value); setAnalysis(null); setReplyText(''); setStatusMsg(null); }}
             placeholder="Describe what was wrong, missing, or should become a learned rule..."
             className="w-full border border-slate-200 rounded-lg p-2 text-xs bg-white"
           />
@@ -117,7 +132,7 @@ export default function InlineOutcomeFeedback({ envelope }) {
             <button
               type="button"
               disabled={busy || !feedbackText.trim()}
-              onClick={queueRuleProposal}
+              onClick={() => submitFeedback(null)}
               className="btn-secondary text-[11px] py-1 px-2.5 disabled:opacity-50"
             >
               <Send className="w-3 h-3" />
@@ -138,31 +153,25 @@ export default function InlineOutcomeFeedback({ envelope }) {
                   <p className="font-semibold text-amber-800">{analysis.confirmationPrompt.question}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {(analysis.confirmationPrompt.options || []).map((opt, idx) => (
-                      <button key={idx} type="button" onClick={() => analyzeWithAgent(opt)} className="px-2 py-0.5 rounded border border-amber-300 bg-amber-50 text-amber-900 text-[11px] font-semibold">
+                      <button key={idx} type="button" disabled={busy || offline} onClick={() => analyzeWithAgent(opt)} className="px-2 py-0.5 rounded border border-amber-300 bg-amber-50 text-amber-900 text-[11px] font-semibold">
                         {opt}
                       </button>
                     ))}
                   </div>
                   <div className="flex gap-1.5">
                     <input type="text" value={replyText} onChange={e => setReplyText(e.target.value)} placeholder="Reply to confirm..." className="flex-1 px-2 py-1 text-xs border border-slate-200 rounded" />
-                    <button type="button" disabled={busy || !replyText.trim()} onClick={() => analyzeWithAgent(replyText)} className="btn-primary text-[11px] py-1 px-2">Reply</button>
+                    <button type="button" disabled={busy || offline || !replyText.trim()} onClick={() => analyzeWithAgent(replyText)} className="btn-primary text-[11px] py-1 px-2">Reply</button>
                   </div>
                 </div>
               )}
               {analysis.proposedDelta && (
-                <button type="button" disabled={busy} onClick={queueRuleProposal} className="btn-primary text-[11px] py-1 px-2.5">
+                <button type="button" disabled={busy} onClick={() => submitFeedback(analysis.proposedDelta)} className="btn-primary text-[11px] py-1 px-2.5">
                   <CheckCircle2 className="w-3 h-3" /> Confirm &amp; Queue Rule Delta
                 </button>
               )}
             </div>
           )}
 
-          {statusMsg && (
-            <p className={`text-[11px] flex items-center gap-1 ${statusMsg.type === 'error' ? 'text-rose-700' : 'text-emerald-700'}`}>
-              {statusMsg.type === 'error' ? <AlertTriangle className="w-3.5 h-3.5" /> : <CheckCircle2 className="w-3.5 h-3.5" />}
-              <span>{statusMsg.text}</span>
-            </p>
-          )}
         </div>
       )}
     </div>

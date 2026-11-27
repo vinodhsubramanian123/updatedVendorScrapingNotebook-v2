@@ -3,7 +3,7 @@
  * scripts/maintenance/verify_graph_integrity.js — Graphify Knowledge Graph & Skill Network Verifier
  *
  * Enforces graph completeness, skill orchestration connectivity, and zero-ad-hoc invariants:
- * 1. All 30 skills in .agents/skills/ are present in graphify-out/graph.json.
+ * 1. All skills in .agents/skills/ are present in graphify-out/graph.json.
  * 2. Zero isolated skills: Every skill must have >= 1 peer-skill connection.
  * 3. 100% Skill-to-Code Grounding: Every skill must have >= 1 code link (scripts/ or dashboard/).
  * 4. Zero ad-hoc scripts in scripts/lib/ (enforces INV-72).

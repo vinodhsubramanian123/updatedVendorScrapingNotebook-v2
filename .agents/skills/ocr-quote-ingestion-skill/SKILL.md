@@ -119,3 +119,9 @@ When completing an OCR quote ingestion, the agent MUST present:
 3. **OCR Quality Assessment**:
    - Confidence score of text extraction (e.g., `98.5% confidence`)
    - Any blurred or ambiguous part numbers that were auto-corrected or flagged for human review.
+
+---
+
+## 🔗 Implementation Entrypoint
+
+- **Vision OCR Service**: [`ocr_service.js`](../../../scripts/lib/ocr/ocr_service.js) (`performGeminiOcr()`) feeding [`route_query.js`](../../../scripts/evaluators/route_query.js) via [`presales-query-router`](../presales-query-router/SKILL.md) and [`boq-eval-skill`](../boq-eval-skill/SKILL.md).

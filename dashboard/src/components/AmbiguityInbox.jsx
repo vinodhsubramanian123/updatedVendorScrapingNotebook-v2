@@ -179,7 +179,7 @@ function AmbiguityDecisionForm({
             <select
               value={scopeTaxonomy}
               onChange={e => formSetters.setScopeTaxonomy(e.target.value)}
-              className="w-full text-sm border-slate-300 rounded-lg shadow-2xs focus:border-indigo-500 focus:ring-indigo-500 bg-white [color-scheme:light]"
+              className="w-full text-sm border-slate-300 rounded-lg shadow-2xs focus:border-indigo-500 focus:ring-indigo-500 bg-white"
             >
               <option value="CHASSIS_SPECIFIC">Chassis Specific (e.g. Selected Chassis)</option>
               <option value="FAMILY_GEN">Family & Gen (e.g. ProLiant Gen12)</option>
@@ -216,7 +216,7 @@ function AmbiguityDecisionForm({
           </div>
           <div>
             <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Evidence Type</label>
-            <select value={evidenceType} onChange={e => formSetters.setEvidenceType(e.target.value)} className="w-full text-sm border-slate-300 rounded-lg shadow-2xs bg-white [color-scheme:light]">
+            <select value={evidenceType} onChange={e => formSetters.setEvidenceType(e.target.value)} className="w-full text-sm border-slate-300 rounded-lg shadow-2xs bg-white">
               <option value="OFFICIAL_QUICKSPECS">Official QuickSpecs</option>
               <option value="OFFICIAL_VENDOR_PORTAL">Official Vendor Portal</option>
               <option value="CERTIFIED_CATALOG">Certified Catalog</option>

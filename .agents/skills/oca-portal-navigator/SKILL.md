@@ -257,3 +257,11 @@ Use **Components → target icon → Services (right-hand icon controls) → Edi
 ### Runtime Conditional Discovery
 Follow [Shared Runtime Conditional Discovery Contract](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md).
 - **Global Commercial CTO/Wizard Ranking & Cold Step 1 Deferred Click (`INV-266`)**: `_sortAndFilterEligibleCandidates` penalizes regional/restricted variants (`KSA`, `Saudi`, `Disconnected`, `Add-on`, `Upgrade`) so global commercial CTO and Wizard base cards (`arcusSolwizard`, `S3L12A`) rank first. `_clientSelectDropdownControls` checks `alreadyReady` before firing `change`, `buildSelectAndClickExpression` defers `button.click()` via `setTimeout(..., 50)` so page unload cannot tear down CDP `Runtime.evaluate`, `searchAndConfigureChassis` allows `120000`ms for candidate selection, and `handlePartnerPortalLaunch` allows `60000`ms for SAML Tab 2 initialization.
+- **Unified CDP Tab Classifier & Timeout Telemetry (`INV-289`)**: `isAuthenticatedExternalOcaPage()`, `classifyCdpPages()`, `getOCATarget()`, `_isStaleOrLoggedOutTab()`, and `sendCommand()` (`CDP_COMMAND_TIMEOUT` self-healing event via `_buildCdpTimeoutContext()` / `_recordCdpTimeoutEvent()`) in `scripts/lib/scraper/cdp.js` provide the single tab classifier shared with `dashboard/routes/catalogs.cjs`, `scripts/lib/catalog/catalog_discovery.js`, and `scripts/maintenance/observability_status.js`. Use `npm run status` and `npm run inspect:session` (`scripts/scrapers/inspect_oca_session.js`) to verify live port `9222` tab readiness.
+
+## 🔗 Connected Skills
+
+- [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) — Runs full DOM extraction after `navigateToOCAChassis()` lands on Menu Tab.
+- [`clic-portal-validation-skill`](../clic-portal-validation-skill/SKILL.md) — Executes live CLIC verification and cryptographic receipt capture on the active OCA session.
+- [`conditional-sku-discovery-skill`](../conditional-sku-discovery-skill/SKILL.md) — Probes selector-gated SKUs inside an authenticated session.
+- [`degraded-mode-skill`](../degraded-mode-skill/SKILL.md) — Dispatches recovery scraping chains when product catalogs are stale or degraded.

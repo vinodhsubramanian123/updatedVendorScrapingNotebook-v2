@@ -109,7 +109,7 @@ function LiveScrapeControlCard({ targetRequired, targetProduct, canScrape, cdpSt
       <div className="flex items-center gap-2 mb-3">
         {['solution', 'storage'].map((modeVal) => (
           <label key={modeVal} className="text-[11px] font-semibold text-slate-600 flex items-center gap-1 cursor-pointer">
-            <input type="radio" name="scrapeMode" value={modeVal} checked={scrapeMode === modeVal} onChange={() => setScrapeMode(modeVal)} disabled={!canScrape} />
+            <input type="radio" name="scrapeMode" value={modeVal} checked={scrapeMode === modeVal} onChange={() => setScrapeMode(modeVal)} disabled={isTaskRunning} />
             {modeVal === 'solution' ? 'Server E2E' : 'Storage Wizard'}
           </label>
         ))}
@@ -208,7 +208,7 @@ function ScraperSseTerminalCard({ logStream, searchQuery, setSearchQuery, logFil
           <select
             value={logFilter}
             onChange={(e) => setLogFilter(e.target.value)}
-            className="px-2 py-1 border border-slate-200 rounded text-xs bg-white text-slate-700 focus:outline-none [color-scheme:light]"
+            className="px-2 py-1 border border-slate-200 rounded text-xs bg-white text-slate-700 focus:outline-none"
           >
             <option value="ALL">All Logs</option>
             <option value="ERROR">Errors/Fails</option>
@@ -239,6 +239,45 @@ function ScraperSseTerminalCard({ logStream, searchQuery, setSearchQuery, logFil
   );
 }
 
+function RebuildManifestCard({ isTaskRunning, targetRequired, onTriggerRebuild, onTriggerOnboard, manifestMsg, onManifestClick }) {
+  return (
+    <div className="bg-slate-50/80 rounded-xl p-4 border border-slate-200/80 space-y-2">
+      <div>
+        <h4 className="font-bold text-slate-800 text-xs mb-1 flex items-center gap-1.5">
+          <RefreshCw className="w-4 h-4 text-blue-600" /> Rebuild &amp; Manifests
+        </h4>
+        <p className="text-[11px] text-slate-500 mb-3">Re-parse raw JSON catalogs or generate/refresh capability manifest JSON.</p>
+      </div>
+
+      <button
+        onClick={onTriggerRebuild}
+        disabled={isTaskRunning}
+        className="w-full btn-secondary justify-center text-xs disabled:opacity-50"
+      >
+        {isTaskRunning ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5 text-blue-600" />}
+        Rebuild All
+      </button>
+
+      {onTriggerOnboard && (
+        <button
+          type="button"
+          disabled={isTaskRunning || targetRequired}
+          onClick={onManifestClick}
+          className="w-full btn-secondary justify-center text-xs disabled:opacity-50"
+        >
+          <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
+          Generate / Refresh Manifest
+        </button>
+      )}
+      {manifestMsg && (
+        <p role={manifestMsg.type === 'error' ? 'alert' : 'status'} className={`text-[10px] font-medium ${manifestMsg.type === 'error' ? 'text-rose-700' : 'text-emerald-700'}`}>
+          {manifestMsg.text}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export default function ScraperTriggerCard({
   targetRequired = false,
   targetProduct = '',
@@ -260,7 +299,7 @@ export default function ScraperTriggerCard({
   const [cdpState, setCdpState] = useState({ status: 'CHECKING', message: 'Probing browser...' });
   const [logFilter, setLogFilter] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
-  const [manifestMsg, setManifestMsg] = useState('');
+  const [manifestMsg, setManifestMsg] = useState(null);
 
   useEffect(() => {
     let interval;
@@ -282,6 +321,15 @@ export default function ScraperTriggerCard({
   }, [isTaskRunning]);
 
   const canScrape = cdpState.status === 'READY';
+  const handleManifestClick = async () => {
+    setManifestMsg(null);
+    const res = await onTriggerOnboard();
+    if (res?.manifest?.productId) {
+      setManifestMsg({ type: 'success', text: `Manifest ready: ${res.manifest.productId}` });
+    } else {
+      setManifestMsg({ type: 'error', text: 'Manifest generation did not complete. Check scraped catalog or error banner.' });
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -340,39 +388,14 @@ export default function ScraperTriggerCard({
             onTriggerNavigate={onTriggerNavigate}
           />
 
-          <div className="bg-slate-50/80 rounded-xl p-4 border border-slate-200/80 space-y-2">
-            <div>
-              <h4 className="font-bold text-slate-800 text-xs mb-1 flex items-center gap-1.5">
-                <RefreshCw className="w-4 h-4 text-blue-600" /> Rebuild &amp; Manifests
-              </h4>
-              <p className="text-[11px] text-slate-500 mb-3">Re-parse raw JSON catalogs or generate/refresh capability manifest JSON.</p>
-            </div>
-
-            <button
-              onClick={onTriggerRebuild}
-              disabled={isTaskRunning}
-              className="w-full btn-secondary justify-center text-xs disabled:opacity-50"
-            >
-              {isTaskRunning ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5 text-blue-600" />}
-              Rebuild All
-            </button>
-
-            {onTriggerOnboard && (
-              <button
-                type="button"
-                disabled={isTaskRunning || targetRequired}
-                onClick={async () => {
-                  const res = await onTriggerOnboard();
-                  if (res?.manifest?.productId) setManifestMsg(`Manifest ready: ${res.manifest.productId}`);
-                }}
-                className="w-full btn-secondary justify-center text-xs disabled:opacity-50"
-              >
-                <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
-                Generate / Refresh Manifest
-              </button>
-            )}
-            {manifestMsg && <p role="status" className="text-[10px] text-emerald-700 font-medium">{manifestMsg}</p>}
-          </div>
+          <RebuildManifestCard
+            isTaskRunning={isTaskRunning}
+            targetRequired={targetRequired}
+            onTriggerRebuild={onTriggerRebuild}
+            onTriggerOnboard={onTriggerOnboard}
+            manifestMsg={manifestMsg}
+            onManifestClick={handleManifestClick}
+          />
 
           <div className="bg-slate-50/80 rounded-xl p-4 border border-slate-200/80">
             <h4 className="font-bold text-slate-800 text-xs mb-1 flex items-center gap-1.5">

@@ -201,7 +201,7 @@ router.post('/notebook-query', asyncHandler(async (req, res) => {
       agreementScore: result.isCloudGrounded ? 0.95 : 0.6,
       nextActionExecuted: result.isCloudGrounded ? 'DEPENDENCY_VALIDATED_AND_DOUBLE_PROOFED' : 'LOCAL_FALLBACK_ADVISORY'
     });
-    res.json({ ...result, effectivePolicy, durationMs, sanitizationDetails, scenario: sanitizationDetails.scenario, timestamps: { requestSentAt: new Date(startTime - durationMs).toISOString(), responseReceivedAt: new Date().toISOString() } });
+    res.json({ ...result, effectivePolicy, durationMs, sanitizationDetails, scenario: sanitizationDetails.scenario, timestamps: { requestSentAt: new Date(startTime).toISOString(), responseReceivedAt: new Date().toISOString() } });
   } catch (err) {
     res.json({
       query: sanitizeNotebookQuery(query, { chassis: targetChassis }),
@@ -625,6 +625,19 @@ router.post('/config/notebooks', (req, res) => {
 });
 
 // ── Feedback Queue ────────────────────────────────────────────────────
+router.post('/feedback/rule-proposal', (req, res) => {
+  const { chassis, ruleUpdate, affectedSku, requiredDependencySku, runId } = req.body || {};
+  if (typeof chassis !== 'string' || !chassis.trim() || typeof ruleUpdate !== 'string' || !ruleUpdate.trim()) {
+    return sendErrorResponse(res, 400, 'A product and proposed rule are required', { source: 'NOTEBOOK_ROUTER' });
+  }
+  const { saveQuarantinedDelta } = require('../../scripts/lib/feedback/quarantined_deltas.js');
+  const delta = saveQuarantinedDelta({
+    source: 'STUDIO_FEEDBACK', sourceAgent: 'PRESALES_STUDIO', scopeTaxonomy: 'CHASSIS_SPECIFIC',
+    chassis: chassis.trim(), ruleUpdate: ruleUpdate.trim(), affectedSku, requiredDependencySku, runId
+  }, ['Studio proposal requires independent supporting evidence']);
+  res.status(202).json({ governanceStatus: delta.governanceStatus, quarantineId: delta.quarantineId });
+});
+
 router.get('/feedback-list', (req, res) => res.json(feedbackQueue.listFeedback()));
 
 router.post('/feedback-submit', (req, res) => {

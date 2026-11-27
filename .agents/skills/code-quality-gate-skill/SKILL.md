@@ -57,22 +57,26 @@ HALT-CQG6: If analyze_unreachable_modules.js reports a library module unreachabl
 Execute the automated verification sequence in order:
 
 ```bash
-# 1. Fast smoke test suite (8 suites, ~10s)
+# 1. Fast smoke test suite
 npm run test:smoke
 
-# 2. Universal cyclomatic complexity audit (<= 30 global ceiling)
-npm run test:complexity
+# 2. 3D maintainability ratchet (CC <= 20, LOC <= 80, maxNesting <= 4; frozen baseline, INV-287)
+npm run lint:complexity
 
-# 3. Core code linter (oxlint, 95 rules)
-npm run lint:core
+# 3. Full oxlint verification across scripts/, tests/, and dashboard/ (0-warning gate)
+npm run lint:all
 
-# 4. Circular dependency DAG check (690+ files)
+# 4. Circular dependency DAG check & unreachable-module orphan gate
 npm run test:circular
-
-# 4b. Unreachable-module gate (no dead library code)
 npm run test:deadcode
 
-# 5. Domain-specific regression testing
+# 5. Skills integrity, Knowledge Graph verification, and Dashboard frontend tests
+npm run test:skills
+npm run update:graph
+npm run verify:graph
+npm --workspace dashboard test -- --run
+
+# 6. Domain-specific regression testing
 npm run test:domain aspects
 npm run test:domain boq
 npm run test:domain sync
@@ -96,9 +100,12 @@ When refactoring functions approaching the CC $\le 30$ threshold:
 
 ## 5. References & Related Charters
 - [Complexity Analyzer Engine](../../../scripts/maintenance/analyze_complexity.js) via `runAnalysis()` and `analyzeFile()`
+- [Skills Integrity Gate](../../../scripts/maintenance/validate_skills_integrity.js) via `runValidation()` (`npm run test:skills`)
+- [Knowledge Graph Integrity Gate](../../../scripts/maintenance/verify_graph_integrity.js) via `verifyGraphIntegrity()` (`npm run verify:graph`)
 - [Master Operating Charter (CC <= 30 Benchmark)](../../../AGENTS.md)
 - [Epistemic Verification Skill](../epistemic-verification-skill/SKILL.md)
-- [System Invariants Directory (INV-229, INV-230, INV-235)](../../../docs/INVARIANTS.md)
+- [Enterprise Dashboard UX Skill](../enterprise-dashboard-ux-skill/SKILL.md)
+- [System Invariants Directory (INV-229, INV-230, INV-235, INV-287)](../../../docs/INVARIANTS.md)
 
 ### Catalog release verification
 

@@ -341,7 +341,7 @@ export default function AutonomousWorkflowSimulator({
               handleReset();
             }}
             disabled={isPlaying}
-            className="text-xs font-semibold bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 shadow-2xs cursor-pointer [color-scheme:light]"
+            className="text-xs font-semibold bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 shadow-2xs cursor-pointer"
           >
             {SIMULATOR_SCENARIOS.map((sc, sIdx) => (
               <option key={sc.id} value={sIdx}>{sc.title}</option>

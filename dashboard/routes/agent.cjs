@@ -21,6 +21,7 @@ const { executeRoutedQuery } = require('../../scripts/evaluators/route_query.js'
 const { runPresalesCopilot } = require('../../scripts/lib/rag/presales_copilot_agent.js');
 const { checkAgyAvailability, runAgyEscalation } = require('../../scripts/lib/rag/agy_escalation_bridge.js');
 const { resolveModelForTask, getPoolStatus } = require('../../scripts/lib/system/gemini_rotator.js');
+const telemetryLib = require('../../scripts/lib/system/telemetry.js');
 
 const VALID_MODES = new Set(['SMART_AUTO', 'DETERMINISTIC', 'GEMINI_AGENT', 'AGY_DEEP']);
 const ARCH_RULE_QUERY_RE = /\b(require|requirement|mandatory|cable\s*kit|can\s+i|how\s+many|rules?|compatible|compatibility|explain|why|must|support|enablement)\b/i;
@@ -48,8 +49,8 @@ function _extractClarificationPrompt(detResult, agentAnswer) {
   if (Array.isArray(res.missingRequirements) && res.missingRequirements.length > 0) {
     return {
       type: 'MISSING_REQUIREMENTS',
-      question: res.message || 'Provide missing sizing/workload details to complete build:',
-      options: res.missingRequirements.slice(0, 6)
+      question: [res.message || 'Provide missing sizing details', res.missingRequirements.join(', ')].join(' · '),
+      options: []
     };
   }
   const match = String(agentAnswer || '').match(/Confirmation Needed:\s*([\s\S]+?)(?:\n\n|$)/i);
@@ -92,6 +93,8 @@ function _buildAgentResponseEnvelope({
     copilotStatus: copilotRes?.status || null,
     copilotError: copilotRes?.error || null,
     copilotConfidence: copilotRes?.confidence ?? null,
+    copilotModel: copilotRes?.model || null,
+    recoveryEvents: copilotRes?.recoveryEvents || [],
     agentAnswer,
     toolCallsUsed: copilotRes?.toolCallsUsed || [],
     agyEscalated: modeUsed === 'AGY_DEEP',
@@ -215,6 +218,16 @@ router.post('/agent/query', async (req, res) => {
     const payload = _buildAgentResponseEnvelope({
       ...out, runId, effectivePolicy: context.effectivePolicy, cancelled, requestedMode
     });
+    try {
+      telemetryLib.recordAgentExecutionTelemetry({
+        runId, requestedMode, modeUsed: out.modeUsed, tierTrail: out.tierTrail,
+        modelUsed: out.copilotRes?.model || null, copilotStatus: out.copilotRes?.status || null,
+        agyStatus: out.agyRes?.status || null, durationMs: Date.now() - startTime,
+        toolCallCount: (out.copilotRes?.toolCallsUsed || []).length,
+        fallbackOccurred: Boolean(payload.providerFallbackNotice || (out.copilotRes?.recoveryEvents || []).length > 0),
+        recoveryEvents: out.copilotRes?.recoveryEvents || [], chassis: routedProduct
+      });
+    } catch (_) {}
     const isOfflineBlocked = payload.result?.status === 'OFFLINE_INPUT_REQUIRED';
     code = (['ERROR', 'FAILED'].includes(payload.result?.status) || isOfflineBlocked || cancelled) ? 1 : 0;
     onProgress({ percent: code === 0 ? 100 : undefined, stage: 'ROUTED_COMPLETE', tier: out.modeUsed, action: 'Routed result available' });
@@ -255,8 +268,8 @@ function _parseAgentFeedbackResponse(rawAnswer, fallbackChassis) {
       return {
         disposition: parsed.disposition || 'ENGINEERING_TICKET',
         summary: parsed.summary || text,
-        proposedDelta: parsed.ruleUpdate ? {
-          chassis: parsed.chassis || fallbackChassis || 'DL380_Gen12',
+        proposedDelta: parsed.disposition === 'RULE_DELTA_PROPOSAL' && !parsed.confirmationQuestion && (parsed.chassis || fallbackChassis) && parsed.ruleUpdate ? {
+          chassis: parsed.chassis || fallbackChassis,
           affectedSku: parsed.affectedSku || null,
           requiredDependencySku: parsed.requiredDependencySku || null,
           ruleUpdate: parsed.ruleUpdate
@@ -271,7 +284,7 @@ function _parseAgentFeedbackResponse(rawAnswer, fallbackChassis) {
 }
 
 router.post('/feedback/analyze-with-agent', async (req, res) => {
-  const policy = policyResolver.resolveEffectivePolicy();
+  const policy = policyResolver.resolveEffectivePolicy({ clientOffline: req.body?.offline, clientOfflineMode: req.body?.offlineMode });
   if (policy.offline) {
     return sendErrorResponse(res, 422, 'Antigravity feedback analysis is disabled in OFFLINE_MODE', { source: 'AGENT_ROUTER', status: 'BLOCKED_OFFLINE' });
   }
@@ -280,12 +293,23 @@ router.post('/feedback/analyze-with-agent', async (req, res) => {
     return sendErrorResponse(res, 400, 'feedbackText is required', { source: 'AGENT_ROUTER' });
   }
 
+  const startedAt = Date.now();
   const prompt = _buildFeedbackAnalysisPrompt({ feedbackText, category, chassis, queryText, userConfirmation });
+  let modeUsed = 'AGY_DEEP';
   let agentRes = await runAgyEscalation({ query: prompt, conversationId: agyConversationId || null, effectivePolicy: policy, effort: 'low', timeoutMs: 45000 });
   if (agentRes.status !== 'SUCCESS') {
+    modeUsed = 'GEMINI_AGENT';
     const copilotFallback = await runPresalesCopilot({ query: prompt, context: { chassisName: chassis, effectivePolicy: policy } });
     if (copilotFallback.status === 'SUCCESS') agentRes = { ...copilotFallback, conversationId: agyConversationId || null };
   }
+  try {
+    telemetryLib.recordAgentExecutionTelemetry({
+      requestedMode: 'FEEDBACK_ANALYSIS', modeUsed: agentRes.status === 'SUCCESS' ? modeUsed : 'UNAVAILABLE',
+      tierTrail: modeUsed === 'GEMINI_AGENT' ? ['AGY_DEEP', 'GEMINI_AGENT'] : ['AGY_DEEP'],
+      modelUsed: agentRes.model || null, durationMs: Date.now() - startedAt,
+      fallbackOccurred: modeUsed === 'GEMINI_AGENT', recoveryEvents: agentRes.recoveryEvents || [], chassis: chassis || null
+    });
+  } catch (_) {}
   if (agentRes.status !== 'SUCCESS' || !agentRes.answer) {
     return res.status(503).json({
       status: agentRes.status || 'UNAVAILABLE',

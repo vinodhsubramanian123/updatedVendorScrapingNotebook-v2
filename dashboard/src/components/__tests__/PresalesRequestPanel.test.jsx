@@ -61,6 +61,35 @@ describe('PresalesRequestPanel presales handoff & scope preservation', () => {
     expect(api.postJson.mock.calls[2][1].context.priorPriceDriftRunId).toBe(firstRunId);
   });
 
+  it('continues a clarification after updating the input and starts a clean session', async () => {
+    const classification = { intent: 'FREEFORM_QA' };
+    api.postJson.mockImplementation(async (url, input) => {
+      if (url === '/api/query/classify') return classification;
+      return {
+        runId: input.runId, query: input.query, agyConversationId: 'conv', classification,
+        result: { status: 'SUCCESS' },
+        clarificationPrompt: { type: 'PLATFORM_CHOICE', question: 'Choose platform', options: ['DL360 Gen12'] }
+      };
+    });
+    const { unmount } = render(<PresalesRequestPanel localOnly />);
+    fireEvent.change(screen.getByLabelText('Requirements or presales question'), { target: { value: 'Size four nodes' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Run query' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'DL360 Gen12' }));
+    await waitFor(() => expect(api.postJson.mock.calls.filter(([url]) => url === '/api/agent/query')).toHaveLength(2));
+    const [, second] = api.postJson.mock.calls.at(-1);
+    expect(second.query).toContain('Size four nodes');
+    expect(second.query).toContain('DL360 Gen12');
+    expect(second.agyConversationId).toBe('conv');
+    expect(second.priorTurns).toHaveLength(1);
+    fireEvent.click(await screen.findByRole('button', { name: 'New session' }));
+    expect(sessionStorage.getItem('presales.ownedRunId')).toBeNull();
+    expect(sessionStorage.getItem('presales.sessionId')).not.toBe(second.sessionId);
+    expect(screen.getByLabelText('Requirements or presales question')).toHaveValue('');
+    unmount();
+    render(<PresalesRequestPanel localOnly />);
+    expect(api.requestJson).not.toHaveBeenCalled();
+  });
+
   it('preserves originating product, nodeCount, quantityBasis, parentRunId and global/per-node scope across header product change', async () => {
     const onEvaluateBoq = vi.fn().mockResolvedValue({});
     const candidateRef = {

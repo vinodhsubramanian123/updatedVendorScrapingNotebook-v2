@@ -86,7 +86,7 @@ export default function CatalogFilterBar({
           <select
             value={activeCategory}
             onChange={(e) => setActiveCategory(e.target.value)}
-            className="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-700 shadow-2xs focus:outline-none min-w-[140px] max-w-[190px] truncate [color-scheme:light]"
+            className="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-700 shadow-2xs focus:outline-none min-w-[140px] max-w-[190px] truncate"
           >
             <option value="ALL">All Categories</option>
             {categories.filter(c => c !== 'ALL').map(cat => (
@@ -97,7 +97,7 @@ export default function CatalogFilterBar({
           <select
             value={activeSubCategory}
             onChange={(e) => setActiveSubCategory(e.target.value)}
-            className="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-700 shadow-2xs focus:outline-none min-w-[155px] max-w-[210px] truncate [color-scheme:light]"
+            className="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-700 shadow-2xs focus:outline-none min-w-[155px] max-w-[210px] truncate"
           >
             <option value="ALL">All Sub-Categories</option>
             {availableSubCategories.filter(s => s !== 'ALL').map(sub => (

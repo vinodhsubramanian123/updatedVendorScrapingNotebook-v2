@@ -204,14 +204,20 @@ function _extractFunctionCalls(response) {
   return parts.filter(p => p?.functionCall).map(p => p.functionCall);
 }
 
-async function _runToolLoop(state, query, context, onEvent, maxTurns = 4) {
+async function _runToolLoop(state, query, context, onEvent, onProgress, maxTurns = 4) {
   const toolCallsUsed = [];
   let promptInput = query;
   let finalText = '';
 
   for (let turn = 0; turn < maxTurns; turn++) {
     if (context.signal?.aborted) break;
-    const response = await sendGuardrailMessage(promptInput, state, 4, Date.now() + 90000);
+    const maxAttempts = Math.max(8, (state.models?.length || 1) * 3);
+    const response = await sendGuardrailMessage(promptInput, state, maxAttempts, Date.now() + 90000, {
+      onRecovery: evt => {
+        onEvent?.({ type: 'PROVIDER_RECOVERY', ...evt });
+        onProgress?.({ percent: 74, stage: 'COPILOT_RECOVERY', action: `${evt.action}: switching to ${evt.model} (HTTP ${evt.status || 'timeout'})` });
+      }
+    });
     const calls = _extractFunctionCalls(response);
     if (calls.length === 0) {
       finalText = String(response?.text || '').trim();
@@ -230,6 +236,23 @@ async function _runToolLoop(state, query, context, onEvent, maxTurns = 4) {
     promptInput = outputs;
   }
   return { answer: finalText, toolCallsUsed };
+}
+
+function _buildCopilotState(routing, keyInfo, activeApiKey, deterministicResult, priorTurns) {
+  const models = [...new Set([
+    routing.model,
+    ...(Array.isArray(routing.fallbackModels) ? routing.fallbackModels : [])
+  ])];
+  return {
+    model: routing.model,
+    models,
+    fallbackModels: models,
+    apiTimeoutMs: 30000,
+    currentApiKey: activeApiKey,
+    activeKeyInfo: typeof keyInfo === 'object' ? keyInfo : null,
+    systemInstruction: _buildCopilotSystemPrompt(deterministicResult, priorTurns),
+    toolDeclarations: COPILOT_TOOL_DECLARATIONS
+  };
 }
 
 async function runPresalesCopilot({
@@ -265,6 +288,7 @@ async function runPresalesCopilot({
   onProgress?.({ percent: 72, stage: 'COPILOT_REASONING', action: `Running Gemini Copilot (${routing.model})` });
   onLog?.(`🤖 [GEMINI_AGENT] Invoking ${routing.model} copilot over tool registry...`);
 
+  let state = null;
   try {
     if (typeof _chatRunner === 'function') {
       const custom = await _chatRunner({ query, context, deterministicResult, model: routing.model, priorTurns });
@@ -273,34 +297,22 @@ async function runPresalesCopilot({
         answer: custom?.answer || '',
         toolCallsUsed: custom?.toolCallsUsed || []
       });
-      return { status: 'SUCCESS', model: routing.model, ...ev, ...custom };
+      return { status: 'SUCCESS', model: routing.model, recoveryEvents: custom?.recoveryEvents || [], ...ev, ...custom };
     }
 
-    const models = Array.isArray(routing.fallbackModels) && routing.fallbackModels.length > 0
-      ? routing.fallbackModels
-      : [routing.model];
-    const state = {
-      model: routing.model,
-      models,
-      fallbackModels: models,
-      apiTimeoutMs: 45000,
-      currentApiKey: activeApiKey,
-      activeKeyInfo: typeof keyInfo === 'object' ? keyInfo : null,
-      systemInstruction: _buildCopilotSystemPrompt(deterministicResult, priorTurns),
-      toolDeclarations: COPILOT_TOOL_DECLARATIONS
-    };
+    state = _buildCopilotState(routing, keyInfo, activeApiKey, deterministicResult, priorTurns);
     createChat(state, [], cfg => new GoogleGenAI(cfg));
-    const loopRes = await _runToolLoop(state, query, context, onEvent);
+    const loopRes = await _runToolLoop(state, query, context, onEvent, onProgress);
     const ev = evaluateCopilotEscalation({
       deterministicResult,
       answer: loopRes.answer,
       toolCallsUsed: loopRes.toolCallsUsed
     });
-    return { status: loopRes.answer ? 'SUCCESS' : 'UNAVAILABLE', model: state.model, ...loopRes, ...ev };
+    return { status: loopRes.answer ? 'SUCCESS' : 'UNAVAILABLE', model: state.model, recoveryEvents: state.recoveryEvents || [], ...loopRes, ...ev };
   } catch (err) {
     const ev = evaluateCopilotEscalation({ deterministicResult, answer: '', toolCallsUsed: [] });
     onLog?.(`⚠️ [GEMINI_AGENT] Copilot failed safely: ${err.message}`);
-    return { status: 'UNAVAILABLE', answer: null, ...ev, toolCallsUsed: [], error: err.message };
+    return { status: 'UNAVAILABLE', model: state?.model || routing.model, recoveryEvents: state?.recoveryEvents || [], answer: null, ...ev, toolCallsUsed: [], error: err.message };
   }
 }
 

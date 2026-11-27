@@ -273,7 +273,7 @@ export default function PartnerReconciliationView({
             <select
               value={selectedRank}
               onChange={e => setSelectedRank(Number(e.target.value))}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 [color-scheme:light]"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value={1}>Rank 1: Intent-Preserving Solution</option>
               <option value={2}>Rank 2: Standardized Baseline</option>

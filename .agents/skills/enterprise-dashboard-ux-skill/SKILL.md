@@ -89,8 +89,19 @@ All multi-step agentic executions (Deterministic, Gemini Copilot, Antigravity De
 - **Modular Extraction**: Extract complex state machines, file upload handlers, and SSE stream subscriptions into dedicated custom hooks (`useBoqUploader.js`, `useWorkspaceRuns.js`, `useTheme.js`).
 - **Canonical Implementation Modules**:
   - Shell & Navigation: `App()`, `AppWorkspaceShell()`, `Sidebar()`, `CommandOmnibox()` (`dashboard/src/components/layout/AppWorkspaceShell.jsx`)
-  - Hooks & State: `useTheme()`, `useBoqUploader()`, `useAppHandlers()` (`dashboard/src/hooks/useTheme.js`, `dashboard/src/hooks/useBoqUploader.js`)
+  - Hooks & State: `useTheme()`, `useBoqUploader()`, `useAppHandlers()`, `useWorkspaceRuns()` (`dashboard/src/hooks/useTheme.js`, `dashboard/src/hooks/useBoqUploader.js`, `dashboard/src/hooks/useWorkspaceRuns.js`)
   - Normalizers & Streams: `normalizeEvalResult()`, `deriveDualBrainBadges()`, `reduceTimeline()` (`dashboard/src/services/evalNormalizer.js`, `dashboard/src/services/executionTimeline.js`)
+  - Presales Studio & Feedback (`INV-288`, `INV-290`): `PresalesRequestPanel.jsx` (clean session reset rotating `sessionId`), `ClarificationPromptCard.jsx` (multi-turn continuation), `InlineOutcomeFeedback.jsx` (`localOnly` offline enforcement separating Studio feedback from portal observations), `UserFeedbackDrawer.jsx` (`postJson()` / `requestJson()` API helpers), `PortfolioManifestWorkspace.jsx`, and `ScraperTriggerCard.jsx`, backed by `dashboard/routes/agent.cjs`, `dashboard/routes/intelligence.cjs`, `dashboard/routes/catalogs.cjs`, and `dashboard/routes/tasks.cjs`.
+
+---
+
+## 🔗 Connected Skills
+
+- [`design-taste-frontend`](../design-taste-frontend/SKILL.md) — Marketing and portfolio visual styling rules
+- [`code-quality-gate-skill`](../code-quality-gate-skill/SKILL.md) — 3D maintainability ratchet, `oxlint`, Vitest, and Playwright CI gates
+- [`execution-trace-skill`](../execution-trace-skill/SKILL.md) — 9-phase telemetry and `PROVIDER_RECOVERY` observability
+- [`presales-query-router`](../presales-query-router/SKILL.md) — 3-tier Studio copilot dispatch and clarification handoffs
+- [`continuous-learning-skill`](../continuous-learning-skill/SKILL.md) — Studio feedback quarantine vs portal observation governance
 
 ---
 

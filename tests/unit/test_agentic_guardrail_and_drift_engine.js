@@ -203,3 +203,47 @@ test('Test INV-7 generateNotebookSyncPayload chassis pattern routing', async (t)
     );
   });
 });
+
+test('sendGuardrailMessage falls back immediately on 504 deadline exceeded or AbortError', async () => {
+  const { sendGuardrailMessage } = require('../../scripts/lib/rag/guardrail_transport.js');
+  const triedModels = [];
+  const state = {
+    model: 'gemini-3.7-flash',
+    models: ['gemini-3.7-flash', 'gemini-3.6-flash'],
+    apiTimeoutMs: 30000,
+    currentApiKey: 'test-key',
+    systemInstruction: 'sys',
+    toolDeclarations: []
+  };
+  const createClient = () => ({
+    chats: {
+      create: ({ model }) => ({
+        getHistory: async () => [],
+        sendMessage: async () => {
+          triedModels.push(model);
+          if (model === 'gemini-3.7-flash') {
+            const err = new Error('{"error":{"code":504,"message":"Deadline expired","status":"DEADLINE_EXCEEDED"}}');
+            err.status = 504;
+            throw err;
+          }
+          return { text: 'Fallback succeeded' };
+        }
+      })
+    }
+  });
+  state.chat = createClient().chats.create({ model: state.model });
+  const recoveryNotices = [];
+  const res = await sendGuardrailMessage('hello', state, 3, Date.now() + 60000, {
+    createClient,
+    sleep: async () => {},
+    onRecovery: evt => recoveryNotices.push(evt),
+    rotator: { markKeySuccess: () => {}, markKeyExhausted: () => {}, getActiveKey: () => ({ apiKey: 'test-key' }) }
+  });
+  assert.strictEqual(res.text, 'Fallback succeeded');
+  assert.deepStrictEqual(triedModels, ['gemini-3.7-flash', 'gemini-3.6-flash']);
+  assert.strictEqual(recoveryNotices.length, 1);
+  assert.strictEqual(recoveryNotices[0].action, 'MODEL_FALLBACK');
+  assert.strictEqual(recoveryNotices[0].previousModel, 'gemini-3.7-flash');
+  assert.strictEqual(recoveryNotices[0].model, 'gemini-3.6-flash');
+  assert.strictEqual(recoveryNotices[0].status, 504);
+});

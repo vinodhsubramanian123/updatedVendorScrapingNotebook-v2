@@ -7,7 +7,7 @@
  * logs KnowledgeDeltas into catalog_deltas.json, and synthesizes direct SKU fixes.
  */
 
-const { getOCATarget, getAnyPageTarget, connectWS, sendCommand, sleep, dismissDOMModals } = require('../lib/scraper/cdp.js');
+const { getOCATarget, getAnyPageTarget, connectWS, setupDialogAutoHandler, sendCommand, sleep, dismissDOMModals } = require('../lib/scraper/cdp.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
 
 async function ensureGlobalSolutionNodeSelected(ws) {
@@ -31,7 +31,8 @@ async function extractModalErrorsFromDOM(ws) {
   const modalRes = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
       const banner = document.getElementById('ag-clic-banner');
-      const modal = document.querySelector('.clic-error-modal, .ui-dialog, .modal-dialog, #clic_results, [class*="modal"], [class*="popup"]');
+      const modals = Array.from(document.querySelectorAll('.clic-error-modal, .ui-dialog, .modal-dialog, #clic_results, [class*="modal"], [class*="popup"]'));
+      const modal = modals.find(m => m.offsetWidth > 0 && m.offsetHeight > 0 && !/your session is going to expire|resume current session/i.test(m.innerText || '')) || null;
       const downloadExcelBtn = document.querySelector('#_clic_download_excel');
       
       const fullText = document.body ? document.body.innerText : '';
@@ -71,6 +72,7 @@ async function main() {
 
   console.log(`✅ Connected to Active Chrome Tab: ${target.title}`);
   const ws = await connectWS(target.webSocketDebuggerUrl);
+  await setupDialogAutoHandler(ws);
 
   // 1. Inject Banner
   console.log(`Step 1: Injecting visual inspection banner on screen...`);
@@ -112,9 +114,8 @@ async function main() {
 
       // Search for CLIC Check or Unbuildable Status link
       const selectors = [
-        '#clic-button', '#clic_check', '.btn-clic', '#nav_clic', '[id*="clic"]',
-        'a[href*="clic"]', 'button[title*="CLIC"]',
-        'a:contains("Unbuildable")', '.unbuildable-status', '[class*="unbuildable"]',
+        '#clic-button', '#clic_check', '.btn-clic', '#nav_clic', '[id*="clic_check"]', '[id*="clic-button"]',
+        'button[title*="CLIC" i]', '.unbuildable-status', '[class*="unbuildable"]',
         '#action_required_link', '.action-required'
       ];
 
@@ -122,16 +123,16 @@ async function main() {
       for (const sel of selectors) {
         try {
           const el = document.querySelector(sel);
-          if (el && el.offsetWidth > 0 && el.offsetHeight > 0) { btn = el; break; }
+          if (el && el.offsetWidth > 0 && el.offsetHeight > 0 && !/expand all|collapse all/i.test(el.innerText || '')) { btn = el; break; }
         } catch (_) { console.warn('Caught suppressed error in visual_clic_inspector.js:', _); }
       }
 
       if (!btn) {
-        // Fallback: search all links/buttons for "Unbuildable" or "Action" or "CLIC"
+        // Fallback: search all links/buttons for "View/Resolve issues", "Unbuildable", "Action", or "CLIC"
         const elements = Array.from(document.querySelectorAll('a, button, span, div'));
         btn = elements.find(el => {
           const t = (el.innerText || '').trim().toLowerCase();
-          return (t.includes('unbuildable') || t.includes('action-required') || t.includes('clic check'))
+          return !t.includes('expand all') && (t.includes('view/resolve issues') || t.includes('unbuildable') || t.includes('action-required') || t.includes('clic check'))
             && el.offsetWidth > 0 && el.offsetHeight > 0;
         });
       }

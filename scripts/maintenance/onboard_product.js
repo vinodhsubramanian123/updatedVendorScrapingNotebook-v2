@@ -11,6 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const { ProductCapabilityManifestSchema } = require('../lib/system/schemas.js');
+const { invalidateManifestCache } = require('../lib/rules/product_manifest_loader.js');
 const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 
 function parseCliArgs(argv) {
@@ -64,35 +65,69 @@ function _scanCatalogChassisHints(entries, initialState) {
   return initialState;
 }
 
+function _inferDomainFromCatalog(opts, meta, pidLower) {
+  if (opts.domain) return opts.domain;
+  if (meta.domain) return meta.domain;
+  const combined = [pidLower, meta.family, meta.generation].filter(Boolean).join(' ').toLowerCase();
+  const pillar = String(meta.pillar || '').toUpperCase();
+  if (pillar === 'SERVER') return 'server';
+  if (pillar === 'NETWORKING') return 'networking';
+  if (pillar === 'COMPOSITE') return 'composable';
+  if (pillar === 'STORAGE') return /\b(tape|msl\d*|storeever|lto)\b/i.test(combined) ? 'archive' : 'storage';
+  if (/\b(tape|msl\d*|storeever|lto)\b/i.test(combined)) return 'archive';
+  if (/\b(alletra|nimble|msa|storeonce)\b/i.test(combined)) return 'storage';
+  if (/\b(sn\d+[a-z]*|brocade|switch|interconnect|frame_link|f32)\b/i.test(combined)) return 'networking';
+  if (/synergy.*frame/i.test(combined)) return 'composable';
+  return 'server';
+}
+
+function _inferDefaultFormFactor(domain, opts, meta, state) {
+  if (opts.formFactor) return opts.formFactor;
+  if (meta.formFactor) return meta.formFactor;
+  if (domain === 'server') return state.formFactor;
+  const pidLower = String(opts.productId || '').toLowerCase();
+  if (domain === 'composable') return pidLower.includes('synergy') ? '10U Blade Frame' : 'Modular Frame';
+  if (domain === 'networking') return pidLower.includes('module') ? 'Interconnect Module' : '1U Rack';
+  if (domain === 'storage') return pidLower.includes('alletra_mp') ? '2U+ Multi-Node' : '2U Storage';
+  if (domain === 'archive') return /\bmsl/i.test(pidLower) ? '3U Tape Library' : 'Rack Tape Library';
+  return state.formFactor;
+}
+
 function inferManifestFromCatalog(catalogData, opts) {
   const meta = catalogData?.metadata || {};
   const entries = Array.isArray(catalogData?.entries) ? catalogData.entries : [];
+  const pidLower = String(opts.productId || '').toLowerCase();
+  const domain = _inferDomainFromCatalog(opts, meta, pidLower);
   const state = {
     maxSockets: 2,
     ocpSlots: 2,
     basePcieSlots: 3,
     maxPsuBays: 2,
-    generation: opts.generation || meta.generation || 'Gen12',
+    generation: opts.generation || meta.generation || (domain === 'server' ? 'Gen12' : undefined),
     formFactor: opts.formFactor || meta.formFactor || '2U Rack',
     skuAliases: []
   };
-  const pidLower = String(opts.productId || '').toLowerCase();
   _applyChassisDescriptionHints(pidLower, null, state);
   _scanCatalogChassisHints(entries, state);
-  if (opts.formFactor) state.formFactor = opts.formFactor;
-  if (opts.generation) state.generation = opts.generation;
+  const formFactor = _inferDefaultFormFactor(domain, opts, meta, state);
+
+  const baseManifest = {
+    schemaVersion: '1.0.0',
+    productId: opts.productId,
+    vendor: opts.vendor || meta.vendor || 'HPE',
+    domain,
+    family: opts.family || meta.family || (domain === 'server' ? 'ProLiant Compute' : 'HPE Enterprise'),
+    ...(state.generation ? { generation: state.generation } : {}),
+    formFactor,
+    skuAliases: [...new Set([opts.productId, opts.productId.replace(/_/g, ' '), ...state.skuAliases])]
+  };
+  if (domain !== 'server') return baseManifest;
 
   const channelsPerSocket = pidLower.includes('dl145')
     ? 6
     : (/(?:^|[^a-z0-9])dl(?:325|345|365|385)(?![a-z0-9])/.test(pidLower) ? 12 : 8);
   return {
-    schemaVersion: '1.0.0',
-    productId: opts.productId,
-    vendor: opts.vendor || meta.vendor || 'HPE',
-    domain: opts.domain || meta.domain || 'server',
-    family: opts.family || meta.family || 'ProLiant Compute',
-    generation: state.generation,
-    formFactor: state.formFactor,
+    ...baseManifest,
     maxSockets: state.maxSockets,
     ocpSlots: state.ocpSlots,
     basePcieSlots: state.basePcieSlots,
@@ -104,9 +139,36 @@ function inferManifestFromCatalog(catalogData, opts) {
       maxDimmsPerSocket: 16,
       maxDimmsPerChassis: state.maxSockets * 16,
       validBalancedCountsPerSocket: [1, 2, 4, 6, 8, 12, 16]
-    },
-    skuAliases: [...new Set([opts.productId, opts.productId.replace(/_/g, ' '), ...state.skuAliases])]
+    }
   };
+}
+
+function readOnboardingCatalog(args) {
+  if (!args.catalogPath && args.dryRun) return {};
+  if (!args.catalogPath) throw new Error('A scraped catalog is required for onboarding');
+  const catalog = JSON.parse(fs.readFileSync(path.resolve(args.catalogPath), 'utf8'));
+  if (!catalog.entries?.some(entry => entry.skus?.some(row => row['Product #'] || row.sku))) {
+    throw new Error('The catalog has no product SKU rows');
+  }
+  const model = catalog.metadata?.model;
+  if (model && model.toLowerCase().replace(/\s+/g, '_') !== args.productId.toLowerCase().replace(/\s+/g, '_')) {
+    throw new Error('Catalog model does not match the requested product');
+  }
+  return catalog;
+}
+
+function onboardingManifest(existing, catalog, args) {
+  if (!existing) return inferManifestFromCatalog(catalog, args);
+  if (existing.productId !== args.productId) throw new Error('Existing manifest product ID mismatch');
+  const manifest = { ...existing };
+  for (const field of ['vendor', 'domain', 'family', 'generation', 'formFactor']) {
+    if (args[field]) manifest[field] = args[field];
+  }
+  if (!Array.isArray(manifest.skuAliases) || manifest.skuAliases.length === 0) {
+    const scanned = _scanCatalogChassisHints(Array.isArray(catalog?.entries) ? catalog.entries : [], { skuAliases: [] });
+    manifest.skuAliases = [...new Set([args.productId, args.productId.replace(/_/g, ' '), ...scanned.skuAliases])];
+  }
+  return manifest;
 }
 
 function runOnboarding(argv = process.argv.slice(2)) {
@@ -114,21 +176,21 @@ function runOnboarding(argv = process.argv.slice(2)) {
   if (!args.productId) {
     throw new Error('Missing required --product-id argument.');
   }
-  const catalogData = args.catalogPath && fs.existsSync(args.catalogPath)
-    ? JSON.parse(fs.readFileSync(path.resolve(args.catalogPath), 'utf8'))
-    : { metadata: {}, entries: [] };
-
-  const manifest = inferManifestFromCatalog(catalogData, args);
+  if (!/^[A-Za-z0-9][A-Za-z0-9 _.-]*$/.test(args.productId)) throw new Error('Invalid product ID');
+  const outDir = path.resolve(args.outputDir || path.join(__dirname, '..', 'config', 'products'));
+  const outPath = path.join(outDir, args.productId + '.json');
+  const catalogData = readOnboardingCatalog(args);
+  const existing = fs.existsSync(outPath) ? JSON.parse(fs.readFileSync(outPath, 'utf8')) : null;
+  const manifest = onboardingManifest(existing, catalogData, args);
   const validation = ProductCapabilityManifestSchema.safeParse(manifest);
   if (!validation.success) {
     throw new Error(`Manifest failed ProductCapabilityManifestSchema: ${JSON.stringify(validation.error.issues)}`);
   }
 
-  const outDir = path.resolve(args.outputDir || path.join(__dirname, '..', 'config', 'products'));
-  const outPath = path.join(outDir, `${args.productId}.json`);
-  if (!args.dryRun) {
+  if (!args.dryRun && JSON.stringify(existing) !== JSON.stringify(manifest)) {
     if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
-    safeWriteJsonAtomic(outPath, validation.data, { rejectInvalid: false });
+    safeWriteJsonAtomic(outPath, manifest, { rejectInvalid: false });
+    invalidateManifestCache();
   }
   return {
     dryRun: args.dryRun,

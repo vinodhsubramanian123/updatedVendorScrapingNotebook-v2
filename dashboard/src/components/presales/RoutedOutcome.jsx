@@ -354,7 +354,7 @@ function CandidateReferenceSummary({ candidateRef }) {
   );
 }
 
-export default function RoutedOutcome({ envelope, onExportExcel, onEvaluateCandidateBom, onFollowUp, busy = false }) {
+export default function RoutedOutcome({ envelope, onExportExcel, onEvaluateCandidateBom, onFollowUp, busy = false, localOnly = false }) {
   if (!envelope) return null;
   const result = envelope.result || {};
   const items = result.items || result.candidateBOM || result.evalResults?.items || [];
@@ -447,7 +447,7 @@ export default function RoutedOutcome({ envelope, onExportExcel, onEvaluateCandi
       <RoutedBOMTable items={items} />
       <ReasoningNarrativeView reasoningAnalysis={envelope.reasoningAnalysis} rawNarrative={result.reasoningNarrative} />
 
-      <InlineOutcomeFeedback envelope={envelope} />
+      <InlineOutcomeFeedback key={envelope.runId || envelope.query} envelope={envelope} localOnly={localOnly} />
 
       <details>
         <summary className="text-xs text-slate-500 hover:text-slate-700 cursor-pointer">Structured outcome and evidence JSON</summary>

@@ -9,6 +9,7 @@
  */
 
 const assert = require('assert');
+const fs = require('fs');
 const path = require('path');
 const { spawn, execFileSync } = require('child_process');
 const http = require('http');
@@ -59,8 +60,9 @@ async function main() {
   console.log('🧪 RUNNING DASHBOARD ROUTES SUITE');
   console.log('================================================================\n');
 
+  const hasBuiltDist = fs.existsSync(path.join(__dirname, '../../dashboard/dist/index.html'));
   const serverProcess = spawn('node', [path.join(__dirname, '../../dashboard/server.cjs')], {
-    env: { ...process.env, PORT: '3457' }
+    env: { ...process.env, PORT: '3457', ...(hasBuiltDist ? { DASHBOARD_SERVE_DIST: '1' } : {}) }
   });
 
   let serverReady = false;
@@ -70,7 +72,7 @@ async function main() {
     }
   });
 
-  for (let i = 0; i < 150; i++) {
+  for (let i = 0; i < 300; i++) {
     if (serverReady) break;
     await new Promise(r => setTimeout(r, 100));
   }

@@ -90,9 +90,9 @@ npm run auth:nlm:heal
 4. Extracted rules and citations are saved to persistent `KnowledgeDelta` records.
 5. The temporary source is **immediately detached** via `detachSolutionSource()` (`source_delete`), strictly preventing baseline QuickSpecs contamination.
 
-### E. Multi-Notebook Fan-Out, Tiered Routing & Negation Guard (`INV-284`)
-- Cross-solution and multi-generation queries fan out through `scripts/lib/notebook/multi_notebook_coordinator.js` using deterministic timestamp-free cache keys (`trusted_query_v3:...` in `scripts/lib/notebook/notebook_query_utils.js`).
-- Guardrail Prompt `v4` (`ACTIVE_VERSION = 'v4'` in `scripts/lib/prompts/guardrail_prompt.js`), `scripts/config/model_routing.json` (`resolveModelForTask` in `scripts/lib/system/gemini_rotator.js`), and `extractRagClaimsWithNegationGuard` (`scripts/lib/boq/pipeline/eval_boq_rag_stage.js`) prevent negated-claim misattribution and stale fallback prompts.
+### E. Multi-Notebook Fan-Out, Tiered Routing, Recovery Telemetry & Negation Guard (`INV-284`, `INV-290`)
+- Cross-solution and multi-generation queries fan out through `scripts/lib/notebook/multi_notebook_coordinator.js` (`getNotebookIdForChassis(nbConfig, productKey)`) using deterministic timestamp-free cache keys (`trusted_query_v3:...` in `scripts/lib/notebook/notebook_query_utils.js`). `dashboard/routes/intelligence.cjs` (`POST /api/multi-notebook-query`) records `recordNotebookConsultationTelemetry()` with `scenario: 'MULTI_NOTEBOOK_FANOUT'`, and `dashboard/routes/notebook.cjs` logs `requestSentAt` using `new Date(startTime).toISOString()`.
+- Guardrail Prompt `v4` (`ACTIVE_VERSION = 'v4'` in `scripts/lib/prompts/guardrail_prompt.js`), `scripts/config/model_routing.json` (`resolveModelForTask` in `scripts/lib/system/gemini_rotator.js`, with `reasoning_deep` fallback chain including `gemini-3.5-flash-lite`), `sendGuardrailMessage()` (`scripts/lib/rag/guardrail_transport.js`, firing `onRecovery` with `previousModel`), `_runToolLoop()` (`scripts/lib/rag/presales_copilot_agent.js`, emitting `PROVIDER_RECOVERY`), and `extractRagClaimsWithNegationGuard()` (`scripts/lib/boq/pipeline/eval_boq_rag_stage.js`) prevent negated-claim misattribution and silent fallback blind spots.
 
 ---
 

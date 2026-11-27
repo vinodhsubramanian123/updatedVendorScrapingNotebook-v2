@@ -86,12 +86,14 @@ export default function PortfolioManifestWorkspace({
   const [manifests, setManifests] = useState([]);
   const [adapters, setAdapters] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshTick, setRefreshTick] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFamily, setSelectedFamily] = useState('ALL');
   const [selectedStatus, setSelectedStatus] = useState('ALL');
 
   useEffect(() => {
     const controller = new AbortController();
+    setLoading(true);
     Promise.all([
       requestJson('/api/product-manifests', { signal: controller.signal }).catch(() => null),
       requestJson('/api/vendor-adapters', { signal: controller.signal }).catch(() => null)
@@ -103,7 +105,7 @@ export default function PortfolioManifestWorkspace({
       if (!controller.signal.aborted) setLoading(false);
     });
     return () => controller.abort();
-  }, []);
+  }, [catalogs.length, refreshTick]);
 
   const families = Array.from(new Set(catalogs.map(c => c.family).filter(Boolean)));
   const activeCatalogCount = catalogs.filter(c => !c.isQuarantinedStub).length;
@@ -125,11 +127,15 @@ export default function PortfolioManifestWorkspace({
         <div className="flex items-center gap-2">
           <span className="badge badge-emerald">{activeCatalogCount} Active</span>
           {quarantinedStubCount > 0 && <span className="badge badge-amber">{quarantinedStubCount} Quarantined Stubs</span>}
-          {loading && (
-            <span className="text-xs text-slate-500 flex items-center gap-1.5">
-              <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Loading manifests...
-            </span>
-          )}
+          <button
+            type="button"
+            onClick={() => setRefreshTick(t => t + 1)}
+            disabled={loading}
+            className="btn-secondary text-xs px-2.5 py-1 disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+            <span>{loading ? 'Refreshing...' : 'Refresh'}</span>
+          </button>
         </div>
       </div>
 

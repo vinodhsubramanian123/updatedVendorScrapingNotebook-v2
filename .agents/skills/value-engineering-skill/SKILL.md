@@ -132,15 +132,14 @@ The agent MUST NOT invoke value engineering when:
 
 ---
 
-## 💻 CLI Usage
+## 💻 CLI Usage & Programmatic Entrypoints
 
 ```bash
-# Value engineering runs automatically as part of eval_boq.js output
-# The deal_optimizer.js module is invoked internally after buildability is confirmed
-
-# To view VE recommendations in the dashboard:
-# Navigate to the ValueEngineeringPanel in the Resolution Matrix view
+# Value engineering runs automatically inside eval_boq.js after rank 1 buildability passes
+npm run eval:boq -- path/to/boq.xlsx --json
 ```
+
+Programmatically, invoke `analyzeDealValueEngineering()` (`scripts/lib/boq/deal_optimizer.js`), `optimizeForBudget()` (`scripts/lib/boq/budget_optimizer.js`), and `classifyWorkloadProfile()`. Navigate to `ValueEngineeringPanel` in the Resolution Matrix view to inspect advisory savings in the dashboard.
 
 ---
 
@@ -162,3 +161,8 @@ When value engineering runs, it adds entries to the execution trace:
   ]
 }
 ```
+
+## 🔗 Upstream & Downstream Skill Connections
+
+- **Upstream Buildability Gate**: [`boq-eval-skill`](../boq-eval-skill/SKILL.md) (must pass 7-aspect buildability first per `INV-76`), [`workload-dna-skill`](../workload-dna-skill/SKILL.md), [`least-delta-combinator-skill`](../least-delta-combinator-skill/SKILL.md)
+- **Downstream Verification & Deliverables**: [`adversarial-validation-skill`](../adversarial-validation-skill/SKILL.md), [`output-validation-skill`](../output-validation-skill/SKILL.md), [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md), [`execution-trace-skill`](../execution-trace-skill/SKILL.md)

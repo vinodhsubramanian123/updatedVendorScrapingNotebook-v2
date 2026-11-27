@@ -1,7 +1,7 @@
 ﻿# AGENTS.md — Master Operating Charter & Dynamic Skill Router
 
 **Agent Identity:** Lead Solution Execution Architect — HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.  
-**Active Portfolio & Qualification Scope (`2026-11-26`):** **17 active live-scraped HPE product lines** + **2 quarantined legacy stubs** (`Alletra_Storage_System`, `GX5000_General_RACK`), all `17/17` staging-floor and cloud-sync verified (`CLOUD_VERIFIED`), declaratively schema-backed via `scripts/config/products/*.json`. Offline certification covers `SI-00`–`SI-10` (`INV-244`–`INV-252`), `INV-265`–`INV-288`, **40/40** skills, `< 800` LOC decomposed orchestrator facades, the 3D ratchet (`CC <= 20`, `LOC <= 80`, `nesting <= 4` on new/edited functions; frozen legacy baseline, `INV-287`), `0` oxlint warnings, `0` circular dependencies, and `0` orphaned files. Per-customer HPE OCA (`CLIC`) portal acceptance remains **`PORTAL VALIDATION PENDING`** until a current manifest-bound Tier 3 receipt is recorded.  
+**Active Portfolio & Qualification Scope (`2026-11-26`):** **17 active live-scraped HPE product lines** + **2 quarantined legacy stubs** (`Alletra_Storage_System`, `GX5000_General_RACK`), all `17/17` staging-floor and cloud-sync verified (`CLOUD_VERIFIED`), declaratively schema-backed via `scripts/config/products/*.json`. Offline certification covers `SI-00`–`SI-10` (`INV-244`–`INV-252`), `INV-265`–`INV-290`, **40/40** skills, `< 800` LOC decomposed orchestrator facades, the 3D ratchet (`CC <= 20`, `LOC <= 80`, `nesting <= 4` on new/edited functions; frozen legacy baseline, `INV-287`), `0` oxlint warnings, `0` circular dependencies, and `0` orphaned files. Per-customer HPE OCA (`CLIC`) portal acceptance remains **`PORTAL VALIDATION PENDING`** until a current manifest-bound Tier 3 receipt is recorded.  
 **Latest Closures:** [`2026-11-26 Dashboard Modernization & Agentic Studio Closure`](file:///docs/audits/2026-11-26-dashboard-modernization-and-agentic-studio-closure.md) | [`2026-11-26 Intelligence, Graph & Extensibility Closure`](file:///docs/audits/2026-11-26-end-to-end-intelligence-graph-and-extensibility-closure.md) | [`2026-11-24 Intelligence & Hygiene Closure`](file:///docs/audits/2026-11-24-intelligence-elevation-and-hygiene-closure.md) | [`2026-11-22 Catalog & Intelligence Closure`](file:///docs/audits/2026-11-22-catalog-perfection-and-intelligence-closure.md) | [`Historical Milestones Index`](file:///docs/audits/HISTORICAL_MILESTONES_INDEX.md).
 
 ---
@@ -14,7 +14,7 @@
 
 ## 1. Mandatory First Step: Graphify & Indexed Knowledge Lookup (`INV-276`)
 - **Query Graph First**: Start codebase discovery with `graphify query "<question>"` (or inspect `graphify-out/wiki/index.md`) instead of brute-force reads. Run `npm run update:graph` after code edits.
-- **Fast Invariant & Learnings Lookup**: Query `docs/INVARIANTS.md` (`INV-0`–`INV-288`) via `npm run docs:lookup -- INV-<n>` and check [`.agents/ACTIVE_LEARNINGS_DIGEST.md`](file:///.agents/ACTIVE_LEARNINGS_DIGEST.md) + [`.agents/FORENSIC_LEARNINGS.md`](file:///.agents/FORENSIC_LEARNINGS.md) before modifying core subsystems.
+- **Fast Invariant & Learnings Lookup**: Query `docs/INVARIANTS.md` (`INV-0`–`INV-290`) via `npm run docs:lookup -- INV-<n>` and check [`.agents/ACTIVE_LEARNINGS_DIGEST.md`](file:///.agents/ACTIVE_LEARNINGS_DIGEST.md) + [`.agents/FORENSIC_LEARNINGS.md`](file:///.agents/FORENSIC_LEARNINGS.md) before modifying core subsystems.
 
 ---
 

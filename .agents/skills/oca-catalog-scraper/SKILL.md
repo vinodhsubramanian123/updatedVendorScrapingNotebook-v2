@@ -86,7 +86,7 @@ sequenceDiagram
 | HPE Synergy VC 100Gb F32 Module | Synergy | `SY100Gb_F32_Module` | 3 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 | HPE Alletra Storage System | Alletra | `Alletra_Storage_System` | 3 (Baseline + CTO) | 7 Sheets | ✅ 100% PASS | ✅ Verified Cloud RAG |
 
-**Total Portfolio Intelligence**: **11 Canonical Product Generations Certified** across 5 families (2,983 unique hardware SKUs on disk). Full isolated test matrix certified at **163/163 Suites PASSED (100.0%)**.
+**Historical Benchmark Snapshot**: **11 Canonical Product Generations Certified** across 5 families (2,983 unique hardware SKUs on disk at snapshot date). Live portfolio scope is **17 active live-scraped HPE product lines** (`CLOUD_VERIFIED`) + **2 quarantined legacy stubs** (`Alletra_Storage_System`, `GX5000_General_RACK`), tracked dynamically in `outputs/SCRAPED_CATALOGS.md` and `.agents/PORTFOLIO_STATUS.md`.
 
 ---
 
@@ -166,7 +166,14 @@ npm test
 
 # Run universal auth health check before any scraping session (recommended)
 npm run auth:status
+
+# Infer or update product capability manifest (preserves curated hardware limits, INV-285 / INV-290)
+npm run onboard:product -- --product-id DL380_Gen12 --catalog-path outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_Catalog.json
 ```
+
+### Dashboard E2E Scrape Pipeline & Manifest Cache Invalidation (`INV-285`, `INV-290`)
+- Dashboard `POST /api/scrape-e2e` (`dashboard/routes/tasks.cjs`) executes `runDashboardE2EScrape()` via `scripts/lib/scraper/dashboard_scrape_pipeline.js` (`buildNavigateArgs()`, `buildScrapeArgs()`), suppressing duplicate `--recover` flags in Step 3 when Step 2 (`navigate_oca.js`) already refreshed the session.
+- `runOnboarding()`, `onboardingManifest()`, and `readOnboardingCatalog()` in `scripts/maintenance/onboard_product.js` validate catalog-to-product identity, preserve existing curated bounds in `scripts/config/products/*.json`, and invoke `invalidateManifestCache()` (`scripts/lib/rules/product_manifest_loader.js`); `tasks.cjs` calls `invalidateManifestCache()` alongside catalog/chassis cache resets on task completion.
 
 > [!NOTE]
 > **Preflight Gate Drive Auth Decoupling**: Server products with `"canonicalDriveEnabled": false` in `scripts/config/notebooks.json` (e.g. `DL380_Gen12`, `DL380a_Gen12`, `DL385_Gen11`) route knowledge sync through the Markdown payload path rather than Google Drive/Sheets. For these products, `runScrapingPreflightGate()` automatically skips the Google Drive/Sheets OAuth scope verification step (`Step [3/4]`) and emits `SKIPPED_DRIVE_DISABLED`. This prevents false preflight failures when Drive auth is not required for the target chassis.

@@ -53,6 +53,14 @@ HALT-CLIC3: If CLIC response contains unbuildable errors:
 
 ---
 
+## 2.5 Implementation Entrypoints & False-Green Guard (`INV-289`)
+
+- **Live CDP & Modal Inspection Engines**: Invoke `triggerClicCheck()` (`90000`ms default timeout), `parseClicInspectionResult()`, and `setupDialogAutoHandler()` in `scripts/lib/scraper/cdp.js`.
+- **CLI Inspection & E2E Commands**: Run `npm run inspect:session` (`scripts/scrapers/inspect_oca_session.js`), `npm run inspect:clic` (`scripts/scrapers/visual_clic_inspector.js`), `npm run parse:clic` (`scripts/scrapers/parse_clic_modal.js`), and `npm run test:clic` (`tests/e2e/test_live_clic.js`).
+- **False-Green Guard**: Selectors MUST exclude `"Expand All"` / `"Collapse All"` buttons, avoid invalid `:contains(...)` selectors, filter WebLogic session-keepalive dialogs, and read visible header `Config Status` (`UNBUILDABLE` blocks any clean pass claim).
+
+---
+
 ## 3. Deliverable State Invariant
 Deliverables MUST remain marked `PORTAL VALIDATION PENDING` whenever relevant investigations, requested-state readbacks, or final receipts are missing. Catalogue completeness, local physical checks, NotebookLM grounding, and live acceptance are distinct, un-conflatable evidence states.
 

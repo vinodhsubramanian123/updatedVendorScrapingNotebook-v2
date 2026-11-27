@@ -285,7 +285,7 @@ function usePresalesRunner(query, product, primary, secondary, localOnly, onEval
   const [error, setError] = useState(null);
   const revision = useRef(0);
   const submitting = useRef(false);
-  const [sessionId] = useState(() => {
+  const [sessionId, setSessionId] = useState(() => {
     const key = 'presales.sessionId';
     const value = readSessionValue(key) || crypto.randomUUID();
     writeSessionValue(key, value);
@@ -321,6 +321,14 @@ function usePresalesRunner(query, product, primary, secondary, localOnly, onEval
     } finally { submitting.current = false; }
   };
   const resetSession = () => {
+    revision.current++;
+    const nextSession = crypto.randomUUID();
+    setSessionId(nextSession);
+    writeSessionValue('presales.sessionId', nextSession);
+    activeRunIdRef.current = null;
+    setActiveRunId(null);
+    writeSessionValue(SESSION_PRESALES_RUN_KEY, null);
+    setError(null);
     turnsRef.current = [];
     setTurns([]);
     agyConvIdRef.current = null;
@@ -453,13 +461,13 @@ export default function PresalesRequestPanel({ product: initialProduct, catalogs
     query, product, primary, secondary, localOnly, onEvaluateBoq, pinnedProductId, mode
   );
 
-  const handleFollowUp = async (replyText) => {
-    const needsPlatformAppend = result?.result?.code === 'PLATFORM_CLARIFICATION_REQUIRED' && result?.query;
-    const effective = needsPlatformAppend
-      ? `${result.query} (Target HPE Platform: ${replyText})`
-      : replyText;
+  const handleFollowUp = (replyText) => {
+    const original = result?.query || query;
+    const platform = result?.result?.code === 'PLATFORM_CLARIFICATION_REQUIRED';
+    const label = platform ? 'Target HPE Platform' : 'Additional details';
+    const effective = original + ' (' + label + ': ' + replyText + ')';
     setQuery(effective);
-    await execute(effective);
+    setPending({ query: effective });
   };
 
   useEffect(() => {
@@ -471,9 +479,11 @@ export default function PresalesRequestPanel({ product: initialProduct, catalogs
     onConsumeOmnibox?.();
   }, [omniboxRequest, onConsumeOmnibox]);
   useEffect(() => {
-    if (!pending || serverOffline === null || pending.query !== query) return;
+    if (!pending || serverOffline === null) return;
+    if (pending.query !== query) { setPending(null); return; }
+    if (isTaskRunning || busy) return;
     setPending(null);
-    if (!isTaskRunning && !busy) void (pending.preview ? classify() : execute());
+    void (pending.preview ? classify(pending.query) : execute(pending.query));
   }, [pending, serverOffline, query, isTaskRunning, busy, classify, execute]);
 
   const runFromKeyboard = event => {
@@ -532,8 +542,8 @@ export default function PresalesRequestPanel({ product: initialProduct, catalogs
         classify={classify} plan={plan} execute={execute} primary={primary} secondary={secondary}
       />
       {error && <p role="alert" className="text-sm text-rose-800 bg-rose-50 p-2 rounded-lg border border-rose-200">{error}</p>}
-      <AgentConversationThread turns={turns} envelope={result} onNewSession={resetSession} />
-      <RoutedOutcome envelope={result} onExportExcel={exportExcel} onEvaluateCandidateBom={evaluateCandidateBom} onFollowUp={handleFollowUp} busy={busy} />
+      <AgentConversationThread turns={turns} envelope={result} onNewSession={() => { setPending(null); setQuery(''); setPrimary(null); setSecondary(null); resetSession(); }} />
+      <RoutedOutcome localOnly={localOnly} envelope={result} onExportExcel={exportExcel} onEvaluateCandidateBom={evaluateCandidateBom} onFollowUp={handleFollowUp} busy={busy} />
     </section>
   );
 }

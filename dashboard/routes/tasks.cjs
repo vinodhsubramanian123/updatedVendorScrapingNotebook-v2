@@ -26,6 +26,7 @@ const {
 const { isValidRunId, getRunById } = require('../services/runState.cjs');
 const { invalidateChassisMapCache } = require('../../scripts/lib/conflict/conflict_graph.js');
 const { invalidateCatalogCache } = require('./catalogs.cjs');
+const { invalidateManifestCache } = require('../../scripts/lib/rules/product_manifest_loader.js');
 const { runOnboarding } = require('../../scripts/maintenance/onboard_product.js');
 const { sendErrorResponse } = require('../services/errorHandler.cjs');
 const { requestChildTermination } = require('../../scripts/lib/system/child_termination.js');
@@ -78,7 +79,7 @@ router.post('/scrape-e2e', (req, res) => {
     spawn('node', args, { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1', ...extraEnv } })
   );
   startTask('SCRAPE_E2E', proc, res, OUTPUTS_DIR, targetChassis);
-  proc.on('close', () => { invalidateChassisMapCache(); invalidateCatalogCache(); });
+  proc.on('close', () => { invalidateManifestCache(); invalidateChassisMapCache(); invalidateCatalogCache(); });
 });
 
 // ── Product Manifest Onboarding ───────────────────────────────────────────────

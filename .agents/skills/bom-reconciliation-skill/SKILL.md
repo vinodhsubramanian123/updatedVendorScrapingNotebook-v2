@@ -167,7 +167,7 @@ Exact matches require actual row-level equality; unresolved rows must say NOT EV
 ---
 
 ## 💻 Implementation Engine & Direct Execution
-- **Core Verifier**: [`vendor_bom_verifier.js`](../../../scripts/lib/boq/vendor_bom_verifier.js)
+- **Core Verifier**: [`vendor_bom_verifier.js`](../../../scripts/lib/boq/vendor_bom_verifier.js) (`verifyVendorBOM()`)
 - **Remarks Annotator**: [`commercial_remarks.js`](../../../scripts/lib/boq/commercial_remarks.js)
 - **Workbook Generator**: [`generate_boq_xlsx.js`](../../../scripts/lib/boq/generate_boq_xlsx.js)
-- **Presales Router**: [`route_query.js`](../../../scripts/evaluators/route_query.js) (`_handleBomReconciliation`)
+- **Presales Router**: [`route_query.js`](../../../scripts/evaluators/route_query.js) (`_handleBomReconciliation()`)

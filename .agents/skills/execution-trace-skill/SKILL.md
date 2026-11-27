@@ -206,6 +206,11 @@ When executing ANY presales flow, the agent MUST:
 - Production traces: `outputs/temp/agent_traces/execution_trace_{YYYY-MM-DD}_{traceId}.json`
 - Test traces: `outputs/temp/test_payloads/trace_{traceId}.json` (follows `INV-7`)
 
+### Telemetry & Observability Entrypoints (`INV-278`, `INV-289`, `INV-290`)
+- [`telemetry.js`](../../../scripts/lib/system/telemetry.js): `recordAgentExecutionTelemetry()`, `recordNotebookConsultationTelemetry()`, `recordSelfHealingEvent()`, and `getTelemetrySummary()` track `totalAgentRuns`, `agentTierBreakdown`, `avgAgentDurationMs`, `providerFallbackCount`, `providerRecoveryCounts`, `CDP_COMMAND_TIMEOUT`, and `MULTI_NOTEBOOK_FANOUT`.
+- **Live Recovery Stream**: `sendGuardrailMessage()` (`scripts/lib/rag/guardrail_transport.js`) fires `onRecovery`, which `_runToolLoop()` (`scripts/lib/rag/presales_copilot_agent.js`) emits as `PROVIDER_RECOVERY` SSE and `COPILOT_RECOVERY` progress events alongside `model` and `recoveryEvents` in `dashboard/routes/agent.cjs`.
+- **Observability CLI Commands**: `npm run status` (`scripts/maintenance/observability_status.js`), `npm run audit:evidence`, and `npm run trace:view`.
+
 ### Related Governance & Diagnostic Skills
 - Comply with [Normative Language Standard](../../rules/normative_language.md).
 - [`claim-evidence-adjudication-skill`](../claim-evidence-adjudication-skill/SKILL.md) — SHA-256 bound `EvidenceDigestSha256` and separate Tier-1/Tier-2/Tier-3 evidence lanes.

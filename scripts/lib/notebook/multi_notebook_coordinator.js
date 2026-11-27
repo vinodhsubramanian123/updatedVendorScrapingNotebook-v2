@@ -18,7 +18,7 @@ function _resolveNotebookTarget(domainSpec, nbConfig) {
     return { productKey: productKey || domainSpec.notebookId, notebookId: domainSpec.notebookId };
   }
   if (!productKey) return { productKey: 'UNKNOWN', notebookId: null };
-  const mappedId = getNotebookIdForChassis(productKey, nbConfig);
+  const mappedId = getNotebookIdForChassis(nbConfig, productKey);
   return { productKey, notebookId: mappedId || null };
 }
 

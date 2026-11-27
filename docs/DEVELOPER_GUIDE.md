@@ -97,14 +97,19 @@ npm run dev
 | `npm run build` | Build production dashboard assets via Vite |
 | `npm run lint` | Run `oxlint` on dashboard source files (0-warning, 0-error gate) |
 | `npm run lint:core` | Run `oxlint` across scripts and tests with 95 rules (0-warning gate) |
-| `npm run lint:complexity` | Verify strict cyclomatic complexity ceiling ($CC \le 30$) across all scanned functions |
+| `npm run lint:all` | Run `oxlint` across `scripts/`, `tests/`, and `dashboard/` (0-warning, 0-error gate) |
+| `npm run lint:complexity` | Verify 3D maintainability ratchet (`CC <= 20`, `LOC <= 80`, `maxNesting <= 4`; frozen baseline, `INV-287`) |
+| `npm run test:skills` | Validate all 40 skill manifests, links, npm scripts, file refs, SKUs, and normative language |
 | `npm --workspace dashboard test -- --run` | Run frontend component & service Vitest suites |
 | `OFFLINE_MODE=1 LOCAL_EVAL_ONLY=1 node scripts/maintenance/test_dashboard_browser_e2e.js` | Run isolated headless Playwright release gate (Orders 1–5) & write `dashboard_release_evidence.json` |
 | `OFFLINE_MODE=1 LOCAL_EVAL_ONLY=1 node tests/e2e/test_dashboard_full_portfolio_e2e.js` | Run isolated offline Playwright portfolio & DL385 Gen11 topology E2E check |
 | `npm test` | Run complete isolated test matrix (249 suites across Unit, Chaos, Integration tiers) |
-| `npm run test:portfolio` | Run portfolio verification audit (`verify_all.js`) across 8 canonical products |
+| `npm run test:portfolio` | Run portfolio verification audit (`verify_all.js`) across 17 active live-scraped product lines + 2 quarantined legacy stubs |
 | `npm run status` | Display unified observability dashboard overview (`observability_status.js`) |
 | `npm run status:sync` | Re-sync live portfolio state and generate `.agents/PORTFOLIO_STATUS.md` |
+| `npm run inspect:session` | Inspect open CDP port `9222` OCA session, visible `Config Status`, and CLIC state |
+| `npm run inspect:clic` | Run visual DOM/modal CLIC inspector against active WebLogic OCA tab |
+| `npm run onboard:product` | Infer or update product capability manifests under `scripts/config/products/*.json` (`INV-285`, `INV-290`) |
 | `npm run test:benchmarks` | Run 15-scenario BOQ evaluation benchmarks (100% recall/precision) |
 | `npm run test:aspect_units` | Run 7 modular physical hardware aspect unit checkers |
 | `npm run test:preprocessor` | Run BOQ preprocessor, CTO normalizer, and boundary fuzzing suites |
@@ -114,6 +119,7 @@ npm run dev
 | `npm run test:knowledge_extractor` | Run RAG closed-loop knowledge extraction and deduplication tests |
 | `npm run test:dl380_combinations` | Run 8 comprehensive DL380 Gen12 combination and workflow tests |
 | `npm run update:graph` | Rebuild dynamic semantic dependency graph (`graphify`) |
+| `npm run verify:graph` | Verify 40/40 skills connected in `graphify-out/graph.json`, 0 isolated skills, and 0 ad-hoc scripts |
 | `npm run jules:prs` | Inspect open pull requests on GitHub via native REST API |
 | `npm run jules:prune` | Prune merged remote feature branches from GitHub |
 | `npm run jules:archive` | Audit and archive completed Jules sessions |
@@ -228,6 +234,11 @@ The Express backend (`dashboard/server.cjs`) modularly routes requests through `
 | `POST` | `/api/verify-vendor-bom` | `routes/evaluation.cjs` | Reconciles customer tender BOMs with vendor quotes (`verify_vendor_bom.js`) |
 | `GET` | `/api/notebook/quarantined-deltas` | `routes/notebook.cjs` | Lists quarantined feedback observations awaiting review |
 | `POST` | `/api/notebook/quarantined-deltas/:id/promote` | `routes/notebook.cjs` | Frictionless 1-click promotion of validated rules to catalog deltas and NLM |
+| `POST` | `/api/agent/query` | `routes/agent.cjs` | 3-tier presales copilot (`DETERMINISTIC` -> `GEMINI_AGENT` -> `AGY_DEEP`) with `OFFLINE_MODE` lock & recovery SSE |
+| `POST` | `/api/feedback/analyze-with-agent` | `routes/agent.cjs` | Studio feedback quarantine analysis (`quarantined_deltas.js`) separate from portal observations |
+| `POST` | `/api/multi-notebook-query` | `routes/intelligence.cjs` | Cross-notebook QuickSpecs fan-out (`multi_notebook_coordinator.js`) with `MULTI_NOTEBOOK_FANOUT` telemetry |
+| `POST` | `/api/scrape-e2e` | `routes/tasks.cjs` | End-to-end OCA scrape pipeline (`dashboard_scrape_pipeline.js`) with manifest & catalog cache invalidation |
+| `POST` | `/api/onboard-product` | `routes/tasks.cjs` | Product capability manifest scaffolding/update preserving curated hardware bounds (`onboard_product.js`) |
 
 ---
 

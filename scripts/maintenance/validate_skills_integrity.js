@@ -44,9 +44,16 @@ const BANNED = [
 const SKU_RE = /\b[A-Z0-9]{5,7}-B21\b|\b[A-Z0-9]{5,6}AAE?\b/g;
 // Intentional non-existent example SKUs used to illustrate not-found handling.
 const SKU_ALLOW = new Set(['P99999-B21', '900000-B21']);
+const NPM_RUN_RE = /npm(?:\.cmd)?\s+run\s+([a-zA-Z0-9:_-]+)/g;
+const CODE_PATH_RE = /(?:scripts|dashboard|tests|docs|\.agents)\/[A-Za-z0-9_.\-/]+\.(?:json|jsx|cjs|mjs|ts|md|js)(?![A-Za-z0-9_])/g;
 
 function readSafe(file) {
   return fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
+}
+
+function loadKnownNpmScripts() {
+  const pkg = JSON.parse(readSafe(path.join(PROJECT_ROOT, 'package.json')) || '{}');
+  return new Set(Object.keys(pkg.scripts || {}));
 }
 
 function parseFrontmatter(content) {
@@ -173,6 +180,30 @@ function checkBanned(body, warnings) {
   });
 }
 
+function checkNpmScripts(body, knownNpmScripts, issues) {
+  const seen = new Set();
+  for (const m of body.matchAll(NPM_RUN_RE)) {
+    const scriptName = m[1];
+    if (seen.has(scriptName) || scriptName.includes('example')) continue;
+    seen.add(scriptName);
+    if (!knownNpmScripts.has(scriptName)) {
+      issues.push(`unknown npm script "npm run ${scriptName}" absent from package.json`);
+    }
+  }
+}
+
+function checkCodePathRefs(body, issues) {
+  const seen = new Set();
+  for (const m of body.matchAll(CODE_PATH_RE)) {
+    const relPath = m[0];
+    if (seen.has(relPath) || /[*<{]|example/i.test(relPath)) continue;
+    seen.add(relPath);
+    if (!fs.existsSync(path.join(PROJECT_ROOT, relPath))) {
+      issues.push(`missing referenced file path: ${relPath}`);
+    }
+  }
+}
+
 function validateSkill(dirName, ctx) {
   const skillFile = path.join(SKILLS_DIR, dirName, 'SKILL.md');
   const issues = [];
@@ -189,13 +220,19 @@ function validateSkill(dirName, ctx) {
   if (!THIRD_PARTY.has(dirName)) {
     checkInvariants(body, ctx.invariants, issues);
     checkSkus(body, ctx.skus, issues);
+    checkNpmScripts(body, ctx.npmScripts, issues);
+    checkCodePathRefs(body, issues);
     checkBanned(body, warnings);
   }
   return { dirName, issues, warnings };
 }
 
 function runValidation({ strictWarnings = true, quiet = false } = {}) {
-  const ctx = { invariants: loadKnownInvariants(), skus: loadKnownSkus() };
+  const ctx = {
+    invariants: loadKnownInvariants(),
+    skus: loadKnownSkus(),
+    npmScripts: loadKnownNpmScripts()
+  };
   const dirs = fs.readdirSync(SKILLS_DIR).filter(d => fs.statSync(path.join(SKILLS_DIR, d)).isDirectory());
   const results = dirs.map(d => validateSkill(d, ctx));
   const failed = results.filter(r => r.issues.length || (strictWarnings && r.warnings.length));

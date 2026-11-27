@@ -201,6 +201,8 @@ test('Intelligence & Agent routes expose Wave B-F metadata and force determinist
     }).then(r => r.json());
     assert.equal(agentRes.modeUsed, 'DETERMINISTIC');
     assert.equal(agentRes.effectivePolicy.offline, true);
+    assert.equal(agentRes.copilotModel, null);
+    assert.ok(Array.isArray(agentRes.recoveryEvents));
     assert.ok(agentRes.runId);
     assert.ok(agentRes.result?.envelope);
     const record = getRunById(agentRes.runId);
@@ -277,4 +279,91 @@ test('parseAgyNdjsonLine handles live agy.exe stream-json init, step_update tool
   assert.ok(args.includes('--effort') && args.includes('low'));
   assert.ok(args.includes('--conversation') && args.includes('conv-42'));
   assert.ok(args.includes('--print=Inspect DL380 Gen12'));
+});
+
+test('Studio feedback requires offline policy checks and keeps proposals in quarantine', async t => {
+  const { setQuarantineFilePath, getQuarantinedDeltas } = require('../../scripts/lib/feedback/quarantined_deltas.js');
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'studio-feedback-'));
+  setQuarantineFilePath(path.join(temp, 'proposals.json'));
+  t.after(() => { setQuarantineFilePath(); fs.rmSync(temp, { recursive: true, force: true }); });
+  await withTestServer(async baseUrl => {
+    const post = (route, payload) => fetch(baseUrl + route, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+    });
+    const analysis = await post('/api/feedback/analyze-with-agent', { offline: true, feedbackText: 'Memory sizing' });
+    assert.equal(analysis.status, 422);
+    const proposal = { ruleUpdate: 'Review memory population', affectedSku: 'P74879-F21', runId: 'review-test' };
+    assert.equal((await post('/api/feedback/rule-proposal', proposal)).status, 400);
+    const accepted = await post('/api/feedback/rule-proposal', { ...proposal, chassis: 'DL360_Gen12' });
+    assert.equal(accepted.status, 202);
+    const [delta] = getQuarantinedDeltas();
+    assert.equal(delta.source, 'STUDIO_FEEDBACK');
+    assert.equal(delta.quarantineId, (await accepted.json()).quarantineId);
+    assert.equal(delta.affectedSku, proposal.affectedSku);
+    assert.equal(delta.evidenceObservationCount, 0);
+    assert.equal(delta.autoPromotable, false);
+  });
+});
+
+test('classifyCdpPages distinguishes expired OCAInternalLogin from authenticated External OCA and configurator views', () => {
+  const { classifyCdpPages } = require('../../dashboard/routes/catalogs.cjs');
+  const stale = classifyCdpPages([{ type: 'page', title: 'OneConfig Advanced', url: 'https://oca.ext.hpe.com/oca/OCAInternalLogin' }]);
+  assert.equal(stale.status, 'AUTHENTICATING');
+  assert.equal(stale.staleSession, true);
+
+  const authedHome = classifyCdpPages([{ type: 'page', title: 'External OCA | Hewlett Packard Enterprise', url: 'https://oca.ext.hpe.com/oca/OCAInternalLogin' }]);
+  assert.equal(authedHome.status, 'READY');
+  assert.equal(authedHome.isSolutionRoot, false);
+
+  const active = classifyCdpPages([{ type: 'page', title: 'DL380 Gen12', url: 'https://oca.ext.hpe.com/oca/extended_overview_components?id=1' }]);
+  assert.equal(active.status, 'READY');
+  assert.equal(active.isSolutionRoot, true);
+});
+
+test('POST /api/multi-notebook-query resolves real notebookId and returns LOCAL_FALLBACK when offline', async () => {
+  await withTestServer(async baseUrl => {
+    const res = await fetch(baseUrl + '/api/multi-notebook-query', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        offline: true,
+        domains: [{ productKey: 'DL380_Gen12', query: 'Check PCIe risers' }]
+      })
+    });
+    assert.equal(res.status, 200);
+    const data = await res.json();
+    assert.equal(data.status, 'SUCCESS');
+    assert.equal(data.totalDomains, 1);
+    assert.equal(data.results[0].productKey, 'DL380_Gen12');
+    assert.equal(data.results[0].status, 'LOCAL_FALLBACK');
+    assert.ok(data.results[0].notebookId && data.results[0].notebookId.length > 10);
+  });
+});
+
+test('recordAgentExecutionTelemetry tracks tier distribution, fallbacks, and recovery counts', t => {
+  const { recordAgentExecutionTelemetry, getTelemetrySummary } = require('../../scripts/lib/system/telemetry.js');
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-telemetry-'));
+  const telemetryFile = path.join(tmpDir, 'telemetry.json');
+  t.after(() => fs.rmSync(tmpDir, { recursive: true, force: true }));
+
+  recordAgentExecutionTelemetry({
+    runId: 'run-1',
+    requestedMode: 'SMART_AUTO',
+    modeUsed: 'GEMINI_AGENT',
+    tierTrail: ['DETERMINISTIC', 'GEMINI_AGENT'],
+    modelUsed: 'gemini-3.5-flash-lite',
+    copilotStatus: 'SUCCESS',
+    durationMs: 1200,
+    toolCallCount: 2,
+    fallbackOccurred: true,
+    recoveryEvents: [{ action: 'MODEL_FALLBACK', status: 504, model: 'gemini-3.5-flash-lite' }],
+    chassis: 'DL380_Gen12'
+  }, { telemetryFile });
+
+  const summary = getTelemetrySummary({ telemetryFile });
+  assert.equal(summary.totalAgentRuns, 1);
+  assert.equal(summary.agentTierBreakdown.GEMINI_AGENT, 1);
+  assert.equal(summary.avgAgentDurationMs, 1200);
+  assert.equal(summary.providerFallbackCount, 1);
+  assert.equal(summary.providerRecoveryCounts.MODEL_FALLBACK, 1);
 });

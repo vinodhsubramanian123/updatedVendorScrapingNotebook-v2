@@ -17,7 +17,7 @@ const { computeFullPlatformEnvelope } = require('../../scripts/lib/rules/hardwar
 const { loadAllProductManifests } = require('../../scripts/lib/rules/product_manifest_loader.js');
 const { listVendorAdapters } = require('../../scripts/lib/adapters/adapter_registry.js');
 const { coordinateMultiNotebookQueries } = require('../../scripts/lib/notebook/multi_notebook_coordinator.js');
-const { executeNotebookQuery, getNotebookConfigEntry } = require('../../scripts/lib/notebook/notebook_query_utils.js');
+const { executeNotebookQuery } = require('../../scripts/lib/notebook/notebook_query_utils.js');
 const { queryLocalKnowledgeBase } = require('../../scripts/lib/rag/local_rag_search.js');
 const { ACTIVE_VERSION } = require('../../scripts/lib/prompts/guardrail_prompt.js');
 const { getPoolStatus } = require('../../scripts/lib/system/gemini_rotator.js');
@@ -190,25 +190,25 @@ router.post('/config/model-routing', (req, res) => {
 });
 
 function _buildMultiNotebookQueryFn(effectivePolicy) {
-  return async (productKey, query) => {
-    const entry = getNotebookConfigEntry(productKey);
-    const localAns = queryLocalKnowledgeBase(query, productKey);
-    if (effectivePolicy.offline || !entry?.notebookId) {
+  return async (notebookId, query, opts = {}) => {
+    const productKey = opts?.context?.chassis || '';
+    if (effectivePolicy.offline || !notebookId) {
+      const localAns = queryLocalKnowledgeBase(query, productKey);
       return {
         status: 'LOCAL_FALLBACK',
         isCloudGrounded: false,
-        notebookId: entry?.notebookId || null,
+        notebookId: notebookId || null,
         answer: localAns?.answer || `Local fallback response for ${productKey}`,
         citations: localAns?.citations || [],
-        source: 'LOCAL_FALLBACK'
+        source: 'LOCAL_RAG'
       };
     }
-    const cloud = await executeNotebookQuery(entry.notebookId, query, {
+    const cloud = await executeNotebookQuery(notebookId, query, {
       context: { chassis: productKey },
       offline: false,
       effectivePolicy
     });
-    return { ...cloud, notebookId: entry.notebookId };
+    return { ...cloud, notebookId };
   };
 }
 
@@ -222,10 +222,26 @@ router.post('/multi-notebook-query', asyncHandler(async (req, res) => {
     clientOfflineMode: req.body?.offlineMode,
     includeRagOnly: true
   });
+  const startedAt = Date.now();
   const report = await coordinateMultiNotebookQueries(domains, {
-    maxConcurrency: req.body?.maxConcurrency,
+    concurrency: req.body?.concurrency ?? req.body?.maxConcurrency,
     queryFn: _buildMultiNotebookQueryFn(effectivePolicy)
   });
+  try {
+    const telemetryLib = require('../../scripts/lib/system/telemetry.js');
+    const allCitations = (report.results || []).flatMap(r => r.citations || []);
+    telemetryLib.recordNotebookConsultationTelemetry({
+      query: String(domains[0]?.query || 'multi-notebook-query'),
+      sanitizedQuery: `Multi-notebook fan-out (${report.totalDomains || 0})`,
+      answer: `${report.verifiedCount || 0}/${report.totalDomains || 0} grounded`,
+      citations: allCitations,
+      durationMs: Date.now() - startedAt,
+      scenario: 'MULTI_NOTEBOOK_FANOUT',
+      chassis: domains.map(d => d.productKey || d.chassisId).filter(Boolean).join(','),
+      agreementScore: report.allGrounded ? 0.95 : (report.verifiedCount > 0 ? 0.75 : 0.5),
+      nextActionExecuted: report.verifiedCount > 0 ? 'MULTI_NOTEBOOK_CLOUD_GROUNDED' : 'LOCAL_FALLBACK_ADVISORY'
+    });
+  } catch (_) {}
   return res.json({ status: 'SUCCESS', effectivePolicy, ...report });
 }));
 

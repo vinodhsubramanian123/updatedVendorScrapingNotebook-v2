@@ -1,10 +1,9 @@
 import CatalogProductSwitcher from "../catalog/CatalogProductSwitcher.jsx";
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import CatalogExplorer from "../CatalogExplorer";
 import ScraperTriggerCard from "../ScraperTriggerCard";
 import ResolutionMatrix from "../ResolutionMatrix";
 import ArtifactInspector from "../ArtifactInspector";
-import TelemetryCard from "../TelemetryCard";
 import AmbiguityInbox from "../AmbiguityInbox";
 import MacroOrchestratorFlow from "../MacroOrchestratorFlow";
 import ChassisSyncSummaryView from "../ChassisSyncSummaryView";
@@ -12,6 +11,8 @@ import PartnerReconciliationView from "../PartnerReconciliationView";
 import PortfolioManifestWorkspace from "../portfolio/PortfolioManifestWorkspace";
 import EvaluationProgressSteps from "../uploader/EvaluationProgressSteps";
 import { LifecycleAlternatives } from "../uploader/EvaluationOutcomeCard";
+
+const TelemetryCard = lazy(() => import("../TelemetryCard"));
 
 export function WorkspaceEvaluationProgress({ uploaderOpen, progress, logStream }) {
   if (uploaderOpen || (progress?.task !== 'EVAL_BOQ' && !progress?.qualifications)) return null;
@@ -291,7 +292,7 @@ function _renderSecondaryTabView(props) {
     );
   }
   if (activeTab === 'telemetry') {
-    return <div key="telemetry" className="animate-tab-enter"><TelemetryCard /></div>;
+    return <div key="telemetry" className="animate-tab-enter"><Suspense fallback={<p role="status">Loading telemetry…</p>}><TelemetryCard /></Suspense></div>;
   }
   return null;
 }

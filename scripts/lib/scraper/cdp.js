@@ -11,8 +11,12 @@ const WebSocket = require('ws');
 const http      = require('http');
 const domExtract = require('./dom_extract.js');
 
-const CDP_PORT        = 9222;
-const DEFAULT_TIMEOUT = 45000;   // ms — generous for slow OCA pages
+const CDP_PORT = 9222;
+
+function getDefaultCdpTimeout() {
+  const parsed = Number(process.env.CDP_COMMAND_TIMEOUT_MS);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : 90000;
+}
 
 let _nextMsgId = 1;
 
@@ -62,6 +66,56 @@ function assertSafeCdpNavigationGuard(ws, method, params = {}) {
   }
 }
 
+function isAuthenticatedExternalOcaPage(tab) {
+  const url = tab?.url || '';
+  const title = tab?.title || '';
+  if (!/oca\.(?:ext\.)?hpe\.com/i.test(url)) return false;
+  if (/\/logout|login_error|session_expired/i.test(url)) return false;
+  return !/OCAInternalLogin/i.test(url) || /External OCA|Hewlett Packard Enterprise/i.test(title);
+}
+
+function classifyCdpPages(pages = []) {
+  const activeOcaPage = pages.find(isAuthenticatedExternalOcaPage);
+  if (activeOcaPage) {
+    const isSolutionRoot = activeOcaPage.url.includes('extended_overview_components') || activeOcaPage.url.includes('alletra_5000_wizard');
+    return { status: 'READY', title: activeOcaPage.title, url: activeOcaPage.url, isSolutionRoot };
+  }
+  const staleOcaLogin = pages.find(t => /OCAInternalLogin|\/logout|login_error|session_expired/i.test(t.url || ''));
+  if (staleOcaLogin) {
+    return {
+      status: 'AUTHENTICATING',
+      staleSession: true,
+      title: staleOcaLogin.title,
+      url: staleOcaLogin.url,
+      message: 'OCA session expired (OCAInternalLogin); recover via Partner Portal Tab 1'
+    };
+  }
+  const loginPage = pages.find(t => (t.url || '').includes('login.hpe.com') || (t.url || '').includes('partner.hpe.com'));
+  if (loginPage) return { status: 'AUTHENTICATING', title: loginPage.title, url: loginPage.url };
+  return { status: 'NAVIGATING', message: 'OCA not found in open tabs' };
+}
+
+function _buildCdpTimeoutContext(ws, method, params, timeoutMs) {
+  const targetUrl = ws?._targetMeta?.url || null;
+  const targetTitle = ws?._targetMeta?.title || null;
+  const expr = typeof params?.expression === 'string' ? params.expression.replace(/\s+/g, ' ').trim().slice(0, 80) : null;
+  const details = [targetUrl ? `url=${targetUrl}` : null, expr ? `expr=${expr}` : null].filter(Boolean).join(', ');
+  const message = `CDP timeout (${timeoutMs} ms) waiting for: ${method}${details ? ` [${details}]` : ''}`;
+  return { message, targetUrl, targetTitle, expressionPreview: expr };
+}
+
+function _recordCdpTimeoutEvent(method, timeoutMs, ctx) {
+  try {
+    require('../system/telemetry.js').recordSelfHealingEvent('CDP_COMMAND_TIMEOUT', {
+      method,
+      timeoutMs,
+      targetUrl: ctx.targetUrl,
+      targetTitle: ctx.targetTitle,
+      expressionPreview: ctx.expressionPreview
+    });
+  } catch (_) {}
+}
+
 /**
  * Send one CDP command on an open WebSocket and await its response.
  * @param {WebSocket} ws
@@ -70,7 +124,7 @@ function assertSafeCdpNavigationGuard(ws, method, params = {}) {
  * @param {number}    [timeoutMs]
  * @returns {Promise<object>} result field from the CDP response
  */
-function sendCommand(ws, method, params = {}, timeoutMs = DEFAULT_TIMEOUT) {
+function sendCommand(ws, method, params = {}, timeoutMs = getDefaultCdpTimeout()) {
   return new Promise((resolve, reject) => {
     try {
       assertSafeCdpNavigationGuard(ws, method, params);
@@ -115,7 +169,9 @@ return; }
 
     timer = setTimeout(() => {
       cleanup();
-      reject(new Error(`CDP timeout (${timeoutMs} ms) waiting for: ${method}`));
+      const ctx = _buildCdpTimeoutContext(ws, method, params, timeoutMs);
+      _recordCdpTimeoutEvent(method, timeoutMs, ctx);
+      reject(new Error(ctx.message));
     }, timeoutMs);
 
     try {
@@ -125,6 +181,20 @@ return; }
       reject(new Error(`Failed to send CDP command [${method}]: ${err.message}`));
     }
   });
+}
+
+function _isStaleOrLoggedOutTab(t) {
+  const url = (t.url || '').toLowerCase();
+  return url.includes('/logout') || url.includes('login_error') || url.includes('session_expired');
+}
+
+function _findOcaPageTarget(nonLocalPages) {
+  return nonLocalPages.find(isAuthenticatedExternalOcaPage) || nonLocalPages.find(
+    t => !_isStaleOrLoggedOutTab(t) && (
+      (t.url && (t.url.includes('oca.ext.hpe.com') || t.url.includes('oca.hpe.com'))) ||
+      (t.title && (t.title.includes('External OCA') || t.title.includes('Online Config') || (t.title.includes('OCA') && !t.title.includes('Engine'))))
+    )
+  );
 }
 
 /**
@@ -145,19 +215,10 @@ function getOCATarget() {
 
           // Primary match: active OCA configuration portal tab (must not be local dashboard or Seismic sales redirect)
           const nonLocalPages = pages.filter(t => !t.url?.includes('localhost') && !t.url?.includes('127.0.0.1') && !t.url?.includes('antigravity') && !t.url?.includes('seismic.com'));
-          
-          const isStaleOrLoggedOut = (t) => {
-            const url = (t.url || '').toLowerCase();
-            return url.includes('/logout') || url.includes('login_error') || url.includes('session_expired');
-          };
-          const ocaPage = nonLocalPages.find(
-            t => !isStaleOrLoggedOut(t) && (
-                 (t.url && (t.url.includes('oca.ext.hpe.com') || t.url.includes('oca.hpe.com'))) ||
-                 (t.title && (t.title.includes('External OCA') || t.title.includes('Online Config') || (t.title.includes('OCA') && !t.title.includes('Engine'))))
-            )
-          );
+          const ocaPage = _findOcaPageTarget(nonLocalPages);
           if (ocaPage) {
             ocaPage._isOcaTarget = true;
+            ocaPage._targetMeta = { title: ocaPage.title, url: ocaPage.url };
             return resolve(ocaPage);
           }
 
@@ -221,8 +282,8 @@ async function connectWS(debuggerUrl, retries = 3, backoffMs = 1500) {
         const ws = new WebSocket(debuggerUrl);
         const connectTimer = setTimeout(() => {
           try { ws.terminate(); } catch (_) { try { ws.close(); } catch (__) {} }
-          reject(new Error(`WebSocket connection timeout (10000ms) to ${debuggerUrl}`));
-        }, 10000);
+          reject(new Error(`WebSocket connection timeout (20000ms) to ${debuggerUrl}`));
+        }, 20000);
 
         ws.once('open', () => {
           clearTimeout(connectTimer);
@@ -404,6 +465,34 @@ async function assertExpansionThreshold(ws, initialHeight = 5000) {
   return (res && res.result) ? res.result.value : { isExpanded: true, scrollHeight: 15000 };
 }
 
+const SESSION_KEEPALIVE_RE = /your session is going to expire|resume current session/i;
+
+function parseClicInspectionResult(raw = {}) {
+  const rawModalText = String(raw.modalText || '').trim();
+  const cleanModalText = SESSION_KEEPALIVE_RE.test(rawModalText) ? '' : rawModalText;
+  const configStatus = raw.configStatus || 'UNKNOWN';
+  const modalHasErrors = Boolean(
+    cleanModalText && /\b(error|incompatible|unbuildable|required|missing|conflict|violation)\b/i.test(cleanModalText)
+  );
+  const hasErrors = Boolean(modalHasErrors || configStatus === 'UNBUILDABLE');
+  const recommendedSkus = Array.from(new Set(cleanModalText.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6})\b/g) || []));
+  const rootCause = cleanModalText
+    ? cleanModalText.substring(0, 300)
+    : (configStatus === 'UNBUILDABLE' ? 'OCA Config Status reported Unbuildable' : '');
+
+  return {
+    clicked: Boolean(raw.clicked),
+    clickedLabel: raw.clickedLabel || null,
+    configStatus,
+    modalVisible: Boolean(raw.modalVisible && cleanModalText),
+    hasErrors,
+    errorText: cleanModalText,
+    rootCause,
+    recommendedSkus,
+    durationMs: raw.durationMs ?? null
+  };
+}
+
 /**
  * Trigger HPE OCA CLIC Check (Configuration Language & Inspection Engine Check)
  * and extract inspection error messages, root causes, and recommended direct SKU fixes.
@@ -412,42 +501,65 @@ async function assertExpansionThreshold(ws, initialHeight = 5000) {
  * @returns {Promise<object>} CLIC inspection results
  */
 async function triggerClicCheck(ws, level = 'root') {
+  const started = Date.now();
+  await setupDialogAutoHandler(ws);
   await dismissDOMModals(ws);
-  await sendCommand(ws, 'Runtime.evaluate', {
+  const clickRes = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
-      // Find top-right CLIC Check button
-      const clicBtn = document.querySelector('#clic-button, #clic_check, .btn-clic, #nav_clic, [id*="clic_check"], [id*="clic-button"], a[href*="clic"], button[title*="CLIC" i], button[aria-label*="CLIC" i]');
-      const checkLevel = ${JSON.stringify(level)};
-      if (clicBtn) {
-        clicBtn.click();
-        return { clicked: true, level: checkLevel };
+      const visible = el => Boolean(el && el.offsetWidth > 0 && el.offsetHeight > 0);
+      const isExpandBtn = el => /expand all|collapse all/i.test(el.innerText || el.title || '');
+      const selectors = [
+        '#clic-button', '#clic_check', '.btn-clic', '#nav_clic', '[id*="clic_check"]', '[id*="clic-button"]',
+        'button[title*="CLIC" i]', 'button[aria-label*="CLIC" i]', 'a[title*="CLIC" i]'
+      ];
+      let target = selectors.map(s => document.querySelector(s)).find(el => visible(el) && !isExpandBtn(el));
+      if (!target) {
+        target = Array.from(document.querySelectorAll('a, button')).find(el => {
+          const text = (el.innerText || el.title || '').trim();
+          return visible(el) && !isExpandBtn(el) && /^(?:view\\/resolve issues|clic(?: check)?|unbuildable)$/i.test(text);
+        });
       }
-      return { clicked: false, level: checkLevel };
+      if (!target) return { clicked: false, clickedLabel: null, level: ${JSON.stringify(level)} };
+      const clickedLabel = (target.innerText || target.title || target.id || '').trim() || null;
+      target.click();
+      return { clicked: true, clickedLabel, level: ${JSON.stringify(level)} };
     })()`,
     returnByValue: true
   });
 
-  await sleep(2000);
-  await dismissDOMModals(ws);
+  const { clicked, clickedLabel } = clickRes?.result?.value || {};
+  if (clicked) {
+    await waitForDOMPredicate(ws, `(() => {
+      const busy = Array.from(document.querySelectorAll('.loading_div, .maui-loading-div, .toolbar_loading, .dqe-loading'))
+        .some(el => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden' && getComputedStyle(el).display !== 'none');
+      const modals = Array.from(document.querySelectorAll('.clic-error-modal, .ui-dialog, .modal-dialog, #clic_results'));
+      const hasVisibleModal = modals.some(m => m.offsetWidth > 0 && m.offsetHeight > 0 && !/your session is going to expire|resume current session/i.test(m.innerText || ''));
+      return !busy || hasVisibleModal;
+    })()`, 25000, 500);
+    await sleep(500);
+    await dismissDOMModals(ws);
+  }
 
-  const errorRes = await sendCommand(ws, 'Runtime.evaluate', {
+  const domRes = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
-      const modal = document.querySelector('.clic-error-modal, .ui-dialog, .modal-dialog, #clic_results');
-      if (!modal) return { hasErrors: false, errorText: '', rootCause: '', recommendedSkus: [] };
-
-      const errorText = modal.innerText || '';
-      const skuMatches = errorText.match(/\\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6})\\b/g) || [];
-      return {
-        hasErrors: errorText.toLowerCase().includes('error') || errorText.toLowerCase().includes('incompatible'),
-        errorText: errorText.trim(),
-        rootCause: errorText.substring(0, 300),
-        recommendedSkus: Array.from(new Set(skuMatches))
-      };
+      const headerText = (document.body?.innerText || '').slice(0, 1200);
+      const configStatus = /Config Status\\s+Unbuildable/i.test(headerText)
+        ? 'UNBUILDABLE'
+        : (/Config Status\\s+Buildable/i.test(headerText) ? 'BUILDABLE' : 'UNKNOWN');
+      const modals = Array.from(document.querySelectorAll('.clic-error-modal, .ui-dialog, .modal-dialog, #clic_results'))
+        .filter(m => m.offsetWidth > 0 && m.offsetHeight > 0 && !/your session is going to expire|resume current session/i.test(m.innerText || ''));
+      const modal = modals[0] || null;
+      return { configStatus, modalVisible: Boolean(modal), modalText: modal ? (modal.innerText || '').trim() : '' };
     })()`,
     returnByValue: true
   });
 
-  return (errorRes && errorRes.result) ? errorRes.result.value : { hasErrors: false };
+  return parseClicInspectionResult({
+    ...domRes?.result?.value,
+    clicked,
+    clickedLabel,
+    durationMs: Date.now() - started
+  });
 }
 
 /** Async sleep helper */
@@ -463,14 +575,14 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
  * @param {number} [intervalMs=500] Interval between checks
  * @returns {Promise<any>} Resolves with the truthy result value, or false on timeout
  */
-async function waitForDOMPredicate(ws, expression, maxTimeoutMs = 15000, intervalMs = 500) {
+async function waitForDOMPredicate(ws, expression, maxTimeoutMs = 30000, intervalMs = 500) {
   const start = Date.now();
   while (Date.now() - start < maxTimeoutMs) {
     try {
       const evalRes = await sendCommand(ws, 'Runtime.evaluate', {
         expression,
         returnByValue: true
-      }, Math.min(intervalMs * 2, 5000));
+      }, Math.min(Math.max(intervalMs * 4, 8000), 15000));
       const val = evalRes?.result?.value;
       if (val) return val;
     } catch (err) {
@@ -702,6 +814,9 @@ async function setupNetworkSniffer(ws, options = {}) {
 
 module.exports = {
   assertSafeCdpNavigationGuard,
+  isAuthenticatedExternalOcaPage,
+  classifyCdpPages,
+  parseClicInspectionResult,
   sendCommand,
   getOCATarget,
   getAnyPageTarget,
@@ -716,6 +831,7 @@ module.exports = {
   waitForDOMPredicate,
   CDP_PORT,
   getCdpPort,
+  getDefaultCdpTimeout,
   deriveTextFromTables: domExtract.deriveTextFromTables,
   extractHiddenElements: domExtract.extractHiddenElements,
   probeConditionalSkuVisibility: domExtract.probeConditionalSkuVisibility,

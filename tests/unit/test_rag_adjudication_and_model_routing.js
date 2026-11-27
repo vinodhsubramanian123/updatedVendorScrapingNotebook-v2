@@ -98,6 +98,23 @@ async function runTests() {
     assert.strictEqual(res.allGrounded, false);
   });
 
+  await runCase('coordinateMultiNotebookQueries resolves notebook IDs from default notebooks.json by productKey', async () => {
+    const seen = [];
+    const res = await coordinateMultiNotebookQueries(
+      [{ productKey: 'DL380_Gen12', query: 'Check PCIe risers' }],
+      {
+        queryFn: async (nbId, query) => {
+          seen.push({ nbId, query });
+          return { isCloudGrounded: true, citations: [{ source: nbId }], answer: 'OK', source: 'CLOUD_NLM' };
+        }
+      }
+    );
+    assert.strictEqual(res.verifiedCount, 1);
+    assert.strictEqual(res.unavailableCount, 0);
+    assert.strictEqual(res.results[0].status, 'VERIFIED_GROUNDED');
+    assert.ok(seen[0].nbId && seen[0].nbId.length > 10);
+  });
+
   console.log(`\nSUMMARY: ${passed} passed, ${failed} failed`);
   if (failed > 0) process.exit(1);
 }

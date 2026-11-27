@@ -60,7 +60,7 @@ description: >-
 
 - ⛔ **Reachability Fail-Hard Gate**: If `verifyKnowledgeReachability()` returns `reachableCount === 0` for a product profile that has known KnowledgeDeltas recorded on disk:
   - Emit: `[ERR_KNOWLEDGE_UNREACHABLE: Learned rules exist in catalog_deltas.json but active_knowledge_router found 0 reachable rules for chassis <id>.]`
-  - Action: Halt evaluation until reachability is restored via `npm run knowledge:rebuild` or taxonomy fix. Never proceed with evaluation in a degraded state where learned rules are silently dropped.
+  - Action: Halt evaluation until reachability is restored via `npm run sync:knowledge` and `npm run sync:running-knowledge` or taxonomy fix. Never proceed with evaluation in a degraded state where learned rules are silently dropped.
 
 ### 3. Chronological Evidence Logging
 - Every production BOQ evaluation must export:
@@ -138,3 +138,9 @@ Follow [Shared Runtime Conditional Discovery Contract](../../../docs/RUNTIME_CON
 ### Fresh-run verification and probe closure
 
 Follow [the learning and replay contract](../../../docs/CATALOG_EVIDENCE_AND_LEARNING.md). Reopen the full seed set after recording. Durable scoped knowledge takes precedence over generated copies. Report retrieval separately from application and require the exact rule ID and graph effect. Close a query miss only after a hashed promoted capture resolves the original typed request.
+
+### Studio Feedback Quarantine vs Portal Observation Isolation (`INV-288`, `INV-290`)
+
+- **Studio Outcome Feedback (`POST /api/feedback/analyze-with-agent`)**: Feedback submitted through `InlineOutcomeFeedback.jsx` and `UserFeedbackDrawer.jsx` (`postJson()` / `requestJson()`) MUST respect `localOnly` / `OFFLINE_MODE` and route agent-analyzed rule proposals exclusively to quarantine via `quarantined_deltas.js` and `instruction_improvement_queue.json`, never calling `POST /api/feedback-submit` directly as a portal observation.
+- **Portal Observations (`POST /api/feedback-submit`)**: Reserve `feedback_loop.js` (`processPortalFeedback()`) for verified HPE OCA / CLIC portal receipts (`clic-portal-validation-skill`).
+- **Downstream Governance**: Cross-check with [`enterprise-dashboard-ux-skill`](../enterprise-dashboard-ux-skill/SKILL.md) and [`epistemic-verification-skill`](../epistemic-verification-skill/SKILL.md).

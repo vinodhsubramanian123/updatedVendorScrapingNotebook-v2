@@ -4,10 +4,10 @@ import { createPortal } from 'react-dom';
 import { ShieldAlert, X, Check, Trash2, RefreshCw, AlertTriangle, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 function QuarantinedDeltaCard({ delta, idx, actionInProgress, onReject, onPromote }) {
-  const id = delta.id || delta.deltaId || `RULE-${idx}`;
+  const id = delta.quarantineId || delta.deltaId || delta.id || `RULE-${idx}`;
   const isBusy = actionInProgress === id;
   const affectedSku = delta.affectedSku || 'GLOBAL_RULE';
-  const reasonLabel = delta.quarantineReason || delta.reason || 'UNVERIFIED';
+  const reasonLabel = delta.quarantineReasons?.join('; ') || delta.quarantineReason || delta.reason || 'UNVERIFIED';
   const ruleMessage = delta.rawMessage || delta.description || delta.ruleUpdate || 'No rule message provided.';
 
   return (
@@ -191,7 +191,7 @@ function QuarantineListSection({ isLoading, quarantinedDeltas, actionInProgress,
     <div className="space-y-3">
       {quarantinedDeltas.map((delta, idx) => (
         <QuarantinedDeltaCard
-          key={delta.id || delta.deltaId || `RULE-${idx}`}
+          key={delta.quarantineId || delta.deltaId || delta.id || `RULE-${idx}`}
           delta={delta}
           idx={idx}
           actionInProgress={actionInProgress}
@@ -208,7 +208,7 @@ export default function QuarantineManagementDrawer({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   const handlePromote = (delta) => {
-    const ruleId = delta.id || delta.deltaId;
+    const ruleId = delta.quarantineId || delta.deltaId || delta.id;
     s.setActionInProgress(ruleId);
     return _runQuarantineMutation(
       `/api/quarantined-deltas/${encodeURIComponent(ruleId)}/promote`,

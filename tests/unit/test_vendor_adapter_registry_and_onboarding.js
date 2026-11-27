@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert');
 const { ProductCapabilityManifestSchema } = require('../../scripts/lib/system/schemas.js');
+const { resolveChassisDirectory } = require('../../scripts/lib/catalog/sku_versioning.js');
 const { loadAllProductManifests, resolveManifestForKey } = require('../../scripts/lib/rules/product_manifest_loader.js');
 const { getPlatformProfile } = require('../../scripts/lib/rules/platform_profiles.js');
 const { getVendorAdapter, listVendorAdapters, registerVendorAdapter } = require('../../scripts/lib/adapters/adapter_registry.js');
@@ -119,6 +120,50 @@ function runTests() {
       assert.ok(res.manifest.skuAliases.includes('P99999-B21'));
     } finally {
       if (fs.existsSync(tmpCat)) fs.unlinkSync(tmpCat);
+    }
+  });
+
+  check('Repeat onboarding preserves curated hardware bounds and rejects missing or mismatched catalogs', () => {
+    const dir = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'manifest-review-'));
+    const id = 'DL380_Gen12';
+    const filename = path.join(dir, id + '.json');
+    const catalog = path.resolve(__dirname, '../../outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_Catalog.json');
+    const args = ['--output-dir', dir, '--product-id', id];
+    try {
+      fs.copyFileSync(path.resolve(__dirname, '../../scripts/config/products', id + '.json'), filename);
+      const original = fs.readFileSync(filename, 'utf8');
+      assert.throws(() => runOnboarding(args), /scraped catalog/);
+      assert.throws(() => runOnboarding([...args, '--catalog-path', filename]), /no product SKU/);
+      const result = runOnboarding([...args, '--catalog-path', catalog]);
+      assert.deepStrictEqual(result.manifest, JSON.parse(original));
+      assert.strictEqual(fs.readFileSync(filename, 'utf8'), original);
+      assert.throws(() => runOnboarding(['--product-id', 'Other', '--catalog-path', catalog, '--output-dir', dir]), /model does not match/);
+      assert.strictEqual(fs.readdirSync(dir).length, 1);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  check('Fresh onboarding infers non-server domains from catalog pillar without server memory defaults', () => {
+    const dir = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'nonserver-onboard-'));
+    const cases = [
+      { id: 'Alletra_MP_B10000', expectedDomain: 'storage' },
+      { id: 'SN3600B_FC', expectedDomain: 'networking' },
+      { id: 'Synergy_12000_Frame', expectedDomain: 'composable' },
+      { id: 'MSL3040_Tape', expectedDomain: 'archive' }
+    ];
+    try {
+      for (const { id, expectedDomain } of cases) {
+        const chassisDir = resolveChassisDirectory(id);
+        const catFile = fs.readdirSync(chassisDir).find(f => /Catalog\.json$/i.test(f));
+        const res = runOnboarding(['--product-id', id, '--catalog-path', path.join(chassisDir, catFile), '--output-dir', dir]);
+        assert.strictEqual(res.manifest.domain, expectedDomain, `${id} expected domain ${expectedDomain}`);
+        assert.strictEqual(res.manifest.memoryArchitecture, undefined, `${id} should not receive server memoryArchitecture`);
+        assert.strictEqual(res.manifest.maxSockets, undefined, `${id} should not receive server maxSockets`);
+        assert.strictEqual(ProductCapabilityManifestSchema.safeParse(res.manifest).success, true);
+      }
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
     }
   });
 

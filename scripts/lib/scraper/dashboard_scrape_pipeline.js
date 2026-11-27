@@ -55,6 +55,19 @@ function _findCatalogJsonForChassis(chassis) {
   return { dir, productId, catalogPath: catFile ? path.join(dir, catFile) : null };
 }
 
+function buildNavigateArgs(opts) {
+  const args = [opts.chassis];
+  if (opts.recover) args.push('--recover');
+  return args;
+}
+
+function buildScrapeArgs(opts) {
+  const args = ['--chassis', opts.chassis];
+  // Only forward --recover to the scraper when navigation was skipped; otherwise Step 2 already opened a fresh session.
+  if (opts.recover && opts.skipNavigate) args.push('--recover');
+  return args;
+}
+
 async function runDashboardE2EScrape(opts) {
   if (!opts.chassis) throw new Error('--chassis <product> is required for E2E scrape pipeline');
   const productId = opts.chassis.replace(/\s+/g, '_');
@@ -68,31 +81,31 @@ async function runDashboardE2EScrape(opts) {
 
   if (!opts.skipNavigate) {
     emitProgress(2, 5, 'Navigating HPE Partner Portal & OCA', 'in_progress', `Selecting ${opts.chassis}`, { stage: 'OCA_NAVIGATE', percent: 25 });
-    const navArgs = [opts.chassis];
-    if (opts.recover) navArgs.push('--recover');
-    _runChildNodeScript('scripts/lib/scraper/navigate_oca.js', navArgs);
+    _runChildNodeScript('scripts/lib/scraper/navigate_oca.js', buildNavigateArgs(opts));
   }
 
   emitProgress(3, 5, 'Running Live OCA Scrape & Staging Audit', 'in_progress', `Mode: ${opts.mode}`, { stage: 'OCA_SCRAPE', percent: 50 });
   const scrapeRel = opts.mode === 'storage' ? 'scripts/scrapers/scrape_oca_storage_solution.js' : 'scripts/scrapers/scrape_oca_solution.js';
-  const scrapeArgs = ['--chassis', opts.chassis];
-  if (opts.recover) scrapeArgs.push('--recover');
-  _runChildNodeScript(scrapeRel, scrapeArgs);
+  _runChildNodeScript(scrapeRel, buildScrapeArgs(opts));
 
   emitProgress(4, 5, 'Onboarding Declarative Product Manifest', 'in_progress', `Inferring ${productId}.json`, { stage: 'ONBOARD_MANIFEST', percent: 85 });
   const located = _findCatalogJsonForChassis(opts.chassis);
   const onboardArgs = ['--product-id', located.productId || productId];
-  if (located.catalogPath) onboardArgs.push('--catalog-path', located.catalogPath);
+  if (!located.catalogPath) throw new Error('Scrape did not produce a catalog for ' + opts.chassis);
+  onboardArgs.push('--catalog-path', located.catalogPath);
   runOnboarding(onboardArgs);
 
+  let syncStatus = null;
   if (opts.syncKnowledge) {
     emitProgress(5, 5, 'Syncing Knowledge Deltas', 'in_progress', 'Updating local RAG / NotebookLM queue', { stage: 'KNOWLEDGE_SYNC', percent: 95 });
-    const { triggerPostFlowSync } = require('../sync/post_flow_sync.js');
-    triggerPostFlowSync(located.productId || productId, 'SCRAPE_E2E');
+    const { triggerPostFlowSyncAsync } = require('../sync/post_flow_sync.js');
+    const receipt = await triggerPostFlowSyncAsync(located.productId, 'SCRAPE_E2E', { targetDir: located.dir });
+    if (!receipt.success) throw new Error(receipt.error || 'Knowledge sync failed: ' + receipt.syncStatus);
+    syncStatus = receipt.syncStatus;
   }
 
   emitProgress(5, 5, 'E2E Scrape & Manifest Onboarding Complete', 'completed', located.productId || productId, { stage: 'SCRAPE_E2E_COMPLETE', percent: 100 });
-  return { status: 'SUCCESS', productId: located.productId || productId, catalogPath: located.catalogPath };
+  return { status: 'SUCCESS', syncStatus, productId: located.productId || productId, catalogPath: located.catalogPath };
 }
 
 if (require.main === module) {
@@ -107,5 +120,7 @@ if (require.main === module) {
 module.exports = {
   DASHBOARD_SCRAPE_PIPELINE_PATH: __filename,
   parsePipelineArgs,
+  buildNavigateArgs,
+  buildScrapeArgs,
   runDashboardE2EScrape
 };

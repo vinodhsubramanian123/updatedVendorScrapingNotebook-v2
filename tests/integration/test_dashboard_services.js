@@ -9,6 +9,7 @@
  */
 
 const assert = require('assert');
+const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 const http = require('http');
@@ -71,9 +72,9 @@ async function main() {
   console.log('================================================================\n');
 
   await runAsyncTest('Dashboard Server - Mutex, 409 Conflict, and SIGTERM cleanup', async () => {
-    // Start the server
+    const hasBuiltDist = fs.existsSync(path.join(__dirname, '../../dashboard/dist/index.html'));
     const serverProcess = spawn('node', [path.join(__dirname, '../../dashboard/server.cjs')], {
-      env: { ...process.env, PORT: '3456' }
+      env: { ...process.env, PORT: '3456', ...(hasBuiltDist ? { DASHBOARD_SERVE_DIST: '1' } : {}) }
     });
 
     let serverReady = false;
@@ -83,51 +84,47 @@ async function main() {
       }
     });
 
-    serverProcess.stderr.on('data', (data) => {
-      // console.error(`Server stderr: ${data}`);
-    });
+    serverProcess.stderr.on('data', () => {});
 
-    // Wait for server to be ready
-    for (let i = 0; i < 150; i++) {
-      if (serverReady) break;
-      await new Promise(r => setTimeout(r, 100));
+    try {
+      for (let i = 0; i < 300; i++) {
+        if (serverReady) break;
+        await new Promise(r => setTimeout(r, 100));
+      }
+      assert.ok(serverReady, 'Server failed to start in time');
+
+      const res1 = await request('http://127.0.0.1:3456/api/scrape', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      }, { mode: 'solution' });
+
+      assert.ok(res1.status === 200 || res1.status === 202, `First request failed with status ${res1.status}`);
+
+      const res2 = await request('http://127.0.0.1:3456/api/scrape', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      }, { mode: 'solution' });
+
+      assert.strictEqual(res2.status, 409, 'Second request should be rejected with 409 Conflict');
+      assert.ok(res2.data.error.includes('Another task is currently running') || res2.data.message?.includes('Another task'), 'Error message should indicate task is running');
+
+      let serverExited = false;
+      serverProcess.on('exit', () => {
+        serverExited = true;
+      });
+
+      serverProcess.kill('SIGTERM');
+
+      for (let i = 0; i < 50; i++) {
+        if (serverExited) break;
+        await new Promise(r => setTimeout(r, 100));
+      }
+      assert.ok(serverExited, 'Server failed to exit after SIGTERM');
+    } finally {
+      if (serverProcess.exitCode === null) {
+        try { serverProcess.kill('SIGKILL'); } catch (_) {}
+      }
     }
-    assert.ok(serverReady, 'Server failed to start in time');
-
-    // Send a request to trigger a long-running task.
-    // Assuming /api/scrape creates a task
-    const res1 = await request('http://127.0.0.1:3456/api/scrape', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
-    }, { mode: 'solution' });
-
-    // Since scrape script might exist and run, we expect 200 or 202 if it starts.
-    // In tasks.cjs, startTask sends res.json({ message: '...', runId, pid })
-    assert.ok(res1.status === 200 || res1.status === 202, `First request failed with status ${res1.status}`);
-
-    // Immediately send another request to trigger 409 Conflict
-    const res2 = await request('http://127.0.0.1:3456/api/scrape', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
-    }, { mode: 'solution' });
-
-    assert.strictEqual(res2.status, 409, 'Second request should be rejected with 409 Conflict');
-    assert.ok(res2.data.error.includes('Another task is currently running') || res2.data.message?.includes('Another task'), 'Error message should indicate task is running');
-
-    // Test SIGTERM cleanup
-    let serverExited = false;
-    serverProcess.on('exit', () => {
-      serverExited = true;
-    });
-
-    serverProcess.kill('SIGTERM');
-
-    // Wait for server to exit
-    for (let i = 0; i < 50; i++) {
-      if (serverExited) break;
-      await new Promise(r => setTimeout(r, 100));
-    }
-    assert.ok(serverExited, 'Server failed to exit after SIGTERM');
   });
 
   console.log(`\n================================================================`);

@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
@@ -203,5 +205,25 @@ describe('Wave B-F Modernization UI & Hooks', () => {
     );
     fireEvent.click(screen.getByRole('button', { name: 'DL380 Gen12' }));
     expect(onRespond).toHaveBeenCalledWith('DL380 Gen12');
+  });
+
+  it('never hardcodes light color-scheme locks inside dashboard source files', () => {
+    const srcRoot = path.resolve(__dirname, '../..');
+    const matches = [];
+    const walk = (dir) => {
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          if (entry.name !== '__tests__') walk(full);
+        } else if (/\.(jsx|css)$/.test(entry.name)) {
+          const text = fs.readFileSync(full, 'utf8');
+          if (/\[color-scheme:light\]|color-scheme:\s*light\s*!important/i.test(text)) {
+            matches.push(path.relative(srcRoot, full));
+          }
+        }
+      }
+    };
+    walk(srcRoot);
+    expect(matches).toEqual([]);
   });
 });

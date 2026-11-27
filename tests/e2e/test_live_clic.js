@@ -12,7 +12,7 @@
  */
 
 const assert = require('node:assert/strict');
-const { getOCATarget, connectWS, triggerClicCheck } = require('../../scripts/lib/scraper/cdp.js');
+const { getOCATarget, connectWS, setupDialogAutoHandler, triggerClicCheck } = require('../../scripts/lib/scraper/cdp.js');
 
 async function main() {
   console.log(`================================================================`);
@@ -40,6 +40,7 @@ async function main() {
 
     console.log(`✅ Connected to Authenticated OCA Target: ${target.title} (${target.url})`);
     const ws = await connectWS(target.webSocketDebuggerUrl);
+    await setupDialogAutoHandler(ws);
 
     console.log(`\n🔍 Triggering CLIC Check Inspection via WebSocket...`);
     const clicResult = await triggerClicCheck(ws, 'root');

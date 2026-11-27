@@ -218,7 +218,7 @@ export default function PriceAnalyticsCard({ selectedChassis, chassisDir }) {
             <select
               value={selectedCategory}
               onChange={e => setSelectedCategory(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
+              className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="ALL">All Categories ({categories.length})</option>
               {categories.map(c => <option key={c} value={c}>{c}</option>)}

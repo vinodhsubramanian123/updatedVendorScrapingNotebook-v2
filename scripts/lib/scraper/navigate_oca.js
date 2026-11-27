@@ -1396,7 +1396,7 @@ async function _triggerPortalQuickLink(partnerWs) {
   return false;
 }
 
-async function _waitForFreshOcaTab(timeoutMs = 45000) {
+async function _waitForFreshOcaTab(timeoutMs = 90000) {
   const waitStart = Date.now();
   while (Date.now() - waitStart < timeoutMs) {
     await sleep(1000);

@@ -29,7 +29,8 @@ const MAX_TELEMETRY_ENTRIES = {
   exportHistory: 100,
   reconciliationHistory: 100,
   guardrailHistory: 50,
-  selfHealingEvents: 50
+  selfHealingEvents: 50,
+  agentExecutions: 100
 };
 
 function _createEmptyTelemetryStore() {
@@ -57,6 +58,11 @@ function _createEmptyTelemetryStore() {
     guardrailSuccessRate: null,
     totalReconciliations: 0,
     totalSelfHealingEvents: 0,
+    totalAgentRuns: 0,
+    agentTierBreakdown: {},
+    avgAgentDurationMs: null,
+    providerFallbackCount: 0,
+    providerRecoveryCounts: {},
     learningEffectiveness: {
       activeRulesReachedCount: 0,
       appliedRulesCount: 0,
@@ -72,7 +78,8 @@ function _createEmptyTelemetryStore() {
     exportHistory: [],
     reconciliationHistory: [],
     guardrailHistory: [],
-    selfHealingEvents: []
+    selfHealingEvents: [],
+    agentExecutions: []
   };
 }
 
@@ -124,6 +131,8 @@ function _normalizeLoadedStore(data) {
   if (!data.learningEffectiveness || typeof data.learningEffectiveness !== 'object') {
     data.learningEffectiveness = { ...defaults.learningEffectiveness };
   }
+  if (!data.agentTierBreakdown || typeof data.agentTierBreakdown !== 'object') data.agentTierBreakdown = {};
+  if (!data.providerRecoveryCounts || typeof data.providerRecoveryCounts !== 'object') data.providerRecoveryCounts = {};
   return data;
 }
 
@@ -587,6 +596,49 @@ function recordSelfHealingEvent(eventType, details = {}, options = {}) {
   }, options);
 }
 
+function recordAgentExecutionTelemetry(info = {}, options = {}) {
+  const recoveryEvents = Array.isArray(info.recoveryEvents) ? info.recoveryEvents : [];
+  const modeUsed = String(info.modeUsed || info.requestedMode || 'DETERMINISTIC');
+  const entry = {
+    timestamp: new Date().toISOString(),
+    traceId: getTraceId(),
+    runId: info.runId || null,
+    requestedMode: info.requestedMode || null,
+    modeUsed,
+    tierTrail: Array.isArray(info.tierTrail) ? info.tierTrail : [modeUsed],
+    modelUsed: info.modelUsed || null,
+    copilotStatus: info.copilotStatus || null,
+    agyStatus: info.agyStatus || null,
+    durationMs: _finiteNonNegativeOrNull(info.durationMs),
+    toolCallCount: Number.isFinite(info.toolCallCount) ? info.toolCallCount : 0,
+    fallbackOccurred: Boolean(info.fallbackOccurred),
+    recoveryEvents,
+    chassis: info.chassis || null
+  };
+  return _persistTelemetryUpdate(data => {
+    data.agentExecutions.unshift(entry);
+    data.totalAgentRuns = (data.totalAgentRuns || 0) + 1;
+    data.agentTierBreakdown[modeUsed] = (data.agentTierBreakdown[modeUsed] || 0) + 1;
+    if (entry.fallbackOccurred) data.providerFallbackCount = (data.providerFallbackCount || 0) + 1;
+    for (const evt of recoveryEvents) {
+      if (evt?.action) data.providerRecoveryCounts[evt.action] = (data.providerRecoveryCounts[evt.action] || 0) + 1;
+    }
+    const valid = data.agentExecutions.map(e => _finiteNonNegativeOrNull(e.durationMs)).filter(v => v !== null);
+    data.avgAgentDurationMs = valid.length > 0 ? Math.round(valid.reduce((s, v) => s + v, 0) / valid.length) : null;
+    return entry;
+  }, options);
+}
+
+function _buildAgentSummaryFields(data) {
+  return {
+    totalAgentRuns: data.totalAgentRuns || 0,
+    agentTierBreakdown: data.agentTierBreakdown || {},
+    avgAgentDurationMs: data.avgAgentDurationMs ?? null,
+    providerFallbackCount: data.providerFallbackCount || 0,
+    providerRecoveryCounts: data.providerRecoveryCounts || {}
+  };
+}
+
 function getTelemetrySummary(options = {}) {
   const data = _normalizeLoadedStore(loadTelemetry(options));
   _updateRollingStatistics(data);
@@ -611,7 +663,7 @@ function getTelemetrySummary(options = {}) {
     avgGuardrailDurationMs: data.avgGuardrailDurationMs ?? null,
     avgGuardrailTurns: data.avgGuardrailTurns ?? null,
     guardrailSuccessRate: data.guardrailSuccessRate ?? null,
-    learningEffectiveness: data.learningEffectiveness
+    ..._buildAgentSummaryFields(data), learningEffectiveness: data.learningEffectiveness
   };
 }
 
@@ -631,6 +683,7 @@ module.exports = {
   recordReconciliationTelemetry,
   recordGuardrailTelemetry,
   recordSelfHealingEvent,
+  recordAgentExecutionTelemetry,
   recordRoutedQueryTelemetry,
   getTelemetrySummary,
   CANONICAL_EXECUTION_PHASES

@@ -11,9 +11,7 @@ export default function ClarificationPromptCard({
   const [replyText, setReplyText] = useState('');
   if (!prompt && !requiresClarification) return null;
 
-  const options = Array.isArray(prompt?.options) && prompt.options.length > 0
-    ? prompt.options
-    : (Array.isArray(missingReqs) ? missingReqs : []);
+  const options = prompt?.type !== 'MISSING_REQUIREMENTS' && Array.isArray(prompt?.options) ? prompt.options : [];
   const questionText = prompt?.question || (
     Array.isArray(missingReqs) && missingReqs.length > 0
       ? `Sizing requirements are incomplete or ambiguous (Missing: ${missingReqs.join(', ')}). Confirm missing details below.`

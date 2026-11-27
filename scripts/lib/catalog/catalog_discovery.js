@@ -261,8 +261,9 @@ function checkCdpHealth(port = 9222) {
         try {
           const targets = JSON.parse(data);
           const pages = targets.filter(t => t.type === 'page');
-          const ocaPage = pages.find(p => (p.url || '').includes('oca.ext.hpe.com'));
-          resolve({ ok: true, pages, hasActiveOca: !!ocaPage });
+          const { classifyCdpPages } = require('../scraper/cdp.js');
+          const cdpStatus = classifyCdpPages(pages);
+          resolve({ ok: true, pages, hasActiveOca: cdpStatus.status === 'READY', cdpStatus });
         } catch (e) { console.warn('Caught suppressed error in catalog_discovery.js:', e);
 resolve({ ok: false, pages: [], hasActiveOca: false });
         }

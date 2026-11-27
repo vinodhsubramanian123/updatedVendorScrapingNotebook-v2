@@ -146,7 +146,7 @@ test('CDP Navigator Resilience Test Suite', async (t) => {
       { type: 'page', id: 'portal', url: 'https://partner.hpe.com/group/prp', title: 'Partner Portal' }
     ];
     const previous = global.setTimeout;
-    global.setTimeout = (fn, ms) => previous(fn, ms === 45000 ? 10 : ms);
+    global.setTimeout = (fn, ms) => previous(fn, ms >= 45000 ? 10 : ms);
     try {
       await assert.rejects(navigateToOCAChassis('DL360 Gen12'), { code: 'OCA_RESPONSE_TIMEOUT' });
       assert.deepEqual(mockTargets.map(tab => tab.id), ['quickspecs', 'working-oca', 'portal']);
@@ -551,6 +551,61 @@ test('CDP Navigator Resilience Test Suite', async (t) => {
     });
     assert.match(expr, /alreadyReady/, 'Must check alreadyReady before firing redundant change event');
     assert.match(expr, /setTimeout\(\(\)\s*=>\s*\{\s*button\.click\(\);\s*\},\s*50\)/, 'Must defer Customize click past return to avoid CDP teardown timeout');
+  });
+
+  await t.test('Test 10: getDefaultCdpTimeout defaults to 90000ms and respects CDP_COMMAND_TIMEOUT_MS', () => {
+    const prev = process.env.CDP_COMMAND_TIMEOUT_MS;
+    try {
+      delete process.env.CDP_COMMAND_TIMEOUT_MS;
+      assert.strictEqual(cdp.getDefaultCdpTimeout(), 90000);
+      process.env.CDP_COMMAND_TIMEOUT_MS = '120000';
+      assert.strictEqual(cdp.getDefaultCdpTimeout(), 120000);
+      process.env.CDP_COMMAND_TIMEOUT_MS = 'invalid';
+      assert.strictEqual(cdp.getDefaultCdpTimeout(), 90000);
+    } finally {
+      if (prev === undefined) delete process.env.CDP_COMMAND_TIMEOUT_MS;
+      else process.env.CDP_COMMAND_TIMEOUT_MS = prev;
+    }
+  });
+
+  await t.test('Test 11: parseClicInspectionResult ignores session-keepalive dialogs and detects Unbuildable config status', () => {
+    const keepaliveOnly = cdp.parseClicInspectionResult({
+      clicked: false,
+      configStatus: 'UNBUILDABLE',
+      modalVisible: false,
+      modalText: 'Your session is going to expire in seconds! Resume Current Session'
+    });
+    assert.strictEqual(keepaliveOnly.hasErrors, true);
+    assert.strictEqual(keepaliveOnly.modalVisible, false);
+    assert.strictEqual(keepaliveOnly.errorText, '');
+    assert.match(keepaliveOnly.rootCause, /Unbuildable/i);
+
+    const buildableClean = cdp.parseClicInspectionResult({
+      clicked: true,
+      clickedLabel: 'CLIC Check',
+      configStatus: 'BUILDABLE',
+      modalVisible: false,
+      modalText: ''
+    });
+    assert.strictEqual(buildableClean.hasErrors, false);
+
+    const realError = cdp.parseClicInspectionResult({
+      clicked: true,
+      clickedLabel: 'View/Resolve issues',
+      configStatus: 'UNBUILDABLE',
+      modalVisible: true,
+      modalText: 'Error: Missing mandatory riser kit P76453-B21 for slot 4.'
+    });
+    assert.strictEqual(realError.hasErrors, true);
+    assert.strictEqual(realError.modalVisible, true);
+    assert.deepStrictEqual(realError.recommendedSkus, ['P76453-B21']);
+
+    const stale = cdp.classifyCdpPages([{ type: 'page', title: 'OneConfig Advanced', url: 'https://oca.ext.hpe.com/oca/OCAInternalLogin' }]);
+    assert.strictEqual(stale.status, 'AUTHENTICATING');
+    assert.strictEqual(stale.staleSession, true);
+
+    const authed = cdp.classifyCdpPages([{ type: 'page', title: 'External OCA | Hewlett Packard Enterprise', url: 'https://oca.ext.hpe.com/oca/OCAInternalLogin' }]);
+    assert.strictEqual(authed.status, 'READY');
   });
 });
 

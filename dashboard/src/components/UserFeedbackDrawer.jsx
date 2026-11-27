@@ -2,6 +2,7 @@ import { useModalFocus } from '../hooks/useModalFocus.js';
 import React, { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { MessageSquare, X, Send, CheckCircle2 } from 'lucide-react';
+import { postJson, requestJson } from '../services/api.js';
 import { humanizeEnum } from '../utils/formatters';
 
 function formatContextObject(obj) {
@@ -79,7 +80,36 @@ function FeedbackSubmissionForm({ category, setCategory, feedbackText, setFeedba
   );
 }
 
-function FeedbackQueueList({ items, hasQueue, analyzingId, agentAnalysis, onResolveAll, onAnalyzeItem }) {
+function FeedbackAnalysisCard({ itemId, analysis, deltaStatus, queuingDeltaId, onQueueRuleDelta }) {
+  if (!analysis) return null;
+  const delta = analysis.proposedDelta;
+  return (
+    <div className="p-2 rounded bg-white border border-slate-200 text-[11px] space-y-1.5">
+      <div className="flex items-center justify-between gap-2">
+        <span className="badge badge-indigo">{analysis.disposition}</span>
+      </div>
+      <p className="text-slate-700 whitespace-pre-line">{analysis.summary}</p>
+      {delta && (
+        <button
+          type="button"
+          disabled={queuingDeltaId === itemId}
+          onClick={onQueueRuleDelta}
+          className="btn-primary text-[10px] py-1 px-2"
+        >
+          <CheckCircle2 className="w-3 h-3" />
+          <span>{queuingDeltaId === itemId ? 'Queueing...' : 'Confirm & Queue Rule Delta'}</span>
+        </button>
+      )}
+      {deltaStatus && (
+        <p role={deltaStatus.type === 'error' ? 'alert' : 'status'} className={`text-[10px] font-medium ${deltaStatus.type === 'error' ? 'text-rose-700' : 'text-emerald-700'}`}>
+          {deltaStatus.text}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function FeedbackQueueList({ localOnly, items, hasQueue, analyzingId, queuingDeltaId, agentAnalysis, deltaStatus, onResolveAll, onAnalyzeItem, onQueueRuleDelta }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
@@ -105,15 +135,16 @@ function FeedbackQueueList({ items, hasQueue, analyzingId, agentAnalysis, onReso
             <p className="text-slate-700 font-medium break-words">{item.displayText}</p>
             {item.status === 'PENDING' && (
               <div className="mt-2 pt-2 border-t border-slate-200 space-y-1.5">
-                <button type="button" disabled={analyzingId === item.id} onClick={() => onAnalyzeItem(item)} className="btn-secondary text-[10px] py-1 px-2">
+                <button type="button" disabled={localOnly || analyzingId !== null} title={localOnly ? 'Analysis requires online mode' : undefined} onClick={() => onAnalyzeItem(item)} className="btn-secondary text-[10px] py-1 px-2">
                   {analyzingId === item.id ? 'Analyzing...' : 'Analyze with Antigravity'}
                 </button>
-                {agentAnalysis[item.id] && (
-                  <div className="p-2 rounded bg-white border border-slate-200 text-[11px] space-y-1">
-                    <span className="badge badge-indigo">{agentAnalysis[item.id].disposition}</span>
-                    <p className="text-slate-700 whitespace-pre-line">{agentAnalysis[item.id].summary}</p>
-                  </div>
-                )}
+                <FeedbackAnalysisCard
+                  itemId={item.id}
+                  analysis={agentAnalysis[item.id]}
+                  deltaStatus={deltaStatus[item.id]}
+                  queuingDeltaId={queuingDeltaId}
+                  onQueueRuleDelta={() => onQueueRuleDelta(item, agentAnalysis[item.id].proposedDelta)}
+                />
               </div>
             )}
           </div>
@@ -123,16 +154,20 @@ function FeedbackQueueList({ items, hasQueue, analyzingId, agentAnalysis, onReso
   );
 }
 
-export default function UserFeedbackDrawer({ isOpen, onClose }) {
+export default function UserFeedbackDrawer({ isOpen, onClose, localOnly }) {
   const [feedbackText, setFeedbackText] = useState('');
   const [category, setCategory] = useState('feature_request');
   const [queueItems, setQueueItems] = useState([]);
   const [copiedPrompt, setCopiedPrompt] = useState('');
   const [analyzingId, setAnalyzingId] = useState(null);
+  const [queuingDeltaId, setQueuingDeltaId] = useState(null);
   const [agentAnalysis, setAgentAnalysis] = useState({});
+  const [deltaStatus, setDeltaStatus] = useState({});
 
+  const [error, setError] = useState(null);
   const fetchQueue = async () => {
-    try { setQueueItems(await (await fetch('/api/feedback-list')).json()); } catch (err) { console.error(err); }
+    try { setQueueItems(await requestJson('/api/feedback-list')); }
+    catch (err) { setError(err.message); }
   };
   useEffect(() => { if (isOpen) fetchQueue(); }, [isOpen]);
 
@@ -144,19 +179,40 @@ export default function UserFeedbackDrawer({ isOpen, onClose }) {
     e.preventDefault();
     if (!feedbackText.trim()) return;
     try {
-      const data = await (await fetch('/api/feedback-submit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: feedbackText, category }) })).json();
+      setError(null);
+      const data = await postJson('/api/feedback-submit', { text: feedbackText, category });
       setCopiedPrompt(data.agentPrompt); setFeedbackText(''); fetchQueue();
-    } catch (err) { console.error(err); }
+    } catch (err) { setError(err.message); }
   };
 
   const handleAnalyzeItem = async (item) => {
     setAnalyzingId(item.id);
     try {
-      const res = await fetch('/api/feedback/analyze-with-agent', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ feedbackText: item.displayText, category: item.category, chassis: item.context?.chassis }) });
-      const data = await res.json();
-      setAgentAnalysis(prev => ({ ...prev, [item.id]: res.ok ? data : { disposition: 'UNAVAILABLE', summary: data.error || 'Analysis unavailable' } }));
+      const data = await postJson('/api/feedback/analyze-with-agent', {
+        offline: localOnly, feedbackText: item.displayText, category: item.category, chassis: item.context?.chassis
+      }, { timeoutMs: 120000 });
+      setAgentAnalysis(prev => ({ ...prev, [item.id]: data }));
     } catch (err) { setAgentAnalysis(prev => ({ ...prev, [item.id]: { disposition: 'ERROR', summary: err.message } })); }
     finally { setAnalyzingId(null); }
+  };
+
+  const handleQueueRuleDelta = async (item, proposedDelta) => {
+    setQueuingDeltaId(item.id);
+    setDeltaStatus(prev => ({ ...prev, [item.id]: null }));
+    try {
+      await postJson('/api/feedback/rule-proposal', {
+        runId: item.context?.runId || undefined,
+        chassis: proposedDelta.chassis || item.context?.chassis,
+        ruleUpdate: proposedDelta.ruleUpdate,
+        affectedSku: proposedDelta.affectedSku,
+        requiredDependencySku: proposedDelta.requiredDependencySku
+      });
+      setDeltaStatus(prev => ({ ...prev, [item.id]: { type: 'success', text: 'Rule proposal queued in Quarantined Deltas.' } }));
+    } catch (err) {
+      setDeltaStatus(prev => ({ ...prev, [item.id]: { type: 'error', text: err.message } }));
+    } finally {
+      setQueuingDeltaId(null);
+    }
   };
 
   const drawer = (
@@ -167,11 +223,13 @@ export default function UserFeedbackDrawer({ isOpen, onClose }) {
           <div className="flex items-center gap-2"><MessageSquare className="w-5 h-5 text-emerald-600" /><h3 id="feedback-drawer-title" className="font-bold text-slate-900 text-base">Feedback &amp; Agent Task Dispatch</h3></div>
           <button onClick={onClose} aria-label="Close drawer" title="Close drawer" className="text-slate-400 hover:text-slate-600 cursor-pointer"><X className="w-5 h-5" /></button>
         </div>
+        {error && <p role="alert" className="text-xs text-rose-700">{error}</p>}
         <FeedbackSubmissionForm category={category} setCategory={setCategory} feedbackText={feedbackText} setFeedbackText={setFeedbackText} onSubmit={handleSubmit} copiedPrompt={copiedPrompt} />
         <FeedbackQueueList
-          items={deduplicatedQueue} hasQueue={queueItems.length > 0} analyzingId={analyzingId} agentAnalysis={agentAnalysis}
-          onResolveAll={async () => { await fetch('/api/feedback-mark-completed', { method: 'POST' }).catch(() => {}); fetchQueue(); }}
+          items={deduplicatedQueue} localOnly={localOnly} hasQueue={queueItems.some(item => item.status === 'PENDING')} analyzingId={analyzingId} queuingDeltaId={queuingDeltaId} agentAnalysis={agentAnalysis} deltaStatus={deltaStatus}
+          onResolveAll={async () => { try { setError(null); await postJson('/api/feedback-mark-completed', {}); await fetchQueue(); } catch (err) { setError(err.message); } }}
           onAnalyzeItem={handleAnalyzeItem}
+          onQueueRuleDelta={handleQueueRuleDelta}
         />
       </div>
     </div>

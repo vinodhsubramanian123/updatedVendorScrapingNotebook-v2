@@ -31,6 +31,7 @@ const { execFile } = require('child_process');
 
 const { assertSafePath, OUTPUTS_DIR } = require('../services/pathGuard.cjs');
 const { sendErrorResponse } = require('../services/errorHandler.cjs');
+const { classifyCdpPages } = require('../../scripts/lib/scraper/cdp.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 
@@ -487,15 +488,7 @@ async function _probeCdpStatusUncached() {
       return _buildCdpPortConflictPayload(response.status, OUTPUTS_DIR);
     }
     const targets = await response.json();
-    const pages = targets.filter(t => t.type === 'page');
-    const ocaPage = pages.find(t => t.url.includes('oca.ext.hpe.com'));
-    if (ocaPage) {
-      const isSolutionRoot = ocaPage.url.includes('extended_overview_components') || ocaPage.url.includes('alletra_5000_wizard');
-      return { status: 'READY', title: ocaPage.title, url: ocaPage.url, isSolutionRoot };
-    }
-    const loginPage = pages.find(t => t.url.includes('login.hpe.com') || t.url.includes('partner.hpe.com'));
-    if (loginPage) return { status: 'AUTHENTICATING', title: loginPage.title };
-    return { status: 'NAVIGATING', message: 'OCA not found in open tabs' };
+    return classifyCdpPages(targets.filter(t => t.type === 'page'));
   } catch (err) {
     const hasOutputs = fs.existsSync(OUTPUTS_DIR) && fs.readdirSync(OUTPUTS_DIR).length > 0;
     return hasOutputs
@@ -742,4 +735,5 @@ module.exports = router;
 module.exports.invalidateCatalogCache = invalidateCatalogCache;
 module.exports.getCachedCatalogs = getCachedCatalogs;
 module.exports.loadAndNormalizeCatalog = loadAndNormalizeCatalog;
+module.exports.classifyCdpPages = classifyCdpPages;
 

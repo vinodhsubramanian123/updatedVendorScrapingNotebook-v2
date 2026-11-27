@@ -112,6 +112,24 @@ function _printKnowledgeAndTelemetry(deltas, knowledgeSyncState, telemetryData) 
   }
 }
 
+function _printCdpStatusSection(cdpState) {
+  console.log('--- 1. CDP Browser Debugging Status (Port 9222) ---');
+  if (!cdpState.ok) {
+    console.log('  🟡 CDP Connection: INACTIVE / NOT LISTENING on Port 9222');
+    console.log('  💡 Launch Chrome with --remote-debugging-port=9222 before running live scrapers.');
+    return;
+  }
+  console.log('  🟢 CDP Connection: ACTIVE (http://localhost:9222)');
+  console.log(`  Open Browser Tabs (${cdpState.pages.length}):`);
+  const { isAuthenticatedExternalOcaPage } = require('../lib/scraper/cdp.js');
+  cdpState.pages.forEach(p => {
+    const isOca = isAuthenticatedExternalOcaPage(p);
+    const isStale = !isOca && /OCAInternalLogin|\/logout|login_error|session_expired/i.test(p.url || '');
+    const tag = isOca ? '⭐ [ACTIVE OCA]' : (isStale ? '⚠️ [EXPIRED OCA LOGIN]' : '🌐');
+    console.log(`    - ${tag} ${p.title || 'Untitled'} (${p.url})`);
+  });
+}
+
 async function main() {
   const cdpState = await checkCdpHealth(9222);
   const catalogs = listAllCatalogs(OUTPUTS_ROOT);
@@ -145,18 +163,7 @@ async function main() {
   console.log('📊 HPE OCA PIPELINE OBSERVABILITY & HEALTH DASHBOARD');
   console.log('================================================================\n');
 
-  console.log('--- 1. CDP Browser Debugging Status (Port 9222) ---');
-  if (cdpState.ok) {
-    console.log('  🟢 CDP Connection: ACTIVE (http://localhost:9222)');
-    console.log(`  Open Browser Tabs (${cdpState.pages.length}):`);
-    cdpState.pages.forEach(p => {
-      const isOca = (p.url || '').includes('oca.ext.hpe.com');
-      console.log(`    - ${isOca ? '⭐ [ACTIVE OCA]' : '🌐'} ${p.title || 'Untitled'} (${p.url})`);
-    });
-  } else {
-    console.log('  🟡 CDP Connection: INACTIVE / NOT LISTENING on Port 9222');
-    console.log('  💡 Launch Chrome with --remote-debugging-port=9222 before running live scrapers.');
-  }
+  _printCdpStatusSection(cdpState);
 
   console.log('\n--- 2. Portfolio Intelligence & Output Catalogs ---');
   console.log(`Found ${catalogs.length} scraped catalog directory(ies) in outputs/\n`);
